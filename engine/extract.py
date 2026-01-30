@@ -28,21 +28,62 @@ def extract_facts(note_text: str) -> Dict[str, Any]:
             weeks = None
 
     # -----------------------------------------
-    # Neuro deficit / red flags (presence only)
+    # Neuro deficit / red flags
     # -----------------------------------------
-    # NOTE: This detects *presence* of red-flag terms. It does not reliably detect
-    # explicit denials yet (e.g., "denies weakness"). We'll add that in v0.2.
-    neuro_flags = any(
-        s in t
-        for s in [
-            "weakness",
-            "bowel",
-            "bladder",
-            "saddle anesthesia",
-            "foot drop",
-            "progressive deficit",
-        ]
-    )
+    RED_FLAG_TERMS = [
+        "weakness",
+        "bowel",
+        "bladder",
+        "saddle anesthesia",
+        "foot drop",
+        "progressive deficit",
+    ]
+
+    # Explicit denials (documentation that red flags are NOT present)
+    # Keep this list short and high-signal for v0.1/v0.2.
+    DENIAL_PHRASES = [
+        "denies weakness",
+        "no weakness",
+        "denies bowel",
+        "no bowel",
+        "denies bladder",
+        "no bladder",
+        "denies saddle anesthesia",
+        "no saddle anesthesia",
+        "denies foot drop",
+        "no foot drop",
+        "denies progressive deficit",
+        "no progressive deficit",
+        "denies numbness",
+        "no numbness",
+    ]
+
+    neuro_denials = any(p in t for p in DENIAL_PHRASES)
+
+    # "Present" should not be triggered by denial statements.
+    # Heuristic: if denials exist, we only treat "present" as true if we see
+    # an explicit positive cue not expressed as a denial.
+    POSITIVE_CUES = [
+        "reports weakness",
+        "has weakness",
+        "with weakness",
+        "bowel incontinence",
+        "bladder incontinence",
+        "urinary retention",
+        "fecal incontinence",
+        "saddle anesthesia present",
+        "foot drop present",
+        "progressive deficit noted",
+    ]
+
+    neuro_present = any(p in t for p in POSITIVE_CUES)
+
+    # If no explicit positive cue, fall back to generic term matching ONLY when no denials are present.
+    if not neuro_present and not neuro_denials:
+        neuro_present = any(term in t for term in RED_FLAG_TERMS)
+
+    neuro_documented = bool(neuro_present or neuro_denials)
+
 
      # Explicit denials (documentation that red flags are NOT present)
     neuro_denials = any(
