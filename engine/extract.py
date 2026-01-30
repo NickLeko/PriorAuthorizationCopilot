@@ -180,8 +180,9 @@ def extract_facts(note_text: str) -> Dict[str, Any]:
         "osa_diagnosis": osa_dx,
         "sleep_study_date": sleep_study_date,
         "ahi_documented": ahi,
-        "neuro_deficit_or_red_flags": neuro_flags,
+        "neuro_deficit_or_red_flags": neuro_present,
         "neuro_red_flags_documented": neuro_documented,
+
 
     }
 
