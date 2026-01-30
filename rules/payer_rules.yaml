@@ -1,7 +1,43 @@
-Aetna:
-  MRI_LUMBAR:
-    required:
-      - diagnosis_consistent_with_guidelines
-      - conservative_therapy_duration >= 6_weeks
-      - prior_imaging_absent_or_inconclusive
-      - red_flag_symptoms_documented
+version: 0.1
+
+payers:
+  Aetna:
+    procedures:
+      MRI_LUMBAR:
+        display_name: "MRI Lumbar Spine (no contrast)"
+        required:
+          - key: conservative_therapy_weeks
+            label: "Conservative therapy duration (weeks)"
+            type: number
+            min: 6
+            evidence: "PT/NSAIDs/activity modification trial documented"
+          - key: neuro_deficit_or_red_flags
+            label: "Neuro deficit or red flags documented"
+            type: boolean
+            evidence: "Weakness, saddle anesthesia, bowel/bladder changes, etc."
+          - key: prior_imaging_result
+            label: "Prior imaging result"
+            type: enum
+            allowed: ["none", "inconclusive", "abnormal"]
+            evidence: "X-ray/CT results or note of none"
+          - key: symptom_duration_weeks
+            label: "Symptom duration (weeks)"
+            type: number
+            min: 6
+            evidence: "Duration supports guideline-based escalation"
+
+      CPAP_DEVICE:
+        display_name: "CPAP Device (HCPCS E0601)"
+        required:
+          - key: osa_diagnosis
+            label: "OSA diagnosis documented"
+            type: boolean
+            evidence: "Diagnosis present"
+          - key: sleep_study_date
+            label: "Sleep study date documented"
+            type: boolean
+            evidence: "Date in chart"
+          - key: ahi_documented
+            label: "AHI/RDI documented"
+            type: boolean
+            evidence: "AHI value included"
