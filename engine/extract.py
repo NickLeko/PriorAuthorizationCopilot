@@ -44,6 +44,25 @@ def extract_facts(note_text: str) -> Dict[str, Any]:
         ]
     )
 
+     # Explicit denials (documentation that red flags are NOT present)
+    neuro_denials = any(
+        s in t for s in [
+            "denies weakness",
+            "no weakness",
+            "denies bowel",
+            "denies bladder",
+            "no bowel",
+            "no bladder",
+            "denies saddle anesthesia",
+            "no saddle anesthesia",
+            "denies numbness",
+            "no numbness",
+        ]
+    )
+
+    neuro_documented = bool(neuro_flags or neuro_denials)
+
+
     # -----------------------------------------
     # Prior imaging result (with negation handling)
     # -----------------------------------------
