@@ -6,6 +6,32 @@ from llm.draft_letter import draft_letter_deterministic
 
 st.set_page_config(page_title="PA Readiness Copilot", layout="wide")
 
+
+st.markdown(
+    """
+    <style>
+      /* Ensure the overall page can scroll on iOS/webviews */
+      html, body, [data-testid="stAppViewContainer"], [data-testid="stMain"] {
+        height: 100% !important;
+        overflow: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+      }
+
+      /* Streamlit header can cause scroll-jank on mobile */
+      header[data-testid="stHeader"] {
+        position: relative !important;
+      }
+
+      /* Avoid nested overflow containers clipping content */
+      section[data-testid="stSidebar"], div[data-testid="stVerticalBlock"] {
+        overflow: visible !important;
+      }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
+
+
 st.title("PA Readiness Copilot (Flagship)")
 st.caption("Administrative decision support only — not medical or billing advice.")
 
