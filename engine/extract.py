@@ -101,7 +101,14 @@ def extract_facts(note_text: str) -> Dict[str, Any]:
         ]
     )
 
-    neuro_documented = bool(neuro_flags or neuro_denials)
+    neuro_documented = bool(neuro_present or neuro_denials)
+
+
+    # Final names used downstream
+    neuro_deficit_or_red_flags = neuro_present
+    neuro_red_flags_documented = bool(neuro_present or neuro_denials)
+
+
 
 
     # -----------------------------------------
@@ -180,8 +187,9 @@ def extract_facts(note_text: str) -> Dict[str, Any]:
         "osa_diagnosis": osa_dx,
         "sleep_study_date": sleep_study_date,
         "ahi_documented": ahi,
-        "neuro_deficit_or_red_flags": neuro_present,
-        "neuro_red_flags_documented": neuro_documented,
+        "neuro_deficit_or_red_flags": neuro_deficit_or_red_flags,
+        "neuro_red_flags_documented": neuro_red_flags_documented,
+
 
 
     }
