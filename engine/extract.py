@@ -1,4 +1,5 @@
 from __future__ import annotations
+
 import re
 from typing import Any, Dict
 
@@ -6,11 +7,18 @@ from typing import Any, Dict
 def extract_facts(note_text: str) -> Dict[str, Any]:
     """
     Deterministic extraction for MVP.
+
     Produces a dict of facts used by the rules engine.
+    This is intentionally conservative:
+      - If something isn't explicitly documented, prefer None/False over guessing.
+      - Handle common negations so "no abnormalities" doesn't get misread as "abnormal".
     """
     t = (note_text or "").lower()
 
-    # Conservative therapy weeks: look for patterns like "PT x 6 weeks", "6 weeks of PT"
+    # -----------------------------------------
+    # Conservative therapy weeks
+    # -----------------------------------------
+    # Look for patterns like: "PT x 6 weeks", "6 weeks of PT", "trial for 8 weeks"
     weeks = None
     m = re.search(r"(\d+)\s*(week|weeks)\b", t)
     if m:
@@ -19,41 +27,90 @@ def extract_facts(note_text: str) -> Dict[str, Any]:
         except ValueError:
             weeks = None
 
+    # -----------------------------------------
+    # Neuro deficit / red flags (presence only)
+    # -----------------------------------------
+    # NOTE: This detects *presence* of red-flag terms. It does not reliably detect
+    # explicit denials yet (e.g., "denies weakness"). We'll add that in v0.2.
     neuro_flags = any(
-        s in t for s in [
-            "weakness", "bowel", "bladder", "saddle anesthesia",
-            "foot drop", "progressive deficit"
+        s in t
+        for s in [
+            "weakness",
+            "bowel",
+            "bladder",
+            "saddle anesthesia",
+            "foot drop",
+            "progressive deficit",
         ]
     )
 
-    # prior imaging result
-    # IMPORTANT: default None (unknown) unless explicitly documented
+    # -----------------------------------------
+    # Prior imaging result (with negation handling)
+    # -----------------------------------------
+    # IMPORTANT: default None (unknown) unless explicitly documented.
+    # Also handle "no abnormalities" so it does NOT map to "abnormal".
     prior_imaging = None
 
-    if "no prior imaging" in t or "no imaging yet" in t or "no imaging to date" in t:
+    # Explicit "no prior imaging" statements
+    if any(p in t for p in ["no prior imaging", "no imaging yet", "no imaging to date"]):
         prior_imaging = "none"
-    elif "x-ray" in t or "xray" in t or "ct" in t or "imaging" in t or "mri" in t:
-        if "inconclusive" in t or "equivocal" in t:
-            prior_imaging = "inconclusive"
-        elif "abnormal" in t or "herni" in t or "stenosis" in t or "disc" in t:
-            prior_imaging = "abnormal"
-        else:
-            # imaging referenced but result unclear
+
+    # If imaging modality is mentioned, infer a category *only* from documented findings
+    elif any(mod in t for mod in ["x-ray", "xray", "ct", "mri", "imaging"]):
+        # Negation/normal findings FIRST (avoid substring trap: "abnormalities" contains "abnormal")
+        if any(
+            neg in t
+            for neg in [
+                "no abnormal",
+                "no abnormalities",
+                "no acute findings",
+                "normal",
+                "unremarkable",
+            ]
+        ):
+            # Treat normal prior study as "inconclusive" for escalation purposes in v0.1
+            # (You can add a dedicated "normal" bucket later if desired.)
             prior_imaging = "inconclusive"
 
+        elif any(w in t for w in ["inconclusive", "equivocal", "limited"]):
+            prior_imaging = "inconclusive"
+
+        elif any(w in t for w in ["abnormal", "herni", "stenosis", "disc bulge", "fracture"]):
+            prior_imaging = "abnormal"
+
+        else:
+            # Imaging referenced but result not documented clearly
+            prior_imaging = "inconclusive"
+
+    # -----------------------------------------
+    # Symptom duration (weeks)
+    # -----------------------------------------
     symptom_weeks = None
+
     # crude: if "months" appear, convert to weeks
     mm = re.search(r"(\d+)\s*(month|months)\b", t)
     if mm:
-        symptom_weeks = int(mm.group(1)) * 4
+        try:
+            symptom_weeks = int(mm.group(1)) * 4
+        except ValueError:
+            symptom_weeks = None
     else:
         wm = re.search(r"(\d+)\s*(week|weeks)\b", t)
         if wm:
-            symptom_weeks = int(wm.group(1))
+            try:
+                symptom_weeks = int(wm.group(1))
+            except ValueError:
+                symptom_weeks = None
 
-    osa_dx = "obstructive sleep apnea" in t or "osa" in t
+    # -----------------------------------------
+    # OSA / sleep study facts
+    # -----------------------------------------
+    osa_dx = ("obstructive sleep apnea" in t) or ("osa" in t)
+
+    # Strict date pattern: YYYY-MM-DD or YYYY/MM/DD
     sleep_study_date = bool(re.search(r"\b(20\d{2}|19\d{2})[-/]\d{1,2}[-/]\d{1,2}\b", t))
-    ahi = "ahi" in t or "rdi" in t
+
+    ahi = ("ahi" in t) or ("rdi" in t)
 
     return {
         "conservative_therapy_weeks": weeks,
