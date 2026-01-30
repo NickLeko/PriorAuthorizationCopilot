@@ -41,3 +41,9 @@ payers:
             label: "AHI/RDI documented"
             type: boolean
             evidence: "AHI value included"
+
+
+policy_notes:
+  - "Conservative therapy often required prior to advanced imaging."
+  - "Red flags warrant escalation even without long conservative management."
+
