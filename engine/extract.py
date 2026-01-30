@@ -26,15 +26,19 @@ def extract_facts(note_text: str) -> Dict[str, Any]:
         ]
     )
 
-    # prior imaging: "xray normal", "ct inconclusive", etc.
-    prior_imaging = "none"
-    if "x-ray" in t or "xray" in t or "ct" in t or "imaging" in t:
+    # prior imaging result
+    # IMPORTANT: default None (unknown) unless explicitly documented
+    prior_imaging = None
+
+    if "no prior imaging" in t or "no imaging yet" in t or "no imaging to date" in t:
+        prior_imaging = "none"
+    elif "x-ray" in t or "xray" in t or "ct" in t or "imaging" in t or "mri" in t:
         if "inconclusive" in t or "equivocal" in t:
             prior_imaging = "inconclusive"
-        elif "abnormal" in t or "hern" in t or "stenosis" in t:
+        elif "abnormal" in t or "herni" in t or "stenosis" in t or "disc" in t:
             prior_imaging = "abnormal"
         else:
-            # mentioned imaging but no clear result
+            # imaging referenced but result unclear
             prior_imaging = "inconclusive"
 
     symptom_weeks = None
