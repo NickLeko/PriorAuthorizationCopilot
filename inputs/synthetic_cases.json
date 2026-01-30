@@ -1,1 +1,103 @@
+[
+  {
+    "id": "MRI-01-complete",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "dx_codes": ["M54.16"],
+    "site_of_care": "outpatient",
+    "specialty": "Orthopedics",
+    "note_text": "Low back pain with right leg radiculopathy x 8 weeks. Completed PT for 8 weeks and NSAIDs with minimal improvement. Denies bowel/bladder incontinence. No saddle anesthesia. Prior imaging: lumbar xray inconclusive. Neuro exam: mild weakness dorsiflexion 4/5.",
+    "expected_label": "complete"
+  },
+  {
+    "id": "MRI-02-complete",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "dx_codes": ["M51.26"],
+    "site_of_care": "outpatient",
+    "specialty": "Primary Care",
+    "note_text": "Back pain x 2 months. Trial of activity modification + NSAIDs and PT x 6 weeks documented, persistent symptoms. Reports progressive weakness. Prior CT described as abnormal with disc bulge/stenosis.",
+    "expected_label": "complete"
+  },
+  {
+    "id": "MRI-03-borderline",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "dx_codes": ["M54.5"],
+    "site_of_care": "outpatient",
+    "specialty": "Primary Care",
+    "note_text": "Low back pain x 6 weeks. Tried PT for 6 weeks. No imaging yet. No red flags mentioned.",
+    "expected_label": "borderline"
+  },
+  {
+    "id": "MRI-04-borderline",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "dx_codes": ["M54.16"],
+    "site_of_care": "outpatient",
+    "specialty": "Orthopedics",
+    "note_text": "Back pain x 3 months. PT x 10 weeks with no improvement. Imaging noted but result unclear. Denies weakness. Denies bowel/bladder changes.",
+    "expected_label": "borderline"
+  },
+  {
+    "id": "MRI-05-incomplete",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "dx_codes": ["M54.5"],
+    "site_of_care": "outpatient",
+    "specialty": "Primary Care",
+    "note_text": "Back pain. Wants MRI. No duration provided. No mention of prior treatment or imaging.",
+    "expected_label": "incomplete"
+  },
+  {
+    "id": "MRI-06-incomplete",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "dx_codes": ["M54.16"],
+    "site_of_care": "outpatient",
+    "specialty": "Orthopedics",
+    "note_text": "Radicular pain x 4 weeks. PT for 4 weeks. No imaging documented. No red flags documented.",
+    "expected_label": "incomplete"
+  },
+  {
+    "id": "CPAP-01-complete",
+    "payer": "Aetna",
+    "procedure_code": "CPAP_DEVICE",
+    "dx_codes": ["G47.33"],
+    "site_of_care": "outpatient",
+    "specialty": "Sleep Medicine",
+    "note_text": "Dx: OSA. Sleep study completed 2024-05-18. AHI 22 documented. Requests CPAP E0601.",
+    "expected_label": "complete"
+  },
+  {
+    "id": "CPAP-02-borderline",
+    "payer": "Aetna",
+    "procedure_code": "CPAP_DEVICE",
+    "dx_codes": ["G47.33"],
+    "site_of_care": "outpatient",
+    "specialty": "Primary Care",
+    "note_text": "OSA noted in problem list. Sleep study in 2023 mentioned but no date. AHI not documented.",
+    "expected_label": "borderline"
+  },
+  {
+    "id": "CPAP-03-incomplete",
+    "payer": "Aetna",
+    "procedure_code": "CPAP_DEVICE",
+    "dx_codes": [],
+    "site_of_care": "outpatient",
+    "specialty": "Primary Care",
+    "note_text": "Snoring and fatigue. Request CPAP.",
+    "expected_label": "incomplete"
+  },
+  {
+    "id": "CPAP-04-incomplete",
+    "payer": "Aetna",
+    "procedure_code": "CPAP_DEVICE",
+    "dx_codes": ["G47.33"],
+    "site_of_care": "outpatient",
+    "specialty": "Sleep Medicine",
+    "note_text": "OSA. AHI documented. Sleep study date not documented.",
+    "expected_label": "incomplete"
+  }
+]
 
