@@ -11,10 +11,10 @@ payers:
             type: number
             min: 6
             evidence: "PT/NSAIDs/activity modification trial documented"
-          - key: neuro_deficit_or_red_flags
-            label: "Neuro deficit or red flags documented"
+          - key: neuro_red_flags_documented
+            label: "Neuro red flags explicitly addressed (present or denied)"
             type: boolean
-            evidence: "Weakness, saddle anesthesia, bowel/bladder changes, etc."
+            evidence: "Weakness, saddle anesthesia, bowel/bladder changes explicitly documented as present or denied"
           - key: prior_imaging_result
             label: "Prior imaging result"
             type: enum
