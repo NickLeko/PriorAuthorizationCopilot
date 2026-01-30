@@ -1,0 +1,7 @@
+Aetna:
+  MRI_LUMBAR:
+    required:
+      - diagnosis_consistent_with_guidelines
+      - conservative_therapy_duration >= 6_weeks
+      - prior_imaging_absent_or_inconclusive
+      - red_flag_symptoms_documented
