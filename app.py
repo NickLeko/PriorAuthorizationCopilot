@@ -106,3 +106,9 @@ audit = {
 }
 st.json(audit)
 
+st.markdown("### Test Suite (Synthetic Cases)")
+if st.button("Run test suite"):
+    from engine.test_suite import run_cases
+    rows = run_cases("rules/payer_rules.yaml", "inputs/synthetic_cases.json")
+    st.dataframe(rows, use_container_width=True)
+
