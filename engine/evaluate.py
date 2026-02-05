@@ -105,21 +105,20 @@ def evaluate_requirements(requirements: List[Dict[str, Any]], facts: Dict[str, A
 
 def compute_readiness_score(results: List[RequirementResult]) -> Dict[str, int]:
     total = len(results) if results else 1
-    met = sum(1 for r in results if r.status == "met")
-    weak = sum(1 for r in results if r.status == "weak")
-    missing = sum(1 for r in results if r.status == "missing")
+    met = sum(1 for r in results if r.status == "MET")
+    not_met = sum(1 for r in results if r.status == "NOT_MET")
+    not_doc = sum(1 for r in results if r.status == "NOT_DOCUMENTED")
 
-    # simple scoring: met=1, weak=0.5, missing=0
-    raw = met + 0.5 * weak
-    score = int(round(100 * raw / total))
+    score = int(round(100 * met / total))
 
     return {
         "readiness_score": max(0, min(100, score)),
         "met_count": met,
-        "weak_count": weak,
-        "missing_count": missing,
+        "not_met_count": not_met,
+        "not_documented_count": not_doc,
         "total": total,
     }
+
 
 def compute_overall_status(results: List[RequirementResult]) -> Dict[str, Any]:
     any_not_documented = any(r.status == "NOT_DOCUMENTED" for r in results)
