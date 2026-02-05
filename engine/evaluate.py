@@ -21,17 +21,46 @@ def _eval_number(key: str, label: str, facts: Dict[str, Any], req: Dict[str, Any
 
 def _eval_boolean(key: str, label: str, facts: Dict[str, Any], req: Dict[str, Any]) -> RequirementResult:
     val = facts.get(key)
+
     if val is True:
-        return RequirementResult(key=key, label=label, status="met",
-                                 reason="Present in documentation.",
-                                 evidence=req.get("evidence"))
+        return RequirementResult(
+            key=key, label=label, status="MET",
+            reason="Present in documentation.",
+            evidence=req.get("evidence")
+        )
+
     if val is False:
-        return RequirementResult(key=key, label=label, status="missing",
-                                 reason="Not documented. If applicable, add supporting details; otherwise explicitly deny.",
-                                 evidence=req.get("evidence"))
-    return RequirementResult(key=key, label=label, status="missing",
-                             reason="Not found in note. Add explicit statement.",
-                             evidence=req.get("evidence"))
+        return RequirementResult(
+            key=key, label=label, status="NOT_MET",
+            reason="Explicitly documented as not present / not satisfied.",
+            evidence=req.get("evidence")
+        )
+
+    return RequirementResult(
+        key=key, label=label, status="NOT_DOCUMENTED",
+        reason="Not found in note. Add explicit statement.",
+        evidence=req.get("evidence")
+    )
+
+    if val is True:
+        return RequirementResult(
+            key=key, label=label, status="MET",
+            reason="Present in documentation.",
+            evidence=req.get("evidence")
+        )
+
+    if val is False:
+        return RequirementResult(
+            key=key, label=label, status="NOT_MET",
+            reason="Explicitly documented as not present / not satisfied.",
+            evidence=req.get("evidence")
+        )
+
+    return RequirementResult(
+        key=key, label=label, status="NOT_DOCUMENTED",
+        reason="Not found in note. Add explicit statement.",
+        evidence=req.get("evidence")
+    )
 
 
 def _eval_enum(key: str, label: str, facts: Dict[str, Any], req: Dict[str, Any]) -> RequirementResult:
