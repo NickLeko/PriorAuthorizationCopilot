@@ -387,6 +387,8 @@ else:
             st.markdown("**Documented but not met (not ready):**")
             for r in not_met_items:
                 st.write(f"- {r['label']}: {r['reason']}")
+                
+    st.write("DEBUG main UI first row evidence_snippets:", (ev["rows"][0].get("evidence_snippets") if ev["rows"] else None))
 
     # Explainable results (with evidence snippets)
     st.subheader("Rule-based Requirement Results (Explainable)")
