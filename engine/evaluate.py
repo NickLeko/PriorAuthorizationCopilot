@@ -1,7 +1,45 @@
 from __future__ import annotations
 
-from typing import Any, Dict, List, Tuple, Optional
+from typing import Any, Dict, List, Optional, Tuple
+
 from .schemas import RequirementResult
+
+
+def _coerce_evidence_snippets(evidence_items: Any) -> List[str]:
+    """
+    evidence_items may be:
+      - None
+      - List[str]
+      - List[{"start": int, "end": int, "text": str}]
+    Return: List[str] (schema-stable for Pydantic).
+    """
+    if not evidence_items:
+        return []
+
+    out: List[str] = []
+    if isinstance(evidence_items, list):
+        for it in evidence_items:
+            if isinstance(it, str):
+                s = it.strip()
+                if s:
+                    out.append(s)
+            elif isinstance(it, dict):
+                s = str(it.get("text", "")).strip()
+                if s:
+                    out.append(s)
+            else:
+                s = str(it).strip()
+                if s:
+                    out.append(s)
+
+    # Dedup preserve order
+    dedup: List[str] = []
+    seen = set()
+    for s in out:
+        if s not in seen:
+            seen.add(s)
+            dedup.append(s)
+    return dedup
 
 
 def _eval_number(
@@ -9,11 +47,12 @@ def _eval_number(
     label: str,
     facts: Dict[str, Any],
     req: Dict[str, Any],
-    evidence_map: Optional[Dict[str, List[str]]] = None,
+    evidence_map: Optional[Dict[str, Any]] = None,
 ) -> RequirementResult:
     val = facts.get(key)
     minv = req.get("min")
-    snippets = (evidence_map or {}).get(key, [])
+
+    snippets = _coerce_evidence_snippets((evidence_map or {}).get(key))
 
     if val is None:
         return RequirementResult(
@@ -50,20 +89,10 @@ def _eval_boolean(
     label: str,
     facts: Dict[str, Any],
     req: Dict[str, Any],
-    evidence_map: Optional[Dict[str, List[str]]] = None,
+    evidence_map: Optional[Dict[str, Any]] = None,
 ) -> RequirementResult:
     val = facts.get(key)
-    snippets = (evidence_map or {}).get(key, [])
-
-    if val is None:
-        return RequirementResult(
-            key=key,
-            label=label,
-            status="NOT_DOCUMENTED",
-            reason="Not found in note. Add explicit statement.",
-            evidence=req.get("evidence"),
-            evidence_snippets=snippets,
-        )
+    snippets = _coerce_evidence_snippets((evidence_map or {}).get(key))
 
     if val is True:
         return RequirementResult(
@@ -75,12 +104,21 @@ def _eval_boolean(
             evidence_snippets=snippets,
         )
 
-    # val is False
+    if val is False:
+        return RequirementResult(
+            key=key,
+            label=label,
+            status="NOT_DOCUMENTED",
+            reason="Not documented. If applicable, add supporting details; otherwise explicitly deny.",
+            evidence=req.get("evidence"),
+            evidence_snippets=snippets,
+        )
+
     return RequirementResult(
         key=key,
         label=label,
-        status="NOT_MET",
-        reason="Documented as absent/denied. If applicable, add supporting details; otherwise criteria may not be met.",
+        status="NOT_DOCUMENTED",
+        reason="Not found in note. Add explicit statement.",
         evidence=req.get("evidence"),
         evidence_snippets=snippets,
     )
@@ -91,11 +129,11 @@ def _eval_enum(
     label: str,
     facts: Dict[str, Any],
     req: Dict[str, Any],
-    evidence_map: Optional[Dict[str, List[str]]] = None,
+    evidence_map: Optional[Dict[str, Any]] = None,
 ) -> RequirementResult:
     val = facts.get(key)
     allowed = req.get("allowed", [])
-    snippets = (evidence_map or {}).get(key, [])
+    snippets = _coerce_evidence_snippets((evidence_map or {}).get(key))
 
     if val is None:
         return RequirementResult(
@@ -130,7 +168,7 @@ def _eval_enum(
 def evaluate_requirements(
     requirements: List[Dict[str, Any]],
     facts: Dict[str, Any],
-    evidence_map: Optional[Dict[str, List[str]]] = None,
+    evidence_map: Optional[Dict[str, Any]] = None,
 ) -> Tuple[List[RequirementResult], List[str]]:
     results: List[RequirementResult] = []
     reasons: List[str] = []
@@ -155,17 +193,20 @@ def evaluate_requirements(
     return results, reasons
 
 
-def compute_readiness_score(results: List[RequirementResult]) -> Dict[str, Any]:
+def compute_readiness_score(results: List[RequirementResult]) -> Dict[str, int]:
     """
-    Simple deterministic scoring for demo:
-      MET=1, NOT_MET=0, NOT_DOCUMENTED=0
+    Score is informational only.
+    MET = 1
+    NOT_MET = 0.5 (documented but failing threshold)
+    NOT_DOCUMENTED = 0
     """
     total = len(results) if results else 1
     met = sum(1 for r in results if r.status == "MET")
     not_met = sum(1 for r in results if r.status == "NOT_MET")
     not_doc = sum(1 for r in results if r.status == "NOT_DOCUMENTED")
 
-    score = int(round(100 * met / total))
+    raw = met + 0.5 * not_met
+    score = int(round(100 * raw / total))
 
     return {
         "readiness_score": max(0, min(100, score)),
@@ -178,17 +219,17 @@ def compute_readiness_score(results: List[RequirementResult]) -> Dict[str, Any]:
 
 def compute_overall_status(results: List[RequirementResult]) -> Dict[str, Any]:
     """
-    Guardrail-aligned overall status:
-      - Any NOT_DOCUMENTED => CANNOT_DETERMINE
-      - Else any NOT_MET => NOT_READY
-      - Else READY
+    Semantics Contract (locked):
+      READY: all required MET
+      CANNOT_DETERMINE: >=1 NOT_DOCUMENTED
+      NOT_READY: all documented, but >=1 NOT_MET
     """
-    any_not_doc = any(r.status == "NOT_DOCUMENTED" for r in results)
-    if any_not_doc:
+    has_not_doc = any(r.status == "NOT_DOCUMENTED" for r in results)
+    has_not_met = any(r.status == "NOT_MET" for r in results)
+
+    if has_not_doc:
         return {"overall_status": "CANNOT_DETERMINE", "submission_readiness": False}
-
-    any_not_met = any(r.status == "NOT_MET" for r in results)
-    if any_not_met:
+    if has_not_met:
         return {"overall_status": "NOT_READY", "submission_readiness": False}
-
     return {"overall_status": "READY", "submission_readiness": True}
+
