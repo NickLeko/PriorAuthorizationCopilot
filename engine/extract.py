@@ -13,16 +13,27 @@ def _add_ev(evidence: Dict[str, List[str]], key: str, snippet: str) -> None:
         evidence[key].append(snippet)
 
 
-def _find_contextual_date(text: str, context_terms: List[str], window: int = 60) -> Optional[str]:
+def _is_dob_date(text: str, date_start: int) -> bool:
     """
-    Returns a date string only if it appears near a relevant context term.
-    Prevents DOB or unrelated dates from triggering "sleep_study_date".
+    Skip DOB dates: if 'dob' appears shortly before the date, treat it as DOB not sleep study.
     """
-    # Date formats: YYYY-MM-DD or YYYY/MM/DD
-    date_pat = re.compile(r"\b(20\d{2}|19\d{2})[-/]\d{1,2}[-/]\d{1,2}\b")
+    left = max(0, date_start - 12)
+    prefix = text[left:date_start]
+    return "dob" in prefix
 
-    # Scan all date matches and check nearby context
+
+def _find_contextual_sleep_study_date(text: str, window: int = 90) -> Optional[str]:
+    """
+    Returns a date ONLY if it appears near a sleep-study context term,
+    and the date is NOT a DOB date.
+    """
+    date_pat = re.compile(r"\b(20\d{2}|19\d{2})[-/]\d{1,2}[-/]\d{1,2}\b")
+    context_terms = ["sleep study", "polysomnogram", "psg"]
+
     for m in date_pat.finditer(text):
+        if _is_dob_date(text, m.start()):
+            continue
+
         start, end = m.start(), m.end()
         left = max(0, start - window)
         right = min(len(text), end + window)
@@ -31,8 +42,6 @@ def _find_contextual_date(text: str, context_terms: List[str], window: int = 60)
         if any(ct in neighborhood for ct in context_terms):
             return m.group(0)
 
-    # Also handle "sleep study 2023-..." in the other direction (context before date)
-    # Already covered by neighborhood scan, but kept explicit for clarity.
     return None
 
 
@@ -42,19 +51,17 @@ def extract_facts(note_text: str) -> Tuple[Dict[str, Any], Dict[str, List[str]]]
 
     Returns:
       facts: dict used by rules engine
-      evidence: dict mapping fact_key -> list of evidence snippets (substrings)
+      evidence: dict mapping fact_key -> list of evidence snippets
 
-    Semantics:
-      - Missing documentation => None (drives NOT_DOCUMENTED downstream)
-      - Explicit denial => False where appropriate
-      - Explicit presence => True / concrete values
+    Design principles:
+      - Conservative: if not explicitly documented, return None
+      - Avoid substring traps and negated mentions ("AHI not documented")
+      - Fake PHI-safe: DOB dates should not satisfy sleep-study date
     """
 
     evidence: Dict[str, List[str]] = {}
 
-    # -----------------------------------------
     # Input validation
-    # -----------------------------------------
     if not isinstance(note_text, str):
         note_text = "" if note_text is None else str(note_text)
 
@@ -76,62 +83,39 @@ def extract_facts(note_text: str) -> Tuple[Dict[str, Any], Dict[str, List[str]]]
     t = note_text.lower()
 
     # -----------------------------------------
-    # Conservative therapy weeks (context-aware)
+    # Conservative therapy weeks (STRICT)
+    # Only extract therapy weeks if explicitly tied to PT/therapy wording.
+    # (Avoid using symptom duration weeks by accident.)
     # -----------------------------------------
     weeks: Optional[int] = None
 
-    THERAPY_CONTEXT = [
-        "pt",
-        "physical therapy",
-        "therapy",
-        "home exercise",
-        "exercise program",
-        "nsaids",
-        "ibuprofen",
-        "naproxen",
-        "meloxicam",
-        "activity modification",
-        "conservative management",
-        "conservative care",
-    ]
-    has_therapy_context = any(k in t for k in THERAPY_CONTEXT)
-
-    if has_therapy_context:
-        # Prefer explicit PT duration patterns
-        m = re.search(r"\b(pt|physical therapy|therapy)\s*(x|for)?\s*(\d+)\s*(week|weeks)\b", t)
-        if m:
-            try:
-                weeks = int(m.group(3))
-                _add_ev(evidence, "conservative_therapy_weeks", t[m.start():m.end()])
-            except ValueError:
-                weeks = None
-        else:
-            # Fallback: any N weeks mention (still guarded by therapy context)
-            m2 = re.search(r"\b(\d+)\s*(week|weeks)\b", t)
-            if m2:
-                try:
-                    weeks = int(m2.group(1))
-                    _add_ev(evidence, "conservative_therapy_weeks", t[m2.start():m2.end()])
-                except ValueError:
-                    weeks = None
+    # Matches:
+    # "PT x 8 weeks", "PT 8 weeks", "PT for 8 weeks", "physical therapy 6 weeks"
+    m = re.search(
+        r"\b(pt|physical therapy|therapy)\b(?:\s*(x|for)?\s*)?(\d+)\s*(week|weeks)\b",
+        t,
+    )
+    if m:
+        try:
+            weeks = int(m.group(3))
+            _add_ev(evidence, "conservative_therapy_weeks", t[m.start():m.end()])
+        except ValueError:
+            weeks = None
 
     # -----------------------------------------
-    # Neuro deficit / red flags (presence vs documented)
+    # Neuro red flags: presence vs documented
     # -----------------------------------------
-    DENIAL_PHRASES = [
+    denial_phrases = [
         "denies weakness",
         "no weakness",
         "weakness absent",
         "weakness is absent",
         "strength intact",
         "motor intact",
-        "neuro intact",
         "denies bowel",
         "no bowel",
-        "bowel intact",
         "denies bladder",
         "no bladder",
-        "bladder intact",
         "denies bowel/bladder",
         "no bowel/bladder",
         "bowel/bladder function intact",
@@ -148,10 +132,9 @@ def extract_facts(note_text: str) -> Tuple[Dict[str, Any], Dict[str, List[str]]]
         "no tingling",
     ]
 
-    POSITIVE_CUES = [
+    positive_cues = [
         "reports weakness",
         "has weakness",
-        "with weakness",
         "objective weakness",
         "new weakness",
         "progressive weakness",
@@ -165,46 +148,40 @@ def extract_facts(note_text: str) -> Tuple[Dict[str, Any], Dict[str, List[str]]]
         "cauda equina",
     ]
 
-    neuro_denials = [p for p in DENIAL_PHRASES if p in t]
-    neuro_positive = [p for p in POSITIVE_CUES if p in t]
+    neuro_denials = [p for p in denial_phrases if p in t]
+    neuro_positive = [p for p in positive_cues if p in t]
 
-    neuro_present: bool = len(neuro_positive) > 0
-
-    # If no explicit positive cues, do NOT infer presence from generic terms.
-    # (We keep this conservative and evidence-based.)
-    if not neuro_present and not neuro_denials:
+    if not neuro_denials and not neuro_positive:
         neuro_deficit_or_red_flags = None
         neuro_red_flags_documented = None
     else:
-        neuro_deficit_or_red_flags = bool(neuro_present)
+        # Positive cues override denials if both present (conflict case)
+        neuro_present = len(neuro_positive) > 0
+        neuro_deficit_or_red_flags = True if neuro_present else False
         neuro_red_flags_documented = True
 
-        # Evidence: include representative snippets (cap list size)
         for snip in (neuro_positive[:2] + neuro_denials[:2]):
             _add_ev(evidence, "neuro_red_flags_documented", snip)
-        if neuro_positive:
-            _add_ev(evidence, "neuro_deficit_or_red_flags", neuro_positive[0])
-        elif neuro_denials:
-            # Denials imply present=False; document one snippet
-            _add_ev(evidence, "neuro_deficit_or_red_flags", neuro_denials[0])
+        _add_ev(
+            evidence,
+            "neuro_deficit_or_red_flags",
+            neuro_positive[0] if neuro_positive else neuro_denials[0],
+        )
 
     # -----------------------------------------
-    # Prior imaging result (with negation handling)
+    # Prior imaging result
     # -----------------------------------------
-    # DESIGN DECISION:
-    # - "normal/unremarkable" imaging => inconclusive (x-ray doesn't rule out soft tissue pathology)
-    # - Order matters: "no abnormalities" must be checked before "abnormal"
     prior_imaging: Optional[str] = None
 
     if any(p in t for p in ["no prior imaging", "no imaging yet", "no imaging to date"]):
         prior_imaging = "none"
-        # Choose the first matching phrase for evidence
         for p in ["no prior imaging", "no imaging yet", "no imaging to date"]:
             if p in t:
                 _add_ev(evidence, "prior_imaging_result", p)
                 break
 
     elif any(mod in t for mod in ["x-ray", "xray", "ct", "mri", "imaging"]):
+        # normal/unremarkable => inconclusive (escalation still plausible)
         if any(neg in t for neg in ["no abnormal", "no abnormalities", "no acute findings", "normal", "unremarkable"]):
             prior_imaging = "inconclusive"
             for p in ["no abnormalities", "no acute findings", "normal", "unremarkable", "no abnormal"]:
@@ -228,7 +205,7 @@ def extract_facts(note_text: str) -> Tuple[Dict[str, Any], Dict[str, List[str]]]
             _add_ev(evidence, "prior_imaging_result", "imaging mentioned; result unclear")
 
     # -----------------------------------------
-    # Symptom duration (weeks)
+    # Symptom duration weeks (separate from therapy)
     # -----------------------------------------
     symptom_weeks: Optional[int] = None
 
@@ -249,25 +226,52 @@ def extract_facts(note_text: str) -> Tuple[Dict[str, Any], Dict[str, List[str]]]
                 symptom_weeks = None
 
     # -----------------------------------------
-    # OSA / sleep study facts (contextual)
+    # OSA diagnosis (affirmative only; avoid "OSA not stated")
     # -----------------------------------------
     osa_dx: Optional[bool] = None
-    if ("obstructive sleep apnea" in t) or re.search(r"\bosa\b", t):
-        osa_dx = True
-        _add_ev(evidence, "osa_diagnosis", "osa" if "osa" in t else "obstructive sleep apnea")
 
-    # Sleep study date should only trigger if date appears near sleep-study context
+    # affirmative patterns
+    if "obstructive sleep apnea" in t:
+        osa_dx = True
+        _add_ev(evidence, "osa_diagnosis", "obstructive sleep apnea")
+    elif re.search(r"\b(dx|diagnosis)\s*:\s*osa\b", t):
+        osa_dx = True
+        _add_ev(evidence, "osa_diagnosis", "dx: osa")
+    elif re.search(r"\bosa\b", t) and not any(
+        bad in t for bad in ["osa not stated", "osa not documented", "no osa", "without osa", "denies osa"]
+    ):
+        # still conservative: only count plain "OSA" if not explicitly negated
+        osa_dx = True
+        _add_ev(evidence, "osa_diagnosis", "osa")
+
+    # -----------------------------------------
+    # Sleep study date (contextual + DOB-safe)
+    # -----------------------------------------
     sleep_study_date: Optional[bool] = None
-    sleep_context = ["sleep study", "polysomnogram", "psg"]
-    date_str = _find_contextual_date(t, context_terms=sleep_context, window=80)
+    date_str = _find_contextual_sleep_study_date(t, window=90)
     if date_str is not None:
         sleep_study_date = True
         _add_ev(evidence, "sleep_study_date", date_str)
 
+    # -----------------------------------------
+    # AHI/RDI documented (avoid negations)
+    # -----------------------------------------
     ahi: Optional[bool] = None
-    if ("ahi" in t) or ("rdi" in t):
-        ahi = True
-        _add_ev(evidence, "ahi_documented", "ahi" if "ahi" in t else "rdi")
+
+    # Negated phrases should NOT count as documented
+    if any(p in t for p in ["ahi not documented", "ahi not provided", "ahi unknown", "no ahi", "ahi unavailable"]):
+        ahi = None
+        for p in ["ahi not documented", "ahi not provided", "ahi unknown", "no ahi", "ahi unavailable"]:
+            if p in t:
+                _add_ev(evidence, "ahi_documented", p)
+                break
+    else:
+        if "ahi" in t:
+            ahi = True
+            _add_ev(evidence, "ahi_documented", "ahi")
+        elif "rdi" in t:
+            ahi = True
+            _add_ev(evidence, "ahi_documented", "rdi")
 
     facts = {
         "conservative_therapy_weeks": weeks,
