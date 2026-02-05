@@ -3,6 +3,34 @@ from __future__ import annotations
 import re
 from typing import Any, Dict, List, Optional, Tuple
 
+_NUM_WORDS = {
+    "one": 1,
+    "two": 2,
+    "three": 3,
+    "four": 4,
+    "five": 5,
+    "six": 6,
+    "seven": 7,
+    "eight": 8,
+    "nine": 9,
+    "ten": 10,
+    "eleven": 11,
+    "twelve": 12,
+}
+
+def _normalize_number_words(text: str) -> str:
+    """
+    Replace common small number words with digits.
+    Example: "eight weeks" -> "8 weeks"
+    Keeps scope intentionally small to avoid weird replacements.
+    """
+    if not text:
+        return text
+    out = text
+    for w, n in _NUM_WORDS.items():
+        out = re.sub(rf"\b{w}\b", str(n), out)
+    return out
+
 
 def _add_ev(evidence: Dict[str, List[str]], key: str, snippet: str) -> None:
     snippet = (snippet or "").strip()
@@ -80,7 +108,7 @@ def extract_facts(note_text: str) -> Tuple[Dict[str, Any], Dict[str, List[str]]]
             evidence,
         )
 
-    t = note_text.lower()
+    t = _normalize_number_words(note_text.lower())
 
     # -----------------------------------------
     # Conservative therapy weeks (context-aware, strict)
