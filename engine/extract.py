@@ -171,30 +171,60 @@ def extract_facts(note_text: str) -> Tuple[Dict[str, Any], Dict[str, List[Dict[s
     else:
         osa_dx = None
 
+    # ----------------------------
+    # Sleep study date (context-gated)
+    # ----------------------------
     sleep_study_date: Optional[bool] = None
-
-    # Find date, but require sleep-study context within 60 chars
-    m_date = re.search(r"\b(20\d{2}|19\d{2})[-/]\d{1,2}[-/]\d{1,2}\b", t)
-    if m_date:
-        window_start = max(0, m_date.start() - 60)
-        window_end = min(len(t), m_date.end() + 60)
+    
+    # Find all date-like strings, pick one only if sleep-study context is nearby
+    date_iter = list(re.finditer(r"\b(20\d{2}|19\d{2})[-/]\d{1,2}[-/]\d{1,2}\b", t))
+    
+    SLEEP_CTX = re.compile(r"\b(sleep study|polysomnography|psg|hst|home sleep test)\b")
+    
+    for m_date in date_iter:
+        window_start = max(0, m_date.start() - 80)
+        window_end = min(len(t), m_date.end() + 80)
         window = t[window_start:window_end]
-        if re.search(r"\b(sleep study|polysomnography|psg|hst|home sleep test)\b", window):
+    
+        if SLEEP_CTX.search(window):
             sleep_study_date = True
-            _add_span(evidence, "sleep_study_date", m_date.start(), m_date.end(), raw[m_date.start(): m_date.end()])
-        else:
-            sleep_study_date = None
-    else:
-        sleep_study_date = None
+            _add_span(
+                evidence,
+                "sleep_study_date",
+                m_date.start(),
+                m_date.end(),
+                raw[m_date.start(): m_date.end()],
+            )
+            break
+    
+    # If no date matched with sleep-study context, leave as None
 
 
+
+    # ----------------------------
+    # AHI / RDI documented (must have value; negation aware)
+    # ----------------------------
     ahi_doc: Optional[bool] = None
-    m_ahi = re.search(r"\b(ahi|rdi)\b", t)
-    if m_ahi:
-        ahi_doc = True
-        _add_span(evidence, "ahi_documented", m_ahi.start(), m_ahi.end(), raw[m_ahi.start() : m_ahi.end()])
-    else:
+    
+    # Hard negations
+    if re.search(r"\b(ahi|rdi)\b.*\b(not documented|not available|unknown|n/?a|missing)\b", t):
         ahi_doc = None
+    else:
+        # Require an actual numeric value near AHI/RDI
+        # Examples: "AHI 22", "AHI: 22", "RDI 15.4"
+        m_ahi_val = re.search(r"\b(ahi|rdi)\b\s*[:=]?\s*(\d+(\.\d+)?)\b", t)
+        if m_ahi_val:
+            ahi_doc = True
+            _add_span(
+                evidence,
+                "ahi_documented",
+                m_ahi_val.start(),
+                m_ahi_val.end(),
+                raw[m_ahi_val.start(): m_ahi_val.end()],
+            )
+        else:
+            ahi_doc = None
+
 
     facts: Dict[str, Any] = {
         "conservative_therapy_weeks": therapy_weeks,
