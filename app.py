@@ -232,7 +232,7 @@ with c1:
     run_tests = st.button("Run test suite", use_container_width=True)
 
 if run_tests:
-    from engine.test_suite import run_cases
+    from engine.test_suites import run_cases
 
     st.session_state.test_rows = run_cases("rules/payer_rules.yaml", "inputs/synthetic_cases.json")
 
