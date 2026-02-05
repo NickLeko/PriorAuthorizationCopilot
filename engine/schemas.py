@@ -15,9 +15,10 @@ class PARequest(BaseModel):
 class RequirementResult(BaseModel):
     key: str
     label: str
-    status: str  # "met" | "missing" | "weak" | "unknown"
+    status: str  # "MET" | "NOT_MET" | "NOT_DOCUMENTED" | "OUT_OF_SCOPE"
     reason: str
     evidence: Optional[str] = None
+
 
 
 class ReadinessReport(BaseModel):
