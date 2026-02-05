@@ -192,17 +192,17 @@ if submitted:
     score_info = compute_readiness_score(results)
 
     rows = []
-    for r in results:
-        rows.append(
-            {
-                "key": r.key,
-                "label": r.label,
-                "status": r.status,
-                "reason": r.reason,
-                "evidence_hint": r.evidence or "",
-                "evidence_snippets": list(getattr(r, "evidence_snippets", []) or []),
-            }
-        )
+    for rr in results:
+    rows.append(
+        {
+            "key": rr.key,
+            "label": rr.label,
+            "status": rr.status,
+            "reason": rr.reason,
+            "evidence_hint": rr.evidence or "",
+            "evidence_snippets": getattr(rr, "evidence_snippets", []) or [],
+        }
+    )
 
     # Blocking issues
     blocking_not_documented = [{"key": r["key"], "label": r["label"]} for r in rows if r["status"] == "NOT_DOCUMENTED"]
@@ -391,26 +391,25 @@ else:
     # Explainable results (with evidence snippets)
     st.subheader("Rule-based Requirement Results (Explainable)")
     status_emoji = {"MET": "✅", "NOT_MET": "⚠️", "NOT_DOCUMENTED": "❌"}
-
+    
     for r in ev["rows"]:
-        emoji = status_emoji.get(r["status"], "❓")
-        expand_default = r["status"] != "MET"
-
-        with st.expander(f"{emoji} {r['label']}", expanded=expand_default):
-            st.write(f"**Status:** {r['status']}")
-            st.write(f"**Reason:** {r['reason']}")
-
+        emoji = status_emoji.get(r.get("status"), "❓")
+        expand_default = r.get("status") != "MET"
+    
+        with st.expander(f"{emoji} {r.get('label', '')}", expanded=expand_default):
+            st.write(f"**Status:** {r.get('status')}")
+            st.write(f"**Reason:** {r.get('reason')}")
+    
             if r.get("evidence_hint"):
                 st.info(f"💡 **What to look for in the note:** {r['evidence_hint']}")
-
-        snips = r.get("evidence_snippets") or []
-        if snips:
-            st.markdown("**Evidence found in note:**")
-            for s in snips[:5]:
-                st.code(str(s), language="text")
-        else:
+    
+            snips = r.get("evidence_snippets") or []
+            if snips:
+                st.markdown("**Evidence found in note:**")
+                for s in snips[:5]:
+                    st.code(str(s), language="text")
+            else:
                 st.caption("No evidence snippet captured for this requirement.")
-
 
     # Letter
     st.subheader("Draft Letter (Deterministic MVP)")
