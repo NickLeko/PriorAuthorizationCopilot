@@ -5,30 +5,41 @@ from typing import Any, Dict, List
 
 from engine.rules_loader import load_rules
 from engine.extract import extract_facts
-from engine.evaluate import evaluate_requirements, compute_readiness_score, compute_overall_status
+from engine.evaluate import (
+    evaluate_requirements,
+    compute_readiness_score,
+    compute_overall_status,
+)
 
 
-def label_from_score(score: int, not_documented: int, not_met: int) -> str:
+def label_from_outputs(overall_status: str, score_info: Dict[str, Any]) -> str:
     """
-    Heuristic labels for synthetic evaluation only.
-    Mirrors product guardrails:
-      - Missing documentation is a hard blocker.
+    Heuristic labels for synthetic evaluation only (NOT a product output).
+
+    Mapping:
+      - READY -> complete
+      - NOT_READY -> incomplete
+      - CANNOT_DETERMINE -> borderline (missing documentation but partially present)
     """
-    if not_documented > 0:
+    if overall_status == "READY":
+        return "complete"
+    if overall_status == "NOT_READY":
         return "incomplete"
 
-    if score >= 85 and not_met == 0:
-        return "complete"
+    # CANNOT_DETERMINE: differentiate borderline vs incomplete using extracted signal
+    # If they documented at least half the requirements (met + not_met), call it borderline.
+    total = int(score_info.get("total", 0) or 0)
+    met = int(score_info.get("met_count", 0) or 0)
+    not_met = int(score_info.get("not_met_count", 0) or 0)
 
-    if score >= 60 and not_met <= 1:
+    documented = met + not_met
+    if total > 0 and (documented / total) >= 0.5:
         return "borderline"
-
     return "incomplete"
 
 
 def run_cases(rules_path: str, cases_path: str) -> List[Dict[str, Any]]:
     rules = load_rules(rules_path)
-
     with open(cases_path, "r", encoding="utf-8") as f:
         cases = json.load(f)
 
@@ -37,22 +48,20 @@ def run_cases(rules_path: str, cases_path: str) -> List[Dict[str, Any]]:
     for c in cases:
         payer = c["payer"]
         proc = c["procedure_code"]
+
         proc_obj = rules["payers"][payer]["procedures"][proc]
         reqs = proc_obj.get("required", [])
 
-        facts, evidence_map = extract_facts(c.get("note_text", ""))
-        results, reasons = evaluate_requirements(reqs, facts, evidence_map=evidence_map)
+        note_text = c.get("note_text", "") or ""
 
+        # NEW: extract_facts now returns (facts, evidence_map)
+        facts, evidence_map = extract_facts(note_text)
 
+        results, _reasons = evaluate_requirements(reqs, facts, evidence_map=evidence_map)
         score_info = compute_readiness_score(results)
         overall = compute_overall_status(results)
 
-        pred = label_from_score(
-            score_info["readiness_score"],
-            score_info["not_documented_count"],
-            score_info["not_met_count"],
-        )
-
+        predicted = label_from_outputs(overall["overall_status"], score_info)
         expected = c.get("expected_label")
 
         rows.append(
@@ -61,16 +70,15 @@ def run_cases(rules_path: str, cases_path: str) -> List[Dict[str, Any]]:
                 "payer": payer,
                 "procedure": proc,
                 "expected": expected,
-                "predicted": pred,
+                "predicted": predicted,
                 "overall_status": overall["overall_status"],
-                "submission_readiness": bool(overall["submission_readiness"]),
+                "submission_readiness": str(bool(overall["submission_readiness"])).upper(),
                 "score": score_info["readiness_score"],
                 "not_documented": score_info["not_documented_count"],
                 "not_met": score_info["not_met_count"],
-                "pass": "✅" if (expected is not None and pred == expected) else "❌"
-                "test_category": c.get("test_category", ""),
-,
+                "pass": "✅" if predicted == expected else "❌",
             }
         )
 
     return rows
+
