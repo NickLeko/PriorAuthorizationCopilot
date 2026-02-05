@@ -83,6 +83,11 @@ try:
     passed, total, test_results_cached = _get_test_health()
     pass_rate = (passed / total * 100) if total > 0 else 0.0
 
+    # Gate: only allow evaluations if tests are fully passing
+    tests_healthy = (total > 0 and passed == total)
+    st.session_state["tests_healthy"] = tests_healthy
+
+
     if pass_rate >= 90:
         st.sidebar.success(f"✅ Tests: {passed}/{total} ({pass_rate:.0f}%)")
     elif pass_rate >= 70:
