@@ -37,7 +37,7 @@
     "site_of_care": "outpatient",
     "specialty": "Orthopedics",
     "note_text": "Back pain x 3 months. PT x 10 weeks with no improvement. Imaging noted but result unclear. Denies weakness. Denies bowel/bladder changes.",
-    "expected_label": "borderline"
+    "expected_label": "complete"
   },
   {
     "id": "MRI-05-incomplete",
