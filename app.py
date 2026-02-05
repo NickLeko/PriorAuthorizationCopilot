@@ -68,13 +68,16 @@ except FileNotFoundError:
 # ----------------------------
 st.sidebar.markdown("### 🧪 System Health")
 
+
 @st.cache_data(ttl=300)
 def _get_test_health():
     from engine.test_suites import run_cases
+
     results = run_cases("rules/payer_rules.yaml", "inputs/synthetic_cases.json")
     passed = sum(1 for r in results if r.get("pass") == "✅")
     total = len(results)
     return passed, total, results
+
 
 try:
     passed, total, test_results_cached = _get_test_health()
@@ -96,6 +99,32 @@ try:
             st.success("All tests passing.")
 except Exception as e:
     st.sidebar.warning(f"Test health unavailable: {e}")
+
+
+# ----------------------------
+# Helpers
+# ----------------------------
+def _hash_note(note: str) -> str:
+    h = hashlib.sha256((note or "").encode("utf-8")).hexdigest()
+    return h[:16]  # short hash for readability
+
+
+def _compute_metrics(score_info: dict) -> dict:
+    total = int(score_info.get("total", 0) or 0)
+    met = int(score_info.get("met_count", 0) or 0)
+    not_met = int(score_info.get("not_met_count", 0) or 0)
+    not_doc = int(score_info.get("not_documented_count", 0) or 0)
+
+    extraction_success_rate = round(((met + not_met) / total * 100), 1) if total else 0.0
+    compliance_rate = round((met / (met + not_met) * 100), 1) if (met + not_met) > 0 else None
+
+    return {
+        "extraction_success_rate": extraction_success_rate,
+        "extraction_failure_count": not_doc,
+        "compliance_rate": compliance_rate,
+        "compliant_count": met,
+        "non_compliant_count": not_met,
+    }
 
 
 # ----------------------------
@@ -129,14 +158,6 @@ with st.form("pa_form", clear_on_submit=False):
 
 
 # ----------------------------
-# Helpers
-# ----------------------------
-def _hash_note(note: str) -> str:
-    h = hashlib.sha256((note or "").encode("utf-8")).hexdigest()
-    return h[:16]  # short hash for readability
-
-
-# ----------------------------
 # Evaluate action (persist results)
 # ----------------------------
 if submitted:
@@ -151,29 +172,22 @@ if submitted:
     overall = compute_overall_status(results)
     score_info = compute_readiness_score(results)
 
-    rows = [
-        {
-            "key": r.key,
-            "label": r.label,
-            "status": r.status,
-            "reason": r.reason,
-            "evidence_hint": r.evidence or "",
-            "evidence_snippets": getattr(r, "evidence_snippets", []) or [],
-        }
-        for r in results
-    ]
+    rows = []
+    for r in results:
+        rows.append(
+            {
+                "key": r.key,
+                "label": r.label,
+                "status": r.status,
+                "reason": r.reason,
+                "evidence_hint": r.evidence or "",
+                "evidence_snippets": list(getattr(r, "evidence_snippets", []) or []),
+            }
+        )
 
     # Blocking issues
-    blocking_not_documented = [
-        {"key": r["key"], "label": r["label"]}
-        for r in rows
-        if r["status"] == "NOT_DOCUMENTED"
-    ]
-    blocking_not_met = [
-        {"key": r["key"], "label": r["label"]}
-        for r in rows
-        if r["status"] == "NOT_MET"
-    ]
+    blocking_not_documented = [{"key": r["key"], "label": r["label"]} for r in rows if r["status"] == "NOT_DOCUMENTED"]
+    blocking_not_met = [{"key": r["key"], "label": r["label"]} for r in rows if r["status"] == "NOT_MET"]
 
     # Invariants
     invariant_errors = []
@@ -185,32 +199,14 @@ if submitted:
         invariant_errors.append("Invariant violation: no blockers exist but overall_status is not READY.")
 
     # Provenance snapshot + trust level
-    prov_info = (
-        prov.get("sources", {})
-        .get(payer, {})
-        .get(proc_code, {})
-    )
+    prov_info = (prov.get("sources", {}) or {}).get(payer, {}).get(proc_code, {})
     source_type = (prov_info or {}).get("source_type", "unknown")
     policy_trust_level = "verified" if source_type == "policy_document" else "demo"
 
-    # Refined metrics
-    total = score_info["total"]
-    met = score_info["met_count"]
-    not_met = score_info["not_met_count"]
-    not_doc = score_info["not_documented_count"]
+    # Metrics
+    metrics = _compute_metrics(score_info)
 
-    extraction_success_rate = round(((met + not_met) / total * 100), 1) if total else 0.0
-    compliance_rate = round((met / (met + not_met) * 100), 1) if (met + not_met) > 0 else None
-
-    metrics = {
-        "extraction_success_rate": extraction_success_rate,
-        "extraction_failure_count": not_doc,
-        "compliance_rate": compliance_rate,
-        "compliant_count": met,
-        "non_compliant_count": not_met,
-    }
-
-    # Deterministic letter
+    # Letter draft
     letter = draft_letter_deterministic(
         payer=payer,
         procedure_code=proc_code,
@@ -221,7 +217,6 @@ if submitted:
         overall_status=overall["overall_status"],
     )
 
-    # Audit: PHI-equivalent practice (no note text)
     run_id = str(uuid.uuid4())
     ts = datetime.now(timezone.utc).isoformat()
 
@@ -239,14 +234,11 @@ if submitted:
         "policy_trust_level": policy_trust_level,
         "provenance_snapshot": prov_info or {},
         "facts_extracted": facts,
-        "evidence_snippets": evidence_map,  # key -> [snippets]
+        "evidence_snippets": evidence_map,
         "requirements_checked": [r["key"] for r in rows],
         "overall_status": overall["overall_status"],
         "submission_readiness": bool(overall["submission_readiness"]),
-        "blocking_issues": {
-            "not_documented": blocking_not_documented,
-            "not_met": blocking_not_met,
-        },
+        "blocking_issues": {"not_documented": blocking_not_documented, "not_met": blocking_not_met},
         "metrics": metrics,
         "invariant_errors": invariant_errors,
     }
@@ -287,7 +279,7 @@ else:
     status = overall["overall_status"]
     submission_readiness = bool(overall["submission_readiness"])
 
-    # Provenance banner (actionable)
+    # Policy provenance + banner
     st.markdown("### Policy Provenance")
     if ev["policy_trust_level"] != "verified":
         st.warning(
@@ -305,7 +297,7 @@ else:
         }
     )
 
-    # Invariant failures
+    # Invariant errors
     inv = ev.get("invariant_errors", [])
     if inv:
         st.error("Internal consistency checks failed:")
@@ -360,6 +352,7 @@ else:
             delta=f"{metrics['non_compliant_count']} below threshold",
         )
 
+    # Blocking items
     st.subheader("Blocking Items (Most Important)")
     not_documented_items = [r for r in ev["rows"] if r["status"] == "NOT_DOCUMENTED"]
     not_met_items = [r for r in ev["rows"] if r["status"] == "NOT_MET"]
@@ -371,7 +364,6 @@ else:
             st.markdown("**Missing documentation (cannot determine readiness):**")
             for r in not_documented_items:
                 st.write(f"- {r['label']}: {r['reason']}")
-
         if not_met_items:
             st.markdown("**Documented but not met (not ready):**")
             for r in not_met_items:
@@ -392,7 +384,6 @@ else:
             if r.get("evidence_hint"):
                 st.info(f"💡 **What to look for in the note:** {r['evidence_hint']}")
 
-            # Evidence snippets (span-level traceability)
             snippets = r.get("evidence_snippets", []) or []
             if snippets:
                 st.markdown("**Evidence found in note:**")
@@ -401,25 +392,24 @@ else:
             else:
                 st.caption("No evidence snippets captured for this item.")
 
-            # Show extracted value if present
             k = r["key"]
             if k in ev["facts"] and ev["facts"][k] is not None:
                 st.code(f"{k} = {ev['facts'][k]}", language="text")
 
-    # Letter draft
+    # Letter
     st.subheader("Draft Letter (Deterministic MVP)")
     st.text_area("Letter draft", value=ev["letter"], height=220)
 
-    # Audit trail + export (no note text)
+    # Audit export (no note_text)
     st.subheader("Audit Trail")
     st.json(ev["audit"])
 
     audit_json = json.dumps(ev["audit"], indent=2)
-    ts = datetime.now().strftime("%Y%m%d_%H%M%S")
+    ts_local = datetime.now().strftime("%Y%m%d_%H%M%S")
     st.download_button(
         label="📥 Download Audit Trail (JSON)",
         data=audit_json,
-        file_name=f"pa_audit_{ev['audit']['payer']}_{ev['audit']['procedure_code']}_{ts}.json",
+        file_name=f"pa_audit_{ev['audit']['payer']}_{ev['audit']['procedure_code']}_{ts_local}.json",
         mime="application/json",
         use_container_width=True,
     )
@@ -434,6 +424,7 @@ run_tests = st.button("Run test suite", use_container_width=True)
 
 if run_tests:
     from engine.test_suites import run_cases
+
     st.session_state.test_rows = run_cases("rules/payer_rules.yaml", "inputs/synthetic_cases.json")
 
 if st.session_state.test_rows is None:
@@ -442,12 +433,11 @@ else:
     st.dataframe(st.session_state.test_rows, use_container_width=True)
 
     test_json = json.dumps(st.session_state.test_rows, indent=2)
-    ts = datetime.now().strftime("%Y%m%d_%H%M%S")
+    ts_local = datetime.now().strftime("%Y%m%d_%H%M%S")
     st.download_button(
         label="📥 Download Test Results (JSON)",
         data=test_json,
-        file_name=f"pa_test_results_{ts}.json",
+        file_name=f"pa_test_results_{ts_local}.json",
         mime="application/json",
         use_container_width=True,
     )
-
