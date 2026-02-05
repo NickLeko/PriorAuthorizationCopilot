@@ -118,8 +118,8 @@ try:
     else:
         st.caption("No evidence snippet captured for this requirement.")
 
-    except Exception as e:
-        st.sidebar.warning(f"Test health unavailable: {e}")
+        except Exception as e:
+            st.sidebar.warning(f"Test health unavailable: {e}")
 
 
 # ----------------------------
