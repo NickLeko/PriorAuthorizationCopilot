@@ -77,7 +77,7 @@
     "site_of_care": "outpatient",
     "specialty": "Primary Care",
     "note_text": "OSA noted in problem list. Sleep study in 2023 mentioned but no date. AHI not documented.",
-    "expected_label": "borderline"
+    "expected_label": "incomplete"
   },
   {
     "id": "CPAP-03-incomplete",
