@@ -27,7 +27,7 @@
     "site_of_care": "outpatient",
     "specialty": "Primary Care",
     "note_text": "Low back pain x 6 weeks. Tried PT for 6 weeks. No imaging yet. No red flags mentioned.",
-    "expected_label": "borderline"
+    "expected_label": "incomplete"
   },
   {
     "id": "MRI-04-borderline",
