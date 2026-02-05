@@ -78,6 +78,13 @@ def _get_test_health():
     total = len(results)
     return passed, total, results
 
+# Global health banner (explicit gate)
+    tests_healthy = bool(st.session_state.get("tests_healthy", False))
+    if not tests_healthy:
+    st.error(
+        "🚫 **Build Unhealthy** — Synthetic test suite is not passing. "
+        "Outputs may be unreliable. Fix failing tests before running evaluations."
+    )
 
 try:
     passed, total, test_results_cached = _get_test_health()
