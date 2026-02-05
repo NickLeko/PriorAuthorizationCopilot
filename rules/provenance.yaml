@@ -1,0 +1,14 @@
+version: 0.1
+
+sources:
+  Aetna:
+    MRI_LUMBAR:
+      source_type: "manual_summary"
+      source_name: "Aetna policy (summary)"
+      last_reviewed: "2026-02-05"
+      notes: "Rules are illustrative for demo. Not a substitute for payer policy documents."
+    CPAP_DEVICE:
+      source_type: "manual_summary"
+      source_name: "Aetna DME policy (summary)"
+      last_reviewed: "2026-02-05"
+      notes: "Rules are illustrative for demo."
