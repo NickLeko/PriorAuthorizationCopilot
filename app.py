@@ -107,8 +107,8 @@ try:
         if failures:
             for f in failures[:10]:
                 st.write(f"- {f.get('id')}: expected `{f.get('expected')}`, got `{f.get('predicted')}`")
-    else:
-        t.success("All tests passing.")
+        else:
+            t.success("All tests passing.")
     # Evidence snippets found in the note (from extract -> evaluate)
     snips = r.get("evidence_snippets") or []
     if snips:
