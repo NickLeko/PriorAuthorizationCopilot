@@ -410,6 +410,8 @@ else:
                     st.code(str(s), language="text")
             else:
                 st.caption("No evidence snippet captured for this requirement.")
+                
+    st.write("DEBUG evidence_snippets sample:", rows[0].get("evidence_snippets") if rows else None)
 
     # Letter
     st.subheader("Draft Letter (Deterministic MVP)")
