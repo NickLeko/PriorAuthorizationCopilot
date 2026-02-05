@@ -5,7 +5,7 @@ from typing import Any, Dict, List
 
 from engine.rules_loader import load_rules
 from engine.extract import extract_facts
-from engine.evaluate import evaluate_requirements, compute_readiness_score
+from engine.evaluate import evaluate_requirements, compute_readiness_score, compute_overall_status
 
 
 def label_from_score(score: int, not_documented: int, not_met: int) -> str:
@@ -26,7 +26,6 @@ def label_from_score(score: int, not_documented: int, not_met: int) -> str:
     return "incomplete"
 
 
-
 def run_cases(rules_path: str, cases_path: str) -> List[Dict[str, Any]]:
     rules = load_rules(rules_path)
 
@@ -38,13 +37,14 @@ def run_cases(rules_path: str, cases_path: str) -> List[Dict[str, Any]]:
     for c in cases:
         payer = c["payer"]
         proc = c["procedure_code"]
-
         proc_obj = rules["payers"][payer]["procedures"][proc]
         reqs = proc_obj.get("required", [])
 
         facts = extract_facts(c.get("note_text", ""))
-        results, _reasons = evaluate_requirements(reqs, facts)
+        results, _ = evaluate_requirements(reqs, facts)
+
         score_info = compute_readiness_score(results)
+        overall = compute_overall_status(results)
 
         pred = label_from_score(
             score_info["readiness_score"],
@@ -61,6 +61,8 @@ def run_cases(rules_path: str, cases_path: str) -> List[Dict[str, Any]]:
                 "procedure": proc,
                 "expected": expected,
                 "predicted": pred,
+                "overall_status": overall["overall_status"],
+                "submission_readiness": bool(overall["submission_readiness"]),
                 "score": score_info["readiness_score"],
                 "not_documented": score_info["not_documented_count"],
                 "not_met": score_info["not_met_count"],
