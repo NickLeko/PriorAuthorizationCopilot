@@ -116,18 +116,35 @@ if submitted:
         results=rows,
     )
 
-    audit = {
-        "payer": payer,
-        "procedure_code": proc_code,
-        "procedure_name": proc_name,
-        "site_of_care": site,
-        "specialty": specialty,
-        "rules_version": rules.get("version"),
-        "facts_extracted": facts,
-        "requirements_checked": [r["key"] for r in rows],
-        "overall_status": overall["overall_status"],
-        "submission_readiness": bool(overall["submission_readiness"]),
-    }
+    blocking_not_documented = [
+    {"key": r["key"], "label": r["label"]}
+    for r in rows
+    if r["status"] == "NOT_DOCUMENTED"
+]
+
+blocking_not_met = [
+    {"key": r["key"], "label": r["label"]}
+    for r in rows
+    if r["status"] == "NOT_MET"
+]
+
+audit = {
+    "payer": payer,
+    "procedure_code": proc_code,
+    "procedure_name": proc_name,
+    "site_of_care": site,
+    "specialty": specialty,
+    "rules_version": rules.get("version"),
+    "facts_extracted": facts,
+    "requirements_checked": [r["key"] for r in rows],
+    "overall_status": overall["overall_status"],
+    "submission_readiness": bool(overall["submission_readiness"]),
+    "blocking_issues": {
+        "not_documented": blocking_not_documented,
+        "not_met": blocking_not_met,
+    },
+}
+
 
     st.session_state.last_eval = {
         "payer": payer,
