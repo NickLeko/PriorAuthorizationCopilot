@@ -434,7 +434,7 @@ else:
 
 
 # ----------------------------
-# Test suite (manual run + export)
+# Test suite (manual run + export + inspect)
 # ----------------------------
 st.markdown("### Test Suite (Synthetic Cases)")
 
@@ -442,7 +442,6 @@ run_tests = st.button("Run test suite", use_container_width=True)
 
 if run_tests:
     from engine.test_suites import run_cases
-
     st.session_state.test_rows = run_cases("rules/payer_rules.yaml", "inputs/synthetic_cases.json")
 
 if st.session_state.test_rows is None:
@@ -459,3 +458,67 @@ else:
         mime="application/json",
         use_container_width=True,
     )
+
+    st.markdown("---")
+    st.subheader("🔎 Inspect a Test Case (shows evidence snippets)")
+
+    # Load the raw cases so we can re-run extraction/eval for one selected case
+    with open("inputs/synthetic_cases.json", "r", encoding="utf-8") as f:
+        _cases = json.load(f)
+
+    case_ids = [c.get("id") for c in _cases]
+    selected_id = st.selectbox("Select case", case_ids)
+
+    case = next((c for c in _cases if c.get("id") == selected_id), None)
+    if case:
+        payer_i = case["payer"]
+        proc_i = case["procedure_code"]
+        note_i = case.get("note_text", "")
+
+        proc_obj_i = rules["payers"][payer_i]["procedures"][proc_i]
+        reqs_i = proc_obj_i.get("required", [])
+
+        facts_i, evidence_map_i = extract_facts(note_i)
+        results_i, _ = evaluate_requirements(reqs_i, facts_i, evidence_map=evidence_map_i)
+
+        # Build rows including evidence_snippets
+        rows_i = []
+        for rr in results_i:
+            rows_i.append(
+                {
+                    "key": rr.key,
+                    "label": rr.label,
+                    "status": rr.status,
+                    "reason": rr.reason,
+                    "evidence_hint": rr.evidence or "",
+                    "evidence_snippets": getattr(rr, "evidence_snippets", []) or [],
+                }
+            )
+
+        st.markdown("**Test case note (synthetic):**")
+        st.text_area("note_text", value=note_i, height=160)
+
+        st.markdown("**Extracted facts:**")
+        st.json(facts_i)
+
+        st.markdown("**Evidence map (raw spans):**")
+        st.json(evidence_map_i)
+
+        st.markdown("**Explainable requirement results:**")
+        status_emoji = {"MET": "✅", "NOT_MET": "⚠️", "NOT_DOCUMENTED": "❌"}
+        for r in rows_i:
+            emoji = status_emoji.get(r.get("status"), "❓")
+            expand_default = r.get("status") != "MET"
+            with st.expander(f"{emoji} {r.get('label','')}", expanded=expand_default):
+                st.write(f"**Status:** {r.get('status')}")
+                st.write(f"**Reason:** {r.get('reason')}")
+                if r.get("evidence_hint"):
+                    st.info(f"💡 **What to look for in the note:** {r['evidence_hint']}")
+
+                snips = r.get("evidence_snippets") or []
+                if snips:
+                    st.markdown("**Evidence found in note:**")
+                    for s in snips[:5]:
+                        st.code(str(s), language="text")
+                else:
+                    st.caption("No evidence snippet captured for this requirement.")
