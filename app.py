@@ -3,6 +3,8 @@ from engine.rules_loader import load_rules
 from engine.extract import extract_facts
 from engine.evaluate import evaluate_requirements, compute_readiness_score
 from llm.draft_letter import draft_letter_deterministic
+from engine.test_suites import run_cases
+
 
 st.set_page_config(page_title="PA Readiness Copilot", layout="wide")
 
