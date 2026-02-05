@@ -253,7 +253,7 @@ if submitted:
         "policy_trust_level": policy_trust_level,
         "provenance_snapshot": prov_info or {},
         "facts_extracted": facts,
-        "evidence_snippets": evidence_map,
+        "evidence_map": evidence_map,
         "requirements_checked": [r["key"] for r in rows],
         "overall_status": overall["overall_status"],
         "submission_readiness": bool(overall["submission_readiness"]),
@@ -411,7 +411,9 @@ else:
             else:
                 st.caption("No evidence snippet captured for this requirement.")
                 
-    st.write("DEBUG evidence_snippets sample:", rows[0].get("evidence_snippets") if rows else None)
+    st.write("DEBUG evidence_snippets sample:", (ev["rows"][0].get("evidence_snippets") if ev["rows"] else None))
+    st.write("DEBUG evidence_map keys:", list((ev.get("evidence_map") or {}).keys())[:10])
+
 
     # Letter
     st.subheader("Draft Letter (Deterministic MVP)")
