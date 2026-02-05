@@ -7,13 +7,13 @@ from engine.extract import extract_facts
 from engine.evaluate import evaluate_requirements, compute_readiness_score
 
 
-def label_from_score(score: int, missing: int, weak: int) -> str:
-    # Simple, explicit heuristic for MVP evaluation
-    if score >= 85 and missing == 0:
+def label_from_score(score: int, not_documented: int, not_met: int) -> str:
+    if score >= 85 and not_documented == 0 and not_met == 0:
         return "complete"
-    if score >= 60 and missing <= 2:
+    if score >= 60 and not_documented <= 2 and not_met <= 1:
         return "borderline"
     return "incomplete"
+
 
 
 def run_cases(rules_path: str, cases_path: str) -> List[Dict[str, Any]]:
@@ -31,18 +31,30 @@ def run_cases(rules_path: str, cases_path: str) -> List[Dict[str, Any]]:
         facts = extract_facts(c.get("note_text", ""))
         results, reasons = evaluate_requirements(reqs, facts)
         score_info = compute_readiness_score(results)
-        pred = label_from_score(score_info["readiness_score"], score_info["missing_count"], score_info["weak_count"])
 
-        rows.append({
-            "id": c["id"],
-            "payer": payer,
-            "procedure": proc,
-            "expected": c.get("expected_label"),
-            "predicted": pred,
-            "score": score_info["readiness_score"],
-            "missing": score_info["missing_count"],
-            "weak": score_info["weak_count"],
-            "pass": "✅" if pred == c.get("expected_label") else "❌",
-        })
+        pred = label_from_score(
+            score_info["readiness_score"],
+            score_info["not_documented_count"],
+            score_info["not_met_count"],
+        )
+
+        rows.append(
+            {
+                "id": c["id"],
+                "payer": payer,
+                "procedure": proc,
+                "expected": c.get("expected_label"),
+                "predicted": pred,
+                "score": score_info["readiness_score"],
+                "not_documented": score_info["not_documented_count"],
+                "not_met": score_info["not_met_count"],
+                "pass": "✅" if pred == c.get("expected_label") else "❌",
+            }
+        )
 
     return rows
+
+)
+
+
+ 
