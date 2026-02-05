@@ -107,6 +107,33 @@ if submitted:
         for r in results
     ]
 
+    # Blocking issues (first-class)
+    blocking_not_documented = [
+        {"key": r["key"], "label": r["label"]}
+        for r in rows
+        if r["status"] == "NOT_DOCUMENTED"
+    ]
+    blocking_not_met = [
+        {"key": r["key"], "label": r["label"]}
+        for r in rows
+        if r["status"] == "NOT_MET"
+    ]
+
+    # Invariant checks (defensive programming)
+    invariant_errors = []
+    if blocking_not_documented and overall["overall_status"] != "CANNOT_DETERMINE":
+        invariant_errors.append(
+            "Invariant violation: NOT_DOCUMENTED blockers exist but overall_status is not CANNOT_DETERMINE."
+        )
+    if (not blocking_not_documented) and blocking_not_met and overall["overall_status"] == "READY":
+        invariant_errors.append(
+            "Invariant violation: NOT_MET blockers exist but overall_status is READY."
+        )
+    if (not blocking_not_documented) and (not blocking_not_met) and overall["overall_status"] != "READY":
+        invariant_errors.append(
+            "Invariant violation: no blockers exist but overall_status is not READY."
+        )
+
     letter = draft_letter_deterministic(
         payer=payer,
         procedure_code=proc_code,
@@ -116,35 +143,23 @@ if submitted:
         results=rows,
     )
 
-    blocking_not_documented = [
-    {"key": r["key"], "label": r["label"]}
-    for r in rows
-    if r["status"] == "NOT_DOCUMENTED"
-]
-
-blocking_not_met = [
-    {"key": r["key"], "label": r["label"]}
-    for r in rows
-    if r["status"] == "NOT_MET"
-]
-
-audit = {
-    "payer": payer,
-    "procedure_code": proc_code,
-    "procedure_name": proc_name,
-    "site_of_care": site,
-    "specialty": specialty,
-    "rules_version": rules.get("version"),
-    "facts_extracted": facts,
-    "requirements_checked": [r["key"] for r in rows],
-    "overall_status": overall["overall_status"],
-    "submission_readiness": bool(overall["submission_readiness"]),
-    "blocking_issues": {
-        "not_documented": blocking_not_documented,
-        "not_met": blocking_not_met,
-    },
-}
-
+    audit = {
+        "payer": payer,
+        "procedure_code": proc_code,
+        "procedure_name": proc_name,
+        "site_of_care": site,
+        "specialty": specialty,
+        "rules_version": rules.get("version"),
+        "facts_extracted": facts,
+        "requirements_checked": [r["key"] for r in rows],
+        "overall_status": overall["overall_status"],
+        "submission_readiness": bool(overall["submission_readiness"]),
+        "blocking_issues": {
+            "not_documented": blocking_not_documented,
+            "not_met": blocking_not_met,
+        },
+        "invariant_errors": invariant_errors,
+    }
 
     st.session_state.last_eval = {
         "payer": payer,
@@ -159,6 +174,7 @@ audit = {
         "score_info": score_info,
         "letter": letter,
         "audit": audit,
+        "invariant_errors": invariant_errors,
     }
 
 
@@ -176,6 +192,13 @@ else:
 
     status = overall["overall_status"]
     submission_readiness = bool(overall["submission_readiness"])
+
+    # Invariant check display (visible, but non-blocking)
+    inv = ev.get("invariant_errors", [])
+    if inv:
+        st.error("Internal consistency checks failed:")
+        for msg in inv:
+            st.write(f"- {msg}")
 
     # Bias-resistant banner
     if status == "CANNOT_DETERMINE":
@@ -212,9 +235,8 @@ else:
 
     with o2:
         st.subheader("Blocking Items (Most Important)")
-        results = ev["results"]
-        not_documented_items = [r for r in results if r.status == "NOT_DOCUMENTED"]
-        not_met_items = [r for r in results if r.status == "NOT_MET"]
+        not_documented_items = [r for r in ev["rows"] if r["status"] == "NOT_DOCUMENTED"]
+        not_met_items = [r for r in ev["rows"] if r["status"] == "NOT_MET"]
 
         if not not_documented_items and not not_met_items:
             st.success("No blocking items detected by current rules.")
@@ -222,12 +244,12 @@ else:
             if not_documented_items:
                 st.markdown("**Missing documentation (cannot determine readiness):**")
                 for r in not_documented_items:
-                    st.write(f"- {r.label}: {r.reason}")
+                    st.write(f"- {r['label']}: {r['reason']}")
 
             if not_met_items:
                 st.markdown("**Documented but not met (not ready):**")
                 for r in not_met_items:
-                    st.write(f"- {r.label}: {r.reason}")
+                    st.write(f"- {r['label']}: {r['reason']}")
 
     st.subheader("Rule-based Requirement Results")
     st.dataframe(ev["rows"], use_container_width=True)
@@ -244,9 +266,7 @@ else:
 # ----------------------------
 st.markdown("### Test Suite (Synthetic Cases)")
 
-c1, c2 = st.columns([1, 3])
-with c1:
-    run_tests = st.button("Run test suite", use_container_width=True)
+run_tests = st.button("Run test suite", use_container_width=True)
 
 if run_tests:
     from engine.test_suites import run_cases
