@@ -1,6 +1,9 @@
 from __future__ import annotations
 from pydantic import BaseModel, Field
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Literal
+
+
+Status = Literal["MET", "NOT_MET", "NOT_DOCUMENTED"]
 
 
 class PARequest(BaseModel):
@@ -15,10 +18,9 @@ class PARequest(BaseModel):
 class RequirementResult(BaseModel):
     key: str
     label: str
-    status: str  # "MET" | "NOT_MET" | "NOT_DOCUMENTED" | "OUT_OF_SCOPE"
+    status: Status
     reason: str
     evidence: Optional[str] = None
-
 
 
 class ReadinessReport(BaseModel):
