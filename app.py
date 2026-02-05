@@ -1,4 +1,7 @@
 import streamlit as st
+import yaml
+import json
+from datetime import datetime
 
 from engine.rules_loader import load_rules
 from engine.extract import extract_facts
@@ -44,11 +47,18 @@ if "test_rows" not in st.session_state:
 
 
 # ----------------------------
-# Load rules
+# Load rules + provenance
 # ----------------------------
 RULES_PATH = "rules/payer_rules.yaml"
 rules = load_rules(RULES_PATH)
 payers = sorted(rules["payers"].keys())
+
+PROV_PATH = "rules/provenance.yaml"
+try:
+    with open(PROV_PATH, "r", encoding="utf-8") as f:
+        prov = yaml.safe_load(f) or {}
+except FileNotFoundError:
+    prov = {}
 
 
 # ----------------------------
@@ -134,6 +144,7 @@ if submitted:
             "Invariant violation: no blockers exist but overall_status is not READY."
         )
 
+    # Deterministic letter draft (mode depends on overall_status)
     letter = draft_letter_deterministic(
         payer=payer,
         procedure_code=proc_code,
@@ -201,6 +212,25 @@ else:
         for msg in inv:
             st.write(f"- {msg}")
 
+    # Policy provenance (based on payer + procedure)
+    st.markdown("### Policy Provenance")
+    prov_info = (
+        prov.get("sources", {})
+        .get(ev["payer"], {})
+        .get(ev["proc_code"], {})
+    )
+    if prov_info:
+        st.write(
+            {
+                "source_type": prov_info.get("source_type"),
+                "source_name": prov_info.get("source_name"),
+                "last_reviewed": prov_info.get("last_reviewed"),
+                "notes": prov_info.get("notes"),
+            }
+        )
+    else:
+        st.warning("No provenance record found for this payer/procedure.")
+
     # Bias-resistant banner
     if status == "CANNOT_DETERMINE":
         st.warning(
@@ -252,11 +282,10 @@ else:
                 for r in not_met_items:
                     st.write(f"- {r['label']}: {r['reason']}")
 
+    # Explainable results
     st.subheader("Rule-based Requirement Results (Explainable)")
-
     status_emoji = {"MET": "✅", "NOT_MET": "⚠️", "NOT_DOCUMENTED": "❌"}
 
-    # Expand non-MET by default so problems are visible first
     for r in ev["rows"]:
         emoji = status_emoji.get(r["status"], "❓")
         expand_default = r["status"] != "MET"
@@ -265,28 +294,27 @@ else:
             st.write(f"**Status:** {r['status']}")
             st.write(f"**Reason:** {r['reason']}")
 
-        if r.get("evidence_hint"):
-            st.info(f"💡 **What to look for in the note:** {r['evidence_hint']}")
+            if r.get("evidence_hint"):
+                st.info(f"💡 **What to look for in the note:** {r['evidence_hint']}")
 
-        # Show extracted value if present (transparency)
-        k = r["key"]
-        if k in ev["facts"] and ev["facts"][k] is not None:
-            st.code(f"{k} = {ev['facts'][k]}", language="text")
+            k = r["key"]
+            if k in ev["facts"] and ev["facts"][k] is not None:
+                st.code(f"{k} = {ev['facts'][k]}", language="text")
 
-    # Optional: keep the table for fast scanning (comment out if you want less noise)
+    # Optional quick-scan table
     st.dataframe(ev["rows"], use_container_width=True)
 
-    st.subheader("Draft Justification Letter (deterministic MVP)")
+    # Letter draft
+    st.subheader("Draft Letter (Deterministic MVP)")
     st.text_area("Letter draft", value=ev["letter"], height=220)
 
+    # Audit trail
     st.subheader("Audit Trail")
     st.json(ev["audit"])
-    import json
-    from datetime import datetime
 
+    # Export audit trail
     audit_json = json.dumps(ev["audit"], indent=2)
     ts = datetime.now().strftime("%Y%m%d_%H%M%S")
-
     st.download_button(
         label="📥 Download Audit Trail (JSON)",
         data=audit_json,
@@ -294,7 +322,6 @@ else:
         mime="application/json",
         use_container_width=True,
     )
-
 
 
 # ----------------------------
@@ -313,12 +340,10 @@ if st.session_state.test_rows is None:
     st.caption("Click **Run test suite** to evaluate the rules engine on synthetic cases.")
 else:
     st.dataframe(st.session_state.test_rows, use_container_width=True)
-    import json
-    from datetime import datetime
-    
-    ts = datetime.now().strftime("%Y%m%d_%H%M%S")
+
+    # Export test results
     test_json = json.dumps(st.session_state.test_rows, indent=2)
-    
+    ts = datetime.now().strftime("%Y%m%d_%H%M%S")
     st.download_button(
         label="📥 Download Test Results (JSON)",
         data=test_json,
@@ -326,8 +351,6 @@ else:
         mime="application/json",
         use_container_width=True,
     )
-
-
 
 
 
