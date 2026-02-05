@@ -10,13 +10,21 @@ from engine.evaluate import evaluate_requirements, compute_readiness_score
 
 def label_from_score(score: int, not_documented: int, not_met: int) -> str:
     """
-    Heuristic labels for synthetic evaluation only (not a product output).
+    Heuristic labels for synthetic evaluation only.
+    Mirrors product guardrails:
+      - Missing documentation is a hard blocker.
     """
-    if score >= 85 and not_documented == 0 and not_met == 0:
+    if not_documented > 0:
+        return "incomplete"
+
+    if score >= 85 and not_met == 0:
         return "complete"
-    if score >= 60 and not_documented <= 2 and not_met <= 1:
+
+    if score >= 60 and not_met <= 1:
         return "borderline"
+
     return "incomplete"
+
 
 
 def run_cases(rules_path: str, cases_path: str) -> List[Dict[str, Any]]:
