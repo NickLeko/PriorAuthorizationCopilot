@@ -83,24 +83,55 @@ def extract_facts(note_text: str) -> Tuple[Dict[str, Any], Dict[str, List[str]]]
     t = note_text.lower()
 
     # -----------------------------------------
-    # Conservative therapy weeks (STRICT)
-    # Only extract therapy weeks if explicitly tied to PT/therapy wording.
-    # (Avoid using symptom duration weeks by accident.)
+    # Conservative therapy weeks (context-aware, still conservative)
+    # Extract weeks only when duration is clearly tied to conservative therapy terms.
     # -----------------------------------------
     weeks: Optional[int] = None
-
-    # Matches:
-    # "PT x 8 weeks", "PT 8 weeks", "PT for 8 weeks", "physical therapy 6 weeks"
-    m = re.search(
-        r"\b(pt|physical therapy|therapy)\b(?:\s*(x|for)?\s*)?(\d+)\s*(week|weeks)\b",
+    
+    # Acceptable conservative-therapy anchors
+    therapy_terms = [
+        "pt",
+        "physical therapy",
+        "therapy",
+        "nsaids",
+        "ibuprofen",
+        "naproxen",
+        "meloxicam",
+        "activity modification",
+        "home exercise",
+        "conservative care",
+        "conservative therapy",
+        "conservative management",
+    ]
+    
+    # Pattern 1: anchor term then duration
+    m1 = re.search(
+        r"\b("
+        + "|".join(re.escape(x) for x in therapy_terms)
+        + r")\b(?:\s*(x|for)?\s*)?(\d+)\s*(week|weeks)\b",
         t,
     )
-    if m:
+    if m1:
         try:
-            weeks = int(m.group(3))
-            _add_ev(evidence, "conservative_therapy_weeks", t[m.start():m.end()])
+            weeks = int(m1.group(3))
+            _add_ev(evidence, "conservative_therapy_weeks", t[m1.start():m1.end()])
         except ValueError:
             weeks = None
+    else:
+        # Pattern 2: duration then nearby anchor term (within 40 chars)
+        m2 = re.search(r"\b(\d+)\s*(week|weeks)\b", t)
+        if m2:
+            start, end = m2.start(), m2.end()
+            left = max(0, start - 40)
+            right = min(len(t), end + 40)
+            neighborhood = t[left:right]
+    
+            if any(term in neighborhood for term in therapy_terms):
+                try:
+                    weeks = int(m2.group(1))
+                    _add_ev(evidence, "conservative_therapy_weeks", neighborhood.strip())
+                except ValueError:
+                    weeks = None
 
     # -----------------------------------------
     # Neuro red flags: presence vs documented
