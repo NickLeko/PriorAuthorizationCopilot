@@ -12,30 +12,15 @@ from engine.evaluate import (
 )
 
 
-def label_from_outputs(overall_status: str, score_info: Dict[str, Any]) -> str:
+def label_from_outputs(overall_status: str) -> str:
     """
     Heuristic labels for synthetic evaluation only (NOT a product output).
 
-    Mapping:
-      - READY -> complete
-      - NOT_READY -> incomplete
-      - CANNOT_DETERMINE -> borderline (missing documentation but partially present)
+    Current project semantics:
+      - READY => complete
+      - NOT_READY or CANNOT_DETERMINE => incomplete
     """
-    if overall_status == "READY":
-        return "complete"
-    if overall_status == "NOT_READY":
-        return "incomplete"
-
-    # CANNOT_DETERMINE: differentiate borderline vs incomplete using extracted signal
-    # If they documented at least half the requirements (met + not_met), call it borderline.
-    total = int(score_info.get("total", 0) or 0)
-    met = int(score_info.get("met_count", 0) or 0)
-    not_met = int(score_info.get("not_met_count", 0) or 0)
-
-    documented = met + not_met
-    if total > 0 and (documented / total) >= 0.5:
-        return "borderline"
-    return "incomplete"
+    return "complete" if overall_status == "READY" else "incomplete"
 
 
 def run_cases(rules_path: str, cases_path: str) -> List[Dict[str, Any]]:
@@ -54,14 +39,12 @@ def run_cases(rules_path: str, cases_path: str) -> List[Dict[str, Any]]:
 
         note_text = c.get("note_text", "") or ""
 
-        # NEW: extract_facts now returns (facts, evidence_map)
         facts, evidence_map = extract_facts(note_text)
-
-        results, _reasons = evaluate_requirements(reqs, facts, evidence_map=evidence_map)
+        results, _ = evaluate_requirements(reqs, facts, evidence_map=evidence_map)
         score_info = compute_readiness_score(results)
         overall = compute_overall_status(results)
 
-        predicted = label_from_outputs(overall["overall_status"], score_info)
+        predicted = label_from_outputs(overall["overall_status"])
         expected = c.get("expected_label")
 
         rows.append(
@@ -81,4 +64,3 @@ def run_cases(rules_path: str, cases_path: str) -> List[Dict[str, Any]]:
         )
 
     return rows
-
