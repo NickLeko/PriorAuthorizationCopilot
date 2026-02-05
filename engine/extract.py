@@ -206,12 +206,17 @@ def extract_facts(note_text: str) -> Tuple[Dict[str, Any], Dict[str, List[Dict[s
     # ----------------------------
     ahi_doc: Optional[bool] = None
     
-    # Hard negations
-    if re.search(r"\b(ahi|rdi)\b.*\b(not documented|not available|unknown|n/?a|missing)\b", t):
+    m_ahi_missing = re.search(r"\b(ahi|rdi)\b.*\b(not documented|not stated|not available|unknown|n/?a|missing)\b", t)
+    if m_ahi_missing:
         ahi_doc = None
+        _add_span(
+            evidence,
+            "ahi_documented",
+            m_ahi_missing.start(),
+            m_ahi_missing.end(),
+            raw[m_ahi_missing.start(): m_ahi_missing.end()],
+        )
     else:
-        # Require an actual numeric value near AHI/RDI
-        # Examples: "AHI 22", "AHI: 22", "RDI 15.4"
         m_ahi_val = re.search(r"\b(ahi|rdi)\b\s*[:=]?\s*(\d+(\.\d+)?)\b", t)
         if m_ahi_val:
             ahi_doc = True
