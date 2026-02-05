@@ -41,7 +41,8 @@ def run_cases(rules_path: str, cases_path: str) -> List[Dict[str, Any]]:
         reqs = proc_obj.get("required", [])
 
         facts, evidence_map = extract_facts(c.get("note_text", ""))
-        results, _ = evaluate_requirements(reqs, facts, evidence_map=evidence_map)
+        results, reasons = evaluate_requirements(reqs, facts, evidence_map=evidence_map)
+
 
         score_info = compute_readiness_score(results)
         overall = compute_overall_status(results)
