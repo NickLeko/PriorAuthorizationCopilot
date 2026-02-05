@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import streamlit as st
 import yaml
 import json
@@ -42,6 +44,11 @@ st.caption("Administrative decision support only — not medical or billing advi
 # ----------------------------
 # Session state initialization
 # ----------------------------
+if "last_eval" not in st.session_state:
+    st.session_state.last_eval = None
+if "test_rows" not in st.session_state:
+    st.session_state.test_rows = None
+
 if "last_eval" not in st.session_state:
     st.session_state.last_eval = None
 if "test_rows" not in st.session_state:
