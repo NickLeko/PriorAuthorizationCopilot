@@ -194,15 +194,15 @@ if submitted:
     rows = []
     for rr in results:
         rows.append(
-        {
-            "key": rr.key,
-            "label": rr.label,
-            "status": rr.status,
-            "reason": rr.reason,
-            "evidence_hint": rr.evidence or "",
-            "evidence_snippets": getattr(rr, "evidence_snippets", []) or [],
-        }
-    )
+            {
+                "key": rr.key,
+                "label": rr.label,
+                "status": rr.status,
+                "reason": rr.reason,
+                "evidence_hint": rr.evidence or "",
+                "evidence_snippets": getattr(rr, "evidence_snippets", []) or [],
+            }
+        )
 
     # Blocking issues
     blocking_not_documented = [{"key": r["key"], "label": r["label"]} for r in rows if r["status"] == "NOT_DOCUMENTED"]
