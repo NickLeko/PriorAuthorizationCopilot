@@ -189,7 +189,7 @@
     "site_of_care": "outpatient",
     "specialty": "Sleep Medicine",
     "note_text": "OSA diagnosed. Sleep study completed 2023-11-10. CPAP requested. (AHI not stated.)",
-    "expected_label": "incomplete"
+    "expected_label": "complete"
   },
   {
     "id": "CPAP-06-edge-with-ahi-no-date",
