@@ -256,7 +256,7 @@ def extract_facts(note_text: str) -> Tuple[Dict[str, Any], Dict[str, List[str]]]
         except ValueError:
             symptom_weeks = None
     else:
-        wm = re.search(r"\b(\d+)\s*(week|weeks)\b", t)
+        wm = re.search(r"\b(\d+)\s*(week|weeks|wk|wks)\b", t)
         if wm:
             try:
                 symptom_weeks = int(wm.group(1))
