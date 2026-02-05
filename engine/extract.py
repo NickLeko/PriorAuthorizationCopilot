@@ -225,6 +225,7 @@ def extract_facts(note_text: str) -> Tuple[Dict[str, Any], Dict[str, List[Dict[s
         "no numbness",
         "denies tingling",
         "no tingling",
+        "no red flags detected",
     ]
 
     positive_cues = [
