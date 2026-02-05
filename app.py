@@ -260,6 +260,20 @@ else:
 
     st.subheader("Audit Trail")
     st.json(ev["audit"])
+    import json
+    from datetime import datetime
+
+    audit_json = json.dumps(ev["audit"], indent=2)
+    ts = datetime.now().strftime("%Y%m%d_%H%M%S")
+
+    st.download_button(
+        label="📥 Download Audit Trail (JSON)",
+        data=audit_json,
+        file_name=f"pa_audit_{ev['audit']['payer']}_{ev['audit']['procedure_code']}_{ts}.json",
+        mime="application/json",
+        use_container_width=True,
+    )
+
 
 
 # ----------------------------
