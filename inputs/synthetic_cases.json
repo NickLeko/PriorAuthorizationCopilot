@@ -99,5 +99,158 @@
     "note_text": "OSA. AHI documented. Sleep study date not documented.",
     "expected_label": "incomplete"
   }
+
+  ,
+  {
+    "id": "MRI-07-edge-exact-threshold",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "dx_codes": ["M54.16"],
+    "site_of_care": "outpatient",
+    "specialty": "Primary Care",
+    "note_text": "Low back pain x 6 weeks exactly. PT x 6 weeks and NSAIDs documented without improvement. Denies weakness. Denies bowel/bladder changes. No saddle anesthesia. No prior imaging.",
+    "expected_label": "complete"
+  },
+  {
+    "id": "MRI-08-edge-below-threshold",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "dx_codes": ["M54.5"],
+    "site_of_care": "outpatient",
+    "specialty": "Primary Care",
+    "note_text": "Low back pain x 5 weeks. PT x 5 weeks documented. Denies weakness. Denies bowel/bladder changes. No prior imaging.",
+    "expected_label": "incomplete"
+  },
+  {
+    "id": "MRI-09-negation-variant",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "dx_codes": ["M54.16"],
+    "site_of_care": "outpatient",
+    "specialty": "Orthopedics",
+    "note_text": "Back pain x 8 weeks. PT for 8 weeks with minimal relief. Weakness absent. Bowel/bladder function intact. No saddle anesthesia. No prior imaging yet.",
+    "expected_label": "complete"
+  },
+  {
+    "id": "MRI-10-doc-gap-redflags",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "dx_codes": ["M54.5"],
+    "site_of_care": "outpatient",
+    "specialty": "Primary Care",
+    "note_text": "Low back pain x 8 weeks. PT x 8 weeks documented. No prior imaging. No red flags mentioned.",
+    "expected_label": "incomplete"
+  },
+  {
+    "id": "MRI-11-conflict-deny-then-report",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "dx_codes": ["M54.16"],
+    "site_of_care": "outpatient",
+    "specialty": "Primary Care",
+    "note_text": "Back pain x 8 weeks. PT x 8 weeks. Denies weakness earlier in visit. Later note: reports progressive weakness and urinary retention.",
+    "expected_label": "complete"
+  },
+  {
+    "id": "MRI-12-imaging-normal",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "dx_codes": ["M54.16"],
+    "site_of_care": "outpatient",
+    "specialty": "Orthopedics",
+    "note_text": "Back pain x 10 weeks. PT x 10 weeks. Lumbar xray normal/unremarkable. Denies bowel/bladder changes. Denies weakness.",
+    "expected_label": "complete"
+  },
+  {
+    "id": "MRI-13-imaging-unclear",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "dx_codes": ["M54.5"],
+    "site_of_care": "outpatient",
+    "specialty": "Primary Care",
+    "note_text": "Back pain x 10 weeks. PT x 10 weeks. Prior imaging performed but findings unclear. Denies weakness. Denies bowel/bladder changes.",
+    "expected_label": "complete"
+  },
+  {
+    "id": "MRI-14-therapy-context-missing",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "dx_codes": ["M54.5"],
+    "site_of_care": "outpatient",
+    "specialty": "Primary Care",
+    "note_text": "Back pain x 8 weeks. No prior imaging. Denies weakness. Denies bowel/bladder changes.",
+    "expected_label": "incomplete"
+  },
+  {
+    "id": "CPAP-05-edge-with-date-no-ahi",
+    "payer": "Aetna",
+    "procedure_code": "CPAP_DEVICE",
+    "dx_codes": ["G47.33"],
+    "site_of_care": "outpatient",
+    "specialty": "Sleep Medicine",
+    "note_text": "OSA diagnosed. Sleep study completed 2023-11-10. CPAP requested. (AHI not stated.)",
+    "expected_label": "incomplete"
+  },
+  {
+    "id": "CPAP-06-edge-with-ahi-no-date",
+    "payer": "Aetna",
+    "procedure_code": "CPAP_DEVICE",
+    "dx_codes": ["G47.33"],
+    "site_of_care": "outpatient",
+    "specialty": "Sleep Medicine",
+    "note_text": "OSA. AHI 18 documented. Sleep study mentioned but no date provided.",
+    "expected_label": "incomplete"
+  },
+  {
+    "id": "CPAP-07-complete-alt-format-date",
+    "payer": "Aetna",
+    "procedure_code": "CPAP_DEVICE",
+    "dx_codes": ["G47.33"],
+    "site_of_care": "outpatient",
+    "specialty": "Sleep Medicine",
+    "note_text": "Dx obstructive sleep apnea. Sleep study 2024/06/01. RDI 28. Request CPAP E0601.",
+    "expected_label": "complete"
+  },
+  {
+    "id": "CPAP-08-doc-gap-osa-not-stated",
+    "payer": "Aetna",
+    "procedure_code": "CPAP_DEVICE",
+    "dx_codes": [],
+    "site_of_care": "outpatient",
+    "specialty": "Primary Care",
+    "note_text": "Sleep study completed 2024-01-05. AHI 22 documented. Request CPAP.",
+    "expected_label": "incomplete"
+  },
+  {
+    "id": "CPAP-09-noise-contains-date-unrelated",
+    "payer": "Aetna",
+    "procedure_code": "CPAP_DEVICE",
+    "dx_codes": ["G47.33"],
+    "site_of_care": "outpatient",
+    "specialty": "Primary Care",
+    "note_text": "OSA listed. Follow-up scheduled 2024-05-18. AHI not documented. Sleep study mentioned in 2023 but no sleep study date.",
+    "expected_label": "incomplete"
+  },
+  {
+    "id": "MRI-15-noise-unrelated-weeks",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "dx_codes": ["M54.5"],
+    "site_of_care": "outpatient",
+    "specialty": "Primary Care",
+    "note_text": "Back pain x 8 weeks. Patient is 6 weeks pregnant. PT x 8 weeks documented. Denies bowel/bladder changes. Denies weakness. No imaging yet.",
+    "expected_label": "complete"
+  },
+  {
+    "id": "MRI-16-pt-mentioned-no-duration",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "dx_codes": ["M54.16"],
+    "site_of_care": "outpatient",
+    "specialty": "Primary Care",
+    "note_text": "Back pain x 8 weeks. Completed PT and NSAIDs, duration not specified. Denies weakness. Denies bowel/bladder changes. No prior imaging.",
+    "expected_label": "incomplete"
+  }
+
 ]
 
