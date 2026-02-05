@@ -84,7 +84,6 @@ def extract_facts(note_text: str) -> Tuple[Dict[str, Any], Dict[str, List[Dict[s
         r"\bbowel/bladder\b.*\bdenied\b",
     ]
 
-    ]
 
     positive_patterns = [
         r"\breports\b.*\b(weakness|urinary retention|bowel incontinence|bladder incontinence|saddle anesthesia|foot drop)\b",
