@@ -411,8 +411,8 @@ else:
             else:
                 st.caption("No evidence snippet captured for this requirement.")
                 
-                st.write("DEBUG first RequirementResult evidence_snippets:", getattr(results[0], "evidence_snippets", None) if results else None)
-                st.write("DEBUG evidence_map sample:", evidence_map)
+    st.write("DEBUG first RequirementResult evidence_snippets:", getattr(results[0], "evidence_snippets", None) if results else None)
+    st.write("DEBUG evidence_map sample:", evidence_map)
 
     # Letter
     st.subheader("Draft Letter (Deterministic MVP)")
