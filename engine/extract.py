@@ -149,7 +149,10 @@ def extract_facts(note_text: str) -> Dict[str, Any]:
     osa_dx = ("obstructive sleep apnea" in t) or ("osa" in t)
 
     # Strict date pattern: YYYY-MM-DD or YYYY/MM/DD
-    sleep_study_date = bool(re.search(r"\b(20\d{2}|19\d{2})[-/]\d{1,2}[-/]\d{1,2}\b", t))
+    sleep_study_date = None
+    if re.search(r"\b(20\d{2}|19\d{2})[-/]\d{1,2}[-/]\d{1,2}\b", t):
+        sleep_study_date = True
+
 
     ahi = ("ahi" in t) or ("rdi" in t)
 
