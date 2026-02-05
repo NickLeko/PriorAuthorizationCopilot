@@ -193,7 +193,7 @@ if submitted:
 
     rows = []
     for rr in results:
-    rows.append(
+        rows.append(
         {
             "key": rr.key,
             "label": rr.label,
