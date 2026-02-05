@@ -40,8 +40,8 @@ def run_cases(rules_path: str, cases_path: str) -> List[Dict[str, Any]]:
         proc_obj = rules["payers"][payer]["procedures"][proc]
         reqs = proc_obj.get("required", [])
 
-        facts = extract_facts(c.get("note_text", ""))
-        results, _ = evaluate_requirements(reqs, facts)
+        facts, evidence_map = extract_facts(c.get("note_text", ""))
+        results, _ = evaluate_requirements(reqs, facts, evidence_map=evidence_map)
 
         score_info = compute_readiness_score(results)
         overall = compute_overall_status(results)
