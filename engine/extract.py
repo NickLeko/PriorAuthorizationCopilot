@@ -281,8 +281,8 @@ def extract_facts(note_text: str) -> Tuple[Dict[str, Any], Dict[str, List[Dict[s
                 _add_span(evidence, "prior_imaging_result", raw, idx, idx + len(p))
                 break
     if any(p in t for p in ["no imaging", "no imaging documented", "no prior imaging", "no imaging yet", "no imaging to date"]):
-    prior_imaging = "none"
-    idx = t.find("no imaging")
+        prior_imaging = "none"
+        idx = t.find("no imaging")
     if idx >= 0:
         _add_span(evidence, "prior_imaging_result", raw, idx, min(len(raw), idx + 20))
 
