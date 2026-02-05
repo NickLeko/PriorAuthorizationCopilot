@@ -78,13 +78,6 @@ def _get_test_health():
     total = len(results)
     return passed, total, results
 
-# Global health banner (explicit gate)
-    tests_healthy = bool(st.session_state.get("tests_healthy", False))
-    if not tests_healthy:
-        st.error(
-            "🚫 **Build Unhealthy** — Synthetic test suite is not passing. "
-            "Outputs may be unreliable. Fix failing tests before running evaluations."
-    )
 
 try:
     passed, total, test_results_cached = _get_test_health()
@@ -93,7 +86,6 @@ try:
     # Gate: only allow evaluations if tests are fully passing
     tests_healthy = (total > 0 and passed == total)
     st.session_state["tests_healthy"] = tests_healthy
-
 
     if pass_rate >= 90:
         st.sidebar.success(f"✅ Tests: {passed}/{total} ({pass_rate:.0f}%)")
@@ -108,18 +100,12 @@ try:
             for f in failures[:10]:
                 st.write(f"- {f.get('id')}: expected `{f.get('expected')}`, got `{f.get('predicted')}`")
         else:
-            t.success("All tests passing.")
-    # Evidence snippets found in the note (from extract -> evaluate)
-    snips = r.get("evidence_snippets") or []
-    if snips:
-        st.markdown("**Evidence found in note:**")
-        for s in snips[:5]:
-            st.code(str(s), language="text")
-    else:
-        st.caption("No evidence snippet captured for this requirement.")
+            st.success("All tests passing!")
 
-        except Exception as e:
-            st.sidebar.warning(f"Test health unavailable: {e}")
+except Exception as e:
+    st.session_state["tests_healthy"] = False
+    st.sidebar.warning(f"Test health unavailable: {e}")
+
 
 
 # ----------------------------
@@ -146,6 +132,17 @@ def _compute_metrics(score_info: dict) -> dict:
         "compliant_count": met,
         "non_compliant_count": not_met,
     }
+
+
+# ----------------------------
+# Global health banner (explicit gate)
+# ----------------------------
+tests_healthy = bool(st.session_state.get("tests_healthy", False))
+if not tests_healthy:
+    st.error(
+        "🚫 **Build Unhealthy** — Synthetic test suite is not passing. "
+        "Outputs may be unreliable. Fix failing tests before running evaluations."
+    )
 
 
 # ----------------------------
