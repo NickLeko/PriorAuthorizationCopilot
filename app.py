@@ -252,7 +252,28 @@ else:
                 for r in not_met_items:
                     st.write(f"- {r['label']}: {r['reason']}")
 
-    st.subheader("Rule-based Requirement Results")
+    st.subheader("Rule-based Requirement Results (Explainable)")
+
+    status_emoji = {"MET": "✅", "NOT_MET": "⚠️", "NOT_DOCUMENTED": "❌"}
+
+    # Expand non-MET by default so problems are visible first
+    for r in ev["rows"]:
+        emoji = status_emoji.get(r["status"], "❓")
+        expand_default = r["status"] != "MET"
+
+        with st.expander(f"{emoji} {r['label']}", expanded=expand_default):
+            st.write(f"**Status:** {r['status']}")
+            st.write(f"**Reason:** {r['reason']}")
+
+        if r.get("evidence_hint"):
+            st.info(f"💡 **What to look for in the note:** {r['evidence_hint']}")
+
+        # Show extracted value if present (transparency)
+        k = r["key"]
+        if k in ev["facts"] and ev["facts"][k] is not None:
+            st.code(f"{k} = {ev['facts'][k]}", language="text")
+
+    # Optional: keep the table for fast scanning (comment out if you want less noise)
     st.dataframe(ev["rows"], use_container_width=True)
 
     st.subheader("Draft Justification Letter (deterministic MVP)")
