@@ -107,10 +107,19 @@ try:
         if failures:
             for f in failures[:10]:
                 st.write(f"- {f.get('id')}: expected `{f.get('expected')}`, got `{f.get('predicted')}`")
-        else:
-            st.success("All tests passing.")
-except Exception as e:
-    st.sidebar.warning(f"Test health unavailable: {e}")
+    else:
+        t.success("All tests passing.")
+    # Evidence snippets found in the note (from extract -> evaluate)
+    snips = r.get("evidence_snippets") or []
+    if snips:
+        st.markdown("**Evidence found in note:**")
+        for s in snips[:5]:
+            st.code(str(s), language="text")
+    else:
+        st.caption("No evidence snippet captured for this requirement.")
+
+    except Exception as e:
+        st.sidebar.warning(f"Test health unavailable: {e}")
 
 
 # ----------------------------
