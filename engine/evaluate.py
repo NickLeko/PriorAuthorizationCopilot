@@ -121,3 +121,13 @@ def compute_readiness_score(results: List[RequirementResult]) -> Dict[str, int]:
         "total": total,
     }
 
+def compute_overall_status(results: List[RequirementResult]) -> Dict[str, Any]:
+    any_not_documented = any(r.status == "NOT_DOCUMENTED" for r in results)
+    any_not_met = any(r.status == "NOT_MET" for r in results)
+
+    if any_not_documented:
+        return {"overall_status": "CANNOT_DETERMINE", "submission_readiness": False}
+    if any_not_met:
+        return {"overall_status": "NOT_READY", "submission_readiness": False}
+    return {"overall_status": "READY", "submission_readiness": True}
+
