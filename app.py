@@ -313,3 +313,21 @@ if st.session_state.test_rows is None:
     st.caption("Click **Run test suite** to evaluate the rules engine on synthetic cases.")
 else:
     st.dataframe(st.session_state.test_rows, use_container_width=True)
+    import json
+    from datetime import datetime
+    
+    ts = datetime.now().strftime("%Y%m%d_%H%M%S")
+    test_json = json.dumps(st.session_state.test_rows, indent=2)
+    
+    st.download_button(
+        label="📥 Download Test Results (JSON)",
+        data=test_json,
+        file_name=f"pa_test_results_{ts}.json",
+        mime="application/json",
+        use_container_width=True,
+    )
+
+
+
+
+
