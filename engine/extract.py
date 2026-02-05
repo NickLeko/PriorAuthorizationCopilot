@@ -14,8 +14,29 @@ def extract_facts(note_text: str) -> Dict[str, Any]:
       - Handle common negations so "no abnormalities" doesn't get misread as "abnormal".
       - Distinguish between:
           (a) red flags PRESENT vs
-          (b) red flags DOCUMENTED (present OR explicitly denied)
-    """
+          (b) red flags DOCUMENTED (present OR explicitly denied)     
+    """    
+    # -----------------------------------------
+    # Input validation (v0.2+ semantics)
+    # -----------------------------------------
+    # NOTE: Missing documentation should be represented as None for fields that drive NOT_DOCUMENTED.
+    if not isinstance(note_text, str):
+        note_text = "" if note_text is None else str(note_text)
+
+    if len(note_text.strip()) == 0:
+        # Empty note = no documentation. Use None where "not documented" is the correct semantics.
+        return {
+            "conservative_therapy_weeks": None,
+            "neuro_deficit_or_red_flags": None,      # unknown (not documented)
+            "neuro_red_flags_documented": None,      # unknown (not documented)
+            "prior_imaging_result": None,
+            "symptom_duration_weeks": None,
+            "osa_diagnosis": None,                   # unknown (not documented)
+            "sleep_study_date": None,                # unknown (not documented)
+            "ahi_documented": None,                  # unknown (not documented)
+        }
+
+    
     t = (note_text or "").lower()
 
     # -----------------------------------------
