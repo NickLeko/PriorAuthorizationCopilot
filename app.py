@@ -166,7 +166,8 @@ with st.form("pa_form", clear_on_submit=False):
         placeholder="Paste a synthetic note here...",
     )
 
-    submitted = st.form_submit_button("Evaluate PA readiness")
+    tests_healthy = bool(st.session_state.get("tests_healthy", False))
+    submitted = st.form_submit_button("Evaluate PA readiness", disabled=(not tests_healthy))
 
 
 # ----------------------------
