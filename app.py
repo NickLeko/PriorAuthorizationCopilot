@@ -403,17 +403,14 @@ else:
             if r.get("evidence_hint"):
                 st.info(f"💡 **What to look for in the note:** {r['evidence_hint']}")
 
-            snippets = r.get("evidence_snippets", []) or []
-            if snippets:
-                st.markdown("**Evidence found in note:**")
-                for s in snippets[:5]:
-                    st.code(s, language="text")
-            else:
-                st.caption("No evidence snippets captured for this item.")
+        snips = r.get("evidence_snippets") or []
+        if snips:
+            st.markdown("**Evidence found in note:**")
+            for s in snips[:5]:
+                st.code(str(s), language="text")
+        else:
+                st.caption("No evidence snippet captured for this requirement.")
 
-            k = r["key"]
-            if k in ev["facts"] and ev["facts"][k] is not None:
-                st.code(f"{k} = {ev['facts'][k]}", language="text")
 
     # Letter
     st.subheader("Draft Letter (Deterministic MVP)")
