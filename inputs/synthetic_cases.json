@@ -149,7 +149,7 @@
     "site_of_care": "outpatient",
     "specialty": "Primary Care",
     "note_text": "Back pain x 8 weeks. PT x 8 weeks. Denies weakness earlier in visit. Later note: reports progressive weakness and urinary retention.",
-    "expected_label": "complete"
+    "expected_label": "incomplete"
   },
   {
     "id": "MRI-12-imaging-normal",
