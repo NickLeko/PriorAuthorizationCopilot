@@ -66,7 +66,9 @@ def run_cases(rules_path: str, cases_path: str) -> List[Dict[str, Any]]:
                 "score": score_info["readiness_score"],
                 "not_documented": score_info["not_documented_count"],
                 "not_met": score_info["not_met_count"],
-                "pass": "✅" if (expected is not None and pred == expected) else "❌",
+                "pass": "✅" if (expected is not None and pred == expected) else "❌"
+                "test_category": c.get("test_category", ""),
+,
             }
         )
 
