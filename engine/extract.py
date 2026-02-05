@@ -48,15 +48,11 @@ def extract_facts(note_text: str) -> Tuple[Dict[str, Any], Dict[str, List[Dict[s
     # Prefer explicit PT duration if present, otherwise first weeks mention.
     therapy_weeks: Optional[int] = None
 
-    m_pt = re.search(r"\bpt\b.*?\b(\d+)\s*(week|weeks)\b", t)
-    if m_pt:
-        therapy_weeks = int(m_pt.group(1))
-        _add_span(evidence, "conservative_therapy_weeks", m_pt.start(), m_pt.end(), raw[m_pt.start() : m_pt.end()])
-    else:
-        m_any = re.search(r"\b(\d+)\s*(week|weeks)\b", t)
-        if m_any:
-            therapy_weeks = int(m_any.group(1))
-            _add_span(evidence, "conservative_therapy_weeks", m_any.start(), m_any.end(), raw[m_any.start() : m_any.end()])
+    THERAPY_CONTEXT = r"(pt|physical therapy|nsaid|activity modification|home exercise|chiropractic|chiro)"
+    m_therapy = re.search(rf"\b{THERAPY_CONTEXT}\b.*?\b(\d+)\s*(week|weeks)\b", t)
+    if m_therapy:
+        therapy_weeks = int(m_therapy.group(2)) if m_therapy.lastindex and m_therapy.lastindex >= 2 else int(m_therapy.group(1))
+        _add_span(evidence, "conservative_therapy_weeks", m_therapy.start(), m_therapy.end(), raw[m_therapy.start(): m_therapy.end()])
 
     # ----------------------------
     # Symptom duration (weeks)
@@ -85,11 +81,9 @@ def extract_facts(note_text: str) -> Tuple[Dict[str, Any], Dict[str, List[Dict[s
     denial_patterns = [
         r"\bdenies\b.*\b(weakness|bowel|bladder|saddle anesthesia|foot drop|urinary retention)\b",
         r"\bno\b.*\b(weakness|bowel|bladder|saddle anesthesia|foot drop|urinary retention)\b",
-        r"\bno red flags\b",
-        r"\bno red flag\b",
-        r"\bno red flags documented\b",
-        r"\bdenies red flags\b",
-        r"\bred flags denied\b",
+        r"\bbowel/bladder\b.*\bdenied\b",
+    ]
+
     ]
 
     positive_patterns = [
@@ -179,12 +173,21 @@ def extract_facts(note_text: str) -> Tuple[Dict[str, Any], Dict[str, List[Dict[s
         osa_dx = None
 
     sleep_study_date: Optional[bool] = None
+
+    # Find date, but require sleep-study context within 60 chars
     m_date = re.search(r"\b(20\d{2}|19\d{2})[-/]\d{1,2}[-/]\d{1,2}\b", t)
     if m_date:
-        sleep_study_date = True
-        _add_span(evidence, "sleep_study_date", m_date.start(), m_date.end(), raw[m_date.start() : m_date.end()])
+        window_start = max(0, m_date.start() - 60)
+        window_end = min(len(t), m_date.end() + 60)
+        window = t[window_start:window_end]
+        if re.search(r"\b(sleep study|polysomnography|psg|hst|home sleep test)\b", window):
+            sleep_study_date = True
+            _add_span(evidence, "sleep_study_date", m_date.start(), m_date.end(), raw[m_date.start(): m_date.end()])
+        else:
+            sleep_study_date = None
     else:
         sleep_study_date = None
+
 
     ahi_doc: Optional[bool] = None
     m_ahi = re.search(r"\b(ahi|rdi)\b", t)
