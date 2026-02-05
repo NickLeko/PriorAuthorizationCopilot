@@ -75,6 +75,11 @@ except FileNotFoundError:
 # ----------------------------
 st.sidebar.markdown("### 🧪 System Health")
 
+# Manual cache bust button (prevents stale failures after edits)
+if st.sidebar.button("🔄 Refresh test health (clear cache)", use_container_width=True):
+    st.cache_data.clear()
+    st.rerun()
+
 
 @st.cache_data(ttl=300)
 def _get_test_health():
@@ -90,7 +95,6 @@ try:
     passed, total, test_results_cached = _get_test_health()
     pass_rate = (passed / total * 100) if total > 0 else 0.0
 
-    # Gate: only allow evaluations if tests are fully passing
     tests_healthy = (total > 0 and passed == total)
     st.session_state["tests_healthy"] = tests_healthy
 
@@ -112,7 +116,6 @@ try:
 except Exception as e:
     st.session_state["tests_healthy"] = False
     st.sidebar.warning(f"Test health unavailable: {e}")
-
 
 
 # ----------------------------
