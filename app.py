@@ -81,9 +81,9 @@ def _get_test_health():
 # Global health banner (explicit gate)
     tests_healthy = bool(st.session_state.get("tests_healthy", False))
     if not tests_healthy:
-    st.error(
-        "🚫 **Build Unhealthy** — Synthetic test suite is not passing. "
-        "Outputs may be unreliable. Fix failing tests before running evaluations."
+        st.error(
+            "🚫 **Build Unhealthy** — Synthetic test suite is not passing. "
+            "Outputs may be unreliable. Fix failing tests before running evaluations."
     )
 
 try:
