@@ -168,6 +168,10 @@ def _compute_metrics(score_info: dict) -> dict:
 # Base directory for absolute path resolution (prevents Streamlit CWD issues)
 BASE_DIR = Path(__file__).resolve().parent
 
+# Ensure drift ack state exists
+if "ack_policy_drift" not in st.session_state:
+    st.session_state.ack_policy_drift = False
+
 
 def _read_drift_log(log_path: Path) -> list[dict]:
     """
@@ -240,6 +244,52 @@ def _policy_monitor_status(
                 "procedure_code": src.procedure_code,
                 "trust_level": src.trust_level,
                 "status": status,
+                "last_checked_utc": last_checked,
+            }
+        )
+
+    return rows, any_review_required
+
+
+# ----------------------------
+# Global health banner (explicit gate)
+# ----------------------------
+tests_healthy = bool(st.session_state.get("tests_healthy", False))
+if not tests_healthy:
+    st.error(
+        "🚫 **Build Unhealthy** — Synthetic test suite is not passing. "
+        "Outputs may be unreliable. Fix failing tests before running evaluations."
+    )
+
+
+# ----------------------------
+# Policy Monitor panel + drift gate (shown before intake)
+# ----------------------------
+try:
+    policy_rows, any_review_required = _policy_monitor_status()
+except Exception as e:
+    policy_rows, any_review_required = [], False
+    st.warning(f"Policy monitor unavailable: {type(e).__name__}: {e}")
+
+st.subheader("Policy Monitor (Governance)")
+st.caption("Detects policy drift via committed snapshots + drift log. Does not auto-update rules or change outcomes.")
+
+if policy_rows:
+    st.dataframe(policy_rows, use_container_width=True)
+else:
+    st.info("No policy sources configured (or policy_sources.yaml missing).")
+
+if any_review_required:
+    st.warning("⚠️ Policy drift detected — rules may be stale. Verify policy and update rules/tests before trusting outputs.")
+    st.session_state.ack_policy_drift = st.checkbox(
+        "I acknowledge policy drift; demo outputs may be stale.",
+        value=st.session_state.ack_policy_drift,
+    )
+else:
+    st.success("Policy drift status: OK (based on latest snapshots/log).")
+    st.session_state.ack_policy_drift = True
+
+policy_gate_block = any_review_required and (not st.session_state.get("ack_policy_drift", False))
 
 
 # ----------------------------
