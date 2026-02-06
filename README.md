@@ -7,6 +7,9 @@ It deterministically assesses documentation completeness and threshold complianc
 
 This system is intentionally **not predictive, not clinical, and not autonomous**.
 
+> **Note:** In the current public demo (v1.1), letter drafting is **deterministic and template-based**.  
+> An optional LLM-based drafting layer is architecturally supported but intentionally **not enabled** to preserve reproducibility, auditability, and safety.
+
 ---
 
 ## Problem
@@ -107,6 +110,8 @@ The letter generator is a **pure formatting layer**:
   - payer-facing administrative letters
   - machine-readable letter metadata
 
+In v1.1, drafting is **deterministic and template-based**.
+
 The drafting layer:
 - cannot change requirement statuses
 - cannot infer facts
@@ -154,20 +159,19 @@ Tests are treated as **behavioral contracts**, not examples.
 
 ## Architecture Summary
 
-Clinical Note
-↓
-Deterministic Extraction (context-gated, span-based)
-↓
-Requirement Evaluation (rules-first)
-↓
-Invariant Enforcement
-↓
-Overall Readiness Status
-↓
-Optional Write-only Letter Drafting
-↓
-Audit Record + UI Presentation
-
+Clinical Note  
+↓  
+Deterministic Extraction (context-gated, span-based)  
+↓  
+Requirement Evaluation (rules-first)  
+↓  
+Invariant Enforcement  
+↓  
+Overall Readiness Status  
+↓  
+Optional Write-only Letter Drafting  
+↓  
+Audit Record + UI Presentation  
 
 ---
 
