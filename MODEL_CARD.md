@@ -1,155 +1,197 @@
 # Model Card — Prior Authorization Readiness Copilot
 
-**Version:** 0.1 (Pre-Build / Design-Time)  
+**Version:** 1.1  
 **Last Updated:** February 2026  
 **Author:** Nicholas Leko  
-**Status:** Draft — Intent & Risk Lock-In  
+**Status:** Feature-complete (Frozen)  
 **License:** MIT  
 
 ---
 
-## Model Overview
+## 1. System Overview
 
-The Prior Authorization Readiness Copilot is an **administrative decision-support system** designed to assess whether a prior authorization (PA) request is *administratively ready* for submission, identify missing or weak documentation, and assist in drafting payer-aligned justification letters.
+The Prior Authorization Readiness Copilot is a **deterministic administrative decision-support system** designed to assess whether a prior authorization (PA) request is **documentation-ready** for submission according to payer-specific criteria.
 
-This system is **not a predictive model** and does **not** estimate approval likelihood. Its primary function is **pre-submission readiness assessment** under explicit human control.
+The system:
+- evaluates documentation completeness and threshold compliance,
+- explicitly distinguishes missing information from documented failures,
+- refuses to determine readiness when required information is absent,
+- optionally generates **write-only administrative justification letters** grounded in evaluated results.
 
----
-
-## Intended Use
-
-The system is intended to support:
-
-- Prior authorization teams preparing PA submissions
-- Revenue cycle and utilization management staff
-- Clinicians seeking clarity on administrative documentation requirements
-
-Primary use cases include:
-- Identifying missing documentation relative to payer rules
-- Highlighting weak or ambiguous justification language
-- Drafting editable, payer-aligned justification letters
-- Improving consistency and auditability of PA preparation
-
-The system is designed for **internal decision support** and **offline or shadow-mode evaluation** prior to any operational integration.
+This system is **not predictive**, **not clinical**, and **not autonomous**.
 
 ---
 
-## Explicit Non-Goals (Out of Scope)
+## 2. Intended Use
 
-This system is **not** intended to:
+### Intended Users
+- Prior authorization coordinators
+- Utilization management teams
+- Revenue cycle operations staff
+- Clinicians (review-only)
 
-- Predict prior authorization approval or denial
-- Provide medical advice or clinical judgment
+### Intended Use Cases
+- Pre-submission administrative readiness review
+- Identification of missing or insufficient documentation
+- Preparation of payer-aligned administrative justification letters
+- Audit and governance review of PA preparation logic
+
+The system is intended for **offline evaluation, demonstration, or shadow-mode use**.
+
+---
+
+## 3. Explicit Non-Uses (Out of Scope)
+
+The system must **not** be used to:
+- Predict approval or denial likelihood
+- Make medical necessity determinations
+- Provide clinical advice or recommendations
 - Override, reinterpret, or negotiate payer policy
-- Autonomously submit PA requests
-- Replace human review or decision-making
-- Optimize approval rates as a primary objective
+- Automatically submit, escalate, or appeal requests
+- Optimize approval rates or payer outcomes
 
-Any use outside these bounds is explicitly unsupported.
-
----
-
-## System Description (High-Level)
-
-### Architecture Principles
-- **Rules-first evaluation:**  
-  Deterministic logic assesses administrative readiness and requirement coverage.
-- **LLM-assisted drafting (write-only):**  
-  Language models are used exclusively to draft justification text after readiness evaluation.
-- **Human-in-the-loop by default:**  
-  All outputs require human review and approval.
-- **Auditability over automation:**  
-  Every output must be traceable to source inputs and rule evaluations.
-
-### Core Capabilities
-- Readiness classification (e.g., ready vs missing requirements)
-- Requirement gap identification
-- Draft justification letter generation
-- Rationale and source attribution
+Any use outside these bounds is unsupported and unsafe.
 
 ---
 
-## Inputs & Outputs (Conceptual)
+## 4. System Architecture & Components
+
+### Deterministic Core
+- Context-gated, rules-based extraction of documentation signals
+- Payer-specific requirement evaluation
+- Explicit missingness handling
+- Invariant-based readiness determination
+
+### Write-only Drafting Layer
+- Generates administrative justification letters
+- Inputs: evaluated requirement results + evidence snippets
+- Outputs: editable text + letter metadata
+- Cannot alter facts, statuses, or readiness outcomes
+
+### Human Oversight
+- All outputs require human review
+- No autonomous action or state mutation
+- Refusal (`CANNOT_DETERMINE`) is a first-class outcome
+
+---
+
+## 5. Inputs & Outputs (Actual)
 
 ### Inputs
-- Structured administrative data (procedure codes, diagnosis codes, payer identifiers)
-- Unstructured clinical documentation
-- Payer policy documents (e.g., PDFs, guidelines)
+- Payer identifier
+- Procedure code
+- Diagnosis codes (sanitized)
+- Site of care
+- Ordering specialty
+- Clinical note text (synthetic or de-identified)
+
+> Note: Payer policy documents are **not parsed at runtime**. Rules are curated offline and versioned.
 
 ### Outputs
-- Readiness status or score
-- Checklist of missing or weak administrative elements
-- Draft justification letter (fully editable)
-- Explanation of rule evaluations and assumptions
+- Requirement-level results:
+  - `MET`
+  - `NOT_MET`
+  - `NOT_DOCUMENTED`
+- Overall readiness status:
+  - `READY`
+  - `NOT_READY`
+  - `CANNOT_DETERMINE`
+- Blocking issue checklist
+- Optional write-only justification letter
+- Audit JSON with evidence spans and invariant checks
 
 ---
 
-## Human-in-the-Loop Requirements
+## 6. Decision Logic & Invariants
 
-- Outputs must be reviewed by a human user prior to any submission
-- No automated escalation or submission is permitted
-- Ambiguous or incomplete cases must default to “missing information”
-- Users must be able to see *why* a requirement was flagged
+### Requirement Status Semantics
+- `MET`: documented and meets payer threshold
+- `NOT_MET`: documented but does not meet threshold
+- `NOT_DOCUMENTED`: required element missing
 
-Human oversight is considered **mandatory**, not optional.
+### Overall Readiness Mapping (Frozen)
+- Any `NOT_DOCUMENTED` ⇒ `CANNOT_DETERMINE`
+- Any `NOT_MET` (with no missing items) ⇒ `NOT_READY`
+- No blockers ⇒ `READY`
 
----
-
-## Anticipated Risks & Failure Modes (Pre-Build)
-
-This section documents **expected risks prior to implementation**. These will be revised post-build.
-
-### Known Risks
-- Hallucinated policy requirements
-- Over-trust in generated justification text
-- Incomplete or outdated policy inputs
-- Inconsistent outputs across similar cases
-
-### Mitigations (Design-Time)
-- Rules-first gating before LLM invocation
-- Write-only LLM role with no decision authority
-- Explicit source citation requirements
-- Conservative defaults when uncertainty exists
+Invariant violations are explicitly surfaced and logged.
 
 ---
 
-## Evaluation Approach (Planned)
+## 7. Evaluation & Testing
 
-Quantitative performance metrics are **intentionally undefined** at this stage.
+### Test Strategy
+- Synthetic PA cases with realistic fake PHI
+- Deterministic expected outcomes
+- Negative-path coverage (missing documentation)
+- Invariant enforcement tests
+- Letter safety tests (no clinical or predictive language)
 
-Planned evaluation includes:
-- Synthetic PA cases with known administrative requirements
-- Rule coverage and error analysis
-- Human review of drafted justifications
-- Qualitative assessment of clarity and usefulness
+### Metrics Tracked
+- Readiness classification correctness (synthetic)
+- Missing documentation detection accuracy
+- Invariant compliance rate
+- Evidence snippet coverage
 
-Predictive accuracy and approval rate optimization are explicitly deprioritized.
-
----
-
-## Monitoring & Change Considerations
-
-This v0.1 model card reflects **design intent only**.
-
-Post-build versions will include:
-- Observed failure modes
-- Empirical evaluation results
-- Monitoring signals
-- Update and change control policies (via PCCP or equivalent)
-
-Any material change in scope or behavior will require model card revision.
+### Metrics Explicitly Excluded
+- Approval rate
+- Predictive accuracy
+- Automation rate
+- Throughput optimization
 
 ---
 
-## Ethical & Governance Considerations
+## 8. Observed Failure Modes & Mitigations
 
-- The system must not be used to pressure clinicians into inappropriate documentation
-- Outputs should not be treated as authoritative or definitive
-- Use must be transparent and auditable
-- The system should not be used for individual performance evaluation
+### Observed Risks
+- Ambiguous documentation leading to refusal
+- User over-trust in generated letter text
+- Misinterpretation of demo rules as verified policy
+
+### Mitigations Implemented
+- Conservative extraction rules
+- Explicit refusal semantics (`CANNOT_DETERMINE`)
+- Write-only drafting constraints
+- Policy trust level surfaced in UI and letters
+- No silent defaults or inference
+
+---
+
+## 9. Human-in-the-Loop Requirements
+
+- All outputs require human review before use
+- Letters are editable and non-authoritative
+- The system cannot proceed when required data is missing
+- Audit records must be accessible for every run
+
+Human oversight is **mandatory**.
+
+---
+
+## 10. Ethical & Governance Considerations
+
+- The system must not pressure clinicians to fabricate documentation
+- Outputs must not be treated as authoritative decisions
+- Use must be transparent, explainable, and auditable
+- The system must not be used for performance evaluation or enforcement
+
+---
+
+## 11. Change Management & Versioning
+
+- Current version: **v1.1 (feature-complete)**
+- Any change requires:
+  - contract update,
+  - test coverage,
+  - version bump,
+  - model card revision.
+
+No silent behavioral changes are permitted.
 
 ---
 
 ## Summary Statement
 
-The Prior Authorization Readiness Copilot is a **constrained, human-supervised administrative support system** designed to improve the quality and consistency of PA preparation. Its design prioritizes transparency, auditability, and safety over automation or prediction. This v0.1 model card establishes intent, boundaries, and anticipated risks prior to implementation.
+The Prior Authorization Readiness Copilot is a **constrained, deterministic, human-supervised administrative decision-support system**. It is designed to **refuse when uncertain**, explain its reasoning, and preserve auditability at every step.
+
+The system prioritizes **safety, transparency, and governance** over automation or prediction, demonstrating a defensible approach to AI-assisted workflows in healthcare.
