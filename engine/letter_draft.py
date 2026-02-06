@@ -97,12 +97,24 @@ def _format_snippet(s: str, max_words: int = 25) -> str:
     return " ".join(words[:max_words]) + "…"
 
 
-def _policy_trust_line(policy_trust_level: str) -> Optional[str]:
+def _policy_trust_line(policy_trust_level: str) -> str | None:
+    """
+    Returns a single-line policy trust disclaimer to be injected
+    into the letter header. Presentation-only; no logic impact.
+    """
     if policy_trust_level == "demo":
-        return "Policy trust level: DEMO (rules are illustrative; verify against official payer policy before submission)."
+        return (
+            "Policy trust level: DEMO — criteria are illustrative only. "
+            "Verify against the official payer policy before submission."
+        )
+
     if policy_trust_level == "verified":
-        return "Policy trust level: VERIFIED (based on documented policy source metadata)."
+        return (
+            "Policy trust level: VERIFIED — criteria derived from documented payer policy sources."
+        )
+
     return None
+
 
 
 def _title_for(letter_type: str) -> str:
@@ -159,17 +171,18 @@ def draft_letter(
         all_snips.extend(r.evidence_snippets or [])
     cited_count = len([s for s in all_snips if s and str(s).strip()])
 
-    # Header
-    header_lines = [
+        # Header
+        header_lines = [
         f"Payer: {pa.payer}",
         f"Procedure: {pa.procedure_code}",
         f"Site of care: {pa.site_of_care}",
         f"Specialty: {pa.specialty}",
         f"Generated: {ts}",
     ]
+    
     if pa.dx_codes:
         header_lines.append(f"Diagnosis codes: {', '.join(pa.dx_codes)}")
-
+    
     trust_line = _policy_trust_line(policy_trust_level)
     if trust_line:
         header_lines.append(trust_line)
