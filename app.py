@@ -457,63 +457,89 @@ else:
                 st.caption("No evidence snippet captured for this requirement.")
 
     # ----------------------------
-    # NEW: Letter Drafting UI (Write-only)
+    # Letter Drafting UI (Write-only)
     # ----------------------------
     st.subheader("Justification Letter (Write-only)")
-
+    
+    # NEW: Letter type selector (presentation only; does not change readiness logic)
+    letter_type = st.selectbox(
+        "Letter type",
+        ["submission_cover_letter", "missing_info_request", "appeal_template"],
+        index=0,
+    )
+    
     cA, cB = st.columns([1, 1])
     with cA:
         generate_letter = st.button("Generate letter draft", type="primary", use_container_width=True)
     with cB:
         clear_letter = st.button("Clear draft", use_container_width=True)
-
+    
     if clear_letter:
         st.session_state.letter_text = ""
         st.session_state.letter_meta = {}
         st.session_state.letter_error = ""
-
+    
     if generate_letter:
         try:
             pa_model: PARequest = ev["pa_model"]
             report_model: ReadinessReport = ev["report_model"]
-            letter_text, letter_meta = draft_letter_writeonly(pa_model, report_model)
-
+    
+            letter_text, letter_meta = draft_letter_writeonly(
+                pa_model,
+                report_model,
+                letter_type=letter_type,
+                policy_trust_level=ev.get("policy_trust_level", "demo"),
+            )
+    
             st.session_state.letter_text = letter_text
             st.session_state.letter_meta = letter_meta
             st.session_state.letter_error = ""
+    
+            # NEW: Audit linkage without storing full letter content
+            ev["audit"]["letter_artifacts"] = {
+                "letter_type": letter_meta.get("letter_type"),
+                "letter_version": letter_meta.get("letter_version"),
+                "generated_timestamp_utc": letter_meta.get("generated_timestamp_utc"),
+                "letter_hash_sha256_16": letter_meta.get("letter_hash_sha256_16"),
+                "cited_snippets_count": letter_meta.get("cited_snippets_count"),
+                "overall_status": letter_meta.get("overall_status"),
+                "policy_trust_level": letter_meta.get("policy_trust_level"),
+                "draft_blocked": letter_meta.get("draft_blocked"),
+            }
+    
         except Exception as e:
             st.session_state.letter_error = f"{type(e).__name__}: {e}"
-
+    
     if st.session_state.letter_error:
         st.error(st.session_state.letter_error)
-
+    
     if st.session_state.letter_text:
         st.text_area("Letter draft (read-only)", value=st.session_state.letter_text, height=300)
-
+    
         with st.expander("Letter metadata"):
             st.code(json.dumps(st.session_state.letter_meta, indent=2), language="json")
-
+    
         st.download_button(
             "📥 Download Letter (.txt)",
             data=st.session_state.letter_text,
-            file_name="pa_justification_letter.txt",
+            file_name=f"pa_{letter_type}.txt",
             mime="text/plain",
             use_container_width=True,
         )
         st.download_button(
             "📥 Download Letter Metadata (.json)",
             data=json.dumps(st.session_state.letter_meta, indent=2),
-            file_name="pa_letter_metadata.json",
+            file_name=f"pa_{letter_type}_metadata.json",
             mime="application/json",
             use_container_width=True,
         )
     else:
-        st.caption("No letter generated yet. Click **Generate letter draft**.")
-
+        st.caption("No letter generated yet. Select a letter type and click **Generate letter draft**.")
+    
     # Audit export (no note_text)
     st.subheader("Audit Trail")
     st.json(ev["audit"])
-
+    
     audit_json = json.dumps(ev["audit"], indent=2)
     ts_local = datetime.now().strftime("%Y%m%d_%H%M%S")
     st.download_button(
