@@ -12,6 +12,13 @@ This system is intentionally **not predictive, not clinical, and not autonomous*
 
 ---
 
+## Design Philosophy
+This project optimizes for **safety, auditability, and long-term maintainability** over automation or predictive performance.
+
+Where uncertainty exists, the system explicitly **refuses to decide**.
+
+---
+
 ## Problem
 Prior authorization denials are most commonly caused by:
 - missing or ambiguous documentation,
@@ -20,7 +27,7 @@ Prior authorization denials are most commonly caused by:
 
 These failures are **administrative**, not clinical.
 
-Most tools attempt to “optimize approval” using opaque models. This system instead prioritizes **auditability, determinism, and refusal when certainty is unavailable**.
+Most tools attempt to “optimize approval” using opaque models. This system instead prioritizes **determinism, explicit missingness handling, and failure transparency**.
 
 ---
 
@@ -32,6 +39,42 @@ A **rules-first, deterministic pipeline** that:
 3. Enforces invariant-based readiness semantics
 4. Optionally generates **write-only** justification letters grounded strictly in evaluated results and evidence snippets
 5. Produces a complete audit trail suitable for review and governance
+
+---
+
+## Policy Drift & Post-Deploy Governance
+
+Payer policies are external dependencies that change over time.  
+Silent policy drift is one of the highest-risk failure modes in prior authorization automation.
+
+This system explicitly treats payer policy as a **versioned, monitored input**, not a static assumption.
+
+### Drift Detection (Deterministic)
+- Official policy sources are snapshotted as normalized text
+- Content hashes are computed and compared over time
+- Any change produces:
+  - a stored snapshot
+  - a unified diff artifact
+  - an append-only drift log entry
+
+### Governance Guarantees
+- **Rules are never auto-updated**
+- **Policy meaning is never inferred**
+- **LLMs are not used for policy interpretation**
+- Drift detection **only triggers human review**
+
+### UI Trust Gating
+When policy drift is detected:
+- the UI surfaces a **REVIEW_REQUIRED** state
+- evaluation is gated behind explicit user acknowledgment
+- outputs are marked as potentially stale
+
+This ensures the system **fails loudly and safely** rather than silently producing outdated decisions.
+
+Policy updates require:
+- human review
+- rule and test updates
+- explicit recommitment of governance artifacts
 
 ---
 
@@ -55,6 +98,7 @@ A **rules-first, deterministic pipeline** that:
 - Override payer policy
 - Auto-submit, auto-appeal, or auto-escalate requests
 - Use LLMs for extraction, evaluation, or decision-making
+- Auto-update rules in response to policy changes
 
 ---
 
@@ -100,15 +144,16 @@ Invariant violations are explicitly surfaced in the UI and audit trail.
 
 ## Letter Drafting (Write-only by Design)
 
-The letter generator is a **pure formatting layer**:
+The letter generator is a **pure formatting layer**.
 
-- Inputs:
-  - evaluated requirement results
-  - evidence snippets
-  - policy trust level
-- Outputs:
-  - payer-facing administrative letters
-  - machine-readable letter metadata
+### Inputs
+- evaluated requirement results
+- evidence snippets
+- policy trust level
+
+### Outputs
+- payer-facing administrative letters
+- machine-readable letter metadata
 
 In v1.1, drafting is **deterministic and template-based**.
 
@@ -130,6 +175,7 @@ Every run produces a downloadable audit record containing:
 - short note hash (no raw PHI)
 - payer, procedure, site, specialty
 - rules version and policy trust level
+- policy drift status at time of evaluation
 - extracted facts
 - evidence spans
 - requirement results
@@ -137,6 +183,8 @@ Every run produces a downloadable audit record containing:
 - blocking issues
 - invariant violations (if any)
 - letter artifact metadata (hash + version, not raw text)
+
+Policy snapshots and drift logs are treated as **first-class governance artifacts** and are committed for reproducibility.
 
 This design supports:
 - reproducibility
@@ -172,6 +220,8 @@ Overall Readiness Status
 Optional Write-only Letter Drafting  
 ↓  
 Audit Record + UI Presentation  
+↓  
+**Policy Drift Monitor (out-of-band governance)**
 
 ---
 
@@ -183,4 +233,4 @@ The system is intentionally frozen at this stage to preserve:
 - regulatory defensibility,
 - and portfolio signal.
 
-Future changes require explicit contract updates and test coverage.
+Future changes require explicit contract updates, governance review, and test coverage.
