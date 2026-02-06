@@ -182,8 +182,9 @@ def _read_drift_log(log_path: Path) -> list[dict]:
 
 
 def _policy_monitor_status(
-    snapshot_root: str = "policy_snapshots",
-    sources_path: str = "rules/policy_sources.yaml",
+    snapshot_root_p = (BASE_DIR / snapshot_root).resolve()
+    sources = load_policy_sources((BASE_DIR / sources_path).resolve())
+
 ) -> tuple[list[dict], bool]:
     """
     Offline UI status:
