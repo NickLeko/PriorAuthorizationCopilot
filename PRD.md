@@ -46,6 +46,7 @@ This system is **not patient-facing**, **not payer-facing**, and **not autonomou
 - Reduce preventable denials caused by documentation gaps
 - Preserve full human control, transparency, and auditability
 - Provide clear, reproducible explanations for every output
+- Fail loudly and safely when assumptions are violated
 
 ### Non-Goals (Explicit)
 - Predict approval or denial likelihood
@@ -54,6 +55,7 @@ This system is **not patient-facing**, **not payer-facing**, and **not autonomou
 - Override, reinterpret, or negotiate payer policy
 - Automate submission, escalation, or appeals
 - Optimize for approval rates or automation metrics
+- Auto-update rules in response to policy changes
 
 ---
 
@@ -66,6 +68,8 @@ This system is **not patient-facing**, **not payer-facing**, and **not autonomou
 - Invariant-based readiness determination
 - Write-only drafting of administrative justification letters  
   *(deterministic in v1.1; LLM-based drafting architecturally supported but intentionally disabled in the public demo)*
+- Policy provenance surfacing and trust signaling
+- Policy drift detection and governance gating
 - Full audit trail with evidence spans
 - Synthetic test suite and offline evaluation
 
@@ -76,6 +80,7 @@ This system is **not patient-facing**, **not payer-facing**, and **not autonomou
 - Machine learning–driven decisioning
 - Continuous learning or model retraining
 - Live clinical workflows
+- Autonomous system behavior
 
 ---
 
@@ -105,7 +110,8 @@ It does not answer:
 ### Unstructured Inputs
 - Clinical note text (synthetic or de-identified)
 
-> Note: Payer policy documents are **not parsed at runtime**. Rules are curated offline and versioned.
+> Note: Payer policy documents are **not parsed or interpreted at runtime**.  
+> Rules are curated offline, versioned, and governed explicitly.
 
 ---
 
@@ -133,6 +139,7 @@ It does not answer:
   - Evidence spans
   - Rules evaluated
   - Invariant checks
+  - Policy trust level
   - Letter artifact metadata (hash + version)
 
 The system does **not** output:
@@ -164,11 +171,40 @@ Invariant violations are explicitly surfaced and logged.
 
 ---
 
-## 9. Architecture Principles
+## 9. Policy Drift & Governance Requirements
+
+### Problem
+Payer policies are external dependencies that change over time.  
+Silent policy drift can invalidate otherwise correct rules.
+
+### Requirements
+- Policy sources must be explicitly registered and versioned
+- Normalized policy content must be snapshotted
+- Content hashes must be compared over time
+- Any change must produce:
+  - a snapshot artifact,
+  - a diff artifact,
+  - an append-only drift log entry
+
+### Explicit Non-Behavior
+- Rules must **never** auto-update
+- Policy meaning must **never** be inferred
+- LLMs must **not** be used for policy interpretation
+
+### Runtime UX Requirements
+When drift is detected:
+- UI must surface `REVIEW_REQUIRED`
+- Evaluation must be gated behind explicit acknowledgment
+- Outputs must be labeled as potentially stale
+
+---
+
+## 10. Architecture Principles
 
 - **Rules-first, deterministic evaluation**
-- **Write-only drafting layer (deterministic in v1.1)**
-- **LLM use architecturally constrained and disabled in public demo**
+- **Governance before automation**
+- **Write-only drafting layer**
+- **LLM use architecturally constrained**
 - **No hidden state or learning**
 - **Failure-safe defaults**
   - ambiguity → refusal (`CANNOT_DETERMINE`)
@@ -177,13 +213,14 @@ Invariant violations are explicitly surfaced and logged.
 
 ---
 
-## 10. Success Metrics
+## 11. Success Metrics
 
 ### Primary Metrics (Tracked)
 - Correct readiness classification on synthetic cases
 - Correct detection of missing vs unmet requirements
 - Invariant compliance rate
 - Evidence snippet coverage
+- Policy drift detection accuracy
 
 ### Secondary Metrics (Qualitative)
 - Reviewer clarity and trust
@@ -198,12 +235,14 @@ Invariant violations are explicitly surfaced and logged.
 
 ---
 
-## 11. Evaluation Plan
+## 12. Evaluation Plan
 
 ### Offline Evaluation
 - Synthetic PA cases with known ground truth
 - Edge-case and negation handling tests
 - Negative-path tests (`CANNOT_DETERMINE`)
+- Invariant enforcement tests
+- Policy drift gating tests
 
 ### Review Mode
 - Human inspection of audit outputs
@@ -214,31 +253,49 @@ No live automation or production deployment is planned.
 
 ---
 
-## 12. Constraints & Guardrails
+## 13. Constraints & Guardrails
 
 - Determinism preferred over flexibility
 - No inference beyond explicit documentation
 - No silent defaults or gap-filling
 - Latency tolerance is minutes, not seconds
 - All behavior must be testable and auditable
+- Governance artifacts are first-class outputs
 
 ---
 
-## 13. Risks & Mitigations
+## 14. Risks & Mitigations
 
 | Risk | Mitigation |
 |----|----|
 | Hallucinated facts | Deterministic extraction only |
 | Over-trust in generated text | Write-only drafting + disclaimers |
-| Policy drift | Versioned rules + trust level |
+| Policy drift | Snapshotting + diffing + UI gating |
 | Scope creep into prediction | Frozen contracts + explicit non-goals |
-| Misuse of demo rules | Policy trust line in letters |
+| Misuse of demo rules | Policy trust level surfaced everywhere |
 
 ---
 
-## 14. Stopping Criteria
+## 15. Stopping Criteria
 
 The system is considered complete when:
 - Invariants hold across all tests
 - Missing documentation reliably triggers refusal
-- Letters are grounded, editable, and non
+- Letters are grounded, editable, and non-authoritative
+- Policy drift is detectable and review-gated
+- No feature depends on probabilistic inference
+
+**Status:** All criteria satisfied in v1.1.
+
+---
+
+## Summary
+
+The Prior Authorization Readiness Copilot is a **governance-first administrative decision-support system**.
+
+It deliberately chooses:
+- refusal over guesswork,
+- determinism over optimization,
+- and transparency over automation.
+
+This PRD reflects a consciously constrained product designed for **regulated healthcare environments**, where correctness, explainability, and post-deploy validity matter more than speed or scale.
