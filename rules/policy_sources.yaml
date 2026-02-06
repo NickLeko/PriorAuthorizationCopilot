@@ -1,0 +1,11 @@
+version: 1.0
+sources:
+  - id: aetna_mri_lumbar
+    payer: Aetna
+    procedure_code: MRI_LUMBAR
+    url: https://www.aetna.com/cpb/medical/data/100_199/0157.html
+    source_type: official_policy_web
+    trust_level: verified
+    check_frequency: daily
+    owner: NickLeko
+    notes: "Monitored for drift; rules curated offline."
