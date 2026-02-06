@@ -1,7 +1,14 @@
+# OS / editor
 .DS_Store
+
+# Python
 __pycache__/
 *.pyc
 .venv/
 
+# Streamlit runtime
+.streamlit/
+
+# Policy snapshots: keep artifacts, ignore runtime junk
 policy_snapshots/**/__pycache__/
 policy_snapshots/**/*.pyc
