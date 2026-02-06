@@ -15,9 +15,13 @@ from engine.evaluate import (
     compute_overall_status,
 )
 
+
 # NEW: schema + write-only letter drafting
 from engine.schemas import PARequest, ReadinessReport, RequirementResult
 from engine.letter_draft import draft_letter as draft_letter_writeonly
+
+from pathlib import Path
+from engine.policy_monitor import load_policy_sources, read_latest_snapshot
 
 
 # ----------------------------
