@@ -18,6 +18,9 @@ The system:
 - refuses to determine readiness when required information is absent,
 - optionally generates **write-only administrative justification letters** grounded in evaluated results.
 
+In the current public release (v1.1), all evaluation and drafting behavior is **deterministic**.  
+An optional LLM-based drafting layer is **architecturally supported but intentionally disabled** to preserve reproducibility, auditability, and safety.
+
 This system is **not predictive**, **not clinical**, and **not autonomous**.
 
 ---
@@ -66,6 +69,7 @@ Any use outside these bounds is unsupported and unsafe.
 - Generates administrative justification letters
 - Inputs: evaluated requirement results + evidence snippets
 - Outputs: editable text + letter metadata
+- Deterministic in v1.1
 - Cannot alter facts, statuses, or readiness outcomes
 
 ### Human Oversight
@@ -151,7 +155,7 @@ Invariant violations are explicitly surfaced and logged.
 ### Mitigations Implemented
 - Conservative extraction rules
 - Explicit refusal semantics (`CANNOT_DETERMINE`)
-- Write-only drafting constraints
+- Deterministic, write-only drafting constraints
 - Policy trust level surfaced in UI and letters
 - No silent defaults or inference
 
