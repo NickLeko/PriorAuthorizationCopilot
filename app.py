@@ -176,115 +176,64 @@ def _read_drift_log(log_path: Path) -> list[dict]:
             try:
                 events.append(json.loads(line))
             except json.JSONDecodeError:
-                # Ignore malformed lines; monitor is governance-only
                 continue
     return events
 
 
-    def _policy_monitor_status(
-        snapshot_root: str = "policy_snapshots",
-        sources_path: str = "rules/policy_sources.yaml",
-    ) -> tuple[list[dict], bool]:
-        """
-        Offline UI status:
-          - Reads latest snapshots (baseline exists?)
-          - Reads drift_log.jsonl to determine REVIEW_REQUIRED
-        Does NOT fetch internet.
-        """
-        snapshot_root_p = (BASE_DIR / snapshot_root).resolve()
-        log_path = snapshot_root_p / "drift_log.jsonl"
-    
-        # Load sources (YAML) using absolute path
-        try:
-            sources = load_policy_sources((BASE_DIR / sources_path).resolve())
-        except Exception:
-            sources = []
-    
-        # Read drift log (append-only)
-        events: list[dict] = []
-        if log_path.exists():
-            with log_path.open("r", encoding="utf-8") as f:
-                for line in f:
-                    line = line.strip()
-                    if not line:
-                        continue
-                    try:
-                        events.append(json.loads(line))
-                    except json.JSONDecodeError:
-                        continue
-    
-        # Latest event per source (last line wins)
-        latest_event_by_id: dict[str, dict] = {}
-        for e in events:
-            sid = e.get("id")
-            if sid:
-                latest_event_by_id[sid] = e
-    
-        rows: list[dict] = []
-        any_review_required = False
-    
-        for src in sources:
-            latest_snap = read_latest_snapshot(snapshot_root_p, src.id)
-            last_checked = latest_snap.get("fetched_at_utc") if latest_snap else None
-    
-            status = "NO_BASELINE" if latest_snap is None else "OK"
-    
-            last_evt = latest_event_by_id.get(src.id, {})
-            if last_evt.get("event") == "POLICY_DRIFT_DETECTED":
-                status = "REVIEW_REQUIRED"
-                any_review_required = True
-    
-            rows.append(
-                {
-                    "id": src.id,
-                    "payer": src.payer,
-                    "procedure_code": src.procedure_code,
-                    "trust_level": src.trust_level,
-                    "status": status,
-                    "last_checked_utc": last_checked,
-                }
-            )
-    
-        return rows, any_review_required
+def _policy_monitor_status(
+    snapshot_root: str = "policy_snapshots",
+    sources_path: str = "rules/policy_sources.yaml",
+) -> tuple[list[dict], bool]:
+    """
+    Offline UI status:
+      - Reads latest snapshots (baseline exists?)
+      - Reads drift_log.jsonl to determine REVIEW_REQUIRED
+    Does NOT fetch internet.
+    """
+    snapshot_root_p = (BASE_DIR / snapshot_root).resolve()
+    log_path = snapshot_root_p / "drift_log.jsonl"
 
+    # Load sources (YAML) using absolute path
+    try:
+        sources = load_policy_sources((BASE_DIR / sources_path).resolve())
+    except Exception:
+        sources = []
 
+    events = _read_drift_log(log_path)
 
-# ----------------------------
-# Global health banner (explicit gate)
-# ----------------------------
-tests_healthy = bool(st.session_state.get("tests_healthy", False))
-if not tests_healthy:
-    st.error(
-        "🚫 **Build Unhealthy** — Synthetic test suite is not passing. "
-        "Outputs may be unreliable. Fix failing tests before running evaluations."
-    )
+    # Latest event per source (last line wins)
+    latest_event_by_id: dict[str, dict] = {}
+    for e in events:
+        sid = e.get("id")
+        if sid:
+            latest_event_by_id[str(sid)] = e
 
+    rows: list[dict] = []
+    any_review_required = False
 
-# ----------------------------
-# Policy Monitor panel + drift gate (shown before intake)
-# ----------------------------
-policy_rows, any_review_required = _policy_monitor_status()
+    for src in sources:
+        latest_snap = read_latest_snapshot(snapshot_root_p, src.id)
+        last_checked = latest_snap.get("fetched_at_utc") if latest_snap else None
 
-st.subheader("Policy Monitor (Governance)")
-st.caption("Detects policy drift via committed snapshots + drift log. Does not auto-update rules or change outcomes.")
+        status = "NO_BASELINE" if latest_snap is None else "OK"
 
-if policy_rows:
-    st.dataframe(policy_rows, use_container_width=True)
-else:
-    st.info("No policy sources configured (or policy_sources.yaml missing).")
+        last_evt = latest_event_by_id.get(src.id, {})
+        if last_evt.get("event") == "POLICY_DRIFT_DETECTED":
+            status = "REVIEW_REQUIRED"
+            any_review_required = True
 
-if any_review_required:
-    st.warning("⚠️ Policy drift detected — rules may be stale. Verify policy and update rules/tests before trusting outputs.")
-    st.session_state.ack_policy_drift = st.checkbox(
-        "I acknowledge policy drift; demo outputs may be stale.",
-        value=st.session_state.ack_policy_drift,
-    )
-else:
-    st.success("Policy drift status: OK (based on latest snapshots/log).")
-    st.session_state.ack_policy_drift = True
+        rows.append(
+            {
+                "id": src.id,
+                "payer": src.payer,
+                "procedure_code": src.procedure_code,
+                "trust_level": src.trust_level,
+                "status": status,
+                "last_checked_utc": last_checked,
+            }
+        )
 
-policy_gate_block = any_review_required and (not st.session_state.get("ack_policy_drift", False))
-
+    return rows, any_review_required
 
 # ----------------------------
 # Intake form
