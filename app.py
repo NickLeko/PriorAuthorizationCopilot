@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-python -m engine.policy_monitor --write
 
 import streamlit as st
 import yaml
