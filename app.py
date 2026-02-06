@@ -17,6 +17,8 @@ from engine.evaluate import (
     compute_overall_status,
 )
 
+BASE_DIR = Path(__file__).resolve().parent
+
 # NEW: schema + write-only letter drafting
 from engine.schemas import PARequest, ReadinessReport, RequirementResult
 from engine.letter_draft import draft_letter as draft_letter_writeonly
