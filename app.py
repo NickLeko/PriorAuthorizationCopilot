@@ -164,9 +164,18 @@ def _compute_metrics(score_info: dict) -> dict:
 # ----------------------------
 # Policy Drift Monitor (governance-only)
 # ----------------------------
+
+# Base directory for absolute path resolution (prevents Streamlit CWD issues)
+BASE_DIR = Path(__file__).resolve().parent
+
+
 def _read_drift_log(log_path: Path) -> list[dict]:
+    """
+    Read append-only drift log. Ignores malformed lines.
+    """
     if not log_path.exists():
         return []
+
     events: list[dict] = []
     with log_path.open("r", encoding="utf-8") as f:
         for line in f:
@@ -177,6 +186,7 @@ def _read_drift_log(log_path: Path) -> list[dict]:
                 events.append(json.loads(line))
             except json.JSONDecodeError:
                 continue
+
     return events
 
 
@@ -193,15 +203,16 @@ def _policy_monitor_status(
     snapshot_root_p = (BASE_DIR / snapshot_root).resolve()
     log_path = snapshot_root_p / "drift_log.jsonl"
 
-    # Load sources (YAML) using absolute path
+    # Load policy sources (absolute path)
     try:
         sources = load_policy_sources((BASE_DIR / sources_path).resolve())
     except Exception:
         sources = []
 
+    # Load drift events
     events = _read_drift_log(log_path)
 
-    # Latest event per source (last line wins)
+    # Latest event per source (append-only; last occurrence wins)
     latest_event_by_id: dict[str, dict] = {}
     for e in events:
         sid = e.get("id")
@@ -229,11 +240,7 @@ def _policy_monitor_status(
                 "procedure_code": src.procedure_code,
                 "trust_level": src.trust_level,
                 "status": status,
-                "last_checked_utc": last_checked,
-            }
-        )
 
-    return rows, any_review_required
 
 # ----------------------------
 # Intake form
