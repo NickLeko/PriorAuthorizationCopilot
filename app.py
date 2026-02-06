@@ -6,6 +6,7 @@ import json
 import uuid
 import hashlib
 from datetime import datetime, timezone
+from pathlib import Path
 
 from engine.rules_loader import load_rules
 from engine.extract import extract_facts
@@ -15,12 +16,11 @@ from engine.evaluate import (
     compute_overall_status,
 )
 
-
 # NEW: schema + write-only letter drafting
 from engine.schemas import PARequest, ReadinessReport, RequirementResult
 from engine.letter_draft import draft_letter as draft_letter_writeonly
 
-from pathlib import Path
+# Governance: policy drift monitor (offline UI reads artifacts; does not fetch internet)
 from engine.policy_monitor import load_policy_sources, read_latest_snapshot
 
 
@@ -63,6 +63,10 @@ if "letter_meta" not in st.session_state:
     st.session_state.letter_meta = {}
 if "letter_error" not in st.session_state:
     st.session_state.letter_error = ""
+
+# NEW: policy drift acknowledge gate state
+if "ack_policy_drift" not in st.session_state:
+    st.session_state.ack_policy_drift = False
 
 
 # ----------------------------
@@ -131,16 +135,32 @@ except Exception as e:
 # ----------------------------
 # Helpers
 # ----------------------------
+def _hash_note(note: str) -> str:
+    h = hashlib.sha256((note or "").encode("utf-8")).hexdigest()
+    return h[:16]  # short hash for readability
+
+
+def _compute_metrics(score_info: dict) -> dict:
+    total = int(score_info.get("total", 0) or 0)
+    met = int(score_info.get("met_count", 0) or 0)
+    not_met = int(score_info.get("not_met_count", 0) or 0)
+    not_doc = int(score_info.get("not_documented_count", 0) or 0)
+
+    extraction_success_rate = round(((met + not_met) / total * 100), 1) if total else 0.0
+    compliance_rate = round((met / (met + not_met) * 100), 1) if (met + not_met) > 0 else None
+
+    return {
+        "extraction_success_rate": extraction_success_rate,
+        "extraction_failure_count": not_doc,
+        "compliance_rate": compliance_rate,
+        "compliant_count": met,
+        "non_compliant_count": not_met,
+    }
 
 
 # ----------------------------
 # Policy Drift Monitor (governance-only)
 # ----------------------------
-
-if "ack_policy_drift" not in st.session_state:
-    st.session_state.ack_policy_drift = False
-
-
 def _read_drift_log(log_path: Path) -> list[dict]:
     if not log_path.exists():
         return []
@@ -172,7 +192,10 @@ def _policy_monitor_status(
     log_path = snapshot_root_p / "drift_log.jsonl"
 
     # Load sources (YAML)
-    sources = load_policy_sources(Path(sources_path))
+    try:
+        sources = load_policy_sources(Path(sources_path))
+    except Exception:
+        sources = []
 
     # Load drift events and compute latest event per source
     events = _read_drift_log(log_path)
@@ -213,28 +236,6 @@ def _policy_monitor_status(
 
     return rows, any_review_required
 
-def _hash_note(note: str) -> str:
-    h = hashlib.sha256((note or "").encode("utf-8")).hexdigest()
-    return h[:16]  # short hash for readability
-
-
-def _compute_metrics(score_info: dict) -> dict:
-    total = int(score_info.get("total", 0) or 0)
-    met = int(score_info.get("met_count", 0) or 0)
-    not_met = int(score_info.get("not_met_count", 0) or 0)
-    not_doc = int(score_info.get("not_documented_count", 0) or 0)
-
-    extraction_success_rate = round(((met + not_met) / total * 100), 1) if total else 0.0
-    compliance_rate = round((met / (met + not_met) * 100), 1) if (met + not_met) > 0 else None
-
-    return {
-        "extraction_success_rate": extraction_success_rate,
-        "extraction_failure_count": not_doc,
-        "compliance_rate": compliance_rate,
-        "compliant_count": met,
-        "non_compliant_count": not_met,
-    }
-
 
 # ----------------------------
 # Global health banner (explicit gate)
@@ -245,6 +246,32 @@ if not tests_healthy:
         "🚫 **Build Unhealthy** — Synthetic test suite is not passing. "
         "Outputs may be unreliable. Fix failing tests before running evaluations."
     )
+
+
+# ----------------------------
+# Policy Monitor panel + drift gate (shown before intake)
+# ----------------------------
+policy_rows, any_review_required = _policy_monitor_status()
+
+st.subheader("Policy Monitor (Governance)")
+st.caption("Detects policy drift via committed snapshots + drift log. Does not auto-update rules or change outcomes.")
+
+if policy_rows:
+    st.dataframe(policy_rows, use_container_width=True)
+else:
+    st.info("No policy sources configured (or policy_sources.yaml missing).")
+
+if any_review_required:
+    st.warning("⚠️ Policy drift detected — rules may be stale. Verify policy and update rules/tests before trusting outputs.")
+    st.session_state.ack_policy_drift = st.checkbox(
+        "I acknowledge policy drift; demo outputs may be stale.",
+        value=st.session_state.ack_policy_drift,
+    )
+else:
+    st.success("Policy drift status: OK (based on latest snapshots/log).")
+    st.session_state.ack_policy_drift = True
+
+policy_gate_block = any_review_required and (not st.session_state.get("ack_policy_drift", False))
 
 
 # ----------------------------
@@ -275,7 +302,10 @@ with st.form("pa_form", clear_on_submit=False):
     )
 
     tests_healthy = bool(st.session_state.get("tests_healthy", False))
-    submitted = st.form_submit_button("Evaluate PA readiness", disabled=(not tests_healthy))
+    submitted = st.form_submit_button(
+        "Evaluate PA readiness",
+        disabled=(not tests_healthy) or policy_gate_block,
+    )
 
 
 # ----------------------------
@@ -362,9 +392,9 @@ if submitted:
     def _clean_dx(code: str) -> str:
         # Conservative normalization: no inference, no validation against ICD tables
         return code.strip().upper().replace(" ", "").replace("%", "")
-    
+
     dx_codes_clean = [_clean_dx(c) for c in dx_codes if c.strip()]
-    
+
     pa_model = PARequest(
         payer=payer,
         procedure_code=proc_code,
@@ -372,7 +402,7 @@ if submitted:
         site_of_care=site,
         specialty=(specialty or "unknown"),
         note_text="",  # intentionally NOT used by drafting
-)
+    )
 
     req_models = [
         RequirementResult(
@@ -552,41 +582,41 @@ else:
     # Letter Drafting UI (Write-only)
     # ----------------------------
     st.subheader("Justification Letter (Write-only)")
-    
+
     # NEW: Letter type selector (presentation only; does not change readiness logic)
     letter_type = st.selectbox(
         "Letter type",
         ["submission_cover_letter", "missing_info_request", "appeal_template"],
         index=0,
     )
-    
+
     cA, cB = st.columns([1, 1])
     with cA:
         generate_letter = st.button("Generate letter draft", type="primary", use_container_width=True)
     with cB:
         clear_letter = st.button("Clear draft", use_container_width=True)
-    
+
     if clear_letter:
         st.session_state.letter_text = ""
         st.session_state.letter_meta = {}
         st.session_state.letter_error = ""
-    
+
     if generate_letter:
         try:
             pa_model: PARequest = ev["pa_model"]
             report_model: ReadinessReport = ev["report_model"]
-    
+
             letter_text, letter_meta = draft_letter_writeonly(
                 pa_model,
                 report_model,
                 letter_type=letter_type,
                 policy_trust_level=ev.get("policy_trust_level", "demo"),
             )
-    
+
             st.session_state.letter_text = letter_text
             st.session_state.letter_meta = letter_meta
             st.session_state.letter_error = ""
-    
+
             # NEW: Audit linkage without storing full letter content
             ev["audit"]["letter_artifacts"] = {
                 "letter_type": letter_meta.get("letter_type"),
@@ -598,19 +628,19 @@ else:
                 "policy_trust_level": letter_meta.get("policy_trust_level"),
                 "draft_blocked": letter_meta.get("draft_blocked"),
             }
-    
+
         except Exception as e:
             st.session_state.letter_error = f"{type(e).__name__}: {e}"
-    
+
     if st.session_state.letter_error:
         st.error(st.session_state.letter_error)
-    
+
     if st.session_state.letter_text:
         st.text_area("Letter draft (read-only)", value=st.session_state.letter_text, height=300)
-    
+
         with st.expander("Letter metadata"):
             st.code(json.dumps(st.session_state.letter_meta, indent=2), language="json")
-    
+
         st.download_button(
             "📥 Download Letter (.txt)",
             data=st.session_state.letter_text,
@@ -627,11 +657,11 @@ else:
         )
     else:
         st.caption("No letter generated yet. Select a letter type and click **Generate letter draft**.")
-    
+
     # Audit export (no note_text)
     st.subheader("Audit Trail")
     st.json(ev["audit"])
-    
+
     audit_json = json.dumps(ev["audit"], indent=2)
     ts_local = datetime.now().strftime("%Y%m%d_%H%M%S")
     st.download_button(
@@ -732,4 +762,3 @@ else:
                         st.code(str(s), language="text")
                 else:
                     st.caption("No evidence snippet captured for this requirement.")
-
