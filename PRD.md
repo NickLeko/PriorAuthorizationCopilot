@@ -64,7 +64,8 @@ This system is **not patient-facing**, **not payer-facing**, and **not autonomou
 - Rules-first evaluation of payer-specific requirements
 - Explicit missingness handling (`NOT_DOCUMENTED`)
 - Invariant-based readiness determination
-- Optional **write-only** drafting of administrative justification letters
+- Write-only drafting of administrative justification letters  
+  *(deterministic in v1.1; LLM-based drafting architecturally supported but intentionally disabled in the public demo)*
 - Full audit trail with evidence spans
 - Synthetic test suite and offline evaluation
 
@@ -166,7 +167,8 @@ Invariant violations are explicitly surfaced and logged.
 ## 9. Architecture Principles
 
 - **Rules-first, deterministic evaluation**
-- **LLM restricted to write-only generation**
+- **Write-only drafting layer (deterministic in v1.1)**
+- **LLM use architecturally constrained and disabled in public demo**
 - **No hidden state or learning**
 - **Failure-safe defaults**
   - ambiguity → refusal (`CANNOT_DETERMINE`)
@@ -239,15 +241,4 @@ No live automation or production deployment is planned.
 The system is considered complete when:
 - Invariants hold across all tests
 - Missing documentation reliably triggers refusal
-- Letters are grounded, editable, and non-clinical
-- Audit records fully explain outcomes
-
-All criteria have been met as of v1.1.
-
----
-
-## Summary
-
-This PRD defines a **deterministic, audit-first administrative decision-support system** for prior authorization readiness. The system intentionally prioritizes refusal over speculation, transparency over automation, and governance over predictive performance.
-
-It is designed to demonstrate **safe, defensible AI system design in healthcare**, not to optimize payer outcomes.
+- Letters are grounded, editable, and non
