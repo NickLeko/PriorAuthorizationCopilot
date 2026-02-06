@@ -131,6 +131,88 @@ except Exception as e:
 # ----------------------------
 # Helpers
 # ----------------------------
+
+
+# ----------------------------
+# Policy Drift Monitor (governance-only)
+# ----------------------------
+
+if "ack_policy_drift" not in st.session_state:
+    st.session_state.ack_policy_drift = False
+
+
+def _read_drift_log(log_path: Path) -> list[dict]:
+    if not log_path.exists():
+        return []
+    events: list[dict] = []
+    with log_path.open("r", encoding="utf-8") as f:
+        for line in f:
+            line = line.strip()
+            if not line:
+                continue
+            try:
+                events.append(json.loads(line))
+            except json.JSONDecodeError:
+                # Ignore malformed lines; monitor is governance-only
+                continue
+    return events
+
+
+def _policy_monitor_status(
+    snapshot_root: str = "policy_snapshots",
+    sources_path: str = "rules/policy_sources.yaml",
+) -> tuple[list[dict], bool]:
+    """
+    Offline UI status:
+      - Reads latest snapshots (baseline exists?)
+      - Reads drift_log.jsonl to determine REVIEW_REQUIRED
+    Does NOT fetch internet.
+    """
+    snapshot_root_p = Path(snapshot_root)
+    log_path = snapshot_root_p / "drift_log.jsonl"
+
+    # Load sources (YAML)
+    sources = load_policy_sources(Path(sources_path))
+
+    # Load drift events and compute latest event per source
+    events = _read_drift_log(log_path)
+    latest_event_by_id: dict[str, dict] = {}
+    for e in events:
+        sid = e.get("id")
+        if not sid:
+            continue
+        # drift_log is append-only; last occurrence wins
+        latest_event_by_id[str(sid)] = e
+
+    rows: list[dict] = []
+    any_review_required = False
+
+    for src in sources:
+        latest_snap = read_latest_snapshot(snapshot_root_p, src.id)
+        last_checked = latest_snap.get("fetched_at_utc") if latest_snap else None
+
+        # Default status
+        status = "NO_BASELINE" if latest_snap is None else "OK"
+
+        # If the last logged event for this source is drift detected, mark review-required
+        last_evt = latest_event_by_id.get(src.id, {})
+        if last_evt.get("event") == "POLICY_DRIFT_DETECTED":
+            status = "REVIEW_REQUIRED"
+            any_review_required = True
+
+        rows.append(
+            {
+                "id": src.id,
+                "payer": src.payer,
+                "procedure_code": src.procedure_code,
+                "trust_level": src.trust_level,
+                "status": status,
+                "last_checked_utc": last_checked,
+            }
+        )
+
+    return rows, any_review_required
+
 def _hash_note(note: str) -> str:
     h = hashlib.sha256((note or "").encode("utf-8")).hexdigest()
     return h[:16]  # short hash for readability
