@@ -172,7 +172,7 @@ def draft_letter(
     cited_count = len([s for s in all_snips if s and str(s).strip()])
 
         # Header
-        header_lines = [
+    header_lines = [
         f"Payer: {pa.payer}",
         f"Procedure: {pa.procedure_code}",
         f"Site of care: {pa.site_of_care}",
