@@ -14,7 +14,10 @@ from engine.evaluate import (
     compute_readiness_score,
     compute_overall_status,
 )
-from llm.draft_letter import draft_letter_deterministic
+
+# NEW: schema + write-only letter drafting
+from engine.schemas import PARequest, ReadinessReport, RequirementResult
+from engine.letter_draft import draft_letter as draft_letter_writeonly
 
 
 # ----------------------------
@@ -49,10 +52,13 @@ if "last_eval" not in st.session_state:
 if "test_rows" not in st.session_state:
     st.session_state.test_rows = None
 
-if "last_eval" not in st.session_state:
-    st.session_state.last_eval = None
-if "test_rows" not in st.session_state:
-    st.session_state.test_rows = None
+# NEW: letter UI state (write-only)
+if "letter_text" not in st.session_state:
+    st.session_state.letter_text = ""
+if "letter_meta" not in st.session_state:
+    st.session_state.letter_meta = {}
+if "letter_error" not in st.session_state:
+    st.session_state.letter_error = ""
 
 
 # ----------------------------
@@ -190,6 +196,11 @@ with st.form("pa_form", clear_on_submit=False):
 # Evaluate action (persist results)
 # ----------------------------
 if submitted:
+    # Clear prior letter UI output on new eval to avoid stale drafts
+    st.session_state.letter_text = ""
+    st.session_state.letter_meta = {}
+    st.session_state.letter_error = ""
+
     dx_codes = [x.strip() for x in (dx_raw or "").split(",") if x.strip()]
     proc_obj = rules["payers"][payer]["procedures"][proc_code]
     proc_name = proc_obj.get("display_name", proc_code)
@@ -235,17 +246,6 @@ if submitted:
     # Metrics
     metrics = _compute_metrics(score_info)
 
-    # Letter draft
-    letter = draft_letter_deterministic(
-        payer=payer,
-        procedure_code=proc_code,
-        procedure_name=proc_name,
-        dx_codes=dx_codes,
-        facts=facts,
-        results=rows,
-        overall_status=overall["overall_status"],
-    )
-
     run_id = str(uuid.uuid4())
     ts = datetime.now(timezone.utc).isoformat()
 
@@ -272,6 +272,39 @@ if submitted:
         "invariant_errors": invariant_errors,
     }
 
+    # NEW: build schema objects for write-only letter drafting
+    pa_model = PARequest(
+        payer=payer,
+        procedure_code=proc_code,
+        dx_codes=dx_codes,
+        site_of_care=site,
+        specialty=(specialty or "unknown"),
+        note_text="",  # intentionally NOT used by drafting
+    )
+
+    req_models = [
+        RequirementResult(
+            key=r["key"],
+            label=r["label"],
+            status=r["status"],
+            reason=r["reason"],
+            evidence=(r.get("evidence_hint") or None),
+            evidence_snippets=(r.get("evidence_snippets") or []),
+        )
+        for r in rows
+    ]
+
+    report_model = ReadinessReport(
+        readiness_score=int(score_info.get("readiness_score", 0) or 0),
+        not_documented_count=int(score_info.get("not_documented_count", 0) or 0),
+        not_met_count=int(score_info.get("not_met_count", 0) or 0),
+        met_count=int(score_info.get("met_count", 0) or 0),
+        results=req_models,
+        rule_reasons=list(reasons or []),
+        audit_trail=dict(audit),
+        letter_draft="",  # write-only; UI will populate separately
+    )
+
     st.session_state.last_eval = {
         "payer": payer,
         "proc_code": proc_code,
@@ -284,11 +317,13 @@ if submitted:
         "overall": overall,
         "score_info": score_info,
         "metrics": metrics,
-        "letter": letter,
         "audit": audit,
         "invariant_errors": invariant_errors,
         "policy_trust_level": policy_trust_level,
         "provenance": prov_info or {},
+        # NEW
+        "pa_model": pa_model,
+        "report_model": report_model,
     }
 
 
@@ -397,24 +432,22 @@ else:
             st.markdown("**Documented but not met (not ready):**")
             for r in not_met_items:
                 st.write(f"- {r['label']}: {r['reason']}")
-                
-    st.write("DEBUG main UI first row evidence_snippets:", (ev["rows"][0].get("evidence_snippets") if ev["rows"] else None))
 
     # Explainable results (with evidence snippets)
     st.subheader("Rule-based Requirement Results (Explainable)")
     status_emoji = {"MET": "✅", "NOT_MET": "⚠️", "NOT_DOCUMENTED": "❌"}
-    
+
     for r in ev["rows"]:
         emoji = status_emoji.get(r.get("status"), "❓")
         expand_default = r.get("status") != "MET"
-    
+
         with st.expander(f"{emoji} {r.get('label', '')}", expanded=expand_default):
             st.write(f"**Status:** {r.get('status')}")
             st.write(f"**Reason:** {r.get('reason')}")
-    
+
             if r.get("evidence_hint"):
                 st.info(f"💡 **What to look for in the note:** {r['evidence_hint']}")
-    
+
             snips = r.get("evidence_snippets") or []
             if snips:
                 st.markdown("**Evidence found in note:**")
@@ -422,13 +455,60 @@ else:
                     st.code(str(s), language="text")
             else:
                 st.caption("No evidence snippet captured for this requirement.")
-                
-    st.write("DEBUG first RequirementResult evidence_snippets:", getattr(results[0], "evidence_snippets", None) if results else None)
-    st.write("DEBUG evidence_map sample:", evidence_map)
 
-    # Letter
-    st.subheader("Draft Letter (Deterministic MVP)")
-    st.text_area("Letter draft", value=ev["letter"], height=220)
+    # ----------------------------
+    # NEW: Letter Drafting UI (Write-only)
+    # ----------------------------
+    st.subheader("Justification Letter (Write-only)")
+
+    cA, cB = st.columns([1, 1])
+    with cA:
+        generate_letter = st.button("Generate letter draft", type="primary", use_container_width=True)
+    with cB:
+        clear_letter = st.button("Clear draft", use_container_width=True)
+
+    if clear_letter:
+        st.session_state.letter_text = ""
+        st.session_state.letter_meta = {}
+        st.session_state.letter_error = ""
+
+    if generate_letter:
+        try:
+            pa_model: PARequest = ev["pa_model"]
+            report_model: ReadinessReport = ev["report_model"]
+            letter_text, letter_meta = draft_letter_writeonly(pa_model, report_model)
+
+            st.session_state.letter_text = letter_text
+            st.session_state.letter_meta = letter_meta
+            st.session_state.letter_error = ""
+        except Exception as e:
+            st.session_state.letter_error = f"{type(e).__name__}: {e}"
+
+    if st.session_state.letter_error:
+        st.error(st.session_state.letter_error)
+
+    if st.session_state.letter_text:
+        st.text_area("Letter draft (read-only)", value=st.session_state.letter_text, height=300)
+
+        with st.expander("Letter metadata"):
+            st.code(json.dumps(st.session_state.letter_meta, indent=2), language="json")
+
+        st.download_button(
+            "📥 Download Letter (.txt)",
+            data=st.session_state.letter_text,
+            file_name="pa_justification_letter.txt",
+            mime="text/plain",
+            use_container_width=True,
+        )
+        st.download_button(
+            "📥 Download Letter Metadata (.json)",
+            data=json.dumps(st.session_state.letter_meta, indent=2),
+            file_name="pa_letter_metadata.json",
+            mime="application/json",
+            use_container_width=True,
+        )
+    else:
+        st.caption("No letter generated yet. Click **Generate letter draft**.")
 
     # Audit export (no note_text)
     st.subheader("Audit Trail")
@@ -534,3 +614,4 @@ else:
                         st.code(str(s), language="text")
                 else:
                     st.caption("No evidence snippet captured for this requirement.")
+
