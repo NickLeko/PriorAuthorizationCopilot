@@ -2,3 +2,6 @@
 __pycache__/
 *.pyc
 .venv/
+
+policy_snapshots/**/__pycache__/
+policy_snapshots/**/*.pyc
