@@ -2,217 +2,252 @@
 ## Prior Authorization Readiness Copilot
 
 **Author:** Nicholas Leko  
-**Status:** Draft (Pre-Build PRD)  
+**Status:** Feature-complete (v1.1)  
 **Last Updated:** February 2026  
-**Project Type:** Flagship Agentic AI System
+**Project Type:** Flagship Administrative Decision-Support System  
 
 ---
 
 ## 1. Problem Statement
 
-Prior authorization (PA) requests frequently fail or are delayed not because of inappropriate care, but due to **incomplete documentation, unclear justification language, and payer-specific administrative requirements**.
+Prior authorization (PA) requests are frequently delayed or denied not due to inappropriate care, but because of **incomplete, ambiguous, or misaligned administrative documentation** relative to payer-specific criteria.
 
-These failures create:
-- Delays in care
-- Administrative burden for clinicians and staff
-- Revenue leakage for health systems
-- Friction between providers and payers
+These failures result in:
+- delays to patient care,
+- increased administrative burden,
+- avoidable rework and resubmissions,
+- friction between providers and payers.
 
-The core problem is **administrative readiness**, not clinical decision-making.
+The core problem is **administrative readiness**, not clinical decision-making or approval prediction.
 
 ---
 
 ## 2. Target Users & Stakeholders
 
 ### Primary Users
-- Hospital or clinic prior authorization teams
-- Revenue cycle / utilization management staff
+- Prior authorization coordinators
+- Utilization management teams
+- Revenue cycle operations staff
 
 ### Secondary Stakeholders
-- Clinicians submitting PA requests
-- Operations leadership
+- Ordering clinicians (review-only)
 - Compliance and audit teams
+- Operations leadership
 
-This system is **not patient-facing** and **not payer-facing**.
+This system is **not patient-facing**, **not payer-facing**, and **not autonomous**.
 
 ---
 
 ## 3. Goals & Non-Goals
 
 ### Goals
-- Assess whether a PA request is *administratively ready* for submission
-- Identify missing or weak documentation relative to payer rules
+- Determine whether a PA request is **administratively ready** for submission
+- Explicitly identify **missing documentation** vs **documented but unmet criteria**
 - Reduce preventable denials caused by documentation gaps
-- Preserve full human control and auditability
-- Improve speed and consistency of PA preparation
+- Preserve full human control, transparency, and auditability
+- Provide clear, reproducible explanations for every output
 
-### Non-Goals
-- Predict payer approval or denial
+### Non-Goals (Explicit)
+- Predict approval or denial likelihood
 - Make medical necessity determinations
-- Override or reinterpret payer policy
-- Automate submission or approval decisions
-- Replace clinical or administrative judgment
+- Provide clinical recommendations
+- Override, reinterpret, or negotiate payer policy
+- Automate submission, escalation, or appeals
+- Optimize for approval rates or automation metrics
 
 ---
 
 ## 4. Product Scope
 
 ### In Scope
-- Rules-based evaluation of PA readiness
-- Identification of missing or insufficient requirements
-- LLM-assisted drafting of justification letters (write-only)
-- Transparent rationale for every output
-- Offline and synthetic-case evaluation
+- Deterministic extraction of documentation signals from clinical notes
+- Rules-first evaluation of payer-specific requirements
+- Explicit missingness handling (`NOT_DOCUMENTED`)
+- Invariant-based readiness determination
+- Optional **write-only** drafting of administrative justification letters
+- Full audit trail with evidence spans
+- Synthetic test suite and offline evaluation
 
 ### Out of Scope
 - Real-time EHR integration
-- Automated payer communication
-- Appeals automation
-- Model fine-tuning or end-to-end learning systems
+- Direct payer communication
+- Automated appeals or submissions
+- Machine learning–driven decisioning
+- Continuous learning or model retraining
+- Live clinical workflows
 
 ---
 
 ## 5. Decision Being Supported
 
 **Decision:**  
-> “Is this prior authorization request ready to submit as-is, and if not, what specific administrative elements are missing or weak?”
+> “Is this prior authorization request administratively ready to submit as documented, and if not, what specific administrative elements are missing or below threshold?”
 
-The system supports **pre-submission review**, not outcome prediction.
+The system supports **pre-submission review only**.
+
+It does not answer:
+- whether the procedure is appropriate,
+- whether it should be approved,
+- or what clinical action should be taken.
 
 ---
 
 ## 6. System Inputs
 
 ### Structured Inputs
-- Procedure codes (e.g., CPT / HCPCS)
-- Diagnosis codes (e.g., ICD)
-- Site of care
 - Payer identifier
+- Procedure code
+- Diagnosis codes (sanitized)
+- Site of care
+- Ordering specialty
 
 ### Unstructured Inputs
-- Clinical notes
-- Prior authorization policy documents (PDFs, guidelines)
-- Historical PA examples (synthetic or de-identified)
+- Clinical note text (synthetic or de-identified)
+
+> Note: Payer policy documents are **not parsed at runtime**. Rules are curated offline and versioned.
 
 ---
 
 ## 7. System Outputs
 
-- **Readiness score or status**
-  - Ready
-  - Missing requirements
-  - High denial risk due to documentation gaps (administrative only)
+### Primary Outputs
+- **Requirement-level results**
+  - `MET`
+  - `NOT_MET`
+  - `NOT_DOCUMENTED`
+- **Overall readiness status**
+  - `READY`
+  - `NOT_READY`
+  - `CANNOT_DETERMINE`
+- **Blocking issues**
+  - Explicit list of missing or unmet requirements
 
-- **Checklist of missing or weak elements**
-  - Explicit mapping to payer requirements
+### Secondary Outputs
+- **Administrative justification letters** (write-only)
+  - Submission cover letters
+  - Missing information requests
+  - Appeal templates
+- **Audit JSON**
+  - Facts extracted
+  - Evidence spans
+  - Rules evaluated
+  - Invariant checks
+  - Letter artifact metadata (hash + version)
 
-- **Draft justification letter**
-  - Payer-aligned
-  - Fully editable
-  - Traceable to source inputs
-
-- **Rationale & audit trail**
-  - What rules fired
-  - What information was used
-  - What assumptions (if any) were made
+The system does **not** output:
+- approval probability,
+- denial risk,
+- confidence scores,
+- clinical interpretation.
 
 ---
 
-## 8. Architecture Principles
+## 8. Core Semantics & Invariants (Frozen)
 
-- **Rules-first evaluation**
-  - Deterministic, inspectable, auditable
-- **LLM as write-only assistant**
-  - No autonomous decisions
-  - No hidden state
-- **Human-in-the-loop by design**
-  - Every output requires review
+### Requirement Status
+- `MET`: documented and meets payer threshold
+- `NOT_MET`: documented but does not meet threshold
+- `NOT_DOCUMENTED`: required element not present
+
+### Overall Status
+- `READY`: all required criteria documented and met
+- `CANNOT_DETERMINE`: one or more required criteria not documented
+- `NOT_READY`: all criteria documented, but one or more not met
+
+### Invariant Rules
+- Any `NOT_DOCUMENTED` ⇒ overall must be `CANNOT_DETERMINE`
+- Any `NOT_MET` (with no missing items) ⇒ overall must be `NOT_READY`
+- No blockers ⇒ overall must be `READY`
+
+Invariant violations are explicitly surfaced and logged.
+
+---
+
+## 9. Architecture Principles
+
+- **Rules-first, deterministic evaluation**
+- **LLM restricted to write-only generation**
+- **No hidden state or learning**
 - **Failure-safe defaults**
-  - Ambiguity → “missing information,” not “ready”
+  - ambiguity → refusal (`CANNOT_DETERMINE`)
+- **Evidence-linked explanations**
+- **Test-locked behavior**
 
 ---
 
-## 9. Success Metrics
+## 10. Success Metrics
 
-### Primary Metrics
-- Accuracy of readiness classification on synthetic cases
-- Accuracy of missing-requirement detection
+### Primary Metrics (Tracked)
+- Correct readiness classification on synthetic cases
+- Correct detection of missing vs unmet requirements
+- Invariant compliance rate
+- Evidence snippet coverage
 
-### Secondary Metrics
-- Time saved per PA preparation
-- Consistency of outputs across similar cases
-- User-reported clarity and trust
+### Secondary Metrics (Qualitative)
+- Reviewer clarity and trust
+- Ease of correcting missing documentation
+- Consistency across similar cases
 
-### Explicitly Deprioritized Metrics
+### Explicitly Excluded Metrics
 - Approval rate
-- Predictive accuracy
-- End-to-end automation rate
+- Denial prediction accuracy
+- Automation percentage
+- Throughput optimization
 
 ---
 
-## 10. Evaluation Plan
+## 11. Evaluation Plan
 
 ### Offline Evaluation
-- Synthetic PA cases with known requirements
-- Rule coverage and error analysis
-- Human review of drafted justifications
+- Synthetic PA cases with known ground truth
+- Edge-case and negation handling tests
+- Negative-path tests (`CANNOT_DETERMINE`)
 
-### Silent Mode
-- Run on historical cases without user exposure
-- Compare agent output vs known outcomes (qualitative)
+### Review Mode
+- Human inspection of audit outputs
+- Comparison against expected rule behavior
+- Letter review for prohibited language
 
-### Shadow Mode
-- Show outputs to users without affecting submissions
-- Collect feedback on usefulness and correctness
-
-No live automation is planned in the MVP.
+No live automation or production deployment is planned.
 
 ---
 
-## 11. Constraints & Guardrails
+## 12. Constraints & Guardrails
 
-- Outputs must be explainable and auditable
-- The system must not hallucinate policy requirements
-- Any uncertainty must be explicitly surfaced
-- Latency may be minutes, not seconds
-- Determinism is preferred over creativity
+- Determinism preferred over flexibility
+- No inference beyond explicit documentation
+- No silent defaults or gap-filling
+- Latency tolerance is minutes, not seconds
+- All behavior must be testable and auditable
 
 ---
 
-## 12. Risks & Mitigations
+## 13. Risks & Mitigations
 
 | Risk | Mitigation |
 |----|----|
-| Hallucinated requirements | Rules-first gating, source citation |
-| Over-trust in generated text | Write-only LLM, mandatory human review |
-| Policy drift | Versioned policy inputs |
-| Scope creep toward prediction | Explicit non-goals in PRD and model card |
-
----
-
-## 13. Rollout Strategy
-
-1. Offline testing on synthetic cases  
-2. Silent mode on historical data  
-3. Shadow mode with PA teams  
-4. Limited internal MVP usage  
-
-Progression is gated by **trust and clarity**, not performance metrics alone.
+| Hallucinated facts | Deterministic extraction only |
+| Over-trust in generated text | Write-only drafting + disclaimers |
+| Policy drift | Versioned rules + trust level |
+| Scope creep into prediction | Frozen contracts + explicit non-goals |
+| Misuse of demo rules | Policy trust line in letters |
 
 ---
 
 ## 14. Stopping Criteria
 
-The MVP is considered complete when:
-- Readiness classification is reliable on synthetic cases
-- Missing-requirement detection is consistent
-- Drafted letters are usable with minimal edits
-- Users understand *why* the system flags issues
+The system is considered complete when:
+- Invariants hold across all tests
+- Missing documentation reliably triggers refusal
+- Letters are grounded, editable, and non-clinical
+- Audit records fully explain outcomes
 
-Further automation is intentionally deferred.
+All criteria have been met as of v1.1.
 
 ---
 
 ## Summary
 
-This PRD defines a **prior authorization readiness system**, not a predictive or autonomous agent. The system prioritizes transparency, auditability, and administrative correctness over speed or automation, aligning with real healthcare workflows and regulatory expectations.
+This PRD defines a **deterministic, audit-first administrative decision-support system** for prior authorization readiness. The system intentionally prioritizes refusal over speculation, transparency over automation, and governance over predictive performance.
+
+It is designed to demonstrate **safe, defensible AI system design in healthcare**, not to optimize payer outcomes.
