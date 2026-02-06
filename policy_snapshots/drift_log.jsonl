@@ -1,0 +1,3 @@
+{"detected_at_utc": "2026-02-06T06:12:45Z", "event": "BOOTSTRAP_SNAPSHOT_CREATED", "id": "aetna_mri_lumbar", "new_hash": "480f08eba64b3ad166504d92675a8751c598f4c4f364c38aaf702c346e525209", "old_hash": null, "payer": "Aetna", "procedure_code": "MRI_LUMBAR", "url": "https://www.aetna.com/cpb/medical/data/100_199/0157.html"}
+{"detected_at_utc":"2026-02-06T06:20:00Z","event":"POLICY_DRIFT_DETECTED","id":"aetna_mri_lumbar","payer":"Aetna","procedure_code":"MRI_LUMBAR","old_hash":"aaa","new_hash":"bbb","status":"REVIEW_REQUIRED"}
+{"detected_at_utc":"2026-02-06T06:20:00Z","event":"POLICY_DRIFT_DETECTED","id":"aetna_mri_lumbar","payer":"Aetna","procedure_code":"MRI_LUMBAR","old_hash":"aaa","new_hash":"bbb","status":"REVIEW_REQUIRED"}
