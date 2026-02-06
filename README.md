@@ -1,67 +1,182 @@
 # Prior Authorization Readiness Copilot (Flagship)
 
 ## Overview
-Administrative decision-support system that evaluates PA readiness, identifies missing requirements,
-and drafts payer-aligned justification letters.
+The Prior Authorization Readiness Copilot is an **administrative decision-support system** that evaluates whether a prior authorization (PA) request is **documentation-ready** according to payer-specific criteria.
 
-## Problem
-Prior authorizations fail due to incomplete documentation, unclear medical necessity language,
-and payer-specific rules — not clinical quality.
+It deterministically assesses documentation completeness and threshold compliance, explicitly surfaces missing information, and generates **write-only, payer-facing justification letters** grounded in captured evidence.
 
-## Solution
-Rules-based readiness evaluation + (optional) drafting layer with full auditability.
-
-## What This System Does
-- Evaluates whether required payer criteria are documented and met
-- Flags missing documentation vs documented-but-not-met thresholds
-- Drafts editable payer-aligned letters
-- Preserves clinician control + audit trail
-
-## What This System Does NOT Do
-- Predict approval/denial likelihood
-- Provide medical advice
-- Override payer policy
-- Auto-submit or auto-escalate requests
+This system is intentionally **not predictive, not clinical, and not autonomous**.
 
 ---
 
-## Semantics Contract (Locked)
-These definitions are **invariants** used across:
+## Problem
+Prior authorization denials are most commonly caused by:
+- missing or ambiguous documentation,
+- misalignment with payer-specific administrative criteria,
+- unclear justification language.
+
+These failures are **administrative**, not clinical.
+
+Most tools attempt to “optimize approval” using opaque models. This system instead prioritizes **auditability, determinism, and refusal when certainty is unavailable**.
+
+---
+
+## Solution
+A **rules-first, deterministic pipeline** that:
+
+1. Extracts structured facts from clinical notes using context-gated rules
+2. Evaluates payer-defined requirements with explicit missingness handling
+3. Enforces invariant-based readiness semantics
+4. Optionally generates **write-only** justification letters grounded strictly in evaluated results and evidence snippets
+5. Produces a complete audit trail suitable for review and governance
+
+---
+
+## What This System Does
+- Determines whether payer-required criteria are:
+  - documented and met,
+  - documented but not met,
+  - or not documented
+- Differentiates **missing documentation** from **documented failures**
+- Refuses to determine readiness when documentation is incomplete
+- Drafts payer-aligned administrative letters (submission, missing-info request, appeal templates)
+- Preserves full human control and review at all times
+- Emits an auditable, test-locked JSON record for every run
+
+---
+
+## What This System Does NOT Do
+- Predict approval or denial likelihood
+- Make clinical judgments or recommendations
+- Infer undocumented facts
+- Override payer policy
+- Auto-submit, auto-appeal, or auto-escalate requests
+- Use LLMs for extraction, evaluation, or decision-making
+
+---
+
+## Core Semantics Contract (Frozen)
+
+These definitions are **invariants** enforced across:
 - UI banners
-- audit JSON exports
-- test suite labels
+- letter generation
+- audit exports
+- automated tests
 
 ### Requirement Result Status
-- `MET` = required element is documented and meets threshold
-- `NOT_MET` = documented but below threshold / wrong category
-- `NOT_DOCUMENTED` = not found in note (missing)
+- `MET`  
+  Required element is explicitly documented **and meets** the payer threshold
 
-### Overall Status
+- `NOT_MET`  
+  Required element is documented but **does not meet** the threshold
+
+- `NOT_DOCUMENTED`  
+  Required element is **not present** in the note
+
+### Overall Readiness Status
 - `READY`  
-  All required criteria are **documented and met**.  
+  All required criteria are documented and met  
   `submission_readiness = true`
 
 - `CANNOT_DETERMINE`  
-  One or more required criteria are **not documented**.  
+  One or more required criteria are not documented  
   `submission_readiness = false`
 
 - `NOT_READY`  
-  All required criteria are documented, but one or more are **not met**.  
+  All required criteria are documented, but one or more are not met  
   `submission_readiness = false`
 
-### Synthetic Test Labels
-- `complete` => `READY`
-- `incomplete` => `NOT_READY` or `CANNOT_DETERMINE`
+### Invariant Rules
+- Any `NOT_DOCUMENTED` ⇒ overall status **must** be `CANNOT_DETERMINE`
+- Any `NOT_MET` (with no missing items) ⇒ overall status **must** be `NOT_READY`
+- No blockers ⇒ overall status **must** be `READY`
 
-`borderline` is intentionally not used unless explicitly reintroduced with a written rule.
+Invariant violations are explicitly surfaced in the UI and audit trail.
 
 ---
 
-## Architecture
-Rules engine (deterministic) + optional write-only drafting layer.
+## Letter Drafting (Write-only by Design)
 
-## Evaluation
-Synthetic cases, rule coverage, extraction robustness, invariant checks.
+The letter generator is a **pure formatting layer**:
 
-## Status
-Flagship project — under active development.
+- Inputs:
+  - evaluated requirement results
+  - evidence snippets
+  - policy trust level
+- Outputs:
+  - payer-facing administrative letters
+  - machine-readable letter metadata
+
+The drafting layer:
+- cannot change requirement statuses
+- cannot infer facts
+- cannot predict approval
+- cannot introduce new information
+
+Policy trust level is explicitly surfaced:
+- `demo` → illustrative rules disclaimer is injected
+- `verified` → provenance-confirmed framing
+
+---
+
+## Audit & Governance
+Every run produces a downloadable audit record containing:
+- run metadata and timestamps
+- short note hash (no raw PHI)
+- payer, procedure, site, specialty
+- rules version and policy trust level
+- extracted facts
+- evidence spans
+- requirement results
+- overall readiness status
+- blocking issues
+- invariant violations (if any)
+- letter artifact metadata (hash + version, not raw text)
+
+This design supports:
+- reproducibility
+- reviewability
+- governance
+- regression testing
+
+---
+
+## Evaluation & Testing
+- Synthetic test suite with realistic fake PHI
+- Deterministic expected outcomes
+- Explicit negative-path tests (e.g., `CANNOT_DETERMINE`)
+- Invariant enforcement tests
+- Letter safety tests (no clinical language, no approval claims)
+
+Tests are treated as **behavioral contracts**, not examples.
+
+---
+
+## Architecture Summary
+
+Clinical Note
+↓
+Deterministic Extraction (context-gated, span-based)
+↓
+Requirement Evaluation (rules-first)
+↓
+Invariant Enforcement
+↓
+Overall Readiness Status
+↓
+Optional Write-only Letter Drafting
+↓
+Audit Record + UI Presentation
+
+
+---
+
+## Project Status
+**Flagship project — feature-complete (v1.1).**
+
+The system is intentionally frozen at this stage to preserve:
+- clarity of scope,
+- regulatory defensibility,
+- and portfolio signal.
+
+Future changes require explicit contract updates and test coverage.
