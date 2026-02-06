@@ -9,6 +9,8 @@ __pycache__/
 # Streamlit runtime
 .streamlit/
 
-# Policy snapshots: keep artifacts, ignore runtime junk
+# Policy snapshots (governance artifacts)
+# Keep normalized snapshots, diffs, and drift logs
 policy_snapshots/**/__pycache__/
 policy_snapshots/**/*.pyc
+policy_snapshots/**/.DS_Store
