@@ -21,6 +21,14 @@ def label_from_outputs(overall_status: str) -> str:
       - NOT_READY or CANNOT_DETERMINE => incomplete
     """
     return "complete" if overall_status == "READY" else "incomplete"
+    
+def test_demo_policy_trust_line_present():
+    letter, _ = draft_letter(
+        pa_demo,
+        report_ready,
+        policy_trust_level="demo",
+    )
+    assert "Policy trust level: DEMO" in letter
 
 
 def run_cases(rules_path: str, cases_path: str) -> List[Dict[str, Any]]:
