@@ -273,14 +273,20 @@ if submitted:
     }
 
     # NEW: build schema objects for write-only letter drafting
+    def _clean_dx(code: str) -> str:
+        # Conservative normalization: no inference, no validation against ICD tables
+        return code.strip().upper().replace(" ", "").replace("%", "")
+    
+    dx_codes_clean = [_clean_dx(c) for c in dx_codes if c.strip()]
+    
     pa_model = PARequest(
         payer=payer,
         procedure_code=proc_code,
-        dx_codes=dx_codes,
+        dx_codes=dx_codes_clean,
         site_of_care=site,
         specialty=(specialty or "unknown"),
         note_text="",  # intentionally NOT used by drafting
-    )
+)
 
     req_models = [
         RequirementResult(
