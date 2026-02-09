@@ -277,7 +277,7 @@ That document is the **authoritative source** for:
 - what risks are explicitly accepted,
 - and what behaviors are prohibited.
 
-
+---
 
 ### Summary (Non-Exhaustive)
 
