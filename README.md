@@ -17,7 +17,29 @@ This project optimizes for **safety, auditability, and long-term maintainability
 
 Where uncertainty exists, the system explicitly **refuses to decide**.
 
+
 ---
+
+
+## Failure Modes & Safety Guarantees
+This system’s behavior is governed by explicit, test-backed safety contracts.
+
+Key properties:
+- refusal-first behavior when documentation is missing,
+- frozen readiness invariants (`READY`, `NOT_READY`, `CANNOT_DETERMINE`),
+- deterministic extraction with evidence spans,
+- write-only letter drafting with prohibited-language constraints,
+- policy drift detection with human review gating.
+
+All known failure modes, mitigations, and residual risks are documented in:
+
+➡️ **[`FAILURE_MODES.md`](./FAILURE_MODES.md)**
+
+This file serves as the authoritative reference for system safety, governance, and change control.
+
+
+---
+
 
 ## Problem
 Prior authorization denials are most commonly caused by:
