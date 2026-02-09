@@ -192,7 +192,7 @@ These semantics are enforced consistently across:
 
 ## 9. Observed Failure Modes & Mitigations
 
-This section summarizes **realistic, expected failure modes** observed or anticipated in administrative prior authorization workflows, along with the concrete mitigations implemented in this system.
+This section summarizes safety-relevant behaviors; detailed failure analysis is maintained in `FAILURE_MODES.md`.
 
 This is a **summary view**. The authoritative, detailed analysis lives in `FAILURE_MODES.md`.
 
