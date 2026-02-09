@@ -17,11 +17,14 @@ This project optimizes for **safety, auditability, and long-term maintainability
 
 Where uncertainty exists, the system explicitly **refuses to decide**.
 
+Refusal, transparency, and human review are treated as first-class product features.
+
+
 
 ---
 
 
-## Failure Modes & Safety Guarantees
+## Failure Modes, Safety Guarantees, and Governance Boundaries
 This system’s behavior is governed by explicit, test-backed safety contracts.
 
 Key properties:
@@ -250,11 +253,12 @@ Audit Record + UI Presentation
 ---
 
 ## Project Status
-**Flagship project — feature-complete (v1.1).**
+
 
 The system is intentionally frozen at this stage to preserve:
 - clarity of scope,
 - regulatory defensibility,
-- and portfolio signal.
+- and signal fidelity for real-world healthcare AI work.
+
 
 Future changes require explicit contract updates, governance review, and test coverage.
