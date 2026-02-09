@@ -192,19 +192,66 @@ These semantics are enforced consistently across:
 
 ## 9. Observed Failure Modes & Mitigations
 
-### Observed Risks
-- Ambiguous documentation leading to refusal
-- User over-trust in generated letter text
-- Misinterpretation of demo rules as verified policy
-- Policy drift invalidating curated rules
+This section summarizes **realistic, expected failure modes** observed or anticipated in administrative prior authorization workflows, along with the concrete mitigations implemented in this system.
 
-### Mitigations Implemented
-- Conservative extraction rules
-- Explicit refusal semantics (`CANNOT_DETERMINE`)
-- Deterministic, write-only drafting constraints
-- Policy trust level surfaced in UI and letters
-- Policy drift monitoring with explicit gating
-- No silent defaults or inference
+This is a **summary view**. The authoritative, detailed analysis lives in `FAILURE_MODES.md`.
+
+---
+
+### 9.1 Observed / Anticipated Failure Modes
+
+- **Ambiguous or incomplete documentation**
+  - Clinical notes frequently omit required administrative elements or use vague language.
+  - This can prevent a definitive readiness determination even when care may be appropriate.
+
+- **User over-trust in generated artifacts**
+  - Users may mistakenly treat generated letters or summaries as authoritative or approval-guaranteeing.
+
+- **Misinterpretation of demo rules as verified policy**
+  - Curated or illustrative rules may be mistaken for up-to-date payer policy.
+
+- **Policy drift invalidating curated rules**
+  - External payer policies may change without notice, silently invalidating existing rules if not monitored.
+
+---
+
+### 9.2 Mitigations Implemented
+
+- **Conservative, deterministic extraction**
+  - Only explicitly documented facts are extracted.
+  - Missing documentation is preserved as missing (`NOT_DOCUMENTED`), never inferred.
+
+- **Explicit refusal semantics**
+  - Any required missing documentation forces `CANNOT_DETERMINE`.
+  - Refusal is treated as a safe, first-class outcome.
+
+- **Write-only letter drafting**
+  - Drafting is downstream of evaluation and cannot modify facts, statuses, or readiness.
+  - Prohibited language and approval claims are explicitly blocked.
+
+- **Policy trust signaling**
+  - Every output clearly surfaces whether rules are `demo` or `verified`.
+  - Letters and UI explicitly warn when demo rules are in use.
+
+- **Policy drift monitoring with gating**
+  - Policy changes are detected via snapshotting and diffing.
+  - Detected drift triggers a `REVIEW_REQUIRED` state and user acknowledgment before evaluation.
+
+- **No silent defaults or inference**
+  - All assumptions are explicit, testable, and auditable.
+  - Any invariant violation is surfaced in the UI and audit trail.
+
+---
+
+### 9.3 Residual Risk (Accepted by Design)
+
+Some refusals and conservative outcomes are **intentionally accepted** tradeoffs to preserve:
+- auditability,
+- regulatory defensibility,
+- and user trust.
+
+The system prioritizes **failing safely** over maximizing apparent readiness.
+
 
 ---
 
