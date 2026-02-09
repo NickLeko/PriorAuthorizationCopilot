@@ -186,6 +186,8 @@ Every run produces a downloadable audit record containing:
 
 Policy snapshots and drift logs are treated as **first-class governance artifacts** and are committed for reproducibility.
 
+See FAILURE_MODES.md for explicit failure taxonomy and mitigations.
+
 This design supports:
 - reproducibility
 - reviewability
