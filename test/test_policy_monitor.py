@@ -1,9 +1,6 @@
-# test/test_policy_monitor.py
 from __future__ import annotations
 
 from pathlib import Path
-
-import pytest
 
 from engine.policy_monitor import (
     PolicySource,
@@ -14,7 +11,7 @@ from engine.policy_monitor import (
     write_snapshot,
 )
 
-# Repo path is: test/fixtures/...
+# Repo uses "test/fixtures", not "tests/fixtures"
 FIXTURE_PATH = Path("test/fixtures/policy_aetna_0157_sample.html")
 
 
@@ -22,10 +19,8 @@ def test_normalization_is_deterministic():
     raw = FIXTURE_PATH.read_text(encoding="utf-8")
     n1 = normalize_policy(raw)
     n2 = normalize_policy(raw)
-
     assert n1 == n2
     assert n1.endswith("\n")
-
     # Should remove obvious boilerplate
     assert "Privacy Policy" not in n1
     assert "Terms of Use" not in n1
@@ -48,9 +43,7 @@ def test_hash_changes_when_content_changes():
 def test_diff_contains_expected_line():
     old = "Line A\nSymptoms are present for at least 6 weeks\nLine C\n"
     new = "Line A\nSymptoms are present for at least 8 weeks\nLine C\n"
-
     patch = diff_text(old, new, fromfile="previous", tofile="current")
-
     assert "--- previous" in patch
     assert "+++ current" in patch
     assert "-Symptoms are present for at least 6 weeks" in patch
