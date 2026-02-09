@@ -51,7 +51,6 @@ def _eval_number(
 ) -> RequirementResult:
     val = facts.get(key)
     minv = req.get("min")
-
     snippets = _coerce_evidence_snippets((evidence_map or {}).get(key))
 
     if val is None:
@@ -91,6 +90,21 @@ def _eval_boolean(
     req: Dict[str, Any],
     evidence_map: Optional[Dict[str, Any]] = None,
 ) -> RequirementResult:
+    """
+    Boolean requirement semantics:
+
+    - If the field is explicitly addressed in the note (either True or False),
+      that counts as DOCUMENTED.
+
+    - Whether False should be MET vs NOT_MET depends on the *meaning* of the field.
+      For this MVP, boolean fields represent "criterion addressed/present" patterns
+      (e.g., 'neuro_red_flags_documented' means addressed, not 'present').
+
+    Therefore:
+      - True => MET
+      - False => MET (documented denial still satisfies "addressed" requirement)
+      - None => NOT_DOCUMENTED
+    """
     val = facts.get(key)
     snippets = _coerce_evidence_snippets((evidence_map or {}).get(key))
 
@@ -99,7 +113,7 @@ def _eval_boolean(
             key=key,
             label=label,
             status="MET",
-            reason="Present in documentation.",
+            reason="Explicitly addressed in documentation (present/affirmed).",
             evidence=req.get("evidence"),
             evidence_snippets=snippets,
         )
@@ -108,8 +122,8 @@ def _eval_boolean(
         return RequirementResult(
             key=key,
             label=label,
-            status="NOT_DOCUMENTED",
-            reason="Not documented. If applicable, add supporting details; otherwise explicitly deny.",
+            status="MET",
+            reason="Explicitly addressed in documentation (denied/absent).",
             evidence=req.get("evidence"),
             evidence_snippets=snippets,
         )
