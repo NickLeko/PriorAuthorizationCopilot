@@ -264,15 +264,38 @@ No live automation or production deployment is planned.
 
 ---
 
-## 14. Risks & Mitigations
+## 14. Risks & Mitigations (Governance Reference)
 
-| Risk | Mitigation |
+All material risks, failure modes, mitigations, and residual limitations for this system are formally documented and versioned in the **Failure Modes & Safety Contract**:
+
+➡️ **[`FAILURE_MODES.md`](./FAILURE_MODES.md)**
+
+That document is the **authoritative source** for:
+- known and expected failure modes,
+- why those failures occur,
+- which mitigations exist inside vs. outside the system,
+- what risks are explicitly accepted,
+- and what behaviors are prohibited.
+
+
+
+### Summary (Non-Exhaustive)
+
+This PRD intentionally does **not** restate the full safety analysis to avoid duplication and drift. At a high level, the system addresses the following risk categories:
+
+| Risk Category | Mitigation Strategy |
 |----|----|
-| Hallucinated facts | Deterministic extraction only |
-| Over-trust in generated text | Write-only drafting + disclaimers |
-| Policy drift | Snapshotting + diffing + UI gating |
-| Scope creep into prediction | Frozen contracts + explicit non-goals |
-| Misuse of demo rules | Policy trust level surfaced everywhere |
+| Hallucinated or inferred facts | Deterministic, evidence-backed extraction only |
+| Over-trust in generated artifacts | Write-only drafting with prohibited-language enforcement |
+| Policy drift invalidating rules | Snapshotting, diffing, and explicit UI gating |
+| Scope creep into prediction or autonomy | Frozen contracts and explicit non-goals |
+| Misuse of demo rules | Policy trust level surfaced in UI, letters, and audit |
+
+Any change to system risk posture or mitigation strategy **must** be reflected in `FAILURE_MODES.md` and accompanied by:
+- updated or new tests,
+- contract review,
+- and an explicit version bump.
+
 
 ---
 
