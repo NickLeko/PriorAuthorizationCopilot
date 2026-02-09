@@ -1,4 +1,3 @@
-# engine/test_suites.py
 from __future__ import annotations
 
 import json
@@ -15,41 +14,26 @@ from engine.evaluate import (
 
 def label_from_outputs(overall_status: str) -> str:
     """
-    Synthetic evaluation label (NOT a product output).
+    Heuristic label mapping for synthetic evaluation only (NOT a product output).
 
-    We deliberately collapse:
+    Project semantics:
       - READY => "complete"
       - NOT_READY or CANNOT_DETERMINE => "incomplete"
-
-    This matches the project stance: anything other than READY is not submission-ready.
     """
     return "complete" if overall_status == "READY" else "incomplete"
 
 
 def run_cases(rules_path: str, cases_path: str) -> List[Dict[str, Any]]:
     """
-    Deterministic synthetic test runner used by:
-      - Streamlit "System Health" panel
-      - Manual test suite execution in UI
+    Run deterministic extraction + evaluation for each synthetic case and return
+    a compact row per case for UI display / export.
 
-    Inputs:
-      - rules YAML path
-      - synthetic cases JSON path
-
-    Output:
-      - list of rows with pass/fail flags and key counters
-
-    NOTE:
-      - This is NOT a clinical eval.
-      - This is a behavioral contract check for deterministic rules.
+    This is intentionally not a pytest test module.
+    Tests belong in /test and should import engine modules as needed.
     """
     rules = load_rules(rules_path)
-
     with open(cases_path, "r", encoding="utf-8") as f:
         cases = json.load(f)
-
-    if not isinstance(cases, list):
-        raise ValueError("synthetic_cases.json must be a list of case objects")
 
     rows: List[Dict[str, Any]] = []
 
@@ -64,7 +48,6 @@ def run_cases(rules_path: str, cases_path: str) -> List[Dict[str, Any]]:
 
         facts, evidence_map = extract_facts(note_text)
         results, _ = evaluate_requirements(reqs, facts, evidence_map=evidence_map)
-
         score_info = compute_readiness_score(results)
         overall = compute_overall_status(results)
 
