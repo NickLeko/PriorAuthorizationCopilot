@@ -16,9 +16,9 @@ def label_from_outputs(overall_status: str) -> str:
     """
     Heuristic labels for synthetic evaluation only (NOT a product output).
 
-    Current project semantics:
-      - READY => complete
-      - NOT_READY or CANNOT_DETERMINE => incomplete
+    Semantics:
+      - READY => "complete"
+      - NOT_READY or CANNOT_DETERMINE => "incomplete"
     """
     return "complete" if overall_status == "READY" else "incomplete"
 
@@ -64,4 +64,3 @@ def run_cases(rules_path: str, cases_path: str) -> List[Dict[str, Any]]:
         )
 
     return rows
-
