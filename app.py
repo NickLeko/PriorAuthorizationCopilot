@@ -162,6 +162,35 @@ def _compute_metrics(score_info: dict) -> dict:
     }
 
 
+def _render_key_value_block(title: str, payload: dict) -> None:
+    st.markdown(f"**{title}**")
+    lines = []
+    for key, value in payload.items():
+        rendered = "null" if value is None else str(value)
+        lines.append(f"{key}: {rendered}")
+    st.code("\n".join(lines) if lines else "(none)", language="text")
+
+
+def _render_evidence_map_block(title: str, evidence_map: dict) -> None:
+    st.markdown(f"**{title}**")
+    if not evidence_map:
+        st.caption("No evidence spans captured.")
+        return
+
+    blocks = []
+    for key, spans in evidence_map.items():
+        blocks.append(f"{key}:")
+        if not spans:
+            blocks.append("  (none)")
+            continue
+        for idx, span in enumerate(spans, start=1):
+            text = str(span.get("text", "")).strip()
+            start = span.get("start")
+            end = span.get("end")
+            blocks.append(f"  [{idx}] {start}-{end}: {text}")
+    st.code("\n".join(blocks), language="text")
+
+
 # ----------------------------
 # Policy Drift Monitor (governance-only)
 # ----------------------------
@@ -752,11 +781,8 @@ else:
         st.markdown("**Test case note (synthetic):**")
         st.text_area("note_text", value=note_i, height=160)
 
-        st.markdown("**Extracted facts:**")
-        st.json(facts_i)
-
-        st.markdown("**Evidence map (raw spans):**")
-        st.json(evidence_map_i)
+        _render_key_value_block("Extracted facts", facts_i)
+        _render_evidence_map_block("Evidence map (raw spans)", evidence_map_i)
 
         st.markdown("**Explainable requirement results:**")
         status_emoji = {"MET": "✅", "NOT_MET": "⚠️", "NOT_DOCUMENTED": "❌"}

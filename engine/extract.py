@@ -25,6 +25,12 @@ def _dedup_spans(evidence: Dict[str, List[Dict[str, Any]]]) -> Dict[str, List[Di
     return out
 
 
+def _combined_span_text(raw: str, first: re.Match[str], second: re.Match[str]) -> Tuple[int, int, str]:
+    start = min(first.start(), second.start())
+    end = max(first.end(), second.end())
+    return start, end, raw[start:end]
+
+
 def extract_facts(note_text: str) -> Tuple[Dict[str, Any], Dict[str, List[Dict[str, Any]]]]:
     """
     Deterministic extraction for MVP.
@@ -181,14 +187,34 @@ def extract_facts(note_text: str) -> Tuple[Dict[str, Any], Dict[str, List[Dict[s
 
         if m_unclear and (m_any_img or m_mod):
             prior_imaging = "inconclusive"
-            _add_span(evidence, "prior_imaging_result", m_unclear.start(), m_unclear.end(), raw[m_unclear.start(): m_unclear.end()])
+            if m_mod:
+                start, end, text = _combined_span_text(raw, m_mod, m_unclear)
+                _add_span(evidence, "prior_imaging_result", start, end, text)
+            else:
+                _add_span(
+                    evidence,
+                    "prior_imaging_result",
+                    m_unclear.start(),
+                    m_unclear.end(),
+                    raw[m_unclear.start(): m_unclear.end()],
+                )
 
         elif m_mod or m_any_img:
             # Normal/negation => inconclusive
             m_norm = re.search(r"\b(no abnormalities|no abnormal|no acute findings|normal|unremarkable)\b", t)
             if m_norm:
                 prior_imaging = "inconclusive"
-                _add_span(evidence, "prior_imaging_result", m_norm.start(), m_norm.end(), raw[m_norm.start(): m_norm.end()])
+                if m_mod:
+                    start, end, text = _combined_span_text(raw, m_mod, m_norm)
+                    _add_span(evidence, "prior_imaging_result", start, end, text)
+                else:
+                    _add_span(
+                        evidence,
+                        "prior_imaging_result",
+                        m_norm.start(),
+                        m_norm.end(),
+                        raw[m_norm.start(): m_norm.end()],
+                    )
             else:
                 m_abn = re.search(r"\b(abnormal|herniat|stenosis|disc bulge|fracture|degenerative)\b", t)
                 if m_abn:
