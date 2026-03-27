@@ -52,8 +52,8 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-st.title("PA Readiness Copilot (Flagship)")
-st.caption("Administrative decision support only — not medical or billing advice.")
+st.title("PA Readiness Copilot")
+st.caption("Administrative decision support only. Not medical or billing advice.")
 
 
 # ----------------------------
@@ -272,7 +272,7 @@ except Exception as e:
     policy_rows, any_review_required = [], False
     st.warning(f"Policy monitor unavailable: {type(e).__name__}: {e}")
 
-st.subheader("Policy Monitor (Governance)")
+st.subheader("Policy Monitor")
 st.caption("Detects policy drift via committed snapshots + drift log. Does not auto-update rules or change outcomes.")
 
 if policy_rows:
@@ -317,7 +317,7 @@ with st.form("pa_form", clear_on_submit=False):
     note_text = st.text_area(
         "Clinical note (mock/synthetic)",
         height=220,
-        placeholder="Paste a synthetic note here...",
+        placeholder="Paste a synthetic clinical note here...",
     )
 
     tests_healthy = bool(st.session_state.get("tests_healthy", False))
