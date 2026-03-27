@@ -5,12 +5,12 @@ from datetime import datetime, timezone
 from hashlib import sha256
 from typing import Dict, List, Tuple
 
-from .schemas import PARequest, ReadinessReport
+from .schemas import LetterType, OverallStatus, PARequest, PolicyTrustLevel, ReadinessReport, RequirementStatus
 
 
-ALLOWED_STATUSES = {"MET", "NOT_MET", "NOT_DOCUMENTED"}
-ALLOWED_LETTER_TYPES = {"submission_cover_letter", "missing_info_request", "appeal_template"}
-ALLOWED_POLICY_TRUST = {"demo", "verified"}
+ALLOWED_STATUSES: set[RequirementStatus] = {"MET", "NOT_MET", "NOT_DOCUMENTED"}
+ALLOWED_LETTER_TYPES: set[LetterType] = {"submission_cover_letter", "missing_info_request", "appeal_template"}
+ALLOWED_POLICY_TRUST: set[PolicyTrustLevel] = {"demo", "verified"}
 
 # Hard-block phrases (lowercased) that must never appear in payer-facing output by default.
 # Contract: prohibited language is a hard block.
@@ -35,9 +35,9 @@ PROHIBITED_SUBSTRINGS = [
 class LetterMeta:
     letter_version: str
     generated_timestamp_utc: str
-    overall_status: str  # READY | NOT_READY | CANNOT_DETERMINE | UNKNOWN
-    letter_type: str  # submission_cover_letter | missing_info_request | appeal_template
-    policy_trust_level: str  # demo | verified
+    overall_status: OverallStatus
+    letter_type: LetterType
+    policy_trust_level: PolicyTrustLevel
     cited_snippets_count: int
     contains_missing_documentation: bool
     draft_blocked: bool
@@ -55,7 +55,7 @@ def letter_hash(text: str) -> str:
     return h[:16]
 
 
-def _derive_overall_status(report: ReadinessReport) -> str:
+def _derive_overall_status(report: ReadinessReport) -> OverallStatus:
     # Frozen invariant mapping:
     # - Any NOT_DOCUMENTED => CANNOT_DETERMINE
     # - Else any NOT_MET => NOT_READY
@@ -176,8 +176,8 @@ def _hard_block_if_prohibited(letter_text: str) -> List[str]:
 def draft_letter(
     pa: PARequest,
     report: ReadinessReport,
-    letter_type: str = "submission_cover_letter",
-    policy_trust_level: str = "demo",
+    letter_type: LetterType = "submission_cover_letter",
+    policy_trust_level: PolicyTrustLevel = "demo",
 ) -> Tuple[str, Dict]:
     """
     Write-only letter drafting.
@@ -225,7 +225,7 @@ def draft_letter(
         f"Generated: {ts}",
     ]
     if dx_codes:
-        header_lines.append(f"Diagnosis codes: {', '.join(dx_codes)}")
+        header_lines.append(f"Dx codes: {', '.join(dx_codes)}")
 
     trust_line = _policy_trust_line(policy_trust_level)
     if trust_line:
@@ -358,4 +358,3 @@ def draft_letter(
         letter_hash_sha256_16=letter_hash(letter),
     )
     return letter, meta.__dict__
-

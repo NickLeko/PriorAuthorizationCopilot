@@ -2,7 +2,6 @@
 
 
 import streamlit as st
-import yaml
 import json
 import uuid
 import hashlib
@@ -15,6 +14,12 @@ from engine.evaluate import (
     evaluate_requirements,
     compute_readiness_score,
     compute_overall_status,
+)
+from engine.provenance import (
+    get_provenance_entry,
+    load_provenance,
+    normalized_dx_codes,
+    policy_trust_from_provenance,
 )
 
 BASE_DIR = Path(__file__).resolve().parent
@@ -80,11 +85,7 @@ rules = load_rules(RULES_PATH)
 payers = sorted(rules["payers"].keys())
 
 PROV_PATH = "rules/provenance.yaml"
-try:
-    with open(PROV_PATH, "r", encoding="utf-8") as f:
-        prov = yaml.safe_load(f) or {}
-except FileNotFoundError:
-    prov = {}
+prov = load_provenance(PROV_PATH)
 
 
 # ----------------------------
@@ -373,9 +374,8 @@ if submitted:
         invariant_errors.append("Invariant violation: no blockers exist but overall_status is not READY.")
 
     # Provenance snapshot + trust level
-    prov_info = (prov.get("sources", {}) or {}).get(payer, {}).get(proc_code, {})
-    source_type = (prov_info or {}).get("source_type", "unknown")
-    policy_trust_level = "verified" if source_type == "policy_document" else "demo"
+    prov_info = get_provenance_entry(prov, payer, proc_code)
+    policy_trust_level = policy_trust_from_provenance(prov_info)
 
     # Metrics
     metrics = _compute_metrics(score_info)
@@ -407,11 +407,7 @@ if submitted:
     }
 
     # NEW: build schema objects for write-only letter drafting
-    def _clean_dx(code: str) -> str:
-        # Conservative normalization: no inference, no validation against ICD tables
-        return code.strip().upper().replace(" ", "").replace("%", "")
-
-    dx_codes_clean = [_clean_dx(c) for c in dx_codes if c.strip()]
+    dx_codes_clean = normalized_dx_codes(dx_codes)
 
     pa_model = PARequest(
         payer=payer,

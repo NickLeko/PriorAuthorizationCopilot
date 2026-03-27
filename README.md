@@ -1,264 +1,153 @@
-# Prior Authorization Readiness Copilot (Flagship)
-
-## Overview
-The Prior Authorization Readiness Copilot is an **administrative decision-support system** that evaluates whether a prior authorization (PA) request is **documentation-ready** according to payer-specific criteria.
-
-It deterministically assesses documentation completeness and threshold compliance, explicitly surfaces missing information, and generates **write-only, payer-facing justification letters** grounded in captured evidence.
-
-This system is intentionally **not predictive, not clinical, and not autonomous**.
-
-> **Note:** In the current public demo (v1.1), letter drafting is **deterministic and template-based**.  
-> An optional LLM-based drafting layer is architecturally supported but intentionally **not enabled** to preserve reproducibility, auditability, and safety.
-
----
-
-## Design Philosophy
-This project optimizes for **safety, auditability, and long-term maintainability** over automation or predictive performance.
-
-Where uncertainty exists, the system explicitly **refuses to decide**.
-
-Refusal, transparency, and human review are treated as first-class product features.
-
-
-
----
-
-
-## Failure Modes, Safety Guarantees, and Governance Boundaries
-This system’s behavior is governed by explicit, test-backed safety contracts.
-
-Key properties:
-- refusal-first behavior when documentation is missing,
-- frozen readiness invariants (`READY`, `NOT_READY`, `CANNOT_DETERMINE`),
-- deterministic extraction with evidence spans,
-- write-only letter drafting with prohibited-language constraints,
-- policy drift detection with human review gating.
-
-All known failure modes, mitigations, and residual risks are documented in:
-
-➡️ **[`FAILURE_MODES.md`](./FAILURE_MODES.md)**
-
-This file serves as the authoritative reference for system safety, governance, and change control.
-
-
----
-
-
-## Problem
-Prior authorization denials are most commonly caused by:
-- missing or ambiguous documentation,
-- misalignment with payer-specific administrative criteria,
-- unclear justification language.
-
-These failures are **administrative**, not clinical.
-
-Most tools attempt to “optimize approval” using opaque models. This system instead prioritizes **determinism, explicit missingness handling, and failure transparency**.
-
----
-
-## Solution
-A **rules-first, deterministic pipeline** that:
-
-1. Extracts structured facts from clinical notes using context-gated rules
-2. Evaluates payer-defined requirements with explicit missingness handling
-3. Enforces invariant-based readiness semantics
-4. Optionally generates **write-only** justification letters grounded strictly in evaluated results and evidence snippets
-5. Produces a complete audit trail suitable for review and governance
-
----
-
-## Policy Drift & Post-Deploy Governance
-
-Payer policies are external dependencies that change over time.  
-Silent policy drift is one of the highest-risk failure modes in prior authorization automation.
-
-This system explicitly treats payer policy as a **versioned, monitored input**, not a static assumption.
-
-### Drift Detection (Deterministic)
-- Official policy sources are snapshotted as normalized text
-- Content hashes are computed and compared over time
-- Any change produces:
-  - a stored snapshot
-  - a unified diff artifact
-  - an append-only drift log entry
-
-### Governance Guarantees
-- **Rules are never auto-updated**
-- **Policy meaning is never inferred**
-- **LLMs are not used for policy interpretation**
-- Drift detection **only triggers human review**
-
-### UI Trust Gating
-When policy drift is detected:
-- the UI surfaces a **REVIEW_REQUIRED** state
-- evaluation is gated behind explicit user acknowledgment
-- outputs are marked as potentially stale
-
-This ensures the system **fails loudly and safely** rather than silently producing outdated decisions.
-
-Policy updates require:
-- human review
-- rule and test updates
-- explicit recommitment of governance artifacts
-
----
-
-## What This System Does
-- Determines whether payer-required criteria are:
-  - documented and met,
-  - documented but not met,
-  - or not documented
-- Differentiates **missing documentation** from **documented failures**
-- Refuses to determine readiness when documentation is incomplete
-- Drafts payer-aligned administrative letters (submission, missing-info request, appeal templates)
-- Preserves full human control and review at all times
-- Emits an auditable, test-locked JSON record for every run
-
----
-
-## What This System Does NOT Do
-- Predict approval or denial likelihood
-- Make clinical judgments or recommendations
-- Infer undocumented facts
-- Override payer policy
-- Auto-submit, auto-appeal, or auto-escalate requests
-- Use LLMs for extraction, evaluation, or decision-making
-- Auto-update rules in response to policy changes
-
----
-
-## Core Semantics Contract (Frozen)
-
-These definitions are **invariants** enforced across:
-- UI banners
-- letter generation
-- audit exports
-- automated tests
-
-### Requirement Result Status
-- `MET`  
-  Required element is explicitly documented **and meets** the payer threshold
-
-- `NOT_MET`  
-  Required element is documented but **does not meet** the threshold
-
-- `NOT_DOCUMENTED`  
-  Required element is **not present** in the note
-
-### Overall Readiness Status
-- `READY`  
-  All required criteria are documented and met  
-  `submission_readiness = true`
-
-- `CANNOT_DETERMINE`  
-  One or more required criteria are not documented  
-  `submission_readiness = false`
-
-- `NOT_READY`  
-  All required criteria are documented, but one or more are not met  
-  `submission_readiness = false`
-
-### Invariant Rules
-- Any `NOT_DOCUMENTED` ⇒ overall status **must** be `CANNOT_DETERMINE`
-- Any `NOT_MET` (with no missing items) ⇒ overall status **must** be `NOT_READY`
-- No blockers ⇒ overall status **must** be `READY`
-
-Invariant violations are explicitly surfaced in the UI and audit trail.
-
----
-
-## Letter Drafting (Write-only by Design)
-
-The letter generator is a **pure formatting layer**.
-
-### Inputs
-- evaluated requirement results
-- evidence snippets
-- policy trust level
-
-### Outputs
-- payer-facing administrative letters
-- machine-readable letter metadata
-
-In v1.1, drafting is **deterministic and template-based**.
-
-The drafting layer:
-- cannot change requirement statuses
-- cannot infer facts
-- cannot predict approval
-- cannot introduce new information
-
-Policy trust level is explicitly surfaced:
-- `demo` → illustrative rules disclaimer is injected
-- `verified` → provenance-confirmed framing
-
----
-
-## Audit & Governance
-Every run produces a downloadable audit record containing:
-- run metadata and timestamps
-- short note hash (no raw PHI)
-- payer, procedure, site, specialty
-- rules version and policy trust level
-- policy drift status at time of evaluation
-- extracted facts
-- evidence spans
-- requirement results
-- overall readiness status
-- blocking issues
-- invariant violations (if any)
-- letter artifact metadata (hash + version, not raw text)
-
-Policy snapshots and drift logs are treated as **first-class governance artifacts** and are committed for reproducibility.
-
-See FAILURE_MODES.md for explicit failure taxonomy and mitigations.
-
-This design supports:
-- reproducibility
-- reviewability
-- governance
-- regression testing
-
----
-
-## Evaluation & Testing
-- Synthetic test suite with realistic fake PHI
-- Deterministic expected outcomes
-- Explicit negative-path tests (e.g., `CANNOT_DETERMINE`)
-- Invariant enforcement tests
-- Letter safety tests (no clinical language, no approval claims)
-
-Tests are treated as **behavioral contracts**, not examples.
-
----
-
-## Architecture Summary
-
-Clinical Note  
-↓  
-Deterministic Extraction (context-gated, span-based)  
-↓  
-Requirement Evaluation (rules-first)  
-↓  
-Invariant Enforcement  
-↓  
-Overall Readiness Status  
-↓  
-Optional Write-only Letter Drafting  
-↓  
-Audit Record + UI Presentation  
-↓  
-**Policy Drift Monitor (out-of-band governance)**
-
----
-
-## Project Status
-
-
-The system is intentionally frozen at this stage to preserve:
-- clarity of scope,
-- regulatory defensibility,
-- and signal fidelity for real-world healthcare AI work.
-
-
-Future changes require explicit contract updates, governance review, and test coverage.
+# Prior Authorization Readiness Copilot
+
+A safety-first healthcare AI demo for deterministic prior authorization readiness review.
+
+This project is intentionally narrow: it helps determine whether a prior authorization request is administratively ready based on documented payer criteria. It does not make clinical judgments, predict approval, or act autonomously.
+
+## At a Glance
+- Problem: prior authorization requests are often delayed or denied because documentation is incomplete or misaligned with payer requirements.
+- Product stance: support administrative workflow quality, not clinical decision-making.
+- Core behavior: extract a few structured facts deterministically, evaluate explicit rules, and refuse to decide when required documentation is missing.
+- Safety posture: refusal-first, rules-first, auditable, and governance-aware.
+- Why this repo exists: to demonstrate strong healthcare AI product judgment, safety boundaries, and practical implementation discipline.
+
+## Quick Facts
+- Type: deterministic administrative decision-support demo
+- Domain: prior authorization readiness review
+- Primary signal: safety-first healthcare AI product judgment
+- Stack: Python, Streamlit, YAML rules, Pydantic, pytest
+- Non-goal: clinical decision-making or approval prediction
+
+## What This System Is
+- A deterministic administrative decision-support tool.
+- A rules-first evaluator of documentation readiness.
+- A write-only letter drafting system downstream of evaluated results.
+- A governance-aware demo with policy drift monitoring artifacts and audit outputs.
+
+## What This System Is Not
+- Not a clinical decision support system.
+- Not an approval prediction model.
+- Not a generic chatbot.
+- Not an autonomous submission or appeals agent.
+- Not a system that infers missing facts or reinterprets payer policy with an LLM.
+
+## Why It Is Credible
+- Frozen readiness semantics: `READY`, `NOT_READY`, and `CANNOT_DETERMINE`.
+- Conservative extraction: missing facts stay missing.
+- Refusal is explicit: any missing required element forces `CANNOT_DETERMINE`.
+- Letter generation is constrained: it cannot change statuses, add facts, or promise approval.
+- Policy drift is treated as a governance problem, not a prompt-engineering problem.
+- Contract tests lock behavior across extraction, evaluation, drafting, and drift monitoring.
+
+## 2-Minute Architecture
+
+```text
+Structured Intake + Synthetic Note
+                ↓
+Deterministic Fact Extraction
+                ↓
+Requirement-by-Requirement Rules Evaluation
+                ↓
+Frozen Readiness Outcome
+                ↓
+Audit Record + Optional Write-Only Letter Draft
+```
+
+### Main flow
+1. Load versioned payer rules and provenance metadata.
+2. Accept structured intake fields plus synthetic note text.
+3. Extract a small set of facts deterministically with evidence spans.
+4. Evaluate each requirement as `MET`, `NOT_MET`, or `NOT_DOCUMENTED`.
+5. Compute the overall readiness status using frozen invariants.
+6. Produce blocking issues, an audit record, and an optional write-only administrative letter.
+
+These design choices help surface documentation problems before submission, reduce preventable rework, and keep administrative gaps explicit instead of implicit.
+
+### Key files
+- [app.py](./app.py): Streamlit demo app and orchestration layer.
+- [engine/extract.py](./engine/extract.py): deterministic extraction logic.
+- [engine/evaluate.py](./engine/evaluate.py): rules evaluation and overall status computation.
+- [engine/letter_draft.py](./engine/letter_draft.py): write-only administrative letter generation.
+- [engine/policy_monitor.py](./engine/policy_monitor.py): policy drift snapshot/diff/log handling.
+- [rules/payer_rules.yaml](./rules/payer_rules.yaml): payer and procedure requirements.
+- [rules/provenance.yaml](./rules/provenance.yaml): trust framing for current rules.
+- [rules/policy_sources.yaml](./rules/policy_sources.yaml): monitored external policy sources.
+- [test/](./test): contract tests for deterministic and safety-critical behavior.
+
+## Safety, Refusal, and Governance
+
+### Frozen readiness contract
+- `MET`: documented and meets the threshold.
+- `NOT_MET`: documented but below threshold.
+- `NOT_DOCUMENTED`: not explicitly present in the note.
+
+### Frozen overall outcomes
+- `READY`: all required elements are documented and meet criteria.
+- `NOT_READY`: all required elements are documented, but one or more do not meet criteria.
+- `CANNOT_DETERMINE`: one or more required elements are not documented.
+
+### Non-negotiable invariants
+- Any `NOT_DOCUMENTED` must force `CANNOT_DETERMINE`.
+- The system does not infer undocumented facts.
+- Policy drift does not change rules automatically.
+- The drafting layer cannot override evaluation outputs.
+
+For the fuller safety narrative, see [FAILURE_MODES.md](./FAILURE_MODES.md), [docs/REFUSAL_IS_A_FEATURE.md](./docs/REFUSAL_IS_A_FEATURE.md), and [MODEL_CARD.md](./MODEL_CARD.md).
+
+## Quick Demo
+
+### Setup
+```bash
+make install
+```
+
+Manual setup also works:
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+```
+
+### Run
+```bash
+make run
+```
+
+### Test
+```bash
+make test
+```
+
+### What to look for in the UI
+- A clear policy provenance banner.
+- Blocking items separated into missing documentation vs documented failures.
+- `CANNOT_DETERMINE` when required evidence is absent.
+- Deterministic, write-only letter output with metadata.
+- Audit JSON that captures evidence, invariants, and trust framing.
+
+## Scope and Limitations
+- Uses synthetic/demo inputs, not production PHI workflows.
+- Covers a narrow set of payer rules and extraction patterns.
+- Does not integrate with an EHR, clearinghouse, or payer system.
+- Policy drift monitoring is governance support, not automated policy interpretation.
+- The UI is a demo surface; the repo’s strongest signal is the contracts, tests, and decision boundaries.
+
+## Safe Expansion Path
+- Expand rule coverage only with explicit provenance updates and regression tests.
+- Add CI to run the contract suite automatically on each change.
+- Add a small artifact example set for audit and governance reviewers.
+
+## Recommended Reading Order
+1. This README for scope, behavior, and run instructions.
+2. [docs/DEMO_WALKTHROUGH.md](./docs/DEMO_WALKTHROUGH.md) for a fast portfolio/demo tour.
+3. [FAILURE_MODES.md](./FAILURE_MODES.md) for the safety and governance posture.
+4. [MODEL_CARD.md](./MODEL_CARD.md) for intended use and non-use.
+
+## Supporting Docs
+- [docs/DEMO_WALKTHROUGH.md](./docs/DEMO_WALKTHROUGH.md): fastest way to demo and explain the repo.
+- [docs/LOCAL_WORKFLOW.md](./docs/LOCAL_WORKFLOW.md): local run/test workflow.
+- [EXTRACTION_CONTRACT.md](./EXTRACTION_CONTRACT.md): extraction behavior contract.
+- [LETTER_DRAFTING_CONTRACT.md](./LETTER_DRAFTING_CONTRACT.md): drafting constraints and safety boundaries.
+- [PRD.md](./PRD.md): product framing and goals/non-goals.
+
+Future changes should preserve the administrative scope, refusal-first behavior, deterministic evaluation, and explicit governance boundaries documented here.
