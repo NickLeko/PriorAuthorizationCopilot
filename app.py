@@ -819,7 +819,7 @@ else:
                     st.caption("Captured from the note.")
 
     st.subheader("Evidence Mapping")
-    st.caption("Short note excerpts that supported the extracted facts above.")
+    st.caption("Compact note excerpts associated with the extracted facts above.")
     for start in range(0, len(ev["rows"]), 2):
         cols = st.columns(2)
         for col, r in zip(cols, ev["rows"][start : start + 2]):
@@ -829,37 +829,42 @@ else:
             with col:
                 st.markdown(f"**{r.get('label', '')}**")
                 if spans:
-                    st.caption(f"{len(spans)} supporting excerpt(s) captured.")
+                    st.caption(f"{len(spans)} supporting note excerpt(s) shown.")
                     for span in spans[:2]:
                         st.code(str(span.get("text", "")).strip(), language="text")
-                        st.caption(f"Span {span.get('start')}-{span.get('end')}")
+                        st.caption(f"Excerpt location: {span.get('start')}-{span.get('end')}")
                     if len(spans) > 2:
-                        st.caption(f"+ {len(spans) - 2} more excerpt(s) available in the raw details below.")
+                        st.caption(f"+ {len(spans) - 2} more note excerpt(s) available in the raw details below.")
                 elif r["status"] == "NOT_DOCUMENTED":
-                    st.caption("No supporting excerpt captured because the fact was missing or not explicit enough.")
+                    st.caption("No supporting note excerpt was captured because the fact was missing or not explicit enough.")
                 else:
-                    st.caption("No supporting excerpt captured for this fact.")
+                    st.caption("No supporting note excerpt was captured for this fact.")
 
     _render_audit_summary_card(ev["audit"], ev["provenance"], inv)
 
-    st.subheader("Secondary Metrics (Informational)")
-    st.caption("These diagnostics support review but do not change the decision outputs above.")
+    st.subheader("Secondary Diagnostics (Informational)")
+    st.caption("These convenience metrics support review but do not change the frozen status or blockers above.")
 
     o1, o2, o3 = st.columns([1, 1, 1])
 
     with o1:
-        st.metric("Informational Readiness Score", f"{score_info['readiness_score']}/100")
+        st.metric("Score (informational only)", f"{score_info['readiness_score']}/100")
         st.caption(
             f"{score_info['met_count']} met | {score_info['not_documented_count']} missing | "
             f"{score_info['not_met_count']} below threshold out of {score_info['total']} requirements."
         )
-        st.caption(f"Submission readiness flag: {'Yes' if submission_readiness else 'No'}")
+        st.caption(f"Administratively ready under current demo rules: {'Yes' if submission_readiness else 'No'}")
 
     with o2:
+        extraction_delta = (
+            "0 missing"
+            if metrics["extraction_failure_count"] == 0
+            else f"-{metrics['extraction_failure_count']} missing"
+        )
         st.metric(
             "Extraction Success",
             f"{metrics['extraction_success_rate']}%",
-            delta=f"-{metrics['extraction_failure_count']} missing",
+            delta=extraction_delta,
         )
         st.caption("Higher missing counts usually reflect documentation gaps, not hidden inference.")
 
