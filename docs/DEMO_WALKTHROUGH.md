@@ -13,16 +13,19 @@ Prior Authorization Readiness Copilot is a deterministic healthcare AI demo that
 
 ## Demo Flow
 1. Open the app with `make run`.
-2. Point out that rules and provenance are loaded from versioned YAML, not hidden prompts.
-3. Run a case and show requirement-level outputs: `MET`, `NOT_MET`, `NOT_DOCUMENTED`.
-4. Highlight the overall status logic:
+2. Start with one of the `Featured Showcase Cases` at the top of the app so the audience can see a realistic example immediately.
+3. Point out that the showcase case preloads the editable intake rather than relying on a hidden prompt or hard-coded output.
+4. Show that rules and provenance are loaded from versioned YAML, not hidden prompts.
+5. Run a case and show requirement-level outputs: `MET`, `NOT_MET`, `NOT_DOCUMENTED`.
+6. Highlight the overall status logic:
    `NOT_DOCUMENTED` -> `CANNOT_DETERMINE`
    else any `NOT_MET` -> `NOT_READY`
    else -> `READY`
-5. Show the blocking-items section to illustrate missing vs unmet documentation.
-6. Generate a letter and explain that it is write-only and downstream of the evaluated results.
-7. Show the audit JSON and policy provenance banner.
-8. Mention the policy drift monitor as a governance safeguard rather than an automation feature.
+7. Show the blocking-items section to illustrate missing vs unmet documentation.
+8. Show the extracted facts and evidence mapping so the audience can see what the note actually supported.
+9. Show the audit summary first, then optionally open the raw audit JSON and point back to the policy provenance banner.
+10. Generate a letter and explain that it is write-only and downstream of the evaluated results.
+11. Mention the policy drift monitor as a governance safeguard rather than an automation feature.
 
 ## What Makes This Repo Interview-Strong
 - The scope is disciplined.

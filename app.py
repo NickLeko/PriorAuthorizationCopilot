@@ -24,7 +24,7 @@ from engine.provenance import (
 
 BASE_DIR = Path(__file__).resolve().parent
 
-# NEW: schema + write-only letter drafting
+# Schema + write-only letter drafting
 from engine.schemas import PARequest, ReadinessReport, RequirementResult
 from engine.letter_draft import draft_letter as draft_letter_writeonly
 
@@ -53,7 +53,7 @@ st.markdown(
 )
 
 st.title("PA Readiness Copilot")
-st.caption("Administrative decision support only. Not medical or billing advice.")
+st.caption("Administrative decision support only. Not clinical decision support, approval prediction, or billing advice.")
 
 
 # ----------------------------
@@ -64,7 +64,7 @@ if "last_eval" not in st.session_state:
 if "test_rows" not in st.session_state:
     st.session_state.test_rows = None
 
-# NEW: letter UI state (write-only)
+# Letter UI state (write-only)
 if "letter_text" not in st.session_state:
     st.session_state.letter_text = ""
 if "letter_meta" not in st.session_state:
@@ -72,7 +72,7 @@ if "letter_meta" not in st.session_state:
 if "letter_error" not in st.session_state:
     st.session_state.letter_error = ""
 
-# NEW: policy drift acknowledge gate state
+# Policy drift acknowledge gate state
 if "ack_policy_drift" not in st.session_state:
     st.session_state.ack_policy_drift = False
 
@@ -87,6 +87,8 @@ payers = sorted(rules["payers"].keys())
 PROV_PATH = "rules/provenance.yaml"
 prov = load_provenance(PROV_PATH)
 
+SITE_OPTIONS = ["outpatient", "inpatient", "ASC", "office"]
+
 
 # ----------------------------
 # Sidebar: System Health (auto tests, cached)
@@ -94,7 +96,7 @@ prov = load_provenance(PROV_PATH)
 st.sidebar.markdown("### 🧪 System Health")
 
 # Manual cache bust button (prevents stale failures after edits)
-if st.sidebar.button("🔄 Refresh test health (clear cache)", use_container_width=True):
+if st.sidebar.button("🔄 Refresh test health (clear cache)", width="stretch"):
     st.cache_data.clear()
     st.rerun()
 
@@ -189,6 +191,140 @@ def _render_evidence_map_block(title: str, evidence_map: dict) -> None:
             end = span.get("end")
             blocks.append(f"  [{idx}] {start}-{end}: {text}")
     st.code("\n".join(blocks), language="text")
+
+
+def _summary_text(value: object, fallback: str = "Not available") -> str:
+    if value is None:
+        return fallback
+    text = str(value).strip()
+    return text if text else fallback
+
+
+def _render_audit_summary_card(audit: dict, provenance: dict, invariant_errors: list[str]) -> None:
+    blocking = audit.get("blocking_issues") or {}
+    not_documented = blocking.get("not_documented") or []
+    not_met = blocking.get("not_met") or []
+    total_blockers = len(not_documented) + len(not_met)
+    letter_artifacts = audit.get("letter_artifacts") or {}
+
+    st.subheader("Audit Summary")
+    st.caption("Compact trust and traceability view. Full audit details remain available at the bottom.")
+
+    top_row = st.columns(4)
+    with top_row[0]:
+        st.caption("Run ID")
+        st.code(_summary_text(audit.get("run_id")), language="text")
+    with top_row[1]:
+        st.caption("Note Hash")
+        st.code(_summary_text(audit.get("note_hash")), language="text")
+    with top_row[2]:
+        st.caption("Rules Version")
+        st.code(_summary_text(audit.get("rules_version")), language="text")
+    with top_row[3]:
+        st.caption("Trust Level")
+        st.code(_summary_text(str(audit.get("policy_trust_level", "")).upper()), language="text")
+
+    bottom_row = st.columns(4)
+    with bottom_row[0]:
+        st.metric("Invariant Checks", "PASS" if not invariant_errors else "CHECK")
+    with bottom_row[1]:
+        st.metric("Total Blockers", total_blockers)
+    with bottom_row[2]:
+        st.metric("Missing Requirements", len(not_documented))
+    with bottom_row[3]:
+        st.caption("Letter Hash")
+        st.code(_summary_text(letter_artifacts.get("letter_hash_sha256_16"), fallback="No letter draft yet"), language="text")
+
+    source_name = provenance.get("source_name") or "Not documented"
+    source_type = provenance.get("source_type") or "Not documented"
+    last_reviewed = provenance.get("last_reviewed") or "Not documented"
+    st.caption(f"Policy source: {source_name} | Source type: {source_type} | Last reviewed: {last_reviewed}")
+
+
+def _format_extracted_fact_value(key: str, value: object) -> str:
+    if value is None:
+        return "Missing from note"
+
+    if key in {"conservative_therapy_weeks", "symptom_duration_weeks"}:
+        return f"{value} weeks"
+
+    if key == "prior_imaging_result":
+        mapping = {
+            "none": "No prior imaging documented",
+            "inconclusive": "Prior imaging documented as inconclusive",
+            "abnormal": "Prior imaging documented as abnormal",
+        }
+        return mapping.get(str(value), str(value))
+
+    if isinstance(value, bool):
+        return "Documented" if value else "Documented as absent"
+
+    return str(value)
+
+
+@st.cache_data
+def _load_synthetic_cases(cases_path: str = "inputs/synthetic_cases.json") -> list[dict]:
+    cases_file = (BASE_DIR / cases_path).resolve()
+    with cases_file.open("r", encoding="utf-8") as f:
+        return json.load(f)
+
+
+def _featured_showcase_cases(cases: list[dict]) -> list[dict]:
+    featured = [case for case in cases if (case.get("showcase") or {}).get("featured")]
+    return sorted(featured, key=lambda case: (case.get("showcase") or {}).get("sort_order", 999))
+
+
+def _showcase_status_chip(status: str) -> str:
+    chips = {
+        "READY": "READY",
+        "NOT_READY": "NOT_READY",
+        "CANNOT_DETERMINE": "CANNOT_DETERMINE",
+    }
+    rendered = chips.get(status, status or "UNKNOWN")
+    return f"`{rendered}`"
+
+
+def _load_case_into_intake(case: dict) -> None:
+    payer = case.get("payer") or payers[0]
+    if payer not in rules["payers"]:
+        payer = payers[0]
+
+    procedures = rules["payers"][payer]["procedures"]
+    proc_code = case.get("procedure_code")
+    if proc_code not in procedures:
+        proc_code = next(iter(procedures))
+
+    st.session_state["intake_payer"] = payer
+    st.session_state["intake_proc_code"] = proc_code
+    st.session_state["intake_dx_raw"] = ", ".join(case.get("dx_codes", []))
+    st.session_state["intake_specialty"] = case.get("specialty", "")
+    st.session_state["intake_site"] = case.get("site_of_care", "outpatient")
+    st.session_state["intake_note_text"] = case.get("note_text", "")
+    st.session_state["selected_showcase_case_id"] = case.get("id")
+
+
+synthetic_cases = _load_synthetic_cases()
+featured_showcase_cases = _featured_showcase_cases(synthetic_cases)
+
+if "selected_showcase_case_id" not in st.session_state:
+    st.session_state.selected_showcase_case_id = None
+
+if "intake_payer" not in st.session_state or st.session_state["intake_payer"] not in rules["payers"]:
+    st.session_state["intake_payer"] = payers[0]
+
+current_intake_payer = st.session_state["intake_payer"]
+current_procedure_options = list(rules["payers"][current_intake_payer]["procedures"].keys())
+if "intake_proc_code" not in st.session_state or st.session_state["intake_proc_code"] not in current_procedure_options:
+    st.session_state["intake_proc_code"] = current_procedure_options[0]
+
+if "intake_dx_raw" not in st.session_state:
+    st.session_state["intake_dx_raw"] = ""
+if "intake_specialty" not in st.session_state:
+    st.session_state["intake_specialty"] = ""
+if "intake_site" not in st.session_state or st.session_state["intake_site"] not in SITE_OPTIONS:
+    st.session_state["intake_site"] = "outpatient"
+if "intake_note_text" not in st.session_state:
+    st.session_state["intake_note_text"] = ""
 
 
 # ----------------------------
@@ -305,7 +441,7 @@ st.subheader("Policy Monitor")
 st.caption("Detects policy drift via committed snapshots + drift log. Does not auto-update rules or change outcomes.")
 
 if policy_rows:
-    st.dataframe(policy_rows, use_container_width=True)
+    st.dataframe(policy_rows, width="stretch")
 else:
     st.info("No policy sources configured (or policy_sources.yaml missing).")
 
@@ -323,30 +459,98 @@ policy_gate_block = any_review_required and (not st.session_state.get("ack_polic
 
 
 # ----------------------------
+# Featured showcase cases
+# ----------------------------
+showcase_submitted = False
+showcase_feedback = None
+
+st.subheader("Featured Showcase Cases")
+st.caption(
+    "Fastest way to experience the demo. Choose a curated synthetic case to load it into the main intake below. "
+    "Loaded inputs stay editable for custom exploration."
+)
+
+if featured_showcase_cases:
+    for start in range(0, len(featured_showcase_cases), 2):
+        cols = st.columns(2)
+        for col, case in zip(cols, featured_showcase_cases[start : start + 2]):
+            showcase = case.get("showcase") or {}
+            title = showcase.get("title", case.get("id", "Showcase case"))
+            description = showcase.get("description", "")
+            expected_status = showcase.get("expected_overall_status", "UNKNOWN")
+            why_interesting = showcase.get("why_interesting", "")
+
+            with col:
+                st.markdown(f"#### {title}")
+                st.write(description)
+                st.markdown(f"**Expected outcome:** {_showcase_status_chip(expected_status)}")
+                if why_interesting:
+                    st.caption(f"Why this case is useful: {why_interesting}")
+                if st.session_state.get("selected_showcase_case_id") == case.get("id"):
+                    st.caption("Currently loaded in the intake below.")
+
+                if st.button("Open This Demo Case", key=f"showcase_{case.get('id')}", width="stretch"):
+                    _load_case_into_intake(case)
+                    if tests_healthy and not policy_gate_block:
+                        showcase_submitted = True
+                        showcase_feedback = (
+                            "success",
+                            f'Loaded "{title}" and ran the evaluation below. The intake remains fully editable.',
+                        )
+                    elif policy_gate_block:
+                        showcase_feedback = (
+                            "info",
+                            f'Loaded "{title}" into the intake below. Acknowledge the policy drift gate to run the evaluation.',
+                        )
+                    else:
+                        showcase_feedback = (
+                            "info",
+                            f'Loaded "{title}" into the intake below. Resolve the build health gate before running the evaluation.',
+                        )
+else:
+    st.info("No featured showcase cases configured.")
+
+if showcase_feedback:
+    getattr(st, showcase_feedback[0])(showcase_feedback[1])
+
+
+# ----------------------------
 # Intake form
 # ----------------------------
 st.markdown("### Intake")
+current_showcase_case = next(
+    (case for case in featured_showcase_cases if case.get("id") == st.session_state.get("selected_showcase_case_id")),
+    None,
+)
+if current_showcase_case is not None:
+    st.caption(
+        f'Loaded showcase case: {(current_showcase_case.get("showcase") or {}).get("title", current_showcase_case.get("id"))}. '
+        "You can edit any field below or replace the note for custom exploration."
+    )
+else:
+    st.caption("Paste your own synthetic note here, or start with one of the featured showcase cases above.")
 
 with st.form("pa_form", clear_on_submit=False):
     c1, c2, c3 = st.columns(3)
 
     with c1:
-        payer = st.selectbox("Payer", payers)
+        payer = st.selectbox("Payer", payers, key="intake_payer")
 
     with c2:
         procedures = rules["payers"][payer]["procedures"]
-        proc_code = st.selectbox("Procedure", list(procedures.keys()))
+        proc_code = st.selectbox("Procedure", list(procedures.keys()), key="intake_proc_code")
 
     with c3:
-        dx_raw = st.text_input("Dx codes (comma-separated)", placeholder="e.g., M54.5, M51.26")
+        dx_raw = st.text_input("Dx codes (comma-separated)", placeholder="e.g., M54.5, M51.26", key="intake_dx_raw")
 
-    specialty = st.text_input("Ordering specialty (optional)", placeholder="e.g., Orthopedics")
-    site = st.selectbox("Site of care", ["outpatient", "inpatient", "ASC", "office"])
+    specialty = st.text_input("Ordering specialty (optional)", placeholder="e.g., Orthopedics", key="intake_specialty")
+    site = st.selectbox("Site of care", SITE_OPTIONS, key="intake_site")
 
     note_text = st.text_area(
         "Clinical note (mock/synthetic)",
         height=220,
         placeholder="Paste a synthetic clinical note here...",
+        key="intake_note_text",
     )
 
     tests_healthy = bool(st.session_state.get("tests_healthy", False))
@@ -359,7 +563,7 @@ with st.form("pa_form", clear_on_submit=False):
 # ----------------------------
 # Evaluate action (persist results)
 # ----------------------------
-if submitted:
+if submitted or showcase_submitted:
     # Clear prior letter UI output on new eval to avoid stale drafts
     st.session_state.letter_text = ""
     st.session_state.letter_meta = {}
@@ -435,7 +639,7 @@ if submitted:
         "invariant_errors": invariant_errors,
     }
 
-    # NEW: build schema objects for write-only letter drafting
+    # Build schema objects for write-only letter drafting
     dx_codes_clean = normalized_dx_codes(dx_codes)
 
     pa_model = PARequest(
@@ -495,10 +699,10 @@ if submitted:
 # ----------------------------
 # Outputs
 # ----------------------------
-st.markdown("### Outputs")
+st.markdown("### Results")
 
 if st.session_state.last_eval is None:
-    st.info("Run an evaluation to see case outputs. Test suite can be run anytime below.")
+    st.info("Run an evaluation to see the result. The synthetic test suite remains available below.")
 else:
     ev = st.session_state.last_eval
     overall = ev["overall"]
@@ -507,36 +711,17 @@ else:
 
     status = overall["overall_status"]
     submission_readiness = bool(overall["submission_readiness"])
-
-    # Policy provenance + banner
-    st.markdown("### Policy Provenance")
-    if ev["policy_trust_level"] != "verified":
-        st.warning(
-            "⚠️ **Demo rules in use** — Requirements are manually curated for demonstration. "
-            "Verify criteria against the official payer policy before any real submission."
-        )
-
-    st.write(
-        {
-            "policy_trust_level": ev["policy_trust_level"],
-            "source_type": ev["provenance"].get("source_type"),
-            "source_name": ev["provenance"].get("source_name"),
-            "last_reviewed": ev["provenance"].get("last_reviewed"),
-            "notes": ev["provenance"].get("notes"),
-        }
-    )
-
-    # Invariant errors
     inv = ev.get("invariant_errors", [])
-    if inv:
-        st.error("Internal consistency checks failed:")
-        for msg in inv:
-            st.write(f"- {msg}")
+    not_documented_items = [r for r in ev["rows"] if r["status"] == "NOT_DOCUMENTED"]
+    not_met_items = [r for r in ev["rows"] if r["status"] == "NOT_MET"]
+    total_blockers = len(not_documented_items) + len(not_met_items)
+    source_name = ev["provenance"].get("source_name") or "Not documented"
+    last_reviewed = ev["provenance"].get("last_reviewed") or "Not documented"
 
-    # Status banner
+    # Decision first
     if status == "CANNOT_DETERMINE":
         st.warning(
-            "Approval readiness **cannot be determined** — one or more required criteria are **not documented** in the note. "
+            "Administrative readiness **cannot be determined** — one or more required criteria are **not documented** in the note. "
             "Add explicit documentation for the blocking items below."
         )
     elif status == "NOT_READY":
@@ -552,54 +737,45 @@ else:
     else:
         st.info("Status unavailable (unexpected overall_status).")
 
-    o1, o2, o3 = st.columns([1, 1, 1])
-
-    with o1:
-        st.metric("PA Readiness Score", f"{score_info['readiness_score']}/100")
-        st.write(
-            {
-                "met": score_info["met_count"],
-                "not_documented": score_info["not_documented_count"],
-                "not_met": score_info["not_met_count"],
-                "total": score_info["total"],
-            }
+    if ev["policy_trust_level"] != "verified":
+        st.warning(
+            "Demo rules in use — requirements are manually curated for demonstration. "
+            "Verify against the official payer policy before any real submission."
         )
-        st.write({"overall_status": status, "submission_readiness": submission_readiness})
+    st.caption(
+        f"Policy source: {source_name} | Last reviewed: {last_reviewed} | Trust level: {str(ev['policy_trust_level']).upper()}"
+    )
 
-    with o2:
-        st.metric(
-            "Extraction Success",
-            f"{metrics['extraction_success_rate']}%",
-            delta=f"-{metrics['extraction_failure_count']} missing",
-        )
+    if inv:
+        st.error("Internal consistency checks require review before trusting this run.")
+        for msg in inv:
+            st.write(f"- {msg}")
 
-    with o3:
-        cr = metrics["compliance_rate"]
-        st.metric(
-            "Requirement Compliance",
-            f"{cr}%" if cr is not None else "N/A",
-            delta=f"{metrics['non_compliant_count']} below threshold",
-        )
-
-    # Blocking items
-    st.subheader("Blocking Items (Most Important)")
-    not_documented_items = [r for r in ev["rows"] if r["status"] == "NOT_DOCUMENTED"]
-    not_met_items = [r for r in ev["rows"] if r["status"] == "NOT_MET"]
+    # Blocking items and reasons
+    st.subheader("What Needs Attention")
+    blocker_cols = st.columns(3)
+    with blocker_cols[0]:
+        st.metric("Total Blockers", total_blockers)
+    with blocker_cols[1]:
+        st.metric("Missing Requirements", len(not_documented_items))
+    with blocker_cols[2]:
+        st.metric("Documented Failures", len(not_met_items))
 
     if not not_documented_items and not not_met_items:
-        st.success("No blocking items detected by current rules.")
+        st.success("No blocking items detected under the current rules.")
     else:
         if not_documented_items:
-            st.markdown("**Missing documentation (cannot determine readiness):**")
+            st.markdown("**Missing documentation (drives `CANNOT_DETERMINE`):**")
             for r in not_documented_items:
                 st.write(f"- {r['label']}: {r['reason']}")
         if not_met_items:
-            st.markdown("**Documented but not met (not ready):**")
+            st.markdown("**Documented but below threshold (drives `NOT_READY`):**")
             for r in not_met_items:
                 st.write(f"- {r['label']}: {r['reason']}")
 
-    # Explainable results (with evidence snippets)
-    st.subheader("Rule-based Requirement Results (Explainable)")
+    # Requirement-by-requirement explanation
+    st.subheader("Why This Result")
+    st.caption("Each requirement shows its status, the reason it landed there, and supporting note text when available.")
     status_emoji = {"MET": "✅", "NOT_MET": "⚠️", "NOT_DOCUMENTED": "❌"}
 
     for r in ev["rows"]:
@@ -621,12 +797,87 @@ else:
             else:
                 st.caption("No evidence snippet captured for this requirement.")
 
+    st.subheader("Extracted Facts")
+    st.caption("Decision-relevant facts pulled from the note for this request.")
+    for start in range(0, len(ev["rows"]), 2):
+        cols = st.columns(2)
+        for col, r in zip(cols, ev["rows"][start : start + 2]):
+            key = r["key"]
+            fact_value = _format_extracted_fact_value(key, ev["facts"].get(key))
+            span_count = len(ev["evidence_map"].get(key) or [])
+
+            with col:
+                st.markdown(f"**{status_emoji.get(r.get('status'), '❓')} {r.get('label', '')}**")
+                st.write(fact_value)
+                if r["status"] == "NOT_DOCUMENTED":
+                    st.caption("Missing from the note or not explicit enough for deterministic extraction.")
+                elif r["status"] == "NOT_MET":
+                    st.caption("Captured from the note, but below the current rule threshold.")
+                elif span_count > 1:
+                    st.caption("Captured from multiple note excerpts.")
+                else:
+                    st.caption("Captured from the note.")
+
+    st.subheader("Evidence Mapping")
+    st.caption("Short note excerpts that supported the extracted facts above.")
+    for start in range(0, len(ev["rows"]), 2):
+        cols = st.columns(2)
+        for col, r in zip(cols, ev["rows"][start : start + 2]):
+            key = r["key"]
+            spans = ev["evidence_map"].get(key) or []
+
+            with col:
+                st.markdown(f"**{r.get('label', '')}**")
+                if spans:
+                    st.caption(f"{len(spans)} supporting excerpt(s) captured.")
+                    for span in spans[:2]:
+                        st.code(str(span.get("text", "")).strip(), language="text")
+                        st.caption(f"Span {span.get('start')}-{span.get('end')}")
+                    if len(spans) > 2:
+                        st.caption(f"+ {len(spans) - 2} more excerpt(s) available in the raw details below.")
+                elif r["status"] == "NOT_DOCUMENTED":
+                    st.caption("No supporting excerpt captured because the fact was missing or not explicit enough.")
+                else:
+                    st.caption("No supporting excerpt captured for this fact.")
+
+    _render_audit_summary_card(ev["audit"], ev["provenance"], inv)
+
+    st.subheader("Secondary Metrics (Informational)")
+    st.caption("These diagnostics support review but do not change the decision outputs above.")
+
+    o1, o2, o3 = st.columns([1, 1, 1])
+
+    with o1:
+        st.metric("Informational Readiness Score", f"{score_info['readiness_score']}/100")
+        st.caption(
+            f"{score_info['met_count']} met | {score_info['not_documented_count']} missing | "
+            f"{score_info['not_met_count']} below threshold out of {score_info['total']} requirements."
+        )
+        st.caption(f"Submission readiness flag: {'Yes' if submission_readiness else 'No'}")
+
+    with o2:
+        st.metric(
+            "Extraction Success",
+            f"{metrics['extraction_success_rate']}%",
+            delta=f"-{metrics['extraction_failure_count']} missing",
+        )
+        st.caption("Higher missing counts usually reflect documentation gaps, not hidden inference.")
+
+    with o3:
+        cr = metrics["compliance_rate"]
+        st.metric(
+            "Requirement Compliance",
+            f"{cr}%" if cr is not None else "N/A",
+            delta=f"{metrics['non_compliant_count']} below threshold",
+        )
+        st.caption("Compliance is calculated only from documented requirements and remains secondary to the frozen status contract.")
+
     # ----------------------------
     # Letter Drafting UI (Write-only)
     # ----------------------------
     st.subheader("Justification Letter (Write-only)")
 
-    # NEW: Letter type selector (presentation only; does not change readiness logic)
+    # Letter type selector (presentation only; does not change readiness logic)
     letter_type = st.selectbox(
         "Letter type",
         ["submission_cover_letter", "missing_info_request", "appeal_template"],
@@ -635,9 +886,9 @@ else:
 
     cA, cB = st.columns([1, 1])
     with cA:
-        generate_letter = st.button("Generate letter draft", type="primary", use_container_width=True)
+        generate_letter = st.button("Generate letter draft", type="primary", width="stretch")
     with cB:
-        clear_letter = st.button("Clear draft", use_container_width=True)
+        clear_letter = st.button("Clear draft", width="stretch")
 
     if clear_letter:
         st.session_state.letter_text = ""
@@ -660,7 +911,7 @@ else:
             st.session_state.letter_meta = letter_meta
             st.session_state.letter_error = ""
 
-            # NEW: Audit linkage without storing full letter content
+            # Audit linkage without storing full letter content
             ev["audit"]["letter_artifacts"] = {
                 "letter_type": letter_meta.get("letter_type"),
                 "letter_version": letter_meta.get("letter_version"),
@@ -689,21 +940,27 @@ else:
             data=st.session_state.letter_text,
             file_name=f"pa_{letter_type}.txt",
             mime="text/plain",
-            use_container_width=True,
+            width="stretch",
         )
         st.download_button(
             "📥 Download Letter Metadata (.json)",
             data=json.dumps(st.session_state.letter_meta, indent=2),
             file_name=f"pa_{letter_type}_metadata.json",
             mime="application/json",
-            use_container_width=True,
+            width="stretch",
         )
     else:
         st.caption("No letter generated yet. Select a letter type and click **Generate letter draft**.")
 
-    # Audit export (no note_text)
-    st.subheader("Audit Trail")
-    st.json(ev["audit"])
+    # Full audit/debug details
+    st.subheader("Full Audit & Debug Details")
+    with st.expander("Open raw audit JSON, extracted facts, and evidence spans"):
+        st.json(ev["audit"])
+        if ev["reasons"]:
+            st.markdown("**Rule reasons**")
+            st.code("\n".join(ev["reasons"]), language="text")
+        _render_key_value_block("Extracted facts (raw)", ev["facts"])
+        _render_evidence_map_block("Evidence map (raw spans)", ev["evidence_map"])
 
     audit_json = json.dumps(ev["audit"], indent=2)
     ts_local = datetime.now().strftime("%Y%m%d_%H%M%S")
@@ -712,16 +969,16 @@ else:
         data=audit_json,
         file_name=f"pa_audit_{ev['audit']['payer']}_{ev['audit']['procedure_code']}_{ts_local}.json",
         mime="application/json",
-        use_container_width=True,
+        width="stretch",
     )
 
 
 # ----------------------------
 # Test suite (manual run + export + inspect)
 # ----------------------------
-st.markdown("### Test Suite (Synthetic Cases)")
+st.markdown("### Advanced: Synthetic Test Suite")
 
-run_tests = st.button("Run test suite", use_container_width=True)
+run_tests = st.button("Run test suite", width="stretch")
 
 if run_tests:
     from engine.test_suites import run_cases
@@ -730,7 +987,7 @@ if run_tests:
 if st.session_state.test_rows is None:
     st.caption("Click **Run test suite** to evaluate the rules engine on synthetic cases.")
 else:
-    st.dataframe(st.session_state.test_rows, use_container_width=True)
+    st.dataframe(st.session_state.test_rows, width="stretch")
 
     test_json = json.dumps(st.session_state.test_rows, indent=2)
     ts_local = datetime.now().strftime("%Y%m%d_%H%M%S")
@@ -739,15 +996,14 @@ else:
         data=test_json,
         file_name=f"pa_test_results_{ts_local}.json",
         mime="application/json",
-        use_container_width=True,
+        width="stretch",
     )
 
     st.markdown("---")
     st.subheader("🔎 Inspect a Test Case (shows evidence snippets)")
 
     # Load the raw cases so we can re-run extraction/eval for one selected case
-    with open("inputs/synthetic_cases.json", "r", encoding="utf-8") as f:
-        _cases = json.load(f)
+    _cases = synthetic_cases
 
     case_ids = [c.get("id") for c in _cases]
     selected_id = st.selectbox("Select case", case_ids)

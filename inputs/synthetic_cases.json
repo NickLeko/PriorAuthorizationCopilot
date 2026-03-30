@@ -7,7 +7,15 @@
     "site_of_care": "outpatient",
     "specialty": "Orthopedics",
     "note_text": "Low back pain with right leg radiculopathy x 8 weeks. Completed PT for 8 weeks and NSAIDs with minimal improvement. Denies bowel/bladder incontinence. No saddle anesthesia. Prior imaging: lumbar xray inconclusive. Neuro exam: mild weakness dorsiflexion 4/5.",
-    "expected_label": "complete"
+    "expected_label": "complete",
+    "showcase": {
+      "featured": true,
+      "sort_order": 1,
+      "title": "Lumbar MRI ready for administrative review",
+      "description": "A clean lumbar MRI request with therapy duration, symptom duration, imaging context, and red-flag documentation all present.",
+      "expected_overall_status": "READY",
+      "why_interesting": "Shows the straight-line READY path with evidence snippets across each requirement."
+    }
   },
   {
     "id": "MRI-02-complete",
@@ -77,7 +85,15 @@
     "site_of_care": "outpatient",
     "specialty": "Primary Care",
     "note_text": "OSA noted in problem list. Sleep study in 2023 mentioned but no date. AHI not documented.",
-    "expected_label": "incomplete"
+    "expected_label": "incomplete",
+    "showcase": {
+      "featured": true,
+      "sort_order": 3,
+      "title": "CPAP request refused for missing documentation",
+      "description": "The note mentions OSA and a past sleep study, but it leaves out the date and AHI details required to determine readiness.",
+      "expected_overall_status": "CANNOT_DETERMINE",
+      "why_interesting": "Shows refusal-first behavior when required evidence is missing instead of inferred."
+    }
   },
   {
     "id": "CPAP-03-incomplete",
@@ -119,7 +135,15 @@
     "site_of_care": "outpatient",
     "specialty": "Primary Care",
     "note_text": "Low back pain x 5 weeks. PT x 5 weeks documented. Denies weakness. Denies bowel/bladder changes. No prior imaging.",
-    "expected_label": "incomplete"
+    "expected_label": "incomplete",
+    "showcase": {
+      "featured": true,
+      "sort_order": 2,
+      "title": "Documented, but not yet ready to submit",
+      "description": "This note documents the right fields, but both symptom duration and therapy duration are still below threshold.",
+      "expected_overall_status": "NOT_READY",
+      "why_interesting": "Shows the difference between documented failure and missingness."
+    }
   },
   {
     "id": "MRI-09-negation-variant",
@@ -209,7 +233,15 @@
     "site_of_care": "outpatient",
     "specialty": "Sleep Medicine",
     "note_text": "Dx obstructive sleep apnea. Sleep study 2024/06/01. RDI 28. Request CPAP E0601.",
-    "expected_label": "complete"
+    "expected_label": "complete",
+    "showcase": {
+      "featured": true,
+      "sort_order": 4,
+      "title": "CPAP ready case with alternative date formatting",
+      "description": "A CPAP request that includes OSA documentation, a slash-formatted sleep study date, and an RDI value.",
+      "expected_overall_status": "READY",
+      "why_interesting": "Shows cross-domain breadth and a small extraction robustness edge case."
+    }
   },
   {
     "id": "CPAP-08-doc-gap-osa-not-stated",
@@ -253,4 +285,3 @@
   }
 
 ]
-

@@ -2,77 +2,67 @@
 
 A safety-first healthcare AI demo for deterministic prior authorization readiness review.
 
-This project is intentionally narrow: it helps determine whether a prior authorization request is administratively ready based on documented payer criteria. It does not make clinical judgments, predict approval, or act autonomously.
+This repo is intentionally narrow: it checks whether a prior authorization request is administratively ready against documented payer criteria. It does not make clinical judgments, predict approval, or act autonomously.
+
+<p align="center">
+  <img src="docs/images/prior-auth-copilot-demo.png" alt="Prior Authorization Copilot demo showing a CANNOT_DETERMINE result with blockers, requirement-level reasoning, extracted facts, evidence mapping, and audit summary." width="900">
+</p>
+<p align="center"><em>Showcase result: a refusal-first <code>CANNOT_DETERMINE</code> CPAP review with blockers, requirement-level reasoning, extracted facts, evidence mapping, and audit traceability in one screen.</em></p>
+
+## Start Here
+
+| Open this first | Why it matters |
+| --- | --- |
+| [app.py](./app.py) | Demo surface: showcase cases, result hierarchy, audit summary, and write-only letter flow |
+| [engine/extract.py](./engine/extract.py) | Deterministic fact extraction with evidence spans |
+| [engine/evaluate.py](./engine/evaluate.py) | Requirement-by-requirement rules evaluation and frozen readiness logic |
+| [rules/payer_rules.yaml](./rules/payer_rules.yaml) | Versioned payer criteria that drive the demo |
+| [FAILURE_MODES.md](./FAILURE_MODES.md) and [MODEL_CARD.md](./MODEL_CARD.md) | Safety boundaries, intended use, and governance posture |
+
+## Why This Matters
+- Prior authorization requests are often delayed because required documentation is missing, incomplete, or misaligned with payer rules.
+- Deterministic design matters here because readiness decisions should be reproducible, inspectable, and stable across reviewers.
+- This is safer and more defensible than a generic LLM workflow because rules, refusal behavior, and outputs are explicit, auditable, and test-backed.
 
 ## At a Glance
-- Problem: prior authorization requests are often delayed or denied because documentation is incomplete or misaligned with payer requirements.
-- Product stance: support administrative workflow quality, not clinical decision-making.
-- Core behavior: extract a few structured facts deterministically, evaluate explicit rules, and refuse to decide when required documentation is missing.
-- Safety posture: refusal-first, rules-first, auditable, and governance-aware.
-- Why this repo exists: to demonstrate strong healthcare AI product judgment, safety boundaries, and practical implementation discipline.
-
-## Quick Facts
 - Type: deterministic administrative decision-support demo
 - Domain: prior authorization readiness review
-- Primary signal: safety-first healthcare AI product judgment
-- Stack: Python, Streamlit, YAML rules, Pydantic, pytest
-- Non-goal: clinical decision-making or approval prediction
+- Core behavior: structured intake, deterministic extraction, explicit rules evaluation, frozen readiness outcome
+- Safety posture: refusal-first, rules-first, auditable, governance-aware
+- Non-goals: clinical decision support, approval prediction, autonomous action
 
-## What This System Is
-- A deterministic administrative decision-support tool.
-- A rules-first evaluator of documentation readiness.
-- A write-only letter drafting system downstream of evaluated results.
-- A governance-aware demo with policy drift monitoring artifacts and audit outputs.
+## System Snapshot
 
-## What This System Is Not
-- Not a clinical decision support system.
-- Not an approval prediction model.
-- Not a generic chatbot.
-- Not an autonomous submission or appeals agent.
-- Not a system that infers missing facts or reinterprets payer policy with an LLM.
+```mermaid
+flowchart TD
+    intake["Structured Intake<br/>+ Synthetic Note"]
+    extract["Deterministic<br/>Fact Extraction"]
+    evaluate["Requirement-by-Requirement<br/>Rules Evaluation"]
+    outcome["Frozen Readiness<br/>Outcome"]
+    outputs["Audit Record<br/>+ Optional Write-Only Letter Draft"]
 
-## Why It Is Credible
-- Frozen readiness semantics: `READY`, `NOT_READY`, and `CANNOT_DETERMINE`.
-- Conservative extraction: missing facts stay missing.
-- Refusal is explicit: any missing required element forces `CANNOT_DETERMINE`.
-- Letter generation is constrained: it cannot change statuses, add facts, or promise approval.
-- Policy drift is treated as a governance problem, not a prompt-engineering problem.
-- Contract tests lock behavior across extraction, evaluation, drafting, and drift monitoring.
-
-## 2-Minute Architecture
-
-```text
-Structured Intake + Synthetic Note
-                ↓
-Deterministic Fact Extraction
-                ↓
-Requirement-by-Requirement Rules Evaluation
-                ↓
-Frozen Readiness Outcome
-                ↓
-Audit Record + Optional Write-Only Letter Draft
+    intake --> extract --> evaluate --> outcome --> outputs
 ```
 
-### Main flow
-1. Load versioned payer rules and provenance metadata.
-2. Accept structured intake fields plus synthetic note text.
-3. Extract a small set of facts deterministically with evidence spans.
-4. Evaluate each requirement as `MET`, `NOT_MET`, or `NOT_DOCUMENTED`.
-5. Compute the overall readiness status using frozen invariants.
-6. Produce blocking issues, an audit record, and an optional write-only administrative letter.
+Versioned payer rules and provenance metadata drive each run. The system accepts structured intake plus note text, extracts a small set of span-evidenced facts, evaluates each requirement as `MET`, `NOT_MET`, or `NOT_DOCUMENTED`, and then produces a frozen readiness status, blocking items, audit output, and an optional write-only administrative letter.
 
-These design choices help surface documentation problems before submission, reduce preventable rework, and keep administrative gaps explicit instead of implicit.
+## What This System Is / Is Not
 
-### Key files
-- [app.py](./app.py): Streamlit demo app and orchestration layer.
-- [engine/extract.py](./engine/extract.py): deterministic extraction logic.
-- [engine/evaluate.py](./engine/evaluate.py): rules evaluation and overall status computation.
-- [engine/letter_draft.py](./engine/letter_draft.py): write-only administrative letter generation.
-- [engine/policy_monitor.py](./engine/policy_monitor.py): policy drift snapshot/diff/log handling.
-- [rules/payer_rules.yaml](./rules/payer_rules.yaml): payer and procedure requirements.
-- [rules/provenance.yaml](./rules/provenance.yaml): trust framing for current rules.
-- [rules/policy_sources.yaml](./rules/policy_sources.yaml): monitored external policy sources.
-- [test/](./test): contract tests for deterministic and safety-critical behavior.
+| This system is | This system is not |
+| --- | --- |
+| Deterministic administrative decision support | Clinical decision support |
+| A rules-first evaluator of documentation readiness | An approval prediction model |
+| Refusal-first when required evidence is missing | A generic chatbot |
+| A write-only drafting layer downstream of evaluated results | An autonomous submission or appeals agent |
+| A governance-aware demo with policy drift monitoring | A system that infers missing facts or reinterprets policy with an LLM |
+
+## Why It Is Credible
+- Frozen readiness semantics: `READY`, `NOT_READY`, and `CANNOT_DETERMINE`
+- Conservative extraction: missing facts stay missing
+- Explicit refusal: any missing required element forces `CANNOT_DETERMINE`
+- Constrained drafting: the letter layer cannot change facts, statuses, or approval likelihood
+- Governed policy drift handling: changes trigger review, not silent rule updates
+- Contract tests lock behavior across extraction, evaluation, drafting, and drift monitoring
 
 ## Safety, Refusal, and Governance
 
@@ -96,34 +86,36 @@ For the fuller safety narrative, see [FAILURE_MODES.md](./FAILURE_MODES.md), [do
 
 ## Quick Demo
 
-### Setup
+### Fastest way to explore this repo
+1. Read [docs/DEMO_WALKTHROUGH.md](./docs/DEMO_WALKTHROUGH.md) for a short interview/demo script.
+2. Run the app:
+
 ```bash
 make install
-```
-
-Manual setup also works:
-```bash
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-```
-
-### Run
-```bash
 make run
 ```
 
-### Test
+3. In the UI, look for:
+- the policy provenance banner
+- blocking items separated into missing documentation vs documented failures
+- `CANNOT_DETERMINE` when required evidence is absent
+- extracted facts and evidence mapping tied back to the note
+- audit summary first, with raw audit JSON available lower in the page
+- deterministic, write-only letter output with metadata
+
+### Sanity check
 ```bash
 make test
 ```
 
-### What to look for in the UI
-- A clear policy provenance banner.
-- Blocking items separated into missing documentation vs documented failures.
-- `CANNOT_DETERMINE` when required evidence is absent.
-- Deterministic, write-only letter output with metadata.
-- Audit JSON that captures evidence, invariants, and trust framing.
+Manual setup also works with a local virtual environment and `pip install -r requirements.txt`.
+
+## Additional Key Files
+- [engine/letter_draft.py](./engine/letter_draft.py): write-only administrative letter generation
+- [engine/policy_monitor.py](./engine/policy_monitor.py): policy drift snapshot, diff, and log handling
+- [rules/provenance.yaml](./rules/provenance.yaml): trust framing for current rules
+- [rules/policy_sources.yaml](./rules/policy_sources.yaml): monitored external policy sources
+- [test/](./test): contract tests for deterministic and safety-critical behavior
 
 ## Scope and Limitations
 - Uses synthetic/demo inputs, not production PHI workflows.
