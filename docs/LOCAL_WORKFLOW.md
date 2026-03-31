@@ -1,44 +1,30 @@
 # Local Workflow
 
-## Setup
-```bash
-make install
-```
+Current repo status:
+- deterministic extraction, evaluation, and letter drafting
+- no LLM implementation
 
-If you prefer to do it manually:
+## Canonical Setup
+
 ```bash
-python3 -m venv .venv
+python3.12 -m venv .venv
 source .venv/bin/activate
-pip install -r requirements.txt
+python -m pip install --upgrade pip
+python -m pip install -r requirements.txt
 ```
 
-## Run The App
+## Run
+
 ```bash
-make run
+streamlit run app.py
 ```
 
-## Run The Contract Tests
+## Test
+
 ```bash
-make test
+pytest -q
 ```
 
-These tests are meant to lock:
-- refusal semantics,
-- deterministic extraction behavior,
-- write-only letter constraints,
-- config validation,
-- policy drift normalization behavior.
+`pytest -q` is the CI path. It covers deterministic extraction, evaluation semantics, drafting constraints, rule loading, policy-monitor helpers, and a regression check over the bundled synthetic eval cases.
 
-## Suggested Local Change Workflow
-1. Update rules, extraction patterns, or governance code in a small commit.
-2. Run `make test`.
-3. Open the app with `make run`.
-4. Verify the policy provenance banner and blocking-item behavior on a synthetic case.
-5. If letter behavior changed, generate a letter and inspect the metadata hash plus blocked-language behavior.
-6. If policy-source artifacts changed, review the snapshot and diff outputs before treating rules as aligned.
-
-## Policy Drift Review Notes
-- `rules/policy_sources.yaml` declares monitored external policy sources.
-- `policy_snapshots/` stores committed governance artifacts.
-- Drift detection should trigger review, not rule mutation.
-- Rule updates should happen only after human review plus test updates.
+The Streamlit UI separately surfaces the same bundled synthetic eval cases as a local demo gate.

@@ -1,14 +1,19 @@
 # FAILURE_MODES.md
-## Failure Modes, Safety Analysis, and Mitigations (Frozen)
+## Failure Modes, Safety Analysis, and Mitigations
 
 **Project:** Prior Authorization Readiness Copilot  
 **Owner:** Nicholas Leko  
 **Last Updated:** February 2026  
-**Status:** FROZEN (behavioral contract; changes require tests + version bump)
+**Status:** Versioned current behavior. Changes should update tests and docs.
 
 ---
 
 ## 1) Scope and Safety Posture
+
+Current repo status:
+- deterministic implementation
+- no LLM implementation
+- synthetic inputs only
 
 This system is **administrative decision support** for prior authorization readiness.
 
@@ -32,7 +37,7 @@ The system is intentionally:
 
 ## 2) Safety-Critical Design Guarantees (Invariants)
 
-### 2.1 Frozen Readiness Invariants
+### 2.1 Current Readiness Invariants
 - Any `NOT_DOCUMENTED` ⇒ overall status **must** be `CANNOT_DETERMINE`
 - Any `NOT_MET` (and no `NOT_DOCUMENTED`) ⇒ overall status **must** be `NOT_READY`
 - No blockers ⇒ overall status **must** be `READY`
@@ -55,10 +60,10 @@ Letter drafting:
 - must include non-guarantee framing (“does not guarantee payer approval”)
 
 ### 2.4 Policy Drift Governance Guarantee
-- Policy drift detection only triggers **human review**
+- Policy drift detection for configured monitored sources only triggers **human review**
 - Rules are never auto-updated
 - Policy meaning is never inferred (no LLM policy interpretation)
-- UI gates evaluation if drift is detected (`REVIEW_REQUIRED` acknowledgement required)
+- UI gates evaluation if drift is detected for a monitored source (`REVIEW_REQUIRED` acknowledgement required)
 
 ---
 
@@ -176,13 +181,14 @@ Letter drafting:
 
 ## 4) Monitoring & Kill Switches (Operational Controls)
 
-- **Tests failing** ⇒ evaluation disabled in UI
-- **Policy drift detected** ⇒ evaluation gated behind acknowledgment
+- **Bundled synthetic eval mismatch in the UI** ⇒ local evaluation disabled
+- **Pytest failure in CI** ⇒ treat as a regression
+- **Policy drift detected for a monitored source** ⇒ evaluation gated behind acknowledgment
 - **Invariant violation detected** ⇒ surfaced in UI + audit; treat as a build defect
 
 ---
 
-## 5) Change Control (Frozen Contract)
+## 5) Change Control
 
 Any change to:
 - extraction patterns

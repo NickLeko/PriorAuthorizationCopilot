@@ -1,250 +1,117 @@
-# Extraction Contract v1.0 (Frozen)
+# Extraction Contract v1.1
 
 Project: Prior Authorization Readiness Copilot  
-Scope: Deterministic extraction only; context-gated; span-evidenced  
-Output: (facts, evidence_map)  
-Rules Version: 1.0  
-Status Semantics (per requirement): MET | NOT_MET | NOT_DOCUMENTED
+Scope: Deterministic extraction only  
+Current repo status: implemented and deterministic; no LLM is used anywhere in the extraction path  
+Output: `(facts, evidence_map)`
 
-THIS CONTRACT IS FROZEN.
-Any change requires: contract update, new or updated tests, and an explicit version bump.
+This document describes the extraction behavior implemented in [engine/extract.py](/Users/nicholasleko/projects/PriorAuthorizationCopilot/engine/extract.py).
 
----
+## 1. Core Rules
 
-## 1. Purpose
+- Extraction is deterministic.
+- Missing information remains missing.
+- Evidence spans are copied from the original note text when a supporting or missingness span is available.
+- The evidence map may omit fields that had no captured span.
+- No LLM is used for extraction.
 
-This document defines the authoritative extraction contract for the Prior Authorization Readiness Copilot.
+## 2. Returned Fields
 
-Extraction characteristics:
-- Deterministic
-- Rules-first
-- Auditable
-- Context-gated
-- Evidence-backed
+### `conservative_therapy_weeks`
 
-LLMs are explicitly prohibited from participating in extraction.
+Type: `int | null`
 
----
+Current behavior:
+- Extracts only week-based durations tied directly to therapy context such as PT, NSAIDs, activity modification, HEP, or chiropractic care.
+- Supports patterns like `PT x 8 weeks`, `PT for 8 weeks`, or `8 weeks of PT`.
+- Does not currently normalize therapy months to weeks.
+- If therapy is mentioned without a linked duration, returns `null`.
 
-## 2. Global Extraction Invariants
+### `symptom_duration_weeks`
 
-- Extraction returns (facts, evidence_map)
-- Each field resolves to either:
-  - a concrete value, or
-  - null if not documented
-- Every field MUST emit an evidence record
-- No inference beyond explicit note text
-- Missing documentation is preserved, never guessed
-- No silent defaults
+Type: `int | null`
 
----
+Current behavior:
+- Extracts the first explicit weeks or months duration found in the note.
+- Months are normalized as `months * 4`.
+- The current implementation does not require explicit symptom context for this field.
 
-## 3. Field Contracts
+### `neuro_red_flags_documented`
 
-### 3.1 Conservative Therapy Weeks
+Type: `bool | null`
 
-Field:
-conservative_therapy_weeks: int | null
+Current behavior:
+- Returns `True` when neurologic red flags are explicitly addressed in the note, whether affirmed or denied.
+- Returns `null` when the note does not explicitly address the supported red-flag phrases.
+- The current implementation does not use `False` for this field.
 
-Accepted Signals (therapy context required):
-- PT / physical therapy
-- NSAIDs / anti-inflammatories
-- Activity modification
-- Home exercise program (HEP)
-- Chiropractic care
+### `prior_imaging_result`
 
-Extraction Rules:
-- Duration extracted ONLY if therapy context exists
-- Accept weeks or months; normalize to weeks
-- If multiple durations exist, the maximum duration wins
-- Bare duration without therapy context → NOT_DOCUMENTED
+Type: `"none" | "inconclusive" | "abnormal" | null`
 
-Examples:
-- "Completed PT for 8 weeks" → 8
-- "Symptoms x 8 weeks" → NOT_DOCUMENTED
+Current behavior:
+- `none` when the note explicitly says there was no prior imaging.
+- `abnormal` when supported abnormal-result language is present.
+- `inconclusive` when imaging is mentioned without a usable result, or when findings are normal, unclear, unknown, or otherwise non-blocking.
+- Imaging mention without a result is treated as documented `inconclusive`, not `null`.
 
-Evidence:
-- Span(s) containing therapy context AND duration
+### `osa_diagnosis`
 
----
+Type: `bool | null`
 
-### 3.2 Symptom Duration
+Current behavior:
+- Returns `True` when `OSA` or `obstructive sleep apnea` appears.
+- Returns `null` otherwise.
 
-Field:
-symptom_duration_weeks: int | null
+### `sleep_study_date`
 
-Accepted Signals:
-- Any explicit duration tied to symptoms
+Type: `bool | null`
 
-Extraction Rules:
-- Therapy context not required
-- Normalize months to weeks
-- Vague descriptors (e.g., "chronic", "longstanding") → NOT_DOCUMENTED
+Current behavior:
+- Returns `True` when a date in `YYYY-MM-DD` or `YYYY/MM/DD` format appears near sleep-study context such as `sleep study`, `PSG`, `polysomnography`, `HST`, or `home sleep test`.
+- Returns `null` otherwise.
+- This field records whether a contextualized date was found. It does not return the parsed date value.
 
-Examples:
-- "Pain for 3 months" → 12
-- "Chronic pain" → NOT_DOCUMENTED
+### `ahi_documented`
 
-Evidence:
-- Duration span
+Type: `bool | null`
 
----
+Current behavior:
+- Returns `True` when a numeric `AHI` or `RDI` value is present.
+- Returns `null` when the note explicitly says the value is missing or when no numeric value is found.
+- This field records whether the numeric value is documented. It does not return the numeric value itself.
 
-### 3.3 Neurologic Red Flags
+## 3. Evidence Map
 
-Field:
-neuro_red_flags_documented: bool | null
+Return type:
+- `Dict[str, List[{"start": int, "end": int, "text": str}]]`
 
-Accepted Signals:
-Explicit presence OR denial of:
-- Weakness
-- Numbness
-- Bowel or bladder dysfunction
-- Saddle anesthesia
-- Progressive neurologic deficit
+Current behavior:
+- Each captured span stores `start`, `end`, and `text`.
+- Supporting spans are included when the extractor matched text for that field.
+- Missingness spans may be included for fields such as `ahi_documented`.
+- The current implementation does not attach status or span type metadata.
+- The evidence map may be empty for a missing field.
 
-Extraction Rules:
-- Explicit symptom mention required
-- Meta phrases such as "no red flags documented" → NOT_DOCUMENTED
-- Mixed signals → documented = true; downstream logic determines MET vs NOT_MET
+## 4. Examples
 
-Examples:
-- "Denies weakness or bowel/bladder issues" → false
-- "No red flags documented" → NOT_DOCUMENTED
+- `Completed PT for 8 weeks` -> `conservative_therapy_weeks = 8`
+- `Back pain x 2 months` -> `symptom_duration_weeks = 8`
+- `Denies weakness. No saddle anesthesia.` -> `neuro_red_flags_documented = True`
+- `Prior MRI reviewed` -> `prior_imaging_result = "inconclusive"`
+- `No prior imaging yet` -> `prior_imaging_result = "none"`
+- `Sleep study completed 2024-05-18` -> `sleep_study_date = True`
+- `AHI 22 documented` -> `ahi_documented = True`
+- `AHI not stated` -> `ahi_documented = null`
 
-Evidence:
-- Symptom or denial span(s)
+## 5. Limits
 
----
+- The extractor is intentionally narrow and regex-based.
+- The current implementation supports only the phrasing patterns encoded in the code and tests.
+- This repo uses synthetic inputs. It is not a production clinical NLP pipeline.
 
-### 3.4 Prior Imaging Result
+## 6. Possible Extensions
 
-Field:
-prior_imaging_result: abnormal | normal | inconclusive | null
-
-Accepted Signals:
-- MRI, CT, or X-ray with an explicit result descriptor
-
-Extraction Rules:
-- "Normal" imaging is treated as inconclusive (non-blocking)
-- Historical imaging is allowed
-- Imaging mentioned without a result → NOT_DOCUMENTED
-
-Examples:
-- "MRI lumbar spine normal" → inconclusive
-- "Prior MRI reviewed" → NOT_DOCUMENTED
-
-Evidence:
-- Imaging + result span
-
----
-
-### 3.5 Sleep Study Date (OSA Use Case)
-
-Field:
-sleep_study_date: date | null
-
-Accepted Signals:
-Date with nearby sleep-study context:
-- Sleep study
-- PSG
-- Polysomnography
-- HST
-
-Extraction Rules:
-- Sleep-study context must exist within a proximity window
-- Scheduling or follow-up dates are ignored
-
-Examples:
-- "PSG on 3/12/2023" → 2023-03-12
-- "Follow-up visit on 3/12/2023" → NOT_DOCUMENTED
-
-Evidence:
-- Contextual date span
-
----
-
-### 3.6 AHI / RDI Value
-
-Field:
-ahi: float | null
-
-Accepted Signals:
-- Numeric AHI or RDI value
-
-Extraction Rules:
-- Numeric value required
-- Negation-aware
-- Explicit missingness (e.g., "AHI not stated") → NOT_DOCUMENTED
-- Missingness evidence must be captured
-
-Examples:
-- "AHI 22.4" → 22.4
-- "Elevated AHI" → NOT_DOCUMENTED
-
-Evidence:
-- Numeric span or missingness span
-
----
-
-## 4. Evidence Map Contract (Required)
-
-Every field MUST emit an evidence record.
-
-Structure:
-- field_name: string
-- status: MET | NOT_MET | NOT_DOCUMENTED
-- spans: list of objects containing:
-  - start: integer offset
-  - end: integer offset
-  - text: raw note text span
-  - type: supporting | missingness
-
-Rules:
-- No raw note text stored outside spans
-- Missing fields may include missingness spans
-- Span offsets must map to original note text
-
----
-
-## 5. Non-Goals (Explicit)
-
-The extraction layer does NOT:
-- Predict approval
-- Score likelihood
-- Make clinical judgments
-- Infer undocumented facts
-- Use LLMs
-- Mutate downstream state
-
----
-
-## 6. Audit Requirements
-
-Each extraction run must persist:
-- rules_version: 1.0
-- extraction_contract_version: 1.0
-- Extracted facts
-- Evidence map
-- Invariant violations (if any)
-
----
-
-## 7. Versioning and Change Control
-
-Current version: 1.0
-
-Any modification requires:
-- Contract update
-- New or updated tests
-- Version bump (e.g., 1.1)
-
----
-
-## 8. Locked Next Step
-
-Proceed to LLM-assisted justification letter drafting with:
-- Inputs: requirement statuses and evidence only
-- Output: write-only text draft
-- No rule overrides
-- No state mutation
+- Return parsed date or numeric values for fields that are currently boolean presence checks.
+- Expand phrase coverage with additional regression tests.
+- Add stricter context gating for symptom duration if the product scope requires it.

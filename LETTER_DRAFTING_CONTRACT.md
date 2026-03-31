@@ -1,11 +1,12 @@
-# Letter Drafting Contract v1.1 (Frozen)
+# Letter Drafting Contract v1.1
 
 Project: Prior Authorization Readiness Copilot  
 Scope: Write-only letter drafting (no extraction, no evaluation, no state mutation)  
 Primary goal: Produce payer-facing administrative documentation that is strictly grounded in deterministic outputs + captured evidence snippets.
+Current repo status: deterministic letter drafting only; no LLM implementation
 
-**Status:** FROZEN  
-Any change requires: contract update + tests + explicit version bump.
+**Status:** Versioned current behavior  
+Any change should update this contract, tests, and versioning.
 
 ---
 

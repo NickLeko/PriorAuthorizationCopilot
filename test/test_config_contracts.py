@@ -9,6 +9,7 @@ from engine.provenance import (
     policy_trust_from_provenance,
 )
 from engine.rules_loader import load_rules
+from engine.test_suites import run_cases
 
 
 def test_rules_loader_rejects_enum_without_allowed_values(tmp_path: Path):
@@ -86,3 +87,10 @@ def test_normalized_dx_codes_are_uppercase_deduped_and_sanitized():
     dx_codes = [" m54.5 ", "M54.5", "m%51.26", "", "  "]
 
     assert normalized_dx_codes(dx_codes) == ["M54.5", "M51.26"]
+
+
+def test_bundled_synthetic_eval_cases_match_expected_labels():
+    rows = run_cases("rules/payer_rules.yaml", "inputs/synthetic_cases.json")
+
+    assert rows
+    assert all(row["pass"] == "✅" for row in rows)

@@ -91,12 +91,12 @@ SITE_OPTIONS = ["outpatient", "inpatient", "ASC", "office"]
 
 
 # ----------------------------
-# Sidebar: System Health (auto tests, cached)
+# Sidebar: Synthetic eval status (cached)
 # ----------------------------
-st.sidebar.markdown("### 🧪 System Health")
+st.sidebar.markdown("### 🧪 Synthetic Eval Status")
 
-# Manual cache bust button (prevents stale failures after edits)
-if st.sidebar.button("🔄 Refresh test health (clear cache)", width="stretch"):
+# Manual cache bust button (prevents stale results after edits)
+if st.sidebar.button("🔄 Refresh synthetic eval status", width="stretch"):
     st.cache_data.clear()
     st.rerun()
 
@@ -119,23 +119,23 @@ try:
     st.session_state["tests_healthy"] = tests_healthy
 
     if pass_rate >= 90:
-        st.sidebar.success(f"✅ Tests: {passed}/{total} ({pass_rate:.0f}%)")
+        st.sidebar.success(f"✅ Synthetic eval: {passed}/{total} cases matched ({pass_rate:.0f}%)")
     elif pass_rate >= 70:
-        st.sidebar.warning(f"⚠️ Tests: {passed}/{total} ({pass_rate:.0f}%)")
+        st.sidebar.warning(f"⚠️ Synthetic eval: {passed}/{total} cases matched ({pass_rate:.0f}%)")
     else:
-        st.sidebar.error(f"❌ Tests: {passed}/{total} ({pass_rate:.0f}%)")
+        st.sidebar.error(f"❌ Synthetic eval: {passed}/{total} cases matched ({pass_rate:.0f}%)")
 
-    with st.sidebar.expander("View Test Failures"):
+    with st.sidebar.expander("View synthetic eval mismatches"):
         failures = [r for r in test_results_cached if r.get("pass") == "❌"]
         if failures:
             for f in failures[:10]:
                 st.write(f"- {f.get('id')}: expected `{f.get('expected')}`, got `{f.get('predicted')}`")
         else:
-            st.success("All tests passing!")
+            st.success("All bundled synthetic cases matched expected labels.")
 
 except Exception as e:
     st.session_state["tests_healthy"] = False
-    st.sidebar.warning(f"Test health unavailable: {e}")
+    st.sidebar.warning(f"Synthetic eval status unavailable: {e}")
 
 
 # ----------------------------
@@ -423,8 +423,8 @@ def _policy_monitor_status(
 tests_healthy = bool(st.session_state.get("tests_healthy", False))
 if not tests_healthy:
     st.error(
-        "🚫 **Build Unhealthy** — Synthetic test suite is not passing. "
-        "Outputs may be unreliable. Fix failing tests before running evaluations."
+        "🚫 **Synthetic Eval Mismatch** — bundled synthetic cases do not all match their expected labels. "
+        "Review the mismatches before trusting demo outputs."
     )
 
 
@@ -437,22 +437,23 @@ except Exception as e:
     policy_rows, any_review_required = [], False
     st.warning(f"Policy monitor unavailable: {type(e).__name__}: {e}")
 
-st.subheader("Policy Monitor")
-st.caption("Detects policy drift via committed snapshots + drift log. Does not auto-update rules or change outcomes.")
+st.subheader("Policy Monitor (Configured Sources)")
+st.caption("Shows drift status for configured monitored sources only. It does not auto-update rules or change outcomes.")
 
 if policy_rows:
     st.dataframe(policy_rows, width="stretch")
+    st.caption("Supported procedures without configured monitored sources do not appear in this table.")
 else:
     st.info("No policy sources configured (or policy_sources.yaml missing).")
 
 if any_review_required:
-    st.warning("⚠️ Policy drift detected — rules may be stale. Verify policy and update rules/tests before trusting outputs.")
+    st.warning("⚠️ Policy drift detected for one or more monitored sources — related rules may be stale. Verify policy and update rules/tests before trusting outputs.")
     st.session_state.ack_policy_drift = st.checkbox(
-        "I acknowledge policy drift; demo outputs may be stale.",
+        "I acknowledge monitored-source drift; related demo outputs may be stale.",
         value=st.session_state.ack_policy_drift,
     )
 else:
-    st.success("Policy drift status: OK (based on latest snapshots/log).")
+    st.success("Policy drift status for monitored sources: OK (based on latest snapshots/log).")
     st.session_state.ack_policy_drift = True
 
 policy_gate_block = any_review_required and (not st.session_state.get("ack_policy_drift", False))
@@ -505,7 +506,7 @@ if featured_showcase_cases:
                     else:
                         showcase_feedback = (
                             "info",
-                            f'Loaded "{title}" into the intake below. Resolve the build health gate before running the evaluation.',
+                            f'Loaded "{title}" into the intake below. Resolve the synthetic eval gate before running the evaluation.',
                         )
 else:
     st.info("No featured showcase cases configured.")
@@ -702,7 +703,7 @@ if submitted or showcase_submitted:
 st.markdown("### Results")
 
 if st.session_state.last_eval is None:
-    st.info("Run an evaluation to see the result. The synthetic test suite remains available below.")
+    st.info("Run an evaluation to see the result. The bundled synthetic evaluation suite remains available below.")
 else:
     ev = st.session_state.last_eval
     overall = ev["overall"]
@@ -979,25 +980,25 @@ else:
 
 
 # ----------------------------
-# Test suite (manual run + export + inspect)
+# Synthetic evaluation suite (manual run + export + inspect)
 # ----------------------------
-st.markdown("### Advanced: Synthetic Test Suite")
+st.markdown("### Advanced: Synthetic Evaluation Suite")
 
-run_tests = st.button("Run test suite", width="stretch")
+run_tests = st.button("Run synthetic eval suite", width="stretch")
 
 if run_tests:
     from engine.test_suites import run_cases
     st.session_state.test_rows = run_cases("rules/payer_rules.yaml", "inputs/synthetic_cases.json")
 
 if st.session_state.test_rows is None:
-    st.caption("Click **Run test suite** to evaluate the rules engine on synthetic cases.")
+    st.caption("Click **Run synthetic eval suite** to evaluate the rules engine on bundled synthetic cases.")
 else:
     st.dataframe(st.session_state.test_rows, width="stretch")
 
     test_json = json.dumps(st.session_state.test_rows, indent=2)
     ts_local = datetime.now().strftime("%Y%m%d_%H%M%S")
     st.download_button(
-        label="📥 Download Test Results (JSON)",
+        label="📥 Download Synthetic Eval Results (JSON)",
         data=test_json,
         file_name=f"pa_test_results_{ts_local}.json",
         mime="application/json",
@@ -1005,7 +1006,7 @@ else:
     )
 
     st.markdown("---")
-    st.subheader("🔎 Inspect a Test Case (shows evidence snippets)")
+    st.subheader("🔎 Inspect a Synthetic Case")
 
     # Load the raw cases so we can re-run extraction/eval for one selected case
     _cases = synthetic_cases
@@ -1039,7 +1040,7 @@ else:
                 }
             )
 
-        st.markdown("**Test case note (synthetic):**")
+        st.markdown("**Synthetic case note:**")
         st.text_area("note_text", value=note_i, height=160)
 
         _render_key_value_block("Extracted facts", facts_i)

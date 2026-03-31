@@ -3,6 +3,10 @@
 Project: Prior Authorization Readiness Copilot  
 Purpose: Explain why “CANNOT_DETERMINE” is the correct, safer outcome when documentation is missing.
 
+Current repo status:
+- deterministic implementation
+- no LLM implementation
+
 ---
 
 ## 1) The Core Design Choice
@@ -35,7 +39,7 @@ This system refuses because it is designed to be **auditable and defensible**.
 
 ---
 
-## 3) Frozen Invariants (Safety Rails)
+## 3) Current Invariants (Safety Rails)
 
 The system enforces:
 
