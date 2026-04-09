@@ -5,12 +5,10 @@ import datetime as dt
 import difflib
 import hashlib
 import json
-import os
 import re
-import sys
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional
 
 # Governance-only module:
 # - Detects drift in official policy sources
@@ -29,6 +27,7 @@ class PolicySource:
     payer: str
     procedure_code: str
     url: str
+    source_name: str
     source_type: str
     trust_level: str
     check_frequency: str
@@ -52,10 +51,7 @@ def load_policy_sources(path: Path = DEFAULT_SOURCES_YAML) -> List[PolicySource]
     try:
         import yaml  # type: ignore
     except Exception as e:
-        raise RuntimeError(
-            "PyYAML is required to load rules/policy_sources.yaml. "
-            "Install pyyaml or vendor a minimal YAML loader."
-        ) from e
+        raise RuntimeError("PyYAML is required to load rules/policy_sources.yaml. Install pyyaml or vendor a minimal YAML loader.") from e
 
     data = yaml.safe_load(path.read_text(encoding="utf-8"))
     if not isinstance(data, dict) or "sources" not in data:
@@ -69,7 +65,21 @@ def load_policy_sources(path: Path = DEFAULT_SOURCES_YAML) -> List[PolicySource]
     for s in sources_raw:
         if not isinstance(s, dict):
             continue
-        missing = [k for k in ("id", "payer", "procedure_code", "url", "source_type", "trust_level", "check_frequency", "owner") if k not in s]
+        missing = [
+            k
+            for k in (
+                "id",
+                "payer",
+                "procedure_code",
+                "url",
+                "source_name",
+                "source_type",
+                "trust_level",
+                "check_frequency",
+                "owner",
+            )
+            if k not in s
+        ]
         if missing:
             raise ValueError(f"Source entry missing fields {missing}: {s}")
         out.append(
@@ -78,6 +88,7 @@ def load_policy_sources(path: Path = DEFAULT_SOURCES_YAML) -> List[PolicySource]
                 payer=str(s["payer"]),
                 procedure_code=str(s["procedure_code"]),
                 url=str(s["url"]),
+                source_name=str(s["source_name"]),
                 source_type=str(s["source_type"]),
                 trust_level=str(s["trust_level"]),
                 check_frequency=str(s["check_frequency"]),
@@ -98,9 +109,7 @@ def fetch_policy(url: str, timeout_s: int = 15) -> str:
     except Exception as e:
         raise RuntimeError("requests is required for live fetches (not used in tests).") from e
 
-    headers = {
-        "User-Agent": "PriorAuthorizationCopilot/PolicyMonitor (+governance; contact owner in policy_sources.yaml)"
-    }
+    headers = {"User-Agent": "PriorAuthorizationCopilot/PolicyMonitor (+governance; contact owner in policy_sources.yaml)"}
     resp = requests.get(url, headers=headers, timeout=timeout_s)
     resp.raise_for_status()
     # Keep as text; normalization will reduce noise.
@@ -130,7 +139,14 @@ class _HTMLTextExtractor:
         # 4) strip remaining tags
         html = re.sub(r"(?is)<[^>]+>", " ", html)
         # 5) unescape basic entities (minimal; deterministic)
-        html = html.replace("&nbsp;", " ").replace("&amp;", "&").replace("&lt;", "<").replace("&gt;", ">").replace("&quot;", '"').replace("&#39;", "'")
+        html = (
+            html.replace("&nbsp;", " ")
+            .replace("&amp;", "&")
+            .replace("&lt;", "<")
+            .replace("&gt;", ">")
+            .replace("&quot;", '"')
+            .replace("&#39;", "'")
+        )
         self._chunks.append(html)
 
     def text(self) -> str:

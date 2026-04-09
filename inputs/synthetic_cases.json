@@ -14,7 +14,9 @@
       "title": "Lumbar MRI ready for administrative review",
       "description": "A clean lumbar MRI request with therapy duration, symptom duration, imaging context, and red-flag documentation all present.",
       "expected_overall_status": "READY",
-      "why_interesting": "Shows the straight-line READY path with evidence snippets across each requirement."
+      "why_interesting": "Shows the straight-line READY path with evidence snippets across each requirement.",
+      "scenario_type": "Ready path",
+      "tags": ["spine MRI", "happy path", "evidence map"]
     }
   },
   {
@@ -92,7 +94,9 @@
       "title": "CPAP request refused for missing documentation",
       "description": "The note mentions OSA and a past sleep study, but it leaves out the date and AHI details required to determine readiness.",
       "expected_overall_status": "CANNOT_DETERMINE",
-      "why_interesting": "Shows refusal-first behavior when required evidence is missing instead of inferred."
+      "why_interesting": "Shows refusal-first behavior when required evidence is missing instead of inferred.",
+      "scenario_type": "Refusal-first",
+      "tags": ["DME", "missing documentation", "cannot determine"]
     }
   },
   {
@@ -142,7 +146,9 @@
       "title": "Documented, but not yet ready to submit",
       "description": "This note documents the right fields, but both symptom duration and therapy duration are still below threshold.",
       "expected_overall_status": "NOT_READY",
-      "why_interesting": "Shows the difference between documented failure and missingness."
+      "why_interesting": "Shows the difference between documented failure and missingness.",
+      "scenario_type": "Documented failure",
+      "tags": ["threshold miss", "not ready", "fully documented"]
     }
   },
   {
@@ -240,8 +246,120 @@
       "title": "CPAP ready case with alternative date formatting",
       "description": "A CPAP request that includes OSA documentation, a slash-formatted sleep study date, and an RDI value.",
       "expected_overall_status": "READY",
-      "why_interesting": "Shows cross-domain breadth and a small extraction robustness edge case."
+      "why_interesting": "Shows cross-domain breadth and a small extraction robustness edge case.",
+      "scenario_type": "Ready path",
+      "tags": ["date parsing", "DME", "cross-domain"]
     }
+  },
+  {
+    "id": "MRI-CERV-01-ready",
+    "payer": "Aetna",
+    "procedure_code": "MRI_CERVICAL",
+    "dx_codes": ["M54.12"],
+    "site_of_care": "outpatient",
+    "specialty": "Orthopedics",
+    "note_text": "Neck pain with right arm radiculopathy x 8 weeks. PT for 8 weeks and NSAIDs documented with minimal improvement. Denies weakness. Denies bowel/bladder changes. Prior cervical xray inconclusive.",
+    "expected_label": "complete",
+    "showcase": {
+      "featured": true,
+      "sort_order": 5,
+      "title": "Cervical MRI ready case using the new supported pathway",
+      "description": "A second spine MRI procedure that uses the same deterministic evidence contract as lumbar MRI.",
+      "expected_overall_status": "READY",
+      "why_interesting": "Shows that the shared service and rule registry can support new deterministic procedures without changing the engine shape.",
+      "scenario_type": "New procedure coverage",
+      "tags": ["cervical MRI", "registry depth", "shared contract"]
+    }
+  },
+  {
+    "id": "MRI-CERV-02-not-ready",
+    "payer": "Aetna",
+    "procedure_code": "MRI_CERVICAL",
+    "dx_codes": ["M54.2"],
+    "site_of_care": "outpatient",
+    "specialty": "Primary Care",
+    "note_text": "Neck pain x 4 weeks. PT x 4 weeks documented. Denies weakness. Denies bowel/bladder changes. Prior cervical xray unremarkable.",
+    "expected_label": "incomplete"
+  },
+  {
+    "id": "MRI-CERV-03-cannot-determine",
+    "payer": "Aetna",
+    "procedure_code": "MRI_CERVICAL",
+    "dx_codes": ["M54.12"],
+    "site_of_care": "outpatient",
+    "specialty": "Primary Care",
+    "note_text": "Neck pain x 8 weeks. PT x 8 weeks documented. No prior imaging. No red flags mentioned.",
+    "expected_label": "incomplete"
+  },
+  {
+    "id": "MRI-CERV-04-positive-redflags",
+    "payer": "Aetna",
+    "procedure_code": "MRI_CERVICAL",
+    "dx_codes": ["M54.12"],
+    "site_of_care": "outpatient",
+    "specialty": "Neurology",
+    "note_text": "Cervical radicular pain x 2 months. Completed physical therapy for 6 weeks. Reports progressive weakness in the right hand. Prior CT described as abnormal with degenerative stenosis.",
+    "expected_label": "complete"
+  },
+  {
+    "id": "MRI-KNEE-01-ready",
+    "payer": "Aetna",
+    "procedure_code": "MRI_KNEE",
+    "dx_codes": ["M25.561"],
+    "site_of_care": "outpatient",
+    "specialty": "Orthopedics",
+    "note_text": "Right knee pain with locking and catching x 8 weeks. Completed PT for 8 weeks and NSAIDs with minimal improvement. Prior knee xray normal/unremarkable.",
+    "expected_label": "complete",
+    "showcase": {
+      "featured": true,
+      "sort_order": 6,
+      "title": "Knee MRI ready case with explicit mechanical symptoms",
+      "description": "A non-spine advanced imaging request that stays narrow: symptom duration, therapy duration, prior xray context, and explicit mechanical symptom review.",
+      "expected_overall_status": "READY",
+      "why_interesting": "Shows deeper deterministic product coverage without changing the engine shape or widening into clinical scoring.",
+      "scenario_type": "Non-spine coverage",
+      "tags": ["knee MRI", "orthopedics", "mechanical symptoms"]
+    }
+  },
+  {
+    "id": "MRI-KNEE-02-not-ready-no-imaging",
+    "payer": "Aetna",
+    "procedure_code": "MRI_KNEE",
+    "dx_codes": ["M25.561"],
+    "site_of_care": "outpatient",
+    "specialty": "Orthopedics",
+    "note_text": "Right knee pain with locking x 8 weeks. PT x 8 weeks and activity modification documented. No prior imaging yet.",
+    "expected_label": "incomplete"
+  },
+  {
+    "id": "MRI-KNEE-03-cannot-determine",
+    "payer": "Aetna",
+    "procedure_code": "MRI_KNEE",
+    "dx_codes": ["M25.561"],
+    "site_of_care": "outpatient",
+    "specialty": "Primary Care",
+    "note_text": "Right knee pain x 8 weeks. PT x 8 weeks documented. Prior knee xray normal/unremarkable. MRI requested.",
+    "expected_label": "incomplete"
+  },
+  {
+    "id": "MRI-KNEE-04-ready-denied-mechanical",
+    "payer": "Aetna",
+    "procedure_code": "MRI_KNEE",
+    "dx_codes": ["M25.561"],
+    "site_of_care": "outpatient",
+    "specialty": "Sports Medicine",
+    "note_text": "Right knee pain x 10 weeks. Completed PT for 6 weeks and home exercise. Denies locking or instability. Prior knee xray findings unclear.",
+    "expected_label": "complete"
+  },
+  {
+    "id": "MRI-KNEE-05-conflict-deny-then-positive",
+    "payer": "Aetna",
+    "procedure_code": "MRI_KNEE",
+    "dx_codes": ["M25.561"],
+    "site_of_care": "outpatient",
+    "specialty": "Orthopedics",
+    "note_text": "Right knee pain x 8 weeks. PT x 8 weeks documented. Denies locking earlier in visit. Later note: reports buckling with stairs. Prior knee xray normal.",
+    "expected_label": "complete"
   },
   {
     "id": "CPAP-08-doc-gap-osa-not-stated",

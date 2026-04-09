@@ -5,8 +5,14 @@ from datetime import datetime, timezone
 from hashlib import sha256
 from typing import Dict, List, Tuple
 
-from .schemas import LetterType, OverallStatus, PARequest, PolicyTrustLevel, ReadinessReport, RequirementStatus
-
+from .schemas import (
+    LetterType,
+    OverallStatus,
+    PARequest,
+    PolicyTrustLevel,
+    ReadinessReport,
+    RequirementStatus,
+)
 
 ALLOWED_STATUSES: set[RequirementStatus] = {"MET", "NOT_MET", "NOT_DOCUMENTED"}
 ALLOWED_LETTER_TYPES: set[LetterType] = {"submission_cover_letter", "missing_info_request", "appeal_template"}
@@ -120,7 +126,7 @@ def _validate_inputs(
 
     # Cross-check counts (block if inconsistent; prevents subtle downstream confusion)
     calc = {"MET": 0, "NOT_MET": 0, "NOT_DOCUMENTED": 0}
-    for r in (report.results or []):
+    for r in report.results or []:
         if r.status in calc:
             calc[r.status] += 1
 
@@ -148,10 +154,7 @@ def _policy_trust_line(policy_trust_level: str) -> str | None:
     Presentation-only; no logic impact.
     """
     if policy_trust_level == "demo":
-        return (
-            "Policy trust level: DEMO — criteria are illustrative only. "
-            "Verify against the official payer policy before submission."
-        )
+        return "Policy trust level: DEMO — criteria are illustrative only. Verify against the official payer policy before submission."
     if policy_trust_level == "verified":
         return "Policy trust level: VERIFIED — criteria derived from documented payer policy sources."
     return None
@@ -193,9 +196,7 @@ def draft_letter(
     if blocked_reasons:
         text = (
             "DRAFT_BLOCKED\n\n"
-            "The letter could not be generated due to input validation errors:\n"
-            + "\n".join([f"- {r}" for r in blocked_reasons])
-            + "\n"
+            "The letter could not be generated due to input validation errors:\n" + "\n".join([f"- {r}" for r in blocked_reasons]) + "\n"
         )
         meta = LetterMeta(
             letter_version="1.1",
@@ -235,13 +236,15 @@ def draft_letter(
     if letter_type == "missing_info_request":
         summary = (
             "Summary:\n"
-            "The documentation provided is insufficient to determine administrative readiness because one or more required elements are not documented. "
+            "The documentation provided is insufficient to determine administrative readiness because "
+            "one or more required elements are not documented. "
             "This does not imply criteria failure and does not guarantee payer approval.\n"
         )
     elif letter_type == "appeal_template":
         summary = (
             "Summary:\n"
-            "This template summarizes documentation-based administrative criteria relevant to the request and is intended to support an appeal or reconsideration packet. "
+            "This template summarizes documentation-based administrative criteria relevant to the "
+            "request and is intended to support an appeal or reconsideration packet. "
             "It does not provide clinical recommendations and does not guarantee payer approval.\n"
         )
     else:
@@ -254,13 +257,15 @@ def draft_letter(
         elif overall == "NOT_READY":
             summary = (
                 "Summary:\n"
-                "The request is not administratively ready for submission because one or more documented requirements do not meet thresholds. "
+                "The request is not administratively ready for submission because one or more "
+                "documented requirements do not meet thresholds. "
                 "This does not represent a clinical judgment and does not guarantee payer approval.\n"
             )
         else:
             summary = (
                 "Summary:\n"
-                "Administrative readiness cannot be determined because one or more required elements are not documented in the record provided. "
+                "Administrative readiness cannot be determined because one or more required elements "
+                "are not documented in the record provided. "
                 "This does not imply criteria failure and does not guarantee payer approval.\n"
             )
 
@@ -326,10 +331,7 @@ def draft_letter(
     if prohibited_hits:
         blocked_reasons = prohibited_hits
         text = (
-            "DRAFT_BLOCKED\n\n"
-            "The letter was blocked due to prohibited language:\n"
-            + "\n".join([f"- {r}" for r in blocked_reasons])
-            + "\n"
+            "DRAFT_BLOCKED\n\nThe letter was blocked due to prohibited language:\n" + "\n".join([f"- {r}" for r in blocked_reasons]) + "\n"
         )
         meta = LetterMeta(
             letter_version="1.1",

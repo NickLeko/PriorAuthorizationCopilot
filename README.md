@@ -2,70 +2,184 @@
 
 Deterministic prior authorization readiness review for synthetic demo cases.
 
-This repo checks whether a request is administratively ready against versioned payer rules. It does not make clinical judgments, predict approval, or act autonomously.
+This repo checks whether a request is administratively ready against versioned payer rules. It does not make clinical judgments, predict approval, assess medical necessity, or act autonomously.
 
-Current scope: the repo supports two Aetna demo procedures, `MRI_LUMBAR` and `CPAP_DEVICE`. Policy drift monitoring is configured only for `MRI_LUMBAR`.
+## What This Repo Does
 
-<p align="center">
-  <img src="docs/images/prior-auth-copilot-demo.png" alt="Prior Authorization Copilot demo showing a CANNOT_DETERMINE result with blockers, requirement-level reasoning, extracted facts, evidence mapping, and audit summary." width="900">
-</p>
+- extracts a narrow set of required facts from synthetic note text using deterministic rules
+- evaluates those facts against versioned payer requirements
+- returns requirement-level reasoning, blocker summaries, evidence mapping, and audit trace data
+- exposes the same workflow through Streamlit, FastAPI, and a CLI
+- monitors configured policy sources for drift without auto-changing rules or outcomes
 
-## Current Repo
+## What This Repo Does Not Do
 
-- Deterministic extraction, evaluation, and letter drafting
-- No LLM is used anywhere in the current implementation
-- Synthetic inputs only
-- Narrow rule coverage
-- Streamlit demo UI plus pytest coverage
+- no approval prediction
+- no clinical decision support
+- no claims adjudication
+- no medical-necessity review
+- no autonomous submission or outreach
+- no real payer integrations
+- no production or compliance claims
 
-| Procedure | Supported in rules | Monitored for drift |
-| --- | --- | --- |
-| `MRI_LUMBAR` | Yes | Yes |
-| `CPAP_DEVICE` | Yes | No |
+## Why Deterministic First
 
-Policy drift status applies only to configured monitored sources. In the current repo, runtime trust remains `demo` for both procedures because provenance is still curated offline in `rules/provenance.yaml`.
+This problem is intentionally narrow. For a recruiter-facing and interview-defensible artifact, deterministic logic is the right backbone because it is:
 
-## Core Semantics
+- explainable requirement by requirement
+- auditable with stable evidence references
+- safe to refuse when documentation is missing
+- testable with synthetic fixtures and regression cases
 
-- `READY`: all required elements are documented and meet the current rule thresholds
-- `NOT_READY`: all required elements are documented, but one or more do not meet threshold
-- `CANNOT_DETERMINE`: one or more required elements are not documented
+`CANNOT_DETERMINE` is a feature here, not a failure mode.
 
-Any `NOT_DOCUMENTED` result must force `CANNOT_DETERMINE`.
+## Current Supported Scope
 
-## Limits
+| Payer | Procedure | Supported in rules | Drift monitored |
+| --- | --- | --- | --- |
+| Aetna | `MRI_LUMBAR` | Yes | Yes |
+| Aetna | `MRI_CERVICAL` | Yes | No |
+| Aetna | `MRI_KNEE` | Yes | No |
+| Aetna | `CPAP_DEVICE` | Yes | No |
 
-- Uses synthetic notes and demo rules
-- Supports a small number of procedures and phrasing patterns
-- Does not integrate with an EHR, payer, or clearinghouse
-- Policy drift monitoring is partial and only covers configured sources
+Synthetic inputs only. Policy drift monitoring is governance-only and does not automatically update rules. Procedure registry output now also surfaces category, rule family, rule source label, last rule update, and last reviewed metadata. A lightweight rulebook registry now tracks reviewed and active snapshots separately from runtime drift monitoring.
 
-## Canonical Local Setup
+## Architecture At A Glance
 
-Python version: `3.12.3`
+- `engine/extract.py`: deterministic extraction
+- `engine/evaluate.py`: requirement evaluation and frozen status semantics
+- `engine/letter_draft.py`: write-only administrative letter drafting
+- `engine/service.py`: shared orchestration for UI, API, CLI, and artifacts
+- `engine/policy_monitor.py`: governance-only drift detection and snapshot handling
+- `engine/rulebook.py`: versioned rulebook validation and diffing
+- `engine/acceptance.py`: golden-output normalization for acceptance checks
+- `app.py`: Streamlit operator demo
+- `api.py`: FastAPI surface
+- `cli.py`: local demo and export workflows
+
+More detail: [docs/architecture.md](docs/architecture.md)
+
+## Local Setup
+
+Python version used in this repo: `3.12.x`
 
 ```bash
-python3.12 -m venv .venv
-source .venv/bin/activate
-python -m pip install --upgrade pip
-python -m pip install -r requirements.txt
+make install
+make test
+make lint
+make acceptance
+make smoke-ui
+make verify
+make run
+```
+
+If you prefer direct commands:
+
+```bash
+python3 -m pip install -r requirements.txt
 pytest -q
+pytest -q test/test_acceptance_snapshots.py
+ruff check .
+pytest -q test/test_streamlit_app.py
 streamlit run app.py
 ```
 
-CI runs `pytest -q`. That automated suite includes unit-style tests plus a regression check over the bundled synthetic eval cases. The UI separately surfaces the same bundled synthetic cases as a local demo gate.
+## FastAPI
 
-## What To Inspect
+Run locally:
 
-- [app.py](./app.py): Streamlit demo surface and monitored-source policy panel
-- [engine/extract.py](./engine/extract.py): deterministic extraction
-- [engine/evaluate.py](./engine/evaluate.py): requirement evaluation and overall status logic
-- [rules/payer_rules.yaml](./rules/payer_rules.yaml): current supported procedures
-- [EXTRACTION_CONTRACT.md](./EXTRACTION_CONTRACT.md): extraction behavior as implemented
-- [FAILURE_MODES.md](./FAILURE_MODES.md): safety and failure boundaries
+```bash
+python3 -m uvicorn api:app --reload
+```
 
-## Possible Extensions
+Example calls:
 
-- Expand payer and procedure coverage with provenance updates and tests
-- Add production integration layers outside this repo
-- Evaluate whether optional LLM-assisted text formatting is worth adding behind strict contracts
+```bash
+curl http://127.0.0.1:8000/health
+curl http://127.0.0.1:8000/supported-procedures
+curl http://127.0.0.1:8000/demo-cases
+curl -X POST http://127.0.0.1:8000/evaluate \
+  -H "Content-Type: application/json" \
+  -d '{
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "dx_codes": ["M54.16"],
+    "site_of_care": "outpatient",
+    "specialty": "Orthopedics",
+    "note_text": "Low back pain with right leg radiculopathy x 8 weeks. Completed PT for 8 weeks and NSAIDs with minimal improvement. Denies bowel/bladder incontinence. No saddle anesthesia. Prior imaging: lumbar xray inconclusive. Neuro exam: mild weakness dorsiflexion 4/5."
+  }'
+```
+
+Full API notes: [docs/api.md](docs/api.md)
+
+## CLI
+
+```bash
+python3 cli.py status
+python3 cli.py list-procedures
+python3 cli.py list-demo-cases
+python3 cli.py evaluate --demo-case MRI-01-complete
+python3 cli.py evaluate --demo-case MRI-CERV-01-ready
+python3 cli.py evaluate --demo-case MRI-KNEE-01-ready
+python3 cli.py export-report --demo-case CPAP-02-borderline --output docs/artifacts/manual_export.json --with-letter
+python3 cli.py drift-status
+python3 cli.py rulebook-status
+python3 cli.py rulebook-diff --from-release 2026-04-09-reviewed-v0.4 --to-release 2026-04-09-active-v0.5
+```
+
+## Demo Artifacts
+
+Stable sample outputs are generated under [docs/artifacts](docs/artifacts):
+
+- [MRI-01-complete.json](docs/artifacts/MRI-01-complete.json)
+- [MRI-08-edge-below-threshold.json](docs/artifacts/MRI-08-edge-below-threshold.json)
+- [MRI-CERV-01-ready.json](docs/artifacts/MRI-CERV-01-ready.json)
+- [MRI-KNEE-01-ready.json](docs/artifacts/MRI-KNEE-01-ready.json)
+- [CPAP-02-borderline.json](docs/artifacts/CPAP-02-borderline.json)
+- [drift_status.json](docs/artifacts/drift_status.json)
+- [drift_report.md](docs/artifacts/drift_report.md)
+- [featured_demo_cases.json](docs/artifacts/featured_demo_cases.json)
+- [rulebook_status.json](docs/artifacts/rulebook_status.json)
+- [rulebook_diff_reviewed_vs_active.json](docs/artifacts/rulebook_diff_reviewed_vs_active.json)
+- [rulebook_diff_reviewed_vs_active.md](docs/artifacts/rulebook_diff_reviewed_vs_active.md)
+- [status.json](docs/artifacts/status.json)
+
+Regenerate demo artifacts with:
+
+```bash
+python3 -m scripts.generate_artifacts
+```
+
+Regenerate golden acceptance snapshots with:
+
+```bash
+python3 -m scripts.generate_golden_outputs
+```
+
+## Key Docs
+
+- [docs/architecture.md](docs/architecture.md)
+- [docs/api.md](docs/api.md)
+- [docs/demo_walkthrough.md](docs/demo_walkthrough.md)
+- [docs/testing.md](docs/testing.md)
+- [docs/safety_and_scope.md](docs/safety_and_scope.md)
+- [EXTRACTION_CONTRACT.md](EXTRACTION_CONTRACT.md)
+- [LETTER_DRAFTING_CONTRACT.md](LETTER_DRAFTING_CONTRACT.md)
+- [MODEL_CARD.md](MODEL_CARD.md)
+- [FAILURE_MODES.md](FAILURE_MODES.md)
+- [PRODUCT_OVERVIEW.md](PRODUCT_OVERVIEW.md)
+- [WHY_THIS_EXISTS.md](WHY_THIS_EXISTS.md)
+- [DESIGN_DECISIONS.md](DESIGN_DECISIONS.md)
+- [LIMITATIONS.md](LIMITATIONS.md)
+- [NEXT_STEPS.md](NEXT_STEPS.md)
+- [INTERVIEW_TALKING_POINTS.md](INTERVIEW_TALKING_POINTS.md)
+
+## Repo Quality Gates
+
+- deterministic-only evaluation path
+- synthetic fixtures only
+- pytest regression coverage
+- acceptance snapshots for representative product outputs
+- structured outputs shared across UI, API, CLI, and exported artifacts
+- explicit unsupported-scope handling
+- honest scope and safety language

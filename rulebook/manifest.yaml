@@ -1,0 +1,55 @@
+version: 1
+
+runtime:
+  rules: "rules/payer_rules.yaml"
+  provenance: "rules/provenance.yaml"
+  policy_sources: "rules/policy_sources.yaml"
+
+stages:
+  draft:
+  reviewed: "2026-04-09-reviewed-v0.4"
+  active: "2026-04-09-active-v0.5"
+
+releases:
+  2026-04-09-reviewed-v0.4:
+    stage: reviewed
+    summary: "Reviewed rulebook before the narrow non-spine knee MRI expansion."
+    created_at: "2026-04-09T10:45:00Z"
+    rules_version: "0.4"
+    procedures:
+      - "CPAP_DEVICE"
+      - "MRI_CERVICAL"
+      - "MRI_LUMBAR"
+    files:
+      rules: "rulebook/releases/2026-04-09-reviewed-v0.4/payer_rules.yaml"
+      provenance: "rulebook/releases/2026-04-09-reviewed-v0.4/provenance.yaml"
+      policy_sources: "rulebook/releases/2026-04-09-reviewed-v0.4/policy_sources.yaml"
+    reviewer: "demo-maintainer"
+    reviewed_at: "2026-04-09"
+    notes:
+      - "Historical reviewed snapshot retained for governance diffs."
+
+  2026-04-09-active-v0.5:
+    stage: active
+    summary: "Active rulebook after the narrow non-spine knee MRI expansion."
+    created_at: "2026-04-09T12:15:00Z"
+    based_on_release_id: "2026-04-09-reviewed-v0.4"
+    rules_version: "0.5"
+    procedures:
+      - "CPAP_DEVICE"
+      - "MRI_CERVICAL"
+      - "MRI_KNEE"
+      - "MRI_LUMBAR"
+    files:
+      rules: "rulebook/releases/2026-04-09-active-v0.5/payer_rules.yaml"
+      provenance: "rulebook/releases/2026-04-09-active-v0.5/provenance.yaml"
+      policy_sources: "rulebook/releases/2026-04-09-active-v0.5/policy_sources.yaml"
+    reviewer: "demo-maintainer"
+    reviewed_at: "2026-04-09"
+    notes:
+      - "This active snapshot should match the runtime files under rules/."
+
+promotion_workflow:
+  draft: "Create a candidate snapshot first. Keep it out of runtime until a human reviewer validates the evidence contract and metadata."
+  reviewed: "Mark a snapshot reviewed only after a human has validated rule text, provenance, and demo fixtures."
+  active: "Promote to active by updating the manifest stage pointer and syncing runtime rules deliberately. Drift monitoring never promotes rules automatically."

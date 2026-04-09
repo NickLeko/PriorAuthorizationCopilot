@@ -1,0 +1,507 @@
+{
+  "audit_trail": {
+    "blocking_issues": {
+      "not_documented": [],
+      "not_met": []
+    },
+    "evaluation_warnings": [
+      "Policy trust remains DEMO for this procedure. Verify against official policy before real-world use."
+    ],
+    "evidence_map": {
+      "conservative_therapy_weeks": [
+        {
+          "end": 77,
+          "start": 63,
+          "text": "PT for 8 weeks"
+        }
+      ],
+      "mechanical_symptoms_documented": [
+        {
+          "end": 41,
+          "start": 16,
+          "text": "with locking and catching"
+        }
+      ],
+      "prior_imaging_result": [
+        {
+          "end": 137,
+          "start": 126,
+          "text": "xray normal"
+        }
+      ],
+      "symptom_duration_weeks": [
+        {
+          "end": 51,
+          "start": 44,
+          "text": "8 weeks"
+        }
+      ]
+    },
+    "facts_extracted": {
+      "ahi_documented": null,
+      "conservative_therapy_weeks": 8,
+      "mechanical_symptoms_documented": true,
+      "neuro_red_flags_documented": null,
+      "osa_diagnosis": null,
+      "prior_imaging_result": "inconclusive",
+      "sleep_study_date": null,
+      "symptom_duration_weeks": 8
+    },
+    "invariant_errors": [],
+    "metrics": {
+      "compliance_rate": 100.0,
+      "compliant_count": 4,
+      "extraction_failure_count": 0,
+      "extraction_success_rate": 100.0,
+      "non_compliant_count": 0
+    },
+    "note_hash": "59421e8561fe0462",
+    "note_length": 151,
+    "overall_status": "READY",
+    "payer": "Aetna",
+    "policy_trust_level": "demo",
+    "procedure_code": "MRI_KNEE",
+    "procedure_name": "MRI Knee (no contrast)",
+    "provenance_snapshot": {
+      "last_reviewed": "2026-04-09",
+      "monitored_check_frequency": null,
+      "monitored_source_id": null,
+      "monitored_source_name": null,
+      "monitored_source_owner": null,
+      "monitored_source_url": null,
+      "notes": "Rules are illustrative for demo and intentionally limited to documentation completeness.",
+      "rule_last_updated": "2026-04-09",
+      "rule_source_label": "Human-curated summary of knee MRI administrative documentation criteria",
+      "source_name": "Aetna knee MRI policy summary",
+      "source_type": "manual_summary",
+      "source_url": null
+    },
+    "requirements_checked": [
+      "conservative_therapy_weeks",
+      "symptom_duration_weeks",
+      "prior_imaging_result",
+      "mechanical_symptoms_documented"
+    ],
+    "rulebook_active_release_id": "2026-04-09-active-v0.5",
+    "rules_version": "0.5",
+    "run_id": "b51fa27b-65d0-4826-bd84-9ae81c89d3d6",
+    "site_of_care": "outpatient",
+    "specialty": "Orthopedics",
+    "submission_readiness": true,
+    "timestamp_utc": "2026-04-09T15:24:39Z"
+  },
+  "blockers": {
+    "not_documented": [],
+    "not_met": []
+  },
+  "evidence_map": {
+    "conservative_therapy_weeks": [
+      {
+        "end": 77,
+        "start": 63,
+        "text": "PT for 8 weeks"
+      }
+    ],
+    "mechanical_symptoms_documented": [
+      {
+        "end": 41,
+        "start": 16,
+        "text": "with locking and catching"
+      }
+    ],
+    "prior_imaging_result": [
+      {
+        "end": 137,
+        "start": 126,
+        "text": "xray normal"
+      }
+    ],
+    "symptom_duration_weeks": [
+      {
+        "end": 51,
+        "start": 44,
+        "text": "8 weeks"
+      }
+    ]
+  },
+  "facts": {
+    "ahi_documented": null,
+    "conservative_therapy_weeks": 8,
+    "mechanical_symptoms_documented": true,
+    "neuro_red_flags_documented": null,
+    "osa_diagnosis": null,
+    "prior_imaging_result": "inconclusive",
+    "sleep_study_date": null,
+    "symptom_duration_weeks": 8
+  },
+  "letter": {
+    "metadata": {
+      "cited_snippets_count": 4,
+      "contains_missing_documentation": false,
+      "draft_blocked": false,
+      "draft_blocked_reasons": [],
+      "generated_timestamp_utc": "2026-04-09T15:24:39Z",
+      "letter_hash_sha256_16": "f82cadf34fa88699",
+      "letter_type": "submission_cover_letter",
+      "letter_version": "1.1",
+      "overall_status": "READY",
+      "policy_trust_level": "demo"
+    },
+    "text": "PRIOR AUTHORIZATION ADMINISTRATIVE READINESS SUMMARY\n\nPayer: Aetna\nProcedure: MRI_KNEE\nSite of care: outpatient\nSpecialty: Orthopedics\nGenerated: 2026-04-09T15:24:39Z\nDx codes: M25.561\nPolicy trust level: DEMO \u2014 criteria are illustrative only. Verify against the official payer policy before submission.\n\nOverall Status: READY\n\nSummary:\nThis letter supports administrative submission readiness based on the documentation present in the record. This does not guarantee payer approval.\n\nRequirements:\n- Conservative therapy duration (weeks) (conservative_therapy_weeks): MET\n  Reason: Documented value: 8.\n  Evidence:\n   - \"PT for 8 weeks\"\n- Symptom duration (weeks) (symptom_duration_weeks): MET\n  Reason: Documented value: 8.\n  Evidence:\n   - \"8 weeks\"\n- Prior imaging result (prior_imaging_result): MET\n  Reason: Documented: inconclusive.\n  Evidence:\n   - \"xray normal\"\n- Mechanical symptoms explicitly addressed (present or denied) (mechanical_symptoms_documented): MET\n  Reason: Explicitly addressed in documentation (present/affirmed).\n  Evidence:\n   - \"with locking and catching\"\nClosing:\nThis letter summarizes documentation-based administrative readiness for prior authorization submission. It does not provide clinical recommendations and does not predict approval outcomes.\n"
+  },
+  "metrics": {
+    "compliance_rate": 100.0,
+    "compliant_count": 4,
+    "extraction_failure_count": 0,
+    "extraction_success_rate": 100.0,
+    "non_compliant_count": 0
+  },
+  "overall_status": "READY",
+  "policy_trust_level": "demo",
+  "provenance": {
+    "last_reviewed": "2026-04-09",
+    "monitored_check_frequency": null,
+    "monitored_source_id": null,
+    "monitored_source_name": null,
+    "monitored_source_owner": null,
+    "monitored_source_url": null,
+    "notes": "Rules are illustrative for demo and intentionally limited to documentation completeness.",
+    "rule_last_updated": "2026-04-09",
+    "rule_source_label": "Human-curated summary of knee MRI administrative documentation criteria",
+    "source_name": "Aetna knee MRI policy summary",
+    "source_type": "manual_summary",
+    "source_url": null
+  },
+  "readiness_score": 100,
+  "report": {
+    "audit_trail": {
+      "blocking_issues": {
+        "not_documented": [],
+        "not_met": []
+      },
+      "evaluation_warnings": [
+        "Policy trust remains DEMO for this procedure. Verify against official policy before real-world use."
+      ],
+      "evidence_map": {
+        "conservative_therapy_weeks": [
+          {
+            "end": 77,
+            "start": 63,
+            "text": "PT for 8 weeks"
+          }
+        ],
+        "mechanical_symptoms_documented": [
+          {
+            "end": 41,
+            "start": 16,
+            "text": "with locking and catching"
+          }
+        ],
+        "prior_imaging_result": [
+          {
+            "end": 137,
+            "start": 126,
+            "text": "xray normal"
+          }
+        ],
+        "symptom_duration_weeks": [
+          {
+            "end": 51,
+            "start": 44,
+            "text": "8 weeks"
+          }
+        ]
+      },
+      "facts_extracted": {
+        "ahi_documented": null,
+        "conservative_therapy_weeks": 8,
+        "mechanical_symptoms_documented": true,
+        "neuro_red_flags_documented": null,
+        "osa_diagnosis": null,
+        "prior_imaging_result": "inconclusive",
+        "sleep_study_date": null,
+        "symptom_duration_weeks": 8
+      },
+      "invariant_errors": [],
+      "metrics": {
+        "compliance_rate": 100.0,
+        "compliant_count": 4,
+        "extraction_failure_count": 0,
+        "extraction_success_rate": 100.0,
+        "non_compliant_count": 0
+      },
+      "note_hash": "59421e8561fe0462",
+      "note_length": 151,
+      "overall_status": "READY",
+      "payer": "Aetna",
+      "policy_trust_level": "demo",
+      "procedure_code": "MRI_KNEE",
+      "procedure_name": "MRI Knee (no contrast)",
+      "provenance_snapshot": {
+        "last_reviewed": "2026-04-09",
+        "monitored_check_frequency": null,
+        "monitored_source_id": null,
+        "monitored_source_name": null,
+        "monitored_source_owner": null,
+        "monitored_source_url": null,
+        "notes": "Rules are illustrative for demo and intentionally limited to documentation completeness.",
+        "rule_last_updated": "2026-04-09",
+        "rule_source_label": "Human-curated summary of knee MRI administrative documentation criteria",
+        "source_name": "Aetna knee MRI policy summary",
+        "source_type": "manual_summary",
+        "source_url": null
+      },
+      "requirements_checked": [
+        "conservative_therapy_weeks",
+        "symptom_duration_weeks",
+        "prior_imaging_result",
+        "mechanical_symptoms_documented"
+      ],
+      "rulebook_active_release_id": "2026-04-09-active-v0.5",
+      "rules_version": "0.5",
+      "run_id": "b51fa27b-65d0-4826-bd84-9ae81c89d3d6",
+      "site_of_care": "outpatient",
+      "specialty": "Orthopedics",
+      "submission_readiness": true,
+      "timestamp_utc": "2026-04-09T15:24:39Z"
+    },
+    "letter_draft": "",
+    "met_count": 4,
+    "not_documented_count": 0,
+    "not_met_count": 0,
+    "readiness_score": 100,
+    "results": [
+      {
+        "evidence": "PT/activity modification/NSAID trial documented",
+        "evidence_snippets": [
+          "PT for 8 weeks"
+        ],
+        "evidence_spans": [
+          {
+            "end": 77,
+            "start": 63,
+            "text": "PT for 8 weeks"
+          }
+        ],
+        "key": "conservative_therapy_weeks",
+        "label": "Conservative therapy duration (weeks)",
+        "reason": "Documented value: 8.",
+        "status": "MET"
+      },
+      {
+        "evidence": "Persistent symptoms documented long enough to justify escalation",
+        "evidence_snippets": [
+          "8 weeks"
+        ],
+        "evidence_spans": [
+          {
+            "end": 51,
+            "start": 44,
+            "text": "8 weeks"
+          }
+        ],
+        "key": "symptom_duration_weeks",
+        "label": "Symptom duration (weeks)",
+        "reason": "Documented value: 8.",
+        "status": "MET"
+      },
+      {
+        "evidence": "Prior knee imaging such as x-ray is documented and not simply absent",
+        "evidence_snippets": [
+          "xray normal"
+        ],
+        "evidence_spans": [
+          {
+            "end": 137,
+            "start": 126,
+            "text": "xray normal"
+          }
+        ],
+        "key": "prior_imaging_result",
+        "label": "Prior imaging result",
+        "reason": "Documented: inconclusive.",
+        "status": "MET"
+      },
+      {
+        "evidence": "Locking, catching, buckling, giving way, or instability explicitly documented",
+        "evidence_snippets": [
+          "with locking and catching"
+        ],
+        "evidence_spans": [
+          {
+            "end": 41,
+            "start": 16,
+            "text": "with locking and catching"
+          }
+        ],
+        "key": "mechanical_symptoms_documented",
+        "label": "Mechanical symptoms explicitly addressed (present or denied)",
+        "reason": "Explicitly addressed in documentation (present/affirmed).",
+        "status": "MET"
+      }
+    ],
+    "rule_reasons": []
+  },
+  "request": {
+    "dx_codes": [
+      "M25.561"
+    ],
+    "note_text": "Right knee pain with locking and catching x 8 weeks. Completed PT for 8 weeks and NSAIDs with minimal improvement. Prior knee xray normal/unremarkable.",
+    "payer": "Aetna",
+    "procedure_code": "MRI_KNEE",
+    "site_of_care": "outpatient",
+    "specialty": "Orthopedics"
+  },
+  "results": [
+    {
+      "evidence": "PT/activity modification/NSAID trial documented",
+      "evidence_snippets": [
+        "PT for 8 weeks"
+      ],
+      "evidence_spans": [
+        {
+          "end": 77,
+          "start": 63,
+          "text": "PT for 8 weeks"
+        }
+      ],
+      "key": "conservative_therapy_weeks",
+      "label": "Conservative therapy duration (weeks)",
+      "reason": "Documented value: 8.",
+      "status": "MET"
+    },
+    {
+      "evidence": "Persistent symptoms documented long enough to justify escalation",
+      "evidence_snippets": [
+        "8 weeks"
+      ],
+      "evidence_spans": [
+        {
+          "end": 51,
+          "start": 44,
+          "text": "8 weeks"
+        }
+      ],
+      "key": "symptom_duration_weeks",
+      "label": "Symptom duration (weeks)",
+      "reason": "Documented value: 8.",
+      "status": "MET"
+    },
+    {
+      "evidence": "Prior knee imaging such as x-ray is documented and not simply absent",
+      "evidence_snippets": [
+        "xray normal"
+      ],
+      "evidence_spans": [
+        {
+          "end": 137,
+          "start": 126,
+          "text": "xray normal"
+        }
+      ],
+      "key": "prior_imaging_result",
+      "label": "Prior imaging result",
+      "reason": "Documented: inconclusive.",
+      "status": "MET"
+    },
+    {
+      "evidence": "Locking, catching, buckling, giving way, or instability explicitly documented",
+      "evidence_snippets": [
+        "with locking and catching"
+      ],
+      "evidence_spans": [
+        {
+          "end": 41,
+          "start": 16,
+          "text": "with locking and catching"
+        }
+      ],
+      "key": "mechanical_symptoms_documented",
+      "label": "Mechanical symptoms explicitly addressed (present or denied)",
+      "reason": "Explicitly addressed in documentation (present/affirmed).",
+      "status": "MET"
+    }
+  ],
+  "rule_reasons": [],
+  "submission_readiness": true,
+  "supported_procedure": {
+    "display_name": "MRI Knee (no contrast)",
+    "metadata": {
+      "category": "advanced_imaging",
+      "last_rule_update": "2026-04-09",
+      "notes": [
+        "This demo pathway checks only administrative completeness, not orthopedic appropriateness.",
+        "Requires symptom duration, conservative therapy, prior imaging context, and explicit review of mechanical symptoms."
+      ],
+      "rule_family": "extremity_mri_conservative_therapy",
+      "summary": "Administrative readiness check for knee MRI requests using a narrow deterministic documentation contract.",
+      "supported_sites": [
+        "outpatient"
+      ]
+    },
+    "monitored_for_drift": false,
+    "payer": "Aetna",
+    "policy_trust_level": "demo",
+    "procedure_code": "MRI_KNEE",
+    "provenance": {
+      "last_reviewed": "2026-04-09",
+      "monitored_check_frequency": null,
+      "monitored_source_id": null,
+      "monitored_source_name": null,
+      "monitored_source_owner": null,
+      "monitored_source_url": null,
+      "notes": "Rules are illustrative for demo and intentionally limited to documentation completeness.",
+      "rule_last_updated": "2026-04-09",
+      "rule_source_label": "Human-curated summary of knee MRI administrative documentation criteria",
+      "source_name": "Aetna knee MRI policy summary",
+      "source_type": "manual_summary",
+      "source_url": null
+    },
+    "required_field_keys": [
+      "conservative_therapy_weeks",
+      "symptom_duration_weeks",
+      "prior_imaging_result",
+      "mechanical_symptoms_documented"
+    ],
+    "requirements": [
+      {
+        "allowed": [],
+        "evidence": "PT/activity modification/NSAID trial documented",
+        "key": "conservative_therapy_weeks",
+        "label": "Conservative therapy duration (weeks)",
+        "min": 6.0,
+        "type": "number"
+      },
+      {
+        "allowed": [],
+        "evidence": "Persistent symptoms documented long enough to justify escalation",
+        "key": "symptom_duration_weeks",
+        "label": "Symptom duration (weeks)",
+        "min": 6.0,
+        "type": "number"
+      },
+      {
+        "allowed": [
+          "inconclusive",
+          "abnormal"
+        ],
+        "evidence": "Prior knee imaging such as x-ray is documented and not simply absent",
+        "key": "prior_imaging_result",
+        "label": "Prior imaging result",
+        "min": null,
+        "type": "enum"
+      },
+      {
+        "allowed": [],
+        "evidence": "Locking, catching, buckling, giving way, or instability explicitly documented",
+        "key": "mechanical_symptoms_documented",
+        "label": "Mechanical symptoms explicitly addressed (present or denied)",
+        "min": null,
+        "type": "boolean"
+      }
+    ]
+  },
+  "warnings": [
+    "Policy trust remains DEMO for this procedure. Verify against official policy before real-world use."
+  ]
+}

@@ -1,0 +1,300 @@
+[
+  {
+    "display_name": "CPAP Device (HCPCS E0601)",
+    "metadata": {
+      "category": "durable_medical_equipment",
+      "last_rule_update": "2026-04-09",
+      "notes": [
+        "The current demo checks for OSA diagnosis, dated sleep study evidence, and AHI/RDI documentation.",
+        "It does not determine clinical appropriateness or device approval likelihood."
+      ],
+      "rule_family": "sleep_study_documentation",
+      "summary": "Administrative readiness check for CPAP device requests using a narrow deterministic documentation contract.",
+      "supported_sites": [
+        "outpatient"
+      ]
+    },
+    "monitored_for_drift": false,
+    "payer": "Aetna",
+    "policy_trust_level": "demo",
+    "procedure_code": "CPAP_DEVICE",
+    "provenance": {
+      "last_reviewed": "2026-04-09",
+      "monitored_check_frequency": null,
+      "monitored_source_id": null,
+      "monitored_source_name": null,
+      "monitored_source_owner": null,
+      "monitored_source_url": null,
+      "notes": "Rules are illustrative for demo.",
+      "rule_last_updated": "2026-04-09",
+      "rule_source_label": "Human-curated summary of CPAP administrative documentation criteria",
+      "source_name": "Aetna DME policy (summary)",
+      "source_type": "manual_summary",
+      "source_url": null
+    },
+    "required_field_keys": [
+      "osa_diagnosis",
+      "sleep_study_date",
+      "ahi_documented"
+    ],
+    "requirements": [
+      {
+        "allowed": [],
+        "evidence": "Diagnosis present",
+        "key": "osa_diagnosis",
+        "label": "OSA diagnosis documented",
+        "min": null,
+        "type": "boolean"
+      },
+      {
+        "allowed": [],
+        "evidence": "Date in chart",
+        "key": "sleep_study_date",
+        "label": "Sleep study date documented",
+        "min": null,
+        "type": "boolean"
+      },
+      {
+        "allowed": [],
+        "evidence": "AHI value included",
+        "key": "ahi_documented",
+        "label": "AHI/RDI documented",
+        "min": null,
+        "type": "boolean"
+      }
+    ]
+  },
+  {
+    "display_name": "MRI Cervical Spine (no contrast)",
+    "metadata": {
+      "category": "advanced_imaging",
+      "last_rule_update": "2026-04-09",
+      "notes": [
+        "Intentionally mirrors the lumbar MRI demo pathway to show reusable deterministic architecture.",
+        "Human review remains required before any real submission."
+      ],
+      "rule_family": "spine_mri_conservative_therapy",
+      "summary": "Administrative readiness check for cervical spine MRI requests using the same narrow deterministic evidence contract as lumbar MRI.",
+      "supported_sites": [
+        "outpatient"
+      ]
+    },
+    "monitored_for_drift": false,
+    "payer": "Aetna",
+    "policy_trust_level": "demo",
+    "procedure_code": "MRI_CERVICAL",
+    "provenance": {
+      "last_reviewed": "2026-04-09",
+      "monitored_check_frequency": null,
+      "monitored_source_id": null,
+      "monitored_source_name": null,
+      "monitored_source_owner": null,
+      "monitored_source_url": null,
+      "notes": "Rules are illustrative for demo and intentionally mirror the narrow spine MRI contract.",
+      "rule_last_updated": "2026-04-09",
+      "rule_source_label": "Human-curated summary of cervical spine MRI administrative criteria",
+      "source_name": "Aetna cervical spine MRI policy summary",
+      "source_type": "manual_summary",
+      "source_url": null
+    },
+    "required_field_keys": [
+      "conservative_therapy_weeks",
+      "neuro_red_flags_documented",
+      "prior_imaging_result",
+      "symptom_duration_weeks"
+    ],
+    "requirements": [
+      {
+        "allowed": [],
+        "evidence": "PT/NSAIDs/activity modification trial documented",
+        "key": "conservative_therapy_weeks",
+        "label": "Conservative therapy duration (weeks)",
+        "min": 6.0,
+        "type": "number"
+      },
+      {
+        "allowed": [],
+        "evidence": "Weakness, numbness, bowel/bladder changes, or related escalation findings explicitly documented",
+        "key": "neuro_red_flags_documented",
+        "label": "Neuro red flags explicitly addressed (present or denied)",
+        "min": null,
+        "type": "boolean"
+      },
+      {
+        "allowed": [
+          "none",
+          "inconclusive",
+          "abnormal"
+        ],
+        "evidence": "X-ray/CT results or note of none",
+        "key": "prior_imaging_result",
+        "label": "Prior imaging result",
+        "min": null,
+        "type": "enum"
+      },
+      {
+        "allowed": [],
+        "evidence": "Duration supports guideline-based escalation",
+        "key": "symptom_duration_weeks",
+        "label": "Symptom duration (weeks)",
+        "min": 6.0,
+        "type": "number"
+      }
+    ]
+  },
+  {
+    "display_name": "MRI Knee (no contrast)",
+    "metadata": {
+      "category": "advanced_imaging",
+      "last_rule_update": "2026-04-09",
+      "notes": [
+        "This demo pathway checks only administrative completeness, not orthopedic appropriateness.",
+        "Requires symptom duration, conservative therapy, prior imaging context, and explicit review of mechanical symptoms."
+      ],
+      "rule_family": "extremity_mri_conservative_therapy",
+      "summary": "Administrative readiness check for knee MRI requests using a narrow deterministic documentation contract.",
+      "supported_sites": [
+        "outpatient"
+      ]
+    },
+    "monitored_for_drift": false,
+    "payer": "Aetna",
+    "policy_trust_level": "demo",
+    "procedure_code": "MRI_KNEE",
+    "provenance": {
+      "last_reviewed": "2026-04-09",
+      "monitored_check_frequency": null,
+      "monitored_source_id": null,
+      "monitored_source_name": null,
+      "monitored_source_owner": null,
+      "monitored_source_url": null,
+      "notes": "Rules are illustrative for demo and intentionally limited to documentation completeness.",
+      "rule_last_updated": "2026-04-09",
+      "rule_source_label": "Human-curated summary of knee MRI administrative documentation criteria",
+      "source_name": "Aetna knee MRI policy summary",
+      "source_type": "manual_summary",
+      "source_url": null
+    },
+    "required_field_keys": [
+      "conservative_therapy_weeks",
+      "symptom_duration_weeks",
+      "prior_imaging_result",
+      "mechanical_symptoms_documented"
+    ],
+    "requirements": [
+      {
+        "allowed": [],
+        "evidence": "PT/activity modification/NSAID trial documented",
+        "key": "conservative_therapy_weeks",
+        "label": "Conservative therapy duration (weeks)",
+        "min": 6.0,
+        "type": "number"
+      },
+      {
+        "allowed": [],
+        "evidence": "Persistent symptoms documented long enough to justify escalation",
+        "key": "symptom_duration_weeks",
+        "label": "Symptom duration (weeks)",
+        "min": 6.0,
+        "type": "number"
+      },
+      {
+        "allowed": [
+          "inconclusive",
+          "abnormal"
+        ],
+        "evidence": "Prior knee imaging such as x-ray is documented and not simply absent",
+        "key": "prior_imaging_result",
+        "label": "Prior imaging result",
+        "min": null,
+        "type": "enum"
+      },
+      {
+        "allowed": [],
+        "evidence": "Locking, catching, buckling, giving way, or instability explicitly documented",
+        "key": "mechanical_symptoms_documented",
+        "label": "Mechanical symptoms explicitly addressed (present or denied)",
+        "min": null,
+        "type": "boolean"
+      }
+    ]
+  },
+  {
+    "display_name": "MRI Lumbar Spine (no contrast)",
+    "metadata": {
+      "category": "advanced_imaging",
+      "last_rule_update": "2026-04-09",
+      "notes": [
+        "Demo rule set only; not a substitute for payer policy review.",
+        "Requires conservative therapy, symptom duration, imaging context, and explicit red-flag review."
+      ],
+      "rule_family": "spine_mri_conservative_therapy",
+      "summary": "Administrative readiness check for lumbar spine MRI requests using a narrow deterministic evidence contract.",
+      "supported_sites": [
+        "outpatient"
+      ]
+    },
+    "monitored_for_drift": true,
+    "payer": "Aetna",
+    "policy_trust_level": "demo",
+    "procedure_code": "MRI_LUMBAR",
+    "provenance": {
+      "last_reviewed": "2026-04-09",
+      "monitored_check_frequency": "daily",
+      "monitored_source_id": "aetna_mri_lumbar",
+      "monitored_source_name": "Aetna CPB 0157",
+      "monitored_source_owner": "NickLeko",
+      "monitored_source_url": "https://www.aetna.com/cpb/medical/data/100_199/0157.html",
+      "notes": "Rules are illustrative for demo. Not a substitute for payer policy documents.",
+      "rule_last_updated": "2026-04-09",
+      "rule_source_label": "Human-curated summary of spine MRI administrative criteria",
+      "source_name": "Aetna spine MRI policy summary",
+      "source_type": "manual_summary",
+      "source_url": "https://www.aetna.com/cpb/medical/data/100_199/0157.html"
+    },
+    "required_field_keys": [
+      "conservative_therapy_weeks",
+      "neuro_red_flags_documented",
+      "prior_imaging_result",
+      "symptom_duration_weeks"
+    ],
+    "requirements": [
+      {
+        "allowed": [],
+        "evidence": "PT/NSAIDs/activity modification trial documented",
+        "key": "conservative_therapy_weeks",
+        "label": "Conservative therapy duration (weeks)",
+        "min": 6.0,
+        "type": "number"
+      },
+      {
+        "allowed": [],
+        "evidence": "Weakness, saddle anesthesia, bowel/bladder changes explicitly documented as present or denied",
+        "key": "neuro_red_flags_documented",
+        "label": "Neuro red flags explicitly addressed (present or denied)",
+        "min": null,
+        "type": "boolean"
+      },
+      {
+        "allowed": [
+          "none",
+          "inconclusive",
+          "abnormal"
+        ],
+        "evidence": "X-ray/CT results or note of none",
+        "key": "prior_imaging_result",
+        "label": "Prior imaging result",
+        "min": null,
+        "type": "enum"
+      },
+      {
+        "allowed": [],
+        "evidence": "Duration supports guideline-based escalation",
+        "key": "symptom_duration_weeks",
+        "label": "Symptom duration (weeks)",
+        "min": 6.0,
+        "type": "number"
+      }
+    ]
+  }
+]

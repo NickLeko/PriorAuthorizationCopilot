@@ -3,13 +3,13 @@ from __future__ import annotations
 import json
 from typing import Any, Dict, List
 
-from engine.rules_loader import load_rules
-from engine.extract import extract_facts
 from engine.evaluate import (
-    evaluate_requirements,
-    compute_readiness_score,
     compute_overall_status,
+    compute_readiness_score,
+    evaluate_requirements,
 )
+from engine.extract import extract_facts
+from engine.rules_loader import load_rules
 
 
 def label_from_outputs(overall_status: str) -> str:

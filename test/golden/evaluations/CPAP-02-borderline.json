@@ -1,0 +1,431 @@
+{
+  "audit_trail": {
+    "blocking_issues": {
+      "not_documented": [
+        {
+          "key": "sleep_study_date",
+          "label": "Sleep study date documented",
+          "reason": "Not found in note. Add explicit statement.",
+          "status": "NOT_DOCUMENTED"
+        },
+        {
+          "key": "ahi_documented",
+          "label": "AHI/RDI documented",
+          "reason": "Not found in note. Add explicit statement.",
+          "status": "NOT_DOCUMENTED"
+        }
+      ],
+      "not_met": []
+    },
+    "evaluation_warnings": [
+      "Policy trust remains DEMO for this procedure. Verify against official policy before real-world use."
+    ],
+    "evidence_map": {
+      "ahi_documented": [
+        {
+          "end": 88,
+          "start": 70,
+          "text": "AHI not documented"
+        }
+      ],
+      "osa_diagnosis": [
+        {
+          "end": 3,
+          "start": 0,
+          "text": "OSA"
+        }
+      ]
+    },
+    "facts_extracted": {
+      "ahi_documented": null,
+      "conservative_therapy_weeks": null,
+      "mechanical_symptoms_documented": null,
+      "neuro_red_flags_documented": null,
+      "osa_diagnosis": true,
+      "prior_imaging_result": null,
+      "sleep_study_date": null,
+      "symptom_duration_weeks": null
+    },
+    "invariant_errors": [],
+    "metrics": {
+      "compliance_rate": 100.0,
+      "compliant_count": 1,
+      "extraction_failure_count": 2,
+      "extraction_success_rate": 33.3,
+      "non_compliant_count": 0
+    },
+    "note_hash": "5ef99d034f3c708e",
+    "note_length": 89,
+    "overall_status": "CANNOT_DETERMINE",
+    "payer": "Aetna",
+    "policy_trust_level": "demo",
+    "procedure_code": "CPAP_DEVICE",
+    "procedure_name": "CPAP Device (HCPCS E0601)",
+    "provenance_snapshot": {
+      "last_reviewed": "2026-04-09",
+      "monitored_check_frequency": null,
+      "monitored_source_id": null,
+      "monitored_source_name": null,
+      "monitored_source_owner": null,
+      "monitored_source_url": null,
+      "notes": "Rules are illustrative for demo.",
+      "rule_last_updated": "2026-04-09",
+      "rule_source_label": "Human-curated summary of CPAP administrative documentation criteria",
+      "source_name": "Aetna DME policy (summary)",
+      "source_type": "manual_summary",
+      "source_url": null
+    },
+    "requirements_checked": [
+      "osa_diagnosis",
+      "sleep_study_date",
+      "ahi_documented"
+    ],
+    "rulebook_active_release_id": "2026-04-09-active-v0.5",
+    "rules_version": "0.5",
+    "run_id": "__RUN_ID__",
+    "site_of_care": "outpatient",
+    "specialty": "Primary Care",
+    "submission_readiness": false,
+    "timestamp_utc": "__TIMESTAMP_UTC__"
+  },
+  "blockers": {
+    "not_documented": [
+      {
+        "key": "sleep_study_date",
+        "label": "Sleep study date documented",
+        "reason": "Not found in note. Add explicit statement.",
+        "status": "NOT_DOCUMENTED"
+      },
+      {
+        "key": "ahi_documented",
+        "label": "AHI/RDI documented",
+        "reason": "Not found in note. Add explicit statement.",
+        "status": "NOT_DOCUMENTED"
+      }
+    ],
+    "not_met": []
+  },
+  "evidence_map": {
+    "ahi_documented": [
+      {
+        "end": 88,
+        "start": 70,
+        "text": "AHI not documented"
+      }
+    ],
+    "osa_diagnosis": [
+      {
+        "end": 3,
+        "start": 0,
+        "text": "OSA"
+      }
+    ]
+  },
+  "facts": {
+    "ahi_documented": null,
+    "conservative_therapy_weeks": null,
+    "mechanical_symptoms_documented": null,
+    "neuro_red_flags_documented": null,
+    "osa_diagnosis": true,
+    "prior_imaging_result": null,
+    "sleep_study_date": null,
+    "symptom_duration_weeks": null
+  },
+  "metrics": {
+    "compliance_rate": 100.0,
+    "compliant_count": 1,
+    "extraction_failure_count": 2,
+    "extraction_success_rate": 33.3,
+    "non_compliant_count": 0
+  },
+  "overall_status": "CANNOT_DETERMINE",
+  "policy_trust_level": "demo",
+  "provenance": {
+    "last_reviewed": "2026-04-09",
+    "monitored_check_frequency": null,
+    "monitored_source_id": null,
+    "monitored_source_name": null,
+    "monitored_source_owner": null,
+    "monitored_source_url": null,
+    "notes": "Rules are illustrative for demo.",
+    "rule_last_updated": "2026-04-09",
+    "rule_source_label": "Human-curated summary of CPAP administrative documentation criteria",
+    "source_name": "Aetna DME policy (summary)",
+    "source_type": "manual_summary",
+    "source_url": null
+  },
+  "readiness_score": 33,
+  "report": {
+    "audit_trail": {
+      "blocking_issues": {
+        "not_documented": [
+          {
+            "key": "sleep_study_date",
+            "label": "Sleep study date documented",
+            "reason": "Not found in note. Add explicit statement.",
+            "status": "NOT_DOCUMENTED"
+          },
+          {
+            "key": "ahi_documented",
+            "label": "AHI/RDI documented",
+            "reason": "Not found in note. Add explicit statement.",
+            "status": "NOT_DOCUMENTED"
+          }
+        ],
+        "not_met": []
+      },
+      "evaluation_warnings": [
+        "Policy trust remains DEMO for this procedure. Verify against official policy before real-world use."
+      ],
+      "evidence_map": {
+        "ahi_documented": [
+          {
+            "end": 88,
+            "start": 70,
+            "text": "AHI not documented"
+          }
+        ],
+        "osa_diagnosis": [
+          {
+            "end": 3,
+            "start": 0,
+            "text": "OSA"
+          }
+        ]
+      },
+      "facts_extracted": {
+        "ahi_documented": null,
+        "conservative_therapy_weeks": null,
+        "mechanical_symptoms_documented": null,
+        "neuro_red_flags_documented": null,
+        "osa_diagnosis": true,
+        "prior_imaging_result": null,
+        "sleep_study_date": null,
+        "symptom_duration_weeks": null
+      },
+      "invariant_errors": [],
+      "metrics": {
+        "compliance_rate": 100.0,
+        "compliant_count": 1,
+        "extraction_failure_count": 2,
+        "extraction_success_rate": 33.3,
+        "non_compliant_count": 0
+      },
+      "note_hash": "5ef99d034f3c708e",
+      "note_length": 89,
+      "overall_status": "CANNOT_DETERMINE",
+      "payer": "Aetna",
+      "policy_trust_level": "demo",
+      "procedure_code": "CPAP_DEVICE",
+      "procedure_name": "CPAP Device (HCPCS E0601)",
+      "provenance_snapshot": {
+        "last_reviewed": "2026-04-09",
+        "monitored_check_frequency": null,
+        "monitored_source_id": null,
+        "monitored_source_name": null,
+        "monitored_source_owner": null,
+        "monitored_source_url": null,
+        "notes": "Rules are illustrative for demo.",
+        "rule_last_updated": "2026-04-09",
+        "rule_source_label": "Human-curated summary of CPAP administrative documentation criteria",
+        "source_name": "Aetna DME policy (summary)",
+        "source_type": "manual_summary",
+        "source_url": null
+      },
+      "requirements_checked": [
+        "osa_diagnosis",
+        "sleep_study_date",
+        "ahi_documented"
+      ],
+      "rulebook_active_release_id": "2026-04-09-active-v0.5",
+      "rules_version": "0.5",
+      "run_id": "__RUN_ID__",
+      "site_of_care": "outpatient",
+      "specialty": "Primary Care",
+      "submission_readiness": false,
+      "timestamp_utc": "__TIMESTAMP_UTC__"
+    },
+    "letter_draft": "",
+    "met_count": 1,
+    "not_documented_count": 2,
+    "not_met_count": 0,
+    "readiness_score": 33,
+    "results": [
+      {
+        "evidence": "Diagnosis present",
+        "evidence_snippets": [
+          "OSA"
+        ],
+        "evidence_spans": [
+          {
+            "end": 3,
+            "start": 0,
+            "text": "OSA"
+          }
+        ],
+        "key": "osa_diagnosis",
+        "label": "OSA diagnosis documented",
+        "reason": "Explicitly addressed in documentation (present/affirmed).",
+        "status": "MET"
+      },
+      {
+        "evidence": "Date in chart",
+        "evidence_snippets": [],
+        "evidence_spans": [],
+        "key": "sleep_study_date",
+        "label": "Sleep study date documented",
+        "reason": "Not found in note. Add explicit statement.",
+        "status": "NOT_DOCUMENTED"
+      },
+      {
+        "evidence": "AHI value included",
+        "evidence_snippets": [
+          "AHI not documented"
+        ],
+        "evidence_spans": [
+          {
+            "end": 88,
+            "start": 70,
+            "text": "AHI not documented"
+          }
+        ],
+        "key": "ahi_documented",
+        "label": "AHI/RDI documented",
+        "reason": "Not found in note. Add explicit statement.",
+        "status": "NOT_DOCUMENTED"
+      }
+    ],
+    "rule_reasons": [
+      "Sleep study date documented: NOT_DOCUMENTED \u2014 Not found in note. Add explicit statement.",
+      "AHI/RDI documented: NOT_DOCUMENTED \u2014 Not found in note. Add explicit statement."
+    ]
+  },
+  "request": {
+    "dx_codes": [
+      "G47.33"
+    ],
+    "note_text": "OSA noted in problem list. Sleep study in 2023 mentioned but no date. AHI not documented.",
+    "payer": "Aetna",
+    "procedure_code": "CPAP_DEVICE",
+    "site_of_care": "outpatient",
+    "specialty": "Primary Care"
+  },
+  "results": [
+    {
+      "evidence": "Diagnosis present",
+      "evidence_snippets": [
+        "OSA"
+      ],
+      "evidence_spans": [
+        {
+          "end": 3,
+          "start": 0,
+          "text": "OSA"
+        }
+      ],
+      "key": "osa_diagnosis",
+      "label": "OSA diagnosis documented",
+      "reason": "Explicitly addressed in documentation (present/affirmed).",
+      "status": "MET"
+    },
+    {
+      "evidence": "Date in chart",
+      "evidence_snippets": [],
+      "evidence_spans": [],
+      "key": "sleep_study_date",
+      "label": "Sleep study date documented",
+      "reason": "Not found in note. Add explicit statement.",
+      "status": "NOT_DOCUMENTED"
+    },
+    {
+      "evidence": "AHI value included",
+      "evidence_snippets": [
+        "AHI not documented"
+      ],
+      "evidence_spans": [
+        {
+          "end": 88,
+          "start": 70,
+          "text": "AHI not documented"
+        }
+      ],
+      "key": "ahi_documented",
+      "label": "AHI/RDI documented",
+      "reason": "Not found in note. Add explicit statement.",
+      "status": "NOT_DOCUMENTED"
+    }
+  ],
+  "rule_reasons": [
+    "Sleep study date documented: NOT_DOCUMENTED \u2014 Not found in note. Add explicit statement.",
+    "AHI/RDI documented: NOT_DOCUMENTED \u2014 Not found in note. Add explicit statement."
+  ],
+  "submission_readiness": false,
+  "supported_procedure": {
+    "display_name": "CPAP Device (HCPCS E0601)",
+    "metadata": {
+      "category": "durable_medical_equipment",
+      "last_rule_update": "2026-04-09",
+      "notes": [
+        "The current demo checks for OSA diagnosis, dated sleep study evidence, and AHI/RDI documentation.",
+        "It does not determine clinical appropriateness or device approval likelihood."
+      ],
+      "rule_family": "sleep_study_documentation",
+      "summary": "Administrative readiness check for CPAP device requests using a narrow deterministic documentation contract.",
+      "supported_sites": [
+        "outpatient"
+      ]
+    },
+    "monitored_for_drift": false,
+    "payer": "Aetna",
+    "policy_trust_level": "demo",
+    "procedure_code": "CPAP_DEVICE",
+    "provenance": {
+      "last_reviewed": "2026-04-09",
+      "monitored_check_frequency": null,
+      "monitored_source_id": null,
+      "monitored_source_name": null,
+      "monitored_source_owner": null,
+      "monitored_source_url": null,
+      "notes": "Rules are illustrative for demo.",
+      "rule_last_updated": "2026-04-09",
+      "rule_source_label": "Human-curated summary of CPAP administrative documentation criteria",
+      "source_name": "Aetna DME policy (summary)",
+      "source_type": "manual_summary",
+      "source_url": null
+    },
+    "required_field_keys": [
+      "osa_diagnosis",
+      "sleep_study_date",
+      "ahi_documented"
+    ],
+    "requirements": [
+      {
+        "allowed": [],
+        "evidence": "Diagnosis present",
+        "key": "osa_diagnosis",
+        "label": "OSA diagnosis documented",
+        "min": null,
+        "type": "boolean"
+      },
+      {
+        "allowed": [],
+        "evidence": "Date in chart",
+        "key": "sleep_study_date",
+        "label": "Sleep study date documented",
+        "min": null,
+        "type": "boolean"
+      },
+      {
+        "allowed": [],
+        "evidence": "AHI value included",
+        "key": "ahi_documented",
+        "label": "AHI/RDI documented",
+        "min": null,
+        "type": "boolean"
+      }
+    ]
+  },
+  "warnings": [
+    "Policy trust remains DEMO for this procedure. Verify against official policy before real-world use."
+  ]
+}

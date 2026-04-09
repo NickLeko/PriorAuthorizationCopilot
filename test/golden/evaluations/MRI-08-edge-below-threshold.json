@@ -1,0 +1,538 @@
+{
+  "audit_trail": {
+    "blocking_issues": {
+      "not_documented": [],
+      "not_met": [
+        {
+          "key": "conservative_therapy_weeks",
+          "label": "Conservative therapy duration (weeks)",
+          "reason": "Documented value (5) below requirement (>= 6.0). Clarify or justify.",
+          "status": "NOT_MET"
+        },
+        {
+          "key": "symptom_duration_weeks",
+          "label": "Symptom duration (weeks)",
+          "reason": "Documented value (5) below requirement (>= 6.0). Clarify or justify.",
+          "status": "NOT_MET"
+        }
+      ]
+    },
+    "evaluation_warnings": [
+      "Policy trust remains DEMO for this procedure. Verify against official policy before real-world use."
+    ],
+    "evidence_map": {
+      "conservative_therapy_weeks": [
+        {
+          "end": 37,
+          "start": 25,
+          "text": "PT x 5 weeks"
+        }
+      ],
+      "neuro_red_flags_documented": [
+        {
+          "end": 87,
+          "start": 50,
+          "text": "Denies weakness. Denies bowel/bladder"
+        }
+      ],
+      "prior_imaging_result": [
+        {
+          "end": 113,
+          "start": 97,
+          "text": "No prior imaging"
+        }
+      ],
+      "symptom_duration_weeks": [
+        {
+          "end": 23,
+          "start": 16,
+          "text": "5 weeks"
+        }
+      ]
+    },
+    "facts_extracted": {
+      "ahi_documented": null,
+      "conservative_therapy_weeks": 5,
+      "mechanical_symptoms_documented": null,
+      "neuro_red_flags_documented": true,
+      "osa_diagnosis": null,
+      "prior_imaging_result": "none",
+      "sleep_study_date": null,
+      "symptom_duration_weeks": 5
+    },
+    "invariant_errors": [],
+    "metrics": {
+      "compliance_rate": 50.0,
+      "compliant_count": 2,
+      "extraction_failure_count": 0,
+      "extraction_success_rate": 100.0,
+      "non_compliant_count": 2
+    },
+    "note_hash": "94ee8ba7171f7dea",
+    "note_length": 114,
+    "overall_status": "NOT_READY",
+    "payer": "Aetna",
+    "policy_trust_level": "demo",
+    "procedure_code": "MRI_LUMBAR",
+    "procedure_name": "MRI Lumbar Spine (no contrast)",
+    "provenance_snapshot": {
+      "last_reviewed": "2026-04-09",
+      "monitored_check_frequency": "daily",
+      "monitored_source_id": "aetna_mri_lumbar",
+      "monitored_source_name": "Aetna CPB 0157",
+      "monitored_source_owner": "NickLeko",
+      "monitored_source_url": "https://www.aetna.com/cpb/medical/data/100_199/0157.html",
+      "notes": "Rules are illustrative for demo. Not a substitute for payer policy documents.",
+      "rule_last_updated": "2026-04-09",
+      "rule_source_label": "Human-curated summary of spine MRI administrative criteria",
+      "source_name": "Aetna spine MRI policy summary",
+      "source_type": "manual_summary",
+      "source_url": "https://www.aetna.com/cpb/medical/data/100_199/0157.html"
+    },
+    "requirements_checked": [
+      "conservative_therapy_weeks",
+      "neuro_red_flags_documented",
+      "prior_imaging_result",
+      "symptom_duration_weeks"
+    ],
+    "rulebook_active_release_id": "2026-04-09-active-v0.5",
+    "rules_version": "0.5",
+    "run_id": "__RUN_ID__",
+    "site_of_care": "outpatient",
+    "specialty": "Primary Care",
+    "submission_readiness": false,
+    "timestamp_utc": "__TIMESTAMP_UTC__"
+  },
+  "blockers": {
+    "not_documented": [],
+    "not_met": [
+      {
+        "key": "conservative_therapy_weeks",
+        "label": "Conservative therapy duration (weeks)",
+        "reason": "Documented value (5) below requirement (>= 6.0). Clarify or justify.",
+        "status": "NOT_MET"
+      },
+      {
+        "key": "symptom_duration_weeks",
+        "label": "Symptom duration (weeks)",
+        "reason": "Documented value (5) below requirement (>= 6.0). Clarify or justify.",
+        "status": "NOT_MET"
+      }
+    ]
+  },
+  "evidence_map": {
+    "conservative_therapy_weeks": [
+      {
+        "end": 37,
+        "start": 25,
+        "text": "PT x 5 weeks"
+      }
+    ],
+    "neuro_red_flags_documented": [
+      {
+        "end": 87,
+        "start": 50,
+        "text": "Denies weakness. Denies bowel/bladder"
+      }
+    ],
+    "prior_imaging_result": [
+      {
+        "end": 113,
+        "start": 97,
+        "text": "No prior imaging"
+      }
+    ],
+    "symptom_duration_weeks": [
+      {
+        "end": 23,
+        "start": 16,
+        "text": "5 weeks"
+      }
+    ]
+  },
+  "facts": {
+    "ahi_documented": null,
+    "conservative_therapy_weeks": 5,
+    "mechanical_symptoms_documented": null,
+    "neuro_red_flags_documented": true,
+    "osa_diagnosis": null,
+    "prior_imaging_result": "none",
+    "sleep_study_date": null,
+    "symptom_duration_weeks": 5
+  },
+  "metrics": {
+    "compliance_rate": 50.0,
+    "compliant_count": 2,
+    "extraction_failure_count": 0,
+    "extraction_success_rate": 100.0,
+    "non_compliant_count": 2
+  },
+  "overall_status": "NOT_READY",
+  "policy_trust_level": "demo",
+  "provenance": {
+    "last_reviewed": "2026-04-09",
+    "monitored_check_frequency": "daily",
+    "monitored_source_id": "aetna_mri_lumbar",
+    "monitored_source_name": "Aetna CPB 0157",
+    "monitored_source_owner": "NickLeko",
+    "monitored_source_url": "https://www.aetna.com/cpb/medical/data/100_199/0157.html",
+    "notes": "Rules are illustrative for demo. Not a substitute for payer policy documents.",
+    "rule_last_updated": "2026-04-09",
+    "rule_source_label": "Human-curated summary of spine MRI administrative criteria",
+    "source_name": "Aetna spine MRI policy summary",
+    "source_type": "manual_summary",
+    "source_url": "https://www.aetna.com/cpb/medical/data/100_199/0157.html"
+  },
+  "readiness_score": 75,
+  "report": {
+    "audit_trail": {
+      "blocking_issues": {
+        "not_documented": [],
+        "not_met": [
+          {
+            "key": "conservative_therapy_weeks",
+            "label": "Conservative therapy duration (weeks)",
+            "reason": "Documented value (5) below requirement (>= 6.0). Clarify or justify.",
+            "status": "NOT_MET"
+          },
+          {
+            "key": "symptom_duration_weeks",
+            "label": "Symptom duration (weeks)",
+            "reason": "Documented value (5) below requirement (>= 6.0). Clarify or justify.",
+            "status": "NOT_MET"
+          }
+        ]
+      },
+      "evaluation_warnings": [
+        "Policy trust remains DEMO for this procedure. Verify against official policy before real-world use."
+      ],
+      "evidence_map": {
+        "conservative_therapy_weeks": [
+          {
+            "end": 37,
+            "start": 25,
+            "text": "PT x 5 weeks"
+          }
+        ],
+        "neuro_red_flags_documented": [
+          {
+            "end": 87,
+            "start": 50,
+            "text": "Denies weakness. Denies bowel/bladder"
+          }
+        ],
+        "prior_imaging_result": [
+          {
+            "end": 113,
+            "start": 97,
+            "text": "No prior imaging"
+          }
+        ],
+        "symptom_duration_weeks": [
+          {
+            "end": 23,
+            "start": 16,
+            "text": "5 weeks"
+          }
+        ]
+      },
+      "facts_extracted": {
+        "ahi_documented": null,
+        "conservative_therapy_weeks": 5,
+        "mechanical_symptoms_documented": null,
+        "neuro_red_flags_documented": true,
+        "osa_diagnosis": null,
+        "prior_imaging_result": "none",
+        "sleep_study_date": null,
+        "symptom_duration_weeks": 5
+      },
+      "invariant_errors": [],
+      "metrics": {
+        "compliance_rate": 50.0,
+        "compliant_count": 2,
+        "extraction_failure_count": 0,
+        "extraction_success_rate": 100.0,
+        "non_compliant_count": 2
+      },
+      "note_hash": "94ee8ba7171f7dea",
+      "note_length": 114,
+      "overall_status": "NOT_READY",
+      "payer": "Aetna",
+      "policy_trust_level": "demo",
+      "procedure_code": "MRI_LUMBAR",
+      "procedure_name": "MRI Lumbar Spine (no contrast)",
+      "provenance_snapshot": {
+        "last_reviewed": "2026-04-09",
+        "monitored_check_frequency": "daily",
+        "monitored_source_id": "aetna_mri_lumbar",
+        "monitored_source_name": "Aetna CPB 0157",
+        "monitored_source_owner": "NickLeko",
+        "monitored_source_url": "https://www.aetna.com/cpb/medical/data/100_199/0157.html",
+        "notes": "Rules are illustrative for demo. Not a substitute for payer policy documents.",
+        "rule_last_updated": "2026-04-09",
+        "rule_source_label": "Human-curated summary of spine MRI administrative criteria",
+        "source_name": "Aetna spine MRI policy summary",
+        "source_type": "manual_summary",
+        "source_url": "https://www.aetna.com/cpb/medical/data/100_199/0157.html"
+      },
+      "requirements_checked": [
+        "conservative_therapy_weeks",
+        "neuro_red_flags_documented",
+        "prior_imaging_result",
+        "symptom_duration_weeks"
+      ],
+      "rulebook_active_release_id": "2026-04-09-active-v0.5",
+      "rules_version": "0.5",
+      "run_id": "__RUN_ID__",
+      "site_of_care": "outpatient",
+      "specialty": "Primary Care",
+      "submission_readiness": false,
+      "timestamp_utc": "__TIMESTAMP_UTC__"
+    },
+    "letter_draft": "",
+    "met_count": 2,
+    "not_documented_count": 0,
+    "not_met_count": 2,
+    "readiness_score": 75,
+    "results": [
+      {
+        "evidence": "PT/NSAIDs/activity modification trial documented",
+        "evidence_snippets": [
+          "PT x 5 weeks"
+        ],
+        "evidence_spans": [
+          {
+            "end": 37,
+            "start": 25,
+            "text": "PT x 5 weeks"
+          }
+        ],
+        "key": "conservative_therapy_weeks",
+        "label": "Conservative therapy duration (weeks)",
+        "reason": "Documented value (5) below requirement (>= 6.0). Clarify or justify.",
+        "status": "NOT_MET"
+      },
+      {
+        "evidence": "Weakness, saddle anesthesia, bowel/bladder changes explicitly documented as present or denied",
+        "evidence_snippets": [
+          "Denies weakness. Denies bowel/bladder"
+        ],
+        "evidence_spans": [
+          {
+            "end": 87,
+            "start": 50,
+            "text": "Denies weakness. Denies bowel/bladder"
+          }
+        ],
+        "key": "neuro_red_flags_documented",
+        "label": "Neuro red flags explicitly addressed (present or denied)",
+        "reason": "Explicitly addressed in documentation (present/affirmed).",
+        "status": "MET"
+      },
+      {
+        "evidence": "X-ray/CT results or note of none",
+        "evidence_snippets": [
+          "No prior imaging"
+        ],
+        "evidence_spans": [
+          {
+            "end": 113,
+            "start": 97,
+            "text": "No prior imaging"
+          }
+        ],
+        "key": "prior_imaging_result",
+        "label": "Prior imaging result",
+        "reason": "Documented: none.",
+        "status": "MET"
+      },
+      {
+        "evidence": "Duration supports guideline-based escalation",
+        "evidence_snippets": [
+          "5 weeks"
+        ],
+        "evidence_spans": [
+          {
+            "end": 23,
+            "start": 16,
+            "text": "5 weeks"
+          }
+        ],
+        "key": "symptom_duration_weeks",
+        "label": "Symptom duration (weeks)",
+        "reason": "Documented value (5) below requirement (>= 6.0). Clarify or justify.",
+        "status": "NOT_MET"
+      }
+    ],
+    "rule_reasons": [
+      "Conservative therapy duration (weeks): NOT_MET \u2014 Documented value (5) below requirement (>= 6.0). Clarify or justify.",
+      "Symptom duration (weeks): NOT_MET \u2014 Documented value (5) below requirement (>= 6.0). Clarify or justify."
+    ]
+  },
+  "request": {
+    "dx_codes": [
+      "M54.5"
+    ],
+    "note_text": "Low back pain x 5 weeks. PT x 5 weeks documented. Denies weakness. Denies bowel/bladder changes. No prior imaging.",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "site_of_care": "outpatient",
+    "specialty": "Primary Care"
+  },
+  "results": [
+    {
+      "evidence": "PT/NSAIDs/activity modification trial documented",
+      "evidence_snippets": [
+        "PT x 5 weeks"
+      ],
+      "evidence_spans": [
+        {
+          "end": 37,
+          "start": 25,
+          "text": "PT x 5 weeks"
+        }
+      ],
+      "key": "conservative_therapy_weeks",
+      "label": "Conservative therapy duration (weeks)",
+      "reason": "Documented value (5) below requirement (>= 6.0). Clarify or justify.",
+      "status": "NOT_MET"
+    },
+    {
+      "evidence": "Weakness, saddle anesthesia, bowel/bladder changes explicitly documented as present or denied",
+      "evidence_snippets": [
+        "Denies weakness. Denies bowel/bladder"
+      ],
+      "evidence_spans": [
+        {
+          "end": 87,
+          "start": 50,
+          "text": "Denies weakness. Denies bowel/bladder"
+        }
+      ],
+      "key": "neuro_red_flags_documented",
+      "label": "Neuro red flags explicitly addressed (present or denied)",
+      "reason": "Explicitly addressed in documentation (present/affirmed).",
+      "status": "MET"
+    },
+    {
+      "evidence": "X-ray/CT results or note of none",
+      "evidence_snippets": [
+        "No prior imaging"
+      ],
+      "evidence_spans": [
+        {
+          "end": 113,
+          "start": 97,
+          "text": "No prior imaging"
+        }
+      ],
+      "key": "prior_imaging_result",
+      "label": "Prior imaging result",
+      "reason": "Documented: none.",
+      "status": "MET"
+    },
+    {
+      "evidence": "Duration supports guideline-based escalation",
+      "evidence_snippets": [
+        "5 weeks"
+      ],
+      "evidence_spans": [
+        {
+          "end": 23,
+          "start": 16,
+          "text": "5 weeks"
+        }
+      ],
+      "key": "symptom_duration_weeks",
+      "label": "Symptom duration (weeks)",
+      "reason": "Documented value (5) below requirement (>= 6.0). Clarify or justify.",
+      "status": "NOT_MET"
+    }
+  ],
+  "rule_reasons": [
+    "Conservative therapy duration (weeks): NOT_MET \u2014 Documented value (5) below requirement (>= 6.0). Clarify or justify.",
+    "Symptom duration (weeks): NOT_MET \u2014 Documented value (5) below requirement (>= 6.0). Clarify or justify."
+  ],
+  "submission_readiness": false,
+  "supported_procedure": {
+    "display_name": "MRI Lumbar Spine (no contrast)",
+    "metadata": {
+      "category": "advanced_imaging",
+      "last_rule_update": "2026-04-09",
+      "notes": [
+        "Demo rule set only; not a substitute for payer policy review.",
+        "Requires conservative therapy, symptom duration, imaging context, and explicit red-flag review."
+      ],
+      "rule_family": "spine_mri_conservative_therapy",
+      "summary": "Administrative readiness check for lumbar spine MRI requests using a narrow deterministic evidence contract.",
+      "supported_sites": [
+        "outpatient"
+      ]
+    },
+    "monitored_for_drift": true,
+    "payer": "Aetna",
+    "policy_trust_level": "demo",
+    "procedure_code": "MRI_LUMBAR",
+    "provenance": {
+      "last_reviewed": "2026-04-09",
+      "monitored_check_frequency": "daily",
+      "monitored_source_id": "aetna_mri_lumbar",
+      "monitored_source_name": "Aetna CPB 0157",
+      "monitored_source_owner": "NickLeko",
+      "monitored_source_url": "https://www.aetna.com/cpb/medical/data/100_199/0157.html",
+      "notes": "Rules are illustrative for demo. Not a substitute for payer policy documents.",
+      "rule_last_updated": "2026-04-09",
+      "rule_source_label": "Human-curated summary of spine MRI administrative criteria",
+      "source_name": "Aetna spine MRI policy summary",
+      "source_type": "manual_summary",
+      "source_url": "https://www.aetna.com/cpb/medical/data/100_199/0157.html"
+    },
+    "required_field_keys": [
+      "conservative_therapy_weeks",
+      "neuro_red_flags_documented",
+      "prior_imaging_result",
+      "symptom_duration_weeks"
+    ],
+    "requirements": [
+      {
+        "allowed": [],
+        "evidence": "PT/NSAIDs/activity modification trial documented",
+        "key": "conservative_therapy_weeks",
+        "label": "Conservative therapy duration (weeks)",
+        "min": 6.0,
+        "type": "number"
+      },
+      {
+        "allowed": [],
+        "evidence": "Weakness, saddle anesthesia, bowel/bladder changes explicitly documented as present or denied",
+        "key": "neuro_red_flags_documented",
+        "label": "Neuro red flags explicitly addressed (present or denied)",
+        "min": null,
+        "type": "boolean"
+      },
+      {
+        "allowed": [
+          "none",
+          "inconclusive",
+          "abnormal"
+        ],
+        "evidence": "X-ray/CT results or note of none",
+        "key": "prior_imaging_result",
+        "label": "Prior imaging result",
+        "min": null,
+        "type": "enum"
+      },
+      {
+        "allowed": [],
+        "evidence": "Duration supports guideline-based escalation",
+        "key": "symptom_duration_weeks",
+        "label": "Symptom duration (weeks)",
+        "min": 6.0,
+        "type": "number"
+      }
+    ]
+  },
+  "warnings": [
+    "Policy trust remains DEMO for this procedure. Verify against official policy before real-world use."
+  ]
+}

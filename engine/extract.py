@@ -101,12 +101,24 @@ def extract_facts(note_text: str) -> Tuple[Dict[str, Any], Dict[str, List[Dict[s
     m_months = re.search(r"\b(\d+)\s*(month|months)\b", t)
     if m_months:
         symptom_weeks = int(m_months.group(1)) * 4
-        _add_span(evidence, "symptom_duration_weeks", m_months.start(), m_months.end(), raw[m_months.start(): m_months.end()])
+        _add_span(
+            evidence,
+            "symptom_duration_weeks",
+            m_months.start(),
+            m_months.end(),
+            raw[m_months.start() : m_months.end()],
+        )
     else:
         m_weeks = re.search(r"\b(\d+)\s*(week|weeks)\b", t)
         if m_weeks:
             symptom_weeks = int(m_weeks.group(1))
-            _add_span(evidence, "symptom_duration_weeks", m_weeks.start(), m_weeks.end(), raw[m_weeks.start(): m_weeks.end()])
+            _add_span(
+                evidence,
+                "symptom_duration_weeks",
+                m_weeks.start(),
+                m_weeks.end(),
+                raw[m_weeks.start() : m_weeks.end()],
+            )
 
     # ----------------------------
     # Neuro deficit / red flags addressed
@@ -153,7 +165,7 @@ def extract_facts(note_text: str) -> Tuple[Dict[str, Any], Dict[str, List[Dict[s
             "neuro_red_flags_documented",
             positive_match.start(),
             positive_match.end(),
-            raw[positive_match.start(): positive_match.end()],
+            raw[positive_match.start() : positive_match.end()],
         )
     elif denial_match:
         neuro_documented = True
@@ -162,7 +174,7 @@ def extract_facts(note_text: str) -> Tuple[Dict[str, Any], Dict[str, List[Dict[s
             "neuro_red_flags_documented",
             denial_match.start(),
             denial_match.end(),
-            raw[denial_match.start(): denial_match.end()],
+            raw[denial_match.start() : denial_match.end()],
         )
     else:
         neuro_documented = None
@@ -176,7 +188,13 @@ def extract_facts(note_text: str) -> Tuple[Dict[str, Any], Dict[str, List[Dict[s
     m_no_img = re.search(r"\bno (prior )?imaging( documented| yet| to date)?\b", t)
     if m_no_img:
         prior_imaging = "none"
-        _add_span(evidence, "prior_imaging_result", m_no_img.start(), m_no_img.end(), raw[m_no_img.start(): m_no_img.end()])
+        _add_span(
+            evidence,
+            "prior_imaging_result",
+            m_no_img.start(),
+            m_no_img.end(),
+            raw[m_no_img.start() : m_no_img.end()],
+        )
     else:
         # Accept "prior imaging performed" / "imaging noted" even without modality/result
         m_any_img = re.search(r"\b(prior )?imaging\b", t)
@@ -196,7 +214,7 @@ def extract_facts(note_text: str) -> Tuple[Dict[str, Any], Dict[str, List[Dict[s
                     "prior_imaging_result",
                     m_unclear.start(),
                     m_unclear.end(),
-                    raw[m_unclear.start(): m_unclear.end()],
+                    raw[m_unclear.start() : m_unclear.end()],
                 )
 
         elif m_mod or m_any_img:
@@ -213,18 +231,85 @@ def extract_facts(note_text: str) -> Tuple[Dict[str, Any], Dict[str, List[Dict[s
                         "prior_imaging_result",
                         m_norm.start(),
                         m_norm.end(),
-                        raw[m_norm.start(): m_norm.end()],
+                        raw[m_norm.start() : m_norm.end()],
                     )
             else:
                 m_abn = re.search(r"\b(abnormal|herniat|stenosis|disc bulge|fracture|degenerative)\b", t)
                 if m_abn:
                     prior_imaging = "abnormal"
-                    _add_span(evidence, "prior_imaging_result", m_abn.start(), m_abn.end(), raw[m_abn.start(): m_abn.end()])
+                    _add_span(
+                        evidence,
+                        "prior_imaging_result",
+                        m_abn.start(),
+                        m_abn.end(),
+                        raw[m_abn.start() : m_abn.end()],
+                    )
                 else:
                     # Imaging referenced but result not specified => documented as inconclusive
                     prior_imaging = "inconclusive"
                     m_span = m_mod or m_any_img
-                    _add_span(evidence, "prior_imaging_result", m_span.start(), m_span.end(), raw[m_span.start(): m_span.end()])
+                    _add_span(
+                        evidence,
+                        "prior_imaging_result",
+                        m_span.start(),
+                        m_span.end(),
+                        raw[m_span.start() : m_span.end()],
+                    )
+
+    # ----------------------------
+    # Mechanical symptoms addressed
+    # ----------------------------
+    # This field is used for the narrow knee MRI pathway.
+    # Semantics:
+    #   True  -> explicit positive symptom wording (locking/catching/buckling/etc.)
+    #   False -> explicit denial / absence wording
+    #   None  -> not addressed explicitly
+    mechanical_symptoms_documented: Optional[bool] = None
+
+    mechanical_denial_patterns = [
+        r"\bdenies\b.*\b(locking|catching|buckling|giving way|instability)\b",
+        r"\bno\b.*\b(locking|catching|buckling|giving way|instability)\b",
+        r"\bwithout\b.*\b(locking|catching|buckling|giving way|instability)\b",
+    ]
+    mechanical_positive_patterns = [
+        r"\b(reports|reported|endorses|notes|noted|describes|described|with)\b.*\b(locking|catching|buckling|giving way|instability)\b",
+        r"\bmechanical symptoms\b",
+    ]
+
+    mechanical_denial_match = None
+    for pat in mechanical_denial_patterns:
+        mm = re.search(pat, t)
+        if mm:
+            mechanical_denial_match = mm
+            break
+
+    mechanical_positive_match = None
+    for pat in mechanical_positive_patterns:
+        mm = re.search(pat, t)
+        if mm:
+            text = raw[mm.start() : mm.end()].lower()
+            if not any(token in text for token in ("denies", "no ", "without")):
+                mechanical_positive_match = mm
+                break
+
+    if mechanical_positive_match:
+        mechanical_symptoms_documented = True
+        _add_span(
+            evidence,
+            "mechanical_symptoms_documented",
+            mechanical_positive_match.start(),
+            mechanical_positive_match.end(),
+            raw[mechanical_positive_match.start() : mechanical_positive_match.end()],
+        )
+    elif mechanical_denial_match:
+        mechanical_symptoms_documented = False
+        _add_span(
+            evidence,
+            "mechanical_symptoms_documented",
+            mechanical_denial_match.start(),
+            mechanical_denial_match.end(),
+            raw[mechanical_denial_match.start() : mechanical_denial_match.end()],
+        )
 
     # ----------------------------
     # OSA diagnosis
@@ -233,7 +318,7 @@ def extract_facts(note_text: str) -> Tuple[Dict[str, Any], Dict[str, List[Dict[s
     m_osa = re.search(r"\b(obstructive sleep apnea|osa)\b", t)
     if m_osa:
         osa_dx = True
-        _add_span(evidence, "osa_diagnosis", m_osa.start(), m_osa.end(), raw[m_osa.start(): m_osa.end()])
+        _add_span(evidence, "osa_diagnosis", m_osa.start(), m_osa.end(), raw[m_osa.start() : m_osa.end()])
 
     # ----------------------------
     # Sleep study date (context-gated)
@@ -250,7 +335,7 @@ def extract_facts(note_text: str) -> Tuple[Dict[str, Any], Dict[str, List[Dict[s
 
         if SLEEP_CTX.search(window):
             sleep_study_date = True
-            _add_span(evidence, "sleep_study_date", m_date.start(), m_date.end(), raw[m_date.start(): m_date.end()])
+            _add_span(evidence, "sleep_study_date", m_date.start(), m_date.end(), raw[m_date.start() : m_date.end()])
             break
 
     # ----------------------------
@@ -261,18 +346,31 @@ def extract_facts(note_text: str) -> Tuple[Dict[str, Any], Dict[str, List[Dict[s
     m_ahi_missing = re.search(r"\b(ahi|rdi)\b.*\b(not documented|not stated|not available|unknown|n/?a|missing)\b", t)
     if m_ahi_missing:
         ahi_doc = None
-        _add_span(evidence, "ahi_documented", m_ahi_missing.start(), m_ahi_missing.end(), raw[m_ahi_missing.start(): m_ahi_missing.end()])
+        _add_span(
+            evidence,
+            "ahi_documented",
+            m_ahi_missing.start(),
+            m_ahi_missing.end(),
+            raw[m_ahi_missing.start() : m_ahi_missing.end()],
+        )
     else:
         m_ahi_val = re.search(r"\b(ahi|rdi)\b\s*[:=]?\s*(\d+(\.\d+)?)\b", t)
         if m_ahi_val:
             ahi_doc = True
-            _add_span(evidence, "ahi_documented", m_ahi_val.start(), m_ahi_val.end(), raw[m_ahi_val.start(): m_ahi_val.end()])
+            _add_span(
+                evidence,
+                "ahi_documented",
+                m_ahi_val.start(),
+                m_ahi_val.end(),
+                raw[m_ahi_val.start() : m_ahi_val.end()],
+            )
 
     facts: Dict[str, Any] = {
         "conservative_therapy_weeks": therapy_weeks,
         "neuro_red_flags_documented": neuro_documented,
         "prior_imaging_result": prior_imaging,
         "symptom_duration_weeks": symptom_weeks,
+        "mechanical_symptoms_documented": mechanical_symptoms_documented,
         "osa_diagnosis": osa_dx,
         "sleep_study_date": sleep_study_date,
         "ahi_documented": ahi_doc,

@@ -56,6 +56,7 @@ def test_write_snapshot_and_read_latest(tmp_path: Path):
         payer="Aetna",
         procedure_code="MRI_LUMBAR",
         url="https://example.invalid/0157.html",
+        source_name="Fixture Policy Source",
         source_type="official_policy_web",
         trust_level="verified",
         check_frequency="daily",

@@ -1,0 +1,16 @@
+[tool.ruff]
+line-length = 140
+target-version = "py312"
+exclude = [
+  "docs/artifacts",
+]
+
+[tool.ruff.lint]
+select = [
+  "E",
+  "F",
+  "I",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["test"]
