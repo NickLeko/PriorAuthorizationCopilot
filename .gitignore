@@ -14,3 +14,18 @@ __pycache__/
 policy_snapshots/**/__pycache__/
 policy_snapshots/**/*.pyc
 policy_snapshots/**/.DS_Store
+
+# Internal planning / audit residue
+WORKLOG.md
+IMPLEMENTATION_PLAN.md
+SECOND_PASS_PLAN.md
+MARATHON_PASS_PLAN.md
+FINAL_FREEZE_AUDIT.md
+PUSH_SUMMARY.md
+RELEASE_NOTES_LAST_3_SPRINTS.md
+PUBLIC_DOCS_AUDIT.md
+PUBLIC_REPO_CLEANUP_SUMMARY.md
+inputs/test_plan.md
+docs/notes/
+docs/LOCAL_WORKFLOW.md
+docs/REFUSAL_IS_A_FEATURE.md
