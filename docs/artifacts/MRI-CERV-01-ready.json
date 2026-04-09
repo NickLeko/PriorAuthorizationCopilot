@@ -1,0 +1,508 @@
+{
+  "audit_trail": {
+    "blocking_issues": {
+      "not_documented": [],
+      "not_met": []
+    },
+    "evaluation_warnings": [
+      "Policy trust remains DEMO for this procedure. Verify against official policy before real-world use."
+    ],
+    "evidence_map": {
+      "conservative_therapy_weeks": [
+        {
+          "end": 64,
+          "start": 50,
+          "text": "PT for 8 weeks"
+        }
+      ],
+      "neuro_red_flags_documented": [
+        {
+          "end": 150,
+          "start": 113,
+          "text": "Denies weakness. Denies bowel/bladder"
+        }
+      ],
+      "prior_imaging_result": [
+        {
+          "end": 179,
+          "start": 175,
+          "text": "xray"
+        }
+      ],
+      "symptom_duration_weeks": [
+        {
+          "end": 48,
+          "start": 41,
+          "text": "8 weeks"
+        }
+      ]
+    },
+    "facts_extracted": {
+      "ahi_documented": null,
+      "conservative_therapy_weeks": 8,
+      "mechanical_symptoms_documented": null,
+      "neuro_red_flags_documented": true,
+      "osa_diagnosis": null,
+      "prior_imaging_result": "inconclusive",
+      "sleep_study_date": null,
+      "symptom_duration_weeks": 8
+    },
+    "invariant_errors": [],
+    "metrics": {
+      "compliance_rate": 100.0,
+      "compliant_count": 4,
+      "extraction_failure_count": 0,
+      "extraction_success_rate": 100.0,
+      "non_compliant_count": 0
+    },
+    "note_hash": "449f7c6ef1838637",
+    "note_length": 193,
+    "overall_status": "READY",
+    "payer": "Aetna",
+    "policy_trust_level": "demo",
+    "procedure_code": "MRI_CERVICAL",
+    "procedure_name": "MRI Cervical Spine (no contrast)",
+    "provenance_snapshot": {
+      "last_reviewed": "2026-04-09",
+      "monitored_check_frequency": null,
+      "monitored_source_id": null,
+      "monitored_source_name": null,
+      "monitored_source_owner": null,
+      "monitored_source_url": null,
+      "notes": "Rules are illustrative for demo and intentionally mirror the narrow spine MRI contract.",
+      "rule_last_updated": "2026-04-09",
+      "rule_source_label": "Human-curated summary of cervical spine MRI administrative criteria",
+      "source_name": "Aetna cervical spine MRI policy summary",
+      "source_type": "manual_summary",
+      "source_url": null
+    },
+    "requirements_checked": [
+      "conservative_therapy_weeks",
+      "neuro_red_flags_documented",
+      "prior_imaging_result",
+      "symptom_duration_weeks"
+    ],
+    "rulebook_active_release_id": "2026-04-09-active-v0.5",
+    "rules_version": "0.5",
+    "run_id": "e3e18d4f-137e-4b42-94f8-2f35c1a29f17",
+    "site_of_care": "outpatient",
+    "specialty": "Orthopedics",
+    "submission_readiness": true,
+    "timestamp_utc": "2026-04-09T15:24:39Z"
+  },
+  "blockers": {
+    "not_documented": [],
+    "not_met": []
+  },
+  "evidence_map": {
+    "conservative_therapy_weeks": [
+      {
+        "end": 64,
+        "start": 50,
+        "text": "PT for 8 weeks"
+      }
+    ],
+    "neuro_red_flags_documented": [
+      {
+        "end": 150,
+        "start": 113,
+        "text": "Denies weakness. Denies bowel/bladder"
+      }
+    ],
+    "prior_imaging_result": [
+      {
+        "end": 179,
+        "start": 175,
+        "text": "xray"
+      }
+    ],
+    "symptom_duration_weeks": [
+      {
+        "end": 48,
+        "start": 41,
+        "text": "8 weeks"
+      }
+    ]
+  },
+  "facts": {
+    "ahi_documented": null,
+    "conservative_therapy_weeks": 8,
+    "mechanical_symptoms_documented": null,
+    "neuro_red_flags_documented": true,
+    "osa_diagnosis": null,
+    "prior_imaging_result": "inconclusive",
+    "sleep_study_date": null,
+    "symptom_duration_weeks": 8
+  },
+  "letter": {
+    "metadata": {
+      "cited_snippets_count": 4,
+      "contains_missing_documentation": false,
+      "draft_blocked": false,
+      "draft_blocked_reasons": [],
+      "generated_timestamp_utc": "2026-04-09T15:24:39Z",
+      "letter_hash_sha256_16": "3af85eb36469835a",
+      "letter_type": "submission_cover_letter",
+      "letter_version": "1.1",
+      "overall_status": "READY",
+      "policy_trust_level": "demo"
+    },
+    "text": "PRIOR AUTHORIZATION ADMINISTRATIVE READINESS SUMMARY\n\nPayer: Aetna\nProcedure: MRI_CERVICAL\nSite of care: outpatient\nSpecialty: Orthopedics\nGenerated: 2026-04-09T15:24:39Z\nDx codes: M54.12\nPolicy trust level: DEMO \u2014 criteria are illustrative only. Verify against the official payer policy before submission.\n\nOverall Status: READY\n\nSummary:\nThis letter supports administrative submission readiness based on the documentation present in the record. This does not guarantee payer approval.\n\nRequirements:\n- Conservative therapy duration (weeks) (conservative_therapy_weeks): MET\n  Reason: Documented value: 8.\n  Evidence:\n   - \"PT for 8 weeks\"\n- Neuro red flags explicitly addressed (present or denied) (neuro_red_flags_documented): MET\n  Reason: Explicitly addressed in documentation (present/affirmed).\n  Evidence:\n   - \"Denies weakness. Denies bowel/bladder\"\n- Prior imaging result (prior_imaging_result): MET\n  Reason: Documented: inconclusive.\n  Evidence:\n   - \"xray\"\n- Symptom duration (weeks) (symptom_duration_weeks): MET\n  Reason: Documented value: 8.\n  Evidence:\n   - \"8 weeks\"\nClosing:\nThis letter summarizes documentation-based administrative readiness for prior authorization submission. It does not provide clinical recommendations and does not predict approval outcomes.\n"
+  },
+  "metrics": {
+    "compliance_rate": 100.0,
+    "compliant_count": 4,
+    "extraction_failure_count": 0,
+    "extraction_success_rate": 100.0,
+    "non_compliant_count": 0
+  },
+  "overall_status": "READY",
+  "policy_trust_level": "demo",
+  "provenance": {
+    "last_reviewed": "2026-04-09",
+    "monitored_check_frequency": null,
+    "monitored_source_id": null,
+    "monitored_source_name": null,
+    "monitored_source_owner": null,
+    "monitored_source_url": null,
+    "notes": "Rules are illustrative for demo and intentionally mirror the narrow spine MRI contract.",
+    "rule_last_updated": "2026-04-09",
+    "rule_source_label": "Human-curated summary of cervical spine MRI administrative criteria",
+    "source_name": "Aetna cervical spine MRI policy summary",
+    "source_type": "manual_summary",
+    "source_url": null
+  },
+  "readiness_score": 100,
+  "report": {
+    "audit_trail": {
+      "blocking_issues": {
+        "not_documented": [],
+        "not_met": []
+      },
+      "evaluation_warnings": [
+        "Policy trust remains DEMO for this procedure. Verify against official policy before real-world use."
+      ],
+      "evidence_map": {
+        "conservative_therapy_weeks": [
+          {
+            "end": 64,
+            "start": 50,
+            "text": "PT for 8 weeks"
+          }
+        ],
+        "neuro_red_flags_documented": [
+          {
+            "end": 150,
+            "start": 113,
+            "text": "Denies weakness. Denies bowel/bladder"
+          }
+        ],
+        "prior_imaging_result": [
+          {
+            "end": 179,
+            "start": 175,
+            "text": "xray"
+          }
+        ],
+        "symptom_duration_weeks": [
+          {
+            "end": 48,
+            "start": 41,
+            "text": "8 weeks"
+          }
+        ]
+      },
+      "facts_extracted": {
+        "ahi_documented": null,
+        "conservative_therapy_weeks": 8,
+        "mechanical_symptoms_documented": null,
+        "neuro_red_flags_documented": true,
+        "osa_diagnosis": null,
+        "prior_imaging_result": "inconclusive",
+        "sleep_study_date": null,
+        "symptom_duration_weeks": 8
+      },
+      "invariant_errors": [],
+      "metrics": {
+        "compliance_rate": 100.0,
+        "compliant_count": 4,
+        "extraction_failure_count": 0,
+        "extraction_success_rate": 100.0,
+        "non_compliant_count": 0
+      },
+      "note_hash": "449f7c6ef1838637",
+      "note_length": 193,
+      "overall_status": "READY",
+      "payer": "Aetna",
+      "policy_trust_level": "demo",
+      "procedure_code": "MRI_CERVICAL",
+      "procedure_name": "MRI Cervical Spine (no contrast)",
+      "provenance_snapshot": {
+        "last_reviewed": "2026-04-09",
+        "monitored_check_frequency": null,
+        "monitored_source_id": null,
+        "monitored_source_name": null,
+        "monitored_source_owner": null,
+        "monitored_source_url": null,
+        "notes": "Rules are illustrative for demo and intentionally mirror the narrow spine MRI contract.",
+        "rule_last_updated": "2026-04-09",
+        "rule_source_label": "Human-curated summary of cervical spine MRI administrative criteria",
+        "source_name": "Aetna cervical spine MRI policy summary",
+        "source_type": "manual_summary",
+        "source_url": null
+      },
+      "requirements_checked": [
+        "conservative_therapy_weeks",
+        "neuro_red_flags_documented",
+        "prior_imaging_result",
+        "symptom_duration_weeks"
+      ],
+      "rulebook_active_release_id": "2026-04-09-active-v0.5",
+      "rules_version": "0.5",
+      "run_id": "e3e18d4f-137e-4b42-94f8-2f35c1a29f17",
+      "site_of_care": "outpatient",
+      "specialty": "Orthopedics",
+      "submission_readiness": true,
+      "timestamp_utc": "2026-04-09T15:24:39Z"
+    },
+    "letter_draft": "",
+    "met_count": 4,
+    "not_documented_count": 0,
+    "not_met_count": 0,
+    "readiness_score": 100,
+    "results": [
+      {
+        "evidence": "PT/NSAIDs/activity modification trial documented",
+        "evidence_snippets": [
+          "PT for 8 weeks"
+        ],
+        "evidence_spans": [
+          {
+            "end": 64,
+            "start": 50,
+            "text": "PT for 8 weeks"
+          }
+        ],
+        "key": "conservative_therapy_weeks",
+        "label": "Conservative therapy duration (weeks)",
+        "reason": "Documented value: 8.",
+        "status": "MET"
+      },
+      {
+        "evidence": "Weakness, numbness, bowel/bladder changes, or related escalation findings explicitly documented",
+        "evidence_snippets": [
+          "Denies weakness. Denies bowel/bladder"
+        ],
+        "evidence_spans": [
+          {
+            "end": 150,
+            "start": 113,
+            "text": "Denies weakness. Denies bowel/bladder"
+          }
+        ],
+        "key": "neuro_red_flags_documented",
+        "label": "Neuro red flags explicitly addressed (present or denied)",
+        "reason": "Explicitly addressed in documentation (present/affirmed).",
+        "status": "MET"
+      },
+      {
+        "evidence": "X-ray/CT results or note of none",
+        "evidence_snippets": [
+          "xray"
+        ],
+        "evidence_spans": [
+          {
+            "end": 179,
+            "start": 175,
+            "text": "xray"
+          }
+        ],
+        "key": "prior_imaging_result",
+        "label": "Prior imaging result",
+        "reason": "Documented: inconclusive.",
+        "status": "MET"
+      },
+      {
+        "evidence": "Duration supports guideline-based escalation",
+        "evidence_snippets": [
+          "8 weeks"
+        ],
+        "evidence_spans": [
+          {
+            "end": 48,
+            "start": 41,
+            "text": "8 weeks"
+          }
+        ],
+        "key": "symptom_duration_weeks",
+        "label": "Symptom duration (weeks)",
+        "reason": "Documented value: 8.",
+        "status": "MET"
+      }
+    ],
+    "rule_reasons": []
+  },
+  "request": {
+    "dx_codes": [
+      "M54.12"
+    ],
+    "note_text": "Neck pain with right arm radiculopathy x 8 weeks. PT for 8 weeks and NSAIDs documented with minimal improvement. Denies weakness. Denies bowel/bladder changes. Prior cervical xray inconclusive.",
+    "payer": "Aetna",
+    "procedure_code": "MRI_CERVICAL",
+    "site_of_care": "outpatient",
+    "specialty": "Orthopedics"
+  },
+  "results": [
+    {
+      "evidence": "PT/NSAIDs/activity modification trial documented",
+      "evidence_snippets": [
+        "PT for 8 weeks"
+      ],
+      "evidence_spans": [
+        {
+          "end": 64,
+          "start": 50,
+          "text": "PT for 8 weeks"
+        }
+      ],
+      "key": "conservative_therapy_weeks",
+      "label": "Conservative therapy duration (weeks)",
+      "reason": "Documented value: 8.",
+      "status": "MET"
+    },
+    {
+      "evidence": "Weakness, numbness, bowel/bladder changes, or related escalation findings explicitly documented",
+      "evidence_snippets": [
+        "Denies weakness. Denies bowel/bladder"
+      ],
+      "evidence_spans": [
+        {
+          "end": 150,
+          "start": 113,
+          "text": "Denies weakness. Denies bowel/bladder"
+        }
+      ],
+      "key": "neuro_red_flags_documented",
+      "label": "Neuro red flags explicitly addressed (present or denied)",
+      "reason": "Explicitly addressed in documentation (present/affirmed).",
+      "status": "MET"
+    },
+    {
+      "evidence": "X-ray/CT results or note of none",
+      "evidence_snippets": [
+        "xray"
+      ],
+      "evidence_spans": [
+        {
+          "end": 179,
+          "start": 175,
+          "text": "xray"
+        }
+      ],
+      "key": "prior_imaging_result",
+      "label": "Prior imaging result",
+      "reason": "Documented: inconclusive.",
+      "status": "MET"
+    },
+    {
+      "evidence": "Duration supports guideline-based escalation",
+      "evidence_snippets": [
+        "8 weeks"
+      ],
+      "evidence_spans": [
+        {
+          "end": 48,
+          "start": 41,
+          "text": "8 weeks"
+        }
+      ],
+      "key": "symptom_duration_weeks",
+      "label": "Symptom duration (weeks)",
+      "reason": "Documented value: 8.",
+      "status": "MET"
+    }
+  ],
+  "rule_reasons": [],
+  "submission_readiness": true,
+  "supported_procedure": {
+    "display_name": "MRI Cervical Spine (no contrast)",
+    "metadata": {
+      "category": "advanced_imaging",
+      "last_rule_update": "2026-04-09",
+      "notes": [
+        "Intentionally mirrors the lumbar MRI demo pathway to show reusable deterministic architecture.",
+        "Human review remains required before any real submission."
+      ],
+      "rule_family": "spine_mri_conservative_therapy",
+      "summary": "Administrative readiness check for cervical spine MRI requests using the same narrow deterministic evidence contract as lumbar MRI.",
+      "supported_sites": [
+        "outpatient"
+      ]
+    },
+    "monitored_for_drift": false,
+    "payer": "Aetna",
+    "policy_trust_level": "demo",
+    "procedure_code": "MRI_CERVICAL",
+    "provenance": {
+      "last_reviewed": "2026-04-09",
+      "monitored_check_frequency": null,
+      "monitored_source_id": null,
+      "monitored_source_name": null,
+      "monitored_source_owner": null,
+      "monitored_source_url": null,
+      "notes": "Rules are illustrative for demo and intentionally mirror the narrow spine MRI contract.",
+      "rule_last_updated": "2026-04-09",
+      "rule_source_label": "Human-curated summary of cervical spine MRI administrative criteria",
+      "source_name": "Aetna cervical spine MRI policy summary",
+      "source_type": "manual_summary",
+      "source_url": null
+    },
+    "required_field_keys": [
+      "conservative_therapy_weeks",
+      "neuro_red_flags_documented",
+      "prior_imaging_result",
+      "symptom_duration_weeks"
+    ],
+    "requirements": [
+      {
+        "allowed": [],
+        "evidence": "PT/NSAIDs/activity modification trial documented",
+        "key": "conservative_therapy_weeks",
+        "label": "Conservative therapy duration (weeks)",
+        "min": 6.0,
+        "type": "number"
+      },
+      {
+        "allowed": [],
+        "evidence": "Weakness, numbness, bowel/bladder changes, or related escalation findings explicitly documented",
+        "key": "neuro_red_flags_documented",
+        "label": "Neuro red flags explicitly addressed (present or denied)",
+        "min": null,
+        "type": "boolean"
+      },
+      {
+        "allowed": [
+          "none",
+          "inconclusive",
+          "abnormal"
+        ],
+        "evidence": "X-ray/CT results or note of none",
+        "key": "prior_imaging_result",
+        "label": "Prior imaging result",
+        "min": null,
+        "type": "enum"
+      },
+      {
+        "allowed": [],
+        "evidence": "Duration supports guideline-based escalation",
+        "key": "symptom_duration_weeks",
+        "label": "Symptom duration (weeks)",
+        "min": 6.0,
+        "type": "number"
+      }
+    ]
+  },
+  "warnings": [
+    "Policy trust remains DEMO for this procedure. Verify against official policy before real-world use."
+  ]
+}

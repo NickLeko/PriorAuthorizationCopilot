@@ -1,7 +1,5 @@
-import pytest
-
-from engine.schemas import PARequest, ReadinessReport, RequirementResult
 from engine.letter_draft import draft_letter
+from engine.schemas import PARequest, ReadinessReport, RequirementResult
 
 
 def _base_pa():

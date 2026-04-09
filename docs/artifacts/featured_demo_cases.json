@@ -1,0 +1,158 @@
+[
+  {
+    "dx_codes": [
+      "M54.16"
+    ],
+    "expected_label": "complete",
+    "id": "MRI-01-complete",
+    "note_text": "Low back pain with right leg radiculopathy x 8 weeks. Completed PT for 8 weeks and NSAIDs with minimal improvement. Denies bowel/bladder incontinence. No saddle anesthesia. Prior imaging: lumbar xray inconclusive. Neuro exam: mild weakness dorsiflexion 4/5.",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "showcase": {
+      "description": "A clean lumbar MRI request with therapy duration, symptom duration, imaging context, and red-flag documentation all present.",
+      "expected_overall_status": "READY",
+      "featured": true,
+      "scenario_type": "Ready path",
+      "sort_order": 1,
+      "tags": [
+        "spine MRI",
+        "happy path",
+        "evidence map"
+      ],
+      "title": "Lumbar MRI ready for administrative review",
+      "why_interesting": "Shows the straight-line READY path with evidence snippets across each requirement."
+    },
+    "site_of_care": "outpatient",
+    "specialty": "Orthopedics"
+  },
+  {
+    "dx_codes": [
+      "G47.33"
+    ],
+    "expected_label": "incomplete",
+    "id": "CPAP-02-borderline",
+    "note_text": "OSA noted in problem list. Sleep study in 2023 mentioned but no date. AHI not documented.",
+    "payer": "Aetna",
+    "procedure_code": "CPAP_DEVICE",
+    "showcase": {
+      "description": "The note mentions OSA and a past sleep study, but it leaves out the date and AHI details required to determine readiness.",
+      "expected_overall_status": "CANNOT_DETERMINE",
+      "featured": true,
+      "scenario_type": "Refusal-first",
+      "sort_order": 3,
+      "tags": [
+        "DME",
+        "missing documentation",
+        "cannot determine"
+      ],
+      "title": "CPAP request refused for missing documentation",
+      "why_interesting": "Shows refusal-first behavior when required evidence is missing instead of inferred."
+    },
+    "site_of_care": "outpatient",
+    "specialty": "Primary Care"
+  },
+  {
+    "dx_codes": [
+      "M54.5"
+    ],
+    "expected_label": "incomplete",
+    "id": "MRI-08-edge-below-threshold",
+    "note_text": "Low back pain x 5 weeks. PT x 5 weeks documented. Denies weakness. Denies bowel/bladder changes. No prior imaging.",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "showcase": {
+      "description": "This note documents the right fields, but both symptom duration and therapy duration are still below threshold.",
+      "expected_overall_status": "NOT_READY",
+      "featured": true,
+      "scenario_type": "Documented failure",
+      "sort_order": 2,
+      "tags": [
+        "threshold miss",
+        "not ready",
+        "fully documented"
+      ],
+      "title": "Documented, but not yet ready to submit",
+      "why_interesting": "Shows the difference between documented failure and missingness."
+    },
+    "site_of_care": "outpatient",
+    "specialty": "Primary Care"
+  },
+  {
+    "dx_codes": [
+      "G47.33"
+    ],
+    "expected_label": "complete",
+    "id": "CPAP-07-complete-alt-format-date",
+    "note_text": "Dx obstructive sleep apnea. Sleep study 2024/06/01. RDI 28. Request CPAP E0601.",
+    "payer": "Aetna",
+    "procedure_code": "CPAP_DEVICE",
+    "showcase": {
+      "description": "A CPAP request that includes OSA documentation, a slash-formatted sleep study date, and an RDI value.",
+      "expected_overall_status": "READY",
+      "featured": true,
+      "scenario_type": "Ready path",
+      "sort_order": 4,
+      "tags": [
+        "date parsing",
+        "DME",
+        "cross-domain"
+      ],
+      "title": "CPAP ready case with alternative date formatting",
+      "why_interesting": "Shows cross-domain breadth and a small extraction robustness edge case."
+    },
+    "site_of_care": "outpatient",
+    "specialty": "Sleep Medicine"
+  },
+  {
+    "dx_codes": [
+      "M54.12"
+    ],
+    "expected_label": "complete",
+    "id": "MRI-CERV-01-ready",
+    "note_text": "Neck pain with right arm radiculopathy x 8 weeks. PT for 8 weeks and NSAIDs documented with minimal improvement. Denies weakness. Denies bowel/bladder changes. Prior cervical xray inconclusive.",
+    "payer": "Aetna",
+    "procedure_code": "MRI_CERVICAL",
+    "showcase": {
+      "description": "A second spine MRI procedure that uses the same deterministic evidence contract as lumbar MRI.",
+      "expected_overall_status": "READY",
+      "featured": true,
+      "scenario_type": "New procedure coverage",
+      "sort_order": 5,
+      "tags": [
+        "cervical MRI",
+        "registry depth",
+        "shared contract"
+      ],
+      "title": "Cervical MRI ready case using the new supported pathway",
+      "why_interesting": "Shows that the shared service and rule registry can support new deterministic procedures without changing the engine shape."
+    },
+    "site_of_care": "outpatient",
+    "specialty": "Orthopedics"
+  },
+  {
+    "dx_codes": [
+      "M25.561"
+    ],
+    "expected_label": "complete",
+    "id": "MRI-KNEE-01-ready",
+    "note_text": "Right knee pain with locking and catching x 8 weeks. Completed PT for 8 weeks and NSAIDs with minimal improvement. Prior knee xray normal/unremarkable.",
+    "payer": "Aetna",
+    "procedure_code": "MRI_KNEE",
+    "showcase": {
+      "description": "A non-spine advanced imaging request that stays narrow: symptom duration, therapy duration, prior xray context, and explicit mechanical symptom review.",
+      "expected_overall_status": "READY",
+      "featured": true,
+      "scenario_type": "Non-spine coverage",
+      "sort_order": 6,
+      "tags": [
+        "knee MRI",
+        "orthopedics",
+        "mechanical symptoms"
+      ],
+      "title": "Knee MRI ready case with explicit mechanical symptoms",
+      "why_interesting": "Shows deeper deterministic product coverage without changing the engine shape or widening into clinical scoring."
+    },
+    "site_of_care": "outpatient",
+    "specialty": "Orthopedics"
+  }
+]

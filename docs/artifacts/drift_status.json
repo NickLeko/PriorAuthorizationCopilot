@@ -1,0 +1,29 @@
+{
+  "any_review_required": true,
+  "sources": [
+    {
+      "check_frequency": "daily",
+      "days_since_last_checked": 62,
+      "freshness_status": "STALE",
+      "id": "aetna_mri_lumbar",
+      "last_checked_utc": "2026-02-06T06:12:45Z",
+      "last_rule_reviewed": "2026-04-09",
+      "latest_diff_path": null,
+      "latest_event": "BOOTSTRAP_SNAPSHOT_CREATED",
+      "latest_hash": "480f08eba64b3ad166504d92675a8751c598f4c4f364c38aaf702c346e525209",
+      "latest_snapshot_path": "policy_snapshots/aetna_mri_lumbar/latest.json",
+      "notes": "Monitored for drift; rules curated offline.",
+      "owner": "NickLeko",
+      "payer": "Aetna",
+      "procedure_code": "MRI_LUMBAR",
+      "review_reason": "Snapshot exceeds the configured daily monitoring window.",
+      "rule_source_label": "Human-curated summary of spine MRI administrative criteria",
+      "source_name": "Aetna CPB 0157",
+      "source_type": "official_policy_web",
+      "status": "OK",
+      "trust_level": "verified",
+      "url": "https://www.aetna.com/cpb/medical/data/100_199/0157.html"
+    }
+  ],
+  "stale_source_count": 1
+}

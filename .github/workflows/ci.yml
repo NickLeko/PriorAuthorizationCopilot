@@ -5,7 +5,7 @@ on:
   pull_request:
 
 jobs:
-  pytest:
+  quality:
     runs-on: ubuntu-latest
 
     steps:
@@ -22,5 +22,14 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install -r requirements.txt
 
+      - name: Run Ruff
+        run: ruff check .
+
       - name: Run pytest
         run: pytest -q
+
+      - name: Generate demo artifacts
+        run: python -m scripts.generate_artifacts
+
+      - name: Generate golden outputs
+        run: python -m scripts.generate_golden_outputs

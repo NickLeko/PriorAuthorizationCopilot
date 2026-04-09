@@ -56,6 +56,33 @@ payers:
         load_rules(str(rules_path))
 
 
+def test_rules_loader_rejects_invalid_metadata(tmp_path: Path):
+    rules_path = tmp_path / "bad_rules_metadata.yaml"
+    rules_path.write_text(
+        """
+version: 1
+payers:
+  Aetna:
+    procedures:
+      MRI_CERVICAL:
+        display_name: "MRI Cervical Spine"
+        metadata:
+          category: ""
+          rule_family: "spine_mri_conservative_therapy"
+          summary: "Test summary"
+        required:
+          - key: symptom_duration_weeks
+            label: "Symptom duration"
+            type: number
+            min: 6
+""".strip(),
+        encoding="utf-8",
+    )
+
+    with pytest.raises(ValueError, match="metadata.category must be a non-empty string"):
+        load_rules(str(rules_path))
+
+
 def test_provenance_loader_defaults_missing_file_to_empty_mapping(tmp_path: Path):
     missing_path = tmp_path / "missing_provenance.yaml"
     loaded = load_provenance(missing_path)
@@ -81,6 +108,17 @@ def test_official_policy_provenance_maps_to_verified():
 
     assert entry["source_type"] == "official_policy_web"
     assert policy_trust_from_provenance(entry) == "verified"
+
+
+def test_bundled_provenance_contains_rule_source_metadata():
+    provenance = load_provenance("rules/provenance.yaml")
+    entry = get_provenance_entry(provenance, "Aetna", "MRI_CERVICAL")
+
+    assert entry["rule_source_label"] == "Human-curated summary of cervical spine MRI administrative criteria"
+    assert entry["rule_last_updated"] == "2026-04-09"
+
+    knee_entry = get_provenance_entry(provenance, "Aetna", "MRI_KNEE")
+    assert knee_entry["rule_source_label"] == "Human-curated summary of knee MRI administrative documentation criteria"
 
 
 def test_normalized_dx_codes_are_uppercase_deduped_and_sanitized():

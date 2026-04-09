@@ -5,7 +5,7 @@ Scope: Deterministic extraction only
 Current repo status: implemented and deterministic; no LLM is used anywhere in the extraction path  
 Output: `(facts, evidence_map)`
 
-This document describes the extraction behavior implemented in [engine/extract.py](/Users/nicholasleko/projects/PriorAuthorizationCopilot/engine/extract.py).
+This document describes the extraction behavior implemented in [engine/extract.py](engine/extract.py).
 
 ## 1. Core Rules
 
@@ -55,6 +55,16 @@ Current behavior:
 - `inconclusive` when imaging is mentioned without a usable result, or when findings are normal, unclear, unknown, or otherwise non-blocking.
 - Imaging mention without a result is treated as documented `inconclusive`, not `null`.
 
+### `mechanical_symptoms_documented`
+
+Type: `bool | null`
+
+Current behavior:
+- Returns `True` when supported mechanical symptom phrasing such as `locking`, `catching`, `buckling`, `giving way`, or `instability` is explicitly present.
+- Returns `False` when those symptoms are explicitly denied with supported negation phrasing.
+- Returns `null` when the note does not explicitly address the supported symptom phrases.
+- Positive phrasing takes precedence if the note contains both denial and later affirmative mechanical-symptom language.
+
 ### `osa_diagnosis`
 
 Type: `bool | null`
@@ -100,6 +110,7 @@ Current behavior:
 - `Denies weakness. No saddle anesthesia.` -> `neuro_red_flags_documented = True`
 - `Prior MRI reviewed` -> `prior_imaging_result = "inconclusive"`
 - `No prior imaging yet` -> `prior_imaging_result = "none"`
+- `Denies locking or instability` -> `mechanical_symptoms_documented = false`
 - `Sleep study completed 2024-05-18` -> `sleep_study_date = True`
 - `AHI 22 documented` -> `ahi_documented = True`
 - `AHI not stated` -> `ahi_documented = null`

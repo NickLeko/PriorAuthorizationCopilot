@@ -7,6 +7,17 @@ import yaml
 
 from .schemas import PARequest, PolicyTrustLevel
 
+PROVENANCE_STRING_FIELDS = {
+    "source_type",
+    "source_name",
+    "source_url",
+    "rule_source_label",
+    "last_reviewed",
+    "rule_last_updated",
+    "monitored_source_id",
+    "notes",
+}
+
 
 def load_provenance(path: str | Path) -> Dict[str, Any]:
     provenance_path = Path(path)
@@ -26,6 +37,19 @@ def load_provenance(path: str | Path) -> Dict[str, Any]:
 
     if not isinstance(sources, dict):
         raise ValueError("Invalid provenance file: 'sources' must be a mapping.")
+
+    for payer, payer_entries in sources.items():
+        if not isinstance(payer_entries, dict):
+            raise ValueError(f"Invalid provenance file: '{payer}' entries must be a mapping.")
+        for procedure_code, entry in payer_entries.items():
+            if not isinstance(entry, dict):
+                raise ValueError(f"Invalid provenance file: '{payer}.{procedure_code}' must be a mapping.")
+            for field_name, value in entry.items():
+                if field_name in PROVENANCE_STRING_FIELDS and value is not None:
+                    if not isinstance(value, str) or not value.strip():
+                        raise ValueError(
+                            f"Invalid provenance file: '{payer}.{procedure_code}.{field_name}' must be a non-empty string."
+                        )
 
     return data
 

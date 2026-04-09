@@ -1,11 +1,42 @@
 from __future__ import annotations
+
 from pathlib import Path
-from typing import Any, Dict, List
+from typing import Any, Dict
 
 import yaml
 
-
 ALLOWED_REQUIREMENT_TYPES = {"number", "boolean", "enum"}
+
+
+def _validate_procedure_metadata(metadata: Dict[str, Any], payer: str, procedure_code: str) -> None:
+    location = f"{payer}.{procedure_code}.metadata"
+
+    if not isinstance(metadata, dict):
+        raise ValueError(f"Invalid rules file: {location} must be a mapping.")
+
+    required_string_fields = ("category", "rule_family", "summary")
+    for field_name in required_string_fields:
+        value = metadata.get(field_name)
+        if not isinstance(value, str) or not value.strip():
+            raise ValueError(f"Invalid rules file: {location}.{field_name} must be a non-empty string.")
+
+    supported_sites = metadata.get("supported_sites", [])
+    if supported_sites is not None:
+        if not isinstance(supported_sites, list):
+            raise ValueError(f"Invalid rules file: {location}.supported_sites must be a list when provided.")
+        if any(not isinstance(site, str) or not site.strip() for site in supported_sites):
+            raise ValueError(f"Invalid rules file: {location}.supported_sites entries must be non-empty strings.")
+
+    notes = metadata.get("notes", [])
+    if notes is not None:
+        if not isinstance(notes, list):
+            raise ValueError(f"Invalid rules file: {location}.notes must be a list when provided.")
+        if any(not isinstance(note, str) or not note.strip() for note in notes):
+            raise ValueError(f"Invalid rules file: {location}.notes entries must be non-empty strings.")
+
+    last_rule_update = metadata.get("last_rule_update")
+    if last_rule_update is not None and (not isinstance(last_rule_update, str) or not last_rule_update.strip()):
+        raise ValueError(f"Invalid rules file: {location}.last_rule_update must be a non-empty string when provided.")
 
 
 def _validate_requirement(req: Dict[str, Any], payer: str, procedure_code: str, idx: int) -> None:
@@ -17,9 +48,7 @@ def _validate_requirement(req: Dict[str, Any], payer: str, procedure_code: str, 
 
     req_type = req.get("type", "boolean")
     if req_type not in ALLOWED_REQUIREMENT_TYPES:
-        raise ValueError(
-            f"Invalid rules file: {location}.type must be one of {sorted(ALLOWED_REQUIREMENT_TYPES)}."
-        )
+        raise ValueError(f"Invalid rules file: {location}.type must be one of {sorted(ALLOWED_REQUIREMENT_TYPES)}.")
 
     label = req.get("label", key)
     if not isinstance(label, str) or not label.strip():
@@ -47,21 +76,19 @@ def _validate_procedures(procedures: Dict[str, Any], payer: str) -> None:
 
         display_name = procedure.get("display_name", procedure_code)
         if not isinstance(display_name, str) or not display_name.strip():
-            raise ValueError(
-                f"Invalid rules file: {payer}.{procedure_code}.display_name must be a non-empty string."
-            )
+            raise ValueError(f"Invalid rules file: {payer}.{procedure_code}.display_name must be a non-empty string.")
+
+        metadata = procedure.get("metadata")
+        if metadata is not None:
+            _validate_procedure_metadata(metadata, payer, procedure_code)
 
         requirements = procedure.get("required")
         if not isinstance(requirements, list) or not requirements:
-            raise ValueError(
-                f"Invalid rules file: {payer}.{procedure_code}.required must be a non-empty list."
-            )
+            raise ValueError(f"Invalid rules file: {payer}.{procedure_code}.required must be a non-empty list.")
 
         for idx, requirement in enumerate(requirements):
             if not isinstance(requirement, dict):
-                raise ValueError(
-                    f"Invalid rules file: {payer}.{procedure_code}.required[{idx}] must be a mapping."
-                )
+                raise ValueError(f"Invalid rules file: {payer}.{procedure_code}.required[{idx}] must be a mapping.")
             _validate_requirement(requirement, payer, procedure_code, idx)
 
 

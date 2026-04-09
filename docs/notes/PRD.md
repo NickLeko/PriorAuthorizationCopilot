@@ -42,7 +42,7 @@ Is this request administratively ready to submit as documented, and if not, whic
 ## Current Proof
 
 - Versioned rules in YAML
-- Documented extraction behavior in [EXTRACTION_CONTRACT.md](/Users/nicholasleko/projects/PriorAuthorizationCopilot/EXTRACTION_CONTRACT.md)
+- Documented extraction behavior in [EXTRACTION_CONTRACT.md](../../EXTRACTION_CONTRACT.md)
 - Pytest coverage for core behaviors
 - Streamlit demo for inspection
 

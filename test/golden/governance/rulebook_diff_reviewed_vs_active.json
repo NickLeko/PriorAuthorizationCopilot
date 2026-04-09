@@ -1,0 +1,25 @@
+{
+  "added_procedures": [
+    "MRI_KNEE"
+  ],
+  "changed_policy_sources": [],
+  "changed_procedures": [],
+  "changed_provenance": [
+    "MRI_KNEE"
+  ],
+  "from_release_id": "2026-04-09-reviewed-v0.4",
+  "from_stage": "reviewed",
+  "removed_procedures": [],
+  "rules_version_from": "0.4",
+  "rules_version_to": "0.5",
+  "summary_lines": [
+    "Rules version: 0.4 -> 0.5",
+    "Added procedures: MRI_KNEE",
+    "Removed procedures: none",
+    "Changed procedures: none",
+    "Changed provenance entries: MRI_KNEE",
+    "Changed policy source entries: none"
+  ],
+  "to_release_id": "2026-04-09-active-v0.5",
+  "to_stage": "active"
+}

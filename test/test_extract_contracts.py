@@ -3,15 +3,11 @@ from pathlib import Path
 from engine.evaluate import compute_overall_status, evaluate_requirements
 from engine.extract import extract_facts
 
-
 CONTRACT_PATH = Path("EXTRACTION_CONTRACT.md")
 
 
 def test_extract_facts_is_deterministic_for_same_note():
-    note = (
-        "Low back pain for 8 weeks. Completed PT for 6 weeks. "
-        "Denies weakness, bowel or bladder changes. No prior imaging documented."
-    )
+    note = "Low back pain for 8 weeks. Completed PT for 6 weeks. Denies weakness, bowel or bladder changes. No prior imaging documented."
 
     facts_one, evidence_one = extract_facts(note)
     facts_two, evidence_two = extract_facts(note)
@@ -66,6 +62,11 @@ def test_extraction_contract_describes_current_shapes_and_limits():
     assert "The current implementation does not require explicit symptom context for this field." in contract
     assert 'Type: `"none" | "inconclusive" | "abnormal" | null`' in contract
     assert "Imaging mention without a result is treated as documented `inconclusive`, not `null`." in contract
+    assert "### `mechanical_symptoms_documented`" in contract
+    assert (
+        "Positive phrasing takes precedence if the note contains both denial and later affirmative "
+        "mechanical-symptom language." in contract
+    )
     assert "This field records whether a contextualized date was found. It does not return the parsed date value." in contract
     assert "This field records whether the numeric value is documented. It does not return the numeric value itself." in contract
     assert "Possible Extensions" in contract
@@ -84,3 +85,42 @@ def test_extraction_contract_examples_match_current_behavior():
     facts, _ = extract_facts("Back pain x 2 months. Completed PT and NSAIDs, duration not specified.")
     assert facts["symptom_duration_weeks"] == 8
     assert facts["conservative_therapy_weeks"] is None
+
+    facts, _ = extract_facts("Denies locking or instability. Prior knee xray normal.")
+    assert facts["mechanical_symptoms_documented"] is False
+
+
+def test_positive_red_flag_evidence_takes_precedence_when_note_contains_conflict():
+    note = (
+        "Neck pain x 8 weeks. PT x 8 weeks. Denies weakness earlier in visit. "
+        "Later note: reports progressive weakness and urinary retention. Prior CT abnormal."
+    )
+
+    facts, evidence = extract_facts(note)
+
+    assert facts["neuro_red_flags_documented"] is True
+    assert "neuro_red_flags_documented" in evidence
+    assert any("progressive weakness" in span["text"].lower() for span in evidence["neuro_red_flags_documented"])
+
+
+def test_mechanical_symptom_denial_is_captured_as_explicit_documentation():
+    note = "Right knee pain x 8 weeks. PT x 8 weeks. Denies locking or instability. Prior knee xray normal."
+
+    facts, evidence = extract_facts(note)
+
+    assert facts["mechanical_symptoms_documented"] is False
+    assert "mechanical_symptoms_documented" in evidence
+    assert any("denies locking" in span["text"].lower() for span in evidence["mechanical_symptoms_documented"])
+
+
+def test_positive_mechanical_symptoms_take_precedence_when_note_contains_conflict():
+    note = (
+        "Right knee pain x 8 weeks. PT x 8 weeks. Denies locking earlier in visit. "
+        "Later note: reports buckling with stairs. Prior knee xray normal."
+    )
+
+    facts, evidence = extract_facts(note)
+
+    assert facts["mechanical_symptoms_documented"] is True
+    assert "mechanical_symptoms_documented" in evidence
+    assert any("buckling" in span["text"].lower() for span in evidence["mechanical_symptoms_documented"])

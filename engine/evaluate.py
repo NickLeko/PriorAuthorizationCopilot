@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import Any, Dict, List, Optional, Tuple
 
-from .schemas import RequirementResult
+from .schemas import EvidenceSpan, RequirementResult
 
 
 def _coerce_evidence_snippets(evidence_items: Any) -> List[str]:
@@ -42,6 +42,26 @@ def _coerce_evidence_snippets(evidence_items: Any) -> List[str]:
     return dedup
 
 
+def _coerce_evidence_spans(evidence_items: Any) -> List[EvidenceSpan]:
+    if not evidence_items:
+        return []
+
+    spans: List[EvidenceSpan] = []
+    if isinstance(evidence_items, list):
+        for item in evidence_items:
+            if not isinstance(item, dict):
+                continue
+            start = item.get("start")
+            end = item.get("end")
+            text = str(item.get("text", "")).strip()
+            if not isinstance(start, int) or not isinstance(end, int) or not text:
+                continue
+            if end <= start or start < 0:
+                continue
+            spans.append(EvidenceSpan(start=start, end=end, text=text))
+    return spans
+
+
 def _eval_number(
     key: str,
     label: str,
@@ -51,7 +71,9 @@ def _eval_number(
 ) -> RequirementResult:
     val = facts.get(key)
     minv = req.get("min")
-    snippets = _coerce_evidence_snippets((evidence_map or {}).get(key))
+    evidence_items = (evidence_map or {}).get(key)
+    snippets = _coerce_evidence_snippets(evidence_items)
+    spans = _coerce_evidence_spans(evidence_items)
 
     if val is None:
         return RequirementResult(
@@ -61,6 +83,7 @@ def _eval_number(
             reason="Not found in note. Add explicit duration/value.",
             evidence=req.get("evidence"),
             evidence_snippets=snippets,
+            evidence_spans=spans,
         )
 
     if minv is not None and val < minv:
@@ -71,6 +94,7 @@ def _eval_number(
             reason=f"Documented value ({val}) below requirement (>= {minv}). Clarify or justify.",
             evidence=req.get("evidence"),
             evidence_snippets=snippets,
+            evidence_spans=spans,
         )
 
     return RequirementResult(
@@ -80,6 +104,7 @@ def _eval_number(
         reason=f"Documented value: {val}.",
         evidence=req.get("evidence"),
         evidence_snippets=snippets,
+        evidence_spans=spans,
     )
 
 
@@ -106,7 +131,9 @@ def _eval_boolean(
       - None => NOT_DOCUMENTED
     """
     val = facts.get(key)
-    snippets = _coerce_evidence_snippets((evidence_map or {}).get(key))
+    evidence_items = (evidence_map or {}).get(key)
+    snippets = _coerce_evidence_snippets(evidence_items)
+    spans = _coerce_evidence_spans(evidence_items)
 
     if val is True:
         return RequirementResult(
@@ -116,6 +143,7 @@ def _eval_boolean(
             reason="Explicitly addressed in documentation (present/affirmed).",
             evidence=req.get("evidence"),
             evidence_snippets=snippets,
+            evidence_spans=spans,
         )
 
     if val is False:
@@ -126,6 +154,7 @@ def _eval_boolean(
             reason="Explicitly addressed in documentation (denied/absent).",
             evidence=req.get("evidence"),
             evidence_snippets=snippets,
+            evidence_spans=spans,
         )
 
     return RequirementResult(
@@ -135,6 +164,7 @@ def _eval_boolean(
         reason="Not found in note. Add explicit statement.",
         evidence=req.get("evidence"),
         evidence_snippets=snippets,
+        evidence_spans=spans,
     )
 
 
@@ -147,7 +177,9 @@ def _eval_enum(
 ) -> RequirementResult:
     val = facts.get(key)
     allowed = req.get("allowed", [])
-    snippets = _coerce_evidence_snippets((evidence_map or {}).get(key))
+    evidence_items = (evidence_map or {}).get(key)
+    snippets = _coerce_evidence_snippets(evidence_items)
+    spans = _coerce_evidence_spans(evidence_items)
 
     if val is None:
         return RequirementResult(
@@ -157,6 +189,7 @@ def _eval_enum(
             reason="Not found in note. Add explicit result/category.",
             evidence=req.get("evidence"),
             evidence_snippets=snippets,
+            evidence_spans=spans,
         )
 
     if allowed and val not in allowed:
@@ -167,6 +200,7 @@ def _eval_enum(
             reason=f"Value '{val}' not in allowed set {allowed}. Clarify wording/category.",
             evidence=req.get("evidence"),
             evidence_snippets=snippets,
+            evidence_spans=spans,
         )
 
     return RequirementResult(
@@ -176,6 +210,7 @@ def _eval_enum(
         reason=f"Documented: {val}.",
         evidence=req.get("evidence"),
         evidence_snippets=snippets,
+        evidence_spans=spans,
     )
 
 
@@ -246,4 +281,3 @@ def compute_overall_status(results: List[RequirementResult]) -> Dict[str, Any]:
     if has_not_met:
         return {"overall_status": "NOT_READY", "submission_readiness": False}
     return {"overall_status": "READY", "submission_readiness": True}
-
