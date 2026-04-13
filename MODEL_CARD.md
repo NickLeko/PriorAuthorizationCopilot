@@ -56,8 +56,8 @@ The repo includes pytest coverage for extraction, evaluation, drafting, rule loa
 
 - Narrow rule coverage
 - Regex-based extraction with limited phrase support
-- `MRI_LUMBAR` is monitored for drift; `CPAP_DEVICE` is supported in rules but not monitored for drift
-- Runtime trust remains `demo` for both procedures because provenance is still curated offline
+- `MRI_LUMBAR` is monitored for drift; `MRI_CERVICAL`, `MRI_KNEE`, and `CPAP_DEVICE` are supported in rules but not monitored for drift
+- Runtime trust remains `demo` for supported procedures because provenance is still curated offline
 - No production integration
 
 ## Possible Extensions

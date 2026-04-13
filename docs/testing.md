@@ -20,40 +20,48 @@ Two regression layers exist on purpose:
 
 ## Commands
 
+After setup, prefer the Make targets. They use `.venv/bin/python` when the local virtualenv exists:
+
+```bash
+make verify
+make acceptance
+make smoke-ui
+```
+
 Run the full suite:
 
 ```bash
-pytest -q
+.venv/bin/python -m pytest -q
 ```
 
 Run the acceptance snapshots only:
 
 ```bash
-pytest -q test/test_acceptance_snapshots.py
+.venv/bin/python -m pytest -q test/test_acceptance_snapshots.py
 ```
 
 Run the Streamlit sanity tests only:
 
 ```bash
-pytest -q test/test_streamlit_app.py
+.venv/bin/python -m pytest -q test/test_streamlit_app.py
 ```
 
 Run lint:
 
 ```bash
-ruff check .
+.venv/bin/python -m ruff check .
 ```
 
 Regenerate stable artifacts:
 
 ```bash
-python3 -m scripts.generate_artifacts
+.venv/bin/python -m scripts.generate_artifacts
 ```
 
 Regenerate golden snapshots intentionally after a reviewed product change:
 
 ```bash
-python3 -m scripts.generate_golden_outputs
+.venv/bin/python -m scripts.generate_golden_outputs
 ```
 
 ## What Is Covered

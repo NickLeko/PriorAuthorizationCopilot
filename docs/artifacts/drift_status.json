@@ -3,7 +3,7 @@
   "sources": [
     {
       "check_frequency": "daily",
-      "days_since_last_checked": 62,
+      "days_since_last_checked": "__DAYS_SINCE_LAST_CHECKED__",
       "freshness_status": "STALE",
       "id": "aetna_mri_lumbar",
       "last_checked_utc": "2026-02-06T06:12:45Z",

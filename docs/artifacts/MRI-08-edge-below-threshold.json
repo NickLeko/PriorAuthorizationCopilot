@@ -97,11 +97,11 @@
     ],
     "rulebook_active_release_id": "2026-04-09-active-v0.5",
     "rules_version": "0.5",
-    "run_id": "ceb2430a-f92a-4c57-9eca-27e0ad7bdcf7",
+    "run_id": "__RUN_ID__",
     "site_of_care": "outpatient",
     "specialty": "Primary Care",
     "submission_readiness": false,
-    "timestamp_utc": "2026-04-09T15:24:39Z"
+    "timestamp_utc": "__TIMESTAMP_UTC__"
   },
   "blockers": {
     "not_documented": [],
@@ -166,14 +166,14 @@
       "contains_missing_documentation": false,
       "draft_blocked": false,
       "draft_blocked_reasons": [],
-      "generated_timestamp_utc": "2026-04-09T15:24:39Z",
-      "letter_hash_sha256_16": "69829b27e9b0253a",
+      "generated_timestamp_utc": "__TIMESTAMP_UTC__",
+      "letter_hash_sha256_16": "__LETTER_HASH_SHA256_16__",
       "letter_type": "submission_cover_letter",
       "letter_version": "1.1",
       "overall_status": "NOT_READY",
       "policy_trust_level": "demo"
     },
-    "text": "PRIOR AUTHORIZATION ADMINISTRATIVE READINESS SUMMARY\n\nPayer: Aetna\nProcedure: MRI_LUMBAR\nSite of care: outpatient\nSpecialty: Primary Care\nGenerated: 2026-04-09T15:24:39Z\nDx codes: M54.5\nPolicy trust level: DEMO \u2014 criteria are illustrative only. Verify against the official payer policy before submission.\n\nOverall Status: NOT_READY\n\nSummary:\nThe request is not administratively ready for submission because one or more documented requirements do not meet thresholds. This does not represent a clinical judgment and does not guarantee payer approval.\n\nRequirements:\n- Conservative therapy duration (weeks) (conservative_therapy_weeks): NOT_MET\n  Reason: Documented value (5) below requirement (>= 6.0). Clarify or justify.\n  Evidence:\n   - \"PT x 5 weeks\"\n- Neuro red flags explicitly addressed (present or denied) (neuro_red_flags_documented): MET\n  Reason: Explicitly addressed in documentation (present/affirmed).\n  Evidence:\n   - \"Denies weakness. Denies bowel/bladder\"\n- Prior imaging result (prior_imaging_result): MET\n  Reason: Documented: none.\n  Evidence:\n   - \"No prior imaging\"\n- Symptom duration (weeks) (symptom_duration_weeks): NOT_MET\n  Reason: Documented value (5) below requirement (>= 6.0). Clarify or justify.\n  Evidence:\n   - \"5 weeks\"\nClosing:\nThis letter summarizes documentation-based administrative readiness for prior authorization submission. It does not provide clinical recommendations and does not predict approval outcomes.\n"
+    "text": "PRIOR AUTHORIZATION ADMINISTRATIVE READINESS SUMMARY\n\nPayer: Aetna\nProcedure: MRI_LUMBAR\nSite of care: outpatient\nSpecialty: Primary Care\nGenerated: __TIMESTAMP_UTC__\nDx codes: M54.5\nPolicy trust level: DEMO \u2014 criteria are illustrative only. Verify against the official payer policy before submission.\n\nOverall Status: NOT_READY\n\nSummary:\nThe request is not administratively ready for submission because one or more documented requirements do not meet thresholds. This does not represent a clinical judgment and does not guarantee payer approval.\n\nRequirements:\n- Conservative therapy duration (weeks) (conservative_therapy_weeks): NOT_MET\n  Reason: Documented value (5) below requirement (>= 6.0). Clarify or justify.\n  Evidence:\n   - \"PT x 5 weeks\"\n- Neuro red flags explicitly addressed (present or denied) (neuro_red_flags_documented): MET\n  Reason: Explicitly addressed in documentation (present/affirmed).\n  Evidence:\n   - \"Denies weakness. Denies bowel/bladder\"\n- Prior imaging result (prior_imaging_result): MET\n  Reason: Documented: none.\n  Evidence:\n   - \"No prior imaging\"\n- Symptom duration (weeks) (symptom_duration_weeks): NOT_MET\n  Reason: Documented value (5) below requirement (>= 6.0). Clarify or justify.\n  Evidence:\n   - \"5 weeks\"\nClosing:\nThis letter summarizes documentation-based administrative readiness for prior authorization submission. It does not provide clinical recommendations and does not predict approval outcomes.\n"
   },
   "metrics": {
     "compliance_rate": 50.0,
@@ -298,11 +298,11 @@
       ],
       "rulebook_active_release_id": "2026-04-09-active-v0.5",
       "rules_version": "0.5",
-      "run_id": "ceb2430a-f92a-4c57-9eca-27e0ad7bdcf7",
+      "run_id": "__RUN_ID__",
       "site_of_care": "outpatient",
       "specialty": "Primary Care",
       "submission_readiness": false,
-      "timestamp_utc": "2026-04-09T15:24:39Z"
+      "timestamp_utc": "__TIMESTAMP_UTC__"
     },
     "letter_draft": "",
     "met_count": 2,

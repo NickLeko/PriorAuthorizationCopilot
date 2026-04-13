@@ -84,11 +84,11 @@
     ],
     "rulebook_active_release_id": "2026-04-09-active-v0.5",
     "rules_version": "0.5",
-    "run_id": "7270f995-611a-4770-bac4-4eabef6d64ea",
+    "run_id": "__RUN_ID__",
     "site_of_care": "outpatient",
     "specialty": "Orthopedics",
     "submission_readiness": true,
-    "timestamp_utc": "2026-04-09T15:24:39Z"
+    "timestamp_utc": "__TIMESTAMP_UTC__"
   },
   "blockers": {
     "not_documented": [],
@@ -140,14 +140,14 @@
       "contains_missing_documentation": false,
       "draft_blocked": false,
       "draft_blocked_reasons": [],
-      "generated_timestamp_utc": "2026-04-09T15:24:39Z",
-      "letter_hash_sha256_16": "e8f947f931d9208d",
+      "generated_timestamp_utc": "__TIMESTAMP_UTC__",
+      "letter_hash_sha256_16": "__LETTER_HASH_SHA256_16__",
       "letter_type": "submission_cover_letter",
       "letter_version": "1.1",
       "overall_status": "READY",
       "policy_trust_level": "demo"
     },
-    "text": "PRIOR AUTHORIZATION ADMINISTRATIVE READINESS SUMMARY\n\nPayer: Aetna\nProcedure: MRI_LUMBAR\nSite of care: outpatient\nSpecialty: Orthopedics\nGenerated: 2026-04-09T15:24:39Z\nDx codes: M54.16\nPolicy trust level: DEMO \u2014 criteria are illustrative only. Verify against the official payer policy before submission.\n\nOverall Status: READY\n\nSummary:\nThis letter supports administrative submission readiness based on the documentation present in the record. This does not guarantee payer approval.\n\nRequirements:\n- Conservative therapy duration (weeks) (conservative_therapy_weeks): MET\n  Reason: Documented value: 8.\n  Evidence:\n   - \"PT for 8 weeks\"\n- Neuro red flags explicitly addressed (present or denied) (neuro_red_flags_documented): MET\n  Reason: Explicitly addressed in documentation (present/affirmed).\n  Evidence:\n   - \"Denies bowel/bladder incontinence. No saddle anesthesia. Prior imaging: lumbar xray inconclusive. Neuro exam: mild weakness\"\n- Prior imaging result (prior_imaging_result): MET\n  Reason: Documented: inconclusive.\n  Evidence:\n   - \"xray\"\n- Symptom duration (weeks) (symptom_duration_weeks): MET\n  Reason: Documented value: 8.\n  Evidence:\n   - \"8 weeks\"\nClosing:\nThis letter summarizes documentation-based administrative readiness for prior authorization submission. It does not provide clinical recommendations and does not predict approval outcomes.\n"
+    "text": "PRIOR AUTHORIZATION ADMINISTRATIVE READINESS SUMMARY\n\nPayer: Aetna\nProcedure: MRI_LUMBAR\nSite of care: outpatient\nSpecialty: Orthopedics\nGenerated: __TIMESTAMP_UTC__\nDx codes: M54.16\nPolicy trust level: DEMO \u2014 criteria are illustrative only. Verify against the official payer policy before submission.\n\nOverall Status: READY\n\nSummary:\nThis letter supports administrative submission readiness based on the documentation present in the record. This does not guarantee payer approval.\n\nRequirements:\n- Conservative therapy duration (weeks) (conservative_therapy_weeks): MET\n  Reason: Documented value: 8.\n  Evidence:\n   - \"PT for 8 weeks\"\n- Neuro red flags explicitly addressed (present or denied) (neuro_red_flags_documented): MET\n  Reason: Explicitly addressed in documentation (present/affirmed).\n  Evidence:\n   - \"Denies bowel/bladder incontinence. No saddle anesthesia. Prior imaging: lumbar xray inconclusive. Neuro exam: mild weakness\"\n- Prior imaging result (prior_imaging_result): MET\n  Reason: Documented: inconclusive.\n  Evidence:\n   - \"xray\"\n- Symptom duration (weeks) (symptom_duration_weeks): MET\n  Reason: Documented value: 8.\n  Evidence:\n   - \"8 weeks\"\nClosing:\nThis letter summarizes documentation-based administrative readiness for prior authorization submission. It does not provide clinical recommendations and does not predict approval outcomes.\n"
   },
   "metrics": {
     "compliance_rate": 100.0,
@@ -259,11 +259,11 @@
       ],
       "rulebook_active_release_id": "2026-04-09-active-v0.5",
       "rules_version": "0.5",
-      "run_id": "7270f995-611a-4770-bac4-4eabef6d64ea",
+      "run_id": "__RUN_ID__",
       "site_of_care": "outpatient",
       "specialty": "Orthopedics",
       "submission_readiness": true,
-      "timestamp_utc": "2026-04-09T15:24:39Z"
+      "timestamp_utc": "__TIMESTAMP_UTC__"
     },
     "letter_draft": "",
     "met_count": 4,

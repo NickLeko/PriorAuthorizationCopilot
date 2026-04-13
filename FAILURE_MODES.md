@@ -172,7 +172,7 @@ Letter drafting:
 **Definition:** Used for real PHI, autonomous submission, or clinical decisioning.
 
 **Mitigations:**
-- Explicit non-goals in README/PRD/MODEL_CARD
+- Explicit non-goals in README, MODEL_CARD, and safety docs
 - No persistence of raw note text
 - Audit contains only note hash and spans (for synthetic/demo)
 - “Administrative decision support only” banner in UI
@@ -200,6 +200,6 @@ Any change to:
 requires:
 - updated tests
 - version bump
-- updated docs (PRD + model card + this file)
+- updated docs (README, model card, safety docs, and this file as needed)
 
 ---

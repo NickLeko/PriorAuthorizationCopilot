@@ -7,15 +7,15 @@ Show a recruiter or interviewer that this repo is a disciplined internal-product
 ## Setup
 
 ```bash
-python3 -m pip install -r requirements.txt
-streamlit run app.py
+make install PYTHON=python3.12
+make run
 ```
 
 Optional:
 
 ```bash
-python3 -m uvicorn api:app --reload
-python3 cli.py list-demo-cases
+make api
+.venv/bin/python cli.py list-demo-cases
 ```
 
 ## Recommended 5-Minute Demo Flow
@@ -76,7 +76,7 @@ Call out:
 Example:
 
 ```bash
-python3 cli.py evaluate --demo-case CPAP-02-borderline
+.venv/bin/python cli.py evaluate --demo-case CPAP-02-borderline
 curl http://127.0.0.1:8000/supported-procedures
 ```
 
@@ -109,7 +109,7 @@ Call out:
 Use:
 
 ```bash
-python3 cli.py rulebook-diff --from-release 2026-04-09-reviewed-v0.4 --to-release 2026-04-09-active-v0.5
+.venv/bin/python cli.py rulebook-diff --from-release 2026-04-09-reviewed-v0.4 --to-release 2026-04-09-active-v0.5
 ```
 
 Call out:

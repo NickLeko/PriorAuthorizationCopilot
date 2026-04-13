@@ -5,8 +5,10 @@ The FastAPI layer exposes the current deterministic capabilities of the repo wit
 Run locally:
 
 ```bash
-python3 -m uvicorn api:app --reload
+make api
 ```
+
+Direct equivalent: `.venv/bin/python -m uvicorn api:app --reload`
 
 Base URL in local examples: `http://127.0.0.1:8000`
 

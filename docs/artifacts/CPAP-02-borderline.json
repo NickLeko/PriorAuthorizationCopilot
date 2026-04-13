@@ -82,11 +82,11 @@
     ],
     "rulebook_active_release_id": "2026-04-09-active-v0.5",
     "rules_version": "0.5",
-    "run_id": "ac3bf875-685b-4d53-9310-18d736eb772d",
+    "run_id": "__RUN_ID__",
     "site_of_care": "outpatient",
     "specialty": "Primary Care",
     "submission_readiness": false,
-    "timestamp_utc": "2026-04-09T15:24:39Z"
+    "timestamp_utc": "__TIMESTAMP_UTC__"
   },
   "blockers": {
     "not_documented": [
@@ -139,8 +139,8 @@
       "draft_blocked_reasons": [
         "Prohibited language detected: 'diagnosis'"
       ],
-      "generated_timestamp_utc": "2026-04-09T15:24:39Z",
-      "letter_hash_sha256_16": "24229731fe7162a2",
+      "generated_timestamp_utc": "__TIMESTAMP_UTC__",
+      "letter_hash_sha256_16": "__LETTER_HASH_SHA256_16__",
       "letter_type": "submission_cover_letter",
       "letter_version": "1.1",
       "overall_status": "CANNOT_DETERMINE",
@@ -256,11 +256,11 @@
       ],
       "rulebook_active_release_id": "2026-04-09-active-v0.5",
       "rules_version": "0.5",
-      "run_id": "ac3bf875-685b-4d53-9310-18d736eb772d",
+      "run_id": "__RUN_ID__",
       "site_of_care": "outpatient",
       "specialty": "Primary Care",
       "submission_readiness": false,
-      "timestamp_utc": "2026-04-09T15:24:39Z"
+      "timestamp_utc": "__TIMESTAMP_UTC__"
     },
     "letter_draft": "",
     "met_count": 1,

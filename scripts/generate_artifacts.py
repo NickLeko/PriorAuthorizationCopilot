@@ -1,5 +1,8 @@
 from __future__ import annotations
 
+from typing import Any, Dict
+
+from engine.acceptance import normalize_drift_payload, normalize_evaluation_payload
 from engine.rendering import (
     export_evaluation_payload,
     render_drift_markdown,
@@ -8,6 +11,9 @@ from engine.rendering import (
 )
 from engine.service import ReadinessService
 
+TIMESTAMP_PLACEHOLDER = "__TIMESTAMP_UTC__"
+LETTER_HASH_PLACEHOLDER = "__LETTER_HASH_SHA256_16__"
+
 DEFAULT_CASE_IDS = [
     "MRI-01-complete",
     "MRI-08-edge-below-threshold",
@@ -15,6 +21,28 @@ DEFAULT_CASE_IDS = [
     "MRI-KNEE-01-ready",
     "CPAP-02-borderline",
 ]
+
+
+def normalize_artifact_evaluation_payload(payload: Dict[str, Any]) -> Dict[str, Any]:
+    normalized = normalize_evaluation_payload(payload)
+    letter = normalized.get("letter")
+    if not isinstance(letter, dict):
+        return normalized
+
+    metadata = letter.get("metadata")
+    generated_timestamp = None
+    if isinstance(metadata, dict):
+        generated_timestamp = metadata.get("generated_timestamp_utc")
+        if generated_timestamp:
+            metadata["generated_timestamp_utc"] = TIMESTAMP_PLACEHOLDER
+        if metadata.get("letter_hash_sha256_16"):
+            metadata["letter_hash_sha256_16"] = LETTER_HASH_PLACEHOLDER
+
+    text = letter.get("text")
+    if isinstance(text, str) and generated_timestamp:
+        letter["text"] = text.replace(generated_timestamp, TIMESTAMP_PLACEHOLDER)
+
+    return normalized
 
 
 def main() -> int:
@@ -31,13 +59,14 @@ def main() -> int:
         request = service.get_demo_case_request(case_id)
         evaluation = service.evaluate(request)
         letter_text, letter_meta = service.generate_letter(evaluation)
+        payload = export_evaluation_payload(evaluation, letter_text=letter_text, letter_meta=letter_meta)
         write_json_artifact(
-            export_evaluation_payload(evaluation, letter_text=letter_text, letter_meta=letter_meta),
+            normalize_artifact_evaluation_payload(payload),
             artifact_dir / f"{case_id}.json",
         )
 
     write_json_artifact(
-        drift_report.model_dump(mode="json"),
+        normalize_drift_payload(drift_report.model_dump(mode="json")),
         artifact_dir / "drift_status.json",
     )
     (artifact_dir / "drift_report.md").write_text(render_drift_markdown(drift_report), encoding="utf-8")

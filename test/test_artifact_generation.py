@@ -17,6 +17,16 @@ def test_artifact_generation_writes_enriched_outputs(tmp_path, monkeypatch):
     assert (tmp_path / "rulebook_diff_reviewed_vs_active.json").exists()
     assert (tmp_path / "drift_report.md").exists()
 
+    evaluation_payload = json.loads((tmp_path / "MRI-01-complete.json").read_text(encoding="utf-8"))
+    assert evaluation_payload["audit_trail"]["run_id"] == "__RUN_ID__"
+    assert evaluation_payload["audit_trail"]["timestamp_utc"] == "__TIMESTAMP_UTC__"
+    assert evaluation_payload["letter"]["metadata"]["generated_timestamp_utc"] == "__TIMESTAMP_UTC__"
+    assert evaluation_payload["letter"]["metadata"]["letter_hash_sha256_16"] == "__LETTER_HASH_SHA256_16__"
+    assert "Generated: __TIMESTAMP_UTC__" in evaluation_payload["letter"]["text"]
+
+    drift_payload = json.loads((tmp_path / "drift_status.json").read_text(encoding="utf-8"))
+    assert drift_payload["sources"][0]["days_since_last_checked"] == "__DAYS_SINCE_LAST_CHECKED__"
+
     registry_payload = json.loads((tmp_path / "supported_procedures.json").read_text(encoding="utf-8"))
     assert any(item["procedure_code"] == "MRI_CERVICAL" for item in registry_payload)
     assert any(item["procedure_code"] == "MRI_KNEE" for item in registry_payload)

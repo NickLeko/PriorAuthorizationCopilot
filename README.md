@@ -61,10 +61,10 @@ More detail: [docs/architecture.md](docs/architecture.md)
 
 ## Local Setup
 
-Python version used in this repo: `3.12.x`
+Python version used in this repo: `3.12.x` (`.python-version` pins `3.12.3`).
 
 ```bash
-make install
+make install PYTHON=python3.12
 make test
 make lint
 make acceptance
@@ -76,12 +76,15 @@ make run
 If you prefer direct commands:
 
 ```bash
-python3 -m pip install -r requirements.txt
-pytest -q
-pytest -q test/test_acceptance_snapshots.py
-ruff check .
-pytest -q test/test_streamlit_app.py
-streamlit run app.py
+python3.12 -m venv .venv
+.venv/bin/python -m pip install -r requirements.txt
+.venv/bin/python -m pytest -q
+.venv/bin/python -m pytest -q test/test_acceptance_snapshots.py
+.venv/bin/python -m ruff check .
+.venv/bin/python -m pytest -q test/test_streamlit_app.py
+.venv/bin/python -m scripts.generate_artifacts
+.venv/bin/python -m scripts.generate_golden_outputs
+.venv/bin/python -m streamlit run app.py
 ```
 
 ## FastAPI
@@ -89,8 +92,10 @@ streamlit run app.py
 Run locally:
 
 ```bash
-python3 -m uvicorn api:app --reload
+make api
 ```
+
+Direct equivalent: `.venv/bin/python -m uvicorn api:app --reload`
 
 Example calls:
 
@@ -115,21 +120,22 @@ Full API notes: [docs/api.md](docs/api.md)
 ## CLI
 
 ```bash
-python3 cli.py status
-python3 cli.py list-procedures
-python3 cli.py list-demo-cases
-python3 cli.py evaluate --demo-case MRI-01-complete
-python3 cli.py evaluate --demo-case MRI-CERV-01-ready
-python3 cli.py evaluate --demo-case MRI-KNEE-01-ready
-python3 cli.py export-report --demo-case CPAP-02-borderline --output docs/artifacts/manual_export.json --with-letter
-python3 cli.py drift-status
-python3 cli.py rulebook-status
-python3 cli.py rulebook-diff --from-release 2026-04-09-reviewed-v0.4 --to-release 2026-04-09-active-v0.5
+.venv/bin/python cli.py status
+.venv/bin/python cli.py list-procedures
+.venv/bin/python cli.py list-demo-cases
+.venv/bin/python cli.py evaluate --demo-case MRI-01-complete
+.venv/bin/python cli.py evaluate --demo-case MRI-CERV-01-ready
+.venv/bin/python cli.py evaluate --demo-case MRI-KNEE-01-ready
+.venv/bin/python cli.py export-report --demo-case CPAP-02-borderline --output docs/artifacts/manual_export.json --with-letter
+.venv/bin/python cli.py drift-status
+.venv/bin/python cli.py rulebook-status
+.venv/bin/python cli.py rulebook-diff --from-release 2026-04-09-reviewed-v0.4 --to-release 2026-04-09-active-v0.5
 ```
 
 ## Demo Artifacts
 
-Stable sample outputs are generated under [docs/artifacts](docs/artifacts):
+Stable sample outputs are generated under [docs/artifacts](docs/artifacts).
+Volatile run IDs, timestamps, letter hashes, and freshness ages are normalized so regeneration stays reviewable.
 
 - [MRI-01-complete.json](docs/artifacts/MRI-01-complete.json)
 - [MRI-08-edge-below-threshold.json](docs/artifacts/MRI-08-edge-below-threshold.json)
@@ -147,13 +153,13 @@ Stable sample outputs are generated under [docs/artifacts](docs/artifacts):
 Regenerate demo artifacts with:
 
 ```bash
-python3 -m scripts.generate_artifacts
+.venv/bin/python -m scripts.generate_artifacts
 ```
 
 Regenerate golden acceptance snapshots with:
 
 ```bash
-python3 -m scripts.generate_golden_outputs
+.venv/bin/python -m scripts.generate_golden_outputs
 ```
 
 ## Key Docs
