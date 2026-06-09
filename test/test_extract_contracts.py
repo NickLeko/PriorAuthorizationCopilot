@@ -1,5 +1,7 @@
 from pathlib import Path
 
+import pytest
+
 from engine.evaluate import compute_overall_status, evaluate_requirements
 from engine.extract import extract_facts
 
@@ -24,6 +26,89 @@ def test_therapy_duration_does_not_leak_from_symptom_duration():
     assert facts["symptom_duration_weeks"] == 8
     assert facts["conservative_therapy_weeks"] is None
     assert "conservative_therapy_weeks" not in evidence
+
+
+def test_negated_therapy_duration_does_not_extract_false_met():
+    # Regression: previously extracted false MET from negation.
+    facts, evidence = extract_facts("Patient denies completing PT x 8 weeks.")
+
+    assert facts["conservative_therapy_weeks"] is None
+    assert "conservative_therapy_weeks" not in evidence
+
+
+@pytest.mark.parametrize(
+    "note",
+    [
+        "Pt has not completed any PT.",
+        "No conservative therapy attempted.",
+        "PT was recommended but patient declined.",
+        "Patient did not complete PT for 6 weeks.",
+    ],
+)
+def test_negated_therapy_duration_variations_return_none(note):
+    facts, evidence = extract_facts(note)
+
+    assert facts["conservative_therapy_weeks"] is None
+    assert "conservative_therapy_weeks" not in evidence
+
+
+def test_future_therapy_duration_does_not_extract_false_met():
+    # Regression: previously extracted false MET from future-tense.
+    facts, evidence = extract_facts("Will start PT for 6 weeks next month.")
+
+    assert facts["conservative_therapy_weeks"] is None
+    assert "conservative_therapy_weeks" not in evidence
+
+
+@pytest.mark.parametrize(
+    "note",
+    [
+        "PT ordered, to begin next week for 4 weeks.",
+        "Plan: 6 weeks of PT starting 1/15.",
+        "Referral placed for PT x 8 weeks.",
+    ],
+)
+def test_future_therapy_duration_variations_return_none(note):
+    facts, evidence = extract_facts(note)
+
+    assert facts["conservative_therapy_weeks"] is None
+    assert "conservative_therapy_weeks" not in evidence
+
+
+def test_therapy_duration_does_not_leak_into_symptom_duration():
+    # Regression: previously extracted false MET from therapy-leak.
+    note = "Completed PT for 6 weeks. Low back pain ongoing."
+
+    facts, evidence = extract_facts(note)
+
+    assert facts["conservative_therapy_weeks"] == 6
+    assert facts["symptom_duration_weeks"] is None
+    assert "symptom_duration_weeks" not in evidence
+
+
+def test_therapy_context_duration_is_skipped_when_extracting_later_symptom_months():
+    facts, evidence = extract_facts("6 weeks of PT completed. Symptoms present for 3 months.")
+
+    assert facts["conservative_therapy_weeks"] == 6
+    assert facts["symptom_duration_weeks"] == 12
+    assert evidence["symptom_duration_weeks"][0]["text"] == "3 months"
+
+
+@pytest.mark.parametrize(
+    "note, expected_therapy, expected_symptom",
+    [
+        ("PT x 8 weeks completed. Low back pain ongoing.", 8, None),
+        ("Physical therapy for 4 weeks completed; neck pain continues.", 4, None),
+        ("Completed 8 weeks of chiropractic care. Symptoms x 10 weeks.", 8, 10),
+    ],
+)
+def test_therapy_context_duration_does_not_drive_symptom_duration(note, expected_therapy, expected_symptom):
+    facts, evidence = extract_facts(note)
+
+    assert facts["conservative_therapy_weeks"] == expected_therapy
+    assert facts["symptom_duration_weeks"] == expected_symptom
+    if expected_symptom is None:
+        assert "symptom_duration_weeks" not in evidence
 
 
 def test_missing_required_item_forces_cannot_determine():

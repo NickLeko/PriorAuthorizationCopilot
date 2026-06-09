@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import re
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from hashlib import sha256
@@ -19,9 +20,18 @@ ALLOWED_LETTER_TYPES: set[LetterType] = {"submission_cover_letter", "missing_inf
 ALLOWED_POLICY_TRUST: set[PolicyTrustLevel] = {"demo", "verified"}
 
 # Hard-block phrases (lowercased) that must never appear in payer-facing output by default.
-# Contract: prohibited language is a hard block.
+# Contract: prohibited language is a hard block. Administrative references to
+# documented diagnoses or Dx codes are allowed only as source/request labels; the
+# draft must still never recommend or introduce a diagnosis.
 PROHIBITED_SUBSTRINGS = [
-    "diagnosis",
+    "clinical diagnosis",
+    "new diagnosis",
+    "diagnosed with",
+    "dx",
+    "impression",
+    "assessment",
+    "hx",
+    "history",
     "treatment",
     "recommended",
     "should start",
@@ -29,9 +39,16 @@ PROHIBITED_SUBSTRINGS = [
     "high risk",
     "risk score",
     "probability of approval",
+    "approval is expected",
+    "approval likely",
+    "likely to be approved",
     "will be approved",
     "guaranteed approval",
+    "authorization approved",
+    "payer will authorize",
     "clinically indicated",
+    "meets medical necessity",
+    "medical necessity determination",
     # Note: "medically necessary" is prohibited by default per contract.
     "medically necessary",
 ]
@@ -169,8 +186,17 @@ def _title_for(letter_type: str) -> str:
 
 
 def _hard_block_if_prohibited(letter_text: str) -> List[str]:
-    low = (letter_text or "").lower()
-    hits = [p for p in PROHIBITED_SUBSTRINGS if p in low]
+    scan_text = "\n".join(
+        line for line in (letter_text or "").splitlines() if not line.strip().lower().startswith("dx codes:")
+    )
+    low = scan_text.lower()
+    hits = []
+    for p in PROHIBITED_SUBSTRINGS:
+        if p in {"dx", "hx"}:
+            if re.search(rf"(?<![a-z0-9]){re.escape(p)}(?![a-z0-9])", low):
+                hits.append(p)
+        elif p in low:
+            hits.append(p)
     if hits:
         return [f"Prohibited language detected: '{h}'" for h in hits]
     return []

@@ -34,6 +34,10 @@ That avoids:
 - false precision
 - accidental overclaiming
 
+Revision note, June 9, 2026:
+
+The system is designed to prefer under-extraction and missingness, but that is not a guarantee that over-extraction can never occur. Negated therapy, future-planned therapy, and therapy-duration-to-symptom-duration leakage were identified as false-positive extraction edge cases and patched with deterministic context filters plus regression tests.
+
 ## Drift Monitoring Boundary
 
 Policy drift monitoring exists to support governance.

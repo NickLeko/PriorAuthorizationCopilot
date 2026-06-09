@@ -11,6 +11,7 @@
 - extraction is pattern-based, not language-model-based
 - unusual phrasing can remain unparsed
 - the system prefers missingness over aggressive inference
+- revision note, June 9, 2026: over-extraction edge cases have been identified and patched, including negated therapy, future-planned therapy, and therapy-duration leakage into symptom duration; regression tests now cover those cases
 
 ## Governance Limits
 

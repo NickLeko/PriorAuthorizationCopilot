@@ -4,6 +4,48 @@ import re
 from typing import Any, Dict, List, Optional, Tuple
 
 
+THERAPY_CONTEXT = r"(?:pt|physical therapy|nsaids?|anti-?inflammator(?:y|ies)|activity modification|home exercise|hep|chiropractic|chiro)"
+THERAPY_AFTER_RE = re.compile(
+    rf"\b{THERAPY_CONTEXT}\b(?:\s*(?:x|for|over|about)\s*)\b(?P<value>\d+)\s*(?:week|weeks)\b"
+)
+THERAPY_BEFORE_RE = re.compile(rf"\b(?P<value>\d+)\s*(?:week|weeks)\b\s+of\s+\b{THERAPY_CONTEXT}\b")
+THERAPY_DURATION_CONTEXT_RE = re.compile(
+    rf"(?:\b{THERAPY_CONTEXT}\b(?:\s*(?:x|for|over|about)\s*)\b\d+\s*(?:week|weeks|month|months)\b)"
+    rf"|(?:\b\d+\s*(?:week|weeks|month|months)\b\s+of\s+\b{THERAPY_CONTEXT}\b)"
+)
+THERAPY_CONTEXT_RE = re.compile(rf"\b{THERAPY_CONTEXT}\b")
+
+THERAPY_NEGATION_PATTERNS = [
+    r"\bdenies\b",
+    r"\bdenied\b",
+    r"\bhas not\b",
+    r"\bdid not\b",
+    r"\bunable to complete\b",
+    r"\bdeclined\b",
+    r"\brefused\b",
+    r"\bno\s+(?:conservative therapy|pt|physical therapy|nsaids?|anti-?inflammator(?:y|ies)|home exercise|hep|chiropractic|chiro)\b",
+]
+THERAPY_FUTURE_LOOKBACK_PATTERNS = [
+    r"\bwill start\b",
+    r"\bplan to\b",
+    r"\bplans to\b",
+    r"\bplan\s*:",
+    r"\bscheduled for\b",
+    r"\bto begin\b",
+    r"\bupcoming\b",
+    r"\breferral placed\b",
+    r"\bordered\b",
+    r"\brecommended\b",
+]
+THERAPY_FUTURE_AFTER_PATTERNS = [
+    r"\bnext (?:week|month)\b",
+    r"\bto begin\b",
+    r"\bupcoming\b",
+    r"\bstarting\b",
+]
+SENTENCE_BOUNDARY_CHARS = ".!?\n;"
+
+
 def _add_span(evidence: Dict[str, List[Dict[str, Any]]], key: str, start: int, end: int, text: str) -> None:
     if start < 0 or end <= start:
         return
@@ -31,6 +73,63 @@ def _combined_span_text(raw: str, first: re.Match[str], second: re.Match[str]) -
     return start, end, raw[start:end]
 
 
+def _bounded_context_before(text: str, start: int, max_chars: int = 80) -> str:
+    lower = max(0, start - max_chars)
+    boundary = max(text.rfind(ch, lower, start) for ch in SENTENCE_BOUNDARY_CHARS)
+    if boundary >= 0:
+        lower = boundary + 1
+    return text[lower:start]
+
+
+def _bounded_context_after(text: str, end: int, max_chars: int = 80) -> str:
+    upper = min(len(text), end + max_chars)
+    boundaries = [text.find(ch, end, upper) for ch in SENTENCE_BOUNDARY_CHARS]
+    boundaries = [idx for idx in boundaries if idx >= 0]
+    if boundaries:
+        upper = min(boundaries)
+    return text[end:upper]
+
+
+def _has_pattern(patterns: List[str], text: str) -> bool:
+    return any(re.search(pattern, text) for pattern in patterns)
+
+
+def _therapy_duration_is_disqualified(text: str, match: re.Match[str]) -> bool:
+    before = _bounded_context_before(text, match.start())
+    matched = text[match.start() : match.end()]
+    after = _bounded_context_after(text, match.end())
+
+    if _has_pattern(THERAPY_NEGATION_PATTERNS, before + matched):
+        return True
+    if _has_pattern(THERAPY_FUTURE_LOOKBACK_PATTERNS, before):
+        return True
+    if _has_pattern(THERAPY_FUTURE_AFTER_PATTERNS, matched + after):
+        return True
+    return False
+
+
+def _duration_is_in_therapy_context(text: str, start: int, end: int) -> bool:
+    window_start = max(0, start - 80)
+    window_end = min(len(text), end + 80)
+    window = text[window_start:window_end]
+    rel_start = start - window_start
+    rel_end = end - window_start
+
+    for match in THERAPY_DURATION_CONTEXT_RE.finditer(window):
+        if match.start() <= rel_start and match.end() >= rel_end:
+            return True
+
+    before = _bounded_context_before(text, start)
+    near_before = _bounded_context_before(text, start, max_chars=40)
+    if THERAPY_CONTEXT_RE.search(before) and _has_pattern(THERAPY_FUTURE_LOOKBACK_PATTERNS, before):
+        return True
+    if THERAPY_CONTEXT_RE.search(near_before) and re.search(
+        r"\b(completed|complete|trialed|tried|finished|course|duration|total|ordered)\b", near_before
+    ):
+        return True
+    return False
+
+
 def extract_facts(note_text: str) -> Tuple[Dict[str, Any], Dict[str, List[Dict[str, Any]]]]:
     """
     Deterministic extraction for MVP.
@@ -55,14 +154,17 @@ def extract_facts(note_text: str) -> Tuple[Dict[str, Any], Dict[str, List[Dict[s
     # This prevents symptom duration ("pain x 8 weeks") from being misread as PT duration.
     therapy_weeks: Optional[int] = None
 
-    THERAPY_CONTEXT = r"(pt|physical therapy|nsaids?|anti-?inflammator(?:y|ies)|activity modification|home exercise|hep|chiropractic|chiro)"
-
     # Pattern A: "PT x 8 weeks" / "PT for 8 weeks" / "NSAIDs for 6 weeks"
-    m_therapy_after = re.search(rf"\b{THERAPY_CONTEXT}\b(?:\s*(?:x|for|over|about)\s*)\b(\d+)\s*(week|weeks)\b", t)
+    m_therapy_after = None
+    for candidate in THERAPY_AFTER_RE.finditer(t):
+        if _therapy_duration_is_disqualified(t, candidate):
+            continue
+        m_therapy_after = candidate
+        break
+
     if m_therapy_after:
-        # Grouping note: THERAPY_CONTEXT is capturing => digits are group(2)
         try:
-            therapy_weeks = int(m_therapy_after.group(2))
+            therapy_weeks = int(m_therapy_after.group("value"))
         except Exception:
             therapy_weeks = None
 
@@ -77,10 +179,16 @@ def extract_facts(note_text: str) -> Tuple[Dict[str, Any], Dict[str, List[Dict[s
 
     # Pattern B: "8 weeks of PT" / "6 weeks of physical therapy"
     if therapy_weeks is None:
-        m_therapy_before = re.search(rf"\b(\d+)\s*(week|weeks)\b\s+of\s+\b{THERAPY_CONTEXT}\b", t)
+        m_therapy_before = None
+        for candidate in THERAPY_BEFORE_RE.finditer(t):
+            if _therapy_duration_is_disqualified(t, candidate):
+                continue
+            m_therapy_before = candidate
+            break
+
         if m_therapy_before:
             try:
-                therapy_weeks = int(m_therapy_before.group(1))
+                therapy_weeks = int(m_therapy_before.group("value"))
             except Exception:
                 therapy_weeks = None
 
@@ -98,7 +206,13 @@ def extract_facts(note_text: str) -> Tuple[Dict[str, Any], Dict[str, List[Dict[s
     # ----------------------------
     symptom_weeks: Optional[int] = None
 
-    m_months = re.search(r"\b(\d+)\s*(month|months)\b", t)
+    m_months = None
+    for candidate in re.finditer(r"\b(\d+)\s*(month|months)\b", t):
+        if _duration_is_in_therapy_context(t, candidate.start(), candidate.end()):
+            continue
+        m_months = candidate
+        break
+
     if m_months:
         symptom_weeks = int(m_months.group(1)) * 4
         _add_span(
@@ -109,7 +223,13 @@ def extract_facts(note_text: str) -> Tuple[Dict[str, Any], Dict[str, List[Dict[s
             raw[m_months.start() : m_months.end()],
         )
     else:
-        m_weeks = re.search(r"\b(\d+)\s*(week|weeks)\b", t)
+        m_weeks = None
+        for candidate in re.finditer(r"\b(\d+)\s*(week|weeks)\b", t):
+            if _duration_is_in_therapy_context(t, candidate.start(), candidate.end()):
+                continue
+            m_weeks = candidate
+            break
+
         if m_weeks:
             symptom_weeks = int(m_weeks.group(1))
             _add_span(

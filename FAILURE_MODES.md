@@ -3,7 +3,7 @@
 
 **Project:** Prior Authorization Readiness Copilot  
 **Owner:** Nicholas Leko  
-**Last Updated:** February 2026  
+**Last Updated:** June 9, 2026
 **Status:** Versioned current behavior. Changes should update tests and docs.
 
 ---
@@ -84,6 +84,13 @@ Letter drafting:
 - Policy drift gating to reduce stale-rule risk
 
 **Residual risk:** Cannot be eliminated in free-text notes; requires human review.
+
+**Revision note, June 9, 2026:** Fable 5 identified three false-positive extraction paths that could produce false `MET` determinations before this fix:
+- negated therapy phrasing, such as `Patient denies completing PT x 8 weeks`, could be extracted as completed conservative therapy
+- future-tense therapy phrasing, such as `Will start PT for 6 weeks next month`, could be extracted as completed conservative therapy
+- therapy durations, such as `Completed PT for 6 weeks`, could leak into `symptom_duration_weeks`
+
+These were failures in the over-extraction direction, which is the direction the safety contract is designed to minimize. The patched extractor now rejects locally negated or future-planned therapy durations and skips therapy-context durations when extracting symptom duration. Regression coverage was added for the original cases and related phrasing variants. The residual risk remains non-zero for untested free-text phrasing.
 
 ---
 

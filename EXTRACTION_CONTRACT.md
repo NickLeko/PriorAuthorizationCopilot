@@ -15,6 +15,10 @@ This document describes the extraction behavior implemented in [engine/extract.p
 - The evidence map may omit fields that had no captured span.
 - No LLM is used for extraction.
 
+Revision note, June 9, 2026:
+- The extractor is designed to prefer under-extraction over false-positive `MET` determinations, but prior over-extraction edge cases were identified in negated therapy, future-planned therapy, and therapy-to-symptom duration leakage.
+- Those edge cases are patched with deterministic context filters and covered by regression tests.
+
 ## 2. Returned Fields
 
 ### `conservative_therapy_weeks`
@@ -24,6 +28,7 @@ Type: `int | null`
 Current behavior:
 - Extracts only week-based durations tied directly to therapy context such as PT, NSAIDs, activity modification, HEP, or chiropractic care.
 - Supports patterns like `PT x 8 weeks`, `PT for 8 weeks`, or `8 weeks of PT`.
+- Rejects therapy durations when the local context indicates negation, refusal, declined therapy, or future/planned therapy.
 - Does not currently normalize therapy months to weeks.
 - If therapy is mentioned without a linked duration, returns `null`.
 
@@ -35,6 +40,7 @@ Current behavior:
 - Extracts the first explicit weeks or months duration found in the note.
 - Months are normalized as `months * 4`.
 - The current implementation does not require explicit symptom context for this field.
+- Therapy-context durations are skipped so completed, negated, or planned therapy durations do not populate symptom duration.
 
 ### `neuro_red_flags_documented`
 

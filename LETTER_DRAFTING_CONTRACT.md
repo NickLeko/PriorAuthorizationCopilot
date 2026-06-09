@@ -113,19 +113,35 @@ Must return metadata including:
 ## 5) Prohibited Language (Hard Block)
 
 The letter must not contain:
-- “diagnosis”
+- “clinical diagnosis”
+- “new diagnosis”
+- “diagnosed with”
+- “dx”
+- “impression”
+- “assessment”
+- “hx”
+- “history”
 - “treatment”
 - “medically necessary” (unless explicitly sanctioned by policy module; default: prohibited)
+- “meets medical necessity”
+- “medical necessity determination”
 - “recommended”
 - “should start”
 - “should take”
 - “high risk”
 - “risk score”
 - “probability of approval”
+- “approval is expected”
+- “approval likely”
+- “likely to be approved”
 - “will be approved”
 - “guaranteed approval”
+- “authorization approved”
+- “payer will authorize”
 - “clinically indicated” (default: prohibited)
 - any dosing instructions
+
+Administrative references to already supplied Dx codes or requirement labels such as "diagnosis documented" are allowed when they are copied from request fields, rule labels, or evidence snippets. The letter must not introduce, recommend, or reinterpret a diagnosis.
 
 ---
 
