@@ -3,7 +3,7 @@ VENV_PYTHON ?= .venv/bin/python
 CASE ?= MRI-01-complete
 RUN_PYTHON := $(if $(wildcard $(VENV_PYTHON)),$(VENV_PYTHON),$(PYTHON))
 
-.PHONY: install run api test lint format artifacts cli-status verify smoke-ui evaluate-case acceptance goldens
+.PHONY: install run api test lint format artifacts cli-status reviewer-demo verify smoke-ui evaluate-case acceptance goldens
 
 install:
 	$(PYTHON) -m venv .venv
@@ -18,6 +18,14 @@ api:
 
 cli-status:
 	$(RUN_PYTHON) cli.py status
+
+reviewer-demo:
+	$(RUN_PYTHON) cli.py status
+	$(RUN_PYTHON) cli.py list-demo-cases
+	$(RUN_PYTHON) cli.py evaluate --demo-case MRI-01-complete
+	$(RUN_PYTHON) cli.py evaluate --demo-case MRI-08-edge-below-threshold
+	$(RUN_PYTHON) cli.py evaluate --demo-case CPAP-02-borderline
+	$(RUN_PYTHON) cli.py export-report --demo-case CPAP-02-borderline --output /tmp/pa-copilot-reviewer-demo.json --with-letter --letter-type missing_info_request
 
 evaluate-case:
 	$(RUN_PYTHON) cli.py evaluate --demo-case $(CASE)

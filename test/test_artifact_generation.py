@@ -24,6 +24,12 @@ def test_artifact_generation_writes_enriched_outputs(tmp_path, monkeypatch):
     assert evaluation_payload["letter"]["metadata"]["letter_hash_sha256_16"] == "__LETTER_HASH_SHA256_16__"
     assert "Generated: __TIMESTAMP_UTC__" in evaluation_payload["letter"]["text"]
 
+    refusal_payload = json.loads((tmp_path / "CPAP-02-borderline.json").read_text(encoding="utf-8"))
+    assert refusal_payload["overall_status"] == "CANNOT_DETERMINE"
+    assert refusal_payload["letter"]["metadata"]["draft_blocked"] is False
+    assert refusal_payload["letter"]["metadata"]["contains_missing_documentation"] is True
+    assert "Missing Documentation (Checklist):" in refusal_payload["letter"]["text"]
+
     drift_payload = json.loads((tmp_path / "drift_status.json").read_text(encoding="utf-8"))
     assert drift_payload["sources"][0]["days_since_last_checked"] == "__DAYS_SINCE_LAST_CHECKED__"
 

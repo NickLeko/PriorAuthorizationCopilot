@@ -4,6 +4,44 @@ Deterministic prior authorization readiness review for synthetic demo cases.
 
 This repo checks whether a request is administratively ready against versioned payer rules. It does not make clinical judgments, predict approval, assess medical necessity, or act autonomously.
 
+## Read This First
+
+This is a synthetic workflow-readiness demo, not a payer or clinical deployment.
+
+- Inputs are bundled synthetic cases or synthetic notes typed locally.
+- Outputs are administrative readiness signals under narrow demo rules.
+- `READY` means the required demo-rule documentation was found and met threshold.
+- `NOT_READY` means required documentation was found but failed a threshold.
+- `CANNOT_DETERMINE` means required documentation is missing or not explicit enough.
+- No output means payer approval, denial prediction, medical necessity, clinical appropriateness, or medical advice.
+
+## Quick Reviewer Path
+
+From a fresh clone, enter the repo and run:
+
+```bash
+make install PYTHON=python3.12
+make reviewer-demo
+make acceptance
+```
+
+The `make reviewer-demo` target runs a deterministic local path through:
+
+- service status and supported scope
+- bundled synthetic demo cases
+- one `READY` case: `MRI-01-complete`
+- one documented threshold failure: `MRI-08-edge-below-threshold`
+- one refusal-first missing-information case: `CPAP-02-borderline`
+- one exported JSON artifact at `/tmp/pa-copilot-reviewer-demo.json`
+
+Then inspect the checked-in sample artifacts:
+
+- [docs/artifacts/MRI-01-complete.json](docs/artifacts/MRI-01-complete.json)
+- [docs/artifacts/MRI-08-edge-below-threshold.json](docs/artifacts/MRI-08-edge-below-threshold.json)
+- [docs/artifacts/CPAP-02-borderline.json](docs/artifacts/CPAP-02-borderline.json)
+
+For a guided review of inputs, evidence mapping, missing-information flags, output meaning, human review, governance, and enterprise gaps, start with [docs/reviewer_guide.md](docs/reviewer_guide.md).
+
 ## What This Repo Does
 
 - extracts a narrow set of required facts from synthetic note text using deterministic rules
@@ -21,6 +59,21 @@ This repo checks whether a request is administratively ready against versioned p
 - no autonomous submission or outreach
 - no real payer integrations
 - no production or compliance claims
+
+## How The Readiness Logic Works
+
+At a high level:
+
+1. A synthetic request enters through Streamlit, FastAPI, CLI, or artifact generation.
+2. `engine/extract.py` deterministically extracts only supported facts and evidence spans from note text.
+3. `rules/payer_rules.yaml` defines which facts are required for each supported payer/procedure pair.
+4. `engine/evaluate.py` applies frozen status semantics:
+   - any `NOT_DOCUMENTED` requirement forces `CANNOT_DETERMINE`
+   - otherwise any `NOT_MET` requirement forces `NOT_READY`
+   - only all `MET` requirements return `READY`
+5. `engine/service.py` assembles blockers, facts, evidence maps, provenance, warnings, audit trace data, and standard output payloads.
+
+Human review remains outside the automation boundary. A real workflow would still require policy interpretation, chart review, escalation handling, final submission decisions, PHI controls, auth, audit operations, and payer integration layers that are intentionally not implemented here.
 
 ## Why Deterministic First
 
@@ -126,7 +179,8 @@ Full API notes: [docs/api.md](docs/api.md)
 .venv/bin/python cli.py evaluate --demo-case MRI-01-complete
 .venv/bin/python cli.py evaluate --demo-case MRI-CERV-01-ready
 .venv/bin/python cli.py evaluate --demo-case MRI-KNEE-01-ready
-.venv/bin/python cli.py export-report --demo-case CPAP-02-borderline --output docs/artifacts/manual_export.json --with-letter
+.venv/bin/python cli.py evaluate --demo-case CPAP-02-borderline
+.venv/bin/python cli.py export-report --demo-case CPAP-02-borderline --output /tmp/pa-copilot-reviewer-demo.json --with-letter --letter-type missing_info_request
 .venv/bin/python cli.py drift-status
 .venv/bin/python cli.py rulebook-status
 .venv/bin/python cli.py rulebook-diff --from-release 2026-04-09-reviewed-v0.4 --to-release 2026-04-09-active-v0.5
@@ -136,6 +190,7 @@ Full API notes: [docs/api.md](docs/api.md)
 
 Stable sample outputs are generated under [docs/artifacts](docs/artifacts).
 Volatile run IDs, timestamps, letter hashes, and freshness ages are normalized so regeneration stays reviewable.
+See [docs/artifacts/README.md](docs/artifacts/README.md) for how to inspect these artifacts.
 
 - [MRI-01-complete.json](docs/artifacts/MRI-01-complete.json)
 - [MRI-08-edge-below-threshold.json](docs/artifacts/MRI-08-edge-below-threshold.json)
@@ -167,6 +222,7 @@ Regenerate golden acceptance snapshots with:
 - [docs/architecture.md](docs/architecture.md)
 - [docs/api.md](docs/api.md)
 - [docs/demo_walkthrough.md](docs/demo_walkthrough.md)
+- [docs/reviewer_guide.md](docs/reviewer_guide.md)
 - [docs/testing.md](docs/testing.md)
 - [docs/safety_and_scope.md](docs/safety_and_scope.md)
 - [EXTRACTION_CONTRACT.md](EXTRACTION_CONTRACT.md)

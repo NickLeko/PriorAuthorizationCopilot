@@ -4,6 +4,8 @@
 
 Show a recruiter or interviewer that this repo is a disciplined internal-product artifact, not a toy notebook and not fake enterprise theater.
 
+For clone/install/test/artifact inspection steps, use the shorter reviewer path in [docs/reviewer_guide.md](reviewer_guide.md).
+
 ## Setup
 
 ```bash

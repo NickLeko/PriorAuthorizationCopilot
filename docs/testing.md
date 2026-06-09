@@ -23,9 +23,16 @@ Two regression layers exist on purpose:
 After setup, prefer the Make targets. They use `.venv/bin/python` when the local virtualenv exists:
 
 ```bash
+make reviewer-demo
 make verify
 make acceptance
 make smoke-ui
+```
+
+Run the reviewer-facing docs and artifact-path regressions:
+
+```bash
+.venv/bin/python -m pytest -q test/test_reviewer_docs.py test/test_artifact_generation.py
 ```
 
 Run the full suite:
@@ -76,6 +83,7 @@ Regenerate golden snapshots intentionally after a reviewed product change:
 - API endpoints
 - CLI workflows
 - artifact generation
+- reviewer quick path documentation and inspectable export behavior
 - acceptance snapshots for representative evaluation and governance outputs
 - Streamlit AppTest sanity coverage
 - bundled synthetic regression cases
