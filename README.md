@@ -1,8 +1,14 @@
 # Prior Authorization Readiness Copilot
 
-Deterministic prior authorization readiness review for synthetic demo cases.
+Prior authorization often fails before medical necessity is even evaluated: missing documentation, unclear payer requirements, policy variation, rule drift, and handoff gaps between provider and payer teams.
 
-This repo checks whether a request is administratively ready against versioned payer rules. It does not make clinical judgments, predict approval, assess medical necessity, or act autonomously.
+This project is a deterministic readiness workflow that checks prior-authorization documentation against versioned payer rules before submission. It returns `READY`, `NOT_READY`, or `CANNOT_DETERMINE`, with evidence mapping, audit artifacts, and explicit refusal behavior when required information is missing.
+
+It is a self-directed prototype, not a production payer integration or clinical decision system. The goal is to show how prior-auth workflows can be made more reviewable, auditable, and implementation-aware.
+
+![Prior Authorization Readiness Copilot showing a CANNOT_DETERMINE result with explicit missing-documentation blockers](assets/readme/prior-auth-readiness-demo.png)
+
+_Synthetic CPAP demo case. The workflow refuses to infer a missing sleep-study date or AHI/RDI value and surfaces both documentation gaps for review._
 
 ## Read This First
 
