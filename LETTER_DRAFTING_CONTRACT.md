@@ -2,7 +2,7 @@
 
 Project: Prior Authorization Readiness Copilot  
 Scope: Write-only letter drafting (no extraction, no evaluation, no state mutation)  
-Primary goal: Produce payer-facing administrative documentation that is strictly grounded in deterministic outputs + captured evidence snippets.
+Primary goal: Produce payer-facing administrative documentation from supplied request metadata, deterministic outputs, and captured evidence snippets.
 Current repo status: deterministic letter drafting only; no LLM implementation
 
 **Status:** Versioned current behavior  
@@ -10,16 +10,16 @@ Any change should update this contract, tests, and versioning.
 
 ---
 
-## 1) Non-Negotiable Boundaries
+## 1) Implemented Input And Template Boundaries
 
-The letter generator MUST:
+The standard templates are designed to:
 
 - Use ONLY:
   - `PARequest` fields (payer, procedure_code, site_of_care, specialty, dx_codes)
   - `ReadinessReport.results[]` (status, reason, evidence hint, evidence_snippets)
   - `ReadinessReport` counts (met_count, not_met_count, not_documented_count)
   - `policy_trust_level` provided by caller
-- NEVER:
+- not intentionally:
   - infer undocumented facts
   - re-interpret clinical meaning
   - change requirement statuses
@@ -27,9 +27,9 @@ The letter generator MUST:
   - predict approval likelihood or “chance of approval”
   - recommend treatment, diagnosis, tests, or clinical actions
   - add facts not explicitly supported by evidence snippets
-- ALWAYS:
+- consistently:
   - include “does not guarantee payer approval” language in summary framing
-  - keep evidence snippets short (<= 25 words) and verbatim
+  - keep evidence snippets short (<= 25 whitespace-delimited words) and copied from supplied snippets
 
 ---
 
@@ -41,7 +41,7 @@ The letter generator MUST:
   - procedure_code (string)
   - site_of_care (string)
   - specialty (string)
-  - dx_codes (list[string], sanitized)
+  - dx_codes (list[string], minimally normalized by trimming, uppercasing, and removing spaces and `%`; there is no ICD-catalog or general unsafe-character validation)
 - `ReadinessReport`:
   - met_count, not_met_count, not_documented_count
   - results[]:
@@ -88,7 +88,7 @@ Must return metadata including:
 - cited_snippets_count
 - contains_missing_documentation
 - draft_blocked + reasons
-- letter_hash_sha256_16 (audit linkage without storing full letter text)
+- letter_hash_sha256_16 (short audit linkage; exported artifacts may also include full letter text)
 
 ---
 
@@ -110,9 +110,9 @@ Must return metadata including:
 
 ---
 
-## 5) Prohibited Language (Hard Block)
+## 5) Enumerated Prohibited-Phrase Check
 
-The letter must not contain:
+After composing a draft, the implementation performs a case-insensitive substring check for the following configured phrases outside the `Dx codes:` header line. A detected phrase returns `DRAFT_BLOCKED`:
 - “clinical diagnosis”
 - “new diagnosis”
 - “diagnosed with”
@@ -141,7 +141,9 @@ The letter must not contain:
 - “clinically indicated” (default: prohibited)
 - any dosing instructions
 
-Administrative references to already supplied Dx codes or requirement labels such as "diagnosis documented" are allowed when they are copied from request fields, rule labels, or evidence snippets. The letter must not introduce, recommend, or reinterpret a diagnosis.
+Administrative references to already supplied Dx codes or requirement labels such as "diagnosis documented" are allowed when they are copied from request fields, rule labels, or evidence snippets.
+
+Known limitation: this is an enumerated substring check, not a semantic classifier or comprehensive guarantee. Clinical or approval-language variants that are not in the configured list may pass through when present in caller-supplied result text.
 
 ---
 
@@ -150,10 +152,10 @@ Administrative references to already supplied Dx codes or requirement labels suc
 For each requirement:
 - MUST include:
   - Evidence snippet(s) OR “No supporting snippet available.”
-- Evidence snippet(s) must be:
-  - verbatim
-  - short (<= 25 words)
+- Evidence snippet(s) are:
   - sourced from `evidence_snippets` only
+  - trimmed and truncated to at most 25 whitespace-delimited words
+  - rejoined with normalized spaces when truncated
 - The letter must never paraphrase a fact that is not explicitly present in evidence snippets.
 
 ---
@@ -172,7 +174,7 @@ If any of the following are true, letter generation must return `DRAFT_BLOCKED`:
 ## 8) Versioning
 
 - Current version: 1.1
-- Any modification requires:
+- Any behavioral modification requires:
   - updating this contract
   - updating/adding tests
   - bumping letter_version

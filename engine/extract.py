@@ -107,6 +107,16 @@ def _therapy_duration_is_disqualified(text: str, match: re.Match[str]) -> bool:
     return False
 
 
+def _osa_mention_is_negated(text: str, match: re.Match[str]) -> bool:
+    before = _bounded_context_before(text, match.start(), max_chars=24)
+    after = _bounded_context_after(text, match.end(), max_chars=24)
+
+    return bool(
+        re.search(r"\b(?:no(?:\s+evidence\s+of)?|denies?|without)\s+$", before)
+        or re.match(r"^\s+(?:is\s+)?(?:ruled out|absent|negative|not present)\b", after)
+    )
+
+
 def _duration_is_in_therapy_context(text: str, start: int, end: int) -> bool:
     window_start = max(0, start - 80)
     window_end = min(len(text), end + 80)
@@ -315,18 +325,31 @@ def extract_facts(note_text: str) -> Tuple[Dict[str, Any], Dict[str, List[Dict[s
             raw[m_no_img.start() : m_no_img.end()],
         )
     else:
-        # Accept "prior imaging performed" / "imaging noted" even without modality/result
+        # Detect imaging context; a supported result phrase is still required.
         m_any_img = re.search(r"\b(prior )?imaging\b", t)
         m_mod = re.search(r"\b(x-?ray|xray|ct|mri)\b", t)
 
         # If they explicitly say unclear/unknown findings, count as inconclusive (documented)
-        m_unclear = re.search(r"\b(findings|result|results)\b.*\b(unclear|unknown|not clear|not specified|indeterminate)\b", t)
+        m_unclear = re.search(
+            r"\b(inconclusive|indeterminate)\b"
+            r"|\b(findings|result|results)\b.*\b(unclear|unknown|not clear|not specified|indeterminate)\b",
+            t,
+        )
 
         if m_unclear and (m_any_img or m_mod):
             prior_imaging = "inconclusive"
             if m_mod:
-                start, end, text = _combined_span_text(raw, m_mod, m_unclear)
-                _add_span(evidence, "prior_imaging_result", start, end, text)
+                if m_unclear.group(0) in {"inconclusive", "indeterminate"}:
+                    _add_span(
+                        evidence,
+                        "prior_imaging_result",
+                        m_mod.start(),
+                        m_mod.end(),
+                        raw[m_mod.start() : m_mod.end()],
+                    )
+                else:
+                    start, end, text = _combined_span_text(raw, m_mod, m_unclear)
+                    _add_span(evidence, "prior_imaging_result", start, end, text)
             else:
                 _add_span(
                     evidence,
@@ -337,7 +360,7 @@ def extract_facts(note_text: str) -> Tuple[Dict[str, Any], Dict[str, List[Dict[s
                 )
 
         elif m_mod or m_any_img:
-            # Normal/negation => inconclusive
+            # Explicit normal-result language => inconclusive
             m_norm = re.search(r"\b(no abnormalities|no abnormal|no acute findings|normal|unremarkable)\b", t)
             if m_norm:
                 prior_imaging = "inconclusive"
@@ -364,16 +387,23 @@ def extract_facts(note_text: str) -> Tuple[Dict[str, Any], Dict[str, List[Dict[s
                         raw[m_abn.start() : m_abn.end()],
                     )
                 else:
-                    # Imaging referenced but result not specified => documented as inconclusive
-                    prior_imaging = "inconclusive"
-                    m_span = m_mod or m_any_img
-                    _add_span(
-                        evidence,
-                        "prior_imaging_result",
-                        m_span.start(),
-                        m_span.end(),
-                        raw[m_span.start() : m_span.end()],
+                    m_img = m_mod or m_any_img
+                    result_context = _bounded_context_after(t, m_img.end(), max_chars=60)
+                    m_unrecognized = re.search(
+                        r"\b(?:showed|shows|showing|demonstrated|demonstrates|revealed|reveals|equivocal|limited)\b"
+                        r"|\b(?:finding|findings|result|results)\b\s*(?::|=|was|were|is|are)?\s+\S+",
+                        result_context,
                     )
+                    if m_unrecognized:
+                        prior_imaging = "unrecognized"
+                        result_end = m_img.end() + len(result_context.rstrip())
+                        _add_span(
+                            evidence,
+                            "prior_imaging_result",
+                            m_img.start(),
+                            result_end,
+                            raw[m_img.start() : result_end],
+                        )
 
     # ----------------------------
     # Mechanical symptoms addressed
@@ -434,7 +464,12 @@ def extract_facts(note_text: str) -> Tuple[Dict[str, Any], Dict[str, List[Dict[s
     # OSA diagnosis
     # ----------------------------
     osa_dx: Optional[bool] = None
-    m_osa = re.search(r"\b(obstructive sleep apnea|osa)\b", t)
+    m_osa = None
+    for candidate in re.finditer(r"\b(obstructive sleep apnea|osa)\b", t):
+        if _osa_mention_is_negated(t, candidate):
+            continue
+        m_osa = candidate
+        break
     if m_osa:
         osa_dx = True
         _add_span(evidence, "osa_diagnosis", m_osa.start(), m_osa.end(), raw[m_osa.start() : m_osa.end()])

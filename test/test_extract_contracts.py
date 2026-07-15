@@ -145,8 +145,8 @@ def test_extraction_contract_describes_current_shapes_and_limits():
 
     assert "implemented and deterministic; no LLM is used anywhere in the extraction path" in contract
     assert "The current implementation does not require explicit symptom context for this field." in contract
-    assert 'Type: `"none" | "inconclusive" | "abnormal" | null`' in contract
-    assert "Imaging mention without a result is treated as documented `inconclusive`, not `null`." in contract
+    assert 'Type: `"none" | "inconclusive" | "abnormal" | "unrecognized" | null`' in contract
+    assert "Imaging mention without a stated result remains `null`." in contract
     assert "### `mechanical_symptoms_documented`" in contract
     assert (
         "Positive phrasing takes precedence if the note contains both denial and later affirmative "
@@ -159,8 +159,8 @@ def test_extraction_contract_describes_current_shapes_and_limits():
 
 def test_extraction_contract_examples_match_current_behavior():
     facts, evidence = extract_facts("Prior MRI reviewed.")
-    assert facts["prior_imaging_result"] == "inconclusive"
-    assert "prior_imaging_result" in evidence
+    assert facts["prior_imaging_result"] is None
+    assert "prior_imaging_result" not in evidence
 
     facts, _ = extract_facts("OSA listed. Sleep study completed 2024-05-18. AHI 22 documented.")
     assert facts["osa_diagnosis"] is True
@@ -173,6 +173,62 @@ def test_extraction_contract_examples_match_current_behavior():
 
     facts, _ = extract_facts("Denies locking or instability. Prior knee xray normal.")
     assert facts["mechanical_symptoms_documented"] is False
+
+
+@pytest.mark.parametrize(
+    "note",
+    [
+        "No OSA.",
+        "Denies OSA.",
+        "Without OSA.",
+        "OSA ruled out.",
+        "No evidence of OSA.",
+        "OSA absent.",
+        "OSA negative.",
+        "OSA not present.",
+        "No obstructive sleep apnea.",
+        "Denies obstructive sleep apnea.",
+        "Obstructive sleep apnea ruled out.",
+        "No evidence of obstructive sleep apnea.",
+        "Obstructive sleep apnea absent.",
+        "Obstructive sleep apnea negative.",
+        "Obstructive sleep apnea not present.",
+    ],
+)
+def test_negated_osa_mentions_are_not_extracted_as_diagnosis(note):
+    facts, evidence = extract_facts(note)
+
+    assert facts["osa_diagnosis"] is None
+    assert "osa_diagnosis" not in evidence
+
+
+def test_affirmative_osa_mention_is_not_suppressed_by_distinct_negated_mention():
+    facts, evidence = extract_facts("No OSA in father, patient has OSA.")
+
+    assert facts["osa_diagnosis"] is True
+    assert evidence["osa_diagnosis"][0]["text"] == "OSA"
+
+
+def test_imaging_mention_without_result_remains_undocumented():
+    facts, evidence = extract_facts("Prior imaging performed.")
+
+    assert facts["prior_imaging_result"] is None
+    assert "prior_imaging_result" not in evidence
+
+
+def test_recognized_imaging_result_remains_categorized():
+    facts, evidence = extract_facts("MRI abnormal.")
+
+    assert facts["prior_imaging_result"] == "abnormal"
+    assert evidence["prior_imaging_result"][0]["text"] == "abnormal"
+
+
+@pytest.mark.parametrize("note", ["MRI showed edema.", "MRI equivocal.", "CT showed a mass."])
+def test_unrecognized_imaging_result_is_documented_separately(note):
+    facts, evidence = extract_facts(note)
+
+    assert facts["prior_imaging_result"] == "unrecognized"
+    assert "prior_imaging_result" in evidence
 
 
 def test_positive_red_flag_evidence_takes_precedence_when_note_contains_conflict():

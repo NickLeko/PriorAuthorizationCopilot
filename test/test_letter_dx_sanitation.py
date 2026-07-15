@@ -41,5 +41,5 @@ def test_dx_codes_are_sanitized_in_letter_output():
     # DX codes should appear normalized
     assert "M54.5" in letter
 
-    # Garbage characters must never leak into payer-facing artifacts
+    # The configured percent character is removed by minimal DX normalization.
     assert "%" not in letter

@@ -13,6 +13,10 @@ from engine.service import ReadinessService
 
 TIMESTAMP_PLACEHOLDER = "__TIMESTAMP_UTC__"
 LETTER_HASH_PLACEHOLDER = "__LETTER_HASH_SHA256_16__"
+ARTIFACT_METRIC_KEY_RENAMES = {
+    "compliance_rate": "documented_requirements_met_pct",
+    "extraction_success_rate": "fields_extracted_pct",
+}
 
 DEFAULT_CASE_IDS = [
     "MRI-01-complete",
@@ -23,8 +27,19 @@ DEFAULT_CASE_IDS = [
 ]
 
 
+def _rename_artifact_metric_keys(value: Any) -> Any:
+    if isinstance(value, list):
+        return [_rename_artifact_metric_keys(item) for item in value]
+    if isinstance(value, dict):
+        return {
+            ARTIFACT_METRIC_KEY_RENAMES.get(key, key): _rename_artifact_metric_keys(item)
+            for key, item in value.items()
+        }
+    return value
+
+
 def normalize_artifact_evaluation_payload(payload: Dict[str, Any]) -> Dict[str, Any]:
-    normalized = normalize_evaluation_payload(payload)
+    normalized = _rename_artifact_metric_keys(normalize_evaluation_payload(payload))
     letter = normalized.get("letter")
     if not isinstance(letter, dict):
         return normalized

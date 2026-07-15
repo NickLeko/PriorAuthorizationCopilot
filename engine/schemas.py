@@ -441,7 +441,6 @@ class StatusResponse(BaseModel):
     supported_procedures: int
     demo_cases: int
     monitored_policy_sources: int
-    synthetic_only: bool = True
 
 
 class ErrorResponse(BaseModel):

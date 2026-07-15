@@ -10,7 +10,7 @@ This document describes the extraction behavior implemented in [engine/extract.p
 ## 1. Core Rules
 
 - Extraction is deterministic.
-- Missing information remains missing.
+- A field remains missing when no supported affirmative or explicit-missingness pattern matches; this narrow regex behavior is not a general clinical-language guarantee.
 - Evidence spans are copied from the original note text when a supporting or missingness span is available.
 - The evidence map may omit fields that had no captured span.
 - No LLM is used for extraction.
@@ -53,13 +53,14 @@ Current behavior:
 
 ### `prior_imaging_result`
 
-Type: `"none" | "inconclusive" | "abnormal" | null`
+Type: `"none" | "inconclusive" | "abnormal" | "unrecognized" | null`
 
 Current behavior:
 - `none` when the note explicitly says there was no prior imaging.
 - `abnormal` when supported abnormal-result language is present.
-- `inconclusive` when imaging is mentioned without a usable result, or when findings are normal, unclear, unknown, or otherwise non-blocking.
-- Imaging mention without a result is treated as documented `inconclusive`, not `null`.
+- `inconclusive` when findings are explicitly normal, unclear, unknown, or otherwise non-blocking.
+- `unrecognized` when result language is present but does not match a supported result category, so the requirement could not be evaluated. The service maps it to `NOT_MET` as a conservative default pending human review, not as an adjudicated failure.
+- Imaging mention without a stated result remains `null`.
 
 ### `mechanical_symptoms_documented`
 
@@ -76,7 +77,8 @@ Current behavior:
 Type: `bool | null`
 
 Current behavior:
-- Returns `True` when `OSA` or `obstructive sleep apnea` appears.
+- Returns `True` when a non-negated `OSA` or `obstructive sleep apnea` mention appears.
+- Supported negated forms such as `OSA ruled out` and `no evidence of OSA` remain `null`.
 - Returns `null` otherwise.
 
 ### `sleep_study_date`
@@ -114,7 +116,7 @@ Current behavior:
 - `Completed PT for 8 weeks` -> `conservative_therapy_weeks = 8`
 - `Back pain x 2 months` -> `symptom_duration_weeks = 8`
 - `Denies weakness. No saddle anesthesia.` -> `neuro_red_flags_documented = True`
-- `Prior MRI reviewed` -> `prior_imaging_result = "inconclusive"`
+- `Prior MRI reviewed` -> `prior_imaging_result = null`
 - `No prior imaging yet` -> `prior_imaging_result = "none"`
 - `Denies locking or instability` -> `mechanical_symptoms_documented = false`
 - `Sleep study completed 2024-05-18` -> `sleep_study_date = True`
@@ -125,7 +127,7 @@ Current behavior:
 
 - The extractor is intentionally narrow and regex-based.
 - The current implementation supports only the phrasing patterns encoded in the code and tests.
-- This repo uses synthetic inputs. It is not a production clinical NLP pipeline.
+- Bundled and test inputs are synthetic. Free-form input is not screened and must not contain real patient information. This is not a production clinical NLP pipeline.
 
 ## 6. Possible Extensions
 

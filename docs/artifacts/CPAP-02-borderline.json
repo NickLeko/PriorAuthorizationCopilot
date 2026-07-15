@@ -48,10 +48,10 @@
     },
     "invariant_errors": [],
     "metrics": {
-      "compliance_rate": 100.0,
       "compliant_count": 1,
+      "documented_requirements_met_pct": 100.0,
       "extraction_failure_count": 2,
-      "extraction_success_rate": 33.3,
+      "fields_extracted_pct": 33.3,
       "non_compliant_count": 0
     },
     "note_hash": "5ef99d034f3c708e",
@@ -147,10 +147,10 @@
     "text": "PRIOR AUTHORIZATION ADMINISTRATIVE READINESS SUMMARY\n\nPayer: Aetna\nProcedure: CPAP_DEVICE\nSite of care: outpatient\nSpecialty: Primary Care\nGenerated: __TIMESTAMP_UTC__\nDx codes: G47.33\nPolicy trust level: DEMO \u2014 criteria are illustrative only. Verify against the official payer policy before submission.\n\nOverall Status: CANNOT_DETERMINE\n\nSummary:\nAdministrative readiness cannot be determined because one or more required elements are not documented in the record provided. This does not imply criteria failure and does not guarantee payer approval.\n\nRequirements:\n- OSA diagnosis documented (osa_diagnosis): MET\n  Reason: Explicitly addressed in documentation (present/affirmed).\n  Evidence:\n   - \"OSA\"\n- Sleep study date documented (sleep_study_date): NOT_DOCUMENTED\n  Reason: Not found in note. Add explicit statement.\n  Evidence: No supporting snippet available.\n- AHI/RDI documented (ahi_documented): NOT_DOCUMENTED\n  Reason: Not found in note. Add explicit statement.\n  Evidence:\n   - \"AHI not documented\"\nMissing Documentation (Checklist):\n- Sleep study date documented: Date in chart\n- AHI/RDI documented: AHI value included\n\nClosing:\nThis letter summarizes documentation-based administrative readiness for prior authorization submission. It does not provide clinical recommendations and does not predict approval outcomes.\n"
   },
   "metrics": {
-    "compliance_rate": 100.0,
     "compliant_count": 1,
+    "documented_requirements_met_pct": 100.0,
     "extraction_failure_count": 2,
-    "extraction_success_rate": 33.3,
+    "fields_extracted_pct": 33.3,
     "non_compliant_count": 0
   },
   "overall_status": "CANNOT_DETERMINE",
@@ -220,10 +220,10 @@
       },
       "invariant_errors": [],
       "metrics": {
-        "compliance_rate": 100.0,
         "compliant_count": 1,
+        "documented_requirements_met_pct": 100.0,
         "extraction_failure_count": 2,
-        "extraction_success_rate": 33.3,
+        "fields_extracted_pct": 33.3,
         "non_compliant_count": 0
       },
       "note_hash": "5ef99d034f3c708e",

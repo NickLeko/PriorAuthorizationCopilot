@@ -4,9 +4,9 @@ This guide is for healthcare AI product, operations, and technical reviewers who
 
 ## One-Screen Summary
 
-Prior Authorization Readiness Copilot is a synthetic, local-only demo of administrative prior authorization readiness review.
+Prior Authorization Readiness Copilot is a local administrative prior-authorization readiness demo designed and demonstrated with bundled synthetic data.
 
-It checks whether narrow documentation requirements are present and threshold-compliant for a small set of versioned demo rules. It does not authorize care, predict approval or denial, determine medical necessity, provide medical advice, submit anything to a payer, process PHI, or integrate with real payer systems.
+It checks whether narrow documentation requirements are present and threshold-compliant for a small set of versioned demo rules. It does not authorize care, predict approval or denial, determine medical necessity, provide medical advice, submit anything to a payer, or integrate with real payer systems. Free-form input text is not screened for PHI, so do not submit real patient information.
 
 ## Quick Reviewer Path
 
@@ -43,7 +43,7 @@ The evaluation input is a `PARequest` with:
 
 The bundled examples live in `inputs/synthetic_cases.json`. The request schema lives in `engine/schemas.py`.
 
-Synthetic-only scope is intentional. There is no PHI handling path, patient database, payer submission channel, or external API dependency.
+The bundled examples are synthetic, but free-form note text is not screened; do not submit real patient information. Core evaluation is fully offline and has no patient database or payer submission channel. The optional drift-monitoring feature performs live HTTP fetches against configured payer URLs.
 
 ## What Evidence Does It Map?
 
@@ -58,7 +58,7 @@ Synthetic-only scope is intentional. There is no PHI handling path, patient data
 - sleep study date presence
 - AHI/RDI value presence
 
-The extractor returns both `facts` and an `evidence_map`. Evidence spans include character offsets and copied note text snippets. Missing information stays missing; the code does not infer undocumented facts.
+The extractor returns both `facts` and an `evidence_map`. Evidence spans include character offsets and copied note text snippets. Fields remain missing when no supported affirmative or explicit-missingness pattern matches; this narrow regex behavior is not a general clinical-language or negation guarantee.
 
 The extraction contract is documented in `EXTRACTION_CONTRACT.md`.
 
@@ -155,7 +155,7 @@ Example:
 
 - `MRI-08-edge-below-threshold` documents symptom and therapy duration, but both are below threshold.
 
-Letter drafting has an additional safety boundary in `LETTER_DRAFTING_CONTRACT.md`: it can generate only from already evaluated results and evidence snippets, and it must block prohibited clinical or approval language.
+Letter drafting uses supplied request metadata, requirement results, evidence snippets, and hints. It applies an enumerated, case-insensitive substring check against the phrase list in `engine/letter_draft.py`; this is not a semantic guarantee against every clinical or approval-language variant. Diagnosis-code sanitation is minimal: trim, uppercase, and removal of spaces and `%` only.
 
 ## What Makes The Behavior Deterministic Or Auditable?
 

@@ -138,7 +138,7 @@ The API is intentionally conservative:
 
 ## Notes
 
-- The API uses synthetic-only demo logic.
+- The API is designed for synthetic demo inputs, but `note_text` is not screened; do not submit real patient information.
 - There is no persistence layer.
 - There is no authentication layer.
 - There is no autonomous action endpoint.

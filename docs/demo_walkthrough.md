@@ -27,7 +27,7 @@ make api
 Start with the scope language:
 
 - deterministic
-- synthetic only
+- bundled synthetic demo data; free-form input is not screened
 - administrative readiness only
 - no clinical judgment
 - no approval prediction

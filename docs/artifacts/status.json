@@ -5,6 +5,5 @@
   "rulebook_active_rules_version": "0.5",
   "rules_version": "0.5",
   "service": "Prior Authorization Readiness Copilot",
-  "supported_procedures": 4,
-  "synthetic_only": true
+  "supported_procedures": 4
 }

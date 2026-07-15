@@ -26,6 +26,29 @@ def test_service_returns_cannot_determine_for_missing_documentation_case():
     assert not evaluation.submission_readiness
 
 
+def test_unrecognized_imaging_result_is_documented_not_met_and_requires_review():
+    service = ReadinessService()
+    request = PARequest(
+        payer="Aetna",
+        procedure_code="MRI_LUMBAR",
+        dx_codes=["M54.5"],
+        site_of_care="outpatient",
+        specialty="Primary Care",
+        note_text="Low back pain x 8 weeks. PT x 8 weeks. Denies weakness. MRI showed edema.",
+    )
+
+    evaluation = service.evaluate(request)
+    imaging_result = next(result for result in evaluation.results if result.key == "prior_imaging_result")
+
+    assert evaluation.overall_status == "NOT_READY"
+    assert evaluation.submission_readiness is False
+    assert imaging_result.status == "NOT_MET"
+    assert imaging_result.reason == "Imaging result is documented but its category is unrecognized; human review is required."
+    assert all(blocker.key != "prior_imaging_result" for blocker in evaluation.blockers.not_documented)
+    assert any(blocker.key == "prior_imaging_result" for blocker in evaluation.blockers.not_met)
+    assert any("human review is required" in warning for warning in evaluation.warnings)
+
+
 def test_service_lists_new_cervical_procedure_with_registry_metadata():
     service = ReadinessService()
 
@@ -149,6 +172,25 @@ def test_service_rejects_unsupported_site_of_care():
         raise AssertionError("Unsupported site of care should raise UnsupportedScopeError")
 
 
+def test_service_rejects_inpatient_site_for_outpatient_only_procedure():
+    service = ReadinessService()
+    request = PARequest(
+        payer="Aetna",
+        procedure_code="MRI_LUMBAR",
+        dx_codes=["M54.5"],
+        site_of_care="inpatient",
+        specialty="Primary Care",
+        note_text="Low back pain x 8 weeks. PT x 8 weeks. No prior imaging. Denies weakness.",
+    )
+
+    try:
+        service.evaluate(request)
+    except UnsupportedScopeError as exc:
+        assert "Supported demo sites: outpatient" in str(exc)
+    else:  # pragma: no cover - assertion guard
+        raise AssertionError("Inpatient site should be rejected for an outpatient-only procedure")
+
+
 def test_drift_status_exposes_source_metadata_and_hash():
     service = ReadinessService()
 
@@ -156,13 +198,15 @@ def test_drift_status_exposes_source_metadata_and_hash():
 
     assert report.sources
     assert report.any_review_required is True
-    assert report.stale_source_count >= 0
+    assert report.stale_source_count == 0
     first = report.sources[0]
     assert first.source_name == "Aetna CPB 0157"
-    assert first.latest_hash is not None
+    assert first.trust_level == "unverified"
+    assert first.status == "NO_BASELINE"
+    assert first.latest_hash is None
     assert first.rule_source_label
-    assert first.freshness_status in {"CURRENT", "STALE", "UNKNOWN"}
-    assert first.days_since_last_checked is not None
+    assert first.freshness_status == "UNKNOWN"
+    assert first.days_since_last_checked is None
     assert first.latest_snapshot_path == "policy_snapshots/aetna_mri_lumbar/latest.json"
     assert first.review_reason
 

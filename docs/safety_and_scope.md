@@ -13,14 +13,16 @@ It does not:
 - submit requests autonomously
 - contact payers or patients
 
-## Why Synthetic-Only Data
+## Why Bundled Synthetic Data
 
-Synthetic-only inputs keep the repo:
+Bundled synthetic inputs keep the demonstrated workflow:
 
 - safe to share in interviews and portfolios
 - easy to test repeatedly
-- free from PHI handling claims
+- reviewable without including PHI in checked-in fixtures
 - honest about its current maturity
+
+Free-form input is not screened for PHI. Do not submit real patient information.
 
 ## Refusal-First Behavior
 
@@ -58,19 +60,20 @@ It does not:
 
 ## Rulebook Promotion Boundary
 
-The rulebook registry exists to separate governance from runtime behavior.
+The rulebook registry documents a promotion convention and keeps governance metadata separate from runtime behavior. Runtime rules are loaded from configurable file paths; the registry does not enforce human approval before those files change.
 
 It does:
 
 - keep reviewed and active rule snapshots visible
 - make release-to-release diffs inspectable
-- require human promotion of runtime rule changes
+- document the intended human-review and promotion convention
 
 It does not:
 
 - auto-promote draft or reviewed rule snapshots
 - auto-sync runtime rules from drift signals
 - replace human policy review
+- enforce that a human approved the configured runtime files
 
 ## Human Review In A Real Workflow
 

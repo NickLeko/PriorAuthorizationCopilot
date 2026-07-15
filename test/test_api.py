@@ -12,7 +12,7 @@ def test_health_endpoint():
     assert response.status_code == 200
     payload = response.json()
     assert payload["service"] == "Prior Authorization Readiness Copilot"
-    assert payload["synthetic_only"] is True
+    assert "synthetic_only" not in payload
 
 
 def test_supported_procedures_endpoint():

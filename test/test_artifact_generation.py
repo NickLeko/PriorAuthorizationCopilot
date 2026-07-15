@@ -23,6 +23,10 @@ def test_artifact_generation_writes_enriched_outputs(tmp_path, monkeypatch):
     assert evaluation_payload["letter"]["metadata"]["generated_timestamp_utc"] == "__TIMESTAMP_UTC__"
     assert evaluation_payload["letter"]["metadata"]["letter_hash_sha256_16"] == "__LETTER_HASH_SHA256_16__"
     assert "Generated: __TIMESTAMP_UTC__" in evaluation_payload["letter"]["text"]
+    assert evaluation_payload["metrics"]["fields_extracted_pct"] == 100.0
+    assert evaluation_payload["metrics"]["documented_requirements_met_pct"] == 100.0
+    assert "extraction_success_rate" not in evaluation_payload["metrics"]
+    assert "compliance_rate" not in evaluation_payload["metrics"]
 
     refusal_payload = json.loads((tmp_path / "CPAP-02-borderline.json").read_text(encoding="utf-8"))
     assert refusal_payload["overall_status"] == "CANNOT_DETERMINE"
@@ -31,7 +35,9 @@ def test_artifact_generation_writes_enriched_outputs(tmp_path, monkeypatch):
     assert "Missing Documentation (Checklist):" in refusal_payload["letter"]["text"]
 
     drift_payload = json.loads((tmp_path / "drift_status.json").read_text(encoding="utf-8"))
-    assert drift_payload["sources"][0]["days_since_last_checked"] == "__DAYS_SINCE_LAST_CHECKED__"
+    assert drift_payload["sources"][0]["days_since_last_checked"] is None
+    assert drift_payload["sources"][0]["status"] == "NO_BASELINE"
+    assert drift_payload["sources"][0]["trust_level"] == "unverified"
 
     registry_payload = json.loads((tmp_path / "supported_procedures.json").read_text(encoding="utf-8"))
     assert any(item["procedure_code"] == "MRI_CERVICAL" for item in registry_payload)

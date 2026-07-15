@@ -240,10 +240,13 @@ class ReadinessService:
 
     def validate_request(self, request: PARequest) -> List[str]:
         warnings: List[str] = []
+        supported = self.get_supported_procedure(request.payer, request.procedure_code)
+        supported_sites = supported.metadata.supported_sites
 
-        if request.site_of_care not in self.config.allowed_sites:
+        if request.site_of_care not in supported_sites:
             raise UnsupportedScopeError(
-                f"Unsupported site_of_care '{request.site_of_care}'. Supported demo sites: {', '.join(self.config.allowed_sites)}."
+                f"Unsupported site_of_care '{request.site_of_care}' for {request.payer} {request.procedure_code}. "
+                f"Supported demo sites: {', '.join(supported_sites)}."
             )
 
         if not request.note_text.strip():
@@ -271,6 +274,23 @@ class ReadinessService:
         raw_facts, raw_evidence_map = extract_facts(normalized_request.note_text)
         requirement_payloads = [requirement.model_dump(exclude_none=True) for requirement in supported.requirements]
         results, reasons = evaluate_requirements(requirement_payloads, raw_facts, evidence_map=raw_evidence_map)
+
+        if raw_facts.get("prior_imaging_result") == "unrecognized" and any(
+            result.key == "prior_imaging_result" for result in results
+        ):
+            review_reason = "Imaging result is documented but its category is unrecognized; human review is required."
+            results = [
+                result.model_copy(update={"status": "NOT_MET", "reason": review_reason})
+                if result.key == "prior_imaging_result"
+                else result
+                for result in results
+            ]
+            reasons = [
+                f"{result.label}: {result.status} — {result.reason}"
+                for result in results
+                if result.status in ("NOT_DOCUMENTED", "NOT_MET")
+            ]
+            warnings.append(review_reason)
 
         overall = compute_overall_status(results)
         score_info = compute_readiness_score(results)
@@ -453,7 +473,6 @@ class ReadinessService:
             supported_procedures=len(self.list_supported_procedures()),
             demo_cases=len(self.demo_cases),
             monitored_policy_sources=len(self.policy_sources),
-            synthetic_only=True,
         )
 
     @staticmethod

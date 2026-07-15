@@ -62,10 +62,10 @@
     },
     "invariant_errors": [],
     "metrics": {
-      "compliance_rate": 50.0,
       "compliant_count": 2,
+      "documented_requirements_met_pct": 50.0,
       "extraction_failure_count": 0,
-      "extraction_success_rate": 100.0,
+      "fields_extracted_pct": 100.0,
       "non_compliant_count": 2
     },
     "note_hash": "94ee8ba7171f7dea",
@@ -176,10 +176,10 @@
     "text": "PRIOR AUTHORIZATION ADMINISTRATIVE READINESS SUMMARY\n\nPayer: Aetna\nProcedure: MRI_LUMBAR\nSite of care: outpatient\nSpecialty: Primary Care\nGenerated: __TIMESTAMP_UTC__\nDx codes: M54.5\nPolicy trust level: DEMO \u2014 criteria are illustrative only. Verify against the official payer policy before submission.\n\nOverall Status: NOT_READY\n\nSummary:\nThe request is not administratively ready for submission because one or more documented requirements do not meet thresholds. This does not represent a clinical judgment and does not guarantee payer approval.\n\nRequirements:\n- Conservative therapy duration (weeks) (conservative_therapy_weeks): NOT_MET\n  Reason: Documented value (5) below requirement (>= 6.0). Clarify or justify.\n  Evidence:\n   - \"PT x 5 weeks\"\n- Neuro red flags explicitly addressed (present or denied) (neuro_red_flags_documented): MET\n  Reason: Explicitly addressed in documentation (present/affirmed).\n  Evidence:\n   - \"Denies weakness. Denies bowel/bladder\"\n- Prior imaging result (prior_imaging_result): MET\n  Reason: Documented: none.\n  Evidence:\n   - \"No prior imaging\"\n- Symptom duration (weeks) (symptom_duration_weeks): NOT_MET\n  Reason: Documented value (5) below requirement (>= 6.0). Clarify or justify.\n  Evidence:\n   - \"5 weeks\"\nClosing:\nThis letter summarizes documentation-based administrative readiness for prior authorization submission. It does not provide clinical recommendations and does not predict approval outcomes.\n"
   },
   "metrics": {
-    "compliance_rate": 50.0,
     "compliant_count": 2,
+    "documented_requirements_met_pct": 50.0,
     "extraction_failure_count": 0,
-    "extraction_success_rate": 100.0,
+    "fields_extracted_pct": 100.0,
     "non_compliant_count": 2
   },
   "overall_status": "NOT_READY",
@@ -263,10 +263,10 @@
       },
       "invariant_errors": [],
       "metrics": {
-        "compliance_rate": 50.0,
         "compliant_count": 2,
+        "documented_requirements_met_pct": 50.0,
         "extraction_failure_count": 0,
-        "extraction_success_rate": 100.0,
+        "fields_extracted_pct": 100.0,
         "non_compliant_count": 2
       },
       "note_hash": "94ee8ba7171f7dea",

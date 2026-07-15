@@ -10,11 +10,13 @@ It is a self-directed prototype, not a production payer integration or clinical 
 
 _Synthetic CPAP demo case. The workflow refuses to infer a missing sleep-study date or AHI/RDI value and surfaces both documentation gaps for review._
 
+The separate screenshot at `docs/images/prior-auth-copilot-demo.png` is a historical UI reference from rules version `0.2` with a `2026-02-05` review date; the current checked-in state is rules version `0.5` with `2026-04-09` provenance review dates.
+
 ## Read This First
 
 This is a synthetic workflow-readiness demo, not a payer or clinical deployment.
 
-- Inputs are bundled synthetic cases or synthetic notes typed locally.
+- Bundled inputs are synthetic, and free-form input is intended for synthetic demo text; input text is not screened, so do not submit real patient information.
 - Outputs are administrative readiness signals under narrow demo rules.
 - `READY` means the required demo-rule documentation was found and met threshold.
 - `NOT_READY` means required documentation was found but failed a threshold.
@@ -50,7 +52,7 @@ For a guided review of inputs, evidence mapping, missing-information flags, outp
 
 ## What This Repo Does
 
-- extracts a narrow set of required facts from synthetic note text using deterministic rules
+- extracts a narrow set of required facts from demo note text using deterministic rules
 - evaluates those facts against versioned payer requirements
 - returns requirement-level reasoning, blocker summaries, evidence mapping, and audit trace data
 - exposes the same workflow through Streamlit, FastAPI, and a CLI
@@ -70,7 +72,7 @@ For a guided review of inputs, evidence mapping, missing-information flags, outp
 
 At a high level:
 
-1. A synthetic request enters through Streamlit, FastAPI, CLI, or artifact generation.
+1. A bundled synthetic or user-entered demo request enters through Streamlit, FastAPI, CLI, or artifact generation.
 2. `engine/extract.py` deterministically extracts only supported facts and evidence spans from note text.
 3. `rules/payer_rules.yaml` defines which facts are required for each supported payer/procedure pair.
 4. `engine/evaluate.py` applies frozen status semantics:
@@ -101,7 +103,7 @@ This problem is intentionally narrow. For a recruiter-facing and interview-defen
 | Aetna | `MRI_KNEE` | Yes | No |
 | Aetna | `CPAP_DEVICE` | Yes | No |
 
-Synthetic inputs only. Policy drift monitoring is governance-only and does not automatically update rules. Procedure registry output now also surfaces category, rule family, rule source label, last rule update, and last reviewed metadata. A lightweight rulebook registry now tracks reviewed and active snapshots separately from runtime drift monitoring.
+Bundled inputs are synthetic; free-form input is not screened and must not contain real patient information. Policy drift monitoring is governance-only and does not automatically update rules. Procedure registry output now also surfaces category, rule family, rule source label, last rule update, and last reviewed metadata. A lightweight rulebook registry now tracks reviewed and active snapshots separately from runtime drift monitoring.
 
 ## Architecture At A Glance
 

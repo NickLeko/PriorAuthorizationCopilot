@@ -19,10 +19,10 @@ ALLOWED_STATUSES: set[RequirementStatus] = {"MET", "NOT_MET", "NOT_DOCUMENTED"}
 ALLOWED_LETTER_TYPES: set[LetterType] = {"submission_cover_letter", "missing_info_request", "appeal_template"}
 ALLOWED_POLICY_TRUST: set[PolicyTrustLevel] = {"demo", "verified"}
 
-# Hard-block phrases (lowercased) that must never appear in payer-facing output by default.
-# Contract: prohibited language is a hard block. Administrative references to
-# documented diagnoses or Dx codes are allowed only as source/request labels; the
-# draft must still never recommend or introduce a diagnosis.
+# Enumerated phrases checked as lowercased substrings in composed output.
+# This is a narrow phrase-list guard, not a semantic guarantee against every
+# clinical or approval-language variant. Administrative references to documented
+# diagnoses or Dx codes are allowed as source/request labels.
 PROHIBITED_SUBSTRINGS = [
     "clinical diagnosis",
     "new diagnosis",
@@ -73,7 +73,7 @@ def _now_utc_iso() -> str:
 
 
 def letter_hash(text: str) -> str:
-    """Short deterministic hash of the letter text for audit linkage (no raw content persisted)."""
+    """Return a short deterministic hash of the letter text for audit linkage."""
     h = sha256((text or "").encode("utf-8")).hexdigest()
     return h[:16]
 
@@ -95,7 +95,7 @@ def _sanitize_dx_codes(dx_codes: List[str]) -> List[str]:
     Conservative sanitation:
       - strip spaces
       - uppercase
-      - remove '%' and any whitespace
+      - remove '%' and ASCII spaces
     No validation against ICD catalogs (no inference).
     """
     out: List[str] = []
@@ -158,7 +158,7 @@ def _validate_inputs(
 
 
 def _format_snippet(s: str, max_words: int = 25) -> str:
-    # Keep snippets short and verbatim; never paraphrase.
+    # Copy supplied snippet words and normalize spacing when truncating.
     words = (s or "").strip().split()
     if len(words) <= max_words:
         return (s or "").strip()
@@ -209,11 +209,12 @@ def draft_letter(
     policy_trust_level: PolicyTrustLevel = "demo",
 ) -> Tuple[str, Dict]:
     """
-    Write-only letter drafting.
+    Write-only letter drafting from supplied structured inputs.
 
-    - Uses ONLY requirement results + snippets/hints already present.
-    - Does not change statuses, does not infer, does not promise approval.
-    - Enforces hard-block prohibited language.
+    - Uses PARequest metadata plus supplied requirement results, snippets, and hints.
+    - Does not mutate requirement statuses; standard templates do not promise approval.
+    - Applies the enumerated PROHIBITED_SUBSTRINGS check; this is not a semantic filter.
+    - Diagnosis-code sanitation is limited to trim, uppercase, and removal of spaces and '%'.
     Returns (letter_text, letter_metadata_dict).
     """
     ts = _now_utc_iso()
@@ -240,7 +241,7 @@ def draft_letter(
 
     overall = _derive_overall_status(report)
 
-    # Sanitize DX codes inside the drafting layer (contract-level guarantee)
+    # Apply the minimal DX-code normalization described in the drafting contract.
     dx_codes = _sanitize_dx_codes(pa.dx_codes)
 
     # Header
