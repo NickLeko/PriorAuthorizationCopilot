@@ -1,9 +1,9 @@
 {
   "demo_cases": 34,
   "monitored_policy_sources": 1,
-  "rulebook_active_release_id": "2026-04-09-active-v0.5",
-  "rulebook_active_rules_version": "0.5",
-  "rules_version": "0.5",
+  "rulebook_active_release_id": "2026-07-17-active-v0.6",
+  "rulebook_active_rules_version": "0.6",
+  "rules_version": "0.6",
   "service": "Prior Authorization Readiness Copilot",
   "supported_procedures": 4
 }

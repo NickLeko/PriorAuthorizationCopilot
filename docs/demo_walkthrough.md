@@ -62,6 +62,7 @@ Call out the difference between:
 
 - present but below threshold -> `NOT_READY`
 - missing or unclear -> not this case
+- documented but outside configured result categories -> `NEEDS_REVIEW`, not a threshold failure
 
 ### 5. Run the refusal-first case
 
@@ -111,7 +112,7 @@ Call out:
 Use:
 
 ```bash
-.venv/bin/python cli.py rulebook-diff --from-release 2026-04-09-reviewed-v0.4 --to-release 2026-04-09-active-v0.5
+.venv/bin/python cli.py rulebook-diff --from-release 2026-04-09-reviewed-v0.4 --to-release 2026-07-17-active-v0.6
 ```
 
 Call out:

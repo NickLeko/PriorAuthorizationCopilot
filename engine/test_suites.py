@@ -18,7 +18,7 @@ def label_from_outputs(overall_status: str) -> str:
 
     Semantics:
       - READY => "complete"
-      - NOT_READY or CANNOT_DETERMINE => "incomplete"
+      - NOT_READY, CANNOT_DETERMINE, or NEEDS_REVIEW => "incomplete"
     """
     return "complete" if overall_status == "READY" else "incomplete"
 

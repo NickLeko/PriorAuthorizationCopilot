@@ -72,7 +72,7 @@ def test_cli_rulebook_status(capsys):
 
     captured = capsys.readouterr()
     assert exit_code == 0
-    assert "2026-04-09-active-v0.5" in captured.out
+    assert "2026-07-17-active-v0.6" in captured.out
 
 
 def test_cli_rulebook_diff(capsys):
@@ -82,7 +82,7 @@ def test_cli_rulebook_diff(capsys):
             "--from-release",
             "2026-04-09-reviewed-v0.4",
             "--to-release",
-            "2026-04-09-active-v0.5",
+            "2026-07-17-active-v0.6",
         ]
     )
 

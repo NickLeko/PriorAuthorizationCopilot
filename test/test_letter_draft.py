@@ -1,22 +1,22 @@
 import pytest
+from pydantic import ValidationError
 
 from engine.letter_draft import draft_letter
-from engine.schemas import PARequest, ReadinessReport, RequirementResult
+from engine.schemas import LetterDraftInput, LetterRequestMetadata, PARequest, RequirementResult
 
 
-def _base_pa():
-    return PARequest(
+def _base_metadata():
+    return LetterRequestMetadata(
         payer="Aetna",
         procedure_code="MRI_LUMBAR",
         dx_codes=["M54.5"],
         site_of_care="outpatient",
         specialty="orthopedics",
-        note_text="(not used by letter drafting)",
     )
 
 
 def test_ready_letter():
-    pa = _base_pa()
+    request = _base_metadata()
     results = [
         RequirementResult(
             key="symptom_duration_weeks",
@@ -35,25 +35,22 @@ def test_ready_letter():
             evidence_snippets=["Completed PT for 8 weeks."],
         ),
     ]
-    report = ReadinessReport(
-        readiness_score=100,
+    draft_input = LetterDraftInput(
+        request=request,
         not_documented_count=0,
         not_met_count=0,
         met_count=2,
         results=results,
-        rule_reasons=[],
-        audit_trail={},
-        letter_draft="",
     )
 
-    text, meta = draft_letter(pa, report)
+    text, meta = draft_letter(draft_input)
     assert "Overall Status: READY" in text
     assert "Missing Documentation" not in text
     assert meta["draft_blocked"] is False
 
 
 def test_not_ready_letter():
-    pa = _base_pa()
+    request = _base_metadata()
     results = [
         RequirementResult(
             key="conservative_therapy_weeks",
@@ -64,24 +61,21 @@ def test_not_ready_letter():
             evidence_snippets=["Tried PT for 2 weeks."],
         )
     ]
-    report = ReadinessReport(
-        readiness_score=40,
+    draft_input = LetterDraftInput(
+        request=request,
         not_documented_count=0,
         not_met_count=1,
         met_count=0,
         results=results,
-        rule_reasons=[],
-        audit_trail={},
-        letter_draft="",
     )
 
-    text, meta = draft_letter(pa, report)
+    text, meta = draft_letter(draft_input)
     assert "Overall Status: NOT_READY" in text
     assert meta["draft_blocked"] is False
 
 
 def test_cannot_determine_letter_includes_checklist():
-    pa = _base_pa()
+    request = _base_metadata()
     results = [
         RequirementResult(
             key="ahi",
@@ -92,18 +86,15 @@ def test_cannot_determine_letter_includes_checklist():
             evidence_snippets=["AHI not stated."],
         )
     ]
-    report = ReadinessReport(
-        readiness_score=0,
+    draft_input = LetterDraftInput(
+        request=request,
         not_documented_count=1,
         not_met_count=0,
         met_count=0,
         results=results,
-        rule_reasons=[],
-        audit_trail={},
-        letter_draft="",
     )
 
-    text, meta = draft_letter(pa, report)
+    text, meta = draft_letter(draft_input)
     assert "Overall Status: CANNOT_DETERMINE" in text
     assert "Missing Documentation (Checklist):" in text
     assert "- AHI documented: Look for numeric AHI" in text
@@ -112,7 +103,7 @@ def test_cannot_determine_letter_includes_checklist():
 
 
 def test_draft_blocked_on_count_mismatch():
-    pa = _base_pa()
+    request = _base_metadata()
     results = [
         RequirementResult(
             key="symptom_duration_weeks",
@@ -123,30 +114,26 @@ def test_draft_blocked_on_count_mismatch():
         )
     ]
     # met_count is wrong on purpose (should be 1)
-    report = ReadinessReport(
-        readiness_score=0,
+    draft_input = LetterDraftInput(
+        request=request,
         not_documented_count=0,
         not_met_count=0,
         met_count=2,
         results=results,
-        rule_reasons=[],
-        audit_trail={},
-        letter_draft="",
     )
 
-    text, meta = draft_letter(pa, report)
+    text, meta = draft_letter(draft_input)
     assert text.startswith("DRAFT_BLOCKED")
     assert meta["draft_blocked"] is True
 
 
 def test_administrative_diagnosis_label_does_not_block_missing_info_letter():
-    pa = PARequest(
+    request = LetterRequestMetadata(
         payer="Aetna",
         procedure_code="CPAP_DEVICE",
         dx_codes=["G47.33"],
         site_of_care="outpatient",
         specialty="Sleep Medicine",
-        note_text="(not used by letter drafting)",
     )
     results = [
         RequirementResult(
@@ -166,18 +153,15 @@ def test_administrative_diagnosis_label_does_not_block_missing_info_letter():
             evidence_snippets=[],
         ),
     ]
-    report = ReadinessReport(
-        readiness_score=50,
+    draft_input = LetterDraftInput(
+        request=request,
         not_documented_count=1,
         not_met_count=0,
         met_count=1,
         results=results,
-        rule_reasons=[],
-        audit_trail={},
-        letter_draft="",
     )
 
-    text, meta = draft_letter(pa, report, letter_type="missing_info_request")
+    text, meta = draft_letter(draft_input, letter_type="missing_info_request")
 
     assert "Overall Status: CANNOT_DETERMINE" in text
     assert "OSA diagnosis documented" in text
@@ -212,7 +196,7 @@ def test_administrative_diagnosis_label_does_not_block_missing_info_letter():
     ],
 )
 def test_prohibited_clinical_authorization_and_medical_necessity_language_blocks_draft(prohibited_phrase):
-    pa = _base_pa()
+    request = _base_metadata()
     results = [
         RequirementResult(
             key="symptom_duration_weeks",
@@ -223,18 +207,15 @@ def test_prohibited_clinical_authorization_and_medical_necessity_language_blocks
             evidence_snippets=["Low back pain for 8 weeks."],
         )
     ]
-    report = ReadinessReport(
-        readiness_score=100,
+    draft_input = LetterDraftInput(
+        request=request,
         not_documented_count=0,
         not_met_count=0,
         met_count=1,
         results=results,
-        rule_reasons=[],
-        audit_trail={},
-        letter_draft="",
     )
 
-    text, meta = draft_letter(pa, report)
+    text, meta = draft_letter(draft_input)
 
     assert text.startswith("DRAFT_BLOCKED")
     assert meta["draft_blocked"] is True
@@ -243,7 +224,7 @@ def test_prohibited_clinical_authorization_and_medical_necessity_language_blocks
 
 @pytest.mark.parametrize("blocked_term", ["dx", "impression", "assessment", "hx", "history"])
 def test_clinical_shorthand_blocklist_terms_block_draft(blocked_term):
-    pa = _base_pa()
+    request = _base_metadata()
     results = [
         RequirementResult(
             key="symptom_duration_weeks",
@@ -254,19 +235,133 @@ def test_clinical_shorthand_blocklist_terms_block_draft(blocked_term):
             evidence_snippets=["Low back pain for 8 weeks."],
         )
     ]
-    report = ReadinessReport(
-        readiness_score=100,
+    draft_input = LetterDraftInput(
+        request=request,
         not_documented_count=0,
         not_met_count=0,
         met_count=1,
         results=results,
-        rule_reasons=[],
-        audit_trail={},
-        letter_draft="",
     )
 
-    text, meta = draft_letter(pa, report)
+    text, meta = draft_letter(draft_input)
 
     assert text.startswith("DRAFT_BLOCKED")
     assert meta["draft_blocked"] is True
     assert any(blocked_term in reason for reason in meta["draft_blocked_reasons"])
+
+
+def test_letter_input_boundary_rejects_raw_note_text():
+    with pytest.raises(ValidationError):
+        LetterRequestMetadata(
+            payer="Aetna",
+            procedure_code="MRI_LUMBAR",
+            site_of_care="outpatient",
+            specialty="Orthopedics",
+            note_text="Raw note text",
+        )
+
+    pa = PARequest(
+        payer="Aetna",
+        procedure_code="MRI_LUMBAR",
+        site_of_care="outpatient",
+        specialty="Orthopedics",
+        note_text="Raw note text",
+    )
+    with pytest.raises(TypeError):
+        draft_letter(pa)
+
+
+@pytest.mark.parametrize(
+    "reason",
+    ["Take 10 mg daily.", "Administer 5 mL BID.", "Use 2 tablets every 8 hours.", "Inject 12 units q6h."],
+)
+def test_dosing_language_blocks_draft(reason):
+    result = RequirementResult(
+        key="symptom_duration_weeks",
+        label="Symptom duration",
+        status="MET",
+        reason=reason,
+        evidence_snippets=["Low back pain for 8 weeks."],
+    )
+    draft_input = LetterDraftInput(
+        request=_base_metadata(),
+        met_count=1,
+        not_met_count=0,
+        not_documented_count=0,
+        results=[result],
+    )
+
+    text, meta = draft_letter(draft_input)
+
+    assert text.startswith("DRAFT_BLOCKED")
+    assert meta["draft_blocked"] is True
+    assert any("Prohibited dosing language" in item for item in meta["draft_blocked_reasons"])
+
+
+def test_benign_non_dosing_measurement_is_allowed():
+    result = RequirementResult(
+        key="prior_imaging_result",
+        label="Prior imaging result",
+        status="MET",
+        reason="Documented 10 mm disc protrusion.",
+        evidence_snippets=["10 mm disc protrusion"],
+    )
+    draft_input = LetterDraftInput(
+        request=_base_metadata(),
+        met_count=1,
+        not_met_count=0,
+        not_documented_count=0,
+        results=[result],
+    )
+
+    text, meta = draft_letter(draft_input)
+
+    assert not text.startswith("DRAFT_BLOCKED")
+    assert meta["draft_blocked"] is False
+
+
+def test_needs_review_letter_does_not_describe_threshold_failure():
+    result = RequirementResult(
+        key="prior_imaging_result",
+        label="Prior imaging result",
+        status="NEEDS_REVIEW",
+        reason="Imaging category is unrecognized; human review is required.",
+        evidence_snippets=["MRI showed edema"],
+    )
+    draft_input = LetterDraftInput(
+        request=_base_metadata(),
+        met_count=0,
+        not_met_count=0,
+        not_documented_count=0,
+        needs_review_count=1,
+        results=[result],
+    )
+
+    text, meta = draft_letter(draft_input)
+
+    assert "Overall Status: NEEDS_REVIEW" in text
+    assert "not an adjudicated criteria failure" in text
+    assert "do not meet thresholds" not in text
+    assert meta["overall_status"] == "NEEDS_REVIEW"
+
+
+def test_missing_info_request_without_missing_results_omits_checklist():
+    result = RequirementResult(
+        key="symptom_duration_weeks",
+        label="Symptom duration",
+        status="MET",
+        reason="Documented value: 8.",
+        evidence_snippets=["Pain for 8 weeks."],
+    )
+    draft_input = LetterDraftInput(
+        request=_base_metadata(),
+        met_count=1,
+        not_met_count=0,
+        not_documented_count=0,
+        results=[result],
+    )
+
+    text, meta = draft_letter(draft_input, letter_type="missing_info_request")
+
+    assert "Missing Documentation (Checklist):" not in text
+    assert meta["contains_missing_documentation"] is False

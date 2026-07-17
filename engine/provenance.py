@@ -10,6 +10,7 @@ from .schemas import PARequest, PolicyTrustLevel
 PROVENANCE_STRING_FIELDS = {
     "source_type",
     "source_name",
+    "status",
     "source_url",
     "rule_source_label",
     "last_reviewed",

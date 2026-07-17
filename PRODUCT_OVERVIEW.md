@@ -4,7 +4,7 @@ Prior Authorization Readiness Copilot is a deterministic internal-product demo f
 
 ## What It Does
 
-- checks whether a synthetic request is administratively ready under narrow, versioned payer rules
+- checks whether a request is administratively ready under narrow, versioned payer rules; bundled examples are synthetic
 - extracts only a small supported fact set from note text
 - returns requirement-level reasoning, blockers, evidence spans, and audit metadata
 - exposes the same logic through Streamlit, FastAPI, CLI, exported artifacts, and acceptance snapshots
@@ -15,7 +15,7 @@ Prior Authorization Readiness Copilot is a deterministic internal-product demo f
 - no medical-necessity review
 - no approval prediction
 - no autonomous action
-- no real patient data
+- all bundled data is synthetic; input is not screened and must not contain real PHI, with screening remaining the operator's responsibility
 
 ## Current Scope
 

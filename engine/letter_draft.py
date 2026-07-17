@@ -7,15 +7,14 @@ from hashlib import sha256
 from typing import Dict, List, Tuple
 
 from .schemas import (
+    LetterDraftInput,
     LetterType,
     OverallStatus,
-    PARequest,
     PolicyTrustLevel,
-    ReadinessReport,
     RequirementStatus,
 )
 
-ALLOWED_STATUSES: set[RequirementStatus] = {"MET", "NOT_MET", "NOT_DOCUMENTED"}
+ALLOWED_STATUSES: set[RequirementStatus] = {"MET", "NOT_MET", "NOT_DOCUMENTED", "NEEDS_REVIEW"}
 ALLOWED_LETTER_TYPES: set[LetterType] = {"submission_cover_letter", "missing_info_request", "appeal_template"}
 ALLOWED_POLICY_TRUST: set[PolicyTrustLevel] = {"demo", "verified"}
 
@@ -53,6 +52,18 @@ PROHIBITED_SUBSTRINGS = [
     "medically necessary",
 ]
 
+PROHIBITED_DOSING_PATTERNS = [
+    re.compile(
+        r"\b(?:\d+(?:\.\d+)?\s*(?:mg|mcg|g|ml|units?|iu|tablets?|capsules?)|"
+        r"(?:mg|mcg|g|ml|units?|iu|tablets?|capsules?)\s*\d+(?:\.\d+)?)\b",
+        re.IGNORECASE,
+    ),
+    re.compile(r"\b(?:daily|bid|tid|qid)\b", re.IGNORECASE),
+    re.compile(r"\bq\s*\d+\s*h\b", re.IGNORECASE),
+    re.compile(r"\bevery\s+\d+\s+hours?\b", re.IGNORECASE),
+    re.compile(r"\b\d+\s+times?\s+per\s+day\b", re.IGNORECASE),
+]
+
 
 @dataclass(frozen=True)
 class LetterMeta:
@@ -78,14 +89,17 @@ def letter_hash(text: str) -> str:
     return h[:16]
 
 
-def _derive_overall_status(report: ReadinessReport) -> OverallStatus:
+def _derive_overall_status(draft_input: LetterDraftInput) -> OverallStatus:
     # Frozen invariant mapping:
     # - Any NOT_DOCUMENTED => CANNOT_DETERMINE
+    # - Else any NEEDS_REVIEW => NEEDS_REVIEW
     # - Else any NOT_MET => NOT_READY
     # - Else READY
-    if report.not_documented_count > 0:
+    if draft_input.not_documented_count > 0:
         return "CANNOT_DETERMINE"
-    if report.not_met_count > 0:
+    if draft_input.needs_review_count > 0:
+        return "NEEDS_REVIEW"
+    if draft_input.not_met_count > 0:
         return "NOT_READY"
     return "READY"
 
@@ -114,26 +128,25 @@ def _sanitize_dx_codes(dx_codes: List[str]) -> List[str]:
 
 
 def _validate_inputs(
-    pa: PARequest,
-    report: ReadinessReport,
+    draft_input: LetterDraftInput,
     letter_type: str,
-    policy_trust_level: str,
 ) -> List[str]:
     reasons: List[str] = []
+    request = draft_input.request
 
-    if not pa.payer or not pa.payer.strip():
+    if not request.payer or not request.payer.strip():
         reasons.append("Missing payer.")
-    if not pa.procedure_code or not pa.procedure_code.strip():
+    if not request.procedure_code or not request.procedure_code.strip():
         reasons.append("Missing procedure_code.")
     if letter_type not in ALLOWED_LETTER_TYPES:
         reasons.append(f"Invalid letter_type: {letter_type}")
-    if policy_trust_level not in ALLOWED_POLICY_TRUST:
-        reasons.append(f"Invalid policy_trust_level: {policy_trust_level}")
+    if draft_input.policy_trust_level not in ALLOWED_POLICY_TRUST:
+        reasons.append(f"Invalid policy_trust_level: {draft_input.policy_trust_level}")
 
-    if not isinstance(report.results, list) or len(report.results) == 0:
+    if not isinstance(draft_input.results, list) or len(draft_input.results) == 0:
         reasons.append("Missing requirement results.")
     else:
-        for r in report.results:
+        for r in draft_input.results:
             if r.status not in ALLOWED_STATUSES:
                 reasons.append(f"Invalid requirement status for '{r.key}': {r.status}")
             if not r.reason or not r.reason.strip():
@@ -142,17 +155,19 @@ def _validate_inputs(
                 reasons.append(f"evidence_snippets is None for requirement '{r.key}'.")
 
     # Cross-check counts (block if inconsistent; prevents subtle downstream confusion)
-    calc = {"MET": 0, "NOT_MET": 0, "NOT_DOCUMENTED": 0}
-    for r in report.results or []:
+    calc = {"MET": 0, "NOT_MET": 0, "NOT_DOCUMENTED": 0, "NEEDS_REVIEW": 0}
+    for r in draft_input.results or []:
         if r.status in calc:
             calc[r.status] += 1
 
-    if report.met_count != calc["MET"]:
+    if draft_input.met_count != calc["MET"]:
         reasons.append("met_count does not match results.")
-    if report.not_met_count != calc["NOT_MET"]:
+    if draft_input.not_met_count != calc["NOT_MET"]:
         reasons.append("not_met_count does not match results.")
-    if report.not_documented_count != calc["NOT_DOCUMENTED"]:
+    if draft_input.not_documented_count != calc["NOT_DOCUMENTED"]:
         reasons.append("not_documented_count does not match results.")
+    if draft_input.needs_review_count != calc["NEEDS_REVIEW"]:
+        reasons.append("needs_review_count does not match results.")
 
     return reasons
 
@@ -198,27 +213,38 @@ def _hard_block_if_prohibited(letter_text: str) -> List[str]:
         elif p in low:
             hits.append(p)
     if hits:
-        return [f"Prohibited language detected: '{h}'" for h in hits]
-    return []
+        reasons = [f"Prohibited language detected: '{h}'" for h in hits]
+    else:
+        reasons = []
+    dosing_hits = []
+    for pattern in PROHIBITED_DOSING_PATTERNS:
+        match = pattern.search(scan_text)
+        if match:
+            dosing_hits.append(match.group(0))
+    reasons.extend(f"Prohibited dosing language detected: '{hit}'" for hit in dict.fromkeys(dosing_hits))
+    return reasons
 
 
 def draft_letter(
-    pa: PARequest,
-    report: ReadinessReport,
+    draft_input: LetterDraftInput,
     letter_type: LetterType = "submission_cover_letter",
-    policy_trust_level: PolicyTrustLevel = "demo",
 ) -> Tuple[str, Dict]:
     """
     Write-only letter drafting from supplied structured inputs.
 
-    - Uses PARequest metadata plus supplied requirement results, snippets, and hints.
+    - Accepts only no-note request metadata plus supplied requirement results, snippets, and hints.
     - Does not mutate requirement statuses; standard templates do not promise approval.
     - Applies the enumerated PROHIBITED_SUBSTRINGS check; this is not a semantic filter.
     - Diagnosis-code sanitation is limited to trim, uppercase, and removal of spaces and '%'.
     Returns (letter_text, letter_metadata_dict).
     """
+    if not isinstance(draft_input, LetterDraftInput):
+        raise TypeError("draft_letter requires LetterDraftInput.")
+
     ts = _now_utc_iso()
-    blocked_reasons = _validate_inputs(pa, report, letter_type, policy_trust_level)
+    request = draft_input.request
+    policy_trust_level = draft_input.policy_trust_level
+    blocked_reasons = _validate_inputs(draft_input, letter_type)
 
     if blocked_reasons:
         text = (
@@ -226,7 +252,7 @@ def draft_letter(
             "The letter could not be generated due to input validation errors:\n" + "\n".join([f"- {r}" for r in blocked_reasons]) + "\n"
         )
         meta = LetterMeta(
-            letter_version="1.1",
+            letter_version="1.2",
             generated_timestamp_utc=ts,
             overall_status="UNKNOWN",
             letter_type=letter_type,
@@ -239,17 +265,17 @@ def draft_letter(
         )
         return text, meta.__dict__
 
-    overall = _derive_overall_status(report)
+    overall = _derive_overall_status(draft_input)
 
     # Apply the minimal DX-code normalization described in the drafting contract.
-    dx_codes = _sanitize_dx_codes(pa.dx_codes)
+    dx_codes = _sanitize_dx_codes(request.dx_codes)
 
     # Header
     header_lines = [
-        f"Payer: {pa.payer}",
-        f"Procedure: {pa.procedure_code}",
-        f"Site of care: {pa.site_of_care}",
-        f"Specialty: {pa.specialty}",
+        f"Payer: {request.payer}",
+        f"Procedure: {request.procedure_code}",
+        f"Site of care: {request.site_of_care}",
+        f"Specialty: {request.specialty}",
         f"Generated: {ts}",
     ]
     if dx_codes:
@@ -260,12 +286,19 @@ def draft_letter(
         header_lines.append(trust_line)
 
     # Summary framing (administrative only)
-    if letter_type == "missing_info_request":
+    if letter_type == "missing_info_request" and draft_input.not_documented_count > 0:
         summary = (
             "Summary:\n"
             "The documentation provided is insufficient to determine administrative readiness because "
             "one or more required elements are not documented. "
             "This does not imply criteria failure and does not guarantee payer approval.\n"
+        )
+    elif letter_type == "missing_info_request":
+        summary = (
+            "Summary:\n"
+            "No requirements are currently marked NOT_DOCUMENTED, so this missing-information template "
+            "does not contain a missing-documentation checklist. "
+            "This does not guarantee payer approval.\n"
         )
     elif letter_type == "appeal_template":
         summary = (
@@ -288,6 +321,13 @@ def draft_letter(
                 "documented requirements do not meet thresholds. "
                 "This does not represent a clinical judgment and does not guarantee payer approval.\n"
             )
+        elif overall == "NEEDS_REVIEW":
+            summary = (
+                "Summary:\n"
+                "Administrative readiness requires human review because one or more documented results "
+                "could not be evaluated against the configured categories. "
+                "This is not an adjudicated criteria failure and does not guarantee payer approval.\n"
+            )
         else:
             summary = (
                 "Summary:\n"
@@ -304,7 +344,7 @@ def draft_letter(
     cited_snips_unique: List[str] = []
     cited_seen = set()
 
-    for r in report.results:
+    for r in draft_input.results:
         req_lines.append(f"- {r.label} ({r.key}): {r.status}")
         req_lines.append(f"  Reason: {r.reason}")
 
@@ -329,9 +369,8 @@ def draft_letter(
             else:
                 missing_checklist.append(f"- {r.label}: Documentation not present (no hint provided).")
 
-    include_missing_section = (overall == "CANNOT_DETERMINE") or (letter_type == "missing_info_request")
     missing_section = ""
-    if include_missing_section and missing_checklist:
+    if missing_checklist:
         missing_section = "\nMissing Documentation (Checklist):\n" + "\n".join(missing_checklist) + "\n"
 
     closing = (
@@ -361,13 +400,13 @@ def draft_letter(
             "DRAFT_BLOCKED\n\nThe letter was blocked due to prohibited language:\n" + "\n".join([f"- {r}" for r in blocked_reasons]) + "\n"
         )
         meta = LetterMeta(
-            letter_version="1.1",
+            letter_version="1.2",
             generated_timestamp_utc=ts,
             overall_status=overall,
             letter_type=letter_type,
             policy_trust_level=policy_trust_level,
             cited_snippets_count=0,
-            contains_missing_documentation=(report.not_documented_count > 0),
+            contains_missing_documentation=(draft_input.not_documented_count > 0),
             draft_blocked=True,
             draft_blocked_reasons=blocked_reasons,
             letter_hash_sha256_16=letter_hash(text),
@@ -375,13 +414,13 @@ def draft_letter(
         return text, meta.__dict__
 
     meta = LetterMeta(
-        letter_version="1.1",
+        letter_version="1.2",
         generated_timestamp_utc=ts,
         overall_status=overall,
         letter_type=letter_type,
         policy_trust_level=policy_trust_level,
         cited_snippets_count=len(cited_snips_unique),
-        contains_missing_documentation=(report.not_documented_count > 0),
+        contains_missing_documentation=(draft_input.not_documented_count > 0),
         draft_blocked=False,
         draft_blocked_reasons=[],
         letter_hash_sha256_16=letter_hash(letter),

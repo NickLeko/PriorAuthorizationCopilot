@@ -40,12 +40,15 @@ def test_unrecognized_imaging_result_is_documented_not_met_and_requires_review()
     evaluation = service.evaluate(request)
     imaging_result = next(result for result in evaluation.results if result.key == "prior_imaging_result")
 
-    assert evaluation.overall_status == "NOT_READY"
+    assert evaluation.overall_status == "NEEDS_REVIEW"
     assert evaluation.submission_readiness is False
-    assert imaging_result.status == "NOT_MET"
+    assert imaging_result.status == "NEEDS_REVIEW"
     assert imaging_result.reason == "Imaging result is documented but its category is unrecognized; human review is required."
     assert all(blocker.key != "prior_imaging_result" for blocker in evaluation.blockers.not_documented)
-    assert any(blocker.key == "prior_imaging_result" for blocker in evaluation.blockers.not_met)
+    assert all(blocker.key != "prior_imaging_result" for blocker in evaluation.blockers.not_met)
+    assert any(blocker.key == "prior_imaging_result" for blocker in evaluation.blockers.needs_review)
+    assert evaluation.report.needs_review_count == 1
+    assert evaluation.metrics.needs_review_count == 1
     assert any("human review is required" in warning for warning in evaluation.warnings)
 
 
@@ -216,5 +219,5 @@ def test_service_status_includes_rulebook_metadata():
 
     status = service.get_status()
 
-    assert status.rules_version == "0.5"
-    assert status.rulebook_active_release_id == "2026-04-09-active-v0.5"
+    assert status.rules_version == "0.6"
+    assert status.rulebook_active_release_id == "2026-07-17-active-v0.6"

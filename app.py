@@ -64,6 +64,10 @@ st.markdown(
         background: #fff4f4;
         border-left: 6px solid var(--stop);
       }
+      .status-needs-review {
+        background: #f4f8ff;
+        border-left: 6px solid var(--info);
+      }
       .status-unknown {
         background: #f4f8ff;
         border-left: 6px solid var(--info);
@@ -131,6 +135,7 @@ def status_panel(evaluation: EvaluationResult) -> None:
         "READY": "status-ready",
         "NOT_READY": "status-not-ready",
         "CANNOT_DETERMINE": "status-cannot-determine",
+        "NEEDS_REVIEW": "status-needs-review",
     }.get(status, "status-unknown")
 
     summaries = {
@@ -145,6 +150,10 @@ def status_panel(evaluation: EvaluationResult) -> None:
         "CANNOT_DETERMINE": (
             "Readiness cannot be determined from the documentation provided.",
             "At least one required element was missing or not explicit enough for deterministic extraction.",
+        ),
+        "NEEDS_REVIEW": (
+            "Human review is required before administrative readiness can be determined.",
+            "At least one documented result could not be evaluated against the configured categories.",
         ),
     }
     headline, detail = summaries.get(
@@ -167,7 +176,9 @@ def status_panel(evaluation: EvaluationResult) -> None:
 
 def render_requirement_result(result) -> None:
     default_open = result.status != "MET"
-    icon = {"MET": "✅", "NOT_MET": "⚠️", "NOT_DOCUMENTED": "❌"}.get(result.status, "❓")
+    icon = {"MET": "✅", "NOT_MET": "⚠️", "NOT_DOCUMENTED": "❌", "NEEDS_REVIEW": "🔎"}.get(
+        result.status, "❓"
+    )
     with st.expander(f"{icon} {result.label}", expanded=default_open):
         c1, c2 = st.columns([1.2, 2])
         with c1:
@@ -206,6 +217,8 @@ def render_fact_card(label: str, value: object, status: str) -> None:
         st.caption("Missing or not explicit enough for deterministic extraction.")
     elif status == "NOT_MET":
         st.caption("Documented, but below the current rule threshold.")
+    elif status == "NEEDS_REVIEW":
+        st.caption("Documented, but not evaluable under the configured categories; human review is required.")
     else:
         st.caption("Captured and used in deterministic evaluation.")
 
@@ -217,7 +230,7 @@ def render_scope_panel() -> None:
           <div class="eyebrow">Scope</div>
           <strong>This product checks administrative readiness only.</strong>
           <p>It does not make clinical judgments, predict approval, review medical necessity, or take autonomous action.</p>
-          <p>Synthetic demo inputs only. Human review still sits before any real submission workflow.</p>
+          <p>Bundled data is synthetic. Input is not screened; do not submit real patient information.</p>
         </div>
         """,
         unsafe_allow_html=True,
@@ -493,7 +506,7 @@ with right:
             for note in current_supported.metadata.notes:
                 st.write(f"- {note}")
     with st.expander("Scope and limitations", expanded=False):
-        st.write("- Synthetic demo inputs only")
+        st.write("- Bundled data is synthetic; input is not screened, so do not submit real patient information")
         st.write("- Deterministic rule evaluation only")
         st.write("- No approval prediction")
         st.write("- No medical-necessity or clinical recommendation logic")
@@ -530,7 +543,7 @@ else:
             for warning in evaluation.warnings:
                 st.write(f"- {warning}")
 
-    metric_cols = st.columns(4)
+    metric_cols = st.columns(5)
     with metric_cols[0]:
         st.metric("Overall status", evaluation.overall_status)
     with metric_cols[1]:
@@ -539,12 +552,18 @@ else:
         st.metric("Missing requirements", len(evaluation.blockers.not_documented))
     with metric_cols[3]:
         st.metric("Documented failures", len(evaluation.blockers.not_met))
+    with metric_cols[4]:
+        st.metric("Needs review", len(evaluation.blockers.needs_review))
 
     tabs = st.tabs(["Overview", "Requirement Reasoning", "Facts and Evidence", "Audit and Export"])
 
     with tabs[0]:
         st.markdown("#### Blockers")
-        if not evaluation.blockers.not_documented and not evaluation.blockers.not_met:
+        if (
+            not evaluation.blockers.not_documented
+            and not evaluation.blockers.not_met
+            and not evaluation.blockers.needs_review
+        ):
             st.success("No blockers detected under the current rules.")
         else:
             if evaluation.blockers.not_documented:
@@ -554,6 +573,10 @@ else:
             if evaluation.blockers.not_met:
                 st.markdown("**Documented but below threshold**")
                 for blocker in evaluation.blockers.not_met:
+                    st.write(f"- {blocker.label}: {blocker.reason}")
+            if evaluation.blockers.needs_review:
+                st.markdown("**Documented but requiring human review**")
+                for blocker in evaluation.blockers.needs_review:
                     st.write(f"- {blocker.label}: {blocker.reason}")
 
         st.markdown("#### Procedure metadata")

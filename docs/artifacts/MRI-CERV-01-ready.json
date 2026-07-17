@@ -1,6 +1,7 @@
 {
   "audit_trail": {
     "blocking_issues": {
+      "needs_review": [],
       "not_documented": [],
       "not_met": []
     },
@@ -49,10 +50,11 @@
     },
     "invariant_errors": [],
     "metrics": {
+      "compliance_rate": 100.0,
       "compliant_count": 4,
-      "documented_requirements_met_pct": 100.0,
       "extraction_failure_count": 0,
-      "fields_extracted_pct": 100.0,
+      "extraction_success_rate": 100.0,
+      "needs_review_count": 0,
       "non_compliant_count": 0
     },
     "note_hash": "449f7c6ef1838637",
@@ -74,7 +76,8 @@
       "rule_source_label": "Human-curated summary of cervical spine MRI administrative criteria",
       "source_name": "Aetna cervical spine MRI policy summary",
       "source_type": "manual_summary",
-      "source_url": null
+      "source_url": null,
+      "status": null
     },
     "requirements_checked": [
       "conservative_therapy_weeks",
@@ -82,8 +85,8 @@
       "prior_imaging_result",
       "symptom_duration_weeks"
     ],
-    "rulebook_active_release_id": "2026-04-09-active-v0.5",
-    "rules_version": "0.5",
+    "rulebook_active_release_id": "2026-07-17-active-v0.6",
+    "rules_version": "0.6",
     "run_id": "__RUN_ID__",
     "site_of_care": "outpatient",
     "specialty": "Orthopedics",
@@ -91,6 +94,7 @@
     "timestamp_utc": "__TIMESTAMP_UTC__"
   },
   "blockers": {
+    "needs_review": [],
     "not_documented": [],
     "not_met": []
   },
@@ -143,17 +147,18 @@
       "generated_timestamp_utc": "__TIMESTAMP_UTC__",
       "letter_hash_sha256_16": "__LETTER_HASH_SHA256_16__",
       "letter_type": "submission_cover_letter",
-      "letter_version": "1.1",
+      "letter_version": "1.2",
       "overall_status": "READY",
       "policy_trust_level": "demo"
     },
     "text": "PRIOR AUTHORIZATION ADMINISTRATIVE READINESS SUMMARY\n\nPayer: Aetna\nProcedure: MRI_CERVICAL\nSite of care: outpatient\nSpecialty: Orthopedics\nGenerated: __TIMESTAMP_UTC__\nDx codes: M54.12\nPolicy trust level: DEMO \u2014 criteria are illustrative only. Verify against the official payer policy before submission.\n\nOverall Status: READY\n\nSummary:\nThis letter supports administrative submission readiness based on the documentation present in the record. This does not guarantee payer approval.\n\nRequirements:\n- Conservative therapy duration (weeks) (conservative_therapy_weeks): MET\n  Reason: Documented value: 8.\n  Evidence:\n   - \"PT for 8 weeks\"\n- Neuro red flags explicitly addressed (present or denied) (neuro_red_flags_documented): MET\n  Reason: Explicitly addressed in documentation (present/affirmed).\n  Evidence:\n   - \"Denies weakness. Denies bowel/bladder\"\n- Prior imaging result (prior_imaging_result): MET\n  Reason: Documented: inconclusive.\n  Evidence:\n   - \"xray\"\n- Symptom duration (weeks) (symptom_duration_weeks): MET\n  Reason: Documented value: 8.\n  Evidence:\n   - \"8 weeks\"\nClosing:\nThis letter summarizes documentation-based administrative readiness for prior authorization submission. It does not provide clinical recommendations and does not predict approval outcomes.\n"
   },
   "metrics": {
+    "compliance_rate": 100.0,
     "compliant_count": 4,
-    "documented_requirements_met_pct": 100.0,
     "extraction_failure_count": 0,
-    "fields_extracted_pct": 100.0,
+    "extraction_success_rate": 100.0,
+    "needs_review_count": 0,
     "non_compliant_count": 0
   },
   "overall_status": "READY",
@@ -170,12 +175,14 @@
     "rule_source_label": "Human-curated summary of cervical spine MRI administrative criteria",
     "source_name": "Aetna cervical spine MRI policy summary",
     "source_type": "manual_summary",
-    "source_url": null
+    "source_url": null,
+    "status": null
   },
   "readiness_score": 100,
   "report": {
     "audit_trail": {
       "blocking_issues": {
+        "needs_review": [],
         "not_documented": [],
         "not_met": []
       },
@@ -224,10 +231,11 @@
       },
       "invariant_errors": [],
       "metrics": {
+        "compliance_rate": 100.0,
         "compliant_count": 4,
-        "documented_requirements_met_pct": 100.0,
         "extraction_failure_count": 0,
-        "fields_extracted_pct": 100.0,
+        "extraction_success_rate": 100.0,
+        "needs_review_count": 0,
         "non_compliant_count": 0
       },
       "note_hash": "449f7c6ef1838637",
@@ -249,7 +257,8 @@
         "rule_source_label": "Human-curated summary of cervical spine MRI administrative criteria",
         "source_name": "Aetna cervical spine MRI policy summary",
         "source_type": "manual_summary",
-        "source_url": null
+        "source_url": null,
+        "status": null
       },
       "requirements_checked": [
         "conservative_therapy_weeks",
@@ -257,8 +266,8 @@
         "prior_imaging_result",
         "symptom_duration_weeks"
       ],
-      "rulebook_active_release_id": "2026-04-09-active-v0.5",
-      "rules_version": "0.5",
+      "rulebook_active_release_id": "2026-07-17-active-v0.6",
+      "rules_version": "0.6",
       "run_id": "__RUN_ID__",
       "site_of_care": "outpatient",
       "specialty": "Orthopedics",
@@ -267,6 +276,7 @@
     },
     "letter_draft": "",
     "met_count": 4,
+    "needs_review_count": 0,
     "not_documented_count": 0,
     "not_met_count": 0,
     "readiness_score": 100,
@@ -346,7 +356,7 @@
     "dx_codes": [
       "M54.12"
     ],
-    "note_text": "Neck pain with right arm radiculopathy x 8 weeks. PT for 8 weeks and NSAIDs documented with minimal improvement. Denies weakness. Denies bowel/bladder changes. Prior cervical xray inconclusive.",
+    "note_text": "sha256:449f7c6ef1838637 [redacted for repository]",
     "payer": "Aetna",
     "procedure_code": "MRI_CERVICAL",
     "site_of_care": "outpatient",
@@ -455,7 +465,8 @@
       "rule_source_label": "Human-curated summary of cervical spine MRI administrative criteria",
       "source_name": "Aetna cervical spine MRI policy summary",
       "source_type": "manual_summary",
-      "source_url": null
+      "source_url": null,
+      "status": null
     },
     "required_field_keys": [
       "conservative_therapy_weeks",

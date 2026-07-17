@@ -192,6 +192,17 @@ def _eval_enum(
             evidence_spans=spans,
         )
 
+    if val == "unrecognized":
+        return RequirementResult(
+            key=key,
+            label=label,
+            status="NEEDS_REVIEW",
+            reason="Imaging result is documented but its category is unrecognized; human review is required.",
+            evidence=req.get("evidence"),
+            evidence_snippets=snippets,
+            evidence_spans=spans,
+        )
+
     if allowed and val not in allowed:
         return RequirementResult(
             key=key,
@@ -236,7 +247,7 @@ def evaluate_requirements(
 
         results.append(out)
 
-        if out.status in ("NOT_DOCUMENTED", "NOT_MET"):
+        if out.status in ("NOT_DOCUMENTED", "NOT_MET", "NEEDS_REVIEW"):
             reasons.append(f"{out.label}: {out.status} — {out.reason}")
 
     return results, reasons
@@ -248,11 +259,13 @@ def compute_readiness_score(results: List[RequirementResult]) -> Dict[str, int]:
     MET = 1
     NOT_MET = 0.5 (documented but failing threshold)
     NOT_DOCUMENTED = 0
+    NEEDS_REVIEW = 0 (documented but unevaluable; no threshold credit)
     """
     total = len(results) if results else 1
     met = sum(1 for r in results if r.status == "MET")
     not_met = sum(1 for r in results if r.status == "NOT_MET")
     not_doc = sum(1 for r in results if r.status == "NOT_DOCUMENTED")
+    needs_review = sum(1 for r in results if r.status == "NEEDS_REVIEW")
 
     raw = met + 0.5 * not_met
     score = int(round(100 * raw / total))
@@ -262,6 +275,7 @@ def compute_readiness_score(results: List[RequirementResult]) -> Dict[str, int]:
         "met_count": met,
         "not_met_count": not_met,
         "not_documented_count": not_doc,
+        "needs_review_count": needs_review,
         "total": total,
     }
 
@@ -271,13 +285,17 @@ def compute_overall_status(results: List[RequirementResult]) -> Dict[str, Any]:
     Semantics Contract (locked):
       READY: all required MET
       CANNOT_DETERMINE: >=1 NOT_DOCUMENTED
-      NOT_READY: all documented, but >=1 NOT_MET
+      NEEDS_REVIEW: no missing requirements, but >=1 NEEDS_REVIEW
+      NOT_READY: all documented and evaluable, but >=1 NOT_MET
     """
     has_not_doc = any(r.status == "NOT_DOCUMENTED" for r in results)
+    has_needs_review = any(r.status == "NEEDS_REVIEW" for r in results)
     has_not_met = any(r.status == "NOT_MET" for r in results)
 
     if has_not_doc:
         return {"overall_status": "CANNOT_DETERMINE", "submission_readiness": False}
+    if has_needs_review:
+        return {"overall_status": "NEEDS_REVIEW", "submission_readiness": False}
     if has_not_met:
         return {"overall_status": "NOT_READY", "submission_readiness": False}
     return {"overall_status": "READY", "submission_readiness": True}

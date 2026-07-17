@@ -5,7 +5,7 @@
     ],
     "expected_label": "complete",
     "id": "MRI-01-complete",
-    "note_text": "Low back pain with right leg radiculopathy x 8 weeks. Completed PT for 8 weeks and NSAIDs with minimal improvement. Denies bowel/bladder incontinence. No saddle anesthesia. Prior imaging: lumbar xray inconclusive. Neuro exam: mild weakness dorsiflexion 4/5.",
+    "note_text": "sha256:82a37cb51ea58464 [redacted for repository]",
     "payer": "Aetna",
     "procedure_code": "MRI_LUMBAR",
     "showcase": {
@@ -31,7 +31,7 @@
     ],
     "expected_label": "incomplete",
     "id": "CPAP-02-borderline",
-    "note_text": "OSA noted in problem list. Sleep study in 2023 mentioned but no date. AHI not documented.",
+    "note_text": "sha256:5ef99d034f3c708e [redacted for repository]",
     "payer": "Aetna",
     "procedure_code": "CPAP_DEVICE",
     "showcase": {
@@ -57,7 +57,7 @@
     ],
     "expected_label": "incomplete",
     "id": "MRI-08-edge-below-threshold",
-    "note_text": "Low back pain x 5 weeks. PT x 5 weeks documented. Denies weakness. Denies bowel/bladder changes. No prior imaging.",
+    "note_text": "sha256:94ee8ba7171f7dea [redacted for repository]",
     "payer": "Aetna",
     "procedure_code": "MRI_LUMBAR",
     "showcase": {
@@ -83,7 +83,7 @@
     ],
     "expected_label": "complete",
     "id": "CPAP-07-complete-alt-format-date",
-    "note_text": "Dx obstructive sleep apnea. Sleep study 2024/06/01. RDI 28. Request CPAP E0601.",
+    "note_text": "sha256:f81083503181f7a5 [redacted for repository]",
     "payer": "Aetna",
     "procedure_code": "CPAP_DEVICE",
     "showcase": {
@@ -109,7 +109,7 @@
     ],
     "expected_label": "complete",
     "id": "MRI-CERV-01-ready",
-    "note_text": "Neck pain with right arm radiculopathy x 8 weeks. PT for 8 weeks and NSAIDs documented with minimal improvement. Denies weakness. Denies bowel/bladder changes. Prior cervical xray inconclusive.",
+    "note_text": "sha256:449f7c6ef1838637 [redacted for repository]",
     "payer": "Aetna",
     "procedure_code": "MRI_CERVICAL",
     "showcase": {
@@ -135,7 +135,7 @@
     ],
     "expected_label": "complete",
     "id": "MRI-KNEE-01-ready",
-    "note_text": "Right knee pain with locking and catching x 8 weeks. Completed PT for 8 weeks and NSAIDs with minimal improvement. Prior knee xray normal/unremarkable.",
+    "note_text": "sha256:59421e8561fe0462 [redacted for repository]",
     "payer": "Aetna",
     "procedure_code": "MRI_KNEE",
     "showcase": {

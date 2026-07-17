@@ -3,7 +3,7 @@
 
 **Project:** Prior Authorization Readiness Copilot  
 **Owner:** Nicholas Leko  
-**Last Updated:** June 9, 2026
+**Last Updated:** July 17, 2026
 **Status:** Versioned current behavior. Changes should update tests and docs.
 
 ---
@@ -13,7 +13,7 @@
 Current repo status:
 - deterministic implementation
 - no LLM implementation
-- synthetic inputs only
+- all bundled data is synthetic; input is not screened and must not contain real PHI, with screening remaining the operator's responsibility
 
 This system is **administrative decision support** for prior authorization readiness.
 
@@ -21,11 +21,13 @@ It evaluates whether payer-required administrative criteria are:
 - documented and met (`MET`)
 - documented but not met (`NOT_MET`)
 - not documented (`NOT_DOCUMENTED`)
+- documented but not evaluable under configured categories (`NEEDS_REVIEW`)
 
 It then derives an overall readiness status:
 - `READY`
 - `NOT_READY`
 - `CANNOT_DETERMINE`
+- `NEEDS_REVIEW`
 
 The system is intentionally:
 - **non-predictive**
@@ -39,7 +41,8 @@ The system is intentionally:
 
 ### 2.1 Current Readiness Invariants
 - Any `NOT_DOCUMENTED` ⇒ overall status **must** be `CANNOT_DETERMINE`
-- Any `NOT_MET` (and no `NOT_DOCUMENTED`) ⇒ overall status **must** be `NOT_READY`
+- Any `NEEDS_REVIEW` (and no `NOT_DOCUMENTED`) ⇒ overall status **must** be `NEEDS_REVIEW`
+- Any `NOT_MET` (and no `NOT_DOCUMENTED` or `NEEDS_REVIEW`) ⇒ overall status **must** be `NOT_READY`
 - No blockers ⇒ overall status **must** be `READY`
 
 Invariant violations are surfaced in:
@@ -54,9 +57,9 @@ Invariant violations are surfaced in:
 
 ### 2.3 Write-only Letter Guarantee
 Letter drafting:
-- cannot access raw note text
+- accepts only `LetterDraftInput`, whose typed request metadata has no `note_text` field and rejects extra fields
 - cannot change requirement results or readiness status
-- cannot add facts that are not directly supported by evidence snippets
+- renders caller-supplied structured reasons without independently validating them against evidence snippets
 - must include non-guarantee framing (“does not guarantee payer approval”)
 
 ### 2.4 Policy Drift Governance Guarantee
@@ -111,15 +114,15 @@ These were failures in the over-extraction direction, which is the direction the
 
 ---
 
-### FM-3: Misclassification Between NOT_MET vs NOT_DOCUMENTED
-**Definition:** System marks a requirement as failing (`NOT_MET`) when it is actually missing, or vice versa.
+### FM-3: Misclassification Between NOT_MET, NOT_DOCUMENTED, And NEEDS_REVIEW
+**Definition:** System marks a requirement as failing (`NOT_MET`) when it is actually missing or unevaluable, or otherwise confuses the three states.
 
 **Primary causes:**
 - Ambiguous phrasing (e.g., “trialed PT” with no duration)
 - Implicit documentation without thresholds
 
 **Mitigations:**
-- Hard separation: values required for `NOT_MET`; otherwise treat as missing
+- Hard separation: failed thresholds use `NOT_MET`, missing values use `NOT_DOCUMENTED`, and enumerated documented-but-unevaluable imaging results use `NEEDS_REVIEW`
 - “duration not specified” ⇒ `NOT_DOCUMENTED`
 - Rule reasons explicitly instruct what must be documented
 
@@ -180,8 +183,8 @@ These were failures in the over-extraction direction, which is the direction the
 
 **Mitigations:**
 - Explicit non-goals in README, MODEL_CARD, and safety docs
-- No persistence of raw note text
-- Audit contains only note hash and spans (for synthetic/demo)
+- Runtime evaluation records retain the full request, including note text, and runtime exports serialize it; checked-in repository artifacts replace full `note_text` values with a short hash and `[redacted for repository]`
+- Audit and export payloads include the request, note hash, facts, evidence spans, provenance, requirements, blockers, warnings, and metrics
 - “Administrative decision support only” banner in UI
 
 ---

@@ -17,7 +17,7 @@
       "payer": "Aetna",
       "procedure_code": "MRI_LUMBAR",
       "review_reason": "No baseline snapshot exists yet for this monitored source.",
-      "rule_source_label": "Human-curated summary of spine MRI administrative criteria",
+      "rule_source_label": "Unverified human-curated summary of lumbar MRI administrative criteria",
       "source_name": "Aetna CPB 0157",
       "source_type": "official_policy_web",
       "status": "NO_BASELINE",

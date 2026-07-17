@@ -1,4 +1,4 @@
-# Letter Drafting Contract v1.1
+# Letter Drafting Contract v1.2
 
 Project: Prior Authorization Readiness Copilot  
 Scope: Write-only letter drafting (no extraction, no evaluation, no state mutation)  
@@ -14,11 +14,11 @@ Any change should update this contract, tests, and versioning.
 
 The standard templates are designed to:
 
-- Use ONLY:
-  - `PARequest` fields (payer, procedure_code, site_of_care, specialty, dx_codes)
-  - `ReadinessReport.results[]` (status, reason, evidence hint, evidence_snippets)
-  - `ReadinessReport` counts (met_count, not_met_count, not_documented_count)
-  - `policy_trust_level` provided by caller
+- Use ONLY the typed `LetterDraftInput` boundary:
+  - `LetterRequestMetadata` fields (payer, procedure_code, site_of_care, specialty, dx_codes); this type has no `note_text` field and rejects extra fields
+  - structured `results[]` (status, reason, evidence hint, evidence_snippets)
+  - structured counts (met_count, not_met_count, not_documented_count, needs_review_count)
+  - `policy_trust_level`
 - not intentionally:
   - infer undocumented facts
   - re-interpret clinical meaning
@@ -26,7 +26,7 @@ The standard templates are designed to:
   - change overall readiness status
   - predict approval likelihood or “chance of approval”
   - recommend treatment, diagnosis, tests, or clinical actions
-  - add facts not explicitly supported by evidence snippets
+  - independently validate factual assertions in caller-supplied structured reasons
 - consistently:
   - include “does not guarantee payer approval” language in summary framing
   - keep evidence snippets short (<= 25 whitespace-delimited words) and copied from supplied snippets
@@ -36,14 +36,14 @@ The standard templates are designed to:
 ## 2) Inputs (Required)
 
 ### 2.1 Required Inputs
-- `PARequest`:
+- `LetterDraftInput.request` (`LetterRequestMetadata`):
   - payer (string)
   - procedure_code (string)
   - site_of_care (string)
   - specialty (string)
   - dx_codes (list[string], minimally normalized by trimming, uppercasing, and removing spaces and `%`; there is no ICD-catalog or general unsafe-character validation)
-- `ReadinessReport`:
-  - met_count, not_met_count, not_documented_count
+- `LetterDraftInput`:
+  - met_count, not_met_count, not_documented_count, needs_review_count
   - results[]:
     - key, label, status, reason
     - evidence (hint; optional)
@@ -52,12 +52,12 @@ The standard templates are designed to:
   - `submission_cover_letter`
   - `missing_info_request`
   - `appeal_template`
-- `policy_trust_level` (string):
+- `LetterDraftInput.policy_trust_level` (string):
   - `demo`
   - `verified`
 
 ### 2.2 Forbidden Inputs
-- raw clinical note text
+- raw clinical note text; the typed public drafting boundary has no note field and rejects extra fields
 - external policy text (unless explicitly included as allowed excerpts)
 - model outputs from any upstream LLM extraction
 
@@ -71,11 +71,12 @@ Letter must include:
 - policy trust line:
   - if `demo`: MUST include DEMO disclaimer line in header
   - if `verified`: MAY include a verified provenance line
-- Overall Status line: READY | NOT_READY | CANNOT_DETERMINE
+- Overall Status line: READY | NOT_READY | CANNOT_DETERMINE | NEEDS_REVIEW
 - Summary section (administrative framing only)
 - Requirements section: each requirement shows status + reason + evidence
 - Missing Documentation checklist:
-  - REQUIRED when overall status is CANNOT_DETERMINE OR letter_type is missing_info_request
+  - emitted when at least one `NOT_DOCUMENTED` result exists
+  - a `missing_info_request` with zero missing results omits the section by design
   - built from evidence hints where present
 
 ### 3.2 Letter Metadata (Machine-readable)
@@ -108,6 +109,11 @@ Must return metadata including:
 - Must include Missing Documentation checklist
 - Must not imply criteria failure
 
+### 4.4 NEEDS_REVIEW
+- Must identify documented results that could not be evaluated against configured categories
+- Must state that the disposition is not an adjudicated criteria failure
+- Must not describe `NEEDS_REVIEW` requirements as threshold failures
+
 ---
 
 ## 5) Enumerated Prohibited-Phrase Check
@@ -139,11 +145,11 @@ After composing a draft, the implementation performs a case-insensitive substrin
 - “authorization approved”
 - “payer will authorize”
 - “clinically indicated” (default: prohibited)
-- any dosing instructions
+- dosing patterns consisting of a number adjacent to `mg`, `mcg`, `g`, `mL`, `units`, `IU`, `tablets`, or `capsules`, or the frequency forms `daily`, `BID`, `TID`, `QID`, `q#h`, `every N hours`, or `N times per day`
 
 Administrative references to already supplied Dx codes or requirement labels such as "diagnosis documented" are allowed when they are copied from request fields, rule labels, or evidence snippets.
 
-Known limitation: this is an enumerated substring check, not a semantic classifier or comprehensive guarantee. Clinical or approval-language variants that are not in the configured list may pass through when present in caller-supplied result text.
+Known limitation: this is an enumerated substring and dosing-pattern check, not a semantic classifier or comprehensive guarantee. Clinical, approval, or dosing-language variants outside the configured checks may pass through when present in caller-supplied result text.
 
 ---
 
@@ -156,7 +162,7 @@ For each requirement:
   - sourced from `evidence_snippets` only
   - trimmed and truncated to at most 25 whitespace-delimited words
   - rejoined with normalized spaces when truncated
-- The letter must never paraphrase a fact that is not explicitly present in evidence snippets.
+- Requirement reasons are copied from the supplied structured evaluation and are not independently checked against evidence snippets; evidence snippets themselves are copied and truncated as described above.
 
 ---
 
@@ -173,7 +179,7 @@ If any of the following are true, letter generation must return `DRAFT_BLOCKED`:
 
 ## 8) Versioning
 
-- Current version: 1.1
+- Current version: 1.2
 - Any behavioral modification requires:
   - updating this contract
   - updating/adding tests

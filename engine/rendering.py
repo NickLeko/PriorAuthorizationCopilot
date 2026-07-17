@@ -50,6 +50,7 @@ def render_cli_evaluation(evaluation: EvaluationResult) -> str:
         "Blocking summary:",
         f"- Missing requirements: {len(evaluation.blockers.not_documented)}",
         f"- Documented but not met: {len(evaluation.blockers.not_met)}",
+        f"- Documented but requiring review: {len(evaluation.blockers.needs_review)}",
     ]
 
     if evaluation.warnings:

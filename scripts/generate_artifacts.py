@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from hashlib import sha256
 from typing import Any, Dict
 
 from engine.acceptance import normalize_drift_payload, normalize_evaluation_payload
@@ -13,10 +14,7 @@ from engine.service import ReadinessService
 
 TIMESTAMP_PLACEHOLDER = "__TIMESTAMP_UTC__"
 LETTER_HASH_PLACEHOLDER = "__LETTER_HASH_SHA256_16__"
-ARTIFACT_METRIC_KEY_RENAMES = {
-    "compliance_rate": "documented_requirements_met_pct",
-    "extraction_success_rate": "fields_extracted_pct",
-}
+REDACTED_NOTE_PLACEHOLDER = "[redacted for repository]"
 
 DEFAULT_CASE_IDS = [
     "MRI-01-complete",
@@ -27,19 +25,23 @@ DEFAULT_CASE_IDS = [
 ]
 
 
-def _rename_artifact_metric_keys(value: Any) -> Any:
+def _redact_note_text(value: Any) -> Any:
     if isinstance(value, list):
-        return [_rename_artifact_metric_keys(item) for item in value]
+        return [_redact_note_text(item) for item in value]
     if isinstance(value, dict):
-        return {
-            ARTIFACT_METRIC_KEY_RENAMES.get(key, key): _rename_artifact_metric_keys(item)
-            for key, item in value.items()
-        }
+        redacted: Dict[str, Any] = {}
+        for key, item in value.items():
+            if key == "note_text":
+                digest = sha256(str(item or "").encode("utf-8")).hexdigest()[:16]
+                redacted[key] = f"sha256:{digest} {REDACTED_NOTE_PLACEHOLDER}"
+            else:
+                redacted[key] = _redact_note_text(item)
+        return redacted
     return value
 
 
 def normalize_artifact_evaluation_payload(payload: Dict[str, Any]) -> Dict[str, Any]:
-    normalized = _rename_artifact_metric_keys(normalize_evaluation_payload(payload))
+    normalized = _redact_note_text(normalize_evaluation_payload(payload))
     letter = normalized.get("letter")
     if not isinstance(letter, dict):
         return normalized
@@ -68,7 +70,7 @@ def main() -> int:
     supported_procedures = service.list_supported_procedures()
     demo_cases = service.list_demo_case_summaries()
     rulebook_status = service.get_rulebook_status()
-    default_rulebook_diff = service.get_rulebook_diff("2026-04-09-reviewed-v0.4", "2026-04-09-active-v0.5")
+    default_rulebook_diff = service.get_rulebook_diff("2026-04-09-reviewed-v0.4", "2026-07-17-active-v0.6")
 
     for case_id in DEFAULT_CASE_IDS:
         request = service.get_demo_case_request(case_id)
@@ -90,11 +92,11 @@ def main() -> int:
         artifact_dir / "supported_procedures.json",
     )
     write_json_artifact(
-        [item.model_dump(mode="json") for item in demo_cases],
+        _redact_note_text([item.model_dump(mode="json") for item in demo_cases]),
         artifact_dir / "demo_cases.json",
     )
     write_json_artifact(
-        [item.model_dump(mode="json") for item in demo_cases if item.showcase.get("featured")],
+        _redact_note_text([item.model_dump(mode="json") for item in demo_cases if item.showcase.get("featured")]),
         artifact_dir / "featured_demo_cases.json",
     )
     write_json_artifact(

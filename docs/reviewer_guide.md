@@ -71,10 +71,12 @@ Requirement statuses mean:
 - `MET`: the required field was documented and met the demo-rule threshold.
 - `NOT_MET`: the field was documented but failed a threshold, such as 5 weeks documented where 6 weeks are required.
 - `NOT_DOCUMENTED`: the field was missing or not explicit enough for deterministic extraction.
+- `NEEDS_REVIEW`: the field was documented, but its value could not be evaluated against the configured categories; this is not a threshold failure.
 
 Overall statuses are frozen in `engine/evaluate.py`:
 
 - any `NOT_DOCUMENTED` requirement forces `CANNOT_DETERMINE`
+- otherwise any `NEEDS_REVIEW` requirement forces `NEEDS_REVIEW`
 - otherwise any `NOT_MET` requirement forces `NOT_READY`
 - only all `MET` requirements return `READY`
 
@@ -155,7 +157,7 @@ Example:
 
 - `MRI-08-edge-below-threshold` documents symptom and therapy duration, but both are below threshold.
 
-Letter drafting uses supplied request metadata, requirement results, evidence snippets, and hints. It applies an enumerated, case-insensitive substring check against the phrase list in `engine/letter_draft.py`; this is not a semantic guarantee against every clinical or approval-language variant. Diagnosis-code sanitation is minimal: trim, uppercase, and removal of spaces and `%` only.
+Letter drafting receives a dedicated structured input containing no raw note field: request metadata, requirement results, evidence snippets, hints, counts, and policy trust. Supplied result reasons are rendered as structured evaluation output and are not independently fact-checked; the draft applies an enumerated, case-insensitive phrase check plus configured dosing-pattern checks. Diagnosis-code sanitation is minimal: trim, uppercase, and removal of spaces and `%` only.
 
 ## What Makes The Behavior Deterministic Or Auditable?
 

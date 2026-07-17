@@ -1,5 +1,5 @@
 {
-  "active_release_id": "2026-04-09-active-v0.5",
+  "active_release_id": "2026-07-17-active-v0.6",
   "manifest_version": "1",
   "releases": [
     {
@@ -11,7 +11,7 @@
         "rules_path": "rulebook/releases/2026-04-09-active-v0.5/payer_rules.yaml"
       },
       "notes": [
-        "This active snapshot should match the runtime files under rules/."
+        "Historical active snapshot retained for versioned comparison; it is no longer expected to match current runtime files."
       ],
       "procedures": [
         "CPAP_DEVICE",
@@ -23,7 +23,7 @@
       "reviewed_at": "2026-04-09",
       "reviewer": "demo-maintainer",
       "rules_version": "0.5",
-      "runtime_matches": true,
+      "runtime_matches": null,
       "stage": "active",
       "summary": "Active rulebook after the narrow non-spine knee MRI expansion."
     },
@@ -50,11 +50,36 @@
       "runtime_matches": null,
       "stage": "reviewed",
       "summary": "Reviewed rulebook before the narrow non-spine knee MRI expansion."
+    },
+    {
+      "based_on_release_id": "2026-04-09-active-v0.5",
+      "created_at": "2026-07-17T19:52:06Z",
+      "files": {
+        "policy_sources_path": "rulebook/releases/2026-07-17-active-v0.6/policy_sources.yaml",
+        "provenance_path": "rulebook/releases/2026-07-17-active-v0.6/provenance.yaml",
+        "rules_path": "rulebook/releases/2026-07-17-active-v0.6/payer_rules.yaml"
+      },
+      "notes": [
+        "Records NEEDS_REVIEW semantics, drafting-boundary and dosing checks, artifact contract/redaction changes, corrected MRI_LUMBAR provenance, and prior OSA/imaging extraction fixes."
+      ],
+      "procedures": [
+        "CPAP_DEVICE",
+        "MRI_CERVICAL",
+        "MRI_KNEE",
+        "MRI_LUMBAR"
+      ],
+      "release_id": "2026-07-17-active-v0.6",
+      "reviewed_at": "2026-07-17",
+      "reviewer": "demo-maintainer",
+      "rules_version": "0.6",
+      "runtime_matches": true,
+      "stage": "active",
+      "summary": "Claims-integrity remediation with distinct human-review semantics and corrected lumbar-MRI provenance."
     }
   ],
-  "runtime_rules_version": "0.5",
+  "runtime_rules_version": "0.6",
   "stage_assignments": {
-    "active": "2026-04-09-active-v0.5",
+    "active": "2026-07-17-active-v0.6",
     "draft": null,
     "reviewed": "2026-04-09-reviewed-v0.4"
   },

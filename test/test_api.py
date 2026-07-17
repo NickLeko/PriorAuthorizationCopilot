@@ -76,7 +76,7 @@ def test_rulebook_status_endpoint():
 
     assert response.status_code == 200
     payload = response.json()
-    assert payload["active_release_id"] == "2026-04-09-active-v0.5"
+    assert payload["active_release_id"] == "2026-07-17-active-v0.6"
     assert payload["validation_errors"] == []
 
 
@@ -85,7 +85,7 @@ def test_rulebook_diff_endpoint():
         "/rulebook/diff",
         params={
             "from_release_id": "2026-04-09-reviewed-v0.4",
-            "to_release_id": "2026-04-09-active-v0.5",
+            "to_release_id": "2026-07-17-active-v0.6",
         },
     )
 

@@ -1,15 +1,14 @@
 from engine.letter_draft import draft_letter
-from engine.schemas import PARequest, ReadinessReport, RequirementResult
+from engine.schemas import LetterDraftInput, LetterRequestMetadata, RequirementResult
 
 
 def test_cannot_determine_letter_includes_missing_checklist_and_demo_trust_line():
-    pa = PARequest(
+    request = LetterRequestMetadata(
         payer="Aetna",
         procedure_code="MRI_LUMBAR",
         dx_codes=["M54.5"],
         site_of_care="outpatient",
         specialty="Orthopedics",
-        note_text="",
     )
 
     results = [
@@ -31,22 +30,17 @@ def test_cannot_determine_letter_includes_missing_checklist_and_demo_trust_line(
         ),
     ]
 
-    report = ReadinessReport(
-        readiness_score=0,
+    draft_input = LetterDraftInput(
+        request=request,
         not_documented_count=1,
         not_met_count=0,
         met_count=1,
         results=results,
-        rule_reasons=[],
-        audit_trail={},
-        letter_draft="",
     )
 
     letter, meta = draft_letter(
-        pa,
-        report,
+        draft_input,
         letter_type="missing_info_request",
-        policy_trust_level="demo",
     )
 
     # Status must follow frozen invariants

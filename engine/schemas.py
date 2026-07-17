@@ -4,8 +4,8 @@ from typing import Any, Dict, List, Literal, Optional
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator
 
-RequirementStatus = Literal["MET", "NOT_MET", "NOT_DOCUMENTED"]
-OverallStatus = Literal["READY", "NOT_READY", "CANNOT_DETERMINE", "UNKNOWN"]
+RequirementStatus = Literal["MET", "NOT_MET", "NOT_DOCUMENTED", "NEEDS_REVIEW"]
+OverallStatus = Literal["READY", "NOT_READY", "CANNOT_DETERMINE", "NEEDS_REVIEW", "UNKNOWN"]
 LetterType = Literal["submission_cover_letter", "missing_info_request", "appeal_template"]
 PolicyTrustLevel = Literal["demo", "verified"]
 RequirementType = Literal["number", "boolean", "enum"]
@@ -21,6 +21,26 @@ class PARequest(BaseModel):
     site_of_care: str = "outpatient"
     specialty: str = "unknown"
     note_text: str = ""
+
+    @field_validator("payer", "procedure_code", "site_of_care", "specialty")
+    @classmethod
+    def _strip_strings(cls, value: str) -> str:
+        return value.strip()
+
+    @field_validator("dx_codes")
+    @classmethod
+    def _ensure_dx_codes_not_none(cls, value: List[str]) -> List[str]:
+        return [str(code) for code in value if str(code).strip()]
+
+
+class LetterRequestMetadata(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    payer: str
+    procedure_code: str
+    dx_codes: List[str] = Field(default_factory=list)
+    site_of_care: str = "outpatient"
+    specialty: str = "unknown"
 
     @field_validator("payer", "procedure_code", "site_of_care", "specialty")
     @classmethod
@@ -117,6 +137,25 @@ class RequirementResult(BaseModel):
         return snippets
 
 
+class LetterDraftInput(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    request: LetterRequestMetadata
+    met_count: int
+    not_met_count: int
+    not_documented_count: int
+    needs_review_count: int = 0
+    results: List[RequirementResult]
+    policy_trust_level: PolicyTrustLevel = "demo"
+
+    @field_validator("met_count", "not_met_count", "not_documented_count", "needs_review_count")
+    @classmethod
+    def _validate_non_negative_counts(cls, value: int) -> int:
+        if value < 0:
+            raise ValueError("Counts must be non-negative.")
+        return value
+
+
 class BlockingIssue(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
@@ -136,6 +175,7 @@ class BlockingIssueSummary(BaseModel):
 
     not_documented: List[BlockingIssue] = Field(default_factory=list)
     not_met: List[BlockingIssue] = Field(default_factory=list)
+    needs_review: List[BlockingIssue] = Field(default_factory=list)
 
 
 class EvaluationMetrics(BaseModel):
@@ -146,6 +186,7 @@ class EvaluationMetrics(BaseModel):
     compliance_rate: Optional[float] = None
     compliant_count: int
     non_compliant_count: int
+    needs_review_count: int = 0
 
 
 class ProcedureMetadata(BaseModel):
@@ -174,6 +215,7 @@ class ProcedureProvenance(BaseModel):
 
     source_name: Optional[str] = None
     source_type: Optional[str] = None
+    status: Optional[str] = None
     source_url: Optional[str] = None
     rule_source_label: Optional[str] = None
     last_reviewed: Optional[str] = None
@@ -188,6 +230,7 @@ class ProcedureProvenance(BaseModel):
     @field_validator(
         "source_name",
         "source_type",
+        "status",
         "source_url",
         "rule_source_label",
         "last_reviewed",
@@ -298,6 +341,7 @@ class ReadinessReport(BaseModel):
     not_documented_count: int
     not_met_count: int
     met_count: int
+    needs_review_count: int = 0
     results: List[RequirementResult]
     rule_reasons: List[str]
     audit_trail: Dict[str, Any]
@@ -310,7 +354,7 @@ class ReadinessReport(BaseModel):
             raise ValueError("readiness_score must be between 0 and 100.")
         return value
 
-    @field_validator("not_documented_count", "not_met_count", "met_count")
+    @field_validator("not_documented_count", "not_met_count", "met_count", "needs_review_count")
     @classmethod
     def _validate_non_negative_counts(cls, value: int) -> int:
         if value < 0:

@@ -39,8 +39,9 @@ The architecture is intentionally split into a small number of explainable layer
 - evaluates extracted facts against requirement definitions
 - preserves frozen semantics:
   - `READY`: all requirements met
-  - `NOT_READY`: all requirements documented, but at least one fails threshold
+  - `NOT_READY`: all requirements documented and evaluable, but at least one fails threshold
   - `CANNOT_DETERMINE`: at least one required element is not documented
+  - `NEEDS_REVIEW`: no required element is missing, but at least one documented result cannot be evaluated against the configured categories
 
 ### Shared application service
 

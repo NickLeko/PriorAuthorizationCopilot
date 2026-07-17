@@ -59,7 +59,8 @@ Current behavior:
 - `none` when the note explicitly says there was no prior imaging.
 - `abnormal` when supported abnormal-result language is present.
 - `inconclusive` when findings are explicitly normal, unclear, unknown, or otherwise non-blocking.
-- `unrecognized` when result language is present but does not match a supported result category, so the requirement could not be evaluated. The service maps it to `NOT_MET` as a conservative default pending human review, not as an adjudicated failure.
+- `unrecognized` only when imaging is followed by one of the enumerated result introducers `showed`, `shows`, `showing`, `demonstrated`, `demonstrates`, `revealed`, `reveals`, `equivocal`, or `limited`, or by `finding(s)`/`result(s)` plus a following token, and no supported result category matches. The service maps it to `NEEDS_REVIEW`, not to a threshold failure.
+- Stated-result phrasing outside that enumerated set returns `null` and falls through to `NOT_DOCUMENTED`; this narrowness is intentional so deterministic matching is used instead of fuzzy interpretation.
 - Imaging mention without a stated result remains `null`.
 
 ### `mechanical_symptoms_documented`

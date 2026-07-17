@@ -2,7 +2,7 @@
 
 Prior authorization often fails before medical necessity is even evaluated: missing documentation, unclear payer requirements, policy variation, rule drift, and handoff gaps between provider and payer teams.
 
-This project is a deterministic readiness workflow that checks prior-authorization documentation against versioned payer rules before submission. It returns `READY`, `NOT_READY`, or `CANNOT_DETERMINE`, with evidence mapping, audit artifacts, and explicit refusal behavior when required information is missing.
+This project is a deterministic readiness workflow that checks prior-authorization documentation against versioned payer rules before submission. It returns `READY`, `NOT_READY`, `CANNOT_DETERMINE`, or `NEEDS_REVIEW`, with evidence mapping, audit artifacts, and explicit refusal behavior when required information is missing or cannot be evaluated.
 
 It is a self-directed prototype, not a production payer integration or clinical decision system. The goal is to show how prior-auth workflows can be made more reviewable, auditable, and implementation-aware.
 
@@ -10,7 +10,7 @@ It is a self-directed prototype, not a production payer integration or clinical 
 
 _Synthetic CPAP demo case. The workflow refuses to infer a missing sleep-study date or AHI/RDI value and surfaces both documentation gaps for review._
 
-The separate screenshot at `docs/images/prior-auth-copilot-demo.png` is a historical UI reference from rules version `0.2` with a `2026-02-05` review date; the current checked-in state is rules version `0.5` with `2026-04-09` provenance review dates.
+The separate screenshot at `docs/images/prior-auth-copilot-demo.png` is a historical UI reference from rules version `0.2` with a `2026-02-05` review date; the current checked-in state is rules version `0.6` with `2026-04-09` provenance review dates.
 
 ## Read This First
 
@@ -19,8 +19,9 @@ This is a synthetic workflow-readiness demo, not a payer or clinical deployment.
 - Bundled inputs are synthetic, and free-form input is intended for synthetic demo text; input text is not screened, so do not submit real patient information.
 - Outputs are administrative readiness signals under narrow demo rules.
 - `READY` means the required demo-rule documentation was found and met threshold.
-- `NOT_READY` means required documentation was found but failed a threshold.
+- `NOT_READY` means required documentation was found and evaluable, but failed a threshold.
 - `CANNOT_DETERMINE` means required documentation is missing or not explicit enough.
+- `NEEDS_REVIEW` means documentation was found but at least one result could not be evaluated against the configured categories; it is not an adjudicated threshold failure.
 - No output means payer approval, denial prediction, medical necessity, clinical appropriateness, or medical advice.
 
 ## Quick Reviewer Path
@@ -77,6 +78,7 @@ At a high level:
 3. `rules/payer_rules.yaml` defines which facts are required for each supported payer/procedure pair.
 4. `engine/evaluate.py` applies frozen status semantics:
    - any `NOT_DOCUMENTED` requirement forces `CANNOT_DETERMINE`
+   - otherwise any `NEEDS_REVIEW` requirement forces `NEEDS_REVIEW`
    - otherwise any `NOT_MET` requirement forces `NOT_READY`
    - only all `MET` requirements return `READY`
 5. `engine/service.py` assembles blockers, facts, evidence maps, provenance, warnings, audit trace data, and standard output payloads.
@@ -191,7 +193,7 @@ Full API notes: [docs/api.md](docs/api.md)
 .venv/bin/python cli.py export-report --demo-case CPAP-02-borderline --output /tmp/pa-copilot-reviewer-demo.json --with-letter --letter-type missing_info_request
 .venv/bin/python cli.py drift-status
 .venv/bin/python cli.py rulebook-status
-.venv/bin/python cli.py rulebook-diff --from-release 2026-04-09-reviewed-v0.4 --to-release 2026-04-09-active-v0.5
+.venv/bin/python cli.py rulebook-diff --from-release 2026-04-09-reviewed-v0.4 --to-release 2026-07-17-active-v0.6
 ```
 
 ## Demo Artifacts

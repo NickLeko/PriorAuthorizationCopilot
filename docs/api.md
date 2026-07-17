@@ -115,7 +115,7 @@ curl http://127.0.0.1:8000/rulebook
 Returns a structured diff between two rulebook releases.
 
 ```bash
-curl "http://127.0.0.1:8000/rulebook/diff?from_release_id=2026-04-09-reviewed-v0.4&to_release_id=2026-04-09-active-v0.5"
+curl "http://127.0.0.1:8000/rulebook/diff?from_release_id=2026-04-09-reviewed-v0.4&to_release_id=2026-07-17-active-v0.6"
 ```
 
 ## Error Behavior

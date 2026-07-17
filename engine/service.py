@@ -34,6 +34,8 @@ from .schemas import (
     EvaluationMetrics,
     EvaluationResult,
     EvidenceSpan,
+    LetterDraftInput,
+    LetterRequestMetadata,
     LetterType,
     PARequest,
     ProcedureMetadata,
@@ -114,8 +116,9 @@ def _compute_metrics(score_info: Dict[str, int]) -> EvaluationMetrics:
     met = int(score_info.get("met_count", 0) or 0)
     not_met = int(score_info.get("not_met_count", 0) or 0)
     not_doc = int(score_info.get("not_documented_count", 0) or 0)
+    needs_review = int(score_info.get("needs_review_count", 0) or 0)
 
-    extraction_success_rate = round(((met + not_met) / total * 100), 1) if total else 0.0
+    extraction_success_rate = round(((met + not_met + needs_review) / total * 100), 1) if total else 0.0
     compliance_rate = round((met / (met + not_met) * 100), 1) if (met + not_met) > 0 else None
 
     return EvaluationMetrics(
@@ -124,6 +127,7 @@ def _compute_metrics(score_info: Dict[str, int]) -> EvaluationMetrics:
         compliance_rate=compliance_rate,
         compliant_count=met,
         non_compliant_count=not_met,
+        needs_review_count=needs_review,
     )
 
 
@@ -276,20 +280,9 @@ class ReadinessService:
         results, reasons = evaluate_requirements(requirement_payloads, raw_facts, evidence_map=raw_evidence_map)
 
         if raw_facts.get("prior_imaging_result") == "unrecognized" and any(
-            result.key == "prior_imaging_result" for result in results
+            result.key == "prior_imaging_result" and result.status == "NEEDS_REVIEW" for result in results
         ):
             review_reason = "Imaging result is documented but its category is unrecognized; human review is required."
-            results = [
-                result.model_copy(update={"status": "NOT_MET", "reason": review_reason})
-                if result.key == "prior_imaging_result"
-                else result
-                for result in results
-            ]
-            reasons = [
-                f"{result.label}: {result.status} — {result.reason}"
-                for result in results
-                if result.status in ("NOT_DOCUMENTED", "NOT_MET")
-            ]
             warnings.append(review_reason)
 
         overall = compute_overall_status(results)
@@ -336,6 +329,7 @@ class ReadinessService:
             not_documented_count=int(score_info.get("not_documented_count", 0) or 0),
             not_met_count=int(score_info.get("not_met_count", 0) or 0),
             met_count=int(score_info.get("met_count", 0) or 0),
+            needs_review_count=int(score_info.get("needs_review_count", 0) or 0),
             results=results,
             rule_reasons=reasons,
             audit_trail=audit.model_dump(mode="json"),
@@ -372,6 +366,7 @@ class ReadinessService:
             note_hash=audit.note_hash,
             blockers_missing=len(blockers.not_documented),
             blockers_not_met=len(blockers.not_met),
+            blockers_needs_review=len(blockers.needs_review),
         )
         return result
 
@@ -379,10 +374,22 @@ class ReadinessService:
         self, evaluation: EvaluationResult, letter_type: LetterType = "submission_cover_letter"
     ) -> tuple[str, Dict[str, Any]]:
         return draft_letter(
-            evaluation.request.model_copy(update={"note_text": ""}),
-            evaluation.report,
+            LetterDraftInput(
+                request=LetterRequestMetadata(
+                    payer=evaluation.request.payer,
+                    procedure_code=evaluation.request.procedure_code,
+                    dx_codes=evaluation.request.dx_codes,
+                    site_of_care=evaluation.request.site_of_care,
+                    specialty=evaluation.request.specialty,
+                ),
+                met_count=evaluation.report.met_count,
+                not_met_count=evaluation.report.not_met_count,
+                not_documented_count=evaluation.report.not_documented_count,
+                needs_review_count=evaluation.report.needs_review_count,
+                results=evaluation.report.results,
+                policy_trust_level=evaluation.policy_trust_level,
+            ),
             letter_type=letter_type,
-            policy_trust_level=evaluation.policy_trust_level,
         )
 
     def get_drift_status(self) -> DriftStatusReport:
@@ -503,16 +510,33 @@ class ReadinessService:
             for result in results
             if result.status == "NOT_MET"
         ]
-        return BlockingIssueSummary(not_documented=missing, not_met=not_met)
+        needs_review = [
+            BlockingIssue(key=result.key, label=result.label, status=result.status, reason=result.reason)
+            for result in results
+            if result.status == "NEEDS_REVIEW"
+        ]
+        return BlockingIssueSummary(not_documented=missing, not_met=not_met, needs_review=needs_review)
 
     @staticmethod
     def _compute_invariant_errors(blockers: BlockingIssueSummary, overall_status: str) -> List[str]:
         errors: List[str] = []
         if blockers.not_documented and overall_status != "CANNOT_DETERMINE":
             errors.append("Invariant violation: NOT_DOCUMENTED blockers exist but overall_status is not CANNOT_DETERMINE.")
-        if (not blockers.not_documented) and blockers.not_met and overall_status == "READY":
-            errors.append("Invariant violation: NOT_MET blockers exist but overall_status is READY.")
-        if (not blockers.not_documented) and (not blockers.not_met) and overall_status != "READY":
+        if (not blockers.not_documented) and blockers.needs_review and overall_status != "NEEDS_REVIEW":
+            errors.append("Invariant violation: NEEDS_REVIEW blockers exist but overall_status is not NEEDS_REVIEW.")
+        if (
+            (not blockers.not_documented)
+            and (not blockers.needs_review)
+            and blockers.not_met
+            and overall_status != "NOT_READY"
+        ):
+            errors.append("Invariant violation: NOT_MET blockers exist but overall_status is not NOT_READY.")
+        if (
+            (not blockers.not_documented)
+            and (not blockers.not_met)
+            and (not blockers.needs_review)
+            and overall_status != "READY"
+        ):
             errors.append("Invariant violation: no blockers exist but overall_status is not READY.")
         return errors
 
@@ -537,6 +561,7 @@ class ReadinessService:
         return ProcedureProvenance(
             source_name=provenance_entry.get("source_name"),
             source_type=provenance_entry.get("source_type"),
+            status=provenance_entry.get("status"),
             source_url=provenance_entry.get("source_url"),
             rule_source_label=provenance_entry.get("rule_source_label") or provenance_entry.get("source_name"),
             last_reviewed=provenance_entry.get("last_reviewed"),

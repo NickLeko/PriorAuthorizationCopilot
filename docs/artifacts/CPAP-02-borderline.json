@@ -1,6 +1,7 @@
 {
   "audit_trail": {
     "blocking_issues": {
+      "needs_review": [],
       "not_documented": [
         {
           "key": "sleep_study_date",
@@ -48,10 +49,11 @@
     },
     "invariant_errors": [],
     "metrics": {
+      "compliance_rate": 100.0,
       "compliant_count": 1,
-      "documented_requirements_met_pct": 100.0,
       "extraction_failure_count": 2,
-      "fields_extracted_pct": 33.3,
+      "extraction_success_rate": 33.3,
+      "needs_review_count": 0,
       "non_compliant_count": 0
     },
     "note_hash": "5ef99d034f3c708e",
@@ -73,15 +75,16 @@
       "rule_source_label": "Human-curated summary of CPAP administrative documentation criteria",
       "source_name": "Aetna DME policy (summary)",
       "source_type": "manual_summary",
-      "source_url": null
+      "source_url": null,
+      "status": null
     },
     "requirements_checked": [
       "osa_diagnosis",
       "sleep_study_date",
       "ahi_documented"
     ],
-    "rulebook_active_release_id": "2026-04-09-active-v0.5",
-    "rules_version": "0.5",
+    "rulebook_active_release_id": "2026-07-17-active-v0.6",
+    "rules_version": "0.6",
     "run_id": "__RUN_ID__",
     "site_of_care": "outpatient",
     "specialty": "Primary Care",
@@ -89,6 +92,7 @@
     "timestamp_utc": "__TIMESTAMP_UTC__"
   },
   "blockers": {
+    "needs_review": [],
     "not_documented": [
       {
         "key": "sleep_study_date",
@@ -140,17 +144,18 @@
       "generated_timestamp_utc": "__TIMESTAMP_UTC__",
       "letter_hash_sha256_16": "__LETTER_HASH_SHA256_16__",
       "letter_type": "submission_cover_letter",
-      "letter_version": "1.1",
+      "letter_version": "1.2",
       "overall_status": "CANNOT_DETERMINE",
       "policy_trust_level": "demo"
     },
     "text": "PRIOR AUTHORIZATION ADMINISTRATIVE READINESS SUMMARY\n\nPayer: Aetna\nProcedure: CPAP_DEVICE\nSite of care: outpatient\nSpecialty: Primary Care\nGenerated: __TIMESTAMP_UTC__\nDx codes: G47.33\nPolicy trust level: DEMO \u2014 criteria are illustrative only. Verify against the official payer policy before submission.\n\nOverall Status: CANNOT_DETERMINE\n\nSummary:\nAdministrative readiness cannot be determined because one or more required elements are not documented in the record provided. This does not imply criteria failure and does not guarantee payer approval.\n\nRequirements:\n- OSA diagnosis documented (osa_diagnosis): MET\n  Reason: Explicitly addressed in documentation (present/affirmed).\n  Evidence:\n   - \"OSA\"\n- Sleep study date documented (sleep_study_date): NOT_DOCUMENTED\n  Reason: Not found in note. Add explicit statement.\n  Evidence: No supporting snippet available.\n- AHI/RDI documented (ahi_documented): NOT_DOCUMENTED\n  Reason: Not found in note. Add explicit statement.\n  Evidence:\n   - \"AHI not documented\"\nMissing Documentation (Checklist):\n- Sleep study date documented: Date in chart\n- AHI/RDI documented: AHI value included\n\nClosing:\nThis letter summarizes documentation-based administrative readiness for prior authorization submission. It does not provide clinical recommendations and does not predict approval outcomes.\n"
   },
   "metrics": {
+    "compliance_rate": 100.0,
     "compliant_count": 1,
-    "documented_requirements_met_pct": 100.0,
     "extraction_failure_count": 2,
-    "fields_extracted_pct": 33.3,
+    "extraction_success_rate": 33.3,
+    "needs_review_count": 0,
     "non_compliant_count": 0
   },
   "overall_status": "CANNOT_DETERMINE",
@@ -167,12 +172,14 @@
     "rule_source_label": "Human-curated summary of CPAP administrative documentation criteria",
     "source_name": "Aetna DME policy (summary)",
     "source_type": "manual_summary",
-    "source_url": null
+    "source_url": null,
+    "status": null
   },
   "readiness_score": 33,
   "report": {
     "audit_trail": {
       "blocking_issues": {
+        "needs_review": [],
         "not_documented": [
           {
             "key": "sleep_study_date",
@@ -220,10 +227,11 @@
       },
       "invariant_errors": [],
       "metrics": {
+        "compliance_rate": 100.0,
         "compliant_count": 1,
-        "documented_requirements_met_pct": 100.0,
         "extraction_failure_count": 2,
-        "fields_extracted_pct": 33.3,
+        "extraction_success_rate": 33.3,
+        "needs_review_count": 0,
         "non_compliant_count": 0
       },
       "note_hash": "5ef99d034f3c708e",
@@ -245,15 +253,16 @@
         "rule_source_label": "Human-curated summary of CPAP administrative documentation criteria",
         "source_name": "Aetna DME policy (summary)",
         "source_type": "manual_summary",
-        "source_url": null
+        "source_url": null,
+        "status": null
       },
       "requirements_checked": [
         "osa_diagnosis",
         "sleep_study_date",
         "ahi_documented"
       ],
-      "rulebook_active_release_id": "2026-04-09-active-v0.5",
-      "rules_version": "0.5",
+      "rulebook_active_release_id": "2026-07-17-active-v0.6",
+      "rules_version": "0.6",
       "run_id": "__RUN_ID__",
       "site_of_care": "outpatient",
       "specialty": "Primary Care",
@@ -262,6 +271,7 @@
     },
     "letter_draft": "",
     "met_count": 1,
+    "needs_review_count": 0,
     "not_documented_count": 2,
     "not_met_count": 0,
     "readiness_score": 33,
@@ -319,7 +329,7 @@
     "dx_codes": [
       "G47.33"
     ],
-    "note_text": "OSA noted in problem list. Sleep study in 2023 mentioned but no date. AHI not documented.",
+    "note_text": "sha256:5ef99d034f3c708e [redacted for repository]",
     "payer": "Aetna",
     "procedure_code": "CPAP_DEVICE",
     "site_of_care": "outpatient",
@@ -406,7 +416,8 @@
       "rule_source_label": "Human-curated summary of CPAP administrative documentation criteria",
       "source_name": "Aetna DME policy (summary)",
       "source_type": "manual_summary",
-      "source_url": null
+      "source_url": null,
+      "status": null
     },
     "required_field_keys": [
       "osa_diagnosis",

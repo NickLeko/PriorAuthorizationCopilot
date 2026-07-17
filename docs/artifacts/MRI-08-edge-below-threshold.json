@@ -1,6 +1,7 @@
 {
   "audit_trail": {
     "blocking_issues": {
+      "needs_review": [],
       "not_documented": [],
       "not_met": [
         {
@@ -62,10 +63,11 @@
     },
     "invariant_errors": [],
     "metrics": {
+      "compliance_rate": 50.0,
       "compliant_count": 2,
-      "documented_requirements_met_pct": 50.0,
       "extraction_failure_count": 0,
-      "fields_extracted_pct": 100.0,
+      "extraction_success_rate": 100.0,
+      "needs_review_count": 0,
       "non_compliant_count": 2
     },
     "note_hash": "94ee8ba7171f7dea",
@@ -82,12 +84,13 @@
       "monitored_source_name": "Aetna CPB 0157",
       "monitored_source_owner": "NickLeko",
       "monitored_source_url": "https://www.aetna.com/cpb/medical/data/100_199/0157.html",
-      "notes": "Rules are illustrative for demo. Not a substitute for payer policy documents.",
+      "notes": "The original CPB 0157 citation was incorrect; a verified lumbar-spine imaging policy source is pending. Rules remain illustrative for demo.",
       "rule_last_updated": "2026-04-09",
-      "rule_source_label": "Human-curated summary of spine MRI administrative criteria",
-      "source_name": "Aetna spine MRI policy summary",
-      "source_type": "manual_summary",
-      "source_url": "https://www.aetna.com/cpb/medical/data/100_199/0157.html"
+      "rule_source_label": "Unverified human-curated summary of lumbar MRI administrative criteria",
+      "source_name": "Aetna lumbar MRI policy summary (unverified)",
+      "source_type": "unverified_manual_summary",
+      "source_url": null,
+      "status": "unverified"
     },
     "requirements_checked": [
       "conservative_therapy_weeks",
@@ -95,8 +98,8 @@
       "prior_imaging_result",
       "symptom_duration_weeks"
     ],
-    "rulebook_active_release_id": "2026-04-09-active-v0.5",
-    "rules_version": "0.5",
+    "rulebook_active_release_id": "2026-07-17-active-v0.6",
+    "rules_version": "0.6",
     "run_id": "__RUN_ID__",
     "site_of_care": "outpatient",
     "specialty": "Primary Care",
@@ -104,6 +107,7 @@
     "timestamp_utc": "__TIMESTAMP_UTC__"
   },
   "blockers": {
+    "needs_review": [],
     "not_documented": [],
     "not_met": [
       {
@@ -169,17 +173,18 @@
       "generated_timestamp_utc": "__TIMESTAMP_UTC__",
       "letter_hash_sha256_16": "__LETTER_HASH_SHA256_16__",
       "letter_type": "submission_cover_letter",
-      "letter_version": "1.1",
+      "letter_version": "1.2",
       "overall_status": "NOT_READY",
       "policy_trust_level": "demo"
     },
     "text": "PRIOR AUTHORIZATION ADMINISTRATIVE READINESS SUMMARY\n\nPayer: Aetna\nProcedure: MRI_LUMBAR\nSite of care: outpatient\nSpecialty: Primary Care\nGenerated: __TIMESTAMP_UTC__\nDx codes: M54.5\nPolicy trust level: DEMO \u2014 criteria are illustrative only. Verify against the official payer policy before submission.\n\nOverall Status: NOT_READY\n\nSummary:\nThe request is not administratively ready for submission because one or more documented requirements do not meet thresholds. This does not represent a clinical judgment and does not guarantee payer approval.\n\nRequirements:\n- Conservative therapy duration (weeks) (conservative_therapy_weeks): NOT_MET\n  Reason: Documented value (5) below requirement (>= 6.0). Clarify or justify.\n  Evidence:\n   - \"PT x 5 weeks\"\n- Neuro red flags explicitly addressed (present or denied) (neuro_red_flags_documented): MET\n  Reason: Explicitly addressed in documentation (present/affirmed).\n  Evidence:\n   - \"Denies weakness. Denies bowel/bladder\"\n- Prior imaging result (prior_imaging_result): MET\n  Reason: Documented: none.\n  Evidence:\n   - \"No prior imaging\"\n- Symptom duration (weeks) (symptom_duration_weeks): NOT_MET\n  Reason: Documented value (5) below requirement (>= 6.0). Clarify or justify.\n  Evidence:\n   - \"5 weeks\"\nClosing:\nThis letter summarizes documentation-based administrative readiness for prior authorization submission. It does not provide clinical recommendations and does not predict approval outcomes.\n"
   },
   "metrics": {
+    "compliance_rate": 50.0,
     "compliant_count": 2,
-    "documented_requirements_met_pct": 50.0,
     "extraction_failure_count": 0,
-    "fields_extracted_pct": 100.0,
+    "extraction_success_rate": 100.0,
+    "needs_review_count": 0,
     "non_compliant_count": 2
   },
   "overall_status": "NOT_READY",
@@ -191,17 +196,19 @@
     "monitored_source_name": "Aetna CPB 0157",
     "monitored_source_owner": "NickLeko",
     "monitored_source_url": "https://www.aetna.com/cpb/medical/data/100_199/0157.html",
-    "notes": "Rules are illustrative for demo. Not a substitute for payer policy documents.",
+    "notes": "The original CPB 0157 citation was incorrect; a verified lumbar-spine imaging policy source is pending. Rules remain illustrative for demo.",
     "rule_last_updated": "2026-04-09",
-    "rule_source_label": "Human-curated summary of spine MRI administrative criteria",
-    "source_name": "Aetna spine MRI policy summary",
-    "source_type": "manual_summary",
-    "source_url": "https://www.aetna.com/cpb/medical/data/100_199/0157.html"
+    "rule_source_label": "Unverified human-curated summary of lumbar MRI administrative criteria",
+    "source_name": "Aetna lumbar MRI policy summary (unverified)",
+    "source_type": "unverified_manual_summary",
+    "source_url": null,
+    "status": "unverified"
   },
   "readiness_score": 75,
   "report": {
     "audit_trail": {
       "blocking_issues": {
+        "needs_review": [],
         "not_documented": [],
         "not_met": [
           {
@@ -263,10 +270,11 @@
       },
       "invariant_errors": [],
       "metrics": {
+        "compliance_rate": 50.0,
         "compliant_count": 2,
-        "documented_requirements_met_pct": 50.0,
         "extraction_failure_count": 0,
-        "fields_extracted_pct": 100.0,
+        "extraction_success_rate": 100.0,
+        "needs_review_count": 0,
         "non_compliant_count": 2
       },
       "note_hash": "94ee8ba7171f7dea",
@@ -283,12 +291,13 @@
         "monitored_source_name": "Aetna CPB 0157",
         "monitored_source_owner": "NickLeko",
         "monitored_source_url": "https://www.aetna.com/cpb/medical/data/100_199/0157.html",
-        "notes": "Rules are illustrative for demo. Not a substitute for payer policy documents.",
+        "notes": "The original CPB 0157 citation was incorrect; a verified lumbar-spine imaging policy source is pending. Rules remain illustrative for demo.",
         "rule_last_updated": "2026-04-09",
-        "rule_source_label": "Human-curated summary of spine MRI administrative criteria",
-        "source_name": "Aetna spine MRI policy summary",
-        "source_type": "manual_summary",
-        "source_url": "https://www.aetna.com/cpb/medical/data/100_199/0157.html"
+        "rule_source_label": "Unverified human-curated summary of lumbar MRI administrative criteria",
+        "source_name": "Aetna lumbar MRI policy summary (unverified)",
+        "source_type": "unverified_manual_summary",
+        "source_url": null,
+        "status": "unverified"
       },
       "requirements_checked": [
         "conservative_therapy_weeks",
@@ -296,8 +305,8 @@
         "prior_imaging_result",
         "symptom_duration_weeks"
       ],
-      "rulebook_active_release_id": "2026-04-09-active-v0.5",
-      "rules_version": "0.5",
+      "rulebook_active_release_id": "2026-07-17-active-v0.6",
+      "rules_version": "0.6",
       "run_id": "__RUN_ID__",
       "site_of_care": "outpatient",
       "specialty": "Primary Care",
@@ -306,6 +315,7 @@
     },
     "letter_draft": "",
     "met_count": 2,
+    "needs_review_count": 0,
     "not_documented_count": 0,
     "not_met_count": 2,
     "readiness_score": 75,
@@ -388,7 +398,7 @@
     "dx_codes": [
       "M54.5"
     ],
-    "note_text": "Low back pain x 5 weeks. PT x 5 weeks documented. Denies weakness. Denies bowel/bladder changes. No prior imaging.",
+    "note_text": "sha256:94ee8ba7171f7dea [redacted for repository]",
     "payer": "Aetna",
     "procedure_code": "MRI_LUMBAR",
     "site_of_care": "outpatient",
@@ -495,12 +505,13 @@
       "monitored_source_name": "Aetna CPB 0157",
       "monitored_source_owner": "NickLeko",
       "monitored_source_url": "https://www.aetna.com/cpb/medical/data/100_199/0157.html",
-      "notes": "Rules are illustrative for demo. Not a substitute for payer policy documents.",
+      "notes": "The original CPB 0157 citation was incorrect; a verified lumbar-spine imaging policy source is pending. Rules remain illustrative for demo.",
       "rule_last_updated": "2026-04-09",
-      "rule_source_label": "Human-curated summary of spine MRI administrative criteria",
-      "source_name": "Aetna spine MRI policy summary",
-      "source_type": "manual_summary",
-      "source_url": "https://www.aetna.com/cpb/medical/data/100_199/0157.html"
+      "rule_source_label": "Unverified human-curated summary of lumbar MRI administrative criteria",
+      "source_name": "Aetna lumbar MRI policy summary (unverified)",
+      "source_type": "unverified_manual_summary",
+      "source_url": null,
+      "status": "unverified"
     },
     "required_field_keys": [
       "conservative_therapy_weeks",

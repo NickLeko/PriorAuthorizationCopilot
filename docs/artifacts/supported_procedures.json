@@ -30,7 +30,8 @@
       "rule_source_label": "Human-curated summary of CPAP administrative documentation criteria",
       "source_name": "Aetna DME policy (summary)",
       "source_type": "manual_summary",
-      "source_url": null
+      "source_url": null,
+      "status": null
     },
     "required_field_keys": [
       "osa_diagnosis",
@@ -95,7 +96,8 @@
       "rule_source_label": "Human-curated summary of cervical spine MRI administrative criteria",
       "source_name": "Aetna cervical spine MRI policy summary",
       "source_type": "manual_summary",
-      "source_url": null
+      "source_url": null,
+      "status": null
     },
     "required_field_keys": [
       "conservative_therapy_weeks",
@@ -173,7 +175,8 @@
       "rule_source_label": "Human-curated summary of knee MRI administrative documentation criteria",
       "source_name": "Aetna knee MRI policy summary",
       "source_type": "manual_summary",
-      "source_url": null
+      "source_url": null,
+      "status": null
     },
     "required_field_keys": [
       "conservative_therapy_weeks",
@@ -245,12 +248,13 @@
       "monitored_source_name": "Aetna CPB 0157",
       "monitored_source_owner": "NickLeko",
       "monitored_source_url": "https://www.aetna.com/cpb/medical/data/100_199/0157.html",
-      "notes": "Rules are illustrative for demo. Not a substitute for payer policy documents.",
+      "notes": "The original CPB 0157 citation was incorrect; a verified lumbar-spine imaging policy source is pending. Rules remain illustrative for demo.",
       "rule_last_updated": "2026-04-09",
-      "rule_source_label": "Human-curated summary of spine MRI administrative criteria",
-      "source_name": "Aetna spine MRI policy summary",
-      "source_type": "manual_summary",
-      "source_url": "https://www.aetna.com/cpb/medical/data/100_199/0157.html"
+      "rule_source_label": "Unverified human-curated summary of lumbar MRI administrative criteria",
+      "source_name": "Aetna lumbar MRI policy summary (unverified)",
+      "source_type": "unverified_manual_summary",
+      "source_url": null,
+      "status": "unverified"
     },
     "required_field_keys": [
       "conservative_therapy_weeks",

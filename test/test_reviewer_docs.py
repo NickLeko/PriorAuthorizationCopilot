@@ -43,8 +43,8 @@ def test_reviewer_demo_cases_preserve_status_meanings_and_audit_fields():
     assert not ready.blockers.not_documented
     assert not ready.blockers.not_met
     assert ready.evidence_map["conservative_therapy_weeks"]
-    assert ready.audit_trail.rules_version == "0.5"
-    assert ready.audit_trail.rulebook_active_release_id == "2026-04-09-active-v0.5"
+    assert ready.audit_trail.rules_version == "0.6"
+    assert ready.audit_trail.rulebook_active_release_id == "2026-07-17-active-v0.6"
     assert ready.audit_trail.note_hash
 
     not_ready = service.evaluate(service.get_demo_case_request("MRI-08-edge-below-threshold"))

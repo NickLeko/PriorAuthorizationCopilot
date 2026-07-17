@@ -53,6 +53,6 @@ def build_acceptance_governance_payloads(service: ReadinessService) -> Dict[str,
         "rulebook_status": service.get_rulebook_status().model_dump(mode="json"),
         "rulebook_diff_reviewed_vs_active": service.get_rulebook_diff(
             "2026-04-09-reviewed-v0.4",
-            "2026-04-09-active-v0.5",
+            "2026-07-17-active-v0.6",
         ).model_dump(mode="json"),
     }

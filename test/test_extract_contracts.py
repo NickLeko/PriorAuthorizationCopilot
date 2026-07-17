@@ -231,6 +231,25 @@ def test_unrecognized_imaging_result_is_documented_separately(note):
     assert "prior_imaging_result" in evidence
 
 
+def test_unrecognized_imaging_result_evaluates_to_needs_review():
+    requirements = [
+        {
+            "key": "prior_imaging_result",
+            "label": "Prior imaging result",
+            "type": "enum",
+            "allowed": ["none", "inconclusive", "abnormal"],
+        }
+    ]
+
+    results, reasons = evaluate_requirements(requirements, {"prior_imaging_result": "unrecognized"})
+    overall = compute_overall_status(results)
+
+    assert results[0].status == "NEEDS_REVIEW"
+    assert overall["overall_status"] == "NEEDS_REVIEW"
+    assert overall["submission_readiness"] is False
+    assert any("NEEDS_REVIEW" in reason for reason in reasons)
+
+
 def test_positive_red_flag_evidence_takes_precedence_when_note_contains_conflict():
     note = (
         "Neck pain x 8 weeks. PT x 8 weeks. Denies weakness earlier in visit. "
