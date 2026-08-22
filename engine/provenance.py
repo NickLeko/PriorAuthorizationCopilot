@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import re
 from pathlib import Path
 from typing import Any, Dict
 
@@ -12,6 +13,12 @@ PROVENANCE_STRING_FIELDS = {
     "source_name",
     "status",
     "source_url",
+    "policy_identifier",
+    "policy_title",
+    "policy_effective_date",
+    "policy_last_reviewed",
+    "accessed_date",
+    "content_hash_sha256",
     "rule_source_label",
     "last_reviewed",
     "rule_last_updated",
@@ -48,9 +55,20 @@ def load_provenance(path: str | Path) -> Dict[str, Any]:
             for field_name, value in entry.items():
                 if field_name in PROVENANCE_STRING_FIELDS and value is not None:
                     if not isinstance(value, str) or not value.strip():
-                        raise ValueError(
-                            f"Invalid provenance file: '{payer}.{procedure_code}.{field_name}' must be a non-empty string."
-                        )
+                        raise ValueError(f"Invalid provenance file: '{payer}.{procedure_code}.{field_name}' must be a non-empty string.")
+            requirement_clause_map = entry.get("requirement_clause_map")
+            if requirement_clause_map is not None:
+                if not isinstance(requirement_clause_map, dict) or not requirement_clause_map:
+                    raise ValueError(
+                        f"Invalid provenance file: '{payer}.{procedure_code}.requirement_clause_map' must be a non-empty mapping."
+                    )
+                if any(
+                    not isinstance(key, str) or not key.strip() or not isinstance(clause, str) or not clause.strip()
+                    for key, clause in requirement_clause_map.items()
+                ):
+                    raise ValueError(
+                        f"Invalid provenance file: '{payer}.{procedure_code}.requirement_clause_map' entries must use non-empty strings."
+                    )
 
     return data
 
@@ -68,11 +86,38 @@ def get_provenance_entry(provenance_data: Dict[str, Any], payer: str, procedure_
     return dict(entry)
 
 
-def policy_trust_from_provenance(entry: Dict[str, Any]) -> PolicyTrustLevel:
+def policy_trust_from_provenance(entry: Dict[str, Any], requirement_keys: list[str] | None = None) -> PolicyTrustLevel:
     source_type = str(entry.get("source_type", "")).strip().lower()
-    if source_type in {"policy_document", "official_policy_web"}:
-        return "verified"
-    return "demo"
+    status = str(entry.get("status", "")).strip().lower()
+    if source_type not in {"policy_document", "official_policy_web"} or status != "verified":
+        return "demo"
+
+    required_metadata = (
+        "source_name",
+        "source_url",
+        "policy_identifier",
+        "policy_title",
+        "policy_effective_date",
+        "policy_last_reviewed",
+        "accessed_date",
+        "content_hash_sha256",
+        "monitored_source_id",
+        "last_reviewed",
+        "rule_last_updated",
+    )
+    if any(not str(entry.get(field_name, "")).strip() for field_name in required_metadata):
+        return "demo"
+    if not re.fullmatch(r"[0-9a-fA-F]{64}", str(entry["content_hash_sha256"]).strip()):
+        return "demo"
+
+    clause_map = entry.get("requirement_clause_map")
+    if not isinstance(clause_map, dict) or not clause_map:
+        return "demo"
+    if any(not str(key).strip() or not str(clause).strip() for key, clause in clause_map.items()):
+        return "demo"
+    if requirement_keys is not None and set(clause_map) != set(requirement_keys):
+        return "demo"
+    return "verified"
 
 
 def normalized_dx_codes(dx_codes: list[str]) -> list[str]:

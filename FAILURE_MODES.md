@@ -3,7 +3,7 @@
 
 **Project:** Prior Authorization Readiness Copilot  
 **Owner:** Nicholas Leko  
-**Last Updated:** July 17, 2026
+**Last Updated:** August 22, 2026
 **Status:** Versioned current behavior. Changes should update tests and docs.
 
 ---

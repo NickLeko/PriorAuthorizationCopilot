@@ -100,6 +100,9 @@ The bundled synthetic case set intentionally includes:
 - new procedure coverage for cervical MRI
 - non-spine knee MRI coverage
 - contradictory evidence precedence for red-flag extraction
+- adversarial negation and duration-anchoring cases for imaging, OSA, and symptom history
+- explicit operator semantics and empty-requirement fail-closed behavior
+- CPB 0236 modality, duration, and treatment-response cases, including longest individually documented qualifying duration
 - governance snapshot drift and rulebook integrity
 
 That is more useful here than adding a large quantity of low-value tests.

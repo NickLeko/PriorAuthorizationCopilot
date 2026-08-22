@@ -51,6 +51,15 @@ st.markdown(
         border: 1px solid var(--line);
         padding: 1rem 1.1rem;
         margin-bottom: 1rem;
+        color: var(--ink);
+      }
+      .status-panel strong {
+        display: block;
+        font-size: clamp(1.45rem, 3vw, 2.2rem);
+        line-height: 1.1;
+        overflow-wrap: anywhere;
+        white-space: normal;
+        margin-bottom: 0.45rem;
       }
       .status-ready {
         background: #f1f8f2;
@@ -140,11 +149,11 @@ def status_panel(evaluation: EvaluationResult) -> None:
 
     summaries = {
         "READY": (
-            "Administratively ready under the current versioned demo rules.",
+            "Administratively ready under the current versioned rules.",
             "All required elements were explicitly documented and met threshold.",
         ),
         "NOT_READY": (
-            "Not ready to submit under the current versioned demo rules.",
+            "Not ready to submit under the current versioned rules.",
             "At least one required element was documented but failed threshold.",
         ),
         "CANNOT_DETERMINE": (
@@ -165,20 +174,86 @@ def status_panel(evaluation: EvaluationResult) -> None:
         f"""
         <div class="status-panel {klass}">
           <div class="eyebrow">Decision</div>
-          <strong>{status}</strong><br/>
-          <span>{headline}</span><br/>
-          <span>{detail}</span>
+          <strong>{status}</strong>
+          <div>{headline}</div>
+          <div>{detail}</div>
         </div>
         """,
         unsafe_allow_html=True,
     )
 
 
+def format_fact_value(value: object) -> str:
+    if value is None:
+        return "null (not extracted)"
+    if isinstance(value, bool):
+        return str(value).lower()
+    if isinstance(value, str):
+        return f'"{value}"'
+    return str(value)
+
+
+def format_rule_operator(requirement) -> str:
+    operator = requirement.operator
+    if operator == "minimum":
+        return f"minimum ≥ {requirement.min:g}"
+    if operator == "one_of":
+        return f"one of: {', '.join(requirement.allowed)}"
+    if operator == "documented":
+        return "must be explicitly addressed"
+    if operator == "equals_true":
+        return "must equal true"
+    return "operator not configured"
+
+
+def render_decision_trace(evaluation: EvaluationResult) -> None:
+    requirements_by_key = {requirement.key: requirement for requirement in evaluation.supported_procedure.requirements}
+    display_status = {
+        "MET": "MET",
+        "NOT_MET": "NOT MET",
+        "NOT_DOCUMENTED": "MISSING",
+        "NEEDS_REVIEW": "NEEDS REVIEW",
+    }
+    status_icon = {"MET": "✅", "NOT_MET": "⚠️", "NOT_DOCUMENTED": "❌", "NEEDS_REVIEW": "🔎"}
+
+    st.markdown("#### Deterministic decision trace")
+    st.caption("Every decision follows the same inspectable path; no generative reasoning layer is added.")
+    headers = st.columns([2.2, 1.5, 2.1, 1.7])
+    for column, label in zip(
+        headers,
+        ["1 · NOTE EVIDENCE →", "2 · EXTRACTED FACT →", "3 · PAYER RULE →", "4 · REQUIREMENT RESULT"],
+    ):
+        with column:
+            st.caption(label)
+
+    for result in evaluation.results:
+        requirement = requirements_by_key[result.key]
+        with st.container(border=True):
+            columns = st.columns([2.2, 1.5, 2.1, 1.7])
+            with columns[0]:
+                if result.evidence_snippets:
+                    snippet = result.evidence_snippets[0]
+                    st.write(f"“{snippet}”")
+                    if len(result.evidence_snippets) > 1:
+                        st.caption(f"+{len(result.evidence_snippets) - 1} additional evidence span(s)")
+                else:
+                    st.caption("No matching note evidence")
+            with columns[1]:
+                st.caption(result.key)
+                st.write(f"**{format_fact_value(evaluation.facts.get(result.key))}**")
+            with columns[2]:
+                st.caption(result.label)
+                st.write(f"`{requirement.operator}` · {format_rule_operator(requirement)}")
+            with columns[3]:
+                st.write(f"**{status_icon[result.status]} {display_status[result.status]}**")
+                st.caption(result.reason)
+
+    st.caption(f"Requirement results resolve deterministically to the overall decision shown above: {evaluation.overall_status}.")
+
+
 def render_requirement_result(result) -> None:
     default_open = result.status != "MET"
-    icon = {"MET": "✅", "NOT_MET": "⚠️", "NOT_DOCUMENTED": "❌", "NEEDS_REVIEW": "🔎"}.get(
-        result.status, "❓"
-    )
+    icon = {"MET": "✅", "NOT_MET": "⚠️", "NOT_DOCUMENTED": "❌", "NEEDS_REVIEW": "🔎"}.get(result.status, "❓")
     with st.expander(f"{icon} {result.label}", expanded=default_open):
         c1, c2 = st.columns([1.2, 2])
         with c1:
@@ -346,7 +421,7 @@ if drift_report.any_review_required:
         "or the monitoring baseline is stale or missing."
     )
     st.session_state["ack_policy_drift"] = st.checkbox(
-        "I acknowledge governance issues may make related demo outputs stale.",
+        "I acknowledge governance issues may make the affected monitored procedure's demo outputs stale.",
         value=st.session_state["ack_policy_drift"],
     )
 else:
@@ -359,7 +434,12 @@ if drift_report.stale_source_count:
         "This is a governance signal only; it does not auto-change rules."
     )
 
-policy_gate_block = drift_report.any_review_required and not st.session_state["ack_policy_drift"]
+
+def policy_gate_blocked(payer: str, procedure_code: str) -> bool:
+    scoped_report = service.get_drift_status(payer=payer, procedure_code=procedure_code)
+    return scoped_report.any_review_required and not st.session_state["ack_policy_drift"]
+
+
 if not tests_healthy:
     st.error("Evaluation is gated because the bundled synthetic regression suite is not fully green.")
 
@@ -417,13 +497,14 @@ for start in range(0, len(featured_cases), 2):
             st.caption(case.showcase.get("why_interesting", ""))
             if st.button("Load Demo Case", key=f"case_{case.id}", width="stretch"):
                 load_case_into_session(case.model_dump(mode="json"))
-                showcase_submitted = tests_healthy and not policy_gate_block
+                case_policy_gate_block = policy_gate_blocked(case.payer, case.procedure_code)
+                showcase_submitted = tests_healthy and not case_policy_gate_block
                 if showcase_submitted:
                     showcase_message = (
                         "success",
                         f'Loaded "{case.showcase.get("title", case.id)}" and ran the evaluation.',
                     )
-                elif policy_gate_block:
+                elif case_policy_gate_block:
                     showcase_message = (
                         "info",
                         f'Loaded "{case.showcase.get("title", case.id)}". Acknowledge the drift gate to run it.',
@@ -470,7 +551,7 @@ with left:
 
         submitted = st.form_submit_button(
             "Run deterministic readiness review",
-            disabled=(not tests_healthy) or policy_gate_block,
+            disabled=not tests_healthy,
         )
 
 with right:
@@ -487,9 +568,7 @@ with right:
         f"Rule last updated: {current_supported.metadata.last_rule_update or 'n/a'} | "
         f"Last reviewed: {current_supported.provenance.last_reviewed or 'n/a'}"
     )
-    st.caption(
-        f"Drift monitoring: {'Configured' if current_supported.monitored_for_drift else 'Not configured for this procedure'}"
-    )
+    st.caption(f"Drift monitoring: {'Configured' if current_supported.monitored_for_drift else 'Not configured for this procedure'}")
     if current_supported.monitored_for_drift:
         st.caption(
             f"Monitored source: {current_supported.provenance.monitored_source_name or current_supported.provenance.monitored_source_id}"
@@ -517,12 +596,17 @@ should_run = submitted or showcase_submitted
 if should_run:
     st.session_state["letter_text"] = ""
     st.session_state["letter_meta"] = {}
-    try:
-        evaluation = service.evaluate(current_request())
-        st.session_state["last_eval_payload"] = evaluation.model_dump(mode="json")
-    except ServiceError as exc:
-        st.error(str(exc))
+    request = current_request()
+    if policy_gate_blocked(request.payer, request.procedure_code):
+        st.info("Acknowledge the governance issue for this monitored payer/procedure before running the evaluation.")
         st.session_state["last_eval_payload"] = None
+    else:
+        try:
+            evaluation = service.evaluate(request)
+            st.session_state["last_eval_payload"] = evaluation.model_dump(mode="json")
+        except ServiceError as exc:
+            st.error(str(exc))
+            st.session_state["last_eval_payload"] = None
 
 
 st.subheader("Results")
@@ -539,31 +623,28 @@ else:
         )
 
     if evaluation.warnings:
-        with st.expander("Evaluation warnings", expanded=True):
+        with st.expander("Evaluation warnings", expanded=False):
             for warning in evaluation.warnings:
                 st.write(f"- {warning}")
 
-    metric_cols = st.columns(5)
+    metric_cols = st.columns(3)
     with metric_cols[0]:
-        st.metric("Overall status", evaluation.overall_status)
+        st.metric(
+            "Criteria met",
+            f"{evaluation.metrics.criteria_met_count} of {evaluation.metrics.total_requirements}",
+        )
     with metric_cols[1]:
-        st.metric("Readiness score", f"{evaluation.readiness_score}/100")
+        st.metric("Missing", f"{evaluation.metrics.missing_requirement_count} missing")
     with metric_cols[2]:
-        st.metric("Missing requirements", len(evaluation.blockers.not_documented))
-    with metric_cols[3]:
-        st.metric("Documented failures", len(evaluation.blockers.not_met))
-    with metric_cols[4]:
-        st.metric("Needs review", len(evaluation.blockers.needs_review))
+        st.metric("Needs review", f"{evaluation.metrics.human_review_count} needs review")
+
+    render_decision_trace(evaluation)
 
     tabs = st.tabs(["Overview", "Requirement Reasoning", "Facts and Evidence", "Audit and Export"])
 
     with tabs[0]:
         st.markdown("#### Blockers")
-        if (
-            not evaluation.blockers.not_documented
-            and not evaluation.blockers.not_met
-            and not evaluation.blockers.needs_review
-        ):
+        if not evaluation.blockers.not_documented and not evaluation.blockers.not_met and not evaluation.blockers.needs_review:
             st.success("No blockers detected under the current rules.")
         else:
             if evaluation.blockers.not_documented:
@@ -581,9 +662,7 @@ else:
 
         st.markdown("#### Procedure metadata")
         rule_source_label = (
-            evaluation.supported_procedure.provenance.rule_source_label
-            or evaluation.supported_procedure.provenance.source_name
-            or "n/a"
+            evaluation.supported_procedure.provenance.rule_source_label or evaluation.supported_procedure.provenance.source_name or "n/a"
         )
         monitored_source_label = (
             evaluation.supported_procedure.provenance.monitored_source_name

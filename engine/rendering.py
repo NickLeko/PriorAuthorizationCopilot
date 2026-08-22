@@ -30,9 +30,7 @@ def write_json_artifact(payload: Dict[str, Any], output_path: str | Path) -> Pat
 
 def render_cli_evaluation(evaluation: EvaluationResult) -> str:
     source_label = (
-        evaluation.supported_procedure.provenance.rule_source_label
-        or evaluation.supported_procedure.provenance.source_name
-        or "n/a"
+        evaluation.supported_procedure.provenance.rule_source_label or evaluation.supported_procedure.provenance.source_name or "n/a"
     )
     lines = [
         "Prior Authorization Readiness Copilot",
@@ -44,7 +42,11 @@ def render_cli_evaluation(evaluation: EvaluationResult) -> str:
         f"Rulebook release: {evaluation.audit_trail.rulebook_active_release_id or 'n/a'}",
         f"Overall status: {evaluation.overall_status}",
         f"Submission readiness: {'YES' if evaluation.submission_readiness else 'NO'}",
-        f"Readiness score: {evaluation.readiness_score}/100",
+        f"Documentation coverage: {evaluation.metrics.documentation_coverage_pct:.1f}%",
+        (
+            "Criteria met among evaluable requirements: "
+            f"{evaluation.metrics.criteria_met_count}/{evaluation.metrics.evaluable_requirement_count}"
+        ),
         f"Policy trust level: {evaluation.policy_trust_level.upper()}",
         "",
         "Blocking summary:",
@@ -88,11 +90,7 @@ def render_rulebook_status(report: RulebookStatusResponse) -> str:
         "",
     ]
     for release in report.releases:
-        runtime = (
-            f" | runtime_match={'yes' if release.runtime_matches else 'no'}"
-            if release.runtime_matches is not None
-            else ""
-        )
+        runtime = f" | runtime_match={'yes' if release.runtime_matches else 'no'}" if release.runtime_matches is not None else ""
         lines.append(
             f"- {release.release_id} | stage={release.stage or 'unassigned'} | "
             f"rules_version={release.rules_version or 'n/a'} | procedures={len(release.procedures)}{runtime}"

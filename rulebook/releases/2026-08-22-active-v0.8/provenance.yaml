@@ -1,0 +1,34 @@
+version: 0.3
+
+sources:
+  Aetna:
+    MRI_LUMBAR:
+      source_type: "unverified_manual_summary"
+      source_name: "Aetna lumbar MRI policy summary (unverified)"
+      status: "unverified"
+      rule_source_label: "Unverified human-curated summary of lumbar MRI administrative criteria"
+      last_reviewed: "2026-04-09"
+      rule_last_updated: "2026-04-09"
+      monitored_source_id: "aetna_mri_lumbar"
+      notes: "The original CPB 0157 citation was incorrect; a verified lumbar-spine imaging policy source is pending. Rules remain illustrative for demo."
+    MRI_CERVICAL:
+      source_type: "manual_summary"
+      source_name: "Aetna cervical spine MRI policy summary"
+      rule_source_label: "Human-curated summary of cervical spine MRI administrative criteria"
+      last_reviewed: "2026-04-09"
+      rule_last_updated: "2026-04-09"
+      notes: "Rules are illustrative for demo and intentionally mirror the narrow spine MRI contract."
+    MRI_KNEE:
+      source_type: "manual_summary"
+      source_name: "Aetna knee MRI policy summary"
+      rule_source_label: "Human-curated summary of knee MRI administrative documentation criteria"
+      last_reviewed: "2026-04-09"
+      rule_last_updated: "2026-04-09"
+      notes: "Rules are illustrative for demo and intentionally limited to documentation completeness."
+    CPAP_DEVICE:
+      source_type: "manual_summary"
+      source_name: "Aetna DME policy (summary)"
+      rule_source_label: "Human-curated summary of CPAP administrative documentation criteria"
+      last_reviewed: "2026-04-09"
+      rule_last_updated: "2026-04-09"
+      notes: "Rules are illustrative for demo."

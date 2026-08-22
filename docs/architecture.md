@@ -36,7 +36,7 @@ The architecture is intentionally split into a small number of explainable layer
 ### Deterministic evaluation
 
 - `engine/evaluate.py`
-- evaluates extracted facts against requirement definitions
+- evaluates extracted facts against explicit `documented`, `equals_true`, `minimum`, and `one_of` requirement operators
 - preserves frozen semantics:
   - `READY`: all requirements met
   - `NOT_READY`: all requirements documented and evaluable, but at least one fails threshold
@@ -73,6 +73,7 @@ The architecture is intentionally split into a small number of explainable layer
 - `engine/rulebook.py`
 - validates versioned rulebook snapshots
 - diffs reviewed and active releases
+- keys procedure identity by payer and procedure code
 - keeps promotion metadata separate from runtime drift monitoring
 
 ### Governance-only drift monitoring
@@ -81,6 +82,8 @@ The architecture is intentionally split into a small number of explainable layer
 - snapshots monitored sources
 - computes diffs and drift events
 - never mutates rules automatically
+
+For the one verified pathway, provenance remains inspectable as `official source → policy metadata/hash → requirement-to-clause mapping → structured rule → extracted evidence → deterministic evaluation`. Trust and drift gates are scoped to the affected payer/procedure.
 
 ### App surfaces
 

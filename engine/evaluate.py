@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import Any, Dict, List, Optional, Tuple
 
-from .schemas import EvidenceSpan, RequirementResult
+from .schemas import LEGACY_OPERATOR_BY_TYPE, EvidenceSpan, RequirementResult
 
 
 def _coerce_evidence_snippets(evidence_items: Any) -> List[str]:
@@ -108,7 +108,7 @@ def _eval_number(
     )
 
 
-def _eval_boolean(
+def _eval_documented(
     key: str,
     label: str,
     facts: Dict[str, Any],
@@ -116,7 +116,7 @@ def _eval_boolean(
     evidence_map: Optional[Dict[str, Any]] = None,
 ) -> RequirementResult:
     """
-    Boolean requirement semantics:
+    Documented requirement semantics:
 
     - If the field is explicitly addressed in the note (either True or False),
       that counts as DOCUMENTED.
@@ -162,6 +162,49 @@ def _eval_boolean(
         label=label,
         status="NOT_DOCUMENTED",
         reason="Not found in note. Add explicit statement.",
+        evidence=req.get("evidence"),
+        evidence_snippets=snippets,
+        evidence_spans=spans,
+    )
+
+
+def _eval_equals_true(
+    key: str,
+    label: str,
+    facts: Dict[str, Any],
+    req: Dict[str, Any],
+    evidence_map: Optional[Dict[str, Any]] = None,
+) -> RequirementResult:
+    val = facts.get(key)
+    evidence_items = (evidence_map or {}).get(key)
+    snippets = _coerce_evidence_snippets(evidence_items)
+    spans = _coerce_evidence_spans(evidence_items)
+
+    if val is None:
+        return RequirementResult(
+            key=key,
+            label=label,
+            status="NOT_DOCUMENTED",
+            reason="Not found in note. Add explicit affirmative documentation.",
+            evidence=req.get("evidence"),
+            evidence_snippets=snippets,
+            evidence_spans=spans,
+        )
+    if val is not True:
+        return RequirementResult(
+            key=key,
+            label=label,
+            status="NOT_MET",
+            reason="Explicitly documented as absent or false.",
+            evidence=req.get("evidence"),
+            evidence_snippets=snippets,
+            evidence_spans=spans,
+        )
+    return RequirementResult(
+        key=key,
+        label=label,
+        status="MET",
+        reason="Explicit affirmative documentation found.",
         evidence=req.get("evidence"),
         evidence_snippets=snippets,
         evidence_spans=spans,
@@ -237,13 +280,18 @@ def evaluate_requirements(
         key = req["key"]
         label = req.get("label", key)
         rtype = req.get("type", "boolean")
+        operator = req.get("operator") or LEGACY_OPERATOR_BY_TYPE.get(rtype)
 
-        if rtype == "number":
+        if operator == "minimum":
             out = _eval_number(key, label, facts, req, evidence_map=evidence_map)
-        elif rtype == "enum":
+        elif operator == "one_of":
             out = _eval_enum(key, label, facts, req, evidence_map=evidence_map)
+        elif operator == "documented":
+            out = _eval_documented(key, label, facts, req, evidence_map=evidence_map)
+        elif operator == "equals_true":
+            out = _eval_equals_true(key, label, facts, req, evidence_map=evidence_map)
         else:
-            out = _eval_boolean(key, label, facts, req, evidence_map=evidence_map)
+            raise ValueError(f"Unsupported requirement operator: {operator!r}")
 
         results.append(out)
 
@@ -253,25 +301,14 @@ def evaluate_requirements(
     return results, reasons
 
 
-def compute_readiness_score(results: List[RequirementResult]) -> Dict[str, int]:
-    """
-    Score is informational only.
-    MET = 1
-    NOT_MET = 0.5 (documented but failing threshold)
-    NOT_DOCUMENTED = 0
-    NEEDS_REVIEW = 0 (documented but unevaluable; no threshold credit)
-    """
-    total = len(results) if results else 1
+def summarize_results(results: List[RequirementResult]) -> Dict[str, int]:
+    total = len(results)
     met = sum(1 for r in results if r.status == "MET")
     not_met = sum(1 for r in results if r.status == "NOT_MET")
     not_doc = sum(1 for r in results if r.status == "NOT_DOCUMENTED")
     needs_review = sum(1 for r in results if r.status == "NEEDS_REVIEW")
 
-    raw = met + 0.5 * not_met
-    score = int(round(100 * raw / total))
-
     return {
-        "readiness_score": max(0, min(100, score)),
         "met_count": met,
         "not_met_count": not_met,
         "not_documented_count": not_doc,
@@ -288,6 +325,9 @@ def compute_overall_status(results: List[RequirementResult]) -> Dict[str, Any]:
       NEEDS_REVIEW: no missing requirements, but >=1 NEEDS_REVIEW
       NOT_READY: all documented and evaluable, but >=1 NOT_MET
     """
+    if not results:
+        return {"overall_status": "CANNOT_DETERMINE", "submission_readiness": False}
+
     has_not_doc = any(r.status == "NOT_DOCUMENTED" for r in results)
     has_needs_review = any(r.status == "NEEDS_REVIEW" for r in results)
     has_not_met = any(r.status == "NOT_MET" for r in results)

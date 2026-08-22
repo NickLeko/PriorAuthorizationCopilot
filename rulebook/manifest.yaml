@@ -8,7 +8,7 @@ runtime:
 stages:
   draft:
   reviewed: "2026-04-09-reviewed-v0.4"
-  active: "2026-07-17-active-v0.6"
+  active: "2026-08-22-active-v1.0"
 
 releases:
   2026-04-09-reviewed-v0.4:
@@ -17,9 +17,9 @@ releases:
     created_at: "2026-04-09T10:45:00Z"
     rules_version: "0.4"
     procedures:
-      - "CPAP_DEVICE"
-      - "MRI_CERVICAL"
-      - "MRI_LUMBAR"
+      - "Aetna:CPAP_DEVICE"
+      - "Aetna:MRI_CERVICAL"
+      - "Aetna:MRI_LUMBAR"
     files:
       rules: "rulebook/releases/2026-04-09-reviewed-v0.4/payer_rules.yaml"
       provenance: "rulebook/releases/2026-04-09-reviewed-v0.4/provenance.yaml"
@@ -36,10 +36,10 @@ releases:
     based_on_release_id: "2026-04-09-reviewed-v0.4"
     rules_version: "0.5"
     procedures:
-      - "CPAP_DEVICE"
-      - "MRI_CERVICAL"
-      - "MRI_KNEE"
-      - "MRI_LUMBAR"
+      - "Aetna:CPAP_DEVICE"
+      - "Aetna:MRI_CERVICAL"
+      - "Aetna:MRI_KNEE"
+      - "Aetna:MRI_LUMBAR"
     files:
       rules: "rulebook/releases/2026-04-09-active-v0.5/payer_rules.yaml"
       provenance: "rulebook/releases/2026-04-09-active-v0.5/provenance.yaml"
@@ -56,10 +56,10 @@ releases:
     based_on_release_id: "2026-04-09-active-v0.5"
     rules_version: "0.6"
     procedures:
-      - "CPAP_DEVICE"
-      - "MRI_CERVICAL"
-      - "MRI_KNEE"
-      - "MRI_LUMBAR"
+      - "Aetna:CPAP_DEVICE"
+      - "Aetna:MRI_CERVICAL"
+      - "Aetna:MRI_KNEE"
+      - "Aetna:MRI_LUMBAR"
     files:
       rules: "rulebook/releases/2026-07-17-active-v0.6/payer_rules.yaml"
       provenance: "rulebook/releases/2026-07-17-active-v0.6/provenance.yaml"
@@ -68,6 +68,91 @@ releases:
     reviewed_at: "2026-07-17"
     notes:
       - "Records NEEDS_REVIEW semantics, drafting-boundary and dosing checks, artifact contract/redaction changes, corrected MRI_LUMBAR provenance, and prior OSA/imaging extraction fixes."
+
+  2026-08-21-active-v0.7:
+    stage: active
+    summary: "Conservative extraction and explicit rule-semantics remediation."
+    created_at: "2026-08-21T00:00:00Z"
+    based_on_release_id: "2026-07-17-active-v0.6"
+    rules_version: "0.7"
+    procedures:
+      - "Aetna:CPAP_DEVICE"
+      - "Aetna:MRI_CERVICAL"
+      - "Aetna:MRI_KNEE"
+      - "Aetna:MRI_LUMBAR"
+    files:
+      rules: "rulebook/releases/2026-08-21-active-v0.7/payer_rules.yaml"
+      provenance: "rulebook/releases/2026-08-21-active-v0.7/provenance.yaml"
+      policy_sources: "rulebook/releases/2026-08-21-active-v0.7/policy_sources.yaml"
+    reviewer: "demo-maintainer"
+    reviewed_at: "2026-08-21"
+    notes:
+      - "Adds explicit requirement operators while preserving the existing synthetic rule criteria."
+      - "Pairs the rule snapshot with conservative extraction, fail-closed empty-set behavior, qualified payer/procedure identity, and strengthened trust semantics in app version 1.3.0."
+
+  2026-08-22-active-v0.8:
+    stage: active
+    summary: "Recognized normal/negative imaging semantics and conservative legacy operator fallback."
+    created_at: "2026-08-22T12:21:19-07:00"
+    based_on_release_id: "2026-08-21-active-v0.7"
+    rules_version: "0.8"
+    procedures:
+      - "Aetna:CPAP_DEVICE"
+      - "Aetna:MRI_CERVICAL"
+      - "Aetna:MRI_KNEE"
+      - "Aetna:MRI_LUMBAR"
+    files:
+      rules: "rulebook/releases/2026-08-22-active-v0.8/payer_rules.yaml"
+      provenance: "rulebook/releases/2026-08-22-active-v0.8/provenance.yaml"
+      policy_sources: "rulebook/releases/2026-08-22-active-v0.8/policy_sources.yaml"
+    reviewer: "demo-maintainer"
+    reviewed_at: "2026-08-22"
+    notes:
+      - "Separates explicit normal imaging from specific negative findings; normal remains accepted in existing imaging-documentation pathways while negative findings fail closed."
+      - "Keeps explicit operators on every active requirement and makes implicit legacy booleans fail conservatively."
+
+  2026-08-22-active-v0.9:
+    stage: active
+    summary: "Align recognized negative imaging with the documented imaging-context criterion."
+    created_at: "2026-08-22T12:33:50-07:00"
+    based_on_release_id: "2026-08-22-active-v0.8"
+    rules_version: "0.9"
+    procedures:
+      - "Aetna:CPAP_DEVICE"
+      - "Aetna:MRI_CERVICAL"
+      - "Aetna:MRI_KNEE"
+      - "Aetna:MRI_LUMBAR"
+    files:
+      rules: "rulebook/releases/2026-08-22-active-v0.9/payer_rules.yaml"
+      provenance: "rulebook/releases/2026-08-22-active-v0.9/provenance.yaml"
+      policy_sources: "rulebook/releases/2026-08-22-active-v0.9/policy_sources.yaml"
+    reviewer: "demo-maintainer"
+    reviewed_at: "2026-08-22"
+    notes:
+      - "Adds the existing negative extraction category to MRI imaging allowed sets because the demo criterion requires documented imaging context, not a qualifying abnormal finding."
+      - "Leaves extraction categories and inconclusive/unrecognized evaluation behavior unchanged."
+
+  2026-08-22-active-v1.0:
+    stage: active
+    summary: "Verified Aetna lumbar-MRI radiculopathy pathway grounded in CPB 0236."
+    created_at: "2026-08-22T19:46:51Z"
+    based_on_release_id: "2026-08-22-active-v0.9"
+    rules_version: "1.0"
+    procedures:
+      - "Aetna:CPAP_DEVICE"
+      - "Aetna:MRI_CERVICAL"
+      - "Aetna:MRI_KNEE"
+      - "Aetna:MRI_LUMBAR"
+    files:
+      rules: "rulebook/releases/2026-08-22-active-v1.0/payer_rules.yaml"
+      provenance: "rulebook/releases/2026-08-22-active-v1.0/provenance.yaml"
+      policy_sources: "rulebook/releases/2026-08-22-active-v1.0/policy_sources.yaml"
+    reviewer: "demo-maintainer"
+    reviewed_at: "2026-08-22"
+    notes:
+      - "Replaces only the MRI_LUMBAR demo pathway with the persistent back pain with radiculopathy alternative from Aetna CPB 0236."
+      - "Maps every MRI_LUMBAR requirement to the official clause and records the source URL, policy dates, access date, and normalized-content hash."
+      - "All other payer/procedure pathways remain synthetic demo rules."
 
 promotion_workflow:
   draft: "Create a candidate snapshot first. Keep it out of runtime until a human reviewer validates the evidence contract and metadata."

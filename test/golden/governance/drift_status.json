@@ -1,28 +1,28 @@
 {
-  "any_review_required": true,
+  "any_review_required": false,
   "sources": [
     {
-      "check_frequency": "daily",
-      "days_since_last_checked": null,
-      "freshness_status": "UNKNOWN",
+      "check_frequency": "monthly",
+      "days_since_last_checked": "__DAYS_SINCE_LAST_CHECKED__",
+      "freshness_status": "CURRENT",
       "id": "aetna_mri_lumbar",
-      "last_checked_utc": null,
-      "last_rule_reviewed": "2026-04-09",
+      "last_checked_utc": "2026-08-22T19:46:51Z",
+      "last_rule_reviewed": "2026-08-22",
       "latest_diff_path": null,
       "latest_event": null,
-      "latest_hash": null,
+      "latest_hash": "5688a01dea8d5e55d9bb074fb4184f4b0722c89a7a35aacd343bf3444577e622",
       "latest_snapshot_path": "policy_snapshots/aetna_mri_lumbar/latest.json",
-      "notes": "Configured URL resolves to CPB 0157 (obesity surgery), not a verified lumbar-MRI policy; no baseline snapshot is checked in.",
+      "notes": "Verified only for the persistent back pain with radiculopathy branch implemented by MRI_LUMBAR; alternate CPB 0236 indications remain out of scope.",
       "owner": "NickLeko",
       "payer": "Aetna",
       "procedure_code": "MRI_LUMBAR",
-      "review_reason": "No baseline snapshot exists yet for this monitored source.",
-      "rule_source_label": "Unverified human-curated summary of lumbar MRI administrative criteria",
-      "source_name": "Aetna CPB 0157",
+      "review_reason": null,
+      "rule_source_label": "Verified mapping to Aetna CPB 0236, persistent back pain with radiculopathy branch",
+      "source_name": "Aetna CPB 0236 - Magnetic Resonance Imaging (MRI) and Computed Tomography (CT) of the Spine",
       "source_type": "official_policy_web",
-      "status": "NO_BASELINE",
-      "trust_level": "unverified",
-      "url": "https://www.aetna.com/cpb/medical/data/100_199/0157.html"
+      "status": "OK",
+      "trust_level": "verified",
+      "url": "https://www.aetna.com/cpb/medical/data/200_299/0236.html"
     }
   ],
   "stale_source_count": 0

@@ -1,0 +1,12 @@
+version: 1.0
+sources:
+  - id: aetna_mri_lumbar
+    payer: Aetna
+    procedure_code: MRI_LUMBAR
+    url: https://www.aetna.com/cpb/medical/data/100_199/0157.html
+    source_name: "Aetna CPB 0157"
+    source_type: official_policy_web
+    trust_level: unverified
+    check_frequency: daily
+    owner: NickLeko
+    notes: "Configured URL resolves to CPB 0157 (obesity surgery), not a verified lumbar-MRI policy; no baseline snapshot is checked in."

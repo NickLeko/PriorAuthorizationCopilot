@@ -26,13 +26,18 @@ Prior Authorization Readiness Copilot is a deterministic internal-product demo f
   - `MRI_KNEE`
   - `CPAP_DEVICE`
 - monitored policy source count: `1`
+- verified policy pathway: `Aetna:MRI_LUMBAR`, limited to the supported CPB 0236 radiculopathy branch
+- synthetic/demo pathways: `MRI_CERVICAL`, `MRI_KNEE`, and `CPAP_DEVICE`
 
 ## Why It Is Credible
 
 - deterministic extraction and evaluation
+- explicit rule operators and fail-closed empty/missing behavior
+- evidence-to-fact-to-rule-to-result traceability
 - explicit unsupported-scope handling
 - refusal-first `CANNOT_DETERMINE` behavior
-- versioned rulebook and governance metadata
+- payer-qualified rule identity, procedure-scoped trust, and immutable rule releases
+- official-source provenance mapping and governance-only drift detection for the verified pathway
 - golden output snapshots and regression tests
 
 ## Why It Is Intentionally Narrow

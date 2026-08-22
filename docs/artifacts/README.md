@@ -22,14 +22,16 @@ The most useful fields are:
 - `evidence_map`: copied evidence snippets with character offsets.
 - `audit_trail`: note hash, rules version, active rulebook release, requirements checked, warnings, and invariant errors.
 - `letter`: optional deterministic administrative draft and metadata.
-- `extraction_success_rate`: `(MET + NOT_MET + NEEDS_REVIEW) / total required fields * 100` for this request; despite the legacy name, this measures documentation presence, not extraction accuracy.
-- `compliance_rate`: `MET / (MET + NOT_MET) * 100` for evaluable documented requirements in this request; missing and `NEEDS_REVIEW` requirements are excluded from the denominator.
+- `documentation_coverage_pct`: documented requirements (`MET`, `NOT_MET`, or `NEEDS_REVIEW`) divided by total required fields.
+- `criteria_met_count` and `evaluable_requirement_count`: an explicit count of met criteria among requirements that could be evaluated; missing and human-review requirements remain visible in separate counts.
+- `missing_requirement_count`: required fields that were not documented.
+- `human_review_count`: documented requirements that could not be categorized deterministically.
 
 ## What The Artifacts Do Not Mean
 
 They do not show payer approval, denial, denial prediction, clinical appropriateness, medical necessity, production readiness, or real patient handling.
 
-`READY` means only that the synthetic note met the currently versioned demo-rule documentation requirements.
+`READY` means only that the synthetic note met the currently configured documentation requirements. It is not a payer authorization or medical-necessity decision, including for the verified lumbar pathway.
 
 ## Regeneration
 

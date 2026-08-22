@@ -4,21 +4,21 @@ Prior authorization often fails before medical necessity is even evaluated: miss
 
 This project is a deterministic readiness workflow that checks prior-authorization documentation against versioned payer rules before submission. It returns `READY`, `NOT_READY`, `CANNOT_DETERMINE`, or `NEEDS_REVIEW`, with evidence mapping, audit artifacts, and explicit refusal behavior when required information is missing or cannot be evaluated.
 
+Its recruiter-facing differentiator is an inspectable `note evidence → extracted fact → rule/operator → requirement result → overall decision` trace. One `Aetna:MRI_LUMBAR` pathway demonstrates verified official-policy provenance; the cervical MRI, knee MRI, and CPAP pathways remain synthetic demos.
+
 It is a self-directed prototype, not a production payer integration or clinical decision system. The goal is to show how prior-auth workflows can be made more reviewable, auditable, and implementation-aware.
 
 ![Prior Authorization Readiness Copilot showing a CANNOT_DETERMINE result with explicit missing-documentation blockers](assets/readme/prior-auth-readiness-demo.png)
 
 _Synthetic CPAP demo case. The workflow refuses to infer a missing sleep-study date or AHI/RDI value and surfaces both documentation gaps for review._
 
-The separate screenshot at `docs/images/prior-auth-copilot-demo.png` is a historical UI reference from rules version `0.2` with a `2026-02-05` review date; the current checked-in state is rules version `0.6` with `2026-04-09` provenance review dates.
-
 ## Read This First
 
 This is a synthetic workflow-readiness demo, not a payer or clinical deployment.
 
 - Bundled inputs are synthetic, and free-form input is intended for synthetic demo text; input text is not screened, so do not submit real patient information.
-- Outputs are administrative readiness signals under narrow demo rules.
-- `READY` means the required demo-rule documentation was found and met threshold.
+- Outputs are administrative readiness signals under narrow versioned rules. One lumbar-MRI pathway is mapped to an official Aetna policy; the remaining pathways are synthetic demonstrations.
+- `READY` means the configured requirement documentation was found and met threshold. It is never an authorization or medical-necessity determination.
 - `NOT_READY` means required documentation was found and evaluable, but failed a threshold.
 - `CANNOT_DETERMINE` means required documentation is missing or not explicit enough.
 - `NEEDS_REVIEW` means documentation was found but at least one result could not be evaluated against the configured categories; it is not an adjudicated threshold failure.
@@ -90,22 +90,32 @@ Human review remains outside the automation boundary. A real workflow would stil
 This problem is intentionally narrow. For a recruiter-facing and interview-defensible artifact, deterministic logic is the right backbone because it is:
 
 - explainable requirement by requirement
+- explicit about rule operators and fail-closed status semantics
 - auditable with stable evidence references
 - safe to refuse when documentation is missing
 - testable with synthetic fixtures and regression cases
+- payer-qualified in rule identity and procedure-scoped in policy trust
+- versioned through immutable rule releases with policy provenance and drift signals
+- reproducible through adversarial extraction tests and generated artifacts
 
 `CANNOT_DETERMINE` is a feature here, not a failure mode.
 
 ## Current Supported Scope
 
-| Payer | Procedure | Supported in rules | Drift monitored |
+| Payer | Procedure | Policy trust | Drift monitored |
 | --- | --- | --- | --- |
-| Aetna | `MRI_LUMBAR` | Yes | Yes |
-| Aetna | `MRI_CERVICAL` | Yes | No |
-| Aetna | `MRI_KNEE` | Yes | No |
-| Aetna | `CPAP_DEVICE` | Yes | No |
+| Aetna | `MRI_LUMBAR` | Verified for one CPB 0236 radiculopathy branch | Yes |
+| Aetna | `MRI_CERVICAL` | Synthetic/demo | No |
+| Aetna | `MRI_KNEE` | Synthetic/demo | No |
+| Aetna | `CPAP_DEVICE` | Synthetic/demo | No |
 
-Bundled inputs are synthetic; free-form input is not screened and must not contain real patient information. Policy drift monitoring is governance-only and does not automatically update rules. Procedure registry output now also surfaces category, rule family, rule source label, last rule update, and last reviewed metadata. A lightweight rulebook registry now tracks reviewed and active snapshots separately from runtime drift monitoring.
+`MRI_LUMBAR` implements only the persistent back pain with radiculopathy alternative in official [Aetna Clinical Policy Bulletin 0236](https://www.aetna.com/cpb/medical/data/200_299/0236.html), _Magnetic Resonance Imaging (MRI) and Computed Tomography (CT) of the Spine_. The source was last reviewed April 9, 2026 and accessed August 22, 2026. The implemented branch requires back pain with radiculopathy, objective motor/reflex findings in an explicit nerve-root distribution, at least six weeks of qualifying conservative therapy, and explicit lack of improvement. Other CPB 0236 indications are not modeled.
+
+Footnote 1 identifies moderate activity, analgesics, NSAIDs/anti-inflammatory medication, and muscle relaxants as conservative-therapy modalities, but it does not explicitly say that every modality, a specific combination, or only one modality is required. The prototype interprets a documented qualifying modality as sufficient evidence of therapy type, selects the longest individually documented qualifying duration, and does not sum shorter sequential courses unless an overall duration is explicit. This is an implementation interpretation, not quoted Aetna policy language.
+
+The verified provenance chain is `official source → policy metadata/hash → requirement-to-clause mapping → structured rule → extracted evidence → deterministic evaluation`. Verified trust downgrades to demo for source drift, a stale or missing baseline, URL/hash mismatch, or incomplete verification metadata and clause mapping. The gate is scoped to the affected payer/procedure. This is a compact portfolio governance mechanism, not production policy management.
+
+Bundled inputs remain synthetic; free-form input is not screened and must not contain real patient information. Policy drift monitoring is governance-only and does not automatically update rules. The rulebook registry tracks reviewed and active snapshots separately from runtime drift monitoring.
 
 ## Architecture At A Glance
 
@@ -174,7 +184,7 @@ curl -X POST http://127.0.0.1:8000/evaluate \
     "dx_codes": ["M54.16"],
     "site_of_care": "outpatient",
     "specialty": "Orthopedics",
-    "note_text": "Low back pain with right leg radiculopathy x 8 weeks. Completed PT for 8 weeks and NSAIDs with minimal improvement. Denies bowel/bladder incontinence. No saddle anesthesia. Prior imaging: lumbar xray inconclusive. Neuro exam: mild weakness dorsiflexion 4/5."
+    "note_text": "Low back pain with right leg radiculopathy. NSAIDs for 8 weeks with minimal improvement. Objective motor exam in the right L5 distribution: ankle dorsiflexion strength 4/5."
   }'
 ```
 
@@ -193,7 +203,7 @@ Full API notes: [docs/api.md](docs/api.md)
 .venv/bin/python cli.py export-report --demo-case CPAP-02-borderline --output /tmp/pa-copilot-reviewer-demo.json --with-letter --letter-type missing_info_request
 .venv/bin/python cli.py drift-status
 .venv/bin/python cli.py rulebook-status
-.venv/bin/python cli.py rulebook-diff --from-release 2026-04-09-reviewed-v0.4 --to-release 2026-07-17-active-v0.6
+.venv/bin/python cli.py rulebook-diff --from-release 2026-04-09-reviewed-v0.4 --to-release 2026-08-22-active-v1.0
 ```
 
 ## Demo Artifacts
@@ -244,7 +254,6 @@ Regenerate golden acceptance snapshots with:
 - [DESIGN_DECISIONS.md](DESIGN_DECISIONS.md)
 - [LIMITATIONS.md](LIMITATIONS.md)
 - [NEXT_STEPS.md](NEXT_STEPS.md)
-- [INTERVIEW_TALKING_POINTS.md](INTERVIEW_TALKING_POINTS.md)
 
 ## Repo Quality Gates
 

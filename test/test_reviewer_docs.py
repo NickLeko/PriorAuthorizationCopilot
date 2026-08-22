@@ -42,19 +42,17 @@ def test_reviewer_demo_cases_preserve_status_meanings_and_audit_fields():
     assert ready.submission_readiness is True
     assert not ready.blockers.not_documented
     assert not ready.blockers.not_met
-    assert ready.evidence_map["conservative_therapy_weeks"]
-    assert ready.audit_trail.rules_version == "0.6"
-    assert ready.audit_trail.rulebook_active_release_id == "2026-07-17-active-v0.6"
+    assert ready.evidence_map["cpb_0236_conservative_therapy_weeks"]
+    assert ready.audit_trail.rules_version == "1.0"
+    assert ready.audit_trail.rulebook_active_release_id == "2026-08-22-active-v1.0"
+    assert ready.policy_trust_level == "verified"
     assert ready.audit_trail.note_hash
 
     not_ready = service.evaluate(service.get_demo_case_request("MRI-08-edge-below-threshold"))
     assert not_ready.overall_status == "NOT_READY"
     assert not_ready.submission_readiness is False
     assert not not_ready.blockers.not_documented
-    assert {blocker.key for blocker in not_ready.blockers.not_met} == {
-        "conservative_therapy_weeks",
-        "symptom_duration_weeks",
-    }
+    assert {blocker.key for blocker in not_ready.blockers.not_met} == {"cpb_0236_conservative_therapy_weeks"}
 
     cannot_determine = service.evaluate(service.get_demo_case_request("CPAP-02-borderline"))
     assert cannot_determine.overall_status == "CANNOT_DETERMINE"

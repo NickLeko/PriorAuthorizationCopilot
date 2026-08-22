@@ -1,0 +1,147 @@
+version: 0.8
+
+payers:
+  Aetna:
+    procedures:
+      MRI_LUMBAR:
+        display_name: "MRI Lumbar Spine (no contrast)"
+        metadata:
+          category: "advanced_imaging"
+          rule_family: "spine_mri_conservative_therapy"
+          summary: "Administrative readiness check for lumbar spine MRI requests using a narrow deterministic evidence contract."
+          supported_sites: ["outpatient"]
+          last_rule_update: "2026-04-09"
+          notes:
+            - "Demo rule set only; not a substitute for payer policy review."
+            - "Requires conservative therapy, symptom duration, imaging context, and explicit red-flag review."
+        required:
+          - key: conservative_therapy_weeks
+            label: "Conservative therapy duration (weeks)"
+            type: number
+            operator: minimum
+            min: 6
+            evidence: "PT/NSAIDs/activity modification trial documented"
+          - key: neuro_red_flags_documented
+            label: "Neuro red flags explicitly addressed (present or denied)"
+            type: boolean
+            operator: documented
+            evidence: "Weakness, saddle anesthesia, bowel/bladder changes explicitly documented as present or denied"
+          - key: prior_imaging_result
+            label: "Prior imaging result"
+            type: enum
+            operator: one_of
+            allowed: ["none", "normal", "inconclusive", "abnormal"]
+            evidence: "X-ray/CT results or note of none"
+          - key: symptom_duration_weeks
+            label: "Symptom duration (weeks)"
+            type: number
+            operator: minimum
+            min: 6
+            evidence: "Duration supports guideline-based escalation"
+
+      MRI_CERVICAL:
+        display_name: "MRI Cervical Spine (no contrast)"
+        metadata:
+          category: "advanced_imaging"
+          rule_family: "spine_mri_conservative_therapy"
+          summary: "Administrative readiness check for cervical spine MRI requests using the same narrow deterministic evidence contract as lumbar MRI."
+          supported_sites: ["outpatient"]
+          last_rule_update: "2026-04-09"
+          notes:
+            - "Intentionally mirrors the lumbar MRI demo pathway to show reusable deterministic architecture."
+            - "Human review remains required before any real submission."
+        required:
+          - key: conservative_therapy_weeks
+            label: "Conservative therapy duration (weeks)"
+            type: number
+            operator: minimum
+            min: 6
+            evidence: "PT/NSAIDs/activity modification trial documented"
+          - key: neuro_red_flags_documented
+            label: "Neuro red flags explicitly addressed (present or denied)"
+            type: boolean
+            operator: documented
+            evidence: "Weakness, numbness, bowel/bladder changes, or related escalation findings explicitly documented"
+          - key: prior_imaging_result
+            label: "Prior imaging result"
+            type: enum
+            operator: one_of
+            allowed: ["none", "normal", "inconclusive", "abnormal"]
+            evidence: "X-ray/CT results or note of none"
+          - key: symptom_duration_weeks
+            label: "Symptom duration (weeks)"
+            type: number
+            operator: minimum
+            min: 6
+            evidence: "Duration supports guideline-based escalation"
+
+      MRI_KNEE:
+        display_name: "MRI Knee (no contrast)"
+        metadata:
+          category: "advanced_imaging"
+          rule_family: "extremity_mri_conservative_therapy"
+          summary: "Administrative readiness check for knee MRI requests using a narrow deterministic documentation contract."
+          supported_sites: ["outpatient"]
+          last_rule_update: "2026-04-09"
+          notes:
+            - "This demo pathway checks only administrative completeness, not orthopedic appropriateness."
+            - "Requires symptom duration, conservative therapy, prior imaging context, and explicit review of mechanical symptoms."
+        required:
+          - key: conservative_therapy_weeks
+            label: "Conservative therapy duration (weeks)"
+            type: number
+            operator: minimum
+            min: 6
+            evidence: "PT/activity modification/NSAID trial documented"
+          - key: symptom_duration_weeks
+            label: "Symptom duration (weeks)"
+            type: number
+            operator: minimum
+            min: 6
+            evidence: "Persistent symptoms documented long enough to justify escalation"
+          - key: prior_imaging_result
+            label: "Prior imaging result"
+            type: enum
+            operator: one_of
+            allowed: ["normal", "inconclusive", "abnormal"]
+            evidence: "Prior knee imaging such as x-ray is documented and not simply absent"
+          - key: mechanical_symptoms_documented
+            label: "Mechanical symptoms explicitly addressed (present or denied)"
+            type: boolean
+            operator: documented
+            evidence: "Locking, catching, buckling, giving way, or instability explicitly documented"
+
+      CPAP_DEVICE:
+        display_name: "CPAP Device (HCPCS E0601)"
+        metadata:
+          category: "durable_medical_equipment"
+          rule_family: "sleep_study_documentation"
+          summary: "Administrative readiness check for CPAP device requests using a narrow deterministic documentation contract."
+          supported_sites: ["outpatient"]
+          last_rule_update: "2026-04-09"
+          notes:
+            - "The current demo checks for OSA diagnosis, dated sleep study evidence, and AHI/RDI documentation."
+            - "It does not determine clinical appropriateness or device approval likelihood."
+        required:
+          - key: osa_diagnosis
+            label: "OSA diagnosis documented"
+            type: boolean
+            operator: equals_true
+            evidence: "Diagnosis present"
+          - key: sleep_study_date
+            label: "Sleep study date documented"
+            type: boolean
+            operator: equals_true
+            evidence: "Date in chart"
+          - key: ahi_documented
+            label: "AHI/RDI documented"
+            type: boolean
+            operator: equals_true
+            evidence: "AHI value included"
+
+
+policy_notes:
+  - "Conservative therapy often required prior to advanced imaging."
+  - "Red flags warrant escalation even without long conservative management."
+  - "Cervical MRI is intentionally modeled with the same narrow deterministic contract as lumbar MRI in this demo."
+  - "Knee MRI adds a narrow orthopedic documentation contract without introducing medical-necessity scoring."

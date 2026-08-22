@@ -6,15 +6,15 @@
     "dx_codes": ["M54.16"],
     "site_of_care": "outpatient",
     "specialty": "Orthopedics",
-    "note_text": "Low back pain with right leg radiculopathy x 8 weeks. Completed PT for 8 weeks and NSAIDs with minimal improvement. Denies bowel/bladder incontinence. No saddle anesthesia. Prior imaging: lumbar xray inconclusive. Neuro exam: mild weakness dorsiflexion 4/5.",
+    "note_text": "Low back pain with right leg radiculopathy x 8 weeks. NSAIDs for 8 weeks with minimal improvement; PT also completed. Objective motor exam in the right L5 distribution: ankle dorsiflexion strength 4/5. Denies bowel/bladder incontinence. No saddle anesthesia. Prior imaging: lumbar xray inconclusive.",
     "expected_label": "complete",
     "showcase": {
       "featured": true,
       "sort_order": 1,
       "title": "Lumbar MRI ready for administrative review",
-      "description": "A clean lumbar MRI request with therapy duration, symptom duration, imaging context, and red-flag documentation all present.",
+      "description": "A synthetic lumbar MRI request satisfying the verified CPB 0236 radiculopathy branch: radicular back pain, an objective root-distribution finding, and six-plus weeks of unsuccessful conservative therapy.",
       "expected_overall_status": "READY",
-      "why_interesting": "Shows the straight-line READY path with evidence snippets across each requirement.",
+      "why_interesting": "Shows an official policy clause mapped to four deterministic requirements and their evidence spans.",
       "scenario_type": "Ready path",
       "tags": ["spine MRI", "happy path", "evidence map"]
     }
@@ -27,7 +27,7 @@
     "site_of_care": "outpatient",
     "specialty": "Primary Care",
     "note_text": "Back pain x 2 months. Trial of activity modification + NSAIDs and PT x 6 weeks documented, persistent symptoms. Reports progressive weakness. Prior CT described as abnormal with disc bulge/stenosis.",
-    "expected_label": "complete"
+    "expected_label": "incomplete"
   },
   {
     "id": "MRI-03-borderline",
@@ -47,7 +47,7 @@
     "site_of_care": "outpatient",
     "specialty": "Orthopedics",
     "note_text": "Back pain x 3 months. PT x 10 weeks with no improvement. Imaging noted but result unclear. Denies weakness. Denies bowel/bladder changes.",
-    "expected_label": "complete"
+    "expected_label": "incomplete"
   },
   {
     "id": "MRI-05-incomplete",
@@ -129,7 +129,7 @@
     "site_of_care": "outpatient",
     "specialty": "Primary Care",
     "note_text": "Low back pain x 6 weeks exactly. PT x 6 weeks and NSAIDs documented without improvement. Denies weakness. Denies bowel/bladder changes. No saddle anesthesia. No prior imaging.",
-    "expected_label": "complete"
+    "expected_label": "incomplete"
   },
   {
     "id": "MRI-08-edge-below-threshold",
@@ -138,15 +138,15 @@
     "dx_codes": ["M54.5"],
     "site_of_care": "outpatient",
     "specialty": "Primary Care",
-    "note_text": "Low back pain x 5 weeks. PT x 5 weeks documented. Denies weakness. Denies bowel/bladder changes. No prior imaging.",
+    "note_text": "Low back pain with right leg radiculopathy. NSAIDs for 5 weeks with no improvement. Objective motor exam in the right L5 distribution: ankle dorsiflexion strength 4/5.",
     "expected_label": "incomplete",
     "showcase": {
       "featured": true,
       "sort_order": 2,
       "title": "Documented, but not yet ready to submit",
-      "description": "This note documents the right fields, but both symptom duration and therapy duration are still below threshold.",
+      "description": "This note satisfies the radiculopathy, objective-finding, and non-response elements, but conservative therapy remains below the official six-week threshold.",
       "expected_overall_status": "NOT_READY",
-      "why_interesting": "Shows the difference between documented failure and missingness.",
+      "why_interesting": "Shows a directly source-backed threshold failure rather than a missing-documentation refusal.",
       "scenario_type": "Documented failure",
       "tags": ["threshold miss", "not ready", "fully documented"]
     }
@@ -159,7 +159,7 @@
     "site_of_care": "outpatient",
     "specialty": "Orthopedics",
     "note_text": "Back pain x 8 weeks. PT for 8 weeks with minimal relief. Weakness absent. Bowel/bladder function intact. No saddle anesthesia. No prior imaging yet.",
-    "expected_label": "complete"
+    "expected_label": "incomplete"
   },
   {
     "id": "MRI-10-doc-gap-redflags",
@@ -189,7 +189,7 @@
     "site_of_care": "outpatient",
     "specialty": "Orthopedics",
     "note_text": "Back pain x 10 weeks. PT x 10 weeks. Lumbar xray normal/unremarkable. Denies bowel/bladder changes. Denies weakness.",
-    "expected_label": "complete"
+    "expected_label": "incomplete"
   },
   {
     "id": "MRI-13-imaging-unclear",
@@ -199,7 +199,7 @@
     "site_of_care": "outpatient",
     "specialty": "Primary Care",
     "note_text": "Back pain x 10 weeks. PT x 10 weeks. Prior imaging performed but findings unclear. Denies weakness. Denies bowel/bladder changes.",
-    "expected_label": "complete"
+    "expected_label": "incomplete"
   },
   {
     "id": "MRI-14-therapy-context-missing",
@@ -264,7 +264,7 @@
       "featured": true,
       "sort_order": 5,
       "title": "Cervical MRI ready case using the new supported pathway",
-      "description": "A second spine MRI procedure that uses the same deterministic evidence contract as lumbar MRI.",
+      "description": "A separate synthetic cervical MRI pathway demonstrating reusable deterministic architecture without inheriting lumbar's verified-policy trust.",
       "expected_overall_status": "READY",
       "why_interesting": "Shows that the shared service and rule registry can support new deterministic procedures without changing the engine shape.",
       "scenario_type": "New procedure coverage",
@@ -389,7 +389,7 @@
     "site_of_care": "outpatient",
     "specialty": "Primary Care",
     "note_text": "Back pain x 8 weeks. Patient is 6 weeks pregnant. PT x 8 weeks documented. Denies bowel/bladder changes. Denies weakness. No imaging yet.",
-    "expected_label": "complete"
+    "expected_label": "incomplete"
   },
   {
     "id": "MRI-16-pt-mentioned-no-duration",

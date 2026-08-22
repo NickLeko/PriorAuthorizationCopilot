@@ -18,6 +18,7 @@ Base URL in local examples: `http://127.0.0.1:8000`
 
 Returns basic service status, including:
 
+- application version
 - runtime `rules_version`
 - active `rulebook_active_release_id`
 - supported procedure count
@@ -115,7 +116,7 @@ curl http://127.0.0.1:8000/rulebook
 Returns a structured diff between two rulebook releases.
 
 ```bash
-curl "http://127.0.0.1:8000/rulebook/diff?from_release_id=2026-04-09-reviewed-v0.4&to_release_id=2026-07-17-active-v0.6"
+curl "http://127.0.0.1:8000/rulebook/diff?from_release_id=2026-04-09-reviewed-v0.4&to_release_id=2026-08-22-active-v1.0"
 ```
 
 ## Error Behavior

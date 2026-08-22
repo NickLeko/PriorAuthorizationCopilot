@@ -1,4 +1,4 @@
-# Extraction Contract v1.1
+# Extraction Contract v1.3
 
 Project: Prior Authorization Readiness Copilot  
 Scope: Deterministic extraction only  
@@ -19,6 +19,15 @@ Revision note, June 9, 2026:
 - The extractor is designed to prefer under-extraction over false-positive `MET` determinations, but prior over-extraction edge cases were identified in negated therapy, future-planned therapy, and therapy-to-symptom duration leakage.
 - Those edge cases are patched with deterministic context filters and covered by regression tests.
 
+Revision note, August 21, 2026:
+- Symptom durations now require supported symptom context in the same sentence.
+- Imaging findings are classified only within the sentence containing the imaging mention, and negated abnormal findings are not treated as abnormal.
+- Common diagnosis negations such as `does not have OSA` are excluded from affirmative OSA extraction.
+
+Revision note, August 22, 2026:
+- Explicitly normal imaging now uses `normal`; a supported negative finding such as `no fracture` uses `negative`. Neither is conflated with inconclusive or unrecognized results.
+- The verified Aetna lumbar-radiculopathy pathway adds three narrow facts: back pain with radiculopathy, objective motor/reflex change in a named nerve-root distribution, and explicit conservative-therapy non-response.
+
 ## 2. Returned Fields
 
 ### `conservative_therapy_weeks`
@@ -37,10 +46,48 @@ Current behavior:
 Type: `int | null`
 
 Current behavior:
-- Extracts the first explicit weeks or months duration found in the note.
+- Extracts the first explicit weeks or months duration linked to supported symptom context.
 - Months are normalized as `months * 4`.
-- The current implementation does not require explicit symptom context for this field.
+- A duration must appear in the same sentence as supported symptom context.
 - Therapy-context durations are skipped so completed, negated, or planned therapy durations do not populate symptom duration.
+
+### `back_pain_with_radiculopathy`
+
+Type: `bool | null`
+
+Current behavior:
+- Returns `True` only when supported back-pain and radiculopathy/radicular-pain wording appears in the same sentence without supported negation.
+- Returns `False` when both concepts are present but one is explicitly negated.
+- Returns `null` when the combined finding is not explicitly documented.
+
+### `objective_motor_or_reflex_change_in_root_distribution`
+
+Type: `bool | null`
+
+Current behavior:
+- Requires a named lumbar or sacral nerve-root distribution in the same sentence as supported objective strength or reflex wording.
+- Returns `True` for supported abnormal strength/reflex findings, `False` for supported normal findings, and `null` for subjective or ambiguous weakness wording.
+- Does not infer a nerve-root distribution from anatomy; the distribution must be explicit in the note.
+
+### `cpb_0236_conservative_therapy_weeks`
+
+Type: `int | null`
+
+Current behavior:
+- Extracts week-based duration only for modalities named by CPB 0236 Footnote 1: moderate activity, analgesics, NSAIDs/anti-inflammatories, and muscle relaxants.
+- When multiple qualifying durations are explicit, selects the longest individually documented course; it never adds shorter courses together.
+- A total duration spanning sequential modalities must be stated explicitly to be extracted as that overall duration.
+- This source-scoped fact prevents a generic PT duration from silently satisfying the verified pathway.
+- Existing demo pathways continue to use the broader `conservative_therapy_weeks` fact.
+
+### `cpb_0236_conservative_therapy_no_improvement`
+
+Type: `bool | null`
+
+Current behavior:
+- Returns `True` when a sentence containing a CPB 0236 Footnote 1 modality explicitly states no, minimal, little, or insufficient improvement/relief/response.
+- Returns `False` for supported explicit meaningful response language.
+- Returns `null` when therapy response is absent or ambiguous, and ignores future/planned therapy language.
 
 ### `neuro_red_flags_documented`
 
@@ -53,12 +100,16 @@ Current behavior:
 
 ### `prior_imaging_result`
 
-Type: `"none" | "inconclusive" | "abnormal" | "unrecognized" | null`
+Type: `"none" | "normal" | "negative" | "inconclusive" | "abnormal" | "unrecognized" | null`
 
 Current behavior:
 - `none` when the note explicitly says there was no prior imaging.
+- `normal` when the note explicitly reports a normal, unremarkable, or no-acute-findings result.
+- `negative` when the note negates a supported specific abnormal finding, such as `no fracture` or `no evidence of stenosis`.
 - `abnormal` when supported abnormal-result language is present.
-- `inconclusive` when findings are explicitly normal, unclear, unknown, or otherwise non-blocking.
+- `inconclusive` when findings are explicitly unclear, unknown, or indeterminate.
+- Result language is evaluated only within the sentence containing the imaging mention.
+- Negated abnormal findings such as `x-ray showed no fracture` are classified as recognized `negative` findings, not globally normal imaging and not `abnormal`. The applicable demo imaging-documentation rules accept this category; the verified lumbar CPB 0236 branch does not use prior imaging as a requirement. Rule evaluation, not extraction, determines the policy outcome.
 - `unrecognized` only when imaging is followed by one of the enumerated result introducers `showed`, `shows`, `showing`, `demonstrated`, `demonstrates`, `revealed`, `reveals`, `equivocal`, or `limited`, or by `finding(s)`/`result(s)` plus a following token, and no supported result category matches. The service maps it to `NEEDS_REVIEW`, not to a threshold failure.
 - Stated-result phrasing outside that enumerated set returns `null` and falls through to `NOT_DOCUMENTED`; this narrowness is intentional so deterministic matching is used instead of fuzzy interpretation.
 - Imaging mention without a stated result remains `null`.
@@ -79,7 +130,7 @@ Type: `bool | null`
 
 Current behavior:
 - Returns `True` when a non-negated `OSA` or `obstructive sleep apnea` mention appears.
-- Supported negated forms such as `OSA ruled out` and `no evidence of OSA` remain `null`.
+- Supported negated forms such as `OSA ruled out`, `no evidence of OSA`, and `does not have OSA` remain `null`.
 - Returns `null` otherwise.
 
 ### `sleep_study_date`
@@ -115,6 +166,9 @@ Current behavior:
 ## 4. Examples
 
 - `Completed PT for 8 weeks` -> `conservative_therapy_weeks = 8`
+- `NSAIDs for 8 weeks with minimal improvement` -> `cpb_0236_conservative_therapy_weeks = 8` and `cpb_0236_conservative_therapy_no_improvement = true`
+- `Low back pain with right leg radiculopathy` -> `back_pain_with_radiculopathy = true`
+- `Right L5 distribution: dorsiflexion strength 4/5` -> `objective_motor_or_reflex_change_in_root_distribution = true`
 - `Back pain x 2 months` -> `symptom_duration_weeks = 8`
 - `Denies weakness. No saddle anesthesia.` -> `neuro_red_flags_documented = True`
 - `Prior MRI reviewed` -> `prior_imaging_result = null`
@@ -134,4 +188,3 @@ Current behavior:
 
 - Return parsed date or numeric values for fields that are currently boolean presence checks.
 - Expand phrase coverage with additional regression tests.
-- Add stricter context gating for symptom duration if the product scope requires it.

@@ -70,7 +70,7 @@ def main() -> int:
     supported_procedures = service.list_supported_procedures()
     demo_cases = service.list_demo_case_summaries()
     rulebook_status = service.get_rulebook_status()
-    default_rulebook_diff = service.get_rulebook_diff("2026-04-09-reviewed-v0.4", "2026-07-17-active-v0.6")
+    default_rulebook_diff = service.get_rulebook_diff("2026-04-09-reviewed-v0.4", "2026-08-22-active-v1.0")
 
     for case_id in DEFAULT_CASE_IDS:
         request = service.get_demo_case_request(case_id)

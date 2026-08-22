@@ -1,17 +1,17 @@
 # Drift Report
 
-- Review required: YES
+- Review required: NO
 - Stale monitored sources: 0
 
 ## Sources
 
 ### Aetna MRI_LUMBAR
-- Source: Aetna CPB 0157
-- Status: NO_BASELINE
-- Freshness: UNKNOWN
-- Last checked: n/a
-- Rule source label: Unverified human-curated summary of lumbar MRI administrative criteria
-- Last rule reviewed: 2026-04-09
-- Review reason: No baseline snapshot exists yet for this monitored source.
+- Source: Aetna CPB 0236 - Magnetic Resonance Imaging (MRI) and Computed Tomography (CT) of the Spine
+- Status: OK
+- Freshness: CURRENT
+- Last checked: 2026-08-22T19:46:51Z
+- Rule source label: Verified mapping to Aetna CPB 0236, persistent back pain with radiculopathy branch
+- Last rule reviewed: 2026-08-22
+- Review reason: n/a
 - Snapshot path: policy_snapshots/aetna_mri_lumbar/latest.json
 - Diff path: n/a

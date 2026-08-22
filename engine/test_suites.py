@@ -5,8 +5,8 @@ from typing import Any, Dict, List
 
 from engine.evaluate import (
     compute_overall_status,
-    compute_readiness_score,
     evaluate_requirements,
+    summarize_results,
 )
 from engine.extract import extract_facts
 from engine.rules_loader import load_rules
@@ -41,7 +41,7 @@ def run_cases(rules_path: str, cases_path: str) -> List[Dict[str, Any]]:
 
         facts, evidence_map = extract_facts(note_text)
         results, _ = evaluate_requirements(reqs, facts, evidence_map=evidence_map)
-        score_info = compute_readiness_score(results)
+        result_summary = summarize_results(results)
         overall = compute_overall_status(results)
 
         predicted = label_from_outputs(overall["overall_status"])
@@ -56,9 +56,16 @@ def run_cases(rules_path: str, cases_path: str) -> List[Dict[str, Any]]:
                 "predicted": predicted,
                 "overall_status": overall["overall_status"],
                 "submission_readiness": str(bool(overall["submission_readiness"])).upper(),
-                "score": score_info["readiness_score"],
-                "not_documented": score_info["not_documented_count"],
-                "not_met": score_info["not_met_count"],
+                "documentation_coverage_pct": round(
+                    100
+                    * (result_summary["met_count"] + result_summary["not_met_count"] + result_summary["needs_review_count"])
+                    / result_summary["total"],
+                    1,
+                )
+                if result_summary["total"]
+                else 0.0,
+                "not_documented": result_summary["not_documented_count"],
+                "not_met": result_summary["not_met_count"],
                 "pass": "✅" if predicted == expected else "❌",
             }
         )

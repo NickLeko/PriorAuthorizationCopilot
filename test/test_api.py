@@ -12,6 +12,7 @@ def test_health_endpoint():
     assert response.status_code == 200
     payload = response.json()
     assert payload["service"] == "Prior Authorization Readiness Copilot"
+    assert payload["app_version"] == "1.3.1"
     assert "synthetic_only" not in payload
 
 
@@ -67,7 +68,7 @@ def test_drift_status_endpoint():
     assert response.status_code == 200
     payload = response.json()
     assert "sources" in payload
-    assert payload["sources"][0]["source_name"] == "Aetna CPB 0157"
+    assert payload["sources"][0]["source_name"].startswith("Aetna CPB 0236")
     assert "freshness_status" in payload["sources"][0]
 
 
@@ -76,7 +77,7 @@ def test_rulebook_status_endpoint():
 
     assert response.status_code == 200
     payload = response.json()
-    assert payload["active_release_id"] == "2026-07-17-active-v0.6"
+    assert payload["active_release_id"] == "2026-08-22-active-v1.0"
     assert payload["validation_errors"] == []
 
 
@@ -85,10 +86,10 @@ def test_rulebook_diff_endpoint():
         "/rulebook/diff",
         params={
             "from_release_id": "2026-04-09-reviewed-v0.4",
-            "to_release_id": "2026-07-17-active-v0.6",
+            "to_release_id": "2026-08-22-active-v1.0",
         },
     )
 
     assert response.status_code == 200
     payload = response.json()
-    assert payload["added_procedures"] == ["MRI_KNEE"]
+    assert payload["added_procedures"] == ["Aetna:MRI_KNEE"]

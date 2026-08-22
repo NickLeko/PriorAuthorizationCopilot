@@ -5,7 +5,11 @@ from typing import Any, Dict
 
 import yaml
 
+from .schemas import LEGACY_OPERATOR_BY_TYPE
+
 ALLOWED_REQUIREMENT_TYPES = {"number", "boolean", "enum"}
+ALLOWED_REQUIREMENT_OPERATORS = {"documented", "equals_true", "minimum", "one_of"}
+EXPECTED_TYPE_BY_OPERATOR = {"documented": "boolean", "equals_true": "boolean", "minimum": "number", "one_of": "enum"}
 
 
 def _validate_procedure_metadata(metadata: Dict[str, Any], payer: str, procedure_code: str) -> None:
@@ -49,6 +53,12 @@ def _validate_requirement(req: Dict[str, Any], payer: str, procedure_code: str, 
     req_type = req.get("type", "boolean")
     if req_type not in ALLOWED_REQUIREMENT_TYPES:
         raise ValueError(f"Invalid rules file: {location}.type must be one of {sorted(ALLOWED_REQUIREMENT_TYPES)}.")
+
+    operator = req.get("operator") or LEGACY_OPERATOR_BY_TYPE[req_type]
+    if operator not in ALLOWED_REQUIREMENT_OPERATORS:
+        raise ValueError(f"Invalid rules file: {location}.operator must be one of {sorted(ALLOWED_REQUIREMENT_OPERATORS)}.")
+    if EXPECTED_TYPE_BY_OPERATOR[operator] != req_type:
+        raise ValueError(f"Invalid rules file: {location}.operator '{operator}' is incompatible with type '{req_type}'.")
 
     label = req.get("label", key)
     if not isinstance(label, str) or not label.strip():

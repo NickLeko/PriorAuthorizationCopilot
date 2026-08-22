@@ -1,3 +1,9 @@
+import json
+from datetime import datetime, timezone
+
+import pytest
+
+from engine.config import load_app_config
 from engine.schemas import PARequest
 from engine.service import ReadinessService, UnsupportedScopeError
 
@@ -11,7 +17,7 @@ def test_service_evaluates_known_ready_demo_case():
     assert evaluation.overall_status == "READY"
     assert evaluation.submission_readiness is True
     assert evaluation.audit_trail.note_hash
-    assert evaluation.audit_trail.evidence_map["conservative_therapy_weeks"]
+    assert evaluation.audit_trail.evidence_map["cpb_0236_conservative_therapy_weeks"]
     assert evaluation.results[0].evidence_spans
 
 
@@ -24,17 +30,106 @@ def test_service_returns_cannot_determine_for_missing_documentation_case():
     assert evaluation.overall_status == "CANNOT_DETERMINE"
     assert evaluation.blockers.not_documented
     assert not evaluation.submission_readiness
+    assert evaluation.metrics.documentation_coverage_pct == 33.3
+    assert evaluation.metrics.criteria_met_count == 1
+    assert evaluation.metrics.evaluable_requirement_count == 1
+    assert evaluation.metrics.missing_requirement_count == 2
+    assert "compliance_rate" not in evaluation.metrics.model_dump()
+    assert "readiness_score" not in evaluation.model_dump()
+
+
+@pytest.mark.parametrize(
+    "procedure_code, note_text, expected_status, fact_key, expected_fact",
+    [
+        (
+            "CPAP_DEVICE",
+            "Patient does not have OSA. Sleep study completed 2025-01-02. AHI 22.",
+            "CANNOT_DETERMINE",
+            "osa_diagnosis",
+            None,
+        ),
+        (
+            "CPAP_DEVICE",
+            "There is no diagnosis of OSA. Sleep study completed 2025-01-02. AHI 22.",
+            "CANNOT_DETERMINE",
+            "osa_diagnosis",
+            None,
+        ),
+        (
+            "MRI_LUMBAR",
+            "Seen 3 months ago. Back pain for 2 weeks. PT for 8 weeks. Denies weakness. No prior imaging.",
+            "CANNOT_DETERMINE",
+            "symptom_duration_weeks",
+            2,
+        ),
+        (
+            "MRI_LUMBAR",
+            "Follow-up occurred 4 months ago. Back pain x 3 weeks. PT for 8 weeks. Denies weakness. No prior imaging.",
+            "CANNOT_DETERMINE",
+            "symptom_duration_weeks",
+            3,
+        ),
+    ],
+)
+def test_adversarial_notes_cannot_produce_false_ready(procedure_code, note_text, expected_status, fact_key, expected_fact):
+    service = ReadinessService()
+    request = PARequest(
+        payer="Aetna",
+        procedure_code=procedure_code,
+        dx_codes=[],
+        site_of_care="outpatient",
+        specialty="Primary Care",
+        note_text=note_text,
+    )
+
+    evaluation = service.evaluate(request)
+
+    assert evaluation.overall_status == expected_status
+    assert evaluation.submission_readiness is False
+    assert evaluation.facts[fact_key] == expected_fact
+
+
+@pytest.mark.parametrize(
+    "note_text",
+    [
+        "Back pain for 8 weeks. PT for 8 weeks. Denies weakness. Prior x-ray showed no fracture.",
+        "Back pain for 8 weeks. PT for 8 weeks. Denies weakness. CT demonstrated no acute fracture.",
+    ],
+)
+def test_recognized_negative_imaging_remains_extraction_only_for_verified_lumbar_branch(note_text):
+    service = ReadinessService()
+    request = PARequest(
+        payer="Aetna",
+        procedure_code="MRI_LUMBAR",
+        dx_codes=[],
+        site_of_care="outpatient",
+        specialty="Primary Care",
+        note_text=(
+            "Low back pain with right leg radiculopathy. "
+            "NSAIDs for 8 weeks with no improvement. "
+            "Objective motor exam in the right L5 distribution: ankle dorsiflexion strength 4/5. "
+            f"{note_text}"
+        ),
+    )
+
+    evaluation = service.evaluate(request)
+    assert evaluation.facts["prior_imaging_result"] == "negative"
+    assert all(result.key != "prior_imaging_result" for result in evaluation.results)
+    assert evaluation.overall_status == "READY"
+    assert evaluation.submission_readiness is True
+    assert not evaluation.blockers.not_met
+    assert not evaluation.blockers.needs_review
 
 
 def test_unrecognized_imaging_result_is_documented_not_met_and_requires_review():
     service = ReadinessService()
     request = PARequest(
         payer="Aetna",
-        procedure_code="MRI_LUMBAR",
-        dx_codes=["M54.5"],
+        procedure_code="MRI_CERVICAL",
+        dx_codes=["M54.12"],
         site_of_care="outpatient",
         specialty="Primary Care",
-        note_text="Low back pain x 8 weeks. PT x 8 weeks. Denies weakness. MRI showed edema.",
+        note_text="Neck pain x 8 weeks. PT x 8 weeks. Denies weakness. MRI showed edema.",
     )
 
     evaluation = service.evaluate(request)
@@ -48,7 +143,7 @@ def test_unrecognized_imaging_result_is_documented_not_met_and_requires_review()
     assert all(blocker.key != "prior_imaging_result" for blocker in evaluation.blockers.not_met)
     assert any(blocker.key == "prior_imaging_result" for blocker in evaluation.blockers.needs_review)
     assert evaluation.report.needs_review_count == 1
-    assert evaluation.metrics.needs_review_count == 1
+    assert evaluation.metrics.human_review_count == 1
     assert any("human review is required" in warning for warning in evaluation.warnings)
 
 
@@ -68,6 +163,29 @@ def test_service_lists_new_cervical_procedure_with_registry_metadata():
     ]
     assert cervical.provenance.rule_source_label == "Human-curated summary of cervical spine MRI administrative criteria"
     assert cervical.monitored_for_drift is False
+
+
+def test_only_verified_lumbar_pathway_receives_verified_trust():
+    service = ReadinessService()
+
+    trust_by_procedure = {item.procedure_code: item.policy_trust_level for item in service.list_supported_procedures()}
+
+    assert trust_by_procedure == {
+        "CPAP_DEVICE": "demo",
+        "MRI_CERVICAL": "demo",
+        "MRI_KNEE": "demo",
+        "MRI_LUMBAR": "verified",
+    }
+
+    lumbar = service.get_supported_procedure("Aetna", "MRI_LUMBAR")
+    assert lumbar.required_field_keys == [
+        "back_pain_with_radiculopathy",
+        "objective_motor_or_reflex_change_in_root_distribution",
+        "cpb_0236_conservative_therapy_weeks",
+        "cpb_0236_conservative_therapy_no_improvement",
+    ]
+    assert set(lumbar.provenance.requirement_clause_map) == set(lumbar.required_field_keys)
+    assert lumbar.provenance.policy_identifier == "CPB 0236"
 
 
 def test_service_lists_new_knee_procedure_with_required_metadata():
@@ -200,18 +318,31 @@ def test_drift_status_exposes_source_metadata_and_hash():
     report = service.get_drift_status()
 
     assert report.sources
-    assert report.any_review_required is True
+    assert report.any_review_required is False
     assert report.stale_source_count == 0
     first = report.sources[0]
-    assert first.source_name == "Aetna CPB 0157"
-    assert first.trust_level == "unverified"
-    assert first.status == "NO_BASELINE"
-    assert first.latest_hash is None
+    assert first.source_name.startswith("Aetna CPB 0236")
+    assert first.trust_level == "verified"
+    assert first.status == "OK"
+    assert first.latest_hash == "5688a01dea8d5e55d9bb074fb4184f4b0722c89a7a35aacd343bf3444577e622"
     assert first.rule_source_label
-    assert first.freshness_status == "UNKNOWN"
-    assert first.days_since_last_checked is None
+    assert first.freshness_status == "CURRENT"
+    assert first.days_since_last_checked is not None
+    assert first.days_since_last_checked <= 35
     assert first.latest_snapshot_path == "policy_snapshots/aetna_mri_lumbar/latest.json"
-    assert first.review_reason
+    assert first.review_reason is None
+
+
+def test_drift_status_can_be_scoped_to_the_evaluated_payer_and_procedure():
+    service = ReadinessService()
+
+    affected = service.get_drift_status(payer="Aetna", procedure_code="MRI_LUMBAR")
+    unrelated = service.get_drift_status(payer="Aetna", procedure_code="CPAP_DEVICE")
+
+    assert affected.sources
+    assert affected.any_review_required is False
+    assert unrelated.sources == []
+    assert unrelated.any_review_required is False
 
 
 def test_service_status_includes_rulebook_metadata():
@@ -219,5 +350,156 @@ def test_service_status_includes_rulebook_metadata():
 
     status = service.get_status()
 
-    assert status.rules_version == "0.6"
-    assert status.rulebook_active_release_id == "2026-07-17-active-v0.6"
+    assert status.rules_version == "1.0"
+    assert status.rulebook_active_release_id == "2026-08-22-active-v1.0"
+
+
+def test_verified_provenance_downgrades_when_monitoring_baseline_is_missing(tmp_path):
+    config = load_app_config().model_copy(update={"snapshot_root": tmp_path})
+    service = ReadinessService(config)
+
+    evaluation = service.evaluate(service.get_demo_case_request("MRI-01-complete"))
+
+    assert evaluation.overall_status == "READY"
+    assert evaluation.policy_trust_level == "demo"
+    assert any("Policy trust remains DEMO" in warning for warning in evaluation.warnings)
+
+
+def test_verified_provenance_downgrades_when_baseline_hash_does_not_match(tmp_path):
+    snapshot_dir = tmp_path / "aetna_mri_lumbar"
+    snapshot_dir.mkdir(parents=True)
+    snapshot_dir.joinpath("latest.json").write_text(
+        json.dumps(
+            {
+                "id": "aetna_mri_lumbar",
+                "payer": "Aetna",
+                "procedure_code": "MRI_LUMBAR",
+                "url": "https://www.aetna.com/cpb/medical/data/200_299/0236.html",
+                "fetched_at_utc": datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z"),
+                "content_hash_sha256": "b" * 64,
+            }
+        ),
+        encoding="utf-8",
+    )
+    config = load_app_config().model_copy(update={"snapshot_root": tmp_path})
+    service = ReadinessService(config)
+
+    evaluation = service.evaluate(service.get_demo_case_request("MRI-01-complete"))
+
+    assert evaluation.overall_status == "READY"
+    assert evaluation.policy_trust_level == "demo"
+
+
+@pytest.mark.parametrize(
+    "note_text, expected_status, expected_blocker",
+    [
+        (
+            "Low back pain with right leg radiculopathy. NSAIDs for 8 weeks with no improvement. "
+            "Objective motor exam in the right L5 distribution: ankle dorsiflexion strength 4/5.",
+            "READY",
+            None,
+        ),
+        (
+            "Low back pain with right leg radiculopathy. NSAIDs for 4 weeks with no improvement. "
+            "Objective motor exam in the right L5 distribution: ankle dorsiflexion strength 4/5.",
+            "NOT_READY",
+            "cpb_0236_conservative_therapy_weeks",
+        ),
+        (
+            "Low back pain with right leg radiculopathy. NSAIDs for 8 weeks with no improvement.",
+            "CANNOT_DETERMINE",
+            "objective_motor_or_reflex_change_in_root_distribution",
+        ),
+        (
+            "Low back pain with right leg radiculopathy. NSAIDs for 8 weeks with no improvement. "
+            "Patient reports weakness in the right L5 distribution.",
+            "CANNOT_DETERMINE",
+            "objective_motor_or_reflex_change_in_root_distribution",
+        ),
+    ],
+)
+def test_verified_lumbar_policy_branch_positive_negative_missing_and_ambiguous(note_text, expected_status, expected_blocker):
+    service = ReadinessService()
+    evaluation = service.evaluate(
+        PARequest(
+            payer="Aetna",
+            procedure_code="MRI_LUMBAR",
+            dx_codes=["M54.16"],
+            site_of_care="outpatient",
+            specialty="Orthopedics",
+            note_text=note_text,
+        )
+    )
+
+    assert evaluation.overall_status == expected_status
+    assert evaluation.policy_trust_level == "verified"
+    if expected_blocker is None:
+        assert evaluation.submission_readiness is True
+    else:
+        blockers = evaluation.blockers.not_documented + evaluation.blockers.not_met + evaluation.blockers.needs_review
+        assert any(blocker.key == expected_blocker for blocker in blockers)
+
+
+@pytest.mark.parametrize(
+    (
+        "treatment_note",
+        "expected_weeks",
+        "expected_no_improvement",
+        "expected_overall",
+        "expected_duration_status",
+        "expected_response_status",
+    ),
+    [
+        ("NSAIDs for 6 weeks with no improvement.", 6, True, "READY", "MET", "MET"),
+        (
+            "Analgesics for 2 weeks were stopped. NSAIDs and muscle relaxants for 6 weeks with no improvement.",
+            6,
+            True,
+            "READY",
+            "MET",
+            "MET",
+        ),
+        ("NSAIDs for 4 weeks with no improvement.", 4, True, "NOT_READY", "NOT_MET", "MET"),
+        ("NSAIDs for 6 weeks with significant improvement.", 6, False, "NOT_READY", "MET", "NOT_MET"),
+        ("NSAIDs for 6 weeks.", 6, None, "CANNOT_DETERMINE", "MET", "NOT_DOCUMENTED"),
+        (
+            "Physical therapy for 6 weeks with no improvement.",
+            None,
+            None,
+            "CANNOT_DETERMINE",
+            "NOT_DOCUMENTED",
+            "NOT_DOCUMENTED",
+        ),
+    ],
+)
+def test_verified_lumbar_conservative_therapy_modalities_duration_and_response_are_independent(
+    treatment_note,
+    expected_weeks,
+    expected_no_improvement,
+    expected_overall,
+    expected_duration_status,
+    expected_response_status,
+):
+    service = ReadinessService()
+    evaluation = service.evaluate(
+        PARequest(
+            payer="Aetna",
+            procedure_code="MRI_LUMBAR",
+            dx_codes=["M54.16"],
+            site_of_care="outpatient",
+            specialty="Orthopedics",
+            note_text=(
+                "Low back pain with right leg radiculopathy. "
+                "Objective motor exam in the right L5 distribution: ankle dorsiflexion strength 4/5. "
+                f"{treatment_note}"
+            ),
+        )
+    )
+
+    requirement_statuses = {result.key: result.status for result in evaluation.results}
+    assert evaluation.audit_trail.rulebook_active_release_id == "2026-08-22-active-v1.0"
+    assert evaluation.facts["cpb_0236_conservative_therapy_weeks"] == expected_weeks
+    assert evaluation.facts["cpb_0236_conservative_therapy_no_improvement"] is expected_no_improvement
+    assert evaluation.overall_status == expected_overall
+    assert requirement_statuses["cpb_0236_conservative_therapy_weeks"] == expected_duration_status
+    assert requirement_statuses["cpb_0236_conservative_therapy_no_improvement"] == expected_response_status

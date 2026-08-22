@@ -201,9 +201,7 @@ def _title_for(letter_type: str) -> str:
 
 
 def _hard_block_if_prohibited(letter_text: str) -> List[str]:
-    scan_text = "\n".join(
-        line for line in (letter_text or "").splitlines() if not line.strip().lower().startswith("dx codes:")
-    )
+    scan_text = "\n".join(line for line in (letter_text or "").splitlines() if not line.strip().lower().startswith("dx codes:"))
     low = scan_text.lower()
     hits = []
     for p in PROHIBITED_SUBSTRINGS:

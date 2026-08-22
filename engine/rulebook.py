@@ -49,9 +49,9 @@ def load_rulebook_manifest(path: Path) -> Dict[str, Any]:
 
 def _extract_procedure_map(rules_data: Dict[str, Any]) -> Dict[str, Dict[str, Any]]:
     out: Dict[str, Dict[str, Any]] = {}
-    for payer_config in (rules_data.get("payers") or {}).values():
+    for payer, payer_config in (rules_data.get("payers") or {}).items():
         for procedure_code, procedure in (payer_config.get("procedures") or {}).items():
-            out[str(procedure_code)] = procedure
+            out[f"{payer}:{procedure_code}"] = procedure
     return out
 
 
@@ -61,9 +61,9 @@ def _extract_procedure_codes(rules_data: Dict[str, Any]) -> list[str]:
 
 def _extract_provenance_map(provenance_data: Dict[str, Any]) -> Dict[str, Dict[str, Any]]:
     out: Dict[str, Dict[str, Any]] = {}
-    for payer_entries in (provenance_data.get("sources") or {}).values():
+    for payer, payer_entries in (provenance_data.get("sources") or {}).items():
         for procedure_code, entry in (payer_entries or {}).items():
-            out[str(procedure_code)] = entry
+            out[f"{payer}:{procedure_code}"] = entry
     return out
 
 
@@ -132,9 +132,7 @@ def get_rulebook_status(repo_root: Path, manifest_path: Path, runtime_files: Rul
         procedures = _extract_procedure_codes(rules_data)
         declared_procedures = sorted(str(item) for item in raw_release.get("procedures") or [])
         if declared_procedures and declared_procedures != procedures:
-            validation_errors.append(
-                f"Release '{release_id}' declared procedures {declared_procedures} but files contain {procedures}."
-            )
+            validation_errors.append(f"Release '{release_id}' declared procedures {declared_procedures} but files contain {procedures}.")
 
         file_rules_version = str(rules_data.get("version")) if rules_data.get("version") is not None else None
         declared_rules_version = str(raw_release.get("rules_version")) if raw_release.get("rules_version") is not None else None
@@ -146,14 +144,10 @@ def get_rulebook_status(repo_root: Path, manifest_path: Path, runtime_files: Rul
         runtime_matches = None
         if release_id == active_release_id:
             runtime_matches = (
-                rules_data == runtime_rules
-                and provenance_data == runtime_provenance
-                and policy_sources_data == runtime_policy_sources
+                rules_data == runtime_rules and provenance_data == runtime_provenance and policy_sources_data == runtime_policy_sources
             )
             if not runtime_matches:
-                validation_errors.append(
-                    f"Active release '{release_id}' does not match the runtime files under rules/."
-                )
+                validation_errors.append(f"Active release '{release_id}' does not match the runtime files under rules/.")
 
         releases.append(
             RulebookRelease(

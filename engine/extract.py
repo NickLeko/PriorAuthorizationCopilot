@@ -4,15 +4,24 @@ import re
 from typing import Any, Dict, List, Optional, Tuple
 
 THERAPY_CONTEXT = r"(?:pt|physical therapy|nsaids?|anti-?inflammator(?:y|ies)|activity modification|home exercise|hep|chiropractic|chiro)"
-THERAPY_AFTER_RE = re.compile(
-    rf"\b{THERAPY_CONTEXT}\b(?:\s*(?:x|for|over|about)\s*)\b(?P<value>\d+)\s*(?:week|weeks)\b"
-)
+THERAPY_AFTER_RE = re.compile(rf"\b{THERAPY_CONTEXT}\b(?:\s*(?:x|for|over|about)\s*)\b(?P<value>\d+)\s*(?:week|weeks)\b")
 THERAPY_BEFORE_RE = re.compile(rf"\b(?P<value>\d+)\s*(?:week|weeks)\b\s+of\s+\b{THERAPY_CONTEXT}\b")
 THERAPY_DURATION_CONTEXT_RE = re.compile(
     rf"(?:\b{THERAPY_CONTEXT}\b(?:\s*(?:x|for|over|about)\s*)\b\d+\s*(?:week|weeks|month|months)\b)"
     rf"|(?:\b\d+\s*(?:week|weeks|month|months)\b\s+of\s+\b{THERAPY_CONTEXT}\b)"
 )
 THERAPY_CONTEXT_RE = re.compile(rf"\b{THERAPY_CONTEXT}\b")
+CPB_0236_THERAPY_CONTEXT = r"(?:moderate activity|analgesics?|nsaids?|anti-?inflammator(?:y|ies)|muscle relaxants?)"
+CPB_0236_THERAPY_AFTER_RE = re.compile(rf"\b{CPB_0236_THERAPY_CONTEXT}\b(?:\s*(?:x|for|over|about)\s*)\b(?P<value>\d+)\s*(?:week|weeks)\b")
+CPB_0236_THERAPY_BEFORE_RE = re.compile(rf"\b(?P<value>\d+)\s*(?:week|weeks)\b\s+of\s+\b{CPB_0236_THERAPY_CONTEXT}\b")
+CPB_0236_THERAPY_CONTEXT_RE = re.compile(rf"\b{CPB_0236_THERAPY_CONTEXT}\b")
+SYMPTOM_CONTEXT = r"(?:symptoms?|(?:low\s+)?back pain|neck pain|cervical pain|knee pain|radicular pain|radiculopathy|pain)"
+SYMPTOM_DURATION_AFTER_RE = re.compile(rf"\b{SYMPTOM_CONTEXT}\b[^.!?;\n]{{0,60}}?\b(?P<value>\d+)\s*(?P<unit>week|weeks|month|months)\b")
+SYMPTOM_DURATION_BEFORE_RE = re.compile(rf"\b(?P<value>\d+)\s*(?P<unit>week|weeks|month|months)\b\s+(?:of\s+)?\b{SYMPTOM_CONTEXT}\b")
+IMAGING_CONTEXT_RE = re.compile(r"\b(?:(?:prior\s+)?imaging|x-?ray|xray|ct|mri)\b")
+BACK_PAIN_RE = re.compile(r"\b(?:low\s+)?back pain\b")
+RADICULOPATHY_RE = re.compile(r"\b(?:lumbar\s+)?radiculopathy\b|\bradicular (?:back )?pain\b")
+ROOT_DISTRIBUTION_RE = re.compile(r"\b(?:l[1-5]|s[1-5])(?:\s+(?:nerve\s+)?root)?\s+distribution\b|\bnerve[- ]root distribution\b")
 
 THERAPY_NEGATION_PATTERNS = [
     r"\bdenies\b",
@@ -66,12 +75,6 @@ def _dedup_spans(evidence: Dict[str, List[Dict[str, Any]]]) -> Dict[str, List[Di
     return out
 
 
-def _combined_span_text(raw: str, first: re.Match[str], second: re.Match[str]) -> Tuple[int, int, str]:
-    start = min(first.start(), second.start())
-    end = max(first.end(), second.end())
-    return start, end, raw[start:end]
-
-
 def _bounded_context_before(text: str, start: int, max_chars: int = 80) -> str:
     lower = max(0, start - max_chars)
     boundary = max(text.rfind(ch, lower, start) for ch in SENTENCE_BOUNDARY_CHARS)
@@ -93,6 +96,22 @@ def _has_pattern(patterns: List[str], text: str) -> bool:
     return any(re.search(pattern, text) for pattern in patterns)
 
 
+def _sentence_spans(text: str) -> List[Tuple[int, int]]:
+    spans: List[Tuple[int, int]] = []
+    start = 0
+    for boundary in re.finditer(r"[.!?;\n]+", text):
+        end = boundary.start()
+        if text[start:end].strip():
+            left_trim = len(text[start:end]) - len(text[start:end].lstrip())
+            right_trim = len(text[start:end].rstrip())
+            spans.append((start + left_trim, start + right_trim))
+        start = boundary.end()
+    if text[start:].strip():
+        left_trim = len(text[start:]) - len(text[start:].lstrip())
+        spans.append((start + left_trim, len(text.rstrip())))
+    return spans
+
+
 def _therapy_duration_is_disqualified(text: str, match: re.Match[str]) -> bool:
     before = _bounded_context_before(text, match.start())
     matched = text[match.start() : match.end()]
@@ -108,12 +127,34 @@ def _therapy_duration_is_disqualified(text: str, match: re.Match[str]) -> bool:
 
 
 def _osa_mention_is_negated(text: str, match: re.Match[str]) -> bool:
-    before = _bounded_context_before(text, match.start(), max_chars=24)
-    after = _bounded_context_after(text, match.end(), max_chars=24)
+    before = _bounded_context_before(text, match.start(), max_chars=48)
+    after = _bounded_context_after(text, match.end(), max_chars=32)
 
     return bool(
-        re.search(r"\b(?:no(?:\s+evidence\s+of)?|denies?|without)\s+$", before)
+        re.search(
+            r"\b(?:"
+            r"no(?:\s+(?:evidence|diagnosis)\s+of)?|"
+            r"denies?(?:\s+(?:having|history\s+of))?|"
+            r"without(?:\s+evidence\s+of)?|"
+            r"(?:does|do|did)\s+not\s+have|"
+            r"has\s+no|negative\s+for|rule(?:d)?\s+out"
+            r")\s+$",
+            before,
+        )
         or re.match(r"^\s+(?:is\s+)?(?:ruled out|absent|negative|not present)\b", after)
+    )
+
+
+def _finding_is_negated(text: str, match: re.Match[str]) -> bool:
+    before = text[max(0, match.start() - 40) : match.start()]
+    after = text[match.end() : min(len(text), match.end() + 24)]
+    return bool(
+        re.search(
+            r"\b(?:no|denies?|without|negative\s+for|free\s+of|absence\s+of)\s+"
+            r"(?:evidence\s+of\s+)?(?:acute\s+)?$",
+            before,
+        )
+        or re.match(r"^\s+(?:is\s+)?(?:absent|negative|not present|ruled out)\b", after)
     )
 
 
@@ -210,44 +251,156 @@ def extract_facts(note_text: str) -> Tuple[Dict[str, Any], Dict[str, List[Dict[s
                     raw[m_therapy_before.start() : m_therapy_before.end()],
                 )
 
+    cpb_0236_therapy_weeks: Optional[int] = None
+    cpb_0236_duration_matches = [
+        candidate
+        for pattern in (CPB_0236_THERAPY_AFTER_RE, CPB_0236_THERAPY_BEFORE_RE)
+        for candidate in pattern.finditer(t)
+        if not _therapy_duration_is_disqualified(t, candidate)
+    ]
+    cpb_0236_duration_match = max(
+        cpb_0236_duration_matches,
+        key=lambda candidate: int(candidate.group("value")),
+        default=None,
+    )
+    if cpb_0236_duration_match is not None:
+        cpb_0236_therapy_weeks = int(cpb_0236_duration_match.group("value"))
+        _add_span(
+            evidence,
+            "cpb_0236_conservative_therapy_weeks",
+            cpb_0236_duration_match.start(),
+            cpb_0236_duration_match.end(),
+            raw[cpb_0236_duration_match.start() : cpb_0236_duration_match.end()],
+        )
+
+    # ----------------------------
+    # Conservative therapy response (explicit non-response only)
+    # ----------------------------
+    cpb_0236_therapy_no_improvement: Optional[bool] = None
+    for sentence_start, sentence_end in _sentence_spans(t):
+        sentence = t[sentence_start:sentence_end]
+        if not CPB_0236_THERAPY_CONTEXT_RE.search(sentence):
+            continue
+        if _has_pattern(THERAPY_FUTURE_LOOKBACK_PATTERNS + THERAPY_FUTURE_AFTER_PATTERNS, sentence):
+            continue
+
+        nonresponse = re.search(
+            r"\b(?:no|minimal|little|insufficient)\s+(?:meaningful\s+)?(?:improvement|relief|response)\b"
+            r"|\bwithout\s+(?:meaningful\s+)?(?:improvement|relief)\b"
+            r"|\bfailed to (?:improve|respond)\b",
+            sentence,
+        )
+        response = re.search(
+            r"\b(?:substantial|significant|meaningful|good)\s+(?:improvement|relief|response)\b"
+            r"|\bsymptoms? resolved\b",
+            sentence,
+        )
+        if nonresponse:
+            cpb_0236_therapy_no_improvement = True
+        elif response:
+            cpb_0236_therapy_no_improvement = False
+        else:
+            continue
+
+        _add_span(
+            evidence,
+            "cpb_0236_conservative_therapy_no_improvement",
+            sentence_start,
+            sentence_end,
+            raw[sentence_start:sentence_end],
+        )
+        break
+
+    # ----------------------------
+    # Official lumbar-radiculopathy branch facts
+    # ----------------------------
+    back_pain_with_radiculopathy: Optional[bool] = None
+    for sentence_start, sentence_end in _sentence_spans(t):
+        sentence = t[sentence_start:sentence_end]
+        back_pain_match = BACK_PAIN_RE.search(sentence)
+        radiculopathy_match = RADICULOPATHY_RE.search(sentence)
+        if back_pain_match is None or radiculopathy_match is None:
+            continue
+
+        back_pain_with_radiculopathy = not (
+            _finding_is_negated(sentence, back_pain_match) or _finding_is_negated(sentence, radiculopathy_match)
+        )
+        _add_span(
+            evidence,
+            "back_pain_with_radiculopathy",
+            sentence_start,
+            sentence_end,
+            raw[sentence_start:sentence_end],
+        )
+        break
+
+    objective_motor_or_reflex_change: Optional[bool] = None
+    for sentence_start, sentence_end in _sentence_spans(t):
+        sentence = t[sentence_start:sentence_end]
+        if ROOT_DISTRIBUTION_RE.search(sentence) is None:
+            continue
+
+        strength = re.search(r"\bstrength\s*(?:is|of|:)?\s*(?P<score>[0-5](?:\.\d)?)/5\b", sentence)
+        abnormal_reflex = re.search(
+            r"\b(?:diminished|decreased|absent|asymmetric|brisk)\s+(?:deep tendon\s+)?reflex(?:es)?\b"
+            r"|\b(?:deep tendon\s+)?reflex(?:es)?\s+(?:is|are|:)?\s*(?:diminished|decreased|absent|asymmetric|brisk)\b",
+            sentence,
+        )
+        normal_reflex = re.search(
+            r"\b(?:normal|symmetric)\s+(?:deep tendon\s+)?reflex(?:es)?\b"
+            r"|\b(?:deep tendon\s+)?reflex(?:es)?\s+(?:is|are|:)?\s*(?:normal|symmetric)\b",
+            sentence,
+        )
+        objective_weakness = re.search(r"\bobjective\b[^.!?;\n]{0,50}\b(?:motor deficit|weakness)\b", sentence)
+
+        if strength:
+            objective_motor_or_reflex_change = float(strength.group("score")) < 5
+        elif abnormal_reflex or objective_weakness:
+            objective_motor_or_reflex_change = True
+        elif normal_reflex:
+            objective_motor_or_reflex_change = False
+        else:
+            continue
+
+        _add_span(
+            evidence,
+            "objective_motor_or_reflex_change_in_root_distribution",
+            sentence_start,
+            sentence_end,
+            raw[sentence_start:sentence_end],
+        )
+        break
+
     # ----------------------------
     # Symptom duration (weeks)
     # ----------------------------
     symptom_weeks: Optional[int] = None
 
-    m_months = None
-    for candidate in re.finditer(r"\b(\d+)\s*(month|months)\b", t):
-        if _duration_is_in_therapy_context(t, candidate.start(), candidate.end()):
-            continue
-        m_months = candidate
-        break
+    symptom_duration_match = None
+    for sentence_start, sentence_end in _sentence_spans(t):
+        sentence = t[sentence_start:sentence_end]
+        candidates = list(SYMPTOM_DURATION_AFTER_RE.finditer(sentence)) + list(SYMPTOM_DURATION_BEFORE_RE.finditer(sentence))
+        for candidate in sorted(candidates, key=lambda item: item.start()):
+            value_start = sentence_start + candidate.start("value")
+            value_end = sentence_start + candidate.end("unit")
+            if _duration_is_in_therapy_context(t, value_start, value_end):
+                continue
+            symptom_duration_match = (candidate, value_start, value_end)
+            break
+        if symptom_duration_match:
+            break
 
-    if m_months:
-        symptom_weeks = int(m_months.group(1)) * 4
+    if symptom_duration_match:
+        match, value_start, value_end = symptom_duration_match
+        value = int(match.group("value"))
+        symptom_weeks = value * 4 if match.group("unit").startswith("month") else value
         _add_span(
             evidence,
             "symptom_duration_weeks",
-            m_months.start(),
-            m_months.end(),
-            raw[m_months.start() : m_months.end()],
+            value_start,
+            value_end,
+            raw[value_start:value_end],
         )
-    else:
-        m_weeks = None
-        for candidate in re.finditer(r"\b(\d+)\s*(week|weeks)\b", t):
-            if _duration_is_in_therapy_context(t, candidate.start(), candidate.end()):
-                continue
-            m_weeks = candidate
-            break
-
-        if m_weeks:
-            symptom_weeks = int(m_weeks.group(1))
-            _add_span(
-                evidence,
-                "symptom_duration_weeks",
-                m_weeks.start(),
-                m_weeks.end(),
-                raw[m_weeks.start() : m_weeks.end()],
-            )
 
     # ----------------------------
     # Neuro deficit / red flags addressed
@@ -325,85 +478,91 @@ def extract_facts(note_text: str) -> Tuple[Dict[str, Any], Dict[str, List[Dict[s
             raw[m_no_img.start() : m_no_img.end()],
         )
     else:
-        # Detect imaging context; a supported result phrase is still required.
-        m_any_img = re.search(r"\b(prior )?imaging\b", t)
-        m_mod = re.search(r"\b(x-?ray|xray|ct|mri)\b", t)
+        # Imaging findings are interpreted only within the sentence containing the
+        # imaging mention. This prevents unrelated or negated findings elsewhere in
+        # the note from being treated as an abnormal imaging result.
+        for sentence_start, sentence_end in _sentence_spans(t):
+            sentence = t[sentence_start:sentence_end]
+            if not IMAGING_CONTEXT_RE.search(sentence):
+                continue
 
-        # If they explicitly say unclear/unknown findings, count as inconclusive (documented)
-        m_unclear = re.search(
-            r"\b(inconclusive|indeterminate)\b"
-            r"|\b(findings|result|results)\b.*\b(unclear|unknown|not clear|not specified|indeterminate)\b",
-            t,
-        )
+            m_unclear = re.search(
+                r"\b(inconclusive|indeterminate)\b"
+                r"|\b(findings|result|results)\b.*\b(unclear|unknown|not clear|not specified|indeterminate)\b",
+                sentence,
+            )
+            m_norm = re.search(r"\b(no abnormalities|no abnormal|no acute findings|normal|unremarkable)\b", sentence)
+            abnormal_matches = list(re.finditer(r"\b(abnormal|herniat\w*|stenosis|disc bulge|fracture|degenerative)\b", sentence))
+            m_abn = next((match for match in abnormal_matches if not _finding_is_negated(sentence, match)), None)
+            m_negated_abn = next((match for match in abnormal_matches if _finding_is_negated(sentence, match)), None)
 
-        if m_unclear and (m_any_img or m_mod):
-            prior_imaging = "inconclusive"
-            if m_mod:
-                if m_unclear.group(0) in {"inconclusive", "indeterminate"}:
-                    _add_span(
-                        evidence,
-                        "prior_imaging_result",
-                        m_mod.start(),
-                        m_mod.end(),
-                        raw[m_mod.start() : m_mod.end()],
-                    )
-                else:
-                    start, end, text = _combined_span_text(raw, m_mod, m_unclear)
-                    _add_span(evidence, "prior_imaging_result", start, end, text)
-            else:
+            if m_unclear:
+                prior_imaging = "inconclusive"
+                result_start = sentence_start + m_unclear.start()
+                result_end = sentence_start + m_unclear.end()
                 _add_span(
                     evidence,
                     "prior_imaging_result",
-                    m_unclear.start(),
-                    m_unclear.end(),
-                    raw[m_unclear.start() : m_unclear.end()],
+                    result_start,
+                    result_end,
+                    raw[result_start:result_end],
                 )
+                break
 
-        elif m_mod or m_any_img:
-            # Explicit normal-result language => inconclusive
-            m_norm = re.search(r"\b(no abnormalities|no abnormal|no acute findings|normal|unremarkable)\b", t)
+            if m_abn:
+                prior_imaging = "abnormal"
+                result_start = sentence_start + m_abn.start()
+                result_end = sentence_start + m_abn.end()
+                _add_span(
+                    evidence,
+                    "prior_imaging_result",
+                    result_start,
+                    result_end,
+                    raw[result_start:result_end],
+                )
+                break
+
             if m_norm:
-                prior_imaging = "inconclusive"
-                if m_mod:
-                    start, end, text = _combined_span_text(raw, m_mod, m_norm)
-                    _add_span(evidence, "prior_imaging_result", start, end, text)
-                else:
-                    _add_span(
-                        evidence,
-                        "prior_imaging_result",
-                        m_norm.start(),
-                        m_norm.end(),
-                        raw[m_norm.start() : m_norm.end()],
-                    )
-            else:
-                m_abn = re.search(r"\b(abnormal|herniat|stenosis|disc bulge|fracture|degenerative)\b", t)
-                if m_abn:
-                    prior_imaging = "abnormal"
-                    _add_span(
-                        evidence,
-                        "prior_imaging_result",
-                        m_abn.start(),
-                        m_abn.end(),
-                        raw[m_abn.start() : m_abn.end()],
-                    )
-                else:
-                    m_img = m_mod or m_any_img
-                    result_context = _bounded_context_after(t, m_img.end(), max_chars=60)
-                    m_unrecognized = re.search(
-                        r"\b(?:showed|shows|showing|demonstrated|demonstrates|revealed|reveals|equivocal|limited)\b"
-                        r"|\b(?:finding|findings|result|results)\b\s*(?::|=|was|were|is|are)?\s+\S+",
-                        result_context,
-                    )
-                    if m_unrecognized:
-                        prior_imaging = "unrecognized"
-                        result_end = m_img.end() + len(result_context.rstrip())
-                        _add_span(
-                            evidence,
-                            "prior_imaging_result",
-                            m_img.start(),
-                            result_end,
-                            raw[m_img.start() : result_end],
-                        )
+                prior_imaging = "normal"
+                result_start = sentence_start + m_norm.start()
+                result_end = sentence_start + m_norm.end()
+                _add_span(
+                    evidence,
+                    "prior_imaging_result",
+                    result_start,
+                    result_end,
+                    raw[result_start:result_end],
+                )
+                break
+
+            if m_negated_abn:
+                prior_imaging = "negative"
+                result_start = sentence_start
+                result_end = sentence_end
+                _add_span(
+                    evidence,
+                    "prior_imaging_result",
+                    result_start,
+                    result_end,
+                    raw[result_start:result_end],
+                )
+                break
+
+            result_language = re.search(
+                r"\b(?:showed|shows|showing|demonstrated|demonstrates|revealed|reveals|equivocal|limited)\b"
+                r"|\b(?:finding|findings|result|results)\b\s*(?::|=|was|were|is|are)?\s+\S+",
+                sentence,
+            )
+            if result_language:
+                prior_imaging = "unrecognized"
+                _add_span(
+                    evidence,
+                    "prior_imaging_result",
+                    sentence_start,
+                    sentence_end,
+                    raw[sentence_start:sentence_end],
+                )
+                break
 
     # ----------------------------
     # Mechanical symptoms addressed
@@ -521,6 +680,10 @@ def extract_facts(note_text: str) -> Tuple[Dict[str, Any], Dict[str, List[Dict[s
 
     facts: Dict[str, Any] = {
         "conservative_therapy_weeks": therapy_weeks,
+        "cpb_0236_conservative_therapy_weeks": cpb_0236_therapy_weeks,
+        "cpb_0236_conservative_therapy_no_improvement": cpb_0236_therapy_no_improvement,
+        "back_pain_with_radiculopathy": back_pain_with_radiculopathy,
+        "objective_motor_or_reflex_change_in_root_distribution": objective_motor_or_reflex_change,
         "neuro_red_flags_documented": neuro_documented,
         "prior_imaging_result": prior_imaging,
         "symptom_duration_weeks": symptom_weeks,

@@ -1,15 +1,16 @@
 # Model Card
 
 Project: Prior Authorization Readiness Copilot  
-Version: 1.2
+Version: 1.3.1
 
-Changelog: 1.2 — Adds distinct human-review status semantics, enforces no-note letter inputs and dosing checks, unifies artifact metric keys, redacts checked-in notes, corrects lumbar-MRI provenance, aligns synthetic-input and checklist claims, and records the OSA/imaging extraction changes.
+Changelog: 1.3.1 — Distinguishes recognized normal and specific negative imaging findings from inconclusive or unrecognized findings, makes implicit legacy booleans conservative, and adds a compact evidence-to-decision UI trace. Version 1.3 introduced local-context extraction, explicit operators, fail-closed evaluation, qualified rule identity, stronger provenance checks, scoped drift gates, and explicit documentation metrics.
 
 ## Current Repo
 
 - Deterministic administrative readiness review
 - Deterministic write-only letter drafting
 - No LLM implementation
+- Verified provenance is limited to the supported Aetna CPB 0236 lumbar-radiculopathy branch; all other pathways remain synthetic/demo
 - All bundled data is synthetic; input is not screened and must not contain real PHI, with screening remaining the operator's responsibility
 
 ## Intended Use
@@ -60,7 +61,8 @@ The repo includes pytest coverage for extraction, evaluation, drafting, rule loa
 - Narrow rule coverage
 - Regex-based extraction with limited phrase support
 - `MRI_LUMBAR` is monitored for drift; `MRI_CERVICAL`, `MRI_KNEE`, and `CPAP_DEVICE` are supported in rules but not monitored for drift
-- Runtime trust remains `demo` for supported procedures because provenance is still curated offline
+- `MRI_LUMBAR` receives `verified` trust only for the implemented Aetna CPB 0236 radiculopathy branch while its scoped source hash and freshness checks remain valid; all other procedures remain `demo`
+- CPB 0236 does not explicitly prescribe a required combination of its listed conservative-therapy modalities; the prototype accepts a qualifying documented modality and does not sum shorter sequential courses without explicit overall duration
 - No production integration
 
 ## Possible Extensions

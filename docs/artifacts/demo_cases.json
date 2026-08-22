@@ -5,11 +5,11 @@
     ],
     "expected_label": "complete",
     "id": "MRI-01-complete",
-    "note_text": "sha256:82a37cb51ea58464 [redacted for repository]",
+    "note_text": "sha256:b66310c6bfc8e97d [redacted for repository]",
     "payer": "Aetna",
     "procedure_code": "MRI_LUMBAR",
     "showcase": {
-      "description": "A clean lumbar MRI request with therapy duration, symptom duration, imaging context, and red-flag documentation all present.",
+      "description": "A synthetic lumbar MRI request satisfying the verified CPB 0236 radiculopathy branch: radicular back pain, an objective root-distribution finding, and six-plus weeks of unsuccessful conservative therapy.",
       "expected_overall_status": "READY",
       "featured": true,
       "scenario_type": "Ready path",
@@ -20,7 +20,7 @@
         "evidence map"
       ],
       "title": "Lumbar MRI ready for administrative review",
-      "why_interesting": "Shows the straight-line READY path with evidence snippets across each requirement."
+      "why_interesting": "Shows an official policy clause mapped to four deterministic requirements and their evidence spans."
     },
     "site_of_care": "outpatient",
     "specialty": "Orthopedics"
@@ -29,7 +29,7 @@
     "dx_codes": [
       "M51.26"
     ],
-    "expected_label": "complete",
+    "expected_label": "incomplete",
     "id": "MRI-02-complete",
     "note_text": "sha256:5b046404ac7bfa33 [redacted for repository]",
     "payer": "Aetna",
@@ -55,7 +55,7 @@
     "dx_codes": [
       "M54.16"
     ],
-    "expected_label": "complete",
+    "expected_label": "incomplete",
     "id": "MRI-04-borderline",
     "note_text": "sha256:23abd50e9165deb4 [redacted for repository]",
     "payer": "Aetna",
@@ -157,7 +157,7 @@
     "dx_codes": [
       "M54.16"
     ],
-    "expected_label": "complete",
+    "expected_label": "incomplete",
     "id": "MRI-07-edge-exact-threshold",
     "note_text": "sha256:9c8f7c88f900caf8 [redacted for repository]",
     "payer": "Aetna",
@@ -172,11 +172,11 @@
     ],
     "expected_label": "incomplete",
     "id": "MRI-08-edge-below-threshold",
-    "note_text": "sha256:94ee8ba7171f7dea [redacted for repository]",
+    "note_text": "sha256:2f9bb605eac5f3ce [redacted for repository]",
     "payer": "Aetna",
     "procedure_code": "MRI_LUMBAR",
     "showcase": {
-      "description": "This note documents the right fields, but both symptom duration and therapy duration are still below threshold.",
+      "description": "This note satisfies the radiculopathy, objective-finding, and non-response elements, but conservative therapy remains below the official six-week threshold.",
       "expected_overall_status": "NOT_READY",
       "featured": true,
       "scenario_type": "Documented failure",
@@ -187,7 +187,7 @@
         "fully documented"
       ],
       "title": "Documented, but not yet ready to submit",
-      "why_interesting": "Shows the difference between documented failure and missingness."
+      "why_interesting": "Shows a directly source-backed threshold failure rather than a missing-documentation refusal."
     },
     "site_of_care": "outpatient",
     "specialty": "Primary Care"
@@ -196,7 +196,7 @@
     "dx_codes": [
       "M54.16"
     ],
-    "expected_label": "complete",
+    "expected_label": "incomplete",
     "id": "MRI-09-negation-variant",
     "note_text": "sha256:e00963c68427c635 [redacted for repository]",
     "payer": "Aetna",
@@ -235,7 +235,7 @@
     "dx_codes": [
       "M54.16"
     ],
-    "expected_label": "complete",
+    "expected_label": "incomplete",
     "id": "MRI-12-imaging-normal",
     "note_text": "sha256:1d1d0a5da504cac5 [redacted for repository]",
     "payer": "Aetna",
@@ -248,7 +248,7 @@
     "dx_codes": [
       "M54.5"
     ],
-    "expected_label": "complete",
+    "expected_label": "incomplete",
     "id": "MRI-13-imaging-unclear",
     "note_text": "sha256:ccff87b96a5ecf2a [redacted for repository]",
     "payer": "Aetna",
@@ -332,7 +332,7 @@
     "payer": "Aetna",
     "procedure_code": "MRI_CERVICAL",
     "showcase": {
-      "description": "A second spine MRI procedure that uses the same deterministic evidence contract as lumbar MRI.",
+      "description": "A separate synthetic cervical MRI pathway demonstrating reusable deterministic architecture without inheriting lumbar's verified-policy trust.",
       "expected_overall_status": "READY",
       "featured": true,
       "scenario_type": "New procedure coverage",
@@ -493,7 +493,7 @@
     "dx_codes": [
       "M54.5"
     ],
-    "expected_label": "complete",
+    "expected_label": "incomplete",
     "id": "MRI-15-noise-unrelated-weeks",
     "note_text": "sha256:06489edc14d553e6 [redacted for repository]",
     "payer": "Aetna",

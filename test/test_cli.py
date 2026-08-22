@@ -72,7 +72,7 @@ def test_cli_rulebook_status(capsys):
 
     captured = capsys.readouterr()
     assert exit_code == 0
-    assert "2026-07-17-active-v0.6" in captured.out
+    assert "2026-08-22-active-v1.0" in captured.out
 
 
 def test_cli_rulebook_diff(capsys):
@@ -82,10 +82,10 @@ def test_cli_rulebook_diff(capsys):
             "--from-release",
             "2026-04-09-reviewed-v0.4",
             "--to-release",
-            "2026-07-17-active-v0.6",
+            "2026-08-22-active-v1.0",
         ]
     )
 
     captured = capsys.readouterr()
     assert exit_code == 0
-    assert "Added procedures: MRI_KNEE" in captured.out
+    assert "Added procedures: Aetna:MRI_KNEE" in captured.out

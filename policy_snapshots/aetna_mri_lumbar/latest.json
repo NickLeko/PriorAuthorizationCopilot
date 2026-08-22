@@ -1,0 +1,10 @@
+{
+  "content_hash_sha256": "5688a01dea8d5e55d9bb074fb4184f4b0722c89a7a35aacd343bf3444577e622",
+  "fetched_at_utc": "2026-08-22T19:46:51Z",
+  "id": "aetna_mri_lumbar",
+  "normalization": "engine.policy_monitor.normalize_policy:v1",
+  "normalized_text_omitted": true,
+  "payer": "Aetna",
+  "procedure_code": "MRI_LUMBAR",
+  "url": "https://www.aetna.com/cpb/medical/data/200_299/0236.html"
+}

@@ -19,6 +19,8 @@
     "policy_trust_level": "demo",
     "procedure_code": "CPAP_DEVICE",
     "provenance": {
+      "accessed_date": null,
+      "content_hash_sha256": null,
       "last_reviewed": "2026-04-09",
       "monitored_check_frequency": null,
       "monitored_source_id": null,
@@ -26,6 +28,11 @@
       "monitored_source_owner": null,
       "monitored_source_url": null,
       "notes": "Rules are illustrative for demo.",
+      "policy_effective_date": null,
+      "policy_identifier": null,
+      "policy_last_reviewed": null,
+      "policy_title": null,
+      "requirement_clause_map": {},
       "rule_last_updated": "2026-04-09",
       "rule_source_label": "Human-curated summary of CPAP administrative documentation criteria",
       "source_name": "Aetna DME policy (summary)",
@@ -45,6 +52,7 @@
         "key": "osa_diagnosis",
         "label": "OSA diagnosis documented",
         "min": null,
+        "operator": "equals_true",
         "type": "boolean"
       },
       {
@@ -53,6 +61,7 @@
         "key": "sleep_study_date",
         "label": "Sleep study date documented",
         "min": null,
+        "operator": "equals_true",
         "type": "boolean"
       },
       {
@@ -61,6 +70,7 @@
         "key": "ahi_documented",
         "label": "AHI/RDI documented",
         "min": null,
+        "operator": "equals_true",
         "type": "boolean"
       }
     ]
@@ -71,11 +81,11 @@
       "category": "advanced_imaging",
       "last_rule_update": "2026-04-09",
       "notes": [
-        "Intentionally mirrors the lumbar MRI demo pathway to show reusable deterministic architecture.",
+        "This remains a synthetic demo pathway and does not inherit the verified lumbar CPB mapping.",
         "Human review remains required before any real submission."
       ],
       "rule_family": "spine_mri_conservative_therapy",
-      "summary": "Administrative readiness check for cervical spine MRI requests using the same narrow deterministic evidence contract as lumbar MRI.",
+      "summary": "Administrative readiness check for cervical spine MRI requests using an illustrative deterministic evidence contract.",
       "supported_sites": [
         "outpatient"
       ]
@@ -85,13 +95,20 @@
     "policy_trust_level": "demo",
     "procedure_code": "MRI_CERVICAL",
     "provenance": {
+      "accessed_date": null,
+      "content_hash_sha256": null,
       "last_reviewed": "2026-04-09",
       "monitored_check_frequency": null,
       "monitored_source_id": null,
       "monitored_source_name": null,
       "monitored_source_owner": null,
       "monitored_source_url": null,
-      "notes": "Rules are illustrative for demo and intentionally mirror the narrow spine MRI contract.",
+      "notes": "Rules are illustrative for demo and do not inherit the verified lumbar CPB mapping.",
+      "policy_effective_date": null,
+      "policy_identifier": null,
+      "policy_last_reviewed": null,
+      "policy_title": null,
+      "requirement_clause_map": {},
       "rule_last_updated": "2026-04-09",
       "rule_source_label": "Human-curated summary of cervical spine MRI administrative criteria",
       "source_name": "Aetna cervical spine MRI policy summary",
@@ -112,6 +129,7 @@
         "key": "conservative_therapy_weeks",
         "label": "Conservative therapy duration (weeks)",
         "min": 6.0,
+        "operator": "minimum",
         "type": "number"
       },
       {
@@ -120,11 +138,14 @@
         "key": "neuro_red_flags_documented",
         "label": "Neuro red flags explicitly addressed (present or denied)",
         "min": null,
+        "operator": "documented",
         "type": "boolean"
       },
       {
         "allowed": [
           "none",
+          "normal",
+          "negative",
           "inconclusive",
           "abnormal"
         ],
@@ -132,6 +153,7 @@
         "key": "prior_imaging_result",
         "label": "Prior imaging result",
         "min": null,
+        "operator": "one_of",
         "type": "enum"
       },
       {
@@ -140,6 +162,7 @@
         "key": "symptom_duration_weeks",
         "label": "Symptom duration (weeks)",
         "min": 6.0,
+        "operator": "minimum",
         "type": "number"
       }
     ]
@@ -164,6 +187,8 @@
     "policy_trust_level": "demo",
     "procedure_code": "MRI_KNEE",
     "provenance": {
+      "accessed_date": null,
+      "content_hash_sha256": null,
       "last_reviewed": "2026-04-09",
       "monitored_check_frequency": null,
       "monitored_source_id": null,
@@ -171,6 +196,11 @@
       "monitored_source_owner": null,
       "monitored_source_url": null,
       "notes": "Rules are illustrative for demo and intentionally limited to documentation completeness.",
+      "policy_effective_date": null,
+      "policy_identifier": null,
+      "policy_last_reviewed": null,
+      "policy_title": null,
+      "requirement_clause_map": {},
       "rule_last_updated": "2026-04-09",
       "rule_source_label": "Human-curated summary of knee MRI administrative documentation criteria",
       "source_name": "Aetna knee MRI policy summary",
@@ -191,6 +221,7 @@
         "key": "conservative_therapy_weeks",
         "label": "Conservative therapy duration (weeks)",
         "min": 6.0,
+        "operator": "minimum",
         "type": "number"
       },
       {
@@ -199,10 +230,13 @@
         "key": "symptom_duration_weeks",
         "label": "Symptom duration (weeks)",
         "min": 6.0,
+        "operator": "minimum",
         "type": "number"
       },
       {
         "allowed": [
+          "normal",
+          "negative",
           "inconclusive",
           "abnormal"
         ],
@@ -210,6 +244,7 @@
         "key": "prior_imaging_result",
         "label": "Prior imaging result",
         "min": null,
+        "operator": "one_of",
         "type": "enum"
       },
       {
@@ -218,6 +253,7 @@
         "key": "mechanical_symptoms_documented",
         "label": "Mechanical symptoms explicitly addressed (present or denied)",
         "min": null,
+        "operator": "documented",
         "type": "boolean"
       }
     ]
@@ -226,78 +262,90 @@
     "display_name": "MRI Lumbar Spine (no contrast)",
     "metadata": {
       "category": "advanced_imaging",
-      "last_rule_update": "2026-04-09",
+      "last_rule_update": "2026-08-22",
       "notes": [
-        "Demo rule set only; not a substitute for payer policy review.",
-        "Requires conservative therapy, symptom duration, imaging context, and explicit red-flag review."
+        "Verified only against the persistent back pain with radiculopathy alternative in CPB 0236; other policy indications are outside this pathway.",
+        "READY means the synthetic note satisfies this narrow documentation branch, not that Aetna will authorize the request."
       ],
-      "rule_family": "spine_mri_conservative_therapy",
-      "summary": "Administrative readiness check for lumbar spine MRI requests using a narrow deterministic evidence contract.",
+      "rule_family": "aetna_cpb_0236_lumbar_radiculopathy",
+      "summary": "Documentation-readiness check for the persistent back pain with radiculopathy branch of Aetna CPB 0236.",
       "supported_sites": [
         "outpatient"
       ]
     },
     "monitored_for_drift": true,
     "payer": "Aetna",
-    "policy_trust_level": "demo",
+    "policy_trust_level": "verified",
     "procedure_code": "MRI_LUMBAR",
     "provenance": {
-      "last_reviewed": "2026-04-09",
-      "monitored_check_frequency": "daily",
+      "accessed_date": "2026-08-22",
+      "content_hash_sha256": "5688a01dea8d5e55d9bb074fb4184f4b0722c89a7a35aacd343bf3444577e622",
+      "last_reviewed": "2026-08-22",
+      "monitored_check_frequency": "monthly",
       "monitored_source_id": "aetna_mri_lumbar",
-      "monitored_source_name": "Aetna CPB 0157",
+      "monitored_source_name": "Aetna CPB 0236 - Magnetic Resonance Imaging (MRI) and Computed Tomography (CT) of the Spine",
       "monitored_source_owner": "NickLeko",
-      "monitored_source_url": "https://www.aetna.com/cpb/medical/data/100_199/0157.html",
-      "notes": "The original CPB 0157 citation was incorrect; a verified lumbar-spine imaging policy source is pending. Rules remain illustrative for demo.",
-      "rule_last_updated": "2026-04-09",
-      "rule_source_label": "Unverified human-curated summary of lumbar MRI administrative criteria",
-      "source_name": "Aetna lumbar MRI policy summary (unverified)",
-      "source_type": "unverified_manual_summary",
-      "source_url": null,
-      "status": "unverified"
+      "monitored_source_url": "https://www.aetna.com/cpb/medical/data/200_299/0236.html",
+      "notes": "Only one CPB 0236 alternative is implemented. CPT 72148 is listed by the bulletin when selection criteria are met; plan terms and precertification requirements still control.",
+      "policy_effective_date": "1998-05-06",
+      "policy_identifier": "CPB 0236",
+      "policy_last_reviewed": "2026-04-09",
+      "policy_title": "Magnetic Resonance Imaging (MRI) and Computed Tomography (CT) of the Spine",
+      "requirement_clause_map": {
+        "back_pain_with_radiculopathy": "Policy > Medical Necessity > persistent back or neck pain with radiculopathy alternative (lumbar scope).",
+        "cpb_0236_conservative_therapy_no_improvement": "Same Medical Necessity alternative: explicit lack of improvement after the conservative-therapy period.",
+        "cpb_0236_conservative_therapy_weeks": "Same Medical Necessity alternative: no improvement after 6 weeks of conservative therapy; Footnote 1 defines the supported modalities.",
+        "objective_motor_or_reflex_change_in_root_distribution": "Same Medical Necessity alternative: pain plus objective motor or reflex findings in the specific nerve-root distribution."
+      },
+      "rule_last_updated": "2026-08-22",
+      "rule_source_label": "Verified mapping to Aetna CPB 0236, persistent back pain with radiculopathy branch",
+      "source_name": "Aetna Clinical Policy Bulletin 0236",
+      "source_type": "official_policy_web",
+      "source_url": "https://www.aetna.com/cpb/medical/data/200_299/0236.html",
+      "status": "verified"
     },
     "required_field_keys": [
-      "conservative_therapy_weeks",
-      "neuro_red_flags_documented",
-      "prior_imaging_result",
-      "symptom_duration_weeks"
+      "back_pain_with_radiculopathy",
+      "objective_motor_or_reflex_change_in_root_distribution",
+      "cpb_0236_conservative_therapy_weeks",
+      "cpb_0236_conservative_therapy_no_improvement"
     ],
     "requirements": [
       {
         "allowed": [],
-        "evidence": "PT/NSAIDs/activity modification trial documented",
-        "key": "conservative_therapy_weeks",
-        "label": "Conservative therapy duration (weeks)",
-        "min": 6.0,
-        "type": "number"
-      },
-      {
-        "allowed": [],
-        "evidence": "Weakness, saddle anesthesia, bowel/bladder changes explicitly documented as present or denied",
-        "key": "neuro_red_flags_documented",
-        "label": "Neuro red flags explicitly addressed (present or denied)",
+        "evidence": "Back pain and radiculopathy documented together",
+        "key": "back_pain_with_radiculopathy",
+        "label": "Persistent back pain with radiculopathy documented",
         "min": null,
+        "operator": "equals_true",
         "type": "boolean"
       },
       {
-        "allowed": [
-          "none",
-          "inconclusive",
-          "abnormal"
-        ],
-        "evidence": "X-ray/CT results or note of none",
-        "key": "prior_imaging_result",
-        "label": "Prior imaging result",
+        "allowed": [],
+        "evidence": "Objective motor strength or reflex change documented in a named nerve-root distribution",
+        "key": "objective_motor_or_reflex_change_in_root_distribution",
+        "label": "Objective motor or reflex change in a nerve-root distribution",
         "min": null,
-        "type": "enum"
+        "operator": "equals_true",
+        "type": "boolean"
       },
       {
         "allowed": [],
-        "evidence": "Duration supports guideline-based escalation",
-        "key": "symptom_duration_weeks",
-        "label": "Symptom duration (weeks)",
+        "evidence": "At least 6 weeks of CPB 0236 Footnote 1 conservative therapy documented",
+        "key": "cpb_0236_conservative_therapy_weeks",
+        "label": "Conservative therapy duration (weeks)",
         "min": 6.0,
+        "operator": "minimum",
         "type": "number"
+      },
+      {
+        "allowed": [],
+        "evidence": "Explicit no, minimal, or insufficient improvement after CPB 0236 Footnote 1 conservative therapy",
+        "key": "cpb_0236_conservative_therapy_no_improvement",
+        "label": "No improvement after conservative therapy",
+        "min": null,
+        "operator": "equals_true",
+        "type": "boolean"
       }
     ]
   }

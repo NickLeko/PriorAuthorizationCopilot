@@ -111,6 +111,35 @@ def test_therapy_context_duration_does_not_drive_symptom_duration(note, expected
         assert "symptom_duration_weeks" not in evidence
 
 
+@pytest.mark.parametrize(
+    "note, expected_weeks",
+    [
+        ("Seen 3 months ago. Back pain for 2 weeks.", 2),
+        ("Follow-up occurred 4 months ago. Neck pain x 3 weeks.", 3),
+        ("The prior visit was 6 months ago. Symptoms have persisted for 5 weeks.", 5),
+    ],
+)
+def test_unrelated_duration_does_not_override_anchored_symptom_duration(note, expected_weeks):
+    facts, evidence = extract_facts(note)
+
+    assert facts["symptom_duration_weeks"] == expected_weeks
+    assert evidence["symptom_duration_weeks"][0]["text"].endswith("weeks")
+
+
+@pytest.mark.parametrize(
+    "note",
+    [
+        "Seen 3 months ago. Back pain continues without a documented duration.",
+        "Follow-up was 6 weeks ago. Knee pain is ongoing.",
+    ],
+)
+def test_unrelated_duration_without_symptom_anchor_remains_missing(note):
+    facts, evidence = extract_facts(note)
+
+    assert facts["symptom_duration_weeks"] is None
+    assert "symptom_duration_weeks" not in evidence
+
+
 def test_missing_required_item_forces_cannot_determine():
     requirements = [
         {
@@ -140,21 +169,116 @@ def test_missing_required_item_forces_cannot_determine():
     assert any("NOT_DOCUMENTED" in reason for reason in reasons)
 
 
+def test_empty_requirement_set_fails_closed():
+    results, reasons = evaluate_requirements([], {})
+    overall = compute_overall_status(results)
+
+    assert results == []
+    assert reasons == []
+    assert overall == {"overall_status": "CANNOT_DETERMINE", "submission_readiness": False}
+
+
+@pytest.mark.parametrize(
+    "requirement, fact_value, expected_status",
+    [
+        ({"key": "addressed", "label": "Addressed", "type": "boolean", "operator": "documented"}, False, "MET"),
+        ({"key": "present", "label": "Present", "type": "boolean", "operator": "equals_true"}, False, "NOT_MET"),
+        ({"key": "weeks", "label": "Weeks", "type": "number", "operator": "minimum", "min": 6}, 5, "NOT_MET"),
+        (
+            {
+                "key": "result",
+                "label": "Result",
+                "type": "enum",
+                "operator": "one_of",
+                "allowed": ["normal"],
+            },
+            "normal",
+            "MET",
+        ),
+    ],
+)
+def test_explicit_requirement_operators_have_distinct_semantics(requirement, fact_value, expected_status):
+    results, _ = evaluate_requirements([requirement], {requirement["key"]: fact_value})
+
+    assert results[0].status == expected_status
+
+
+def test_legacy_boolean_without_operator_defaults_to_conservative_equals_true():
+    requirement = {"key": "legacy_flag", "label": "Legacy flag", "type": "boolean"}
+
+    results, _ = evaluate_requirements([requirement], {"legacy_flag": False})
+
+    assert results[0].status == "NOT_MET"
+
+
 def test_extraction_contract_describes_current_shapes_and_limits():
     contract = CONTRACT_PATH.read_text(encoding="utf-8")
 
     assert "implemented and deterministic; no LLM is used anywhere in the extraction path" in contract
-    assert "The current implementation does not require explicit symptom context for this field." in contract
-    assert 'Type: `"none" | "inconclusive" | "abnormal" | "unrecognized" | null`' in contract
+    assert "A duration must appear in the same sentence as supported symptom context." in contract
+    assert 'Type: `"none" | "normal" | "negative" | "inconclusive" | "abnormal" | "unrecognized" | null`' in contract
     assert "Imaging mention without a stated result remains `null`." in contract
+    assert "### `back_pain_with_radiculopathy`" in contract
+    assert "### `objective_motor_or_reflex_change_in_root_distribution`" in contract
+    assert "### `cpb_0236_conservative_therapy_weeks`" in contract
+    assert "### `cpb_0236_conservative_therapy_no_improvement`" in contract
     assert "### `mechanical_symptoms_documented`" in contract
     assert (
-        "Positive phrasing takes precedence if the note contains both denial and later affirmative "
-        "mechanical-symptom language." in contract
+        "Positive phrasing takes precedence if the note contains both denial and later affirmative mechanical-symptom language." in contract
     )
     assert "This field records whether a contextualized date was found. It does not return the parsed date value." in contract
     assert "This field records whether the numeric value is documented. It does not return the numeric value itself." in contract
     assert "Possible Extensions" in contract
+
+
+@pytest.mark.parametrize(
+    "note, fact_key, expected",
+    [
+        ("Low back pain with right leg radiculopathy.", "back_pain_with_radiculopathy", True),
+        ("Low back pain without radiculopathy.", "back_pain_with_radiculopathy", False),
+        (
+            "Objective motor exam in the right L5 distribution: ankle dorsiflexion strength 4/5.",
+            "objective_motor_or_reflex_change_in_root_distribution",
+            True,
+        ),
+        (
+            "Objective motor exam in the right L5 distribution: ankle dorsiflexion strength 5/5.",
+            "objective_motor_or_reflex_change_in_root_distribution",
+            False,
+        ),
+        (
+            "NSAIDs for 8 weeks with minimal improvement.",
+            "cpb_0236_conservative_therapy_no_improvement",
+            True,
+        ),
+        (
+            "NSAIDs for 8 weeks with significant improvement.",
+            "cpb_0236_conservative_therapy_no_improvement",
+            False,
+        ),
+    ],
+)
+def test_verified_lumbar_branch_facts_preserve_explicit_positive_and_negative_meaning(note, fact_key, expected):
+    facts, evidence = extract_facts(note)
+
+    assert facts[fact_key] is expected
+    assert fact_key in evidence
+
+
+def test_subjective_weakness_does_not_become_objective_root_distribution_finding():
+    facts, evidence = extract_facts("Patient reports weakness in the right L5 distribution.")
+
+    assert facts["objective_motor_or_reflex_change_in_root_distribution"] is None
+    assert "objective_motor_or_reflex_change_in_root_distribution" not in evidence
+
+
+def test_pt_duration_does_not_satisfy_cpb_0236_footnote_therapy_fact():
+    facts, evidence = extract_facts("PT for 8 weeks with no improvement.")
+
+    assert facts["conservative_therapy_weeks"] == 8
+    assert facts["cpb_0236_conservative_therapy_weeks"] is None
+    assert facts["cpb_0236_conservative_therapy_no_improvement"] is None
+    assert "cpb_0236_conservative_therapy_weeks" not in evidence
 
 
 def test_extraction_contract_examples_match_current_behavior():
@@ -202,6 +326,23 @@ def test_negated_osa_mentions_are_not_extracted_as_diagnosis(note):
     assert "osa_diagnosis" not in evidence
 
 
+@pytest.mark.parametrize(
+    "note",
+    [
+        "Patient does not have OSA.",
+        "Patient does not have obstructive sleep apnea.",
+        "There is no diagnosis of OSA.",
+        "Patient is negative for OSA.",
+        "The clinician ruled out OSA.",
+    ],
+)
+def test_common_osa_negation_variants_are_not_extracted_as_diagnosis(note):
+    facts, evidence = extract_facts(note)
+
+    assert facts["osa_diagnosis"] is None
+    assert "osa_diagnosis" not in evidence
+
+
 def test_affirmative_osa_mention_is_not_suppressed_by_distinct_negated_mention():
     facts, evidence = extract_facts("No OSA in father, patient has OSA.")
 
@@ -216,11 +357,49 @@ def test_imaging_mention_without_result_remains_undocumented():
     assert "prior_imaging_result" not in evidence
 
 
-def test_recognized_imaging_result_remains_categorized():
+@pytest.mark.parametrize(
+    "note, expected_evidence",
+    [
+        ("Prior x-ray was normal.", "normal"),
+        ("CT was unremarkable.", "unremarkable"),
+        ("MRI showed no acute findings.", "no acute findings"),
+    ],
+)
+def test_recognized_normal_imaging_result_has_distinct_category(note, expected_evidence):
+    facts, evidence = extract_facts(note)
+
+    assert facts["prior_imaging_result"] == "normal"
+    assert evidence["prior_imaging_result"][0]["text"] == expected_evidence
+
+
+def test_recognized_abnormal_imaging_result_remains_categorized():
     facts, evidence = extract_facts("MRI abnormal.")
 
     assert facts["prior_imaging_result"] == "abnormal"
     assert evidence["prior_imaging_result"][0]["text"] == "abnormal"
+
+
+@pytest.mark.parametrize(
+    "note",
+    [
+        "Prior x-ray showed no fracture.",
+        "CT demonstrated no acute fracture.",
+        "Prior xray was negative for fracture.",
+        "MRI showed no evidence of stenosis.",
+    ],
+)
+def test_negated_imaging_findings_are_not_classified_as_abnormal(note):
+    facts, evidence = extract_facts(note)
+
+    assert facts["prior_imaging_result"] == "negative"
+    assert facts["prior_imaging_result"] != "abnormal"
+    assert "prior_imaging_result" in evidence
+
+
+def test_affirmative_abnormal_finding_wins_over_distinct_negated_finding():
+    facts, _ = extract_facts("X-ray showed no fracture but did show degenerative changes.")
+
+    assert facts["prior_imaging_result"] == "abnormal"
 
 
 @pytest.mark.parametrize("note", ["MRI showed edema.", "MRI equivocal.", "CT showed a mass."])
@@ -237,6 +416,7 @@ def test_unrecognized_imaging_result_evaluates_to_needs_review():
             "key": "prior_imaging_result",
             "label": "Prior imaging result",
             "type": "enum",
+            "operator": "one_of",
             "allowed": ["none", "inconclusive", "abnormal"],
         }
     ]
@@ -248,6 +428,24 @@ def test_unrecognized_imaging_result_evaluates_to_needs_review():
     assert overall["overall_status"] == "NEEDS_REVIEW"
     assert overall["submission_readiness"] is False
     assert any("NEEDS_REVIEW" in reason for reason in reasons)
+
+
+def test_recognized_normal_imaging_result_fails_rule_when_not_allowed():
+    requirements = [
+        {
+            "key": "prior_imaging_result",
+            "label": "Prior imaging result",
+            "type": "enum",
+            "operator": "one_of",
+            "allowed": ["none", "inconclusive", "abnormal"],
+        }
+    ]
+
+    results, _ = evaluate_requirements(requirements, {"prior_imaging_result": "normal"})
+    overall = compute_overall_status(results)
+
+    assert results[0].status == "NOT_MET"
+    assert overall == {"overall_status": "NOT_READY", "submission_readiness": False}
 
 
 def test_positive_red_flag_evidence_takes_precedence_when_note_contains_conflict():

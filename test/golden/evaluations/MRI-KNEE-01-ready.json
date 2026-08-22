@@ -16,6 +16,13 @@
           "text": "PT for 8 weeks"
         }
       ],
+      "cpb_0236_conservative_therapy_no_improvement": [
+        {
+          "end": 113,
+          "start": 53,
+          "text": "Completed PT for 8 weeks and NSAIDs with minimal improvement"
+        }
+      ],
       "mechanical_symptoms_documented": [
         {
           "end": 41,
@@ -26,8 +33,8 @@
       "prior_imaging_result": [
         {
           "end": 137,
-          "start": 126,
-          "text": "xray normal"
+          "start": 131,
+          "text": "normal"
         }
       ],
       "symptom_duration_weeks": [
@@ -40,22 +47,28 @@
     },
     "facts_extracted": {
       "ahi_documented": null,
+      "back_pain_with_radiculopathy": null,
       "conservative_therapy_weeks": 8,
+      "cpb_0236_conservative_therapy_no_improvement": true,
+      "cpb_0236_conservative_therapy_weeks": null,
       "mechanical_symptoms_documented": true,
       "neuro_red_flags_documented": null,
+      "objective_motor_or_reflex_change_in_root_distribution": null,
       "osa_diagnosis": null,
-      "prior_imaging_result": "inconclusive",
+      "prior_imaging_result": "normal",
       "sleep_study_date": null,
       "symptom_duration_weeks": 8
     },
     "invariant_errors": [],
     "metrics": {
-      "compliance_rate": 100.0,
-      "compliant_count": 4,
-      "extraction_failure_count": 0,
-      "extraction_success_rate": 100.0,
-      "needs_review_count": 0,
-      "non_compliant_count": 0
+      "criteria_met_count": 4,
+      "criteria_not_met_count": 0,
+      "documentation_coverage_pct": 100.0,
+      "documented_requirement_count": 4,
+      "evaluable_requirement_count": 4,
+      "human_review_count": 0,
+      "missing_requirement_count": 0,
+      "total_requirements": 4
     },
     "note_hash": "59421e8561fe0462",
     "note_length": 151,
@@ -65,6 +78,8 @@
     "procedure_code": "MRI_KNEE",
     "procedure_name": "MRI Knee (no contrast)",
     "provenance_snapshot": {
+      "accessed_date": null,
+      "content_hash_sha256": null,
       "last_reviewed": "2026-04-09",
       "monitored_check_frequency": null,
       "monitored_source_id": null,
@@ -72,6 +87,11 @@
       "monitored_source_owner": null,
       "monitored_source_url": null,
       "notes": "Rules are illustrative for demo and intentionally limited to documentation completeness.",
+      "policy_effective_date": null,
+      "policy_identifier": null,
+      "policy_last_reviewed": null,
+      "policy_title": null,
+      "requirement_clause_map": {},
       "rule_last_updated": "2026-04-09",
       "rule_source_label": "Human-curated summary of knee MRI administrative documentation criteria",
       "source_name": "Aetna knee MRI policy summary",
@@ -85,8 +105,8 @@
       "prior_imaging_result",
       "mechanical_symptoms_documented"
     ],
-    "rulebook_active_release_id": "2026-07-17-active-v0.6",
-    "rules_version": "0.6",
+    "rulebook_active_release_id": "2026-08-22-active-v1.0",
+    "rules_version": "1.0",
     "run_id": "__RUN_ID__",
     "site_of_care": "outpatient",
     "specialty": "Orthopedics",
@@ -106,6 +126,13 @@
         "text": "PT for 8 weeks"
       }
     ],
+    "cpb_0236_conservative_therapy_no_improvement": [
+      {
+        "end": 113,
+        "start": 53,
+        "text": "Completed PT for 8 weeks and NSAIDs with minimal improvement"
+      }
+    ],
     "mechanical_symptoms_documented": [
       {
         "end": 41,
@@ -116,8 +143,8 @@
     "prior_imaging_result": [
       {
         "end": 137,
-        "start": 126,
-        "text": "xray normal"
+        "start": 131,
+        "text": "normal"
       }
     ],
     "symptom_duration_weeks": [
@@ -130,25 +157,33 @@
   },
   "facts": {
     "ahi_documented": null,
+    "back_pain_with_radiculopathy": null,
     "conservative_therapy_weeks": 8,
+    "cpb_0236_conservative_therapy_no_improvement": true,
+    "cpb_0236_conservative_therapy_weeks": null,
     "mechanical_symptoms_documented": true,
     "neuro_red_flags_documented": null,
+    "objective_motor_or_reflex_change_in_root_distribution": null,
     "osa_diagnosis": null,
-    "prior_imaging_result": "inconclusive",
+    "prior_imaging_result": "normal",
     "sleep_study_date": null,
     "symptom_duration_weeks": 8
   },
   "metrics": {
-    "compliance_rate": 100.0,
-    "compliant_count": 4,
-    "extraction_failure_count": 0,
-    "extraction_success_rate": 100.0,
-    "needs_review_count": 0,
-    "non_compliant_count": 0
+    "criteria_met_count": 4,
+    "criteria_not_met_count": 0,
+    "documentation_coverage_pct": 100.0,
+    "documented_requirement_count": 4,
+    "evaluable_requirement_count": 4,
+    "human_review_count": 0,
+    "missing_requirement_count": 0,
+    "total_requirements": 4
   },
   "overall_status": "READY",
   "policy_trust_level": "demo",
   "provenance": {
+    "accessed_date": null,
+    "content_hash_sha256": null,
     "last_reviewed": "2026-04-09",
     "monitored_check_frequency": null,
     "monitored_source_id": null,
@@ -156,6 +191,11 @@
     "monitored_source_owner": null,
     "monitored_source_url": null,
     "notes": "Rules are illustrative for demo and intentionally limited to documentation completeness.",
+    "policy_effective_date": null,
+    "policy_identifier": null,
+    "policy_last_reviewed": null,
+    "policy_title": null,
+    "requirement_clause_map": {},
     "rule_last_updated": "2026-04-09",
     "rule_source_label": "Human-curated summary of knee MRI administrative documentation criteria",
     "source_name": "Aetna knee MRI policy summary",
@@ -163,7 +203,6 @@
     "source_url": null,
     "status": null
   },
-  "readiness_score": 100,
   "report": {
     "audit_trail": {
       "blocking_issues": {
@@ -182,6 +221,13 @@
             "text": "PT for 8 weeks"
           }
         ],
+        "cpb_0236_conservative_therapy_no_improvement": [
+          {
+            "end": 113,
+            "start": 53,
+            "text": "Completed PT for 8 weeks and NSAIDs with minimal improvement"
+          }
+        ],
         "mechanical_symptoms_documented": [
           {
             "end": 41,
@@ -192,8 +238,8 @@
         "prior_imaging_result": [
           {
             "end": 137,
-            "start": 126,
-            "text": "xray normal"
+            "start": 131,
+            "text": "normal"
           }
         ],
         "symptom_duration_weeks": [
@@ -206,22 +252,28 @@
       },
       "facts_extracted": {
         "ahi_documented": null,
+        "back_pain_with_radiculopathy": null,
         "conservative_therapy_weeks": 8,
+        "cpb_0236_conservative_therapy_no_improvement": true,
+        "cpb_0236_conservative_therapy_weeks": null,
         "mechanical_symptoms_documented": true,
         "neuro_red_flags_documented": null,
+        "objective_motor_or_reflex_change_in_root_distribution": null,
         "osa_diagnosis": null,
-        "prior_imaging_result": "inconclusive",
+        "prior_imaging_result": "normal",
         "sleep_study_date": null,
         "symptom_duration_weeks": 8
       },
       "invariant_errors": [],
       "metrics": {
-        "compliance_rate": 100.0,
-        "compliant_count": 4,
-        "extraction_failure_count": 0,
-        "extraction_success_rate": 100.0,
-        "needs_review_count": 0,
-        "non_compliant_count": 0
+        "criteria_met_count": 4,
+        "criteria_not_met_count": 0,
+        "documentation_coverage_pct": 100.0,
+        "documented_requirement_count": 4,
+        "evaluable_requirement_count": 4,
+        "human_review_count": 0,
+        "missing_requirement_count": 0,
+        "total_requirements": 4
       },
       "note_hash": "59421e8561fe0462",
       "note_length": 151,
@@ -231,6 +283,8 @@
       "procedure_code": "MRI_KNEE",
       "procedure_name": "MRI Knee (no contrast)",
       "provenance_snapshot": {
+        "accessed_date": null,
+        "content_hash_sha256": null,
         "last_reviewed": "2026-04-09",
         "monitored_check_frequency": null,
         "monitored_source_id": null,
@@ -238,6 +292,11 @@
         "monitored_source_owner": null,
         "monitored_source_url": null,
         "notes": "Rules are illustrative for demo and intentionally limited to documentation completeness.",
+        "policy_effective_date": null,
+        "policy_identifier": null,
+        "policy_last_reviewed": null,
+        "policy_title": null,
+        "requirement_clause_map": {},
         "rule_last_updated": "2026-04-09",
         "rule_source_label": "Human-curated summary of knee MRI administrative documentation criteria",
         "source_name": "Aetna knee MRI policy summary",
@@ -251,8 +310,8 @@
         "prior_imaging_result",
         "mechanical_symptoms_documented"
       ],
-      "rulebook_active_release_id": "2026-07-17-active-v0.6",
-      "rules_version": "0.6",
+      "rulebook_active_release_id": "2026-08-22-active-v1.0",
+      "rules_version": "1.0",
       "run_id": "__RUN_ID__",
       "site_of_care": "outpatient",
       "specialty": "Orthopedics",
@@ -264,7 +323,6 @@
     "needs_review_count": 0,
     "not_documented_count": 0,
     "not_met_count": 0,
-    "readiness_score": 100,
     "results": [
       {
         "evidence": "PT/activity modification/NSAID trial documented",
@@ -303,18 +361,18 @@
       {
         "evidence": "Prior knee imaging such as x-ray is documented and not simply absent",
         "evidence_snippets": [
-          "xray normal"
+          "normal"
         ],
         "evidence_spans": [
           {
             "end": 137,
-            "start": 126,
-            "text": "xray normal"
+            "start": 131,
+            "text": "normal"
           }
         ],
         "key": "prior_imaging_result",
         "label": "Prior imaging result",
-        "reason": "Documented: inconclusive.",
+        "reason": "Documented: normal.",
         "status": "MET"
       },
       {
@@ -385,18 +443,18 @@
     {
       "evidence": "Prior knee imaging such as x-ray is documented and not simply absent",
       "evidence_snippets": [
-        "xray normal"
+        "normal"
       ],
       "evidence_spans": [
         {
           "end": 137,
-          "start": 126,
-          "text": "xray normal"
+          "start": 131,
+          "text": "normal"
         }
       ],
       "key": "prior_imaging_result",
       "label": "Prior imaging result",
-      "reason": "Documented: inconclusive.",
+      "reason": "Documented: normal.",
       "status": "MET"
     },
     {
@@ -439,6 +497,8 @@
     "policy_trust_level": "demo",
     "procedure_code": "MRI_KNEE",
     "provenance": {
+      "accessed_date": null,
+      "content_hash_sha256": null,
       "last_reviewed": "2026-04-09",
       "monitored_check_frequency": null,
       "monitored_source_id": null,
@@ -446,6 +506,11 @@
       "monitored_source_owner": null,
       "monitored_source_url": null,
       "notes": "Rules are illustrative for demo and intentionally limited to documentation completeness.",
+      "policy_effective_date": null,
+      "policy_identifier": null,
+      "policy_last_reviewed": null,
+      "policy_title": null,
+      "requirement_clause_map": {},
       "rule_last_updated": "2026-04-09",
       "rule_source_label": "Human-curated summary of knee MRI administrative documentation criteria",
       "source_name": "Aetna knee MRI policy summary",
@@ -466,6 +531,7 @@
         "key": "conservative_therapy_weeks",
         "label": "Conservative therapy duration (weeks)",
         "min": 6.0,
+        "operator": "minimum",
         "type": "number"
       },
       {
@@ -474,10 +540,13 @@
         "key": "symptom_duration_weeks",
         "label": "Symptom duration (weeks)",
         "min": 6.0,
+        "operator": "minimum",
         "type": "number"
       },
       {
         "allowed": [
+          "normal",
+          "negative",
           "inconclusive",
           "abnormal"
         ],
@@ -485,6 +554,7 @@
         "key": "prior_imaging_result",
         "label": "Prior imaging result",
         "min": null,
+        "operator": "one_of",
         "type": "enum"
       },
       {
@@ -493,6 +563,7 @@
         "key": "mechanical_symptoms_documented",
         "label": "Mechanical symptoms explicitly addressed (present or denied)",
         "min": null,
+        "operator": "documented",
         "type": "boolean"
       }
     ]

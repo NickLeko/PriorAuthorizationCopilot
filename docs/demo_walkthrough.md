@@ -112,7 +112,7 @@ Call out:
 Use:
 
 ```bash
-.venv/bin/python cli.py rulebook-diff --from-release 2026-04-09-reviewed-v0.4 --to-release 2026-07-17-active-v0.6
+.venv/bin/python cli.py rulebook-diff --from-release 2026-04-09-reviewed-v0.4 --to-release 2026-08-22-active-v1.0
 ```
 
 Call out:
@@ -127,4 +127,4 @@ Call out:
 - "The system is narrow on purpose so every output can be defended."
 - "Missing data produces refusal, not fake confidence."
 - "The same deterministic workflow powers the UI, API, CLI, and exported artifacts."
-- "The third pass added a non-spine pathway, a versioned rulebook, and golden acceptance checks without widening the product claim."
+- "The active release keeps one verified policy branch separate from three synthetic demo pathways, with versioned rules and reproducible acceptance artifacts."

@@ -2,14 +2,24 @@ from __future__ import annotations
 
 from typing import Any, Dict, List, Literal, Optional
 
-from pydantic import BaseModel, ConfigDict, Field, field_validator
+from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
 RequirementStatus = Literal["MET", "NOT_MET", "NOT_DOCUMENTED", "NEEDS_REVIEW"]
 OverallStatus = Literal["READY", "NOT_READY", "CANNOT_DETERMINE", "NEEDS_REVIEW", "UNKNOWN"]
 LetterType = Literal["submission_cover_letter", "missing_info_request", "appeal_template"]
 PolicyTrustLevel = Literal["demo", "verified"]
 RequirementType = Literal["number", "boolean", "enum"]
+RequirementOperator = Literal["documented", "equals_true", "minimum", "one_of"]
 RulebookStage = Literal["draft", "reviewed", "active"]
+
+# Migration fallback only. Current bundled rules declare operators explicitly.
+# A legacy boolean defaults to the conservative affirmative check so an
+# explicit False value cannot silently satisfy an ambiguous requirement.
+LEGACY_OPERATOR_BY_TYPE: dict[RequirementType, RequirementOperator] = {
+    "number": "minimum",
+    "boolean": "equals_true",
+    "enum": "one_of",
+}
 
 
 class PARequest(BaseModel):
@@ -79,6 +89,7 @@ class RequirementDefinition(BaseModel):
     key: str
     label: str
     type: RequirementType = "boolean"
+    operator: Optional[RequirementOperator] = None
     min: Optional[float] = None
     allowed: List[str] = Field(default_factory=list)
     evidence: Optional[str] = None
@@ -100,6 +111,24 @@ class RequirementDefinition(BaseModel):
             return None
         stripped = value.strip()
         return stripped or None
+
+    @model_validator(mode="after")
+    def _default_and_validate_operator(self) -> "RequirementDefinition":
+        if self.operator is None:
+            self.operator = LEGACY_OPERATOR_BY_TYPE[self.type]
+        expected_type = {
+            "documented": "boolean",
+            "equals_true": "boolean",
+            "minimum": "number",
+            "one_of": "enum",
+        }[self.operator]
+        if self.type != expected_type:
+            raise ValueError(f"operator '{self.operator}' is incompatible with type '{self.type}'.")
+        if self.operator == "minimum" and self.min is None:
+            raise ValueError("minimum requirements must define min.")
+        if self.operator == "one_of" and not self.allowed:
+            raise ValueError("one_of requirements must define allowed values.")
+        return self
 
 
 class RequirementResult(BaseModel):
@@ -181,12 +210,14 @@ class BlockingIssueSummary(BaseModel):
 class EvaluationMetrics(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
-    extraction_success_rate: float
-    extraction_failure_count: int
-    compliance_rate: Optional[float] = None
-    compliant_count: int
-    non_compliant_count: int
-    needs_review_count: int = 0
+    total_requirements: int
+    documented_requirement_count: int
+    documentation_coverage_pct: float
+    evaluable_requirement_count: int
+    criteria_met_count: int
+    criteria_not_met_count: int
+    missing_requirement_count: int
+    human_review_count: int = 0
 
 
 class ProcedureMetadata(BaseModel):
@@ -217,6 +248,13 @@ class ProcedureProvenance(BaseModel):
     source_type: Optional[str] = None
     status: Optional[str] = None
     source_url: Optional[str] = None
+    policy_identifier: Optional[str] = None
+    policy_title: Optional[str] = None
+    policy_effective_date: Optional[str] = None
+    policy_last_reviewed: Optional[str] = None
+    accessed_date: Optional[str] = None
+    content_hash_sha256: Optional[str] = None
+    requirement_clause_map: Dict[str, str] = Field(default_factory=dict)
     rule_source_label: Optional[str] = None
     last_reviewed: Optional[str] = None
     rule_last_updated: Optional[str] = None
@@ -232,6 +270,12 @@ class ProcedureProvenance(BaseModel):
         "source_type",
         "status",
         "source_url",
+        "policy_identifier",
+        "policy_title",
+        "policy_effective_date",
+        "policy_last_reviewed",
+        "accessed_date",
+        "content_hash_sha256",
         "rule_source_label",
         "last_reviewed",
         "rule_last_updated",
@@ -248,6 +292,17 @@ class ProcedureProvenance(BaseModel):
             return None
         stripped = value.strip()
         return stripped or None
+
+    @field_validator("requirement_clause_map")
+    @classmethod
+    def _normalize_requirement_clause_map(cls, value: Dict[str, str]) -> Dict[str, str]:
+        normalized: Dict[str, str] = {}
+        for key, clause in value.items():
+            normalized_key = str(key).strip()
+            normalized_clause = str(clause).strip()
+            if normalized_key and normalized_clause:
+                normalized[normalized_key] = normalized_clause
+        return normalized
 
 
 class SupportedProcedure(BaseModel):
@@ -337,7 +392,6 @@ class AuditTrace(BaseModel):
 class ReadinessReport(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
-    readiness_score: int
     not_documented_count: int
     not_met_count: int
     met_count: int
@@ -346,13 +400,6 @@ class ReadinessReport(BaseModel):
     rule_reasons: List[str]
     audit_trail: Dict[str, Any]
     letter_draft: str
-
-    @field_validator("readiness_score")
-    @classmethod
-    def _validate_score(cls, value: int) -> int:
-        if value < 0 or value > 100:
-            raise ValueError("readiness_score must be between 0 and 100.")
-        return value
 
     @field_validator("not_documented_count", "not_met_count", "met_count", "needs_review_count")
     @classmethod
@@ -374,7 +421,6 @@ class EvaluationResult(BaseModel):
     supported_procedure: SupportedProcedure
     overall_status: OverallStatus
     submission_readiness: bool
-    readiness_score: int
     results: List[RequirementResult]
     rule_reasons: List[str] = Field(default_factory=list)
     facts: Dict[str, Any] = Field(default_factory=dict)
@@ -479,6 +525,7 @@ class StatusResponse(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
     service: str
+    app_version: str
     rules_version: Optional[str] = None
     rulebook_active_release_id: Optional[str] = None
     rulebook_active_rules_version: Optional[str] = None

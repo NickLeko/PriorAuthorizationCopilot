@@ -23,7 +23,9 @@ jobs:
           python -m pip install -r requirements.txt
 
       - name: Run Ruff
-        run: ruff check .
+        run: |
+          ruff check .
+          ruff format --check .
 
       - name: Run pytest
         run: pytest -q
@@ -33,3 +35,6 @@ jobs:
 
       - name: Generate golden outputs
         run: python -m scripts.generate_golden_outputs
+
+      - name: Verify generated files are current
+        run: git diff --exit-code -- docs/artifacts test/golden

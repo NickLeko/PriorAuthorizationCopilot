@@ -3,6 +3,7 @@ from __future__ import annotations
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
 
+from engine import __version__
 from engine.schemas import (
     DemoCase,
     DriftStatusReport,
@@ -18,7 +19,7 @@ from engine.service import InvalidRequestError, ReadinessService, ServiceError, 
 
 app = FastAPI(
     title="Prior Authorization Readiness Copilot API",
-    version="0.5.0",
+    version=__version__,
     description=(
         "Deterministic administrative readiness review for synthetic prior authorization demo cases. "
         "No clinical judgment, approval prediction, or autonomous action."

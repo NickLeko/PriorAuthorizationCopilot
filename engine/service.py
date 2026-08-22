@@ -9,9 +9,10 @@ from hashlib import sha256
 from pathlib import Path
 from typing import Any, Dict, List
 
+from . import __version__
 from .config import AppConfig, load_app_config
 from .demo_cases import demo_case_to_request, get_demo_case, list_demo_cases
-from .evaluate import compute_overall_status, compute_readiness_score, evaluate_requirements
+from .evaluate import compute_overall_status, evaluate_requirements, summarize_results
 from .extract import extract_facts
 from .letter_draft import draft_letter
 from .logging_utils import configure_logging, get_logger, log_event
@@ -111,23 +112,23 @@ def _display_repo_relative_path(repo_root: Path, raw_path: str | Path | None) ->
         return path.as_posix()
 
 
-def _compute_metrics(score_info: Dict[str, int]) -> EvaluationMetrics:
-    total = int(score_info.get("total", 0) or 0)
-    met = int(score_info.get("met_count", 0) or 0)
-    not_met = int(score_info.get("not_met_count", 0) or 0)
-    not_doc = int(score_info.get("not_documented_count", 0) or 0)
-    needs_review = int(score_info.get("needs_review_count", 0) or 0)
-
-    extraction_success_rate = round(((met + not_met + needs_review) / total * 100), 1) if total else 0.0
-    compliance_rate = round((met / (met + not_met) * 100), 1) if (met + not_met) > 0 else None
+def _compute_metrics(summary: Dict[str, int]) -> EvaluationMetrics:
+    total = int(summary.get("total", 0) or 0)
+    met = int(summary.get("met_count", 0) or 0)
+    not_met = int(summary.get("not_met_count", 0) or 0)
+    not_doc = int(summary.get("not_documented_count", 0) or 0)
+    needs_review = int(summary.get("needs_review_count", 0) or 0)
+    documented = met + not_met + needs_review
 
     return EvaluationMetrics(
-        extraction_success_rate=extraction_success_rate,
-        extraction_failure_count=not_doc,
-        compliance_rate=compliance_rate,
-        compliant_count=met,
-        non_compliant_count=not_met,
-        needs_review_count=needs_review,
+        total_requirements=total,
+        documented_requirement_count=documented,
+        documentation_coverage_pct=round(documented / total * 100, 1) if total else 0.0,
+        evaluable_requirement_count=met + not_met,
+        criteria_met_count=met,
+        criteria_not_met_count=not_met,
+        missing_requirement_count=not_doc,
+        human_review_count=needs_review,
     )
 
 
@@ -185,13 +186,19 @@ class ReadinessService:
                 requirements = [RequirementDefinition.model_validate(requirement) for requirement in procedure.get("required", [])]
                 metadata = self._build_procedure_metadata(procedure, requirements)
                 provenance = self._build_procedure_provenance(payer, procedure_code, provenance_entry)
+                policy_trust_level = self._effective_policy_trust(
+                    payer,
+                    procedure_code,
+                    provenance_entry,
+                    [requirement.key for requirement in requirements],
+                )
                 out.append(
                     SupportedProcedure(
                         payer=payer,
                         procedure_code=procedure_code,
                         display_name=procedure.get("display_name", procedure_code),
                         monitored_for_drift=(payer, procedure_code) in self.policy_source_by_procedure,
-                        policy_trust_level=policy_trust_from_provenance(provenance_entry),
+                        policy_trust_level=policy_trust_level,
                         required_field_keys=[requirement.key for requirement in requirements],
                         metadata=metadata,
                         provenance=provenance,
@@ -286,13 +293,18 @@ class ReadinessService:
             warnings.append(review_reason)
 
         overall = compute_overall_status(results)
-        score_info = compute_readiness_score(results)
-        metrics = _compute_metrics(score_info)
+        result_summary = summarize_results(results)
+        metrics = _compute_metrics(result_summary)
         blockers = self._build_blockers(results)
         invariant_errors = self._compute_invariant_errors(blockers, overall["overall_status"])
 
         provenance_entry = get_provenance_entry(self.provenance, normalized_request.payer, normalized_request.procedure_code)
-        policy_trust_level = policy_trust_from_provenance(provenance_entry)
+        policy_trust_level = self._effective_policy_trust(
+            normalized_request.payer,
+            normalized_request.procedure_code,
+            provenance_entry,
+            [requirement.key for requirement in supported.requirements],
+        )
         if policy_trust_level != "verified":
             warnings.append("Policy trust remains DEMO for this procedure. Verify against official policy before real-world use.")
 
@@ -325,11 +337,10 @@ class ReadinessService:
         )
 
         report = ReadinessReport(
-            readiness_score=int(score_info.get("readiness_score", 0) or 0),
-            not_documented_count=int(score_info.get("not_documented_count", 0) or 0),
-            not_met_count=int(score_info.get("not_met_count", 0) or 0),
-            met_count=int(score_info.get("met_count", 0) or 0),
-            needs_review_count=int(score_info.get("needs_review_count", 0) or 0),
+            not_documented_count=int(result_summary.get("not_documented_count", 0) or 0),
+            not_met_count=int(result_summary.get("not_met_count", 0) or 0),
+            met_count=int(result_summary.get("met_count", 0) or 0),
+            needs_review_count=int(result_summary.get("needs_review_count", 0) or 0),
             results=results,
             rule_reasons=reasons,
             audit_trail=audit.model_dump(mode="json"),
@@ -341,7 +352,6 @@ class ReadinessService:
             supported_procedure=supported,
             overall_status=overall["overall_status"],
             submission_readiness=bool(overall["submission_readiness"]),
-            readiness_score=report.readiness_score,
             results=results,
             rule_reasons=reasons,
             facts=raw_facts,
@@ -392,7 +402,7 @@ class ReadinessService:
             letter_type=letter_type,
         )
 
-    def get_drift_status(self) -> DriftStatusReport:
+    def get_drift_status(self, payer: str | None = None, procedure_code: str | None = None) -> DriftStatusReport:
         events = _read_drift_log(self.config.snapshot_root / "drift_log.jsonl")
         latest_event_by_id = {str(event.get("id")): event for event in events if event.get("id")}
 
@@ -401,6 +411,10 @@ class ReadinessService:
         stale_source_count = 0
 
         for source in self.policy_sources:
+            if payer is not None and source.payer != payer:
+                continue
+            if procedure_code is not None and source.procedure_code != procedure_code:
+                continue
             latest_snapshot = read_latest_snapshot(self.config.snapshot_root, source.id)
             status = "NO_BASELINE" if latest_snapshot is None else "OK"
             event = latest_event_by_id.get(source.id, {})
@@ -454,10 +468,7 @@ class ReadinessService:
                         self.config.snapshot_root / source.id / "latest.json",
                     ),
                     latest_diff_path=_display_repo_relative_path(self.config.repo_root, event.get("diff_path")),
-                    rule_source_label=str(
-                        provenance_entry.get("rule_source_label") or provenance_entry.get("source_name") or ""
-                    )
-                    or None,
+                    rule_source_label=str(provenance_entry.get("rule_source_label") or provenance_entry.get("source_name") or "") or None,
                     last_rule_reviewed=str(provenance_entry.get("last_reviewed") or "") or None,
                     review_reason=review_reason,
                     notes=str(source.notes or provenance_entry.get("notes") or "").strip() or None,
@@ -474,6 +485,7 @@ class ReadinessService:
         rulebook_status = self.get_rulebook_status()
         return StatusResponse(
             service="Prior Authorization Readiness Copilot",
+            app_version=__version__,
             rules_version=str(self.rules.get("version")) if self.rules.get("version") is not None else None,
             rulebook_active_release_id=rulebook_status.active_release_id,
             rulebook_active_rules_version=rulebook_status.runtime_rules_version,
@@ -524,26 +536,14 @@ class ReadinessService:
             errors.append("Invariant violation: NOT_DOCUMENTED blockers exist but overall_status is not CANNOT_DETERMINE.")
         if (not blockers.not_documented) and blockers.needs_review and overall_status != "NEEDS_REVIEW":
             errors.append("Invariant violation: NEEDS_REVIEW blockers exist but overall_status is not NEEDS_REVIEW.")
-        if (
-            (not blockers.not_documented)
-            and (not blockers.needs_review)
-            and blockers.not_met
-            and overall_status != "NOT_READY"
-        ):
+        if (not blockers.not_documented) and (not blockers.needs_review) and blockers.not_met and overall_status != "NOT_READY":
             errors.append("Invariant violation: NOT_MET blockers exist but overall_status is not NOT_READY.")
-        if (
-            (not blockers.not_documented)
-            and (not blockers.not_met)
-            and (not blockers.needs_review)
-            and overall_status != "READY"
-        ):
+        if (not blockers.not_documented) and (not blockers.not_met) and (not blockers.needs_review) and overall_status != "READY":
             errors.append("Invariant violation: no blockers exist but overall_status is not READY.")
         return errors
 
     @staticmethod
-    def _build_procedure_metadata(
-        procedure: Dict[str, Any], requirements: List[RequirementDefinition]
-    ) -> ProcedureMetadata:
+    def _build_procedure_metadata(procedure: Dict[str, Any], requirements: List[RequirementDefinition]) -> ProcedureMetadata:
         raw_metadata = procedure.get("metadata") or {}
         return ProcedureMetadata(
             category=str(raw_metadata.get("category") or "administrative_review"),
@@ -554,15 +554,20 @@ class ReadinessService:
             notes=[str(note) for note in raw_metadata.get("notes") or []],
         )
 
-    def _build_procedure_provenance(
-        self, payer: str, procedure_code: str, provenance_entry: Dict[str, Any]
-    ) -> ProcedureProvenance:
+    def _build_procedure_provenance(self, payer: str, procedure_code: str, provenance_entry: Dict[str, Any]) -> ProcedureProvenance:
         policy_source = self.policy_source_by_procedure.get((payer, procedure_code))
         return ProcedureProvenance(
             source_name=provenance_entry.get("source_name"),
             source_type=provenance_entry.get("source_type"),
             status=provenance_entry.get("status"),
             source_url=provenance_entry.get("source_url"),
+            policy_identifier=provenance_entry.get("policy_identifier"),
+            policy_title=provenance_entry.get("policy_title"),
+            policy_effective_date=provenance_entry.get("policy_effective_date"),
+            policy_last_reviewed=provenance_entry.get("policy_last_reviewed"),
+            accessed_date=provenance_entry.get("accessed_date"),
+            content_hash_sha256=provenance_entry.get("content_hash_sha256"),
+            requirement_clause_map=provenance_entry.get("requirement_clause_map") or {},
             rule_source_label=provenance_entry.get("rule_source_label") or provenance_entry.get("source_name"),
             last_reviewed=provenance_entry.get("last_reviewed"),
             rule_last_updated=provenance_entry.get("rule_last_updated"),
@@ -573,3 +578,29 @@ class ReadinessService:
             monitored_source_owner=policy_source.owner if policy_source else None,
             notes=provenance_entry.get("notes") or (policy_source.notes if policy_source else None),
         )
+
+    def _effective_policy_trust(
+        self,
+        payer: str,
+        procedure_code: str,
+        provenance_entry: Dict[str, Any],
+        requirement_keys: list[str],
+    ) -> str:
+        if policy_trust_from_provenance(provenance_entry, requirement_keys) != "verified":
+            return "demo"
+
+        policy_source = self.policy_source_by_procedure.get((payer, procedure_code))
+        if policy_source is None or policy_source.trust_level.strip().lower() != "verified":
+            return "demo"
+        if policy_source.url.strip() != str(provenance_entry.get("source_url") or "").strip():
+            return "demo"
+
+        drift_report = self.get_drift_status(payer=payer, procedure_code=procedure_code)
+        if drift_report.any_review_required or len(drift_report.sources) != 1:
+            return "demo"
+        source_status = drift_report.sources[0]
+        if source_status.status != "OK" or source_status.freshness_status != "CURRENT":
+            return "demo"
+        if source_status.latest_hash != str(provenance_entry.get("content_hash_sha256") or "").strip():
+            return "demo"
+        return "verified"
