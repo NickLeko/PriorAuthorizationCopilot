@@ -29,7 +29,7 @@ Prior Authorization Readiness Copilot is a deterministic internal-product demo f
 - verified policy pathway: `Aetna:MRI_LUMBAR`, limited to the supported CPB 0236 radiculopathy branch
 - synthetic/demo pathways: `MRI_CERVICAL`, `MRI_KNEE`, and `CPAP_DEVICE`
 
-## Why It Is Credible
+## Implemented Controls
 
 - deterministic extraction and evaluation
 - explicit rule operators and fail-closed empty/missing behavior
@@ -42,4 +42,4 @@ Prior Authorization Readiness Copilot is a deterministic internal-product demo f
 
 ## Why It Is Intentionally Narrow
 
-This repo is meant to be explainable by one person in an interview. It prioritizes rigor, auditability, and honest product boundaries over broad claims.
+The system prioritizes rigor, auditability, and honest product boundaries over broad claims.

@@ -6,7 +6,8 @@
       "not_met": []
     },
     "evaluation_warnings": [
-      "Policy trust remains DEMO for this procedure. Verify against official policy before real-world use."
+      "Policy trust remains DEMO for this procedure. Verify against official policy before real-world use.",
+      "Documentation criteria evaluate to READY, but submission_readiness is false because the active policy and rulebook state is not fully trusted."
     ],
     "evidence_map": {
       "conservative_therapy_weeks": [
@@ -25,9 +26,14 @@
       ],
       "neuro_red_flags_documented": [
         {
-          "end": 150,
+          "end": 128,
           "start": 113,
-          "text": "Denies weakness. Denies bowel/bladder"
+          "text": "Denies weakness"
+        },
+        {
+          "end": 158,
+          "start": 130,
+          "text": "Denies bowel/bladder changes"
         }
       ],
       "prior_imaging_result": [
@@ -110,7 +116,7 @@
     "run_id": "__RUN_ID__",
     "site_of_care": "outpatient",
     "specialty": "Orthopedics",
-    "submission_readiness": true,
+    "submission_readiness": false,
     "timestamp_utc": "__TIMESTAMP_UTC__"
   },
   "blockers": {
@@ -135,9 +141,14 @@
     ],
     "neuro_red_flags_documented": [
       {
-        "end": 150,
+        "end": 128,
         "start": 113,
-        "text": "Denies weakness. Denies bowel/bladder"
+        "text": "Denies weakness"
+      },
+      {
+        "end": 158,
+        "start": 130,
+        "text": "Denies bowel/bladder changes"
       }
     ],
     "prior_imaging_result": [
@@ -171,7 +182,7 @@
   },
   "letter": {
     "metadata": {
-      "cited_snippets_count": 4,
+      "cited_snippets_count": 5,
       "contains_missing_documentation": false,
       "draft_blocked": false,
       "draft_blocked_reasons": [],
@@ -182,7 +193,7 @@
       "overall_status": "READY",
       "policy_trust_level": "demo"
     },
-    "text": "PRIOR AUTHORIZATION ADMINISTRATIVE READINESS SUMMARY\n\nPayer: Aetna\nProcedure: MRI_CERVICAL\nSite of care: outpatient\nSpecialty: Orthopedics\nGenerated: __TIMESTAMP_UTC__\nDx codes: M54.12\nPolicy trust level: DEMO \u2014 criteria are illustrative only. Verify against the official payer policy before submission.\n\nOverall Status: READY\n\nSummary:\nThis letter supports administrative submission readiness based on the documentation present in the record. This does not guarantee payer approval.\n\nRequirements:\n- Conservative therapy duration (weeks) (conservative_therapy_weeks): MET\n  Reason: Documented value: 8.\n  Evidence:\n   - \"PT for 8 weeks\"\n- Neuro red flags explicitly addressed (present or denied) (neuro_red_flags_documented): MET\n  Reason: Explicitly addressed in documentation (present/affirmed).\n  Evidence:\n   - \"Denies weakness. Denies bowel/bladder\"\n- Prior imaging result (prior_imaging_result): MET\n  Reason: Documented: inconclusive.\n  Evidence:\n   - \"inconclusive\"\n- Symptom duration (weeks) (symptom_duration_weeks): MET\n  Reason: Documented value: 8.\n  Evidence:\n   - \"8 weeks\"\nClosing:\nThis letter summarizes documentation-based administrative readiness for prior authorization submission. It does not provide clinical recommendations and does not predict approval outcomes.\n"
+    "text": "PRIOR AUTHORIZATION ADMINISTRATIVE READINESS SUMMARY\n\nPayer: Aetna\nProcedure: MRI_CERVICAL\nSite of care: outpatient\nSpecialty: Orthopedics\nGenerated: __TIMESTAMP_UTC__\nDx codes: M54.12\nPolicy trust level: DEMO \u2014 criteria are illustrative only. Verify against the official payer policy before submission.\n\nOverall Status: READY\n\nSummary:\nThe documentation satisfies the configured demonstration criteria, but this is not a submission-ready determination because policy trust is not verified. Verify the criteria against the current official payer policy before use.\n\nRequirements:\n- Conservative therapy duration (weeks) (conservative_therapy_weeks): MET\n  Reason: Documented value: 8.\n  Evidence:\n   - \"PT for 8 weeks\"\n- Neuro red flags explicitly addressed (present or denied) (neuro_red_flags_documented): MET\n  Reason: Explicitly addressed in documentation (present/affirmed).\n  Evidence:\n   - \"Denies weakness\"\n   - \"Denies bowel/bladder changes\"\n- Prior imaging result (prior_imaging_result): MET\n  Reason: Documented: inconclusive.\n  Evidence:\n   - \"inconclusive\"\n- Symptom duration (weeks) (symptom_duration_weeks): MET\n  Reason: Documented value: 8.\n  Evidence:\n   - \"8 weeks\"\nClosing:\nThis letter summarizes documentation-based administrative readiness for prior authorization submission. It does not provide clinical recommendations and does not predict approval outcomes.\n"
   },
   "metrics": {
     "criteria_met_count": 4,
@@ -226,7 +237,8 @@
         "not_met": []
       },
       "evaluation_warnings": [
-        "Policy trust remains DEMO for this procedure. Verify against official policy before real-world use."
+        "Policy trust remains DEMO for this procedure. Verify against official policy before real-world use.",
+        "Documentation criteria evaluate to READY, but submission_readiness is false because the active policy and rulebook state is not fully trusted."
       ],
       "evidence_map": {
         "conservative_therapy_weeks": [
@@ -245,9 +257,14 @@
         ],
         "neuro_red_flags_documented": [
           {
-            "end": 150,
+            "end": 128,
             "start": 113,
-            "text": "Denies weakness. Denies bowel/bladder"
+            "text": "Denies weakness"
+          },
+          {
+            "end": 158,
+            "start": 130,
+            "text": "Denies bowel/bladder changes"
           }
         ],
         "prior_imaging_result": [
@@ -330,7 +347,7 @@
       "run_id": "__RUN_ID__",
       "site_of_care": "outpatient",
       "specialty": "Orthopedics",
-      "submission_readiness": true,
+      "submission_readiness": false,
       "timestamp_utc": "__TIMESTAMP_UTC__"
     },
     "letter_draft": "",
@@ -359,13 +376,19 @@
       {
         "evidence": "Weakness, numbness, bowel/bladder changes, or related escalation findings explicitly documented",
         "evidence_snippets": [
-          "Denies weakness. Denies bowel/bladder"
+          "Denies weakness",
+          "Denies bowel/bladder changes"
         ],
         "evidence_spans": [
           {
-            "end": 150,
+            "end": 128,
             "start": 113,
-            "text": "Denies weakness. Denies bowel/bladder"
+            "text": "Denies weakness"
+          },
+          {
+            "end": 158,
+            "start": 130,
+            "text": "Denies bowel/bladder changes"
           }
         ],
         "key": "neuro_red_flags_documented",
@@ -441,13 +464,19 @@
     {
       "evidence": "Weakness, numbness, bowel/bladder changes, or related escalation findings explicitly documented",
       "evidence_snippets": [
-        "Denies weakness. Denies bowel/bladder"
+        "Denies weakness",
+        "Denies bowel/bladder changes"
       ],
       "evidence_spans": [
         {
-          "end": 150,
+          "end": 128,
           "start": 113,
-          "text": "Denies weakness. Denies bowel/bladder"
+          "text": "Denies weakness"
+        },
+        {
+          "end": 158,
+          "start": 130,
+          "text": "Denies bowel/bladder changes"
         }
       ],
       "key": "neuro_red_flags_documented",
@@ -491,7 +520,7 @@
     }
   ],
   "rule_reasons": [],
-  "submission_readiness": true,
+  "submission_readiness": false,
   "supported_procedure": {
     "display_name": "MRI Cervical Spine (no contrast)",
     "metadata": {
@@ -585,6 +614,7 @@
     ]
   },
   "warnings": [
-    "Policy trust remains DEMO for this procedure. Verify against official policy before real-world use."
+    "Policy trust remains DEMO for this procedure. Verify against official policy before real-world use.",
+    "Documentation criteria evaluate to READY, but submission_readiness is false because the active policy and rulebook state is not fully trusted."
   ]
 }

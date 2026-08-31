@@ -1,9 +1,9 @@
-# Extraction Contract v1.3
+# Extraction Contract v1.4
 
 Project: Prior Authorization Readiness Copilot  
 Scope: Deterministic extraction only  
 Current repo status: implemented and deterministic; no LLM is used anywhere in the extraction path  
-Output: `(facts, evidence_map)`
+Internal output: `(facts, evidence_map)`; service/API facts replace the internal review marker with `null`
 
 This document describes the extraction behavior implemented in [engine/extract.py](engine/extract.py).
 
@@ -28,11 +28,19 @@ Revision note, August 22, 2026:
 - Explicitly normal imaging now uses `normal`; a supported negative finding such as `no fracture` uses `negative`. Neither is conflated with inconclusive or unrecognized results.
 - The verified Aetna lumbar-radiculopathy pathway adds three narrow facts: back pain with radiculopathy, objective motor/reflex change in a named nerve-root distribution, and explicit conservative-therapy non-response.
 
+Revision note, August 31, 2026:
+- For the implemented lumbar diagnosis, objective-finding, and therapy patterns, relevant candidates are collected before scalar resolution; tested contradictory order variants resolve identically.
+- Explicit supported family attribution before or after a mention, supported uncertainty/future-state phrases, and question-form evidence fail closed. This remains bounded phrase matching, not general coreference or clinical-language understanding.
+- Contradictory supported evidence returns the internal review-required sentinel. The evaluator maps it to `NEEDS_REVIEW`.
+- For the verified lumbar branch, therapy duration and response must resolve to one unambiguous modality candidate within a clause. Contrast clauses, conflicting candidates, and unsupported cross-modality linkage are not merged.
+
+`extract_facts` may use the internal string marker `__REVIEW_REQUIRED__` while evaluating a rule. `ReadinessService` converts that marker to `null` in public `facts` and audit payloads; the corresponding requirement result remains `NEEDS_REVIEW` with its evidence spans.
+
 ## 2. Returned Fields
 
 ### `conservative_therapy_weeks`
 
-Type: `int | null`
+Internal type: `int | null | review-required marker`; public fact type: `int | null`
 
 Current behavior:
 - Extracts only week-based durations tied directly to therapy context such as PT, NSAIDs, activity modification, HEP, or chiropractic care.
@@ -40,20 +48,22 @@ Current behavior:
 - Rejects therapy durations when the local context indicates negation, refusal, declined therapy, or future/planned therapy.
 - Does not currently normalize therapy months to weeks.
 - If therapy is mentioned without a linked duration, returns `null`.
+- Distinct supported durations that cannot safely be resolved to one course require human review.
 
 ### `symptom_duration_weeks`
 
-Type: `int | null`
+Internal type: `int | null | review-required marker`; public fact type: `int | null`
 
 Current behavior:
-- Extracts the first explicit weeks or months duration linked to supported symptom context.
+- Extracts an explicit weeks or months duration linked to supported symptom context.
 - Months are normalized as `months * 4`.
 - A duration must appear in the same sentence as supported symptom context.
 - Therapy-context durations are skipped so completed, negated, or planned therapy durations do not populate symptom duration.
+- Distinct supported values or question-form duration evidence require human review instead of selecting one value.
 
 ### `back_pain_with_radiculopathy`
 
-Type: `bool | null`
+Internal type: `bool | null | review-required marker`; public fact type: `bool | null`
 
 Current behavior:
 - Returns `True` only when supported back-pain and radiculopathy/radicular-pain wording appears in the same sentence without supported negation.
@@ -62,7 +72,7 @@ Current behavior:
 
 ### `objective_motor_or_reflex_change_in_root_distribution`
 
-Type: `bool | null`
+Internal type: `bool | null | review-required marker`; public fact type: `bool | null`
 
 Current behavior:
 - Requires a named lumbar or sacral nerve-root distribution in the same sentence as supported objective strength or reflex wording.
@@ -71,27 +81,29 @@ Current behavior:
 
 ### `cpb_0236_conservative_therapy_weeks`
 
-Type: `int | null`
+Internal type: `int | null | review-required marker`; public fact type: `int | null`
 
 Current behavior:
 - Extracts week-based duration only for modalities named by CPB 0236 Footnote 1: moderate activity, analgesics, NSAIDs/anti-inflammatories, and muscle relaxants.
-- When multiple qualifying durations are explicit, selects the longest individually documented course; it never adds shorter courses together.
+- Multiple distinct supported course candidates require human review; the resolver never selects the longest course or adds shorter courses together.
 - A total duration spanning sequential modalities must be stated explicitly to be extracted as that overall duration.
 - This source-scoped fact prevents a generic PT duration from silently satisfying the verified pathway.
+- A duration used with therapy-response evidence must resolve to the same unambiguous modality candidate within a supported clause.
 - Existing demo pathways continue to use the broader `conservative_therapy_weeks` fact.
 
 ### `cpb_0236_conservative_therapy_no_improvement`
 
-Type: `bool | null`
+Internal type: `bool | null | review-required marker`; public fact type: `bool | null`
 
 Current behavior:
-- Returns `True` when a sentence containing a CPB 0236 Footnote 1 modality explicitly states no, minimal, little, or insufficient improvement/relief/response.
+- Returns `True` when an unambiguous supported therapy candidate explicitly states no, minimal, little, or insufficient improvement/relief/response.
 - Returns `False` for supported explicit meaningful response language.
 - Returns `null` when therapy response is absent or ambiguous, and ignores future/planned therapy language.
+- Conflicting response statements, contrast clauses, or duration and response split across unlinked therapy candidates require human review.
 
 ### `neuro_red_flags_documented`
 
-Type: `bool | null`
+Internal type: `bool | null | review-required marker`; public fact type: `bool | null`
 
 Current behavior:
 - Returns `True` when neurologic red flags are explicitly addressed in the note, whether affirmed or denied.
@@ -100,7 +112,7 @@ Current behavior:
 
 ### `prior_imaging_result`
 
-Type: `"none" | "normal" | "negative" | "inconclusive" | "abnormal" | "unrecognized" | null`
+Internal type: `"none" | "normal" | "negative" | "inconclusive" | "abnormal" | "unrecognized" | null | review-required marker`; public fact replaces the marker with `null`
 
 Current behavior:
 - `none` when the note explicitly says there was no prior imaging.
@@ -116,39 +128,42 @@ Current behavior:
 
 ### `mechanical_symptoms_documented`
 
-Type: `bool | null`
+Internal type: `bool | null | review-required marker`; public fact type: `bool | null`
 
 Current behavior:
 - Returns `True` when supported mechanical symptom phrasing such as `locking`, `catching`, `buckling`, `giving way`, or `instability` is explicitly present.
 - Returns `False` when those symptoms are explicitly denied with supported negation phrasing.
 - Returns `null` when the note does not explicitly address the supported symptom phrases.
-- Positive phrasing takes precedence if the note contains both denial and later affirmative mechanical-symptom language.
+- Contradictory positive and negative statements require human review; neither statement takes precedence because of order.
 
 ### `osa_diagnosis`
 
-Type: `bool | null`
+Internal type: `bool | null | review-required marker`; public fact type: `bool | null`
 
 Current behavior:
 - Returns `True` when a non-negated `OSA` or `obstructive sleep apnea` mention appears.
 - Supported negated forms such as `OSA ruled out`, `no evidence of OSA`, and `does not have OSA` remain `null`.
+- Explicit family/non-patient mentions are excluded. Uncertain or contradictory patient diagnosis language requires human review.
 - Returns `null` otherwise.
 
 ### `sleep_study_date`
 
-Type: `bool | null`
+Internal type: `bool | null | review-required marker`; public fact type: `bool | null`
 
 Current behavior:
 - Returns `True` when a date in `YYYY-MM-DD` or `YYYY/MM/DD` format appears near sleep-study context such as `sleep study`, `PSG`, `polysomnography`, `HST`, or `home sleep test`.
 - Returns `null` otherwise.
+- Question-form date evidence requires human review.
 - This field records whether a contextualized date was found. It does not return the parsed date value.
 
 ### `ahi_documented`
 
-Type: `bool | null`
+Internal type: `bool | null | review-required marker`; public fact type: `bool | null`
 
 Current behavior:
 - Returns `True` when a numeric `AHI` or `RDI` value is present.
 - Returns `null` when the note explicitly says the value is missing or when no numeric value is found.
+- Uncertain or question-form numeric evidence requires human review.
 - This field records whether the numeric value is documented. It does not return the numeric value itself.
 
 ## 3. Evidence Map
@@ -162,6 +177,7 @@ Current behavior:
 - Missingness spans may be included for fields such as `ahi_documented`.
 - The current implementation does not attach status or span type metadata.
 - The evidence map may be empty for a missing field.
+- When a fact requires review, every supported conflicting or ambiguous span is retained rather than selecting the first span.
 
 ## 4. Examples
 
@@ -181,6 +197,7 @@ Current behavior:
 ## 5. Limits
 
 - The extractor is intentionally narrow and regex-based.
+- Subject, uncertainty, and temporal-state safeguards cover explicit supported phrasing only. Text outside those patterns may remain unrecognized; this contract does not claim general coreference or longitudinal episode resolution.
 - The current implementation supports only the phrasing patterns encoded in the code and tests.
 - Bundled and test inputs are synthetic. Free-form input is not screened and must not contain real patient information. This is not a production clinical NLP pipeline.
 

@@ -4,6 +4,7 @@
       "M54.16"
     ],
     "expected_label": "complete",
+    "expected_overall_status": "READY",
     "id": "MRI-01-complete",
     "note_text": "sha256:b66310c6bfc8e97d [redacted for repository]",
     "payer": "Aetna",
@@ -30,6 +31,7 @@
       "G47.33"
     ],
     "expected_label": "incomplete",
+    "expected_overall_status": "CANNOT_DETERMINE",
     "id": "CPAP-02-borderline",
     "note_text": "sha256:5ef99d034f3c708e [redacted for repository]",
     "payer": "Aetna",
@@ -56,6 +58,7 @@
       "M54.5"
     ],
     "expected_label": "incomplete",
+    "expected_overall_status": "NOT_READY",
     "id": "MRI-08-edge-below-threshold",
     "note_text": "sha256:2f9bb605eac5f3ce [redacted for repository]",
     "payer": "Aetna",
@@ -82,6 +85,7 @@
       "G47.33"
     ],
     "expected_label": "complete",
+    "expected_overall_status": "READY",
     "id": "CPAP-07-complete-alt-format-date",
     "note_text": "sha256:f81083503181f7a5 [redacted for repository]",
     "payer": "Aetna",
@@ -108,6 +112,7 @@
       "M54.12"
     ],
     "expected_label": "complete",
+    "expected_overall_status": "READY",
     "id": "MRI-CERV-01-ready",
     "note_text": "sha256:449f7c6ef1838637 [redacted for repository]",
     "payer": "Aetna",
@@ -134,6 +139,7 @@
       "M25.561"
     ],
     "expected_label": "complete",
+    "expected_overall_status": "READY",
     "id": "MRI-KNEE-01-ready",
     "note_text": "sha256:59421e8561fe0462 [redacted for repository]",
     "payer": "Aetna",

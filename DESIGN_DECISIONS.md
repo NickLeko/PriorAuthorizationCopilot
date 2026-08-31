@@ -4,7 +4,7 @@
 
 Reason:
 
-- easier to defend in interviews
+- easier to explain requirement by requirement
 - easier to audit
 - easier to regression test
 
@@ -22,13 +22,13 @@ Reason:
 Tradeoff:
 
 - more refusals
-- less superficially impressive throughput
+- lower apparent throughput because uncertain cases abstain
 
 ## 3. Shared Service Layer Instead Of Rewriting The Engine
 
 Reason:
 
-- the original deterministic core was already credible
+- the deterministic core already separated extraction from evaluation
 - the real weakness was orchestration inside the UI
 
 Tradeoff:
@@ -39,7 +39,7 @@ Tradeoff:
 
 Reason:
 
-- interview-friendly product shape
+- multiple inspectable product surfaces without duplicating decision logic
 - no need for persistence in the current scope
 
 Tradeoff:
@@ -51,7 +51,7 @@ Tradeoff:
 
 Reason:
 
-- useful enterprise signal without pretending to solve policy lifecycle management
+- detects source changes without automating policy interpretation or rule promotion
 
 Tradeoff:
 

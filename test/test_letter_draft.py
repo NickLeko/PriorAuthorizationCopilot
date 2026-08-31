@@ -49,6 +49,30 @@ def test_ready_letter():
     assert meta["draft_blocked"] is False
 
 
+def test_demo_trust_ready_letter_does_not_claim_submission_readiness():
+    draft_input = LetterDraftInput(
+        request=_base_metadata(),
+        not_documented_count=0,
+        not_met_count=0,
+        met_count=1,
+        results=[
+            RequirementResult(
+                key="criterion",
+                label="Criterion",
+                status="MET",
+                reason="Documented.",
+            )
+        ],
+        policy_trust_level="demo",
+    )
+
+    text, _ = draft_letter(draft_input)
+
+    assert "Overall Status: READY" in text
+    assert "not a submission-ready determination because policy trust is not verified" in text
+    assert "supports administrative submission readiness" not in text
+
+
 def test_not_ready_letter():
     request = _base_metadata()
     results = [

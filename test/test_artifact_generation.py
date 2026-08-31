@@ -13,6 +13,7 @@ def test_artifact_generation_writes_enriched_outputs(tmp_path, monkeypatch):
     assert (tmp_path / "MRI-KNEE-01-ready.json").exists()
     assert (tmp_path / "featured_demo_cases.json").exists()
     assert (tmp_path / "status.json").exists()
+    assert (tmp_path / "safety_metrics.json").exists()
     assert (tmp_path / "rulebook_status.json").exists()
     assert (tmp_path / "rulebook_diff_reviewed_vs_active.json").exists()
     assert (tmp_path / "drift_report.md").exists()
@@ -49,6 +50,13 @@ def test_artifact_generation_writes_enriched_outputs(tmp_path, monkeypatch):
     assert lumbar["provenance"]["status"] == "verified"
     assert lumbar["provenance"]["policy_identifier"] == "CPB 0236"
     assert lumbar["provenance"]["source_url"] == "https://www.aetna.com/cpb/medical/data/200_299/0236.html"
+
+    safety_metrics = json.loads((tmp_path / "safety_metrics.json").read_text(encoding="utf-8"))
+    assert safety_metrics["total_labeled_cases"] == 52
+    assert safety_metrics["expected_non_ready_count"] == 45
+    assert safety_metrics["exact_status_correct_count"] == 52
+    assert safety_metrics["false_ready_count"] == 0
+    assert safety_metrics["abstention_count"] == 42
 
     featured_payload = json.loads((tmp_path / "featured_demo_cases.json").read_text(encoding="utf-8"))
     assert any(item["id"] == "MRI-CERV-01-ready" for item in featured_payload)

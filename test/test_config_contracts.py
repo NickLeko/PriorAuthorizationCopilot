@@ -10,7 +10,7 @@ from engine.provenance import (
 )
 from engine.rules_loader import load_rules
 from engine.schemas import RequirementDefinition
-from engine.test_suites import run_cases
+from engine.test_suites import run_cases, summarize_safety_metrics
 
 
 def test_rules_loader_rejects_enum_without_allowed_values(tmp_path: Path):
@@ -216,6 +216,15 @@ def test_normalized_dx_codes_are_uppercase_deduped_and_sanitized():
 
 def test_bundled_synthetic_eval_cases_match_expected_labels():
     rows = run_cases("rules/payer_rules.yaml", "inputs/synthetic_cases.json")
+    metrics = summarize_safety_metrics(rows)
 
     assert rows
     assert all(row["pass"] == "✅" for row in rows)
+    assert all(row["expected"] for row in rows)
+    assert metrics["total_labeled_cases"] == 52
+    assert metrics["expected_non_ready_count"] == 45
+    assert metrics["exact_overall_status_accuracy_pct"] == 100.0
+    assert metrics["false_ready_count"] == 0
+    assert metrics["false_ready_rate_pct"] == 0.0
+    assert metrics["needs_review_count"] == 12
+    assert metrics["abstention_count"] == 42

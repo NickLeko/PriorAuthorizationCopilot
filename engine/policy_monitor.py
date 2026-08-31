@@ -19,6 +19,7 @@ from typing import Any, Dict, List, Optional
 DEFAULT_SOURCES_YAML = Path("rules/policy_sources.yaml")
 DEFAULT_SNAPSHOT_ROOT = Path("policy_snapshots")
 DEFAULT_LOG_PATH = DEFAULT_SNAPSHOT_ROOT / "drift_log.jsonl"
+SNAPSHOT_NORMALIZATION_VERSION = "engine.policy_monitor.normalize_policy:v1"
 
 
 @dataclass(frozen=True)
@@ -33,6 +34,10 @@ class PolicySource:
     check_frequency: str
     owner: str
     notes: str = ""
+
+
+class SnapshotValidationError(ValueError):
+    pass
 
 
 def utc_now_iso() -> str:
@@ -233,6 +238,77 @@ def hash_text(text: str) -> str:
     return h.hexdigest()
 
 
+def _parse_snapshot_timestamp(value: Any, field_name: str) -> dt.datetime:
+    if not isinstance(value, str) or not value.strip():
+        raise SnapshotValidationError(f"Snapshot field '{field_name}' must be a non-empty timestamp string.")
+    normalized = value.strip()
+    if normalized.endswith("Z"):
+        normalized = normalized[:-1] + "+00:00"
+    try:
+        parsed = dt.datetime.fromisoformat(normalized)
+    except ValueError as exc:
+        raise SnapshotValidationError(f"Snapshot field '{field_name}' is not a valid ISO-8601 timestamp.") from exc
+    if parsed.tzinfo is None:
+        raise SnapshotValidationError(f"Snapshot field '{field_name}' must include a timezone.")
+    return parsed.astimezone(dt.timezone.utc)
+
+
+def validate_snapshot(
+    snapshot: Any,
+    *,
+    source_id: str,
+    source: PolicySource | None = None,
+) -> Dict[str, Any]:
+    if not isinstance(snapshot, dict):
+        raise SnapshotValidationError("Policy snapshot must be a JSON object.")
+
+    required_string_fields = (
+        "id",
+        "payer",
+        "procedure_code",
+        "url",
+        "fetched_at_utc",
+        "last_checked_utc",
+        "content_hash_sha256",
+        "normalization",
+    )
+    for field_name in required_string_fields:
+        value = snapshot.get(field_name)
+        if not isinstance(value, str) or not value.strip():
+            raise SnapshotValidationError(f"Snapshot field '{field_name}' must be a non-empty string.")
+    if snapshot["id"] != source_id:
+        raise SnapshotValidationError("Snapshot id does not match its configured source directory.")
+    if snapshot["normalization"] != SNAPSHOT_NORMALIZATION_VERSION:
+        raise SnapshotValidationError("Snapshot normalization version is unsupported.")
+
+    normalized_text = snapshot.get("normalized_text")
+    if not isinstance(normalized_text, str):
+        raise SnapshotValidationError("Snapshot must include normalized_text so its content hash can be verified.")
+    declared_hash = snapshot["content_hash_sha256"].strip().lower()
+    if not re.fullmatch(r"[0-9a-f]{64}", declared_hash):
+        raise SnapshotValidationError("Snapshot content_hash_sha256 must be a 64-character lowercase hex digest.")
+    if hash_text(normalized_text) != declared_hash:
+        raise SnapshotValidationError("Snapshot normalized_text does not match content_hash_sha256.")
+
+    fetched_at = _parse_snapshot_timestamp(snapshot["fetched_at_utc"], "fetched_at_utc")
+    last_checked = _parse_snapshot_timestamp(snapshot["last_checked_utc"], "last_checked_utc")
+    if last_checked < fetched_at:
+        raise SnapshotValidationError("Snapshot last_checked_utc cannot precede fetched_at_utc.")
+
+    if source is not None:
+        expected_identity = {
+            "id": source.id,
+            "payer": source.payer,
+            "procedure_code": source.procedure_code,
+            "url": source.url,
+        }
+        for field_name, expected in expected_identity.items():
+            if snapshot.get(field_name) != expected:
+                raise SnapshotValidationError(f"Snapshot field '{field_name}' does not match the configured policy source.")
+
+    return dict(snapshot)
+
+
 def _source_dir(root: Path, source_id: str) -> Path:
     return root / source_id
 
@@ -249,11 +325,20 @@ def _diff_path(root: Path, source_id: str, ts: str) -> Path:
     return _source_dir(root, source_id) / "diffs" / f"{ts}.patch"
 
 
-def read_latest_snapshot(root: Path, source_id: str) -> Optional[Dict[str, Any]]:
+def read_latest_snapshot(
+    root: Path,
+    source_id: str,
+    *,
+    source: PolicySource | None = None,
+) -> Optional[Dict[str, Any]]:
     p = _latest_snapshot_path(root, source_id)
     if not p.exists():
         return None
-    return json.loads(p.read_text(encoding="utf-8"))
+    try:
+        snapshot = json.loads(p.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        raise SnapshotValidationError(f"Could not read a valid policy snapshot: {exc}") from exc
+    return validate_snapshot(snapshot, source_id=source_id, source=source)
 
 
 def diff_text(old_text: str, new_text: str, fromfile: str = "old", tofile: str = "new") -> str:
@@ -279,15 +364,22 @@ def write_snapshot(
     _safe_mkdir(src_dir / "history")
     _safe_mkdir(src_dir / "diffs")
 
+    recomputed_hash = hash_text(normalized_text)
+    if content_hash != recomputed_hash:
+        raise SnapshotValidationError("Refusing to write a policy snapshot with a mismatched content hash.")
+
     snap = {
         "id": source.id,
         "payer": source.payer,
         "procedure_code": source.procedure_code,
         "url": source.url,
         "fetched_at_utc": fetched_at_utc,
+        "last_checked_utc": fetched_at_utc,
         "content_hash_sha256": content_hash,
+        "normalization": SNAPSHOT_NORMALIZATION_VERSION,
         "normalized_text": normalized_text,
     }
+    validate_snapshot(snap, source_id=source.id, source=source)
 
     ts = fetched_at_utc.replace(":", "").replace("-", "")
     # e.g. 20260206T031210Z -> keep 'T' and 'Z' (already no colons)
@@ -301,6 +393,20 @@ def write_snapshot(
         "latest_snapshot_path": latest_path.as_posix(),
         "history_snapshot_path": history_path.as_posix(),
     }
+
+
+def update_last_checked(
+    source: PolicySource,
+    snapshot: Dict[str, Any],
+    checked_at_utc: str,
+    *,
+    snapshot_root: Path = DEFAULT_SNAPSHOT_ROOT,
+) -> None:
+    updated = dict(snapshot)
+    updated["last_checked_utc"] = checked_at_utc
+    validate_snapshot(updated, source_id=source.id, source=source)
+    latest_path = _latest_snapshot_path(snapshot_root, source.id)
+    latest_path.write_text(json.dumps(updated, indent=2, sort_keys=True) + "\n", encoding="utf-8")
 
 
 def append_drift_log(entry: Dict[str, Any], log_path: Path = DEFAULT_LOG_PATH) -> None:
@@ -334,7 +440,25 @@ def check_sources(
         normalized = normalize_policy(raw)
         new_hash = hash_text(normalized)
 
-        latest = read_latest_snapshot(snapshot_root, src.id)
+        try:
+            latest = read_latest_snapshot(snapshot_root, src.id, source=src)
+        except SnapshotValidationError as exc:
+            changes.append(
+                {
+                    "id": src.id,
+                    "payer": src.payer,
+                    "procedure_code": src.procedure_code,
+                    "url": src.url,
+                    "changed": False,
+                    "old_hash": None,
+                    "new_hash": new_hash,
+                    "latest_snapshot_path": _latest_snapshot_path(snapshot_root, src.id).as_posix(),
+                    "diff_path": None,
+                    "status": "INVALID_BASELINE",
+                    "error": str(exc),
+                }
+            )
+            continue
         old_hash = (latest or {}).get("content_hash_sha256")
         old_text = (latest or {}).get("normalized_text", "")
 
@@ -359,7 +483,8 @@ def check_sources(
                         "event": "BOOTSTRAP_SNAPSHOT_CREATED",
                         "old_hash": None,
                         "new_hash": new_hash,
-                    }
+                    },
+                    log_path=snapshot_root / "drift_log.jsonl",
                 )
 
             elif changed:
@@ -387,7 +512,16 @@ def check_sources(
                         "latest_snapshot_path": paths["latest_snapshot_path"],
                         "diff_path": diff_path,
                         "status": status,
-                    }
+                    },
+                    log_path=snapshot_root / "drift_log.jsonl",
+                )
+
+            else:
+                update_last_checked(
+                    src,
+                    latest,
+                    detected_at,
+                    snapshot_root=snapshot_root,
                 )
 
         else:
@@ -409,6 +543,7 @@ def check_sources(
                 "latest_snapshot_path": latest_snapshot_path,
                 "diff_path": diff_path,
                 "status": status,
+                "last_checked_utc": detected_at if write_artifacts else (latest or {}).get("last_checked_utc"),
             }
         )
 

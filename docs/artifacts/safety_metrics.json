@@ -1,0 +1,14 @@
+{
+  "abstention_count": 42,
+  "abstention_rate_pct": 80.8,
+  "cannot_determine_count": 30,
+  "cannot_determine_rate_pct": 57.7,
+  "exact_overall_status_accuracy_pct": 100.0,
+  "exact_status_correct_count": 52,
+  "expected_non_ready_count": 45,
+  "false_ready_count": 0,
+  "false_ready_rate_pct": 0.0,
+  "needs_review_count": 12,
+  "needs_review_rate_pct": 23.1,
+  "total_labeled_cases": 52
+}

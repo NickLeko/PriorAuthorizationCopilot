@@ -11,6 +11,7 @@ from engine.rendering import (
     write_json_artifact,
 )
 from engine.service import ReadinessService
+from engine.test_suites import run_cases, summarize_safety_metrics
 
 TIMESTAMP_PLACEHOLDER = "__TIMESTAMP_UTC__"
 LETTER_HASH_PLACEHOLDER = "__LETTER_HASH_SHA256_16__"
@@ -102,6 +103,10 @@ def main() -> int:
     write_json_artifact(
         service.get_status().model_dump(mode="json"),
         artifact_dir / "status.json",
+    )
+    write_json_artifact(
+        summarize_safety_metrics(run_cases(str(service.config.rules_path), str(service.config.synthetic_cases_path))),
+        artifact_dir / "safety_metrics.json",
     )
     write_json_artifact(
         rulebook_status.model_dump(mode="json"),

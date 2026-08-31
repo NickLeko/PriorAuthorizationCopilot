@@ -9,7 +9,7 @@
 - Source: Aetna CPB 0236 - Magnetic Resonance Imaging (MRI) and Computed Tomography (CT) of the Spine
 - Status: OK
 - Freshness: CURRENT
-- Last checked: 2026-08-22T19:46:51Z
+- Last checked: 2026-08-31T02:03:09Z
 - Rule source label: Verified mapping to Aetna CPB 0236, persistent back pain with radiculopathy branch
 - Last rule reviewed: 2026-08-22
 - Review reason: n/a

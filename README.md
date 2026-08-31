@@ -4,11 +4,11 @@ Prior authorization often fails before medical necessity is even evaluated: miss
 
 This project is a deterministic readiness workflow that checks prior-authorization documentation against versioned payer rules before submission. It returns `READY`, `NOT_READY`, `CANNOT_DETERMINE`, or `NEEDS_REVIEW`, with evidence mapping, audit artifacts, and explicit refusal behavior when required information is missing or cannot be evaluated.
 
-Its recruiter-facing differentiator is an inspectable `note evidence → extracted fact → rule/operator → requirement result → overall decision` trace. One `Aetna:MRI_LUMBAR` pathway demonstrates verified official-policy provenance; the cervical MRI, knee MRI, and CPAP pathways remain synthetic demos.
+Its central design is an inspectable `note evidence → extracted fact → rule/operator → requirement result → overall decision` trace. One `Aetna:MRI_LUMBAR` pathway demonstrates verified official-policy provenance; the cervical MRI, knee MRI, and CPAP pathways remain synthetic demos.
 
 It is a self-directed prototype, not a production payer integration or clinical decision system. The goal is to show how prior-auth workflows can be made more reviewable, auditable, and implementation-aware.
 
-![Prior Authorization Readiness Copilot showing a CANNOT_DETERMINE result with explicit missing-documentation blockers](assets/readme/prior-auth-readiness-demo.png)
+![Prior Authorization Readiness Copilot showing a CANNOT_DETERMINE result with explicit missing-documentation blockers](assets/readme/prior-auth-readiness-demo.jpg)
 
 _Synthetic CPAP demo case. The workflow refuses to infer a missing sleep-study date or AHI/RDI value and surfaces both documentation gaps for review._
 
@@ -21,7 +21,8 @@ This is a synthetic workflow-readiness demo, not a payer or clinical deployment.
 - `READY` means the configured requirement documentation was found and met threshold. It is never an authorization or medical-necessity determination.
 - `NOT_READY` means required documentation was found and evaluable, but failed a threshold.
 - `CANNOT_DETERMINE` means required documentation is missing or not explicit enough.
-- `NEEDS_REVIEW` means documentation was found but at least one result could not be evaluated against the configured categories; it is not an adjudicated threshold failure.
+- `NEEDS_REVIEW` means documentation was found but at least one result was ambiguous, contradictory, or not safely evaluable; it is not an adjudicated threshold failure.
+- `submission_readiness=true` additionally requires current verified policy provenance, a trusted active rulebook, and no unresolved drift. A documentation result may remain `READY` while submission readiness is false.
 - No output means payer approval, denial prediction, medical necessity, clinical appropriateness, or medical advice.
 
 ## Quick Reviewer Path
@@ -87,7 +88,7 @@ Human review remains outside the automation boundary. A real workflow would stil
 
 ## Why Deterministic First
 
-This problem is intentionally narrow. For a recruiter-facing and interview-defensible artifact, deterministic logic is the right backbone because it is:
+This problem is intentionally narrow. Deterministic logic is the right backbone because it is:
 
 - explainable requirement by requirement
 - explicit about rule operators and fail-closed status semantics
@@ -100,6 +101,8 @@ This problem is intentionally narrow. For a recruiter-facing and interview-defen
 
 `CANNOT_DETERMINE` is a feature here, not a failure mode.
 
+The bundled labeled fixture currently contains 52 synthetic cases. Its regression snapshot is 52/52 exact overall statuses, 0 false `READY` results among 45 expected non-`READY` cases, 12 `NEEDS_REVIEW` results (23.1%), and 42 combined `NEEDS_REVIEW`/`CANNOT_DETERMINE` abstentions (80.8%). These figures describe only the checked-in fixture; they are not estimates of performance on clinical notes or external data.
+
 ## Current Supported Scope
 
 | Payer | Procedure | Policy trust | Drift monitored |
@@ -111,9 +114,9 @@ This problem is intentionally narrow. For a recruiter-facing and interview-defen
 
 `MRI_LUMBAR` implements only the persistent back pain with radiculopathy alternative in official [Aetna Clinical Policy Bulletin 0236](https://www.aetna.com/cpb/medical/data/200_299/0236.html), _Magnetic Resonance Imaging (MRI) and Computed Tomography (CT) of the Spine_. The source was last reviewed April 9, 2026 and accessed August 22, 2026. The implemented branch requires back pain with radiculopathy, objective motor/reflex findings in an explicit nerve-root distribution, at least six weeks of qualifying conservative therapy, and explicit lack of improvement. Other CPB 0236 indications are not modeled.
 
-Footnote 1 identifies moderate activity, analgesics, NSAIDs/anti-inflammatory medication, and muscle relaxants as conservative-therapy modalities, but it does not explicitly say that every modality, a specific combination, or only one modality is required. The prototype interprets a documented qualifying modality as sufficient evidence of therapy type, selects the longest individually documented qualifying duration, and does not sum shorter sequential courses unless an overall duration is explicit. This is an implementation interpretation, not quoted Aetna policy language.
+Footnote 1 identifies moderate activity, analgesics, NSAIDs/anti-inflammatory medication, and muscle relaxants as conservative-therapy modalities, but it does not explicitly say that every modality, a specific combination, or only one modality is required. The prototype interprets a documented qualifying modality as sufficient evidence of therapy type. For a duration and response to satisfy the implemented branch together, they must resolve to one unambiguous supported modality candidate; contrast clauses, conflicting candidates, and unsupported cross-modality linkage route to review. This is a bounded deterministic interpretation, not quoted Aetna policy language or general episode resolution.
 
-The verified provenance chain is `official source → policy metadata/hash → requirement-to-clause mapping → structured rule → extracted evidence → deterministic evaluation`. Verified trust downgrades to demo for source drift, a stale or missing baseline, URL/hash mismatch, or incomplete verification metadata and clause mapping. The gate is scoped to the affected payer/procedure. This is a compact portfolio governance mechanism, not production policy management.
+The verified provenance chain is `official source → validated normalized snapshot/hash → requirement-to-clause mapping → structured rule → extracted evidence → deterministic evaluation`. Snapshot structure, source identity, stored content, recomputed hash, timestamps, freshness, and unresolved drift are checked before trust can remain verified. Invalid state downgrades only the affected payer/procedure to demo and forces `submission_readiness=false`; this is still local prototype governance, not production policy management.
 
 Bundled inputs remain synthetic; free-form input is not screened and must not contain real patient information. Policy drift monitoring is governance-only and does not automatically update rules. The rulebook registry tracks reviewed and active snapshots separately from runtime drift monitoring.
 
@@ -224,6 +227,7 @@ See [docs/artifacts/README.md](docs/artifacts/README.md) for how to inspect thes
 - [rulebook_diff_reviewed_vs_active.json](docs/artifacts/rulebook_diff_reviewed_vs_active.json)
 - [rulebook_diff_reviewed_vs_active.md](docs/artifacts/rulebook_diff_reviewed_vs_active.md)
 - [status.json](docs/artifacts/status.json)
+- [safety_metrics.json](docs/artifacts/safety_metrics.json)
 
 Regenerate demo artifacts with:
 

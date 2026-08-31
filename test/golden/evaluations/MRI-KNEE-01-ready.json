@@ -6,7 +6,8 @@
       "not_met": []
     },
     "evaluation_warnings": [
-      "Policy trust remains DEMO for this procedure. Verify against official policy before real-world use."
+      "Policy trust remains DEMO for this procedure. Verify against official policy before real-world use.",
+      "Documentation criteria evaluate to READY, but submission_readiness is false because the active policy and rulebook state is not fully trusted."
     ],
     "evidence_map": {
       "conservative_therapy_weeks": [
@@ -25,9 +26,9 @@
       ],
       "mechanical_symptoms_documented": [
         {
-          "end": 41,
-          "start": 16,
-          "text": "with locking and catching"
+          "end": 51,
+          "start": 0,
+          "text": "Right knee pain with locking and catching x 8 weeks"
         }
       ],
       "prior_imaging_result": [
@@ -110,7 +111,7 @@
     "run_id": "__RUN_ID__",
     "site_of_care": "outpatient",
     "specialty": "Orthopedics",
-    "submission_readiness": true,
+    "submission_readiness": false,
     "timestamp_utc": "__TIMESTAMP_UTC__"
   },
   "blockers": {
@@ -135,9 +136,9 @@
     ],
     "mechanical_symptoms_documented": [
       {
-        "end": 41,
-        "start": 16,
-        "text": "with locking and catching"
+        "end": 51,
+        "start": 0,
+        "text": "Right knee pain with locking and catching x 8 weeks"
       }
     ],
     "prior_imaging_result": [
@@ -211,7 +212,8 @@
         "not_met": []
       },
       "evaluation_warnings": [
-        "Policy trust remains DEMO for this procedure. Verify against official policy before real-world use."
+        "Policy trust remains DEMO for this procedure. Verify against official policy before real-world use.",
+        "Documentation criteria evaluate to READY, but submission_readiness is false because the active policy and rulebook state is not fully trusted."
       ],
       "evidence_map": {
         "conservative_therapy_weeks": [
@@ -230,9 +232,9 @@
         ],
         "mechanical_symptoms_documented": [
           {
-            "end": 41,
-            "start": 16,
-            "text": "with locking and catching"
+            "end": 51,
+            "start": 0,
+            "text": "Right knee pain with locking and catching x 8 weeks"
           }
         ],
         "prior_imaging_result": [
@@ -315,7 +317,7 @@
       "run_id": "__RUN_ID__",
       "site_of_care": "outpatient",
       "specialty": "Orthopedics",
-      "submission_readiness": true,
+      "submission_readiness": false,
       "timestamp_utc": "__TIMESTAMP_UTC__"
     },
     "letter_draft": "",
@@ -378,13 +380,13 @@
       {
         "evidence": "Locking, catching, buckling, giving way, or instability explicitly documented",
         "evidence_snippets": [
-          "with locking and catching"
+          "Right knee pain with locking and catching x 8 weeks"
         ],
         "evidence_spans": [
           {
-            "end": 41,
-            "start": 16,
-            "text": "with locking and catching"
+            "end": 51,
+            "start": 0,
+            "text": "Right knee pain with locking and catching x 8 weeks"
           }
         ],
         "key": "mechanical_symptoms_documented",
@@ -460,13 +462,13 @@
     {
       "evidence": "Locking, catching, buckling, giving way, or instability explicitly documented",
       "evidence_snippets": [
-        "with locking and catching"
+        "Right knee pain with locking and catching x 8 weeks"
       ],
       "evidence_spans": [
         {
-          "end": 41,
-          "start": 16,
-          "text": "with locking and catching"
+          "end": 51,
+          "start": 0,
+          "text": "Right knee pain with locking and catching x 8 weeks"
         }
       ],
       "key": "mechanical_symptoms_documented",
@@ -476,7 +478,7 @@
     }
   ],
   "rule_reasons": [],
-  "submission_readiness": true,
+  "submission_readiness": false,
   "supported_procedure": {
     "display_name": "MRI Knee (no contrast)",
     "metadata": {
@@ -569,6 +571,7 @@
     ]
   },
   "warnings": [
-    "Policy trust remains DEMO for this procedure. Verify against official policy before real-world use."
+    "Policy trust remains DEMO for this procedure. Verify against official policy before real-world use.",
+    "Documentation criteria evaluate to READY, but submission_readiness is false because the active policy and rulebook state is not fully trusted."
   ]
 }

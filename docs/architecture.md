@@ -41,7 +41,7 @@ The architecture is intentionally split into a small number of explainable layer
   - `READY`: all requirements met
   - `NOT_READY`: all requirements documented and evaluable, but at least one fails threshold
   - `CANNOT_DETERMINE`: at least one required element is not documented
-  - `NEEDS_REVIEW`: no required element is missing, but at least one documented result cannot be evaluated against the configured categories
+  - `NEEDS_REVIEW`: no required element is missing, but at least one documented result is ambiguous, contradictory, uncertain, or cannot be safely evaluated
 
 ### Shared application service
 
@@ -83,7 +83,7 @@ The architecture is intentionally split into a small number of explainable layer
 - computes diffs and drift events
 - never mutates rules automatically
 
-For the one verified pathway, provenance remains inspectable as `official source → policy metadata/hash → requirement-to-clause mapping → structured rule → extracted evidence → deterministic evaluation`. Trust and drift gates are scoped to the affected payer/procedure.
+For the one verified pathway, provenance remains inspectable as `official source → policy metadata/hash → requirement-to-clause mapping → structured rule → extracted evidence → deterministic evaluation`. Trust and drift gates are scoped to the affected payer/procedure. `submission_readiness` can be true only when documentation resolves to `READY` and policy/rulebook trust is verified and current.
 
 ### App surfaces
 
@@ -102,7 +102,7 @@ For the one verified pathway, provenance remains inspectable as `official source
 
 ## Why This Shape Was Chosen
 
-- It keeps the deterministic core small and interview-explainable.
+- It keeps the deterministic core small and explainable requirement by requirement.
 - It avoids pushing product logic into the Streamlit app.
 - It gives the repo reusable API and CLI surfaces without introducing a database or service mesh.
 - It supports stronger tests, stable exported artifacts, and a human-review governance story.
@@ -115,4 +115,4 @@ For the one verified pathway, provenance remains inspectable as `official source
 - no generic workflow engine
 - no LLM orchestration layer
 
-Those would make the repo look larger, not stronger.
+Those components are not required for the current local deterministic scope.

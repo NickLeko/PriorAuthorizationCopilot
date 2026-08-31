@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import Any, Dict, List, Optional, Tuple
 
-from .schemas import LEGACY_OPERATOR_BY_TYPE, EvidenceSpan, RequirementResult
+from .schemas import LEGACY_OPERATOR_BY_TYPE, REVIEW_REQUIRED_FACT, EvidenceSpan, RequirementResult
 
 
 def _coerce_evidence_snippets(evidence_items: Any) -> List[str]:
@@ -281,6 +281,23 @@ def evaluate_requirements(
         label = req.get("label", key)
         rtype = req.get("type", "boolean")
         operator = req.get("operator") or LEGACY_OPERATOR_BY_TYPE.get(rtype)
+
+        if facts.get(key) == REVIEW_REQUIRED_FACT:
+            evidence_items = (evidence_map or {}).get(key)
+            out = RequirementResult(
+                key=key,
+                label=label,
+                status="NEEDS_REVIEW",
+                reason=(
+                    "Relevant documentation is ambiguous, contradictory, uncertain, or cannot be safely linked; human review is required."
+                ),
+                evidence=req.get("evidence"),
+                evidence_snippets=_coerce_evidence_snippets(evidence_items),
+                evidence_spans=_coerce_evidence_spans(evidence_items),
+            )
+            results.append(out)
+            reasons.append(f"{out.label}: {out.status} — {out.reason}")
+            continue
 
         if operator == "minimum":
             out = _eval_number(key, label, facts, req, evidence_map=evidence_map)

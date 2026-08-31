@@ -6,7 +6,8 @@
       "not_met": []
     },
     "evaluation_warnings": [
-      "Policy trust remains DEMO for this procedure. Verify against official policy before real-world use."
+      "Policy trust remains DEMO for this procedure. Verify against official policy before real-world use.",
+      "Documentation criteria evaluate to READY, but submission_readiness is false because the active policy and rulebook state is not fully trusted."
     ],
     "evidence_map": {
       "conservative_therapy_weeks": [
@@ -25,9 +26,9 @@
       ],
       "mechanical_symptoms_documented": [
         {
-          "end": 41,
-          "start": 16,
-          "text": "with locking and catching"
+          "end": 51,
+          "start": 0,
+          "text": "Right knee pain with locking and catching x 8 weeks"
         }
       ],
       "prior_imaging_result": [
@@ -110,7 +111,7 @@
     "run_id": "__RUN_ID__",
     "site_of_care": "outpatient",
     "specialty": "Orthopedics",
-    "submission_readiness": true,
+    "submission_readiness": false,
     "timestamp_utc": "__TIMESTAMP_UTC__"
   },
   "blockers": {
@@ -135,9 +136,9 @@
     ],
     "mechanical_symptoms_documented": [
       {
-        "end": 41,
-        "start": 16,
-        "text": "with locking and catching"
+        "end": 51,
+        "start": 0,
+        "text": "Right knee pain with locking and catching x 8 weeks"
       }
     ],
     "prior_imaging_result": [
@@ -182,7 +183,7 @@
       "overall_status": "READY",
       "policy_trust_level": "demo"
     },
-    "text": "PRIOR AUTHORIZATION ADMINISTRATIVE READINESS SUMMARY\n\nPayer: Aetna\nProcedure: MRI_KNEE\nSite of care: outpatient\nSpecialty: Orthopedics\nGenerated: __TIMESTAMP_UTC__\nDx codes: M25.561\nPolicy trust level: DEMO \u2014 criteria are illustrative only. Verify against the official payer policy before submission.\n\nOverall Status: READY\n\nSummary:\nThis letter supports administrative submission readiness based on the documentation present in the record. This does not guarantee payer approval.\n\nRequirements:\n- Conservative therapy duration (weeks) (conservative_therapy_weeks): MET\n  Reason: Documented value: 8.\n  Evidence:\n   - \"PT for 8 weeks\"\n- Symptom duration (weeks) (symptom_duration_weeks): MET\n  Reason: Documented value: 8.\n  Evidence:\n   - \"8 weeks\"\n- Prior imaging result (prior_imaging_result): MET\n  Reason: Documented: normal.\n  Evidence:\n   - \"normal\"\n- Mechanical symptoms explicitly addressed (present or denied) (mechanical_symptoms_documented): MET\n  Reason: Explicitly addressed in documentation (present/affirmed).\n  Evidence:\n   - \"with locking and catching\"\nClosing:\nThis letter summarizes documentation-based administrative readiness for prior authorization submission. It does not provide clinical recommendations and does not predict approval outcomes.\n"
+    "text": "PRIOR AUTHORIZATION ADMINISTRATIVE READINESS SUMMARY\n\nPayer: Aetna\nProcedure: MRI_KNEE\nSite of care: outpatient\nSpecialty: Orthopedics\nGenerated: __TIMESTAMP_UTC__\nDx codes: M25.561\nPolicy trust level: DEMO \u2014 criteria are illustrative only. Verify against the official payer policy before submission.\n\nOverall Status: READY\n\nSummary:\nThe documentation satisfies the configured demonstration criteria, but this is not a submission-ready determination because policy trust is not verified. Verify the criteria against the current official payer policy before use.\n\nRequirements:\n- Conservative therapy duration (weeks) (conservative_therapy_weeks): MET\n  Reason: Documented value: 8.\n  Evidence:\n   - \"PT for 8 weeks\"\n- Symptom duration (weeks) (symptom_duration_weeks): MET\n  Reason: Documented value: 8.\n  Evidence:\n   - \"8 weeks\"\n- Prior imaging result (prior_imaging_result): MET\n  Reason: Documented: normal.\n  Evidence:\n   - \"normal\"\n- Mechanical symptoms explicitly addressed (present or denied) (mechanical_symptoms_documented): MET\n  Reason: Explicitly addressed in documentation (present/affirmed).\n  Evidence:\n   - \"Right knee pain with locking and catching x 8 weeks\"\nClosing:\nThis letter summarizes documentation-based administrative readiness for prior authorization submission. It does not provide clinical recommendations and does not predict approval outcomes.\n"
   },
   "metrics": {
     "criteria_met_count": 4,
@@ -226,7 +227,8 @@
         "not_met": []
       },
       "evaluation_warnings": [
-        "Policy trust remains DEMO for this procedure. Verify against official policy before real-world use."
+        "Policy trust remains DEMO for this procedure. Verify against official policy before real-world use.",
+        "Documentation criteria evaluate to READY, but submission_readiness is false because the active policy and rulebook state is not fully trusted."
       ],
       "evidence_map": {
         "conservative_therapy_weeks": [
@@ -245,9 +247,9 @@
         ],
         "mechanical_symptoms_documented": [
           {
-            "end": 41,
-            "start": 16,
-            "text": "with locking and catching"
+            "end": 51,
+            "start": 0,
+            "text": "Right knee pain with locking and catching x 8 weeks"
           }
         ],
         "prior_imaging_result": [
@@ -330,7 +332,7 @@
       "run_id": "__RUN_ID__",
       "site_of_care": "outpatient",
       "specialty": "Orthopedics",
-      "submission_readiness": true,
+      "submission_readiness": false,
       "timestamp_utc": "__TIMESTAMP_UTC__"
     },
     "letter_draft": "",
@@ -393,13 +395,13 @@
       {
         "evidence": "Locking, catching, buckling, giving way, or instability explicitly documented",
         "evidence_snippets": [
-          "with locking and catching"
+          "Right knee pain with locking and catching x 8 weeks"
         ],
         "evidence_spans": [
           {
-            "end": 41,
-            "start": 16,
-            "text": "with locking and catching"
+            "end": 51,
+            "start": 0,
+            "text": "Right knee pain with locking and catching x 8 weeks"
           }
         ],
         "key": "mechanical_symptoms_documented",
@@ -475,13 +477,13 @@
     {
       "evidence": "Locking, catching, buckling, giving way, or instability explicitly documented",
       "evidence_snippets": [
-        "with locking and catching"
+        "Right knee pain with locking and catching x 8 weeks"
       ],
       "evidence_spans": [
         {
-          "end": 41,
-          "start": 16,
-          "text": "with locking and catching"
+          "end": 51,
+          "start": 0,
+          "text": "Right knee pain with locking and catching x 8 weeks"
         }
       ],
       "key": "mechanical_symptoms_documented",
@@ -491,7 +493,7 @@
     }
   ],
   "rule_reasons": [],
-  "submission_readiness": true,
+  "submission_readiness": false,
   "supported_procedure": {
     "display_name": "MRI Knee (no contrast)",
     "metadata": {
@@ -584,6 +586,7 @@
     ]
   },
   "warnings": [
-    "Policy trust remains DEMO for this procedure. Verify against official policy before real-world use."
+    "Policy trust remains DEMO for this procedure. Verify against official policy before real-world use.",
+    "Documentation criteria evaluate to READY, but submission_readiness is false because the active policy and rulebook state is not fully trusted."
   ]
 }

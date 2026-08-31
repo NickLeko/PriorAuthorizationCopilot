@@ -17,7 +17,7 @@ It does not:
 
 Bundled synthetic inputs keep the demonstrated workflow:
 
-- safe to share in interviews and portfolios
+- safe to inspect and test without checked-in PHI
 - easy to test repeatedly
 - reviewable without including PHI in checked-in fixtures
 - honest about its current maturity
@@ -48,9 +48,11 @@ It does:
 
 - snapshot configured sources
 - normalize content
+- validate snapshot structure and recompute stored-content hashes
 - detect changes
 - flag review-required situations
-- flag stale monitoring baselines when checks have aged past their configured cadence
+- track successful checks separately from content snapshot time and flag stale monitoring state
+- reject malformed drift-log state and preserve recorded drift as unresolved until governance state is explicitly reset
 
 It does not:
 
@@ -88,4 +90,4 @@ Human reviewers would still own:
 
 ## Honest Disclaimer
 
-This repo is an enterprise-shaped demo artifact, not a production healthcare deployment.
+This repo is a local deterministic demo, not a production healthcare deployment.

@@ -4,6 +4,7 @@ import pytest
 
 from engine.evaluate import compute_overall_status, evaluate_requirements
 from engine.extract import extract_facts
+from engine.schemas import REVIEW_REQUIRED_FACT
 
 CONTRACT_PATH = Path("EXTRACTION_CONTRACT.md")
 
@@ -216,16 +217,18 @@ def test_extraction_contract_describes_current_shapes_and_limits():
 
     assert "implemented and deterministic; no LLM is used anywhere in the extraction path" in contract
     assert "A duration must appear in the same sentence as supported symptom context." in contract
-    assert 'Type: `"none" | "normal" | "negative" | "inconclusive" | "abnormal" | "unrecognized" | null`' in contract
+    assert (
+        'Internal type: `"none" | "normal" | "negative" | "inconclusive" | "abnormal" | "unrecognized" | null '
+        "| review-required marker`; public fact replaces the marker with `null`"
+    ) in contract
+    assert "service/API facts replace the internal review marker with `null`" in contract
     assert "Imaging mention without a stated result remains `null`." in contract
     assert "### `back_pain_with_radiculopathy`" in contract
     assert "### `objective_motor_or_reflex_change_in_root_distribution`" in contract
     assert "### `cpb_0236_conservative_therapy_weeks`" in contract
     assert "### `cpb_0236_conservative_therapy_no_improvement`" in contract
     assert "### `mechanical_symptoms_documented`" in contract
-    assert (
-        "Positive phrasing takes precedence if the note contains both denial and later affirmative mechanical-symptom language." in contract
-    )
+    assert "Contradictory supported evidence returns the internal review-required sentinel." in contract
     assert "This field records whether a contextualized date was found. It does not return the parsed date value." in contract
     assert "This field records whether the numeric value is documented. It does not return the numeric value itself." in contract
     assert "Possible Extensions" in contract
@@ -448,7 +451,7 @@ def test_recognized_normal_imaging_result_fails_rule_when_not_allowed():
     assert overall == {"overall_status": "NOT_READY", "submission_readiness": False}
 
 
-def test_positive_red_flag_evidence_takes_precedence_when_note_contains_conflict():
+def test_conflicting_red_flag_evidence_requires_review():
     note = (
         "Neck pain x 8 weeks. PT x 8 weeks. Denies weakness earlier in visit. "
         "Later note: reports progressive weakness and urinary retention. Prior CT abnormal."
@@ -456,8 +459,9 @@ def test_positive_red_flag_evidence_takes_precedence_when_note_contains_conflict
 
     facts, evidence = extract_facts(note)
 
-    assert facts["neuro_red_flags_documented"] is True
+    assert facts["neuro_red_flags_documented"] == REVIEW_REQUIRED_FACT
     assert "neuro_red_flags_documented" in evidence
+    assert len(evidence["neuro_red_flags_documented"]) == 2
     assert any("progressive weakness" in span["text"].lower() for span in evidence["neuro_red_flags_documented"])
 
 
@@ -471,7 +475,7 @@ def test_mechanical_symptom_denial_is_captured_as_explicit_documentation():
     assert any("denies locking" in span["text"].lower() for span in evidence["mechanical_symptoms_documented"])
 
 
-def test_positive_mechanical_symptoms_take_precedence_when_note_contains_conflict():
+def test_conflicting_mechanical_symptoms_require_review():
     note = (
         "Right knee pain x 8 weeks. PT x 8 weeks. Denies locking earlier in visit. "
         "Later note: reports buckling with stairs. Prior knee xray normal."
@@ -479,6 +483,29 @@ def test_positive_mechanical_symptoms_take_precedence_when_note_contains_conflic
 
     facts, evidence = extract_facts(note)
 
-    assert facts["mechanical_symptoms_documented"] is True
+    assert facts["mechanical_symptoms_documented"] == REVIEW_REQUIRED_FACT
     assert "mechanical_symptoms_documented" in evidence
+    assert len(evidence["mechanical_symptoms_documented"]) == 2
     assert any("buckling" in span["text"].lower() for span in evidence["mechanical_symptoms_documented"])
+
+
+def test_same_sentence_mechanical_contradiction_requires_review():
+    facts, evidence = extract_facts("Patient denies locking but later reports buckling with stairs.")
+
+    assert facts["mechanical_symptoms_documented"] == REVIEW_REQUIRED_FACT
+    assert evidence["mechanical_symptoms_documented"]
+
+
+def test_review_required_fact_bypasses_rule_operator_and_fails_closed():
+    requirement = {
+        "key": "criterion",
+        "label": "Criterion",
+        "type": "boolean",
+        "operator": "equals_true",
+    }
+
+    results, _ = evaluate_requirements([requirement], {"criterion": REVIEW_REQUIRED_FACT})
+    overall = compute_overall_status(results)
+
+    assert results[0].status == "NEEDS_REVIEW"
+    assert overall == {"overall_status": "NEEDS_REVIEW", "submission_readiness": False}

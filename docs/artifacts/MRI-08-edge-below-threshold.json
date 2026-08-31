@@ -37,9 +37,9 @@
       ],
       "cpb_0236_conservative_therapy_weeks": [
         {
-          "end": 62,
+          "end": 82,
           "start": 44,
-          "text": "NSAIDs for 5 weeks"
+          "text": "NSAIDs for 5 weeks with no improvement"
         }
       ],
       "objective_motor_or_reflex_change_in_root_distribution": [
@@ -159,9 +159,9 @@
     ],
     "cpb_0236_conservative_therapy_weeks": [
       {
-        "end": 62,
+        "end": 82,
         "start": 44,
-        "text": "NSAIDs for 5 weeks"
+        "text": "NSAIDs for 5 weeks with no improvement"
       }
     ],
     "objective_motor_or_reflex_change_in_root_distribution": [
@@ -188,7 +188,7 @@
   },
   "letter": {
     "metadata": {
-      "cited_snippets_count": 4,
+      "cited_snippets_count": 3,
       "contains_missing_documentation": false,
       "draft_blocked": false,
       "draft_blocked_reasons": [],
@@ -199,7 +199,7 @@
       "overall_status": "NOT_READY",
       "policy_trust_level": "verified"
     },
-    "text": "PRIOR AUTHORIZATION ADMINISTRATIVE READINESS SUMMARY\n\nPayer: Aetna\nProcedure: MRI_LUMBAR\nSite of care: outpatient\nSpecialty: Primary Care\nGenerated: __TIMESTAMP_UTC__\nDx codes: M54.5\nPolicy trust level: VERIFIED \u2014 criteria derived from documented payer policy sources.\n\nOverall Status: NOT_READY\n\nSummary:\nThe request is not administratively ready for submission because one or more documented requirements do not meet thresholds. This does not represent a clinical judgment and does not guarantee payer approval.\n\nRequirements:\n- Persistent back pain with radiculopathy documented (back_pain_with_radiculopathy): MET\n  Reason: Explicit affirmative documentation found.\n  Evidence:\n   - \"Low back pain with right leg radiculopathy\"\n- Objective motor or reflex change in a nerve-root distribution (objective_motor_or_reflex_change_in_root_distribution): MET\n  Reason: Explicit affirmative documentation found.\n  Evidence:\n   - \"Objective motor exam in the right L5 distribution: ankle dorsiflexion strength 4/5\"\n- Conservative therapy duration (weeks) (cpb_0236_conservative_therapy_weeks): NOT_MET\n  Reason: Documented value (5) below requirement (>= 6.0). Clarify or justify.\n  Evidence:\n   - \"NSAIDs for 5 weeks\"\n- No improvement after conservative therapy (cpb_0236_conservative_therapy_no_improvement): MET\n  Reason: Explicit affirmative documentation found.\n  Evidence:\n   - \"NSAIDs for 5 weeks with no improvement\"\nClosing:\nThis letter summarizes documentation-based administrative readiness for prior authorization submission. It does not provide clinical recommendations and does not predict approval outcomes.\n"
+    "text": "PRIOR AUTHORIZATION ADMINISTRATIVE READINESS SUMMARY\n\nPayer: Aetna\nProcedure: MRI_LUMBAR\nSite of care: outpatient\nSpecialty: Primary Care\nGenerated: __TIMESTAMP_UTC__\nDx codes: M54.5\nPolicy trust level: VERIFIED \u2014 criteria derived from documented payer policy sources.\n\nOverall Status: NOT_READY\n\nSummary:\nThe request is not administratively ready for submission because one or more documented requirements do not meet thresholds. This does not represent a clinical judgment and does not guarantee payer approval.\n\nRequirements:\n- Persistent back pain with radiculopathy documented (back_pain_with_radiculopathy): MET\n  Reason: Explicit affirmative documentation found.\n  Evidence:\n   - \"Low back pain with right leg radiculopathy\"\n- Objective motor or reflex change in a nerve-root distribution (objective_motor_or_reflex_change_in_root_distribution): MET\n  Reason: Explicit affirmative documentation found.\n  Evidence:\n   - \"Objective motor exam in the right L5 distribution: ankle dorsiflexion strength 4/5\"\n- Conservative therapy duration (weeks) (cpb_0236_conservative_therapy_weeks): NOT_MET\n  Reason: Documented value (5) below requirement (>= 6.0). Clarify or justify.\n  Evidence:\n   - \"NSAIDs for 5 weeks with no improvement\"\n- No improvement after conservative therapy (cpb_0236_conservative_therapy_no_improvement): MET\n  Reason: Explicit affirmative documentation found.\n  Evidence:\n   - \"NSAIDs for 5 weeks with no improvement\"\nClosing:\nThis letter summarizes documentation-based administrative readiness for prior authorization submission. It does not provide clinical recommendations and does not predict approval outcomes.\n"
   },
   "metrics": {
     "criteria_met_count": 3,
@@ -279,9 +279,9 @@
         ],
         "cpb_0236_conservative_therapy_weeks": [
           {
-            "end": 62,
+            "end": 82,
             "start": 44,
-            "text": "NSAIDs for 5 weeks"
+            "text": "NSAIDs for 5 weeks with no improvement"
           }
         ],
         "objective_motor_or_reflex_change_in_root_distribution": [
@@ -408,13 +408,13 @@
       {
         "evidence": "At least 6 weeks of CPB 0236 Footnote 1 conservative therapy documented",
         "evidence_snippets": [
-          "NSAIDs for 5 weeks"
+          "NSAIDs for 5 weeks with no improvement"
         ],
         "evidence_spans": [
           {
-            "end": 62,
+            "end": 82,
             "start": 44,
-            "text": "NSAIDs for 5 weeks"
+            "text": "NSAIDs for 5 weeks with no improvement"
           }
         ],
         "key": "cpb_0236_conservative_therapy_weeks",
@@ -492,13 +492,13 @@
     {
       "evidence": "At least 6 weeks of CPB 0236 Footnote 1 conservative therapy documented",
       "evidence_snippets": [
-        "NSAIDs for 5 weeks"
+        "NSAIDs for 5 weeks with no improvement"
       ],
       "evidence_spans": [
         {
-          "end": 62,
+          "end": 82,
           "start": 44,
-          "text": "NSAIDs for 5 weeks"
+          "text": "NSAIDs for 5 weeks with no improvement"
         }
       ],
       "key": "cpb_0236_conservative_therapy_weeks",

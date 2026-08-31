@@ -41,6 +41,7 @@ smoke-ui:
 
 lint:
 	$(RUN_PYTHON) -m ruff check .
+	$(RUN_PYTHON) -m ruff format --check .
 
 format:
 	$(RUN_PYTHON) -m ruff format .

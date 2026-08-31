@@ -71,10 +71,10 @@ curl -X POST http://127.0.0.1:8000/evaluate \
 Response highlights:
 
 - `overall_status`
-- `submission_readiness`
+- `submission_readiness` (true only when `overall_status` is `READY` and policy/rulebook trust is verified and current)
 - `results`
 - `blockers`
-- `facts`
+- public `facts` (`null` is used when an internal candidate requires review; consult requirement status and evidence for the distinction)
 - `evidence_map`
 - `audit_trail`
 
@@ -86,7 +86,7 @@ Returns governance-only drift status for configured monitored sources, including
 - source type
 - check frequency
 - freshness status
-- days since last snapshot check
+- days since the last successful policy check
 - latest snapshot hash
 - latest event
 - latest diff path if present

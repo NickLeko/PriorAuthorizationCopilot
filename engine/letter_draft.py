@@ -183,7 +183,6 @@ def _format_snippet(s: str, max_words: int = 25) -> str:
 def _policy_trust_line(policy_trust_level: str) -> str | None:
     """
     Returns a single-line policy trust disclaimer to be injected into the header.
-    Presentation-only; no logic impact.
     """
     if policy_trust_level == "demo":
         return "Policy trust level: DEMO — criteria are illustrative only. Verify against the official payer policy before submission."
@@ -306,7 +305,14 @@ def draft_letter(
             "It does not provide clinical recommendations and does not guarantee payer approval.\n"
         )
     else:
-        if overall == "READY":
+        if overall == "READY" and policy_trust_level != "verified":
+            summary = (
+                "Summary:\n"
+                "The documentation satisfies the configured demonstration criteria, but this is not a "
+                "submission-ready determination because policy trust is not verified. "
+                "Verify the criteria against the current official payer policy before use.\n"
+            )
+        elif overall == "READY":
             summary = (
                 "Summary:\n"
                 "This letter supports administrative submission readiness based on the documentation present in the record. "

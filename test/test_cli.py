@@ -61,7 +61,6 @@ def test_cli_list_demo_cases_includes_scenario_type(capsys):
     assert exit_code == 0
     assert "MRI-CERV-01-ready" in captured.out
     assert "expected_status=READY" in captured.out
-    assert "fixture_label=complete" in captured.out
     assert "New procedure coverage" in captured.out
     assert "MRI-KNEE-01-ready" in captured.out
     assert "Non-spine coverage" in captured.out

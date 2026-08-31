@@ -3,7 +3,7 @@
 
 **Project:** Prior Authorization Readiness Copilot  
 **Owner:** Nicholas Leko  
-**Last Updated:** August 22, 2026
+**Last Updated:** August 31, 2026
 **Status:** Versioned current behavior. Changes should update tests and docs.
 
 ---
@@ -21,7 +21,7 @@ It evaluates whether payer-required administrative criteria are:
 - documented and met (`MET`)
 - documented but not met (`NOT_MET`)
 - not documented (`NOT_DOCUMENTED`)
-- documented but not evaluable under configured categories (`NEEDS_REVIEW`)
+- documented but ambiguous, contradictory, uncertain, or not safely evaluable (`NEEDS_REVIEW`)
 
 It then derives an overall readiness status:
 - `READY`
@@ -44,6 +44,7 @@ The system is intentionally:
 - Any `NEEDS_REVIEW` (and no `NOT_DOCUMENTED`) ⇒ overall status **must** be `NEEDS_REVIEW`
 - Any `NOT_MET` (and no `NOT_DOCUMENTED` or `NEEDS_REVIEW`) ⇒ overall status **must** be `NOT_READY`
 - No blockers ⇒ overall status **must** be `READY`
+- `submission_readiness=true` additionally requires `READY`, current verified policy trust, a trustworthy active rulebook, and no unresolved or invalid governance state
 
 Invariant violations are surfaced in:
 - UI banners
@@ -67,6 +68,8 @@ Letter drafting:
 - Rules are never auto-updated
 - Policy meaning is never inferred (no LLM policy interpretation)
 - UI gates evaluation if drift is detected for a monitored source (`REVIEW_REQUIRED` acknowledgement required)
+- Acknowledgement permits inspection only; it does not restore verified trust or make `submission_readiness` true
+- Malformed drift-log state and any recorded drift without an explicit resolution mechanism fail policy trust closed
 
 ---
 
@@ -95,6 +98,8 @@ Letter drafting:
 
 These were failures in the over-extraction direction, which is the direction the safety contract is designed to minimize. The patched extractor now rejects locally negated or future-planned therapy durations and skips therapy-context durations when extracting symptom duration. Regression coverage was added for the original cases and related phrasing variants. The residual risk remains non-zero for untested free-text phrasing.
 
+**Revision note, August 31, 2026:** Candidate resolution now also fails closed for the tested cross-therapy, non-patient attribution, future/hypothetical, uncertainty/question, and contradictory-finding phrase families. The bundled labeled fixture and direct adversarial tests include forward/reversed order and lexical variants. This is bounded deterministic coverage, not a claim of general clinical-language understanding or zero real-world false `READY` risk.
+
 ---
 
 ### FM-2: False CANNOT_DETERMINE (Operational Friction)
@@ -122,7 +127,7 @@ These were failures in the over-extraction direction, which is the direction the
 - Implicit documentation without thresholds
 
 **Mitigations:**
-- Hard separation: failed thresholds use `NOT_MET`, missing values use `NOT_DOCUMENTED`, and enumerated documented-but-unevaluable imaging results use `NEEDS_REVIEW`
+- Hard separation: failed thresholds use `NOT_MET`, missing values use `NOT_DOCUMENTED`, and ambiguous, contradictory, uncertain, or otherwise unsafe-to-resolve values use `NEEDS_REVIEW`
 - “duration not specified” ⇒ `NOT_DOCUMENTED`
 - Rule reasons explicitly instruct what must be documented
 
@@ -153,6 +158,7 @@ These were failures in the over-extraction direction, which is the direction the
 
 **Mitigations:**
 - Snapshot + hash drift detection
+- Snapshot structure, source identity, timestamp, stored-content hash, and drift-log validation
 - Diff artifact generation
 - Append-only drift log
 - UI `REVIEW_REQUIRED` gate

@@ -2,6 +2,8 @@
 
 This directory contains checked-in sample outputs. The procedure evaluation JSON files are generated from bundled synthetic demo cases and active rules; `drift_status.json` and `drift_report.md` derive from the policy-source registry and checked-in snapshot state; rulebook artifacts derive from the manifest and release files; `status.json` reflects the loaded runtime configuration; `supported_procedures.json` derives from active rules; and the demo-case catalogs derive from bundled synthetic cases.
 
+`safety_metrics.json` reports exact-status, false-`READY`, `NEEDS_REVIEW`, and abstention metrics for the bundled labeled synthetic fixture only.
+
 These artifacts are intentionally committed because they make reviewer inspection easier and support stable diffs. Full `note_text` values are replaced by a short SHA-256 hash and `[redacted for repository]`; the files are not patient records, payer responses, production logs, or PHI-bearing outputs.
 
 ## How To Inspect An Artifact
@@ -15,7 +17,7 @@ Start with:
 The most useful fields are:
 
 - `overall_status`: `READY`, `NOT_READY`, `CANNOT_DETERMINE`, or `NEEDS_REVIEW`.
-- `submission_readiness`: boolean derived from the overall status.
+- `submission_readiness`: true only when the overall status is `READY` and policy/rulebook trust is verified and current.
 - `results[]`: requirement-level `MET`, `NOT_MET`, `NOT_DOCUMENTED`, or `NEEDS_REVIEW` results.
 - `blockers`: grouped missing, documented-but-not-met, and documented-but-unevaluable requirements.
 - `facts`: extracted deterministic facts.
@@ -32,6 +34,8 @@ The most useful fields are:
 They do not show payer approval, denial, denial prediction, clinical appropriateness, medical necessity, production readiness, or real patient handling.
 
 `READY` means only that the synthetic note met the currently configured documentation requirements. It is not a payer authorization or medical-necessity decision, including for the verified lumbar pathway.
+
+The safety metrics are fixture-scoped regression checks. They do not estimate accuracy, sensitivity, specificity, or safety on external clinical text.
 
 ## Regeneration
 

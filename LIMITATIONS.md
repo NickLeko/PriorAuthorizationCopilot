@@ -12,6 +12,7 @@
 - unusual phrasing can remain unparsed
 - the system prefers missingness over aggressive inference
 - revision note, June 9, 2026: over-extraction edge cases have been identified and patched, including negated therapy, future-planned therapy, and therapy-duration leakage into symptom duration; regression tests now cover those cases
+- revision note, August 31, 2026: tested subject-attribution, future/hypothetical, uncertainty/question, cross-therapy, and contradictory-candidate forms fail closed; general coreference, longitudinal episode resolution, and untested language remain unsupported
 
 ## Governance Limits
 

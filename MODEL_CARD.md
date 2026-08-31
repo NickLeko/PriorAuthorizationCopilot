@@ -1,9 +1,9 @@
 # Model Card
 
 Project: Prior Authorization Readiness Copilot  
-Version: 1.3.1
+Version: 1.4.0
 
-Changelog: 1.3.1 — Distinguishes recognized normal and specific negative imaging findings from inconclusive or unrecognized findings, makes implicit legacy booleans conservative, and adds a compact evidence-to-decision UI trace. Version 1.3 introduced local-context extraction, explicit operators, fail-closed evaluation, qualified rule identity, stronger provenance checks, scoped drift gates, and explicit documentation metrics.
+Changelog: 1.4.0 — Collects and conservatively resolves supported evidence candidates, adds tested subject/temporal/uncertainty/question safeguards, prevents internal review markers from entering public payloads, makes policy trust depend on validated snapshot and drift-log state, and reports fixture-scoped safety metrics. Version 1.3.1 distinguished recognized normal and specific negative imaging findings from inconclusive or unrecognized findings.
 
 ## Current Repo
 
@@ -54,7 +54,7 @@ Changelog: 1.3.1 — Distinguishes recognized normal and specific negative imagi
 
 ## Evaluation
 
-The repo includes pytest coverage for extraction, evaluation, drafting, rule loading, and policy-monitor helpers. All bundled evaluation cases are synthetic.
+The repo includes pytest coverage for extraction, evaluation, drafting, rule loading, and policy-monitor helpers. All bundled evaluation cases are synthetic. The checked-in fixture currently reports 52/52 exact statuses and 0 false `READY` results among 45 expected non-`READY` cases; those figures apply only to that fixture and are not real-world performance estimates.
 
 ## Known Limits
 

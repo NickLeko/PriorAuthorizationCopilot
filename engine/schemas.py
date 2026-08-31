@@ -12,6 +12,11 @@ RequirementType = Literal["number", "boolean", "enum"]
 RequirementOperator = Literal["documented", "equals_true", "minimum", "one_of"]
 RulebookStage = Literal["draft", "reviewed", "active"]
 
+# Internal fail-closed value emitted when supported evidence is present but
+# cannot safely be resolved to one fact. The evaluator converts this sentinel
+# to NEEDS_REVIEW before applying a rule operator.
+REVIEW_REQUIRED_FACT = "__REVIEW_REQUIRED__"
+
 # Migration fallback only. Current bundled rules declare operators explicitly.
 # A legacy boolean defaults to the conservative affirmative check so an
 # explicit False value cannot silently satisfy an ambiguous requirement.
@@ -340,6 +345,7 @@ class DemoCase(BaseModel):
     specialty: str = "unknown"
     note_text: str = ""
     expected_label: Optional[str] = None
+    expected_overall_status: Optional[OverallStatus] = None
     showcase: Dict[str, Any] = Field(default_factory=dict)
 
     @field_validator("id", "payer", "procedure_code", "site_of_care", "specialty", "note_text")
@@ -388,6 +394,13 @@ class AuditTrace(BaseModel):
     def _strip_strings(cls, value: str) -> str:
         return value.strip()
 
+    @field_validator("facts_extracted")
+    @classmethod
+    def _reject_internal_fact_sentinel(cls, value: Dict[str, Any]) -> Dict[str, Any]:
+        if any(fact == REVIEW_REQUIRED_FACT for fact in value.values()):
+            raise ValueError("Internal review-required markers must not appear in public audit facts.")
+        return value
+
 
 class ReadinessReport(BaseModel):
     model_config = ConfigDict(extra="forbid")
@@ -432,6 +445,13 @@ class EvaluationResult(BaseModel):
     provenance: Dict[str, Any] = Field(default_factory=dict)
     audit_trail: AuditTrace
     report: ReadinessReport
+
+    @field_validator("facts")
+    @classmethod
+    def _reject_internal_fact_sentinel(cls, value: Dict[str, Any]) -> Dict[str, Any]:
+        if any(fact == REVIEW_REQUIRED_FACT for fact in value.values()):
+            raise ValueError("Internal review-required markers must not appear in public evaluation facts.")
+        return value
 
 
 class DriftSourceStatus(BaseModel):

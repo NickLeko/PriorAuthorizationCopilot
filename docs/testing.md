@@ -15,8 +15,10 @@ The most important things to protect are:
 
 Two regression layers exist on purpose:
 
-- the bundled synthetic evaluation suite checks coarse `complete` versus `incomplete` fixture expectations
+- the bundled labeled fixture suite checks exact expected overall statuses for every included case and reports fixture-scoped false-READY, exact-status, and abstention metrics; these are regression metrics, not estimates of real-world clinical-language performance
 - acceptance snapshots lock representative exact outputs for evaluation and governance surfaces
+
+Current bundled-fixture snapshot: 52 labeled synthetic cases; 52/52 exact overall statuses; 0 false `READY` results among 45 expected non-`READY` cases; 12 `NEEDS_REVIEW` results (23.1%); and 42 combined `NEEDS_REVIEW`/`CANNOT_DETERMINE` abstentions (80.8%).
 
 ## Commands
 
@@ -29,7 +31,7 @@ make acceptance
 make smoke-ui
 ```
 
-Run the reviewer-facing docs and artifact-path regressions:
+Run the documentation and artifact-path regressions:
 
 ```bash
 .venv/bin/python -m pytest -q test/test_reviewer_docs.py test/test_artifact_generation.py
@@ -99,11 +101,11 @@ The bundled synthetic case set intentionally includes:
 - unsupported or incomplete evidence patterns
 - new procedure coverage for cervical MRI
 - non-spine knee MRI coverage
-- contradictory evidence precedence for red-flag extraction
-- adversarial negation and duration-anchoring cases for imaging, OSA, and symptom history
+- contradictory evidence abstention for relevant diagnosis, finding, and symptom facts
+- adversarial subject, uncertainty, future-state, negation, and duration-anchoring cases
 - explicit operator semantics and empty-requirement fail-closed behavior
-- CPB 0236 modality, duration, and treatment-response cases, including longest individually documented qualifying duration
-- governance snapshot drift and rulebook integrity
+- CPB 0236 modality, duration, and treatment-response cases, including contrast-clause linkage failures and tested order variants
+- governance snapshot drift, structural validation, recomputed content hashes, future-time rejection, and successful-check freshness
 
 That is more useful here than adding a large quantity of low-value tests.
 

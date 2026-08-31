@@ -3,6 +3,7 @@ from pathlib import Path
 
 from cli import main
 from engine.service import ReadinessService
+from engine.test_suites import run_cases, summarize_safety_metrics
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -32,6 +33,19 @@ def test_reviewer_docs_include_quick_path_scope_and_artifact_guidance():
     assert "docs/artifacts/CPAP-02-borderline.json" in guide
     assert "/tmp/pa-copilot-reviewer-demo.json" in readme
     assert "/tmp/pa-copilot-reviewer-demo.json" in artifacts_readme
+
+
+def test_documented_fixture_metrics_match_the_bundled_labeled_suite():
+    metrics = summarize_safety_metrics(run_cases("rules/payer_rules.yaml", "inputs/synthetic_cases.json"))
+    expected_claims = [
+        f"{metrics['exact_status_correct_count']}/{metrics['total_labeled_cases']} exact overall statuses",
+        (f"{metrics['false_ready_count']} false `READY` results among {metrics['expected_non_ready_count']} expected non-`READY` cases"),
+        f"{metrics['needs_review_count']} `NEEDS_REVIEW` results ({metrics['needs_review_rate_pct']:.1f}%)",
+    ]
+
+    for path in ("README.md", "docs/testing.md", "docs/reviewer_guide.md"):
+        text = _read(path)
+        assert all(claim in text for claim in expected_claims)
 
 
 def test_reviewer_demo_cases_preserve_status_meanings_and_audit_fields():

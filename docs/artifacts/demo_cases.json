@@ -4,6 +4,7 @@
       "M54.16"
     ],
     "expected_label": "complete",
+    "expected_overall_status": "READY",
     "id": "MRI-01-complete",
     "note_text": "sha256:b66310c6bfc8e97d [redacted for repository]",
     "payer": "Aetna",
@@ -30,6 +31,7 @@
       "M51.26"
     ],
     "expected_label": "incomplete",
+    "expected_overall_status": "CANNOT_DETERMINE",
     "id": "MRI-02-complete",
     "note_text": "sha256:5b046404ac7bfa33 [redacted for repository]",
     "payer": "Aetna",
@@ -43,6 +45,7 @@
       "M54.5"
     ],
     "expected_label": "incomplete",
+    "expected_overall_status": "CANNOT_DETERMINE",
     "id": "MRI-03-borderline",
     "note_text": "sha256:620fd5f46b97e438 [redacted for repository]",
     "payer": "Aetna",
@@ -56,6 +59,7 @@
       "M54.16"
     ],
     "expected_label": "incomplete",
+    "expected_overall_status": "CANNOT_DETERMINE",
     "id": "MRI-04-borderline",
     "note_text": "sha256:23abd50e9165deb4 [redacted for repository]",
     "payer": "Aetna",
@@ -69,6 +73,7 @@
       "M54.5"
     ],
     "expected_label": "incomplete",
+    "expected_overall_status": "CANNOT_DETERMINE",
     "id": "MRI-05-incomplete",
     "note_text": "sha256:ed5102a8acc6d0de [redacted for repository]",
     "payer": "Aetna",
@@ -82,6 +87,7 @@
       "M54.16"
     ],
     "expected_label": "incomplete",
+    "expected_overall_status": "CANNOT_DETERMINE",
     "id": "MRI-06-incomplete",
     "note_text": "sha256:fa68b82ea74c0d8e [redacted for repository]",
     "payer": "Aetna",
@@ -95,6 +101,7 @@
       "G47.33"
     ],
     "expected_label": "complete",
+    "expected_overall_status": "READY",
     "id": "CPAP-01-complete",
     "note_text": "sha256:a6ba497402393571 [redacted for repository]",
     "payer": "Aetna",
@@ -108,6 +115,7 @@
       "G47.33"
     ],
     "expected_label": "incomplete",
+    "expected_overall_status": "CANNOT_DETERMINE",
     "id": "CPAP-02-borderline",
     "note_text": "sha256:5ef99d034f3c708e [redacted for repository]",
     "payer": "Aetna",
@@ -132,6 +140,7 @@
   {
     "dx_codes": [],
     "expected_label": "incomplete",
+    "expected_overall_status": "CANNOT_DETERMINE",
     "id": "CPAP-03-incomplete",
     "note_text": "sha256:8a3e04b0d8cffc5c [redacted for repository]",
     "payer": "Aetna",
@@ -145,6 +154,7 @@
       "G47.33"
     ],
     "expected_label": "incomplete",
+    "expected_overall_status": "CANNOT_DETERMINE",
     "id": "CPAP-04-incomplete",
     "note_text": "sha256:e0d3de983a93cb1f [redacted for repository]",
     "payer": "Aetna",
@@ -158,6 +168,7 @@
       "M54.16"
     ],
     "expected_label": "incomplete",
+    "expected_overall_status": "CANNOT_DETERMINE",
     "id": "MRI-07-edge-exact-threshold",
     "note_text": "sha256:9c8f7c88f900caf8 [redacted for repository]",
     "payer": "Aetna",
@@ -171,6 +182,7 @@
       "M54.5"
     ],
     "expected_label": "incomplete",
+    "expected_overall_status": "NOT_READY",
     "id": "MRI-08-edge-below-threshold",
     "note_text": "sha256:2f9bb605eac5f3ce [redacted for repository]",
     "payer": "Aetna",
@@ -197,6 +209,7 @@
       "M54.16"
     ],
     "expected_label": "incomplete",
+    "expected_overall_status": "CANNOT_DETERMINE",
     "id": "MRI-09-negation-variant",
     "note_text": "sha256:e00963c68427c635 [redacted for repository]",
     "payer": "Aetna",
@@ -210,6 +223,7 @@
       "M54.5"
     ],
     "expected_label": "incomplete",
+    "expected_overall_status": "CANNOT_DETERMINE",
     "id": "MRI-10-doc-gap-redflags",
     "note_text": "sha256:7c34028f4e2de547 [redacted for repository]",
     "payer": "Aetna",
@@ -223,6 +237,7 @@
       "M54.16"
     ],
     "expected_label": "incomplete",
+    "expected_overall_status": "CANNOT_DETERMINE",
     "id": "MRI-11-conflict-deny-then-report",
     "note_text": "sha256:fd3f6e4509382785 [redacted for repository]",
     "payer": "Aetna",
@@ -236,6 +251,7 @@
       "M54.16"
     ],
     "expected_label": "incomplete",
+    "expected_overall_status": "CANNOT_DETERMINE",
     "id": "MRI-12-imaging-normal",
     "note_text": "sha256:1d1d0a5da504cac5 [redacted for repository]",
     "payer": "Aetna",
@@ -249,6 +265,7 @@
       "M54.5"
     ],
     "expected_label": "incomplete",
+    "expected_overall_status": "CANNOT_DETERMINE",
     "id": "MRI-13-imaging-unclear",
     "note_text": "sha256:ccff87b96a5ecf2a [redacted for repository]",
     "payer": "Aetna",
@@ -262,6 +279,7 @@
       "M54.5"
     ],
     "expected_label": "incomplete",
+    "expected_overall_status": "CANNOT_DETERMINE",
     "id": "MRI-14-therapy-context-missing",
     "note_text": "sha256:7dee1ead0051a934 [redacted for repository]",
     "payer": "Aetna",
@@ -275,6 +293,7 @@
       "G47.33"
     ],
     "expected_label": "incomplete",
+    "expected_overall_status": "CANNOT_DETERMINE",
     "id": "CPAP-05-edge-with-date-no-ahi",
     "note_text": "sha256:fd8614b68981a5b0 [redacted for repository]",
     "payer": "Aetna",
@@ -288,6 +307,7 @@
       "G47.33"
     ],
     "expected_label": "incomplete",
+    "expected_overall_status": "CANNOT_DETERMINE",
     "id": "CPAP-06-edge-with-ahi-no-date",
     "note_text": "sha256:8e9be96200b7e02c [redacted for repository]",
     "payer": "Aetna",
@@ -301,6 +321,7 @@
       "G47.33"
     ],
     "expected_label": "complete",
+    "expected_overall_status": "READY",
     "id": "CPAP-07-complete-alt-format-date",
     "note_text": "sha256:f81083503181f7a5 [redacted for repository]",
     "payer": "Aetna",
@@ -327,6 +348,7 @@
       "M54.12"
     ],
     "expected_label": "complete",
+    "expected_overall_status": "READY",
     "id": "MRI-CERV-01-ready",
     "note_text": "sha256:449f7c6ef1838637 [redacted for repository]",
     "payer": "Aetna",
@@ -353,6 +375,7 @@
       "M54.2"
     ],
     "expected_label": "incomplete",
+    "expected_overall_status": "NOT_READY",
     "id": "MRI-CERV-02-not-ready",
     "note_text": "sha256:830b19a00136e7af [redacted for repository]",
     "payer": "Aetna",
@@ -366,6 +389,7 @@
       "M54.12"
     ],
     "expected_label": "incomplete",
+    "expected_overall_status": "CANNOT_DETERMINE",
     "id": "MRI-CERV-03-cannot-determine",
     "note_text": "sha256:52b4108bd403241d [redacted for repository]",
     "payer": "Aetna",
@@ -379,6 +403,7 @@
       "M54.12"
     ],
     "expected_label": "complete",
+    "expected_overall_status": "READY",
     "id": "MRI-CERV-04-positive-redflags",
     "note_text": "sha256:1d9429aa993a9a0a [redacted for repository]",
     "payer": "Aetna",
@@ -392,6 +417,7 @@
       "M25.561"
     ],
     "expected_label": "complete",
+    "expected_overall_status": "READY",
     "id": "MRI-KNEE-01-ready",
     "note_text": "sha256:59421e8561fe0462 [redacted for repository]",
     "payer": "Aetna",
@@ -418,6 +444,7 @@
       "M25.561"
     ],
     "expected_label": "incomplete",
+    "expected_overall_status": "NOT_READY",
     "id": "MRI-KNEE-02-not-ready-no-imaging",
     "note_text": "sha256:24c14bd4fcde036d [redacted for repository]",
     "payer": "Aetna",
@@ -431,6 +458,7 @@
       "M25.561"
     ],
     "expected_label": "incomplete",
+    "expected_overall_status": "CANNOT_DETERMINE",
     "id": "MRI-KNEE-03-cannot-determine",
     "note_text": "sha256:f440d3d90cca6a70 [redacted for repository]",
     "payer": "Aetna",
@@ -444,6 +472,7 @@
       "M25.561"
     ],
     "expected_label": "complete",
+    "expected_overall_status": "READY",
     "id": "MRI-KNEE-04-ready-denied-mechanical",
     "note_text": "sha256:f48d51e10a0acd9b [redacted for repository]",
     "payer": "Aetna",
@@ -456,7 +485,8 @@
     "dx_codes": [
       "M25.561"
     ],
-    "expected_label": "complete",
+    "expected_label": "incomplete",
+    "expected_overall_status": "NEEDS_REVIEW",
     "id": "MRI-KNEE-05-conflict-deny-then-positive",
     "note_text": "sha256:994f21c08480c5a6 [redacted for repository]",
     "payer": "Aetna",
@@ -468,6 +498,7 @@
   {
     "dx_codes": [],
     "expected_label": "incomplete",
+    "expected_overall_status": "CANNOT_DETERMINE",
     "id": "CPAP-08-doc-gap-osa-not-stated",
     "note_text": "sha256:88c7891aa0cb968b [redacted for repository]",
     "payer": "Aetna",
@@ -481,6 +512,7 @@
       "G47.33"
     ],
     "expected_label": "incomplete",
+    "expected_overall_status": "CANNOT_DETERMINE",
     "id": "CPAP-09-noise-contains-date-unrelated",
     "note_text": "sha256:505e47f9a59a0466 [redacted for repository]",
     "payer": "Aetna",
@@ -494,6 +526,7 @@
       "M54.5"
     ],
     "expected_label": "incomplete",
+    "expected_overall_status": "CANNOT_DETERMINE",
     "id": "MRI-15-noise-unrelated-weeks",
     "note_text": "sha256:06489edc14d553e6 [redacted for repository]",
     "payer": "Aetna",
@@ -507,6 +540,7 @@
       "M54.16"
     ],
     "expected_label": "incomplete",
+    "expected_overall_status": "CANNOT_DETERMINE",
     "id": "MRI-16-pt-mentioned-no-duration",
     "note_text": "sha256:07c78b03ceca3923 [redacted for repository]",
     "payer": "Aetna",
@@ -514,5 +548,257 @@
     "showcase": {},
     "site_of_care": "outpatient",
     "specialty": "Primary Care"
+  },
+  {
+    "dx_codes": [
+      "M54.16"
+    ],
+    "expected_label": "safety_abstention",
+    "expected_overall_status": "NEEDS_REVIEW",
+    "id": "SAFETY-01-cross-therapy-linkage",
+    "note_text": "sha256:4a8d27f5f7ef2653 [redacted for repository]",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "showcase": {},
+    "site_of_care": "outpatient",
+    "specialty": "Orthopedics"
+  },
+  {
+    "dx_codes": [
+      "M54.16"
+    ],
+    "expected_label": "safety_abstention",
+    "expected_overall_status": "NEEDS_REVIEW",
+    "id": "SAFETY-02-cross-therapy-reversed",
+    "note_text": "sha256:a86563ce8e7ca10c [redacted for repository]",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "showcase": {},
+    "site_of_care": "outpatient",
+    "specialty": "Orthopedics"
+  },
+  {
+    "dx_codes": [
+      "M54.16"
+    ],
+    "expected_label": "safety_missing_patient_evidence",
+    "expected_overall_status": "CANNOT_DETERMINE",
+    "id": "SAFETY-03-family-therapy-coreference",
+    "note_text": "sha256:f2217092e967331e [redacted for repository]",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "showcase": {},
+    "site_of_care": "outpatient",
+    "specialty": "Orthopedics"
+  },
+  {
+    "dx_codes": [
+      "M54.16"
+    ],
+    "expected_label": "safety_missing_patient_evidence",
+    "expected_overall_status": "CANNOT_DETERMINE",
+    "id": "SAFETY-04-family-therapy-variant",
+    "note_text": "sha256:f60703a89490b4a7 [redacted for repository]",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "showcase": {},
+    "site_of_care": "outpatient",
+    "specialty": "Orthopedics"
+  },
+  {
+    "dx_codes": [
+      "M54.16"
+    ],
+    "expected_label": "safety_missing_completed_evidence",
+    "expected_overall_status": "CANNOT_DETERMINE",
+    "id": "SAFETY-05-planned-therapy",
+    "note_text": "sha256:0dbc47ffc70cf4d9 [redacted for repository]",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "showcase": {},
+    "site_of_care": "outpatient",
+    "specialty": "Orthopedics"
+  },
+  {
+    "dx_codes": [
+      "M54.16"
+    ],
+    "expected_label": "safety_missing_completed_evidence",
+    "expected_overall_status": "CANNOT_DETERMINE",
+    "id": "SAFETY-06-hypothetical-therapy-variant",
+    "note_text": "sha256:1a477851ffa72157 [redacted for repository]",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "showcase": {},
+    "site_of_care": "outpatient",
+    "specialty": "Orthopedics"
+  },
+  {
+    "dx_codes": [
+      "M54.16"
+    ],
+    "expected_label": "safety_abstention",
+    "expected_overall_status": "NEEDS_REVIEW",
+    "id": "SAFETY-07-uncertain-diagnosis",
+    "note_text": "sha256:ffcb782b85465909 [redacted for repository]",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "showcase": {},
+    "site_of_care": "outpatient",
+    "specialty": "Orthopedics"
+  },
+  {
+    "dx_codes": [
+      "M54.16"
+    ],
+    "expected_label": "safety_abstention",
+    "expected_overall_status": "NEEDS_REVIEW",
+    "id": "SAFETY-08-uncertain-diagnosis-variant",
+    "note_text": "sha256:752b41c86426ffc4 [redacted for repository]",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "showcase": {},
+    "site_of_care": "outpatient",
+    "specialty": "Orthopedics"
+  },
+  {
+    "dx_codes": [
+      "M54.16"
+    ],
+    "expected_label": "safety_abstention",
+    "expected_overall_status": "NEEDS_REVIEW",
+    "id": "SAFETY-09-contradictory-diagnosis",
+    "note_text": "sha256:e62891534c3472a2 [redacted for repository]",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "showcase": {},
+    "site_of_care": "outpatient",
+    "specialty": "Orthopedics"
+  },
+  {
+    "dx_codes": [
+      "M54.16"
+    ],
+    "expected_label": "safety_abstention",
+    "expected_overall_status": "NEEDS_REVIEW",
+    "id": "SAFETY-10-objective-conflict-abnormal-first",
+    "note_text": "sha256:0513b0194dc88b4e [redacted for repository]",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "showcase": {},
+    "site_of_care": "outpatient",
+    "specialty": "Orthopedics"
+  },
+  {
+    "dx_codes": [
+      "M54.16"
+    ],
+    "expected_label": "safety_abstention",
+    "expected_overall_status": "NEEDS_REVIEW",
+    "id": "SAFETY-11-objective-conflict-normal-first",
+    "note_text": "sha256:b50b85e2d3c61571 [redacted for repository]",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "showcase": {},
+    "site_of_care": "outpatient",
+    "specialty": "Orthopedics"
+  },
+  {
+    "dx_codes": [
+      "M54.16"
+    ],
+    "expected_label": "safety_abstention",
+    "expected_overall_status": "NEEDS_REVIEW",
+    "id": "SAFETY-12-objective-reflex-conflict",
+    "note_text": "sha256:685b2243e9bb4db0 [redacted for repository]",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "showcase": {},
+    "site_of_care": "outpatient",
+    "specialty": "Orthopedics"
+  },
+  {
+    "dx_codes": [
+      "M54.16"
+    ],
+    "expected_label": "safety_missing_patient_evidence",
+    "expected_overall_status": "CANNOT_DETERMINE",
+    "id": "SAFETY-13-family-attribution-after-therapy",
+    "note_text": "sha256:978b33cff13774de [redacted for repository]",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "showcase": {},
+    "site_of_care": "outpatient",
+    "specialty": "Orthopedics"
+  },
+  {
+    "dx_codes": [
+      "M54.16"
+    ],
+    "expected_label": "safety_missing_completed_evidence",
+    "expected_overall_status": "CANNOT_DETERMINE",
+    "id": "SAFETY-14-future-therapy-after-mention",
+    "note_text": "sha256:b300420a8e4a9693 [redacted for repository]",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "showcase": {},
+    "site_of_care": "outpatient",
+    "specialty": "Orthopedics"
+  },
+  {
+    "dx_codes": [
+      "M54.16"
+    ],
+    "expected_label": "safety_abstention",
+    "expected_overall_status": "NEEDS_REVIEW",
+    "id": "SAFETY-15-diagnosis-differential",
+    "note_text": "sha256:96027d2bf6acb5c1 [redacted for repository]",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "showcase": {},
+    "site_of_care": "outpatient",
+    "specialty": "Orthopedics"
+  },
+  {
+    "dx_codes": [
+      "M54.16"
+    ],
+    "expected_label": "safety_abstention",
+    "expected_overall_status": "NEEDS_REVIEW",
+    "id": "SAFETY-16-objective-finding-unconfirmed",
+    "note_text": "sha256:99f681e644ae0f10 [redacted for repository]",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "showcase": {},
+    "site_of_care": "outpatient",
+    "specialty": "Orthopedics"
+  },
+  {
+    "dx_codes": [
+      "G47.33"
+    ],
+    "expected_label": "safety_missing_patient_evidence",
+    "expected_overall_status": "CANNOT_DETERMINE",
+    "id": "SAFETY-17-nonpatient-osa-attribution",
+    "note_text": "sha256:9f00d567728e14c0 [redacted for repository]",
+    "payer": "Aetna",
+    "procedure_code": "CPAP_DEVICE",
+    "showcase": {},
+    "site_of_care": "outpatient",
+    "specialty": "Sleep Medicine"
+  },
+  {
+    "dx_codes": [
+      "G47.33"
+    ],
+    "expected_label": "safety_abstention",
+    "expected_overall_status": "NEEDS_REVIEW",
+    "id": "SAFETY-18-questioned-osa-diagnosis",
+    "note_text": "sha256:d2873f296b41bca8 [redacted for repository]",
+    "payer": "Aetna",
+    "procedure_code": "CPAP_DEVICE",
+    "showcase": {},
+    "site_of_care": "outpatient",
+    "specialty": "Sleep Medicine"
   }
 ]

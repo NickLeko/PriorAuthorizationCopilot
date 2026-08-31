@@ -16,7 +16,7 @@ from .evaluate import compute_overall_status, evaluate_requirements, summarize_r
 from .extract import extract_facts
 from .letter_draft import draft_letter
 from .logging_utils import configure_logging, get_logger, log_event
-from .policy_monitor import load_policy_sources, read_latest_snapshot
+from .policy_monitor import SnapshotValidationError, load_policy_sources, read_latest_snapshot
 from .provenance import (
     get_provenance_entry,
     load_provenance,
@@ -26,6 +26,7 @@ from .provenance import (
 from .rulebook import RulebookError, get_rulebook_diff, get_rulebook_status
 from .rules_loader import load_rules
 from .schemas import (
+    REVIEW_REQUIRED_FACT,
     AuditTrace,
     BlockingIssue,
     BlockingIssueSummary,
@@ -50,6 +51,9 @@ from .schemas import (
     StatusResponse,
     SupportedProcedure,
 )
+
+MAX_POLICY_CLOCK_SKEW_SECONDS = 300
+SUPPORTED_DRIFT_LOG_EVENTS = {"BOOTSTRAP_SNAPSHOT_CREATED", "POLICY_DRIFT_DETECTED"}
 
 
 class ServiceError(Exception):
@@ -100,6 +104,11 @@ def _freshness_window_days(check_frequency: str) -> int | None:
     return mapping.get(str(check_frequency or "").strip().lower())
 
 
+def _public_facts(raw_facts: Dict[str, Any]) -> Dict[str, Any]:
+    """Keep the internal review sentinel out of API, UI, and audit payloads."""
+    return {key: None if value == REVIEW_REQUIRED_FACT else value for key, value in raw_facts.items()}
+
+
 def _display_repo_relative_path(repo_root: Path, raw_path: str | Path | None) -> str | None:
     if raw_path is None:
         return None
@@ -132,23 +141,37 @@ def _compute_metrics(summary: Dict[str, int]) -> EvaluationMetrics:
     )
 
 
-def _read_drift_log(log_path: Path) -> List[Dict[str, Any]]:
+def _read_drift_log(log_path: Path) -> tuple[List[Dict[str, Any]], List[str]]:
     if not log_path.exists():
-        return []
+        return [], []
 
     events: List[Dict[str, Any]] = []
-    with log_path.open("r", encoding="utf-8") as handle:
-        for line in handle:
-            line = line.strip()
-            if not line:
-                continue
-            try:
-                payload = json.loads(line)
-            except json.JSONDecodeError:
-                continue
-            if isinstance(payload, dict):
-                events.append(payload)
-    return events
+    errors: List[str] = []
+    try:
+        lines = log_path.read_text(encoding="utf-8").splitlines()
+    except OSError as exc:
+        return [], [f"Policy drift log could not be read: {exc}"]
+
+    for line_number, line in enumerate(lines, start=1):
+        line = line.strip()
+        if not line:
+            continue
+        try:
+            payload = json.loads(line)
+        except json.JSONDecodeError:
+            errors.append(f"Policy drift log line {line_number} is not valid JSON.")
+            continue
+        if not isinstance(payload, dict):
+            errors.append(f"Policy drift log line {line_number} must be a JSON object.")
+            continue
+        if not str(payload.get("id") or "").strip() or not str(payload.get("event") or "").strip():
+            errors.append(f"Policy drift log line {line_number} is missing id or event.")
+            continue
+        if payload["event"] not in SUPPORTED_DRIFT_LOG_EVENTS:
+            errors.append(f"Policy drift log line {line_number} has an unsupported event type.")
+            continue
+        events.append(payload)
+    return events, errors
 
 
 class ReadinessService:
@@ -283,6 +306,7 @@ class ReadinessService:
         supported = self.get_supported_procedure(normalized_request.payer, normalized_request.procedure_code)
 
         raw_facts, raw_evidence_map = extract_facts(normalized_request.note_text)
+        public_facts = _public_facts(raw_facts)
         requirement_payloads = [requirement.model_dump(exclude_none=True) for requirement in supported.requirements]
         results, reasons = evaluate_requirements(requirement_payloads, raw_facts, evidence_map=raw_evidence_map)
 
@@ -299,6 +323,7 @@ class ReadinessService:
         invariant_errors = self._compute_invariant_errors(blockers, overall["overall_status"])
 
         provenance_entry = get_provenance_entry(self.provenance, normalized_request.payer, normalized_request.procedure_code)
+        rulebook_status = self.get_rulebook_status()
         policy_trust_level = self._effective_policy_trust(
             normalized_request.payer,
             normalized_request.procedure_code,
@@ -308,8 +333,17 @@ class ReadinessService:
         if policy_trust_level != "verified":
             warnings.append("Policy trust remains DEMO for this procedure. Verify against official policy before real-world use.")
 
+        submission_readiness = bool(
+            overall["submission_readiness"] and policy_trust_level == "verified" and self._rulebook_is_trustworthy(rulebook_status)
+        )
+        if overall["overall_status"] == "READY" and not submission_readiness:
+            warnings.append(
+                "Documentation criteria evaluate to READY, but submission_readiness is false because the active policy "
+                "and rulebook state is not fully trusted."
+            )
+
+        supported = supported.model_copy(update={"policy_trust_level": policy_trust_level})
         structured_provenance = supported.provenance.model_dump(mode="json")
-        rulebook_status = self.get_rulebook_status()
 
         audit = AuditTrace(
             run_id=str(uuid.uuid4()),
@@ -325,11 +359,11 @@ class ReadinessService:
             rulebook_active_release_id=rulebook_status.active_release_id,
             policy_trust_level=policy_trust_level,
             provenance_snapshot=structured_provenance,
-            facts_extracted=raw_facts,
+            facts_extracted=public_facts,
             evidence_map=self._coerce_evidence_map(raw_evidence_map),
             requirements_checked=[result.key for result in results],
             overall_status=overall["overall_status"],
-            submission_readiness=bool(overall["submission_readiness"]),
+            submission_readiness=submission_readiness,
             blocking_issues=blockers,
             metrics=metrics,
             invariant_errors=invariant_errors,
@@ -351,10 +385,10 @@ class ReadinessService:
             request=normalized_request,
             supported_procedure=supported,
             overall_status=overall["overall_status"],
-            submission_readiness=bool(overall["submission_readiness"]),
+            submission_readiness=submission_readiness,
             results=results,
             rule_reasons=reasons,
-            facts=raw_facts,
+            facts=public_facts,
             evidence_map=self._coerce_evidence_map(raw_evidence_map),
             blockers=blockers,
             metrics=metrics,
@@ -403,8 +437,11 @@ class ReadinessService:
         )
 
     def get_drift_status(self, payer: str | None = None, procedure_code: str | None = None) -> DriftStatusReport:
-        events = _read_drift_log(self.config.snapshot_root / "drift_log.jsonl")
+        events, drift_log_errors = _read_drift_log(self.config.snapshot_root / "drift_log.jsonl")
         latest_event_by_id = {str(event.get("id")): event for event in events if event.get("id")}
+        unresolved_drift_ids = {
+            str(event.get("id")) for event in events if event.get("id") and event.get("event") == "POLICY_DRIFT_DETECTED"
+        }
 
         statuses: List[DriftSourceStatus] = []
         any_review_required = False
@@ -415,33 +452,62 @@ class ReadinessService:
                 continue
             if procedure_code is not None and source.procedure_code != procedure_code:
                 continue
-            latest_snapshot = read_latest_snapshot(self.config.snapshot_root, source.id)
-            status = "NO_BASELINE" if latest_snapshot is None else "OK"
+            snapshot_error = None
+            try:
+                latest_snapshot = read_latest_snapshot(
+                    self.config.snapshot_root,
+                    source.id,
+                    source=source,
+                )
+            except SnapshotValidationError as exc:
+                latest_snapshot = None
+                snapshot_error = str(exc)
+
+            status = "INVALID_SNAPSHOT" if snapshot_error else ("NO_BASELINE" if latest_snapshot is None else "OK")
             event = latest_event_by_id.get(source.id, {})
-            if event.get("event") == "POLICY_DRIFT_DETECTED":
+            if source.id in unresolved_drift_ids:
                 status = "REVIEW_REQUIRED"
                 any_review_required = True
 
             provenance_entry = get_provenance_entry(self.provenance, source.payer, source.procedure_code)
-            last_checked_utc = (latest_snapshot or {}).get("fetched_at_utc")
+            last_checked_utc = (latest_snapshot or {}).get("last_checked_utc") or (latest_snapshot or {}).get("fetched_at_utc")
             last_checked_dt = _parse_utc_iso(last_checked_utc)
+            fetched_at_dt = _parse_utc_iso((latest_snapshot or {}).get("fetched_at_utc"))
             freshness_window_days = _freshness_window_days(source.check_frequency)
             days_since_last_checked = None
             freshness_status = "UNKNOWN"
-            review_reason = None
+            review_reason = f"Invalid policy snapshot: {snapshot_error}" if snapshot_error else None
+
+            if snapshot_error:
+                any_review_required = True
+
+            if drift_log_errors:
+                status = "INVALID_DRIFT_LOG"
+                any_review_required = True
+                review_reason = " ".join(drift_log_errors)
 
             if last_checked_dt is not None:
-                age_seconds = max((datetime.now(timezone.utc) - last_checked_dt).total_seconds(), 0)
-                days_since_last_checked = int(age_seconds // 86400)
-                freshness_status = "CURRENT"
-                if freshness_window_days is not None and age_seconds > freshness_window_days * 86400:
-                    freshness_status = "STALE"
-                    stale_source_count += 1
+                now_utc = datetime.now(timezone.utc)
+                age_seconds = (now_utc - last_checked_dt).total_seconds()
+                fetched_future_seconds = (fetched_at_dt - now_utc).total_seconds() if fetched_at_dt is not None else 0
+                if age_seconds < -MAX_POLICY_CLOCK_SKEW_SECONDS or fetched_future_seconds > MAX_POLICY_CLOCK_SKEW_SECONDS:
+                    status = "INVALID_SNAPSHOT"
+                    freshness_status = "INVALID"
                     any_review_required = True
-                    review_reason = f"Snapshot exceeds the configured {source.check_frequency} monitoring window."
+                    review_reason = "Policy snapshot contains a materially future timestamp."
+                else:
+                    age_seconds = max(age_seconds, 0)
+                    days_since_last_checked = int(age_seconds // 86400)
+                    freshness_status = "CURRENT"
+                    if freshness_window_days is not None and age_seconds > freshness_window_days * 86400:
+                        freshness_status = "STALE"
+                        stale_source_count += 1
+                        any_review_required = True
+                        review_reason = f"Last successful policy check exceeds the configured {source.check_frequency} monitoring window."
             elif latest_snapshot is None:
                 any_review_required = True
-                review_reason = "No baseline snapshot exists yet for this monitored source."
+                if snapshot_error is None:
+                    review_reason = "No baseline snapshot exists yet for this monitored source."
 
             if status == "REVIEW_REQUIRED":
                 review_reason = "Detected policy drift requires human rule review before the related rule should be trusted."
@@ -586,6 +652,8 @@ class ReadinessService:
         provenance_entry: Dict[str, Any],
         requirement_keys: list[str],
     ) -> str:
+        if not self._rulebook_is_trustworthy(self.get_rulebook_status()):
+            return "demo"
         if policy_trust_from_provenance(provenance_entry, requirement_keys) != "verified":
             return "demo"
 
@@ -604,3 +672,13 @@ class ReadinessService:
         if source_status.latest_hash != str(provenance_entry.get("content_hash_sha256") or "").strip():
             return "demo"
         return "verified"
+
+    @staticmethod
+    def _rulebook_is_trustworthy(rulebook_status: RulebookStatusResponse) -> bool:
+        if not rulebook_status.active_release_id or rulebook_status.validation_errors:
+            return False
+        active_release = next(
+            (release for release in rulebook_status.releases if release.release_id == rulebook_status.active_release_id),
+            None,
+        )
+        return bool(active_release and active_release.stage == "active" and active_release.runtime_matches is True)

@@ -2,7 +2,7 @@
 
 ## Goal
 
-Show a recruiter or interviewer that this repo is a disciplined internal-product artifact, not a toy notebook and not fake enterprise theater.
+Demonstrate the product boundary, deterministic decision trace, failure behavior, and policy-governance controls.
 
 For clone/install/test/artifact inspection steps, use the shorter reviewer path in [docs/reviewer_guide.md](reviewer_guide.md).
 
@@ -36,12 +36,12 @@ Start with the scope language:
 
 Point out:
 
-- bundled synthetic regression suite status
+- exact-status regression accuracy, false-READY count, and abstention rate
 - policy drift status
 - rulebook governance with reviewed vs active snapshots
 - supported procedure registry with category, rule family, and provenance labels
 
-This is a strong signal that the repo cares about reliability and governance, not just output formatting.
+These checks make regression behavior and governance state visible during a review.
 
 ### 3. Run the straight-line ready case
 
@@ -62,7 +62,7 @@ Call out the difference between:
 
 - present but below threshold -> `NOT_READY`
 - missing or unclear -> not this case
-- documented but outside configured result categories -> `NEEDS_REVIEW`, not a threshold failure
+- ambiguous, contradictory, or otherwise unsafe-to-resolve evidence -> `NEEDS_REVIEW`, not a threshold failure
 
 ### 5. Run the refusal-first case
 
@@ -94,7 +94,7 @@ Call out:
 - the engine was not rewritten to add it
 - the same deterministic extraction contract was reused
 - the procedure registry now surfaces rule family and provenance metadata
-- this is depth, not platform theater
+- procedure-specific behavior remains explicit and testable
 
 ### 8. Show the non-spine deterministic expansion
 

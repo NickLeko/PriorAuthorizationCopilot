@@ -106,8 +106,6 @@ def main(argv: Sequence[str] | None = None) -> int:
                     expected_status = expected_overall_status_for_demo_case(case)
                     if expected_status:
                         expectation_parts.append(f"expected_status={expected_status}")
-                    if case.expected_label:
-                        expectation_parts.append(f"fixture_label={case.expected_label}")
                     expectation = "\t".join(expectation_parts) if expectation_parts else "expectation=n/a"
                     print(f"{case.id}\t{case.payer}\t{case.procedure_code}\t{expectation}\t{scenario_type}\t{title}")
             return 0

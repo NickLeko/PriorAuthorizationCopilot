@@ -37,9 +37,9 @@
       ],
       "cpb_0236_conservative_therapy_weeks": [
         {
-          "end": 62,
+          "end": 82,
           "start": 44,
-          "text": "NSAIDs for 5 weeks"
+          "text": "NSAIDs for 5 weeks with no improvement"
         }
       ],
       "objective_motor_or_reflex_change_in_root_distribution": [
@@ -159,9 +159,9 @@
     ],
     "cpb_0236_conservative_therapy_weeks": [
       {
-        "end": 62,
+        "end": 82,
         "start": 44,
-        "text": "NSAIDs for 5 weeks"
+        "text": "NSAIDs for 5 weeks with no improvement"
       }
     ],
     "objective_motor_or_reflex_change_in_root_distribution": [
@@ -264,9 +264,9 @@
         ],
         "cpb_0236_conservative_therapy_weeks": [
           {
-            "end": 62,
+            "end": 82,
             "start": 44,
-            "text": "NSAIDs for 5 weeks"
+            "text": "NSAIDs for 5 weeks with no improvement"
           }
         ],
         "objective_motor_or_reflex_change_in_root_distribution": [
@@ -393,13 +393,13 @@
       {
         "evidence": "At least 6 weeks of CPB 0236 Footnote 1 conservative therapy documented",
         "evidence_snippets": [
-          "NSAIDs for 5 weeks"
+          "NSAIDs for 5 weeks with no improvement"
         ],
         "evidence_spans": [
           {
-            "end": 62,
+            "end": 82,
             "start": 44,
-            "text": "NSAIDs for 5 weeks"
+            "text": "NSAIDs for 5 weeks with no improvement"
           }
         ],
         "key": "cpb_0236_conservative_therapy_weeks",
@@ -477,13 +477,13 @@
     {
       "evidence": "At least 6 weeks of CPB 0236 Footnote 1 conservative therapy documented",
       "evidence_snippets": [
-        "NSAIDs for 5 weeks"
+        "NSAIDs for 5 weeks with no improvement"
       ],
       "evidence_spans": [
         {
-          "end": 62,
+          "end": 82,
           "start": 44,
-          "text": "NSAIDs for 5 weeks"
+          "text": "NSAIDs for 5 weeks with no improvement"
         }
       ],
       "key": "cpb_0236_conservative_therapy_weeks",

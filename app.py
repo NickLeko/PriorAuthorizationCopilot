@@ -8,9 +8,9 @@ import streamlit as st
 from engine.config import load_app_config
 from engine.demo_cases import expected_overall_status_for_demo_case, featured_demo_cases
 from engine.rendering import export_evaluation_payload
-from engine.schemas import EvaluationResult, PARequest
+from engine.schemas import REVIEW_REQUIRED_FACT, EvaluationResult, PARequest
 from engine.service import ReadinessService, ServiceError
-from engine.test_suites import run_cases
+from engine.test_suites import run_cases, summarize_safety_metrics
 
 BASE_DIR = Path(__file__).resolve().parent
 
@@ -110,16 +110,19 @@ config = service.config
 
 
 @st.cache_data(ttl=300)
-def get_synthetic_eval_status() -> tuple[int, int, list[dict]]:
+def get_synthetic_eval_status() -> tuple[dict, list[dict]]:
     rows = run_cases(str(config.rules_path), str(config.synthetic_cases_path))
-    passed = sum(1 for row in rows if row.get("pass") == "✅")
-    return passed, len(rows), rows
+    return summarize_safety_metrics(rows), rows
 
 
 def load_case_into_session(case: dict) -> None:
     st.session_state["selected_demo_case_id"] = case["id"]
     st.session_state["payer"] = case["payer"]
     st.session_state["procedure_code"] = case["procedure_code"]
+    st.session_state["procedure_selectbox"] = service.get_supported_procedure(
+        case["payer"],
+        case["procedure_code"],
+    )
     st.session_state["dx_codes"] = ", ".join(case.get("dx_codes", []))
     st.session_state["site_of_care"] = case.get("site_of_care", "outpatient")
     st.session_state["specialty"] = case.get("specialty", "unknown")
@@ -149,8 +152,8 @@ def status_panel(evaluation: EvaluationResult) -> None:
 
     summaries = {
         "READY": (
-            "Administratively ready under the current versioned rules.",
-            "All required elements were explicitly documented and met threshold.",
+            "Documentation status is READY under the current versioned rules.",
+            "All required elements were explicitly documented and met threshold; submission readiness is reported separately.",
         ),
         "NOT_READY": (
             "Not ready to submit under the current versioned rules.",
@@ -162,7 +165,7 @@ def status_panel(evaluation: EvaluationResult) -> None:
         ),
         "NEEDS_REVIEW": (
             "Human review is required before administrative readiness can be determined.",
-            "At least one documented result could not be evaluated against the configured categories.",
+            "At least one documented result was ambiguous, contradictory, uncertain, or could not be evaluated safely.",
         ),
     }
     headline, detail = summaries.get(
@@ -188,6 +191,8 @@ def format_fact_value(value: object) -> str:
         return "null (not extracted)"
     if isinstance(value, bool):
         return str(value).lower()
+    if value == REVIEW_REQUIRED_FACT:
+        return "ambiguous/conflicting (review required)"
     if isinstance(value, str):
         return f'"{value}"'
     return str(value)
@@ -281,6 +286,8 @@ def render_fact_card(label: str, value: object, status: str) -> None:
         display = "Missing from note"
     elif isinstance(value, bool):
         display = "Documented" if value else "Explicitly denied or absent"
+    elif value == REVIEW_REQUIRED_FACT:
+        display = "Ambiguous or conflicting; review required"
     elif label.endswith("(weeks)"):
         display = f"{value} weeks"
     else:
@@ -379,25 +386,33 @@ render_scope_panel()
 with st.sidebar:
     st.header("Quality Gates")
     try:
-        passed, total, synthetic_rows = get_synthetic_eval_status()
-        if passed == total:
-            st.success(f"Synthetic eval suite: {passed}/{total}")
+        safety_metrics, synthetic_rows = get_synthetic_eval_status()
+        passed = safety_metrics["exact_status_correct_count"]
+        total = safety_metrics["total_labeled_cases"]
+        if passed == total and safety_metrics["false_ready_count"] == 0:
+            st.success(f"Exact-status regression: {passed}/{total}")
         else:
-            st.error(f"Synthetic eval suite: {passed}/{total}")
-        st.caption("Coarse fixture-label regression. Exact output shapes are protected separately by acceptance snapshots.")
+            st.error(f"Exact-status regression: {passed}/{total}")
+        st.caption(
+            f"Bundled labeled fixture false READY: {safety_metrics['false_ready_count']}/"
+            f"{safety_metrics['expected_non_ready_count']} "
+            f"({safety_metrics['false_ready_rate_pct']:.1f}%) | "
+            f"Abstention: {safety_metrics['abstention_count']} "
+            f"({safety_metrics['abstention_rate_pct']:.1f}%) | "
+            f"NEEDS_REVIEW: {safety_metrics['needs_review_count']}"
+        )
         with st.expander("View synthetic evaluation details"):
             failures = [row for row in synthetic_rows if row.get("pass") != "✅"]
             if failures:
                 for failure in failures:
-                    st.write(
-                        f"- {failure['id']}: expected `{failure['expected']}`, got `{failure['predicted']}` ({failure['overall_status']})"
-                    )
+                    st.write(f"- {failure['id']}: expected `{failure['expected']}`, got `{failure['overall_status']}`")
             else:
-                st.write("All bundled synthetic cases matched expected labels.")
+                st.write("All bundled synthetic cases matched their exact expected overall status.")
     except Exception as exc:  # pragma: no cover - defensive UI path
         passed, total = 0, 0
         synthetic_rows = []
-        st.error(f"Synthetic eval suite unavailable: {exc}")
+        safety_metrics = {}
+        st.error(f"Exact-status regression unavailable: {exc}")
 
     tests_healthy = bool(total and passed == total)
 
@@ -530,6 +545,9 @@ with left:
             (index for index, item in enumerate(procedure_options) if item.procedure_code == st.session_state.get("procedure_code")),
             0,
         )
+        current_widget_procedure = st.session_state.get("procedure_selectbox")
+        if not any(item == current_widget_procedure for item in procedure_options):
+            st.session_state["procedure_selectbox"] = procedure_options[default_index]
         selected_procedure = st.selectbox(
             "Procedure",
             options=procedure_options,
@@ -540,7 +558,10 @@ with left:
         st.session_state["procedure_code"] = selected_procedure.procedure_code
 
         st.text_input("Diagnosis codes (comma-separated)", key="dx_codes", placeholder="e.g., M54.16, G47.33")
-        st.selectbox("Site of care", options=config.allowed_sites, key="site_of_care")
+        valid_sites = selected_procedure.metadata.supported_sites
+        if st.session_state.get("site_of_care") not in valid_sites:
+            st.session_state["site_of_care"] = valid_sites[0]
+        st.selectbox("Site of care", options=valid_sites, key="site_of_care")
         st.text_input("Ordering specialty", key="specialty", placeholder="e.g., Orthopedics")
         st.text_area(
             "Synthetic note text",
@@ -616,7 +637,11 @@ else:
     evaluation = EvaluationResult.model_validate(st.session_state["last_eval_payload"])
     status_panel(evaluation)
 
-    if evaluation.policy_trust_level != "verified":
+    if evaluation.overall_status == "READY" and not evaluation.submission_readiness:
+        st.warning(
+            "Documentation status is READY, but submission readiness is NO because policy or rulebook trust is not verified and current."
+        )
+    elif evaluation.policy_trust_level != "verified":
         st.warning(
             "This procedure currently uses DEMO trust. "
             "The rule logic is still deterministic, but provenance remains curated for demonstration."

@@ -8,6 +8,7 @@
     "specialty": "Orthopedics",
     "note_text": "Low back pain with right leg radiculopathy x 8 weeks. NSAIDs for 8 weeks with minimal improvement; PT also completed. Objective motor exam in the right L5 distribution: ankle dorsiflexion strength 4/5. Denies bowel/bladder incontinence. No saddle anesthesia. Prior imaging: lumbar xray inconclusive.",
     "expected_label": "complete",
+    "expected_overall_status": "READY",
     "showcase": {
       "featured": true,
       "sort_order": 1,
@@ -27,7 +28,8 @@
     "site_of_care": "outpatient",
     "specialty": "Primary Care",
     "note_text": "Back pain x 2 months. Trial of activity modification + NSAIDs and PT x 6 weeks documented, persistent symptoms. Reports progressive weakness. Prior CT described as abnormal with disc bulge/stenosis.",
-    "expected_label": "incomplete"
+    "expected_label": "incomplete",
+    "expected_overall_status": "CANNOT_DETERMINE"
   },
   {
     "id": "MRI-03-borderline",
@@ -37,7 +39,8 @@
     "site_of_care": "outpatient",
     "specialty": "Primary Care",
     "note_text": "Low back pain x 6 weeks. Tried PT for 6 weeks. No imaging yet. No red flags mentioned.",
-    "expected_label": "incomplete"
+    "expected_label": "incomplete",
+    "expected_overall_status": "CANNOT_DETERMINE"
   },
   {
     "id": "MRI-04-borderline",
@@ -47,7 +50,8 @@
     "site_of_care": "outpatient",
     "specialty": "Orthopedics",
     "note_text": "Back pain x 3 months. PT x 10 weeks with no improvement. Imaging noted but result unclear. Denies weakness. Denies bowel/bladder changes.",
-    "expected_label": "incomplete"
+    "expected_label": "incomplete",
+    "expected_overall_status": "CANNOT_DETERMINE"
   },
   {
     "id": "MRI-05-incomplete",
@@ -57,7 +61,8 @@
     "site_of_care": "outpatient",
     "specialty": "Primary Care",
     "note_text": "Back pain. Wants MRI. No duration provided. No mention of prior treatment or imaging.",
-    "expected_label": "incomplete"
+    "expected_label": "incomplete",
+    "expected_overall_status": "CANNOT_DETERMINE"
   },
   {
     "id": "MRI-06-incomplete",
@@ -67,7 +72,8 @@
     "site_of_care": "outpatient",
     "specialty": "Orthopedics",
     "note_text": "Radicular pain x 4 weeks. PT for 4 weeks. No imaging documented. No red flags documented.",
-    "expected_label": "incomplete"
+    "expected_label": "incomplete",
+    "expected_overall_status": "CANNOT_DETERMINE"
   },
   {
     "id": "CPAP-01-complete",
@@ -77,7 +83,8 @@
     "site_of_care": "outpatient",
     "specialty": "Sleep Medicine",
     "note_text": "Dx: OSA. Sleep study completed 2024-05-18. AHI 22 documented. Requests CPAP E0601.",
-    "expected_label": "complete"
+    "expected_label": "complete",
+    "expected_overall_status": "READY"
   },
   {
     "id": "CPAP-02-borderline",
@@ -88,6 +95,7 @@
     "specialty": "Primary Care",
     "note_text": "OSA noted in problem list. Sleep study in 2023 mentioned but no date. AHI not documented.",
     "expected_label": "incomplete",
+    "expected_overall_status": "CANNOT_DETERMINE",
     "showcase": {
       "featured": true,
       "sort_order": 3,
@@ -107,7 +115,8 @@
     "site_of_care": "outpatient",
     "specialty": "Primary Care",
     "note_text": "Snoring and fatigue. Request CPAP.",
-    "expected_label": "incomplete"
+    "expected_label": "incomplete",
+    "expected_overall_status": "CANNOT_DETERMINE"
   },
   {
     "id": "CPAP-04-incomplete",
@@ -117,7 +126,8 @@
     "site_of_care": "outpatient",
     "specialty": "Sleep Medicine",
     "note_text": "OSA. AHI documented. Sleep study date not documented.",
-    "expected_label": "incomplete"
+    "expected_label": "incomplete",
+    "expected_overall_status": "CANNOT_DETERMINE"
   }
 
   ,
@@ -129,7 +139,8 @@
     "site_of_care": "outpatient",
     "specialty": "Primary Care",
     "note_text": "Low back pain x 6 weeks exactly. PT x 6 weeks and NSAIDs documented without improvement. Denies weakness. Denies bowel/bladder changes. No saddle anesthesia. No prior imaging.",
-    "expected_label": "incomplete"
+    "expected_label": "incomplete",
+    "expected_overall_status": "CANNOT_DETERMINE"
   },
   {
     "id": "MRI-08-edge-below-threshold",
@@ -140,6 +151,7 @@
     "specialty": "Primary Care",
     "note_text": "Low back pain with right leg radiculopathy. NSAIDs for 5 weeks with no improvement. Objective motor exam in the right L5 distribution: ankle dorsiflexion strength 4/5.",
     "expected_label": "incomplete",
+    "expected_overall_status": "NOT_READY",
     "showcase": {
       "featured": true,
       "sort_order": 2,
@@ -159,7 +171,8 @@
     "site_of_care": "outpatient",
     "specialty": "Orthopedics",
     "note_text": "Back pain x 8 weeks. PT for 8 weeks with minimal relief. Weakness absent. Bowel/bladder function intact. No saddle anesthesia. No prior imaging yet.",
-    "expected_label": "incomplete"
+    "expected_label": "incomplete",
+    "expected_overall_status": "CANNOT_DETERMINE"
   },
   {
     "id": "MRI-10-doc-gap-redflags",
@@ -169,7 +182,8 @@
     "site_of_care": "outpatient",
     "specialty": "Primary Care",
     "note_text": "Low back pain x 8 weeks. PT x 8 weeks documented. No prior imaging. No red flags mentioned.",
-    "expected_label": "incomplete"
+    "expected_label": "incomplete",
+    "expected_overall_status": "CANNOT_DETERMINE"
   },
   {
     "id": "MRI-11-conflict-deny-then-report",
@@ -179,7 +193,8 @@
     "site_of_care": "outpatient",
     "specialty": "Primary Care",
     "note_text": "Back pain x 8 weeks. PT x 8 weeks. Denies weakness earlier in visit. Later note: reports progressive weakness and urinary retention.",
-    "expected_label": "incomplete"
+    "expected_label": "incomplete",
+    "expected_overall_status": "CANNOT_DETERMINE"
   },
   {
     "id": "MRI-12-imaging-normal",
@@ -189,7 +204,8 @@
     "site_of_care": "outpatient",
     "specialty": "Orthopedics",
     "note_text": "Back pain x 10 weeks. PT x 10 weeks. Lumbar xray normal/unremarkable. Denies bowel/bladder changes. Denies weakness.",
-    "expected_label": "incomplete"
+    "expected_label": "incomplete",
+    "expected_overall_status": "CANNOT_DETERMINE"
   },
   {
     "id": "MRI-13-imaging-unclear",
@@ -199,7 +215,8 @@
     "site_of_care": "outpatient",
     "specialty": "Primary Care",
     "note_text": "Back pain x 10 weeks. PT x 10 weeks. Prior imaging performed but findings unclear. Denies weakness. Denies bowel/bladder changes.",
-    "expected_label": "incomplete"
+    "expected_label": "incomplete",
+    "expected_overall_status": "CANNOT_DETERMINE"
   },
   {
     "id": "MRI-14-therapy-context-missing",
@@ -209,7 +226,8 @@
     "site_of_care": "outpatient",
     "specialty": "Primary Care",
     "note_text": "Back pain x 8 weeks. No prior imaging. Denies weakness. Denies bowel/bladder changes.",
-    "expected_label": "incomplete"
+    "expected_label": "incomplete",
+    "expected_overall_status": "CANNOT_DETERMINE"
   },
   {
     "id": "CPAP-05-edge-with-date-no-ahi",
@@ -219,7 +237,8 @@
     "site_of_care": "outpatient",
     "specialty": "Sleep Medicine",
     "note_text": "OSA diagnosed. Sleep study completed 2023-11-10. CPAP requested. (AHI not stated.)",
-    "expected_label": "incomplete"
+    "expected_label": "incomplete",
+    "expected_overall_status": "CANNOT_DETERMINE"
   },
   {
     "id": "CPAP-06-edge-with-ahi-no-date",
@@ -229,7 +248,8 @@
     "site_of_care": "outpatient",
     "specialty": "Sleep Medicine",
     "note_text": "OSA. AHI 18 documented. Sleep study mentioned but no date provided.",
-    "expected_label": "incomplete"
+    "expected_label": "incomplete",
+    "expected_overall_status": "CANNOT_DETERMINE"
   },
   {
     "id": "CPAP-07-complete-alt-format-date",
@@ -240,6 +260,7 @@
     "specialty": "Sleep Medicine",
     "note_text": "Dx obstructive sleep apnea. Sleep study 2024/06/01. RDI 28. Request CPAP E0601.",
     "expected_label": "complete",
+    "expected_overall_status": "READY",
     "showcase": {
       "featured": true,
       "sort_order": 4,
@@ -260,6 +281,7 @@
     "specialty": "Orthopedics",
     "note_text": "Neck pain with right arm radiculopathy x 8 weeks. PT for 8 weeks and NSAIDs documented with minimal improvement. Denies weakness. Denies bowel/bladder changes. Prior cervical xray inconclusive.",
     "expected_label": "complete",
+    "expected_overall_status": "READY",
     "showcase": {
       "featured": true,
       "sort_order": 5,
@@ -279,7 +301,8 @@
     "site_of_care": "outpatient",
     "specialty": "Primary Care",
     "note_text": "Neck pain x 4 weeks. PT x 4 weeks documented. Denies weakness. Denies bowel/bladder changes. Prior cervical xray unremarkable.",
-    "expected_label": "incomplete"
+    "expected_label": "incomplete",
+    "expected_overall_status": "NOT_READY"
   },
   {
     "id": "MRI-CERV-03-cannot-determine",
@@ -289,7 +312,8 @@
     "site_of_care": "outpatient",
     "specialty": "Primary Care",
     "note_text": "Neck pain x 8 weeks. PT x 8 weeks documented. No prior imaging. No red flags mentioned.",
-    "expected_label": "incomplete"
+    "expected_label": "incomplete",
+    "expected_overall_status": "CANNOT_DETERMINE"
   },
   {
     "id": "MRI-CERV-04-positive-redflags",
@@ -299,7 +323,8 @@
     "site_of_care": "outpatient",
     "specialty": "Neurology",
     "note_text": "Cervical radicular pain x 2 months. Completed physical therapy for 6 weeks. Reports progressive weakness in the right hand. Prior CT described as abnormal with degenerative stenosis.",
-    "expected_label": "complete"
+    "expected_label": "complete",
+    "expected_overall_status": "READY"
   },
   {
     "id": "MRI-KNEE-01-ready",
@@ -310,6 +335,7 @@
     "specialty": "Orthopedics",
     "note_text": "Right knee pain with locking and catching x 8 weeks. Completed PT for 8 weeks and NSAIDs with minimal improvement. Prior knee xray normal/unremarkable.",
     "expected_label": "complete",
+    "expected_overall_status": "READY",
     "showcase": {
       "featured": true,
       "sort_order": 6,
@@ -329,7 +355,8 @@
     "site_of_care": "outpatient",
     "specialty": "Orthopedics",
     "note_text": "Right knee pain with locking x 8 weeks. PT x 8 weeks and activity modification documented. No prior imaging yet.",
-    "expected_label": "incomplete"
+    "expected_label": "incomplete",
+    "expected_overall_status": "NOT_READY"
   },
   {
     "id": "MRI-KNEE-03-cannot-determine",
@@ -339,7 +366,8 @@
     "site_of_care": "outpatient",
     "specialty": "Primary Care",
     "note_text": "Right knee pain x 8 weeks. PT x 8 weeks documented. Prior knee xray normal/unremarkable. MRI requested.",
-    "expected_label": "incomplete"
+    "expected_label": "incomplete",
+    "expected_overall_status": "CANNOT_DETERMINE"
   },
   {
     "id": "MRI-KNEE-04-ready-denied-mechanical",
@@ -349,7 +377,8 @@
     "site_of_care": "outpatient",
     "specialty": "Sports Medicine",
     "note_text": "Right knee pain x 10 weeks. Completed PT for 6 weeks and home exercise. Denies locking or instability. Prior knee xray findings unclear.",
-    "expected_label": "complete"
+    "expected_label": "complete",
+    "expected_overall_status": "READY"
   },
   {
     "id": "MRI-KNEE-05-conflict-deny-then-positive",
@@ -359,7 +388,8 @@
     "site_of_care": "outpatient",
     "specialty": "Orthopedics",
     "note_text": "Right knee pain x 8 weeks. PT x 8 weeks documented. Denies locking earlier in visit. Later note: reports buckling with stairs. Prior knee xray normal.",
-    "expected_label": "complete"
+    "expected_label": "incomplete",
+    "expected_overall_status": "NEEDS_REVIEW"
   },
   {
     "id": "CPAP-08-doc-gap-osa-not-stated",
@@ -369,7 +399,8 @@
     "site_of_care": "outpatient",
     "specialty": "Primary Care",
     "note_text": "Sleep study completed 2024-01-05. AHI 22 documented. Request CPAP.",
-    "expected_label": "incomplete"
+    "expected_label": "incomplete",
+    "expected_overall_status": "CANNOT_DETERMINE"
   },
   {
     "id": "CPAP-09-noise-contains-date-unrelated",
@@ -379,7 +410,8 @@
     "site_of_care": "outpatient",
     "specialty": "Primary Care",
     "note_text": "OSA listed. Follow-up scheduled 2024-05-18. AHI not documented. Sleep study mentioned in 2023 but no sleep study date.",
-    "expected_label": "incomplete"
+    "expected_label": "incomplete",
+    "expected_overall_status": "CANNOT_DETERMINE"
   },
   {
     "id": "MRI-15-noise-unrelated-weeks",
@@ -389,7 +421,8 @@
     "site_of_care": "outpatient",
     "specialty": "Primary Care",
     "note_text": "Back pain x 8 weeks. Patient is 6 weeks pregnant. PT x 8 weeks documented. Denies bowel/bladder changes. Denies weakness. No imaging yet.",
-    "expected_label": "incomplete"
+    "expected_label": "incomplete",
+    "expected_overall_status": "CANNOT_DETERMINE"
   },
   {
     "id": "MRI-16-pt-mentioned-no-duration",
@@ -399,7 +432,206 @@
     "site_of_care": "outpatient",
     "specialty": "Primary Care",
     "note_text": "Back pain x 8 weeks. Completed PT and NSAIDs, duration not specified. Denies weakness. Denies bowel/bladder changes. No prior imaging.",
-    "expected_label": "incomplete"
+    "expected_label": "incomplete",
+    "expected_overall_status": "CANNOT_DETERMINE"
+  },
+  {
+    "id": "SAFETY-01-cross-therapy-linkage",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "dx_codes": ["M54.16"],
+    "site_of_care": "outpatient",
+    "specialty": "Orthopedics",
+    "note_text": "Low back pain with right leg radiculopathy. Objective motor exam in the right L5 distribution: strength 4/5. Muscle relaxants for 2 weeks produced no improvement, whereas NSAIDs for 8 weeks were also documented.",
+    "expected_label": "safety_abstention",
+    "expected_overall_status": "NEEDS_REVIEW"
+  },
+  {
+    "id": "SAFETY-02-cross-therapy-reversed",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "dx_codes": ["M54.16"],
+    "site_of_care": "outpatient",
+    "specialty": "Orthopedics",
+    "note_text": "Low back pain with right leg radiculopathy. Objective motor exam in the right L5 distribution: strength 4/5. NSAIDs for 8 weeks were documented, while muscle relaxants for 2 weeks produced no improvement.",
+    "expected_label": "safety_abstention",
+    "expected_overall_status": "NEEDS_REVIEW"
+  },
+  {
+    "id": "SAFETY-03-family-therapy-coreference",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "dx_codes": ["M54.16"],
+    "site_of_care": "outpatient",
+    "specialty": "Orthopedics",
+    "note_text": "Low back pain with right leg radiculopathy. Objective motor exam in the right L5 distribution: strength 4/5. Mother reports she completed NSAIDs for 8 weeks with no improvement.",
+    "expected_label": "safety_missing_patient_evidence",
+    "expected_overall_status": "CANNOT_DETERMINE"
+  },
+  {
+    "id": "SAFETY-04-family-therapy-variant",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "dx_codes": ["M54.16"],
+    "site_of_care": "outpatient",
+    "specialty": "Orthopedics",
+    "note_text": "Low back pain with right leg radiculopathy. Objective motor exam in the right L5 distribution: strength 4/5. The patient's mother reports she completed analgesics for 7 weeks without relief.",
+    "expected_label": "safety_missing_patient_evidence",
+    "expected_overall_status": "CANNOT_DETERMINE"
+  },
+  {
+    "id": "SAFETY-05-planned-therapy",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "dx_codes": ["M54.16"],
+    "site_of_care": "outpatient",
+    "specialty": "Orthopedics",
+    "note_text": "Low back pain with right leg radiculopathy. Objective motor exam in the right L5 distribution: strength 4/5. The plan is NSAIDs for 8 weeks with no improvement expected.",
+    "expected_label": "safety_missing_completed_evidence",
+    "expected_overall_status": "CANNOT_DETERMINE"
+  },
+  {
+    "id": "SAFETY-06-hypothetical-therapy-variant",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "dx_codes": ["M54.16"],
+    "site_of_care": "outpatient",
+    "specialty": "Orthopedics",
+    "note_text": "Low back pain with right leg radiculopathy. Objective motor exam in the right L5 distribution: strength 4/5. NSAIDs are proposed for 8 weeks with insufficient response expected.",
+    "expected_label": "safety_missing_completed_evidence",
+    "expected_overall_status": "CANNOT_DETERMINE"
+  },
+  {
+    "id": "SAFETY-07-uncertain-diagnosis",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "dx_codes": ["M54.16"],
+    "site_of_care": "outpatient",
+    "specialty": "Orthopedics",
+    "note_text": "Low back pain with radiculopathy that cannot be excluded. Objective motor exam in the right L5 distribution: strength 4/5. NSAIDs for 8 weeks with no improvement.",
+    "expected_label": "safety_abstention",
+    "expected_overall_status": "NEEDS_REVIEW"
+  },
+  {
+    "id": "SAFETY-08-uncertain-diagnosis-variant",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "dx_codes": ["M54.16"],
+    "site_of_care": "outpatient",
+    "specialty": "Orthopedics",
+    "note_text": "Low back pain with radiculopathy not yet ruled out. Objective motor exam in the right L5 distribution: strength 4/5. NSAIDs for 8 weeks with no improvement.",
+    "expected_label": "safety_abstention",
+    "expected_overall_status": "NEEDS_REVIEW"
+  },
+  {
+    "id": "SAFETY-09-contradictory-diagnosis",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "dx_codes": ["M54.16"],
+    "site_of_care": "outpatient",
+    "specialty": "Orthopedics",
+    "note_text": "Low back pain with radiculopathy, but repeat assessment ruled out radiculopathy. Objective motor exam in the right L5 distribution: strength 4/5. NSAIDs for 8 weeks with no improvement.",
+    "expected_label": "safety_abstention",
+    "expected_overall_status": "NEEDS_REVIEW"
+  },
+  {
+    "id": "SAFETY-10-objective-conflict-abnormal-first",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "dx_codes": ["M54.16"],
+    "site_of_care": "outpatient",
+    "specialty": "Orthopedics",
+    "note_text": "Low back pain with radiculopathy. Objective motor exam in the right L5 distribution: strength 4/5 initially, but strength 5/5 on repeat. NSAIDs for 8 weeks with no improvement.",
+    "expected_label": "safety_abstention",
+    "expected_overall_status": "NEEDS_REVIEW"
+  },
+  {
+    "id": "SAFETY-11-objective-conflict-normal-first",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "dx_codes": ["M54.16"],
+    "site_of_care": "outpatient",
+    "specialty": "Orthopedics",
+    "note_text": "Low back pain with radiculopathy. Objective motor exam in the right L5 distribution: strength 5/5 on repeat, but initial strength 4/5. NSAIDs for 8 weeks with no improvement.",
+    "expected_label": "safety_abstention",
+    "expected_overall_status": "NEEDS_REVIEW"
+  },
+  {
+    "id": "SAFETY-12-objective-reflex-conflict",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "dx_codes": ["M54.16"],
+    "site_of_care": "outpatient",
+    "specialty": "Orthopedics",
+    "note_text": "Low back pain with radiculopathy. Right L5 distribution reflexes were diminished initially but later reflexes were normal. NSAIDs for 8 weeks with no improvement.",
+    "expected_label": "safety_abstention",
+    "expected_overall_status": "NEEDS_REVIEW"
+  },
+  {
+    "id": "SAFETY-13-family-attribution-after-therapy",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "dx_codes": ["M54.16"],
+    "site_of_care": "outpatient",
+    "specialty": "Orthopedics",
+    "note_text": "Low back pain with radiculopathy. Objective motor exam in the right L5 distribution: strength 4/5. NSAIDs for 8 weeks with no improvement were completed by her mother.",
+    "expected_label": "safety_missing_patient_evidence",
+    "expected_overall_status": "CANNOT_DETERMINE"
+  },
+  {
+    "id": "SAFETY-14-future-therapy-after-mention",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "dx_codes": ["M54.16"],
+    "site_of_care": "outpatient",
+    "specialty": "Orthopedics",
+    "note_text": "Low back pain with radiculopathy. Objective motor exam in the right L5 distribution: strength 4/5. NSAIDs for 8 weeks with no improvement will be initiated tomorrow.",
+    "expected_label": "safety_missing_completed_evidence",
+    "expected_overall_status": "CANNOT_DETERMINE"
+  },
+  {
+    "id": "SAFETY-15-diagnosis-differential",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "dx_codes": ["M54.16"],
+    "site_of_care": "outpatient",
+    "specialty": "Orthopedics",
+    "note_text": "Low back pain with radiculopathy remains in the differential. Objective motor exam in the right L5 distribution: strength 4/5. NSAIDs for 8 weeks with no improvement.",
+    "expected_label": "safety_abstention",
+    "expected_overall_status": "NEEDS_REVIEW"
+  },
+  {
+    "id": "SAFETY-16-objective-finding-unconfirmed",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "dx_codes": ["M54.16"],
+    "site_of_care": "outpatient",
+    "specialty": "Orthopedics",
+    "note_text": "Low back pain with radiculopathy. Objective motor exam in the right L5 distribution: strength 4/5 cannot be confirmed. NSAIDs for 8 weeks with no improvement.",
+    "expected_label": "safety_abstention",
+    "expected_overall_status": "NEEDS_REVIEW"
+  },
+  {
+    "id": "SAFETY-17-nonpatient-osa-attribution",
+    "payer": "Aetna",
+    "procedure_code": "CPAP_DEVICE",
+    "dx_codes": ["G47.33"],
+    "site_of_care": "outpatient",
+    "specialty": "Sleep Medicine",
+    "note_text": "OSA was diagnosed in her mother. Sleep study completed 2024-05-18. AHI 22.",
+    "expected_label": "safety_missing_patient_evidence",
+    "expected_overall_status": "CANNOT_DETERMINE"
+  },
+  {
+    "id": "SAFETY-18-questioned-osa-diagnosis",
+    "payer": "Aetna",
+    "procedure_code": "CPAP_DEVICE",
+    "dx_codes": ["G47.33"],
+    "site_of_care": "outpatient",
+    "specialty": "Sleep Medicine",
+    "note_text": "OSA? Sleep study completed 2024-05-18. AHI 22.",
+    "expected_label": "safety_abstention",
+    "expected_overall_status": "NEEDS_REVIEW"
   }
 
 ]

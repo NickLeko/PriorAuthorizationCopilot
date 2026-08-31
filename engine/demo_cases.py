@@ -32,7 +32,7 @@ def featured_demo_cases(config: AppConfig) -> List[DemoCase]:
 
 
 def expected_overall_status_for_demo_case(case: DemoCase) -> str | None:
-    expected = str(case.showcase.get("expected_overall_status") or "").strip()
+    expected = str(case.expected_overall_status or case.showcase.get("expected_overall_status") or "").strip()
     return expected or None
 
 

@@ -1,11 +1,62 @@
 import json
 from datetime import datetime, timezone
+from pathlib import Path
 
 import pytest
 
 from engine.config import load_app_config
+from engine.policy_monitor import SNAPSHOT_NORMALIZATION_VERSION, hash_text
 from engine.schemas import PARequest
 from engine.service import ReadinessService, UnsupportedScopeError
+
+
+def _evaluate_complete_lumbar_treatment(treatment_note: str):
+    return ReadinessService().evaluate(
+        PARequest(
+            payer="Aetna",
+            procedure_code="MRI_LUMBAR",
+            dx_codes=["M54.16"],
+            site_of_care="outpatient",
+            specialty="Orthopedics",
+            note_text=(
+                "Low back pain with right leg radiculopathy. "
+                "Objective motor exam in the right L5 distribution: ankle dorsiflexion strength 4/5. "
+                f"{treatment_note}"
+            ),
+        )
+    )
+
+
+def _write_policy_snapshot(snapshot_root: Path, fetched_at_utc: str) -> None:
+    snapshot_dir = snapshot_root / "aetna_mri_lumbar"
+    snapshot_dir.mkdir(parents=True)
+    normalized_text = "synthetic policy snapshot fixture\n"
+    snapshot_dir.joinpath("latest.json").write_text(
+        json.dumps(
+            {
+                "id": "aetna_mri_lumbar",
+                "payer": "Aetna",
+                "procedure_code": "MRI_LUMBAR",
+                "url": "https://www.aetna.com/cpb/medical/data/200_299/0236.html",
+                "fetched_at_utc": fetched_at_utc,
+                "last_checked_utc": fetched_at_utc,
+                "content_hash_sha256": hash_text(normalized_text),
+                "normalization": SNAPSHOT_NORMALIZATION_VERSION,
+                "normalized_text": normalized_text,
+            }
+        ),
+        encoding="utf-8",
+    )
+
+
+def _copy_current_policy_snapshot(snapshot_root: Path) -> None:
+    config = load_app_config()
+    snapshot_dir = snapshot_root / "aetna_mri_lumbar"
+    snapshot_dir.mkdir(parents=True)
+    snapshot_dir.joinpath("latest.json").write_text(
+        config.snapshot_root.joinpath("aetna_mri_lumbar", "latest.json").read_text(encoding="utf-8"),
+        encoding="utf-8",
+    )
 
 
 def test_service_evaluates_known_ready_demo_case():
@@ -362,6 +413,7 @@ def test_verified_provenance_downgrades_when_monitoring_baseline_is_missing(tmp_
 
     assert evaluation.overall_status == "READY"
     assert evaluation.policy_trust_level == "demo"
+    assert evaluation.submission_readiness is False
     assert any("Policy trust remains DEMO" in warning for warning in evaluation.warnings)
 
 
@@ -388,6 +440,7 @@ def test_verified_provenance_downgrades_when_baseline_hash_does_not_match(tmp_pa
 
     assert evaluation.overall_status == "READY"
     assert evaluation.policy_trust_level == "demo"
+    assert evaluation.submission_readiness is False
 
 
 @pytest.mark.parametrize(
@@ -503,3 +556,451 @@ def test_verified_lumbar_conservative_therapy_modalities_duration_and_response_a
     assert evaluation.overall_status == expected_overall
     assert requirement_statuses["cpb_0236_conservative_therapy_weeks"] == expected_duration_status
     assert requirement_statuses["cpb_0236_conservative_therapy_no_improvement"] == expected_response_status
+
+
+@pytest.mark.parametrize(
+    "treatment_note",
+    [
+        ("Muscle relaxants for 2 weeks with no improvement. NSAIDs for 8 weeks with significant improvement."),
+        ("NSAIDs for 8 weeks with significant improvement. Muscle relaxants for 2 weeks with no improvement."),
+    ],
+)
+def test_conflicting_therapy_episodes_are_order_independent_and_never_ready(treatment_note):
+    evaluation = _evaluate_complete_lumbar_treatment(treatment_note)
+
+    assert evaluation.overall_status == "NEEDS_REVIEW"
+    assert evaluation.submission_readiness is False
+    assert evaluation.facts["cpb_0236_conservative_therapy_weeks"] is None
+    assert evaluation.facts["cpb_0236_conservative_therapy_no_improvement"] is None
+
+
+def test_duration_and_response_from_unlinked_therapy_sentences_are_not_combined():
+    evaluation = _evaluate_complete_lumbar_treatment("NSAIDs for 8 weeks. Muscle relaxants provided no improvement.")
+
+    assert evaluation.overall_status == "NEEDS_REVIEW"
+    assert evaluation.submission_readiness is False
+    assert {blocker.key for blocker in evaluation.blockers.needs_review} == {
+        "cpb_0236_conservative_therapy_weeks",
+        "cpb_0236_conservative_therapy_no_improvement",
+    }
+
+
+def test_conflicting_responses_in_one_therapy_sentence_require_review():
+    evaluation = _evaluate_complete_lumbar_treatment(
+        "Muscle relaxants for 2 weeks gave no improvement, while NSAIDs for 8 weeks gave significant improvement."
+    )
+
+    assert evaluation.overall_status == "NEEDS_REVIEW"
+    assert evaluation.submission_readiness is False
+    assert evaluation.facts["cpb_0236_conservative_therapy_no_improvement"] is None
+
+
+def test_family_history_diagnosis_does_not_establish_patient_diagnosis():
+    service = ReadinessService()
+    evaluation = service.evaluate(
+        PARequest(
+            payer="Aetna",
+            procedure_code="CPAP_DEVICE",
+            dx_codes=["G47.33"],
+            site_of_care="outpatient",
+            specialty="Sleep Medicine",
+            note_text="Family history: mother has OSA. Patient sleep study completed 2024-05-18. AHI 22.",
+        )
+    )
+
+    assert evaluation.facts["osa_diagnosis"] is None
+    assert evaluation.overall_status == "CANNOT_DETERMINE"
+    assert evaluation.submission_readiness is False
+
+
+def test_uncertain_diagnosis_requires_review_instead_of_becoming_established():
+    evaluation = ReadinessService().evaluate(
+        PARequest(
+            payer="Aetna",
+            procedure_code="MRI_LUMBAR",
+            dx_codes=["M54.16"],
+            site_of_care="outpatient",
+            specialty="Orthopedics",
+            note_text=(
+                "Low back pain with possible lumbar radiculopathy. "
+                "Objective motor exam in the right L5 distribution: ankle dorsiflexion strength 4/5. "
+                "NSAIDs for 8 weeks with no improvement."
+            ),
+        )
+    )
+
+    assert evaluation.facts["back_pain_with_radiculopathy"] is None
+    assert evaluation.overall_status == "NEEDS_REVIEW"
+    assert evaluation.submission_readiness is False
+
+
+def test_planned_therapy_is_not_treated_as_completed_therapy():
+    evaluation = _evaluate_complete_lumbar_treatment("Plan: NSAIDs for 8 weeks with no improvement.")
+
+    assert evaluation.facts["cpb_0236_conservative_therapy_weeks"] is None
+    assert evaluation.facts["cpb_0236_conservative_therapy_no_improvement"] is None
+    assert evaluation.overall_status == "CANNOT_DETERMINE"
+    assert evaluation.submission_readiness is False
+
+
+def test_contradictory_diagnosis_evidence_requires_review():
+    evaluation = _evaluate_complete_lumbar_treatment("Low back pain without radiculopathy. NSAIDs for 8 weeks with no improvement.")
+
+    assert evaluation.facts["back_pain_with_radiculopathy"] is None
+    assert evaluation.overall_status == "NEEDS_REVIEW"
+    assert evaluation.submission_readiness is False
+
+
+@pytest.mark.parametrize(
+    "treatment_note",
+    [
+        "Muscle relaxants for 2 weeks produced no improvement, whereas NSAIDs for 8 weeks were also documented.",
+        "NSAIDs for 8 weeks were documented, while muscle relaxants for 2 weeks produced no improvement.",
+        "NSAIDs for 8 weeks were documented and muscle relaxants for 2 weeks produced no improvement.",
+    ],
+)
+def test_cross_therapy_duration_response_candidates_fail_closed(treatment_note):
+    evaluation = _evaluate_complete_lumbar_treatment(treatment_note)
+
+    statuses = {result.key: result.status for result in evaluation.results}
+    assert evaluation.overall_status == "NEEDS_REVIEW"
+    assert evaluation.submission_readiness is False
+    assert statuses["cpb_0236_conservative_therapy_weeks"] == "NEEDS_REVIEW"
+    assert statuses["cpb_0236_conservative_therapy_no_improvement"] == "NEEDS_REVIEW"
+    assert evaluation.facts["cpb_0236_conservative_therapy_weeks"] is None
+    assert evaluation.facts["cpb_0236_conservative_therapy_no_improvement"] is None
+    assert "__REVIEW_REQUIRED__" not in evaluation.model_dump_json()
+
+
+@pytest.mark.parametrize(
+    "treatment_note",
+    [
+        "Mother reports she completed NSAIDs for 8 weeks with no improvement.",
+        "The patient's mother reports she completed analgesics for 7 weeks without relief.",
+        "Father states he finished NSAIDs for 6 weeks with little relief.",
+        "The caregiver reports she completed NSAIDs for 8 weeks with no improvement.",
+        "NSAIDs for 8 weeks with no improvement were completed by her mother.",
+        "NSAIDs for 8 weeks with no improvement were undertaken by the guardian.",
+        "NSAIDs for 8 weeks with no improvement were her mother's treatment.",
+        "NSAIDs for 8 weeks with no improvement belonged to her father.",
+    ],
+)
+def test_nonpatient_therapy_candidates_do_not_satisfy_patient_requirements(treatment_note):
+    evaluation = _evaluate_complete_lumbar_treatment(treatment_note)
+
+    assert evaluation.overall_status == "CANNOT_DETERMINE"
+    assert evaluation.submission_readiness is False
+    assert evaluation.facts["cpb_0236_conservative_therapy_weeks"] is None
+    assert evaluation.facts["cpb_0236_conservative_therapy_no_improvement"] is None
+
+
+@pytest.mark.parametrize(
+    "treatment_note",
+    [
+        "The plan is NSAIDs for 8 weeks with no improvement expected.",
+        "NSAIDs are proposed for 8 weeks with insufficient response expected.",
+        "Patient intends to try analgesics for 6 weeks and expects no improvement.",
+        "The plan includes NSAIDs for 8 weeks with no improvement expected.",
+        "The patient is going to try NSAIDs for 8 weeks with no improvement expected.",
+        "NSAIDs for 8 weeks with no improvement will be initiated tomorrow.",
+        "NSAIDs for 8 weeks with no improvement should be tried next.",
+        "If NSAIDs are tried for 8 weeks, no improvement is expected.",
+    ],
+)
+def test_hypothetical_therapy_candidates_do_not_become_completed_courses(treatment_note):
+    evaluation = _evaluate_complete_lumbar_treatment(treatment_note)
+
+    assert evaluation.overall_status == "CANNOT_DETERMINE"
+    assert evaluation.submission_readiness is False
+    assert evaluation.facts["cpb_0236_conservative_therapy_weeks"] is None
+    assert evaluation.facts["cpb_0236_conservative_therapy_no_improvement"] is None
+
+
+@pytest.mark.parametrize(
+    "diagnosis_sentence",
+    [
+        "Low back pain with radiculopathy that cannot be excluded.",
+        "Low back pain with suspected lumbar radiculopathy.",
+        "Low back pain with radiculopathy not yet ruled out.",
+        "Low back pain with radiculopathy remains possible.",
+        "Low back pain with radiculopathy that cannot be ruled out.",
+        "Low back pain with questionable radiculopathy.",
+        "Low back pain with radiculopathy under consideration.",
+        "Low back pain with radiculopathy is being considered.",
+        "Low back pain with radiculopathy remains a diagnostic possibility.",
+        "Low back pain with radiculopathy remains in the differential.",
+        "Low back pain with radiculopathy versus referred pain.",
+        "Low back pain with radiculopathy could not be confirmed.",
+        "Low back pain with radiculopathy?",
+    ],
+)
+def test_uncertain_diagnosis_candidates_require_review(diagnosis_sentence):
+    evaluation = _evaluate_complete_lumbar_treatment(f"{diagnosis_sentence} NSAIDs for 8 weeks with no improvement.")
+
+    assert evaluation.overall_status == "NEEDS_REVIEW"
+    assert evaluation.submission_readiness is False
+    assert evaluation.facts["back_pain_with_radiculopathy"] is None
+    assert "__REVIEW_REQUIRED__" not in evaluation.model_dump_json()
+
+
+@pytest.mark.parametrize(
+    "diagnosis_sentence",
+    [
+        "Low back pain with radiculopathy, but repeat assessment ruled out radiculopathy.",
+        "Repeat assessment ruled out radiculopathy, although low back pain with radiculopathy was documented initially.",
+        "Low back pain with radiculopathy was present initially but radiculopathy was later ruled out.",
+    ],
+)
+def test_competing_diagnosis_candidates_require_review(diagnosis_sentence):
+    evaluation = _evaluate_complete_lumbar_treatment(f"{diagnosis_sentence} NSAIDs for 8 weeks with no improvement.")
+
+    assert evaluation.overall_status == "NEEDS_REVIEW"
+    assert evaluation.submission_readiness is False
+    assert evaluation.facts["back_pain_with_radiculopathy"] is None
+
+
+@pytest.mark.parametrize(
+    "objective_sentence",
+    [
+        "Objective motor exam in the right L5 distribution: strength 4/5 initially, but strength 5/5 on repeat.",
+        "Objective motor exam in the right L5 distribution: strength 5/5 on repeat, but initial strength 4/5.",
+        "Right L5 distribution strength was 4/5 at first and later strength was 5/5.",
+        "Right L5 distribution repeat strength 5/5 after prior strength 4/5.",
+        "Right L5 distribution strength improved from 4/5 to 5/5.",
+        "Right L5 distribution strength declined from 5/5 to 4/5.",
+        "Right L5 distribution reflexes were diminished initially but later reflexes were normal.",
+        "Right L5 distribution reflexes were normal on repeat but diminished initially.",
+    ],
+)
+def test_competing_objective_candidates_are_order_independent_and_require_review(objective_sentence):
+    evaluation = ReadinessService().evaluate(
+        PARequest(
+            payer="Aetna",
+            procedure_code="MRI_LUMBAR",
+            dx_codes=["M54.16"],
+            site_of_care="outpatient",
+            specialty="Orthopedics",
+            note_text=(f"Low back pain with radiculopathy. {objective_sentence} NSAIDs for 8 weeks with no improvement."),
+        )
+    )
+
+    assert evaluation.overall_status == "NEEDS_REVIEW"
+    assert evaluation.submission_readiness is False
+    assert evaluation.facts["objective_motor_or_reflex_change_in_root_distribution"] is None
+    assert "__REVIEW_REQUIRED__" not in evaluation.audit_trail.model_dump_json()
+
+
+@pytest.mark.parametrize(
+    "objective_sentence, expected_status",
+    [
+        (
+            "Objective motor exam in the right L5 distribution: strength 4/5 cannot be confirmed.",
+            "NEEDS_REVIEW",
+        ),
+        (
+            "Objective motor exam in the right L5 distribution: strength 4/5 is under consideration.",
+            "NEEDS_REVIEW",
+        ),
+        (
+            "Objective motor exam in the right L5 distribution: strength may be 4/5.",
+            "NEEDS_REVIEW",
+        ),
+        (
+            "Objective motor exam in the right L5 distribution: strength might be 4/5.",
+            "NEEDS_REVIEW",
+        ),
+        (
+            "Objective motor exam in the right L5 distribution: strength 4/5?",
+            "NEEDS_REVIEW",
+        ),
+        (
+            "Objective motor exam in the right L5 distribution: strength 4/5 was documented in her mother.",
+            "CANNOT_DETERMINE",
+        ),
+    ],
+)
+def test_uncertain_or_nonpatient_objective_candidates_never_produce_ready(objective_sentence, expected_status):
+    evaluation = ReadinessService().evaluate(
+        PARequest(
+            payer="Aetna",
+            procedure_code="MRI_LUMBAR",
+            dx_codes=["M54.16"],
+            site_of_care="outpatient",
+            specialty="Orthopedics",
+            note_text=(f"Low back pain with radiculopathy. {objective_sentence} NSAIDs for 8 weeks with no improvement."),
+        )
+    )
+
+    assert evaluation.overall_status == expected_status
+    assert evaluation.submission_readiness is False
+    assert evaluation.facts["objective_motor_or_reflex_change_in_root_distribution"] is None
+
+
+@pytest.mark.parametrize(
+    "diagnosis_text, expected_status",
+    [
+        ("OSA?", "NEEDS_REVIEW"),
+        ("OSA under consideration.", "NEEDS_REVIEW"),
+        ("OSA remains in the differential.", "NEEDS_REVIEW"),
+        ("OSA was diagnosed in her mother.", "CANNOT_DETERMINE"),
+        ("OSA is her mother's diagnosis.", "CANNOT_DETERMINE"),
+    ],
+)
+def test_uncertain_or_nonpatient_osa_candidates_never_produce_ready(diagnosis_text, expected_status):
+    evaluation = ReadinessService().evaluate(
+        PARequest(
+            payer="Aetna",
+            procedure_code="CPAP_DEVICE",
+            dx_codes=["G47.33"],
+            site_of_care="outpatient",
+            specialty="Sleep Medicine",
+            note_text=f"{diagnosis_text} Sleep study completed 2024-05-18. AHI 22.",
+        )
+    )
+
+    assert evaluation.overall_status == expected_status
+    assert evaluation.submission_readiness is False
+    assert evaluation.facts["osa_diagnosis"] is None
+
+
+@pytest.mark.parametrize(
+    "note_text",
+    [
+        "OSA. Sleep study completed 2024-05-18? AHI 22.",
+        "OSA. Sleep study completed 2024-05-18. AHI 22?",
+    ],
+)
+def test_questioned_cpap_evidence_requires_review(note_text):
+    evaluation = ReadinessService().evaluate(
+        PARequest(
+            payer="Aetna",
+            procedure_code="CPAP_DEVICE",
+            dx_codes=["G47.33"],
+            site_of_care="outpatient",
+            specialty="Sleep Medicine",
+            note_text=note_text,
+        )
+    )
+
+    assert evaluation.overall_status == "NEEDS_REVIEW"
+    assert evaluation.submission_readiness is False
+    assert "__REVIEW_REQUIRED__" not in evaluation.model_dump_json()
+
+
+def test_demo_policy_can_preserve_ready_status_but_never_be_submission_ready():
+    service = ReadinessService()
+    evaluation = service.evaluate(service.get_demo_case_request("CPAP-01-complete"))
+
+    assert evaluation.overall_status == "READY"
+    assert evaluation.policy_trust_level == "demo"
+    assert evaluation.submission_readiness is False
+    assert any("criteria evaluate to READY" in warning for warning in evaluation.warnings)
+
+
+def test_stale_policy_snapshot_blocks_submission_readiness(tmp_path):
+    _write_policy_snapshot(tmp_path, "2020-01-01T00:00:00Z")
+    service = ReadinessService(load_app_config().model_copy(update={"snapshot_root": tmp_path}))
+
+    evaluation = service.evaluate(service.get_demo_case_request("MRI-01-complete"))
+
+    assert evaluation.overall_status == "READY"
+    assert evaluation.policy_trust_level == "demo"
+    assert evaluation.submission_readiness is False
+
+
+def test_unresolved_policy_drift_blocks_submission_readiness(tmp_path):
+    _write_policy_snapshot(
+        tmp_path,
+        datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z"),
+    )
+    tmp_path.joinpath("drift_log.jsonl").write_text(
+        json.dumps({"id": "aetna_mri_lumbar", "event": "POLICY_DRIFT_DETECTED"}) + "\n",
+        encoding="utf-8",
+    )
+    service = ReadinessService(load_app_config().model_copy(update={"snapshot_root": tmp_path}))
+
+    evaluation = service.evaluate(service.get_demo_case_request("MRI-01-complete"))
+
+    assert evaluation.overall_status == "READY"
+    assert evaluation.policy_trust_level == "demo"
+    assert evaluation.submission_readiness is False
+
+
+def test_malformed_drift_log_fails_policy_trust_closed(tmp_path):
+    _copy_current_policy_snapshot(tmp_path)
+    tmp_path.joinpath("drift_log.jsonl").write_text("not-json\n", encoding="utf-8")
+    service = ReadinessService(load_app_config().model_copy(update={"snapshot_root": tmp_path}))
+
+    drift = service.get_drift_status(payer="Aetna", procedure_code="MRI_LUMBAR")
+    evaluation = service.evaluate(service.get_demo_case_request("MRI-01-complete"))
+
+    assert drift.any_review_required is True
+    assert drift.sources[0].status == "INVALID_DRIFT_LOG"
+    assert "not valid JSON" in (drift.sources[0].review_reason or "")
+    assert evaluation.overall_status == "READY"
+    assert evaluation.policy_trust_level == "demo"
+    assert evaluation.submission_readiness is False
+
+
+def test_later_non_drift_event_does_not_clear_unresolved_drift(tmp_path):
+    _copy_current_policy_snapshot(tmp_path)
+    tmp_path.joinpath("drift_log.jsonl").write_text(
+        "\n".join(
+            [
+                json.dumps({"id": "aetna_mri_lumbar", "event": "POLICY_DRIFT_DETECTED"}),
+                json.dumps({"id": "aetna_mri_lumbar", "event": "BOOTSTRAP_SNAPSHOT_CREATED"}),
+            ]
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+    service = ReadinessService(load_app_config().model_copy(update={"snapshot_root": tmp_path}))
+
+    drift = service.get_drift_status(payer="Aetna", procedure_code="MRI_LUMBAR")
+    evaluation = service.evaluate(service.get_demo_case_request("MRI-01-complete"))
+
+    assert drift.any_review_required is True
+    assert drift.sources[0].status == "REVIEW_REQUIRED"
+    assert evaluation.policy_trust_level == "demo"
+    assert evaluation.submission_readiness is False
+
+
+def test_invalid_runtime_rulebook_blocks_submission_readiness(tmp_path):
+    source_rules = load_app_config().rules_path.read_text(encoding="utf-8")
+    changed_rules = tmp_path / "payer_rules.yaml"
+    changed_rules.write_text(source_rules.replace("version: 1.0", "version: 1.0-unreleased", 1), encoding="utf-8")
+    service = ReadinessService(load_app_config().model_copy(update={"rules_path": changed_rules}))
+
+    evaluation = service.evaluate(service.get_demo_case_request("MRI-01-complete"))
+
+    assert evaluation.overall_status == "READY"
+    assert evaluation.policy_trust_level == "demo"
+    assert evaluation.submission_readiness is False
+    assert evaluation.audit_trail.rulebook_active_release_id == "2026-08-22-active-v1.0"
+
+
+@pytest.mark.parametrize("mutation", ["hash_mismatch", "missing_content", "future_timestamp"])
+def test_invalid_policy_snapshot_integrity_blocks_submission_readiness(tmp_path, mutation):
+    config = load_app_config()
+    snapshot = json.loads(config.snapshot_root.joinpath("aetna_mri_lumbar", "latest.json").read_text(encoding="utf-8"))
+    if mutation == "hash_mismatch":
+        snapshot["normalized_text"] = "tampered content\n"
+    elif mutation == "missing_content":
+        snapshot.pop("normalized_text")
+    else:
+        snapshot["fetched_at_utc"] = "2099-01-01T00:00:00Z"
+        snapshot["last_checked_utc"] = "2099-01-01T00:00:00Z"
+
+    snapshot_dir = tmp_path / "aetna_mri_lumbar"
+    snapshot_dir.mkdir(parents=True)
+    snapshot_dir.joinpath("latest.json").write_text(json.dumps(snapshot), encoding="utf-8")
+    service = ReadinessService(config.model_copy(update={"snapshot_root": tmp_path}))
+
+    drift = service.get_drift_status(payer="Aetna", procedure_code="MRI_LUMBAR")
+    evaluation = service.evaluate(service.get_demo_case_request("MRI-01-complete"))
+
+    assert drift.any_review_required is True
+    assert drift.sources[0].status == "INVALID_SNAPSHOT"
+    assert evaluation.overall_status == "READY"
+    assert evaluation.policy_trust_level == "demo"
+    assert evaluation.submission_readiness is False
