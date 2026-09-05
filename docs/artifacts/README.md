@@ -10,13 +10,13 @@ These artifacts are intentionally committed because they make reviewer inspectio
 
 Start with:
 
-- `MRI-01-complete.json`: a `READY` case.
+- `MRI-01-complete.json`: an all-MET `PENDING_VERIFICATION` case with no human attestations.
 - `MRI-08-edge-below-threshold.json`: a documented-but-below-threshold `NOT_READY` case.
 - `CPAP-02-borderline.json`: a missing-information `CANNOT_DETERMINE` case.
 
 The most useful fields are:
 
-- `overall_status`: `READY`, `NOT_READY`, `CANNOT_DETERMINE`, or `NEEDS_REVIEW`.
+- `overall_status`: `PENDING_VERIFICATION`, `READY`, `NOT_READY`, `CANNOT_DETERMINE`, or `NEEDS_REVIEW`.
 - `submission_readiness`: true only when the overall status is `READY` and policy/rulebook trust is verified and current.
 - `results[]`: requirement-level `MET`, `NOT_MET`, `NOT_DOCUMENTED`, or `NEEDS_REVIEW` results.
 - `blockers`: grouped missing, documented-but-not-met, and documented-but-unevaluable requirements.
@@ -33,7 +33,7 @@ The most useful fields are:
 
 They do not show payer approval, denial, denial prediction, clinical appropriateness, medical necessity, production readiness, or real patient handling.
 
-`READY` means only that the synthetic note met the currently configured documentation requirements. It is not a payer authorization or medical-necessity decision, including for the verified lumbar pathway.
+`READY` requires all requirement facts HUMAN_VERIFIED and all operators MET. Automated all-MET proposals remain PENDING_VERIFICATION. Neither status is a payer authorization or medical-necessity decision. `test/golden/evaluations/MRI-01-human-verified.json` separately demonstrates synthetic attestations; they are fixture data, not real review records.
 
 The safety metrics are fixture-scoped regression checks. They do not estimate accuracy, sensitivity, specificity, or safety on external clinical text.
 

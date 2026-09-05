@@ -18,7 +18,18 @@ Two regression layers exist on purpose:
 - the bundled labeled fixture suite checks exact expected overall statuses for every included case and reports fixture-scoped false-READY, exact-status, and abstention metrics; these are regression metrics, not estimates of real-world clinical-language performance
 - acceptance snapshots lock representative exact outputs for evaluation and governance surfaces
 
-Current bundled-fixture snapshot: 52 labeled synthetic cases; 52/52 exact overall statuses; 0 false `READY` results among 45 expected non-`READY` cases; 12 `NEEDS_REVIEW` results (23.1%); and 42 combined `NEEDS_REVIEW`/`CANNOT_DETERMINE` abstentions (80.8%).
+`TestExtractionContractAlignment` is the executable specification for every numbered
+v1.5 extraction/verification guarantee and every published exact example. Its first
+example preserves the negated-diagnosis false proposal and verifies that the
+unverified case cannot become READY. It also exercises Unicode citation integrity,
+reviewer metadata, attestation binding, status precedence and governance gates.
+Cross-surface tests compare identical Streamlit, API and CLI requests before and
+after verification. A long-lived API test promotes a changed rule bundle without
+restarting the service. All 287 pre-v1.5 test cases remain, with intentional status
+and snapshot expectation updates. Governance tests explicitly attest facts before
+checking their independent submission gate, so PENDING cannot mask those checks.
+
+Current bundled-fixture snapshot: 52 labeled synthetic cases; 52/52 exact overall statuses; 0 false `READY` results among 52 expected non-`READY` cases; 12 `NEEDS_REVIEW` results (23.1%); and 42 combined `NEEDS_REVIEW`/`CANNOT_DETERMINE` abstentions (80.8%).
 
 ## Commands
 
@@ -95,6 +106,7 @@ Regenerate golden snapshots intentionally after a reviewed product change:
 The bundled synthetic case set intentionally includes:
 
 - ready cases
+- seven formerly automated READY cases now expect PENDING_VERIFICATION; a separate golden fixture covers fully human-verified READY
 - documented-but-not-ready cases
 - cannot-determine cases
 - threshold edge cases
@@ -108,6 +120,10 @@ The bundled synthetic case set intentionally includes:
 - governance snapshot drift, structural validation, recomputed content hashes, future-time rejection, and successful-check freshness
 
 That is more useful here than adding a large quantity of low-value tests.
+
+Zero READY in the unverified fixture is now a structural property, not a measure
+of extraction accuracy. NEEDS_REVIEW/CANNOT_DETERMINE abstention metrics retain
+their prior definition; pending verification is counted separately.
 
 ## What Is Not Tested
 

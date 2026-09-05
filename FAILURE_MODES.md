@@ -3,7 +3,7 @@
 
 **Project:** Prior Authorization Readiness Copilot  
 **Owner:** Nicholas Leko  
-**Last Updated:** August 31, 2026
+**Last Updated:** September 4, 2026 — v1.5.0
 **Status:** Versioned current behavior. Changes should update tests and docs.
 
 ---
@@ -15,7 +15,7 @@ Current repo status:
 - no LLM implementation
 - all bundled data is synthetic; input is not screened and must not contain real PHI, with screening remaining the operator's responsibility
 
-This system is **administrative decision support** for prior authorization readiness.
+Automated extraction is a **drafting aid, not a decision gate**. v1.4.0's posture over-trusted extraction. Negated diagnoses returned affirmative facts, contradicting the extraction contract as written. v1.5.0 resolves that contradiction by changing what the engine may assert rather than by making extraction match the contract. The language patterns remain unchanged, including known negation, temporality and attribution errors.
 
 It evaluates whether payer-required administrative criteria are:
 - documented and met (`MET`)
@@ -25,6 +25,7 @@ It evaluates whether payer-required administrative criteria are:
 
 It then derives an overall readiness status:
 - `READY`
+- `PENDING_VERIFICATION`
 - `NOT_READY`
 - `CANNOT_DETERMINE`
 - `NEEDS_REVIEW`
@@ -43,7 +44,8 @@ The system is intentionally:
 - Any `NOT_DOCUMENTED` ⇒ overall status **must** be `CANNOT_DETERMINE`
 - Any `NEEDS_REVIEW` (and no `NOT_DOCUMENTED`) ⇒ overall status **must** be `NEEDS_REVIEW`
 - Any `NOT_MET` (and no `NOT_DOCUMENTED` or `NEEDS_REVIEW`) ⇒ overall status **must** be `NOT_READY`
-- No blockers ⇒ overall status **must** be `READY`
+- No blockers and any unverified requirement fact ⇒ `PENDING_VERIFICATION`, submission readiness false
+- No blockers and all requirement facts `HUMAN_VERIFIED` ⇒ `READY`
 - `submission_readiness=true` additionally requires `READY`, current verified policy trust, a trustworthy active rulebook, and no unresolved or invalid governance state
 
 Invariant violations are surfaced in:
@@ -51,10 +53,11 @@ Invariant violations are surfaced in:
 - audit output
 - tests (behavioral contract)
 
-### 2.2 “No Inference” Guarantee
-- Extraction is deterministic and span-evidenced
-- Missing documentation is preserved as `None` / `NOT_DOCUMENTED`
-- No silent defaults
+### 2.2 Source-location and verification guarantees
+- Captured spans have original-note character offsets and exact source-slice text, including Unicode case expansion. This guarantees location integrity, not semantic support or complete context.
+- Requirement facts default to `UNVERIFIED`. `HUMAN_VERIFIED` records reviewer/time and is bound to the exact request, rule bundle, proposal and evidence.
+- A reviewer must leave unsupported facts unverified. Verification cannot edit scalars or override missing, ambiguous or failed requirements.
+- Self-reported identity is not authentication. Rubber-stamping or fabricated attestations can still permit false READY; there is no production attestation store.
 
 ### 2.3 Write-only Letter Guarantee
 Letter drafting:
@@ -84,6 +87,7 @@ Letter drafting:
 - Rule mapping mismatch vs policy source
 
 **Mitigations:**
+- v1.5.0 blocks READY on automated extraction alone; every requirement fact needs human verification
 - Conservative extraction patterns (therapy duration must be therapy-linked)
 - Evidence spans attached to each extracted field
 - Synthetic regression tests include noise and edge cases
@@ -99,6 +103,8 @@ Letter drafting:
 These were failures in the over-extraction direction, which is the direction the safety contract is designed to minimize. The patched extractor now rejects locally negated or future-planned therapy durations and skips therapy-context durations when extracting symptom duration. Regression coverage was added for the original cases and related phrasing variants. The residual risk remains non-zero for untested free-text phrasing.
 
 **Revision note, August 31, 2026:** Candidate resolution now also fails closed for the tested cross-therapy, non-patient attribution, future/hypothetical, uncertainty/question, and contradictory-finding phrase families. The bundled labeled fixture and direct adversarial tests include forward/reversed order and lexical variants. This is bounded deterministic coverage, not a claim of general clinical-language understanding or zero real-world false `READY` risk.
+
+**Revision note, September 4, 2026:** The fourth audit reproduced affirmative proposals from negated diagnoses and strength, reflex qualifiers borrowed from pain, resolved findings, and unrelated therapy. These extraction errors remain. Automated all-MET cases now stop at PENDING_VERIFICATION. The borrowed sleep-study date was one case the existing design contained: v1.4.0 produced READY documentation status but submission_readiness=false under demo policy trust, as the README already allowed. This release also fixes Unicode offset corruption, long-lived service cache staleness after rule promotion, and unknown/misspelled monitoring frequencies disabling freshness enforcement. Exact contract examples and numbered guarantees are executable; finite tests cannot prove arbitrary clinical-language correctness.
 
 ---
 

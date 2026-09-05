@@ -180,19 +180,19 @@ class ReadinessService:
         configure_logging(self.config.log_level)
         self.logger = get_logger("pa_copilot.service")
 
-    @cached_property
+    @property
     def rules(self) -> Dict[str, Any]:
         return load_rules(str(self.config.rules_path))
 
-    @cached_property
+    @property
     def provenance(self) -> Dict[str, Any]:
         return load_provenance(self.config.provenance_path)
 
-    @cached_property
+    @property
     def policy_sources(self):
         return load_policy_sources(self.config.policy_sources_path)
 
-    @cached_property
+    @property
     def policy_source_by_procedure(self) -> Dict[tuple[str, str], Any]:
         return {(source.payer, source.procedure_code): source for source in self.policy_sources}
 
@@ -295,7 +295,21 @@ class ReadinessService:
 
         return warnings
 
+    def _bundle_digest(self) -> str:
+        return sha256(
+            b"\0".join(
+                path.read_bytes()
+                for path in (
+                    self.config.rules_path,
+                    self.config.provenance_path,
+                    self.config.policy_sources_path,
+                    self.config.rulebook_manifest_path,
+                )
+            )
+        ).hexdigest()
+
     def evaluate(self, request: PARequest) -> EvaluationResult:
+        bundle_digest = self._bundle_digest()
         normalized_request = request.model_copy(
             update={
                 "dx_codes": normalized_dx_codes(request.dx_codes),
@@ -309,6 +323,25 @@ class ReadinessService:
         public_facts = _public_facts(raw_facts)
         requirement_payloads = [requirement.model_dump(exclude_none=True) for requirement in supported.requirements]
         results, reasons = evaluate_requirements(requirement_payloads, raw_facts, evidence_map=raw_evidence_map)
+        unknown_keys = set(normalized_request.fact_verifications) - {result.key for result in results}
+        if unknown_keys:
+            raise InvalidRequestError(f"Unknown verification requirements: {sorted(unknown_keys)}")
+        for result, requirement in zip(results, requirement_payloads):
+            result.fact_value = public_facts.get(result.key)
+            proposal = {
+                "request": normalized_request.model_dump(mode="json", exclude={"fact_verifications"}),
+                "bundle": bundle_digest,
+                "requirement": requirement,
+                "fact": result.fact_value,
+                "status": result.status,
+                "evidence": [span.model_dump() for span in result.evidence_spans],
+            }
+            result.verification_fingerprint = sha256(json.dumps(proposal, sort_keys=True).encode("utf-8")).hexdigest()
+            attestation = normalized_request.fact_verifications.get(result.key)
+            if attestation is not None:
+                if attestation.state == "HUMAN_VERIFIED" and attestation.fingerprint != result.verification_fingerprint:
+                    raise InvalidRequestError(f"Stale or mismatched verification for {result.key}; review the current proposal.")
+                result.verification = attestation
 
         if raw_facts.get("prior_imaging_result") == "unrecognized" and any(
             result.key == "prior_imaging_result" and result.status == "NEEDS_REVIEW" for result in results
@@ -317,6 +350,8 @@ class ReadinessService:
             warnings.append(review_reason)
 
         overall = compute_overall_status(results)
+        if overall["overall_status"] == "PENDING_VERIFICATION":
+            warnings.append("Automated extraction is a drafting aid. All proposed facts require human verification before READY.")
         result_summary = summarize_results(results)
         metrics = _compute_metrics(result_summary)
         blockers = self._build_blockers(results)
@@ -360,6 +395,7 @@ class ReadinessService:
             policy_trust_level=policy_trust_level,
             provenance_snapshot=structured_provenance,
             facts_extracted=public_facts,
+            fact_verifications={result.key: result.verification for result in results},
             evidence_map=self._coerce_evidence_map(raw_evidence_map),
             requirements_checked=[result.key for result in results],
             overall_status=overall["overall_status"],
@@ -399,6 +435,8 @@ class ReadinessService:
             report=report,
         )
 
+        if self._bundle_digest() != bundle_digest:
+            raise GovernanceConfigError("Rulebook changed during evaluation; retry against the current release.")
         log_event(
             self.logger,
             logging.INFO,
@@ -499,7 +537,11 @@ class ReadinessService:
                     age_seconds = max(age_seconds, 0)
                     days_since_last_checked = int(age_seconds // 86400)
                     freshness_status = "CURRENT"
-                    if freshness_window_days is not None and age_seconds > freshness_window_days * 86400:
+                    if freshness_window_days is None:
+                        freshness_status = "UNKNOWN"
+                        any_review_required = True
+                        review_reason = "Unsupported policy monitoring frequency; freshness cannot be established."
+                    elif age_seconds > freshness_window_days * 86400:
                         freshness_status = "STALE"
                         stale_source_count += 1
                         any_review_required = True
@@ -570,7 +612,7 @@ class ReadinessService:
                     continue
                 start = span.get("start")
                 end = span.get("end")
-                text = str(span.get("text", "")).strip()
+                text = str(span.get("text", ""))
                 if not isinstance(start, int) or not isinstance(end, int) or end <= start or start < 0 or not text:
                     continue
                 out[key].append(EvidenceSpan(start=start, end=end, text=text))
@@ -604,8 +646,13 @@ class ReadinessService:
             errors.append("Invariant violation: NEEDS_REVIEW blockers exist but overall_status is not NEEDS_REVIEW.")
         if (not blockers.not_documented) and (not blockers.needs_review) and blockers.not_met and overall_status != "NOT_READY":
             errors.append("Invariant violation: NOT_MET blockers exist but overall_status is not NOT_READY.")
-        if (not blockers.not_documented) and (not blockers.not_met) and (not blockers.needs_review) and overall_status != "READY":
-            errors.append("Invariant violation: no blockers exist but overall_status is not READY.")
+        if (
+            (not blockers.not_documented)
+            and (not blockers.not_met)
+            and (not blockers.needs_review)
+            and overall_status not in ("READY", "PENDING_VERIFICATION")
+        ):
+            errors.append("Invariant violation: all criteria pass but status is neither READY nor PENDING_VERIFICATION.")
         return errors
 
     @staticmethod

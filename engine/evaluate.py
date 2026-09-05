@@ -53,7 +53,7 @@ def _coerce_evidence_spans(evidence_items: Any) -> List[EvidenceSpan]:
                 continue
             start = item.get("start")
             end = item.get("end")
-            text = str(item.get("text", "")).strip()
+            text = str(item.get("text", ""))
             if not isinstance(start, int) or not isinstance(end, int) or not text:
                 continue
             if end <= start or start < 0:
@@ -310,6 +310,7 @@ def evaluate_requirements(
         else:
             raise ValueError(f"Unsupported requirement operator: {operator!r}")
 
+        out.fact_value = facts.get(key)
         results.append(out)
 
         if out.status in ("NOT_DOCUMENTED", "NOT_MET", "NEEDS_REVIEW"):
@@ -337,7 +338,8 @@ def summarize_results(results: List[RequirementResult]) -> Dict[str, int]:
 def compute_overall_status(results: List[RequirementResult]) -> Dict[str, Any]:
     """
     Semantics Contract (locked):
-      READY: all required MET
+      READY: all required MET and every fact HUMAN_VERIFIED
+      PENDING_VERIFICATION: all required MET, but at least one fact UNVERIFIED
       CANNOT_DETERMINE: >=1 NOT_DOCUMENTED
       NEEDS_REVIEW: no missing requirements, but >=1 NEEDS_REVIEW
       NOT_READY: all documented and evaluable, but >=1 NOT_MET
@@ -355,4 +357,6 @@ def compute_overall_status(results: List[RequirementResult]) -> Dict[str, Any]:
         return {"overall_status": "NEEDS_REVIEW", "submission_readiness": False}
     if has_not_met:
         return {"overall_status": "NOT_READY", "submission_readiness": False}
+    if any(result.verification.state != "HUMAN_VERIFIED" for result in results):
+        return {"overall_status": "PENDING_VERIFICATION", "submission_readiness": False}
     return {"overall_status": "READY", "submission_readiness": True}

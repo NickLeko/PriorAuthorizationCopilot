@@ -38,7 +38,8 @@ The architecture is intentionally split into a small number of explainable layer
 - `engine/evaluate.py`
 - evaluates extracted facts against explicit `documented`, `equals_true`, `minimum`, and `one_of` requirement operators
 - preserves frozen semantics:
-  - `READY`: all requirements met
+  - `READY`: all requirements met and all facts HUMAN_VERIFIED
+  - `PENDING_VERIFICATION`: all requirements met, with at least one unverified fact
   - `NOT_READY`: all requirements documented and evaluable, but at least one fails threshold
   - `CANNOT_DETERMINE`: at least one required element is not documented
   - `NEEDS_REVIEW`: no required element is missing, but at least one documented result is ambiguous, contradictory, uncertain, or cannot be safely evaluated
@@ -95,9 +96,9 @@ For the one verified pathway, provenance remains inspectable as `official source
 
 1. A request enters through Streamlit, the API, CLI, or an artifact script.
 2. `engine/service.py` validates scope and normalizes the request.
-3. `engine/extract.py` deterministically extracts facts and evidence spans.
+3. `engine/extract.py` deterministically proposes facts and captures original-note evidence spans.
 4. `engine/evaluate.py` applies rule requirements and returns requirement results.
-5. `engine/service.py` assembles blockers, metrics, warnings, procedure metadata, provenance, rulebook metadata, and audit trace.
+5. `engine/service.py` validates any per-fact human attestations against proposal fingerprints, applies the verification gate, and assembles blockers, metrics, warnings, provenance and audit trace. Runtime rule bundles are reread for each evaluation; changed inputs invalidate old attestations.
 6. The surface renders or exports the same typed result.
 
 ## Why This Shape Was Chosen

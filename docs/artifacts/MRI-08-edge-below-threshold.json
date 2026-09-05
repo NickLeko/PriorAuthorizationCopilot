@@ -50,6 +50,32 @@
         }
       ]
     },
+    "fact_verifications": {
+      "back_pain_with_radiculopathy": {
+        "fingerprint": null,
+        "reviewer": null,
+        "state": "UNVERIFIED",
+        "verified_at": null
+      },
+      "cpb_0236_conservative_therapy_no_improvement": {
+        "fingerprint": null,
+        "reviewer": null,
+        "state": "UNVERIFIED",
+        "verified_at": null
+      },
+      "cpb_0236_conservative_therapy_weeks": {
+        "fingerprint": null,
+        "reviewer": null,
+        "state": "UNVERIFIED",
+        "verified_at": null
+      },
+      "objective_motor_or_reflex_change_in_root_distribution": {
+        "fingerprint": null,
+        "reviewer": null,
+        "state": "UNVERIFIED",
+        "verified_at": null
+      }
+    },
     "facts_extracted": {
       "ahi_documented": null,
       "back_pain_with_radiculopathy": true,
@@ -292,6 +318,32 @@
           }
         ]
       },
+      "fact_verifications": {
+        "back_pain_with_radiculopathy": {
+          "fingerprint": null,
+          "reviewer": null,
+          "state": "UNVERIFIED",
+          "verified_at": null
+        },
+        "cpb_0236_conservative_therapy_no_improvement": {
+          "fingerprint": null,
+          "reviewer": null,
+          "state": "UNVERIFIED",
+          "verified_at": null
+        },
+        "cpb_0236_conservative_therapy_weeks": {
+          "fingerprint": null,
+          "reviewer": null,
+          "state": "UNVERIFIED",
+          "verified_at": null
+        },
+        "objective_motor_or_reflex_change_in_root_distribution": {
+          "fingerprint": null,
+          "reviewer": null,
+          "state": "UNVERIFIED",
+          "verified_at": null
+        }
+      },
       "facts_extracted": {
         "ahi_documented": null,
         "back_pain_with_radiculopathy": true,
@@ -383,10 +435,18 @@
             "text": "Low back pain with right leg radiculopathy"
           }
         ],
+        "fact_value": true,
         "key": "back_pain_with_radiculopathy",
         "label": "Persistent back pain with radiculopathy documented",
         "reason": "Explicit affirmative documentation found.",
-        "status": "MET"
+        "status": "MET",
+        "verification": {
+          "fingerprint": null,
+          "reviewer": null,
+          "state": "UNVERIFIED",
+          "verified_at": null
+        },
+        "verification_fingerprint": "4e6403244b450f2bca630bf7f48a4f366f8a343669a20560fd5253f45597ffbf"
       },
       {
         "evidence": "Objective motor strength or reflex change documented in a named nerve-root distribution",
@@ -400,10 +460,18 @@
             "text": "Objective motor exam in the right L5 distribution: ankle dorsiflexion strength 4/5"
           }
         ],
+        "fact_value": true,
         "key": "objective_motor_or_reflex_change_in_root_distribution",
         "label": "Objective motor or reflex change in a nerve-root distribution",
         "reason": "Explicit affirmative documentation found.",
-        "status": "MET"
+        "status": "MET",
+        "verification": {
+          "fingerprint": null,
+          "reviewer": null,
+          "state": "UNVERIFIED",
+          "verified_at": null
+        },
+        "verification_fingerprint": "f3187951fc58624ced59fc7e229140a4c84472ad0b27c14546f474c198dd8707"
       },
       {
         "evidence": "At least 6 weeks of CPB 0236 Footnote 1 conservative therapy documented",
@@ -417,10 +485,18 @@
             "text": "NSAIDs for 5 weeks with no improvement"
           }
         ],
+        "fact_value": 5,
         "key": "cpb_0236_conservative_therapy_weeks",
         "label": "Conservative therapy duration (weeks)",
         "reason": "Documented value (5) below requirement (>= 6.0). Clarify or justify.",
-        "status": "NOT_MET"
+        "status": "NOT_MET",
+        "verification": {
+          "fingerprint": null,
+          "reviewer": null,
+          "state": "UNVERIFIED",
+          "verified_at": null
+        },
+        "verification_fingerprint": "f459d60e54eb5fdb0a998c81ec061b6d5e3ef9dc15cecb4bd0d52a9545e8d697"
       },
       {
         "evidence": "Explicit no, minimal, or insufficient improvement after CPB 0236 Footnote 1 conservative therapy",
@@ -434,10 +510,18 @@
             "text": "NSAIDs for 5 weeks with no improvement"
           }
         ],
+        "fact_value": true,
         "key": "cpb_0236_conservative_therapy_no_improvement",
         "label": "No improvement after conservative therapy",
         "reason": "Explicit affirmative documentation found.",
-        "status": "MET"
+        "status": "MET",
+        "verification": {
+          "fingerprint": null,
+          "reviewer": null,
+          "state": "UNVERIFIED",
+          "verified_at": null
+        },
+        "verification_fingerprint": "a48d9b7ee3ca157959593e796b01dca4436e07dcdaa72c2c972220531a617058"
       }
     ],
     "rule_reasons": [
@@ -448,6 +532,7 @@
     "dx_codes": [
       "M54.5"
     ],
+    "fact_verifications": {},
     "note_text": "sha256:2f9bb605eac5f3ce [redacted for repository]",
     "payer": "Aetna",
     "procedure_code": "MRI_LUMBAR",
@@ -467,10 +552,18 @@
           "text": "Low back pain with right leg radiculopathy"
         }
       ],
+      "fact_value": true,
       "key": "back_pain_with_radiculopathy",
       "label": "Persistent back pain with radiculopathy documented",
       "reason": "Explicit affirmative documentation found.",
-      "status": "MET"
+      "status": "MET",
+      "verification": {
+        "fingerprint": null,
+        "reviewer": null,
+        "state": "UNVERIFIED",
+        "verified_at": null
+      },
+      "verification_fingerprint": "4e6403244b450f2bca630bf7f48a4f366f8a343669a20560fd5253f45597ffbf"
     },
     {
       "evidence": "Objective motor strength or reflex change documented in a named nerve-root distribution",
@@ -484,10 +577,18 @@
           "text": "Objective motor exam in the right L5 distribution: ankle dorsiflexion strength 4/5"
         }
       ],
+      "fact_value": true,
       "key": "objective_motor_or_reflex_change_in_root_distribution",
       "label": "Objective motor or reflex change in a nerve-root distribution",
       "reason": "Explicit affirmative documentation found.",
-      "status": "MET"
+      "status": "MET",
+      "verification": {
+        "fingerprint": null,
+        "reviewer": null,
+        "state": "UNVERIFIED",
+        "verified_at": null
+      },
+      "verification_fingerprint": "f3187951fc58624ced59fc7e229140a4c84472ad0b27c14546f474c198dd8707"
     },
     {
       "evidence": "At least 6 weeks of CPB 0236 Footnote 1 conservative therapy documented",
@@ -501,10 +602,18 @@
           "text": "NSAIDs for 5 weeks with no improvement"
         }
       ],
+      "fact_value": 5,
       "key": "cpb_0236_conservative_therapy_weeks",
       "label": "Conservative therapy duration (weeks)",
       "reason": "Documented value (5) below requirement (>= 6.0). Clarify or justify.",
-      "status": "NOT_MET"
+      "status": "NOT_MET",
+      "verification": {
+        "fingerprint": null,
+        "reviewer": null,
+        "state": "UNVERIFIED",
+        "verified_at": null
+      },
+      "verification_fingerprint": "f459d60e54eb5fdb0a998c81ec061b6d5e3ef9dc15cecb4bd0d52a9545e8d697"
     },
     {
       "evidence": "Explicit no, minimal, or insufficient improvement after CPB 0236 Footnote 1 conservative therapy",
@@ -518,10 +627,18 @@
           "text": "NSAIDs for 5 weeks with no improvement"
         }
       ],
+      "fact_value": true,
       "key": "cpb_0236_conservative_therapy_no_improvement",
       "label": "No improvement after conservative therapy",
       "reason": "Explicit affirmative documentation found.",
-      "status": "MET"
+      "status": "MET",
+      "verification": {
+        "fingerprint": null,
+        "reviewer": null,
+        "state": "UNVERIFIED",
+        "verified_at": null
+      },
+      "verification_fingerprint": "a48d9b7ee3ca157959593e796b01dca4436e07dcdaa72c2c972220531a617058"
     }
   ],
   "rule_reasons": [

@@ -215,23 +215,12 @@ def test_legacy_boolean_without_operator_defaults_to_conservative_equals_true():
 def test_extraction_contract_describes_current_shapes_and_limits():
     contract = CONTRACT_PATH.read_text(encoding="utf-8")
 
-    assert "implemented and deterministic; no LLM is used anywhere in the extraction path" in contract
-    assert "A duration must appear in the same sentence as supported symptom context." in contract
-    assert (
-        'Internal type: `"none" | "normal" | "negative" | "inconclusive" | "abnormal" | "unrecognized" | null '
-        "| review-required marker`; public fact replaces the marker with `null`"
-    ) in contract
-    assert "service/API facts replace the internal review marker with `null`" in contract
-    assert "Imaging mention without a stated result remains `null`." in contract
-    assert "### `back_pain_with_radiculopathy`" in contract
-    assert "### `objective_motor_or_reflex_change_in_root_distribution`" in contract
-    assert "### `cpb_0236_conservative_therapy_weeks`" in contract
-    assert "### `cpb_0236_conservative_therapy_no_improvement`" in contract
-    assert "### `mechanical_symptoms_documented`" in contract
-    assert "Contradictory supported evidence returns the internal review-required sentinel." in contract
-    assert "This field records whether a contextualized date was found. It does not return the parsed date value." in contract
-    assert "This field records whether the numeric value is documented. It does not return the numeric value itself." in contract
-    assert "Possible Extensions" in contract
+    assert "Automated extraction is a drafting aid, not a decision gate." in contract
+    assert "contradicted by `Patient does not have low back pain with radiculopathy`" in contract
+    assert "not by making extraction match the old contract" in contract
+    assert "TestExtractionContractAlignment" in contract
+    assert "source-location integrity" in contract
+    assert "PENDING_VERIFICATION" in contract
 
 
 @pytest.mark.parametrize(

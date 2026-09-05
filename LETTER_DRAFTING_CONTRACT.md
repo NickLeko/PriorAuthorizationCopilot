@@ -71,7 +71,7 @@ Letter must include:
 - policy trust line:
   - if `demo`: MUST include DEMO disclaimer line in header
   - if `verified`: MAY include a verified provenance line
-- Overall Status line: READY | NOT_READY | CANNOT_DETERMINE | NEEDS_REVIEW
+- Overall Status line: READY | PENDING_VERIFICATION | NOT_READY | CANNOT_DETERMINE | NEEDS_REVIEW
 - Summary section (administrative framing only)
 - Requirements section: each requirement shows status + reason + evidence
 - Missing Documentation checklist:
@@ -96,8 +96,13 @@ Must return metadata including:
 ## 4) Status-conditioned Behavior
 
 ### 4.1 READY
+- Requires all supplied requirement facts HUMAN_VERIFIED as well as all operators MET. The service checks proposal fingerprints before constructing this input; the write-only renderer trusts its supplied structured results.
 - Allowed framing: “administrative submission readiness”
 - Must NOT imply approval or clinical appropriateness
+
+### 4.1a PENDING_VERIFICATION
+- All operators MET with any fact UNVERIFIED must render PENDING_VERIFICATION.
+- State that extraction is a drafting aid and human verification is still required; do not assert readiness for submission.
 
 ### 4.2 NOT_READY
 - Must highlight NOT_MET requirements

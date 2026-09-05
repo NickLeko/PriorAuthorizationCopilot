@@ -5,7 +5,9 @@
       "not_documented": [],
       "not_met": []
     },
-    "evaluation_warnings": [],
+    "evaluation_warnings": [
+      "Automated extraction is a drafting aid. All proposed facts require human verification before READY."
+    ],
     "evidence_map": {
       "back_pain_with_radiculopathy": [
         {
@@ -69,6 +71,32 @@
         }
       ]
     },
+    "fact_verifications": {
+      "back_pain_with_radiculopathy": {
+        "fingerprint": null,
+        "reviewer": null,
+        "state": "UNVERIFIED",
+        "verified_at": null
+      },
+      "cpb_0236_conservative_therapy_no_improvement": {
+        "fingerprint": null,
+        "reviewer": null,
+        "state": "UNVERIFIED",
+        "verified_at": null
+      },
+      "cpb_0236_conservative_therapy_weeks": {
+        "fingerprint": null,
+        "reviewer": null,
+        "state": "UNVERIFIED",
+        "verified_at": null
+      },
+      "objective_motor_or_reflex_change_in_root_distribution": {
+        "fingerprint": null,
+        "reviewer": null,
+        "state": "UNVERIFIED",
+        "verified_at": null
+      }
+    },
     "facts_extracted": {
       "ahi_documented": null,
       "back_pain_with_radiculopathy": true,
@@ -96,7 +124,7 @@
     },
     "note_hash": "b66310c6bfc8e97d",
     "note_length": 299,
-    "overall_status": "READY",
+    "overall_status": "PENDING_VERIFICATION",
     "payer": "Aetna",
     "policy_trust_level": "verified",
     "procedure_code": "MRI_LUMBAR",
@@ -139,7 +167,7 @@
     "run_id": "__RUN_ID__",
     "site_of_care": "outpatient",
     "specialty": "Orthopedics",
-    "submission_readiness": true,
+    "submission_readiness": false,
     "timestamp_utc": "__TIMESTAMP_UTC__"
   },
   "blockers": {
@@ -234,10 +262,10 @@
       "letter_hash_sha256_16": "__LETTER_HASH_SHA256_16__",
       "letter_type": "submission_cover_letter",
       "letter_version": "1.2",
-      "overall_status": "READY",
+      "overall_status": "PENDING_VERIFICATION",
       "policy_trust_level": "verified"
     },
-    "text": "PRIOR AUTHORIZATION ADMINISTRATIVE READINESS SUMMARY\n\nPayer: Aetna\nProcedure: MRI_LUMBAR\nSite of care: outpatient\nSpecialty: Orthopedics\nGenerated: __TIMESTAMP_UTC__\nDx codes: M54.16\nPolicy trust level: VERIFIED \u2014 criteria derived from documented payer policy sources.\n\nOverall Status: READY\n\nSummary:\nThis letter supports administrative submission readiness based on the documentation present in the record. This does not guarantee payer approval.\n\nRequirements:\n- Persistent back pain with radiculopathy documented (back_pain_with_radiculopathy): MET\n  Reason: Explicit affirmative documentation found.\n  Evidence:\n   - \"Low back pain with right leg radiculopathy x 8 weeks\"\n- Objective motor or reflex change in a nerve-root distribution (objective_motor_or_reflex_change_in_root_distribution): MET\n  Reason: Explicit affirmative documentation found.\n  Evidence:\n   - \"Objective motor exam in the right L5 distribution: ankle dorsiflexion strength 4/5\"\n- Conservative therapy duration (weeks) (cpb_0236_conservative_therapy_weeks): MET\n  Reason: Documented value: 8.\n  Evidence:\n   - \"NSAIDs for 8 weeks with minimal improvement\"\n- No improvement after conservative therapy (cpb_0236_conservative_therapy_no_improvement): MET\n  Reason: Explicit affirmative documentation found.\n  Evidence:\n   - \"NSAIDs for 8 weeks with minimal improvement\"\nClosing:\nThis letter summarizes documentation-based administrative readiness for prior authorization submission. It does not provide clinical recommendations and does not predict approval outcomes.\n"
+    "text": "PRIOR AUTHORIZATION ADMINISTRATIVE READINESS SUMMARY\n\nPayer: Aetna\nProcedure: MRI_LUMBAR\nSite of care: outpatient\nSpecialty: Orthopedics\nGenerated: __TIMESTAMP_UTC__\nDx codes: M54.16\nPolicy trust level: VERIFIED \u2014 criteria derived from documented payer policy sources.\n\nOverall Status: PENDING_VERIFICATION\n\nSummary:\nAutomated extraction is a drafting aid. Proposed criteria pass, but human verification of every fact and its evidence is required before READY. This does not guarantee payer approval.\n\nRequirements:\n- Persistent back pain with radiculopathy documented (back_pain_with_radiculopathy): MET\n  Reason: Explicit affirmative documentation found.\n  Evidence:\n   - \"Low back pain with right leg radiculopathy x 8 weeks\"\n- Objective motor or reflex change in a nerve-root distribution (objective_motor_or_reflex_change_in_root_distribution): MET\n  Reason: Explicit affirmative documentation found.\n  Evidence:\n   - \"Objective motor exam in the right L5 distribution: ankle dorsiflexion strength 4/5\"\n- Conservative therapy duration (weeks) (cpb_0236_conservative_therapy_weeks): MET\n  Reason: Documented value: 8.\n  Evidence:\n   - \"NSAIDs for 8 weeks with minimal improvement\"\n- No improvement after conservative therapy (cpb_0236_conservative_therapy_no_improvement): MET\n  Reason: Explicit affirmative documentation found.\n  Evidence:\n   - \"NSAIDs for 8 weeks with minimal improvement\"\nClosing:\nThis letter summarizes documentation-based administrative readiness for prior authorization submission. It does not provide clinical recommendations and does not predict approval outcomes.\n"
   },
   "metrics": {
     "criteria_met_count": 4,
@@ -249,7 +277,7 @@
     "missing_requirement_count": 0,
     "total_requirements": 4
   },
-  "overall_status": "READY",
+  "overall_status": "PENDING_VERIFICATION",
   "policy_trust_level": "verified",
   "provenance": {
     "accessed_date": "2026-08-22",
@@ -285,7 +313,9 @@
         "not_documented": [],
         "not_met": []
       },
-      "evaluation_warnings": [],
+      "evaluation_warnings": [
+        "Automated extraction is a drafting aid. All proposed facts require human verification before READY."
+      ],
       "evidence_map": {
         "back_pain_with_radiculopathy": [
           {
@@ -349,6 +379,32 @@
           }
         ]
       },
+      "fact_verifications": {
+        "back_pain_with_radiculopathy": {
+          "fingerprint": null,
+          "reviewer": null,
+          "state": "UNVERIFIED",
+          "verified_at": null
+        },
+        "cpb_0236_conservative_therapy_no_improvement": {
+          "fingerprint": null,
+          "reviewer": null,
+          "state": "UNVERIFIED",
+          "verified_at": null
+        },
+        "cpb_0236_conservative_therapy_weeks": {
+          "fingerprint": null,
+          "reviewer": null,
+          "state": "UNVERIFIED",
+          "verified_at": null
+        },
+        "objective_motor_or_reflex_change_in_root_distribution": {
+          "fingerprint": null,
+          "reviewer": null,
+          "state": "UNVERIFIED",
+          "verified_at": null
+        }
+      },
       "facts_extracted": {
         "ahi_documented": null,
         "back_pain_with_radiculopathy": true,
@@ -376,7 +432,7 @@
       },
       "note_hash": "b66310c6bfc8e97d",
       "note_length": 299,
-      "overall_status": "READY",
+      "overall_status": "PENDING_VERIFICATION",
       "payer": "Aetna",
       "policy_trust_level": "verified",
       "procedure_code": "MRI_LUMBAR",
@@ -419,7 +475,7 @@
       "run_id": "__RUN_ID__",
       "site_of_care": "outpatient",
       "specialty": "Orthopedics",
-      "submission_readiness": true,
+      "submission_readiness": false,
       "timestamp_utc": "__TIMESTAMP_UTC__"
     },
     "letter_draft": "",
@@ -440,10 +496,18 @@
             "text": "Low back pain with right leg radiculopathy x 8 weeks"
           }
         ],
+        "fact_value": true,
         "key": "back_pain_with_radiculopathy",
         "label": "Persistent back pain with radiculopathy documented",
         "reason": "Explicit affirmative documentation found.",
-        "status": "MET"
+        "status": "MET",
+        "verification": {
+          "fingerprint": null,
+          "reviewer": null,
+          "state": "UNVERIFIED",
+          "verified_at": null
+        },
+        "verification_fingerprint": "d56eb87854a7b14f213b99fcca6c1cfc9086e44029e24a22102988e979132acf"
       },
       {
         "evidence": "Objective motor strength or reflex change documented in a named nerve-root distribution",
@@ -457,10 +521,18 @@
             "text": "Objective motor exam in the right L5 distribution: ankle dorsiflexion strength 4/5"
           }
         ],
+        "fact_value": true,
         "key": "objective_motor_or_reflex_change_in_root_distribution",
         "label": "Objective motor or reflex change in a nerve-root distribution",
         "reason": "Explicit affirmative documentation found.",
-        "status": "MET"
+        "status": "MET",
+        "verification": {
+          "fingerprint": null,
+          "reviewer": null,
+          "state": "UNVERIFIED",
+          "verified_at": null
+        },
+        "verification_fingerprint": "ec6a683d043598e68b8bdab16785e8d945e58eeacd995ff6550bff592b4fbc88"
       },
       {
         "evidence": "At least 6 weeks of CPB 0236 Footnote 1 conservative therapy documented",
@@ -474,10 +546,18 @@
             "text": "NSAIDs for 8 weeks with minimal improvement"
           }
         ],
+        "fact_value": 8,
         "key": "cpb_0236_conservative_therapy_weeks",
         "label": "Conservative therapy duration (weeks)",
         "reason": "Documented value: 8.",
-        "status": "MET"
+        "status": "MET",
+        "verification": {
+          "fingerprint": null,
+          "reviewer": null,
+          "state": "UNVERIFIED",
+          "verified_at": null
+        },
+        "verification_fingerprint": "01bea0e9dfbe1b88c1a828fb7c1cc859de00a4d5ca8dab9e195909a1ac830bc9"
       },
       {
         "evidence": "Explicit no, minimal, or insufficient improvement after CPB 0236 Footnote 1 conservative therapy",
@@ -491,10 +571,18 @@
             "text": "NSAIDs for 8 weeks with minimal improvement"
           }
         ],
+        "fact_value": true,
         "key": "cpb_0236_conservative_therapy_no_improvement",
         "label": "No improvement after conservative therapy",
         "reason": "Explicit affirmative documentation found.",
-        "status": "MET"
+        "status": "MET",
+        "verification": {
+          "fingerprint": null,
+          "reviewer": null,
+          "state": "UNVERIFIED",
+          "verified_at": null
+        },
+        "verification_fingerprint": "4b4855a01a2fbbc71a219b2e614a5a4cba475127ed82a09a2723a454d347b342"
       }
     ],
     "rule_reasons": []
@@ -503,6 +591,7 @@
     "dx_codes": [
       "M54.16"
     ],
+    "fact_verifications": {},
     "note_text": "sha256:b66310c6bfc8e97d [redacted for repository]",
     "payer": "Aetna",
     "procedure_code": "MRI_LUMBAR",
@@ -522,10 +611,18 @@
           "text": "Low back pain with right leg radiculopathy x 8 weeks"
         }
       ],
+      "fact_value": true,
       "key": "back_pain_with_radiculopathy",
       "label": "Persistent back pain with radiculopathy documented",
       "reason": "Explicit affirmative documentation found.",
-      "status": "MET"
+      "status": "MET",
+      "verification": {
+        "fingerprint": null,
+        "reviewer": null,
+        "state": "UNVERIFIED",
+        "verified_at": null
+      },
+      "verification_fingerprint": "d56eb87854a7b14f213b99fcca6c1cfc9086e44029e24a22102988e979132acf"
     },
     {
       "evidence": "Objective motor strength or reflex change documented in a named nerve-root distribution",
@@ -539,10 +636,18 @@
           "text": "Objective motor exam in the right L5 distribution: ankle dorsiflexion strength 4/5"
         }
       ],
+      "fact_value": true,
       "key": "objective_motor_or_reflex_change_in_root_distribution",
       "label": "Objective motor or reflex change in a nerve-root distribution",
       "reason": "Explicit affirmative documentation found.",
-      "status": "MET"
+      "status": "MET",
+      "verification": {
+        "fingerprint": null,
+        "reviewer": null,
+        "state": "UNVERIFIED",
+        "verified_at": null
+      },
+      "verification_fingerprint": "ec6a683d043598e68b8bdab16785e8d945e58eeacd995ff6550bff592b4fbc88"
     },
     {
       "evidence": "At least 6 weeks of CPB 0236 Footnote 1 conservative therapy documented",
@@ -556,10 +661,18 @@
           "text": "NSAIDs for 8 weeks with minimal improvement"
         }
       ],
+      "fact_value": 8,
       "key": "cpb_0236_conservative_therapy_weeks",
       "label": "Conservative therapy duration (weeks)",
       "reason": "Documented value: 8.",
-      "status": "MET"
+      "status": "MET",
+      "verification": {
+        "fingerprint": null,
+        "reviewer": null,
+        "state": "UNVERIFIED",
+        "verified_at": null
+      },
+      "verification_fingerprint": "01bea0e9dfbe1b88c1a828fb7c1cc859de00a4d5ca8dab9e195909a1ac830bc9"
     },
     {
       "evidence": "Explicit no, minimal, or insufficient improvement after CPB 0236 Footnote 1 conservative therapy",
@@ -573,14 +686,22 @@
           "text": "NSAIDs for 8 weeks with minimal improvement"
         }
       ],
+      "fact_value": true,
       "key": "cpb_0236_conservative_therapy_no_improvement",
       "label": "No improvement after conservative therapy",
       "reason": "Explicit affirmative documentation found.",
-      "status": "MET"
+      "status": "MET",
+      "verification": {
+        "fingerprint": null,
+        "reviewer": null,
+        "state": "UNVERIFIED",
+        "verified_at": null
+      },
+      "verification_fingerprint": "4b4855a01a2fbbc71a219b2e614a5a4cba475127ed82a09a2723a454d347b342"
     }
   ],
   "rule_reasons": [],
-  "submission_readiness": true,
+  "submission_readiness": false,
   "supported_procedure": {
     "display_name": "MRI Lumbar Spine (no contrast)",
     "metadata": {
@@ -672,5 +793,7 @@
       }
     ]
   },
-  "warnings": []
+  "warnings": [
+    "Automated extraction is a drafting aid. All proposed facts require human verification before READY."
+  ]
 }

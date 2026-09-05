@@ -43,9 +43,16 @@ Point out:
 
 These checks make regression behavior and governance state visible during a review.
 
-### 3. Run the straight-line ready case
+### 3. Run the complete proposal and verify it
 
 Use `MRI-01-complete`.
+
+It initially returns PENDING_VERIFICATION. Open the original note, inspect every
+proposed fact and rule, enter the reviewer name, and check only facts actually
+verified. Recording all four attestations changes this synthetic case to READY
+while the policy source and rulebook remain trusted and current. Leave an
+unsupported proposal unverified. The prototype records the supplied identity;
+it does not authenticate a reviewer or prove review happened.
 
 Call out:
 
@@ -124,7 +131,7 @@ Call out:
 ## Good Sound Bites During The Demo
 
 - "This checks administrative readiness, not approval likelihood."
-- "The system is narrow on purpose so every output can be defended."
+- "Every proposed fact needs human verification before READY; source citations can still be semantically wrong."
 - "Missing data produces refusal, not fake confidence."
 - "The same deterministic workflow powers the UI, API, CLI, and exported artifacts."
 - "The active release keeps one verified policy branch separate from three synthetic demo pathways, with versioned rules and reproducible acceptance artifacts."

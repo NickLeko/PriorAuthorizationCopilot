@@ -68,6 +68,7 @@ def summarize_safety_metrics(rows: List[Dict[str, Any]]) -> Dict[str, Any]:
     exact_correct_count = sum(1 for row in labeled if row.get("overall_status") == row.get("expected"))
     needs_review_count = sum(1 for row in labeled if row.get("overall_status") == "NEEDS_REVIEW")
     cannot_determine_count = sum(1 for row in labeled if row.get("overall_status") == "CANNOT_DETERMINE")
+    pending_verification_count = sum(1 for row in labeled if row.get("overall_status") == "PENDING_VERIFICATION")
     abstention_count = needs_review_count + cannot_determine_count
 
     def rate(count: int, denominator: int) -> float:
@@ -84,6 +85,8 @@ def summarize_safety_metrics(rows: List[Dict[str, Any]]) -> Dict[str, Any]:
         "needs_review_rate_pct": rate(needs_review_count, len(labeled)),
         "cannot_determine_count": cannot_determine_count,
         "cannot_determine_rate_pct": rate(cannot_determine_count, len(labeled)),
+        "pending_verification_count": pending_verification_count,
+        "pending_verification_rate_pct": rate(pending_verification_count, len(labeled)),
         "abstention_count": abstention_count,
         "abstention_rate_pct": rate(abstention_count, len(labeled)),
     }

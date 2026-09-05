@@ -37,6 +37,26 @@
         }
       ]
     },
+    "fact_verifications": {
+      "ahi_documented": {
+        "fingerprint": null,
+        "reviewer": null,
+        "state": "UNVERIFIED",
+        "verified_at": null
+      },
+      "osa_diagnosis": {
+        "fingerprint": null,
+        "reviewer": null,
+        "state": "UNVERIFIED",
+        "verified_at": null
+      },
+      "sleep_study_date": {
+        "fingerprint": null,
+        "reviewer": null,
+        "state": "UNVERIFIED",
+        "verified_at": null
+      }
+    },
     "facts_extracted": {
       "ahi_documented": null,
       "back_pain_with_radiculopathy": null,
@@ -240,6 +260,26 @@
           }
         ]
       },
+      "fact_verifications": {
+        "ahi_documented": {
+          "fingerprint": null,
+          "reviewer": null,
+          "state": "UNVERIFIED",
+          "verified_at": null
+        },
+        "osa_diagnosis": {
+          "fingerprint": null,
+          "reviewer": null,
+          "state": "UNVERIFIED",
+          "verified_at": null
+        },
+        "sleep_study_date": {
+          "fingerprint": null,
+          "reviewer": null,
+          "state": "UNVERIFIED",
+          "verified_at": null
+        }
+      },
       "facts_extracted": {
         "ahi_documented": null,
         "back_pain_with_radiculopathy": null,
@@ -325,19 +365,35 @@
             "text": "OSA"
           }
         ],
+        "fact_value": true,
         "key": "osa_diagnosis",
         "label": "OSA diagnosis documented",
         "reason": "Explicit affirmative documentation found.",
-        "status": "MET"
+        "status": "MET",
+        "verification": {
+          "fingerprint": null,
+          "reviewer": null,
+          "state": "UNVERIFIED",
+          "verified_at": null
+        },
+        "verification_fingerprint": "998a45c4016365863510b023d3b91440e2322609455361ccdf5dce4d5930906a"
       },
       {
         "evidence": "Date in chart",
         "evidence_snippets": [],
         "evidence_spans": [],
+        "fact_value": null,
         "key": "sleep_study_date",
         "label": "Sleep study date documented",
         "reason": "Not found in note. Add explicit affirmative documentation.",
-        "status": "NOT_DOCUMENTED"
+        "status": "NOT_DOCUMENTED",
+        "verification": {
+          "fingerprint": null,
+          "reviewer": null,
+          "state": "UNVERIFIED",
+          "verified_at": null
+        },
+        "verification_fingerprint": "6bc45eb9c1c4b915f731b58ee3fd43413c1cbe3ac6394a3cbe40ffd22c1a7106"
       },
       {
         "evidence": "AHI value included",
@@ -351,10 +407,18 @@
             "text": "AHI not documented"
           }
         ],
+        "fact_value": null,
         "key": "ahi_documented",
         "label": "AHI/RDI documented",
         "reason": "Not found in note. Add explicit affirmative documentation.",
-        "status": "NOT_DOCUMENTED"
+        "status": "NOT_DOCUMENTED",
+        "verification": {
+          "fingerprint": null,
+          "reviewer": null,
+          "state": "UNVERIFIED",
+          "verified_at": null
+        },
+        "verification_fingerprint": "fae9a91b101f06ed59fb8c2def35e855df3a48efa303ee194e2da37e95973502"
       }
     ],
     "rule_reasons": [
@@ -366,6 +430,7 @@
     "dx_codes": [
       "G47.33"
     ],
+    "fact_verifications": {},
     "note_text": "sha256:5ef99d034f3c708e [redacted for repository]",
     "payer": "Aetna",
     "procedure_code": "CPAP_DEVICE",
@@ -385,19 +450,35 @@
           "text": "OSA"
         }
       ],
+      "fact_value": true,
       "key": "osa_diagnosis",
       "label": "OSA diagnosis documented",
       "reason": "Explicit affirmative documentation found.",
-      "status": "MET"
+      "status": "MET",
+      "verification": {
+        "fingerprint": null,
+        "reviewer": null,
+        "state": "UNVERIFIED",
+        "verified_at": null
+      },
+      "verification_fingerprint": "998a45c4016365863510b023d3b91440e2322609455361ccdf5dce4d5930906a"
     },
     {
       "evidence": "Date in chart",
       "evidence_snippets": [],
       "evidence_spans": [],
+      "fact_value": null,
       "key": "sleep_study_date",
       "label": "Sleep study date documented",
       "reason": "Not found in note. Add explicit affirmative documentation.",
-      "status": "NOT_DOCUMENTED"
+      "status": "NOT_DOCUMENTED",
+      "verification": {
+        "fingerprint": null,
+        "reviewer": null,
+        "state": "UNVERIFIED",
+        "verified_at": null
+      },
+      "verification_fingerprint": "6bc45eb9c1c4b915f731b58ee3fd43413c1cbe3ac6394a3cbe40ffd22c1a7106"
     },
     {
       "evidence": "AHI value included",
@@ -411,10 +492,18 @@
           "text": "AHI not documented"
         }
       ],
+      "fact_value": null,
       "key": "ahi_documented",
       "label": "AHI/RDI documented",
       "reason": "Not found in note. Add explicit affirmative documentation.",
-      "status": "NOT_DOCUMENTED"
+      "status": "NOT_DOCUMENTED",
+      "verification": {
+        "fingerprint": null,
+        "reviewer": null,
+        "state": "UNVERIFIED",
+        "verified_at": null
+      },
+      "verification_fingerprint": "fae9a91b101f06ed59fb8c2def35e855df3a48efa303ee194e2da37e95973502"
     }
   ],
   "rule_reasons": [

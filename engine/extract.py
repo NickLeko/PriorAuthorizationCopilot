@@ -1036,4 +1036,12 @@ def extract_facts(note_text: str) -> Tuple[Dict[str, Any], Dict[str, List[Dict[s
         "ahi_documented": ahi_doc,
     }
 
+    # Regex coordinates belong to the lowercased string. Unicode lowercase can
+    # expand a character (e.g. U+0130); map them back before exposing evidence.
+    original_indices = [index for index, char in enumerate(raw) for _ in char.lower()]
+    for spans in evidence.values():
+        for span in spans:
+            start = original_indices[span["start"]]
+            end = original_indices[span["end"] - 1] + 1
+            span.update(start=start, end=end, text=raw[start:end])
     return facts, _dedup_spans(evidence)

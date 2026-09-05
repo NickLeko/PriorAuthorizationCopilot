@@ -2,9 +2,13 @@
 
 Prior authorization often fails before medical necessity is even evaluated: missing documentation, unclear payer requirements, policy variation, rule drift, and handoff gaps between provider and payer teams.
 
-This project is a deterministic readiness workflow that checks prior-authorization documentation against versioned payer rules before submission. It returns `READY`, `NOT_READY`, `CANNOT_DETERMINE`, or `NEEDS_REVIEW`, with evidence mapping, audit artifacts, and explicit refusal behavior when required information is missing or cannot be evaluated.
+This project is a deterministic drafting and human-verification workflow for prior-authorization documentation against versioned payer rules. It returns `PENDING_VERIFICATION`, `READY`, `NOT_READY`, `CANNOT_DETERMINE`, or `NEEDS_REVIEW`, with source spans and audit artifacts.
 
-Its central design is an inspectable `note evidence → extracted fact → rule/operator → requirement result → overall decision` trace. One `Aetna:MRI_LUMBAR` pathway demonstrates verified official-policy provenance; the cervical MRI, knee MRI, and CPAP pathways remain synthetic demos.
+**v1.5.0: automated extraction is a drafting aid, not a decision gate.** v1.4.0's posture over-trusted extraction. Negated diagnoses such as “Patient does not have low back pain with radiculopathy” returned affirmative facts, contradicting the extraction contract as written. Resolved findings and unrelated therapy can still produce incorrect proposals. v1.5.0 resolves the contradiction by changing what the engine may assert rather than by making extraction match that contract: READY now requires explicit human verification of every requirement-level fact. The language extraction logic is unchanged.
+
+Evidence offsets now refer to the original note, and each span's text equals that exact source slice, including Unicode. This guarantees source-location integrity, not semantic support, correct attribution or complete context. Human reviewers must check the original note and decline unsupported proposals. The existing design did contain one audited case: a borrowed sleep-study date yielded READY documentation status but `submission_readiness=false` under demo policy trust, as this README already allowed.
+
+Its central design is an inspectable `source span → proposed fact → rule/operator → requirement result → human verification → overall status` trace. One `Aetna:MRI_LUMBAR` pathway demonstrates verified official-policy provenance; the cervical MRI, knee MRI, and CPAP pathways remain synthetic demos.
 
 It is a self-directed prototype, not a production payer integration or clinical decision system. The goal is to show how prior-auth workflows can be made more reviewable, auditable, and implementation-aware.
 
@@ -18,7 +22,8 @@ This is a synthetic workflow-readiness demo, not a payer or clinical deployment.
 
 - Bundled inputs are synthetic, and free-form input is intended for synthetic demo text; input text is not screened, so do not submit real patient information.
 - Outputs are administrative readiness signals under narrow versioned rules. One lumbar-MRI pathway is mapped to an official Aetna policy; the remaining pathways are synthetic demonstrations.
-- `READY` means the configured requirement documentation was found and met threshold. It is never an authorization or medical-necessity determination.
+- `READY` means every requirement's proposed fact is `HUMAN_VERIFIED` and every operator is `MET`. It is never an authorization or medical-necessity determination.
+- `PENDING_VERIFICATION` means every operator is `MET`, but at least one fact is `UNVERIFIED`; submission readiness is always false. `MET` alone is a result over a proposed scalar, not proof of source support.
 - `NOT_READY` means required documentation was found and evaluable, but failed a threshold.
 - `CANNOT_DETERMINE` means required documentation is missing or not explicit enough.
 - `NEEDS_REVIEW` means documentation was found but at least one result was ambiguous, contradictory, or not safely evaluable; it is not an adjudicated threshold failure.
@@ -39,7 +44,7 @@ The `make reviewer-demo` target runs a deterministic local path through:
 
 - service status and supported scope
 - bundled synthetic demo cases
-- one `READY` case: `MRI-01-complete`
+- one `PENDING_VERIFICATION` case: `MRI-01-complete`
 - one documented threshold failure: `MRI-08-edge-below-threshold`
 - one refusal-first missing-information case: `CPAP-02-borderline`
 - one exported JSON artifact at `/tmp/pa-copilot-reviewer-demo.json`
@@ -75,16 +80,19 @@ For a guided review of inputs, evidence mapping, missing-information flags, outp
 At a high level:
 
 1. A bundled synthetic or user-entered demo request enters through Streamlit, FastAPI, CLI, or artifact generation.
-2. `engine/extract.py` deterministically extracts only supported facts and evidence spans from note text.
+2. `engine/extract.py` deterministically proposes facts and captures source spans from note text; proposals can be wrong.
 3. `rules/payer_rules.yaml` defines which facts are required for each supported payer/procedure pair.
 4. `engine/evaluate.py` applies frozen status semantics:
    - any `NOT_DOCUMENTED` requirement forces `CANNOT_DETERMINE`
    - otherwise any `NEEDS_REVIEW` requirement forces `NEEDS_REVIEW`
    - otherwise any `NOT_MET` requirement forces `NOT_READY`
-   - only all `MET` requirements return `READY`
+   - all `MET` requirements with any unverified fact return `PENDING_VERIFICATION`
+   - only all `MET` requirements with all facts `HUMAN_VERIFIED` return `READY`
 5. `engine/service.py` assembles blockers, facts, evidence maps, provenance, warnings, audit trace data, and standard output payloads.
 
-Human review remains outside the automation boundary. A real workflow would still require policy interpretation, chart review, escalation handling, final submission decisions, PHI controls, auth, audit operations, and payer integration layers that are intentionally not implemented here.
+The engine records human attestations; it cannot prove a person reviewed the note. Reviewer identity is self-reported, with no authentication or tamper-resistant attestation store. A real workflow would still require policy interpretation, chart review, escalation handling, final submission decisions, PHI controls, auth, audit operations, and payer integration layers.
+
+In Streamlit, inspect the original note and each proposal, enter your reviewer name, check the facts you actually verified, and select **Record human verification**. In FastAPI, repeat `POST /evaluate` with the same request and `fact_verifications` keyed by requirement. Each record contains `state: "HUMAN_VERIFIED"`, `reviewer`, timezone-aware `verified_at`, and the result's `verification_fingerprint` as `fingerprint`. In CLI, use `evaluate --request-file request.json --json`, or add `--verifications-file attestations.json` to a demo evaluation. Unverified is the default everywhere. Changed notes, request scope or rule bundles invalidate old attestations; verification cannot edit a proposed value or override a failed requirement. See [docs/api.md](docs/api.md) for the payload.
 
 ## Why Deterministic First
 
@@ -101,7 +109,7 @@ This problem is intentionally narrow. Deterministic logic is the right backbone 
 
 `CANNOT_DETERMINE` is a feature here, not a failure mode.
 
-The bundled labeled fixture currently contains 52 synthetic cases. Its regression snapshot is 52/52 exact overall statuses, 0 false `READY` results among 45 expected non-`READY` cases, 12 `NEEDS_REVIEW` results (23.1%), and 42 combined `NEEDS_REVIEW`/`CANNOT_DETERMINE` abstentions (80.8%). These figures describe only the checked-in fixture; they are not estimates of performance on clinical notes or external data.
+The bundled labeled fixture currently contains 52 synthetic cases. Its regression snapshot is 52/52 exact overall statuses, 0 false `READY` results among 52 expected non-`READY` cases, 12 `NEEDS_REVIEW` results (23.1%), and 42 combined `NEEDS_REVIEW`/`CANNOT_DETERMINE` abstentions (80.8%). Seven cases now await human verification. Zero automated READY is a structural consequence of the verification gate, not evidence of extraction accuracy. These figures describe only the checked-in fixture; they are not estimates of performance on clinical notes or external data.
 
 ## Current Supported Scope
 

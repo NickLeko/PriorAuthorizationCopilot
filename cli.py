@@ -6,6 +6,8 @@ import sys
 from pathlib import Path
 from typing import Sequence
 
+from pydantic import ValidationError
+
 from engine.demo_cases import expected_overall_status_for_demo_case
 from engine.rendering import (
     export_evaluation_payload,
@@ -15,6 +17,7 @@ from engine.rendering import (
     render_rulebook_status,
     write_json_artifact,
 )
+from engine.schemas import PARequest
 from engine.service import ReadinessService, ServiceError
 
 
@@ -37,7 +40,10 @@ def build_parser() -> argparse.ArgumentParser:
     list_demo_cases.add_argument("--json", action="store_true", help="Emit JSON instead of a text table.")
 
     evaluate = subparsers.add_parser("evaluate", help="Evaluate one bundled synthetic demo case.")
-    evaluate.add_argument("--demo-case", required=True, help="Case ID from list-demo-cases.")
+    evaluation_input = evaluate.add_mutually_exclusive_group(required=True)
+    evaluation_input.add_argument("--demo-case", help="Case ID from list-demo-cases.")
+    evaluation_input.add_argument("--request-file", help="JSON PARequest, including any fact_verifications.")
+    evaluate.add_argument("--verifications-file", help="JSON mapping of requirement keys to human attestations.")
     evaluate.add_argument("--json", action="store_true", help="Emit JSON instead of a text summary.")
 
     export = subparsers.add_parser("export-report", help="Export a stable JSON artifact for one demo case.")
@@ -111,7 +117,18 @@ def main(argv: Sequence[str] | None = None) -> int:
             return 0
 
         if args.command == "evaluate":
-            request = service.get_demo_case_request(args.demo_case)
+            request = (
+                PARequest.model_validate_json(Path(args.request_file).read_text(encoding="utf-8"))
+                if args.request_file
+                else service.get_demo_case_request(args.demo_case)
+            )
+            if args.verifications_file:
+                request = PARequest.model_validate(
+                    {
+                        **request.model_dump(),
+                        "fact_verifications": json.loads(Path(args.verifications_file).read_text(encoding="utf-8")),
+                    }
+                )
             evaluation = service.evaluate(request)
             if args.json:
                 print(json.dumps(export_evaluation_payload(evaluation), indent=2, sort_keys=True))
@@ -170,6 +187,9 @@ def main(argv: Sequence[str] | None = None) -> int:
                 print("warnings: none")
             return 0
 
+    except (ValidationError, ValueError, OSError) as exc:
+        print(str(exc), file=sys.stderr)
+        return 2
     except KeyError as exc:
         print(str(exc), file=sys.stderr)
         return 2

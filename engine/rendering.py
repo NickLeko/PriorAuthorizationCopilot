@@ -61,7 +61,9 @@ def render_cli_evaluation(evaluation: EvaluationResult) -> str:
 
     lines.extend(["", "Requirement results:"])
     for result in evaluation.results:
-        lines.append(f"- {result.label}: {result.status} | {result.reason}")
+        lines.append(f"- {result.label}: {result.status} | {result.reason} | verification={result.verification.state}")
+        if result.verification.state == "HUMAN_VERIFIED":
+            lines.append(f"  Verified by {result.verification.reviewer} at {result.verification.verified_at.isoformat()}")
 
     return "\n".join(lines)
 

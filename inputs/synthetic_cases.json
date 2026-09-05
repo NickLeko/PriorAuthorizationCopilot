@@ -8,13 +8,13 @@
     "specialty": "Orthopedics",
     "note_text": "Low back pain with right leg radiculopathy x 8 weeks. NSAIDs for 8 weeks with minimal improvement; PT also completed. Objective motor exam in the right L5 distribution: ankle dorsiflexion strength 4/5. Denies bowel/bladder incontinence. No saddle anesthesia. Prior imaging: lumbar xray inconclusive.",
     "expected_label": "complete",
-    "expected_overall_status": "READY",
+    "expected_overall_status": "PENDING_VERIFICATION",
     "showcase": {
       "featured": true,
       "sort_order": 1,
       "title": "Lumbar MRI ready for administrative review",
       "description": "A synthetic lumbar MRI request satisfying the verified CPB 0236 radiculopathy branch: radicular back pain, an objective root-distribution finding, and six-plus weeks of unsuccessful conservative therapy.",
-      "expected_overall_status": "READY",
+      "expected_overall_status": "PENDING_VERIFICATION",
       "why_interesting": "Shows an official policy clause mapped to four deterministic requirements and their evidence spans.",
       "scenario_type": "Ready path",
       "tags": ["spine MRI", "happy path", "evidence map"]
@@ -84,7 +84,7 @@
     "specialty": "Sleep Medicine",
     "note_text": "Dx: OSA. Sleep study completed 2024-05-18. AHI 22 documented. Requests CPAP E0601.",
     "expected_label": "complete",
-    "expected_overall_status": "READY"
+    "expected_overall_status": "PENDING_VERIFICATION"
   },
   {
     "id": "CPAP-02-borderline",
@@ -260,13 +260,13 @@
     "specialty": "Sleep Medicine",
     "note_text": "Dx obstructive sleep apnea. Sleep study 2024/06/01. RDI 28. Request CPAP E0601.",
     "expected_label": "complete",
-    "expected_overall_status": "READY",
+    "expected_overall_status": "PENDING_VERIFICATION",
     "showcase": {
       "featured": true,
       "sort_order": 4,
       "title": "CPAP ready case with alternative date formatting",
       "description": "A CPAP request that includes OSA documentation, a slash-formatted sleep study date, and an RDI value.",
-      "expected_overall_status": "READY",
+      "expected_overall_status": "PENDING_VERIFICATION",
       "why_interesting": "Shows cross-domain breadth and a small extraction robustness edge case.",
       "scenario_type": "Ready path",
       "tags": ["date parsing", "DME", "cross-domain"]
@@ -281,13 +281,13 @@
     "specialty": "Orthopedics",
     "note_text": "Neck pain with right arm radiculopathy x 8 weeks. PT for 8 weeks and NSAIDs documented with minimal improvement. Denies weakness. Denies bowel/bladder changes. Prior cervical xray inconclusive.",
     "expected_label": "complete",
-    "expected_overall_status": "READY",
+    "expected_overall_status": "PENDING_VERIFICATION",
     "showcase": {
       "featured": true,
       "sort_order": 5,
       "title": "Cervical MRI ready case using the new supported pathway",
       "description": "A separate synthetic cervical MRI pathway demonstrating reusable deterministic architecture without inheriting lumbar's verified-policy trust.",
-      "expected_overall_status": "READY",
+      "expected_overall_status": "PENDING_VERIFICATION",
       "why_interesting": "Shows that the shared service and rule registry can support new deterministic procedures without changing the engine shape.",
       "scenario_type": "New procedure coverage",
       "tags": ["cervical MRI", "registry depth", "shared contract"]
@@ -324,7 +324,7 @@
     "specialty": "Neurology",
     "note_text": "Cervical radicular pain x 2 months. Completed physical therapy for 6 weeks. Reports progressive weakness in the right hand. Prior CT described as abnormal with degenerative stenosis.",
     "expected_label": "complete",
-    "expected_overall_status": "READY"
+    "expected_overall_status": "PENDING_VERIFICATION"
   },
   {
     "id": "MRI-KNEE-01-ready",
@@ -335,13 +335,13 @@
     "specialty": "Orthopedics",
     "note_text": "Right knee pain with locking and catching x 8 weeks. Completed PT for 8 weeks and NSAIDs with minimal improvement. Prior knee xray normal/unremarkable.",
     "expected_label": "complete",
-    "expected_overall_status": "READY",
+    "expected_overall_status": "PENDING_VERIFICATION",
     "showcase": {
       "featured": true,
       "sort_order": 6,
       "title": "Knee MRI ready case with explicit mechanical symptoms",
       "description": "A non-spine advanced imaging request that stays narrow: symptom duration, therapy duration, prior xray context, and explicit mechanical symptom review.",
-      "expected_overall_status": "READY",
+      "expected_overall_status": "PENDING_VERIFICATION",
       "why_interesting": "Shows deeper deterministic product coverage without changing the engine shape or widening into clinical scoring.",
       "scenario_type": "Non-spine coverage",
       "tags": ["knee MRI", "orthopedics", "mechanical symptoms"]
@@ -378,7 +378,7 @@
     "specialty": "Sports Medicine",
     "note_text": "Right knee pain x 10 weeks. Completed PT for 6 weeks and home exercise. Denies locking or instability. Prior knee xray findings unclear.",
     "expected_label": "complete",
-    "expected_overall_status": "READY"
+    "expected_overall_status": "PENDING_VERIFICATION"
   },
   {
     "id": "MRI-KNEE-05-conflict-deny-then-positive",

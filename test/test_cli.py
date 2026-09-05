@@ -42,7 +42,7 @@ def test_cli_export_report(tmp_path: Path, capsys):
     assert exit_code == 0
     assert str(output_path) in captured.out
     payload = json.loads(output_path.read_text(encoding="utf-8"))
-    assert payload["overall_status"] == "READY"
+    assert payload["overall_status"] == "PENDING_VERIFICATION"
     assert "letter" in payload
 
 
@@ -60,7 +60,7 @@ def test_cli_list_demo_cases_includes_scenario_type(capsys):
     captured = capsys.readouterr()
     assert exit_code == 0
     assert "MRI-CERV-01-ready" in captured.out
-    assert "expected_status=READY" in captured.out
+    assert "expected_status=PENDING_VERIFICATION" in captured.out
     assert "New procedure coverage" in captured.out
     assert "MRI-KNEE-01-ready" in captured.out
     assert "Non-spine coverage" in captured.out

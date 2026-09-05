@@ -1,9 +1,11 @@
 # Model Card
 
 Project: Prior Authorization Readiness Copilot  
-Version: 1.4.0
+Version: 1.5.0
 
-Changelog: 1.4.0 — Collects and conservatively resolves supported evidence candidates, adds tested subject/temporal/uncertainty/question safeguards, prevents internal review markers from entering public payloads, makes policy trust depend on validated snapshot and drift-log state, and reports fixture-scoped safety metrics. Version 1.3.1 distinguished recognized normal and specific negative imaging findings from inconclusive or unrecognized findings.
+Changelog: 1.5.0 — Requires per-fact human verification before READY, adds PENDING_VERIFICATION, repairs Unicode source offsets, reloads runtime rule bundles and fails unknown monitoring frequencies closed. No negation, temporality or attribution patterns were changed.
+
+Automated extraction is a drafting aid, not a decision gate. v1.4.0's posture over-trusted extraction: negated diagnoses returned affirmative facts and contradicted the extraction contract as written. v1.5.0 resolves the contradiction by changing what the engine may assert rather than by making extraction match the contract. Known false proposals remain; the executable contract records them explicitly.
 
 ## Current Repo
 
@@ -39,14 +41,16 @@ Changelog: 1.4.0 — Collects and conservatively resolves supported evidence can
 ## Outputs
 
 - Requirement-level `MET`, `NOT_MET`, `NOT_DOCUMENTED`, and `NEEDS_REVIEW`
-- Overall `READY`, `NOT_READY`, `CANNOT_DETERMINE`, or `NEEDS_REVIEW`
+- Overall `PENDING_VERIFICATION`, `READY`, `NOT_READY`, `CANNOT_DETERMINE`, or `NEEDS_REVIEW`
+- Each requirement's proposed value, verification state, reviewer/time and proposal fingerprint
 - Blocking issues
 - Deterministic write-only letter draft
 - Audit JSON
 
 ## Safety Boundaries
 
-- Missing information stays missing
+- Automated proposals can misread missing, negated, resolved or unrelated information
+- All-MET proposals remain `PENDING_VERIFICATION` until every requirement fact is `HUMAN_VERIFIED`
 - Any `NOT_DOCUMENTED` result forces `CANNOT_DETERMINE`
 - With no missing result, any `NEEDS_REVIEW` result forces the human-review disposition instead of a threshold failure
 - Policy drift does not update rules automatically
@@ -54,12 +58,15 @@ Changelog: 1.4.0 — Collects and conservatively resolves supported evidence can
 
 ## Evaluation
 
-The repo includes pytest coverage for extraction, evaluation, drafting, rule loading, and policy-monitor helpers. All bundled evaluation cases are synthetic. The checked-in fixture currently reports 52/52 exact statuses and 0 false `READY` results among 45 expected non-`READY` cases; those figures apply only to that fixture and are not real-world performance estimates.
+The repo includes pytest coverage for extraction, verification, evaluation, drafting, rule loading, and policy-monitor helpers. All bundled evaluation cases are synthetic. The checked-in fixture reports 52/52 exact statuses and 0 false `READY` results among 52 expected non-`READY` cases, including seven `PENDING_VERIFICATION` cases. Zero automated READY is enforced structurally; it is not an extraction-accuracy estimate. The executable contract tests cover every numbered guarantee and published exact example, starting with the known negation failure and its pending outcome.
 
 ## Known Limits
 
 - Narrow rule coverage
 - Regex-based extraction with limited phrase support
+- Source spans now exactly equal original-note slices at Python character offsets, including Unicode. This does not establish semantic support, attribution or complete context.
+- Human-verification identity is self-reported, not authenticated; the local demo cannot establish that a person actually reviewed a fact. Incorrect human attestations can still permit false READY.
+- The borrowed sleep-study date case was already contained at submission: v1.4.0 returned READY documentation status but `submission_readiness=false` because CPAP policy trust is demo, as the README permits. The date association itself remains unfixed.
 - `MRI_LUMBAR` is monitored for drift; `MRI_CERVICAL`, `MRI_KNEE`, and `CPAP_DEVICE` are supported in rules but not monitored for drift
 - `MRI_LUMBAR` receives `verified` trust only for the implemented Aetna CPB 0236 radiculopathy branch while its scoped source hash and freshness checks remain valid; all other procedures remain `demo`
 - CPB 0236 does not explicitly prescribe a required combination of its listed conservative-therapy modalities; the prototype accepts a qualifying documented modality and does not sum shorter sequential courses without explicit overall duration

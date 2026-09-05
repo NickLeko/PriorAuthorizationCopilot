@@ -222,7 +222,7 @@ def test_bundled_synthetic_eval_cases_match_expected_labels():
     assert all(row["pass"] == "✅" for row in rows)
     assert all(row["expected"] for row in rows)
     assert metrics["total_labeled_cases"] == 52
-    assert metrics["expected_non_ready_count"] == 45
+    assert metrics["expected_non_ready_count"] == 52
     assert metrics["exact_overall_status_accuracy_pct"] == 100.0
     assert metrics["false_ready_count"] == 0
     assert metrics["false_ready_rate_pct"] == 0.0

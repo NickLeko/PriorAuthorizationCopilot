@@ -24,10 +24,10 @@ def test_streamlit_featured_case_load_produces_results():
 
     assert not at.exception
     assert at.session_state["last_eval_payload"]["request"]["procedure_code"] == "MRI_KNEE"
-    assert at.session_state["last_eval_payload"]["overall_status"] == "READY"
+    assert at.session_state["last_eval_payload"]["overall_status"] == "PENDING_VERIFICATION"
     assert at.session_state["last_eval_payload"]["submission_readiness"] is False
-    assert any("status-panel" in markdown.value and "READY" in markdown.value for markdown in at.markdown)
-    assert any("submission readiness is NO" in warning.value for warning in at.warning)
+    assert any("status-panel" in markdown.value and "PENDING_VERIFICATION" in markdown.value for markdown in at.markdown)
+    assert any("All proposed facts require human verification before READY" in markdown.value for markdown in at.markdown)
     assert any(markdown.value == "#### Deterministic decision trace" for markdown in at.markdown)
 
 

@@ -6,8 +6,8 @@
       "not_met": []
     },
     "evaluation_warnings": [
-      "Policy trust remains DEMO for this procedure. Verify against official policy before real-world use.",
-      "Documentation criteria evaluate to READY, but submission_readiness is false because the active policy and rulebook state is not fully trusted."
+      "Automated extraction is a drafting aid. All proposed facts require human verification before READY.",
+      "Policy trust remains DEMO for this procedure. Verify against official policy before real-world use."
     ],
     "evidence_map": {
       "conservative_therapy_weeks": [
@@ -46,6 +46,32 @@
         }
       ]
     },
+    "fact_verifications": {
+      "conservative_therapy_weeks": {
+        "fingerprint": null,
+        "reviewer": null,
+        "state": "UNVERIFIED",
+        "verified_at": null
+      },
+      "mechanical_symptoms_documented": {
+        "fingerprint": null,
+        "reviewer": null,
+        "state": "UNVERIFIED",
+        "verified_at": null
+      },
+      "prior_imaging_result": {
+        "fingerprint": null,
+        "reviewer": null,
+        "state": "UNVERIFIED",
+        "verified_at": null
+      },
+      "symptom_duration_weeks": {
+        "fingerprint": null,
+        "reviewer": null,
+        "state": "UNVERIFIED",
+        "verified_at": null
+      }
+    },
     "facts_extracted": {
       "ahi_documented": null,
       "back_pain_with_radiculopathy": null,
@@ -73,7 +99,7 @@
     },
     "note_hash": "59421e8561fe0462",
     "note_length": 151,
-    "overall_status": "READY",
+    "overall_status": "PENDING_VERIFICATION",
     "payer": "Aetna",
     "policy_trust_level": "demo",
     "procedure_code": "MRI_KNEE",
@@ -180,7 +206,7 @@
     "missing_requirement_count": 0,
     "total_requirements": 4
   },
-  "overall_status": "READY",
+  "overall_status": "PENDING_VERIFICATION",
   "policy_trust_level": "demo",
   "provenance": {
     "accessed_date": null,
@@ -212,8 +238,8 @@
         "not_met": []
       },
       "evaluation_warnings": [
-        "Policy trust remains DEMO for this procedure. Verify against official policy before real-world use.",
-        "Documentation criteria evaluate to READY, but submission_readiness is false because the active policy and rulebook state is not fully trusted."
+        "Automated extraction is a drafting aid. All proposed facts require human verification before READY.",
+        "Policy trust remains DEMO for this procedure. Verify against official policy before real-world use."
       ],
       "evidence_map": {
         "conservative_therapy_weeks": [
@@ -252,6 +278,32 @@
           }
         ]
       },
+      "fact_verifications": {
+        "conservative_therapy_weeks": {
+          "fingerprint": null,
+          "reviewer": null,
+          "state": "UNVERIFIED",
+          "verified_at": null
+        },
+        "mechanical_symptoms_documented": {
+          "fingerprint": null,
+          "reviewer": null,
+          "state": "UNVERIFIED",
+          "verified_at": null
+        },
+        "prior_imaging_result": {
+          "fingerprint": null,
+          "reviewer": null,
+          "state": "UNVERIFIED",
+          "verified_at": null
+        },
+        "symptom_duration_weeks": {
+          "fingerprint": null,
+          "reviewer": null,
+          "state": "UNVERIFIED",
+          "verified_at": null
+        }
+      },
       "facts_extracted": {
         "ahi_documented": null,
         "back_pain_with_radiculopathy": null,
@@ -279,7 +331,7 @@
       },
       "note_hash": "59421e8561fe0462",
       "note_length": 151,
-      "overall_status": "READY",
+      "overall_status": "PENDING_VERIFICATION",
       "payer": "Aetna",
       "policy_trust_level": "demo",
       "procedure_code": "MRI_KNEE",
@@ -338,10 +390,18 @@
             "text": "PT for 8 weeks"
           }
         ],
+        "fact_value": 8,
         "key": "conservative_therapy_weeks",
         "label": "Conservative therapy duration (weeks)",
         "reason": "Documented value: 8.",
-        "status": "MET"
+        "status": "MET",
+        "verification": {
+          "fingerprint": null,
+          "reviewer": null,
+          "state": "UNVERIFIED",
+          "verified_at": null
+        },
+        "verification_fingerprint": "7023ed0efebc24e7b52d9f54fbcb3752a51f0551c0914057a67cb3486319b0ba"
       },
       {
         "evidence": "Persistent symptoms documented long enough to justify escalation",
@@ -355,10 +415,18 @@
             "text": "8 weeks"
           }
         ],
+        "fact_value": 8,
         "key": "symptom_duration_weeks",
         "label": "Symptom duration (weeks)",
         "reason": "Documented value: 8.",
-        "status": "MET"
+        "status": "MET",
+        "verification": {
+          "fingerprint": null,
+          "reviewer": null,
+          "state": "UNVERIFIED",
+          "verified_at": null
+        },
+        "verification_fingerprint": "c3ac937220a73f3a7bd9318985f29ca6c81532dea64c3982bdecf9749a97eed1"
       },
       {
         "evidence": "Prior knee imaging such as x-ray is documented and not simply absent",
@@ -372,10 +440,18 @@
             "text": "normal"
           }
         ],
+        "fact_value": "normal",
         "key": "prior_imaging_result",
         "label": "Prior imaging result",
         "reason": "Documented: normal.",
-        "status": "MET"
+        "status": "MET",
+        "verification": {
+          "fingerprint": null,
+          "reviewer": null,
+          "state": "UNVERIFIED",
+          "verified_at": null
+        },
+        "verification_fingerprint": "17c705353ef086ed5cb38abfa719ed6282badd7765f20b3637e0e2300a137c5b"
       },
       {
         "evidence": "Locking, catching, buckling, giving way, or instability explicitly documented",
@@ -389,10 +465,18 @@
             "text": "Right knee pain with locking and catching x 8 weeks"
           }
         ],
+        "fact_value": true,
         "key": "mechanical_symptoms_documented",
         "label": "Mechanical symptoms explicitly addressed (present or denied)",
         "reason": "Explicitly addressed in documentation (present/affirmed).",
-        "status": "MET"
+        "status": "MET",
+        "verification": {
+          "fingerprint": null,
+          "reviewer": null,
+          "state": "UNVERIFIED",
+          "verified_at": null
+        },
+        "verification_fingerprint": "4e7356678ad54ccdb4d8bef2a9e97348b6e74f3180d324498d581743fccfc1d9"
       }
     ],
     "rule_reasons": []
@@ -401,6 +485,7 @@
     "dx_codes": [
       "M25.561"
     ],
+    "fact_verifications": {},
     "note_text": "Right knee pain with locking and catching x 8 weeks. Completed PT for 8 weeks and NSAIDs with minimal improvement. Prior knee xray normal/unremarkable.",
     "payer": "Aetna",
     "procedure_code": "MRI_KNEE",
@@ -420,10 +505,18 @@
           "text": "PT for 8 weeks"
         }
       ],
+      "fact_value": 8,
       "key": "conservative_therapy_weeks",
       "label": "Conservative therapy duration (weeks)",
       "reason": "Documented value: 8.",
-      "status": "MET"
+      "status": "MET",
+      "verification": {
+        "fingerprint": null,
+        "reviewer": null,
+        "state": "UNVERIFIED",
+        "verified_at": null
+      },
+      "verification_fingerprint": "7023ed0efebc24e7b52d9f54fbcb3752a51f0551c0914057a67cb3486319b0ba"
     },
     {
       "evidence": "Persistent symptoms documented long enough to justify escalation",
@@ -437,10 +530,18 @@
           "text": "8 weeks"
         }
       ],
+      "fact_value": 8,
       "key": "symptom_duration_weeks",
       "label": "Symptom duration (weeks)",
       "reason": "Documented value: 8.",
-      "status": "MET"
+      "status": "MET",
+      "verification": {
+        "fingerprint": null,
+        "reviewer": null,
+        "state": "UNVERIFIED",
+        "verified_at": null
+      },
+      "verification_fingerprint": "c3ac937220a73f3a7bd9318985f29ca6c81532dea64c3982bdecf9749a97eed1"
     },
     {
       "evidence": "Prior knee imaging such as x-ray is documented and not simply absent",
@@ -454,10 +555,18 @@
           "text": "normal"
         }
       ],
+      "fact_value": "normal",
       "key": "prior_imaging_result",
       "label": "Prior imaging result",
       "reason": "Documented: normal.",
-      "status": "MET"
+      "status": "MET",
+      "verification": {
+        "fingerprint": null,
+        "reviewer": null,
+        "state": "UNVERIFIED",
+        "verified_at": null
+      },
+      "verification_fingerprint": "17c705353ef086ed5cb38abfa719ed6282badd7765f20b3637e0e2300a137c5b"
     },
     {
       "evidence": "Locking, catching, buckling, giving way, or instability explicitly documented",
@@ -471,10 +580,18 @@
           "text": "Right knee pain with locking and catching x 8 weeks"
         }
       ],
+      "fact_value": true,
       "key": "mechanical_symptoms_documented",
       "label": "Mechanical symptoms explicitly addressed (present or denied)",
       "reason": "Explicitly addressed in documentation (present/affirmed).",
-      "status": "MET"
+      "status": "MET",
+      "verification": {
+        "fingerprint": null,
+        "reviewer": null,
+        "state": "UNVERIFIED",
+        "verified_at": null
+      },
+      "verification_fingerprint": "4e7356678ad54ccdb4d8bef2a9e97348b6e74f3180d324498d581743fccfc1d9"
     }
   ],
   "rule_reasons": [],
@@ -571,7 +688,7 @@
     ]
   },
   "warnings": [
-    "Policy trust remains DEMO for this procedure. Verify against official policy before real-world use.",
-    "Documentation criteria evaluate to READY, but submission_readiness is false because the active policy and rulebook state is not fully trusted."
+    "Automated extraction is a drafting aid. All proposed facts require human verification before READY.",
+    "Policy trust remains DEMO for this procedure. Verify against official policy before real-world use."
   ]
 }

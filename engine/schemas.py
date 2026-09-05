@@ -1,11 +1,12 @@
 from __future__ import annotations
 
+from datetime import datetime, timezone
 from typing import Any, Dict, List, Literal, Optional
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
 RequirementStatus = Literal["MET", "NOT_MET", "NOT_DOCUMENTED", "NEEDS_REVIEW"]
-OverallStatus = Literal["READY", "NOT_READY", "CANNOT_DETERMINE", "NEEDS_REVIEW", "UNKNOWN"]
+OverallStatus = Literal["READY", "PENDING_VERIFICATION", "NOT_READY", "CANNOT_DETERMINE", "NEEDS_REVIEW", "UNKNOWN"]
 LetterType = Literal["submission_cover_letter", "missing_info_request", "appeal_template"]
 PolicyTrustLevel = Literal["demo", "verified"]
 RequirementType = Literal["number", "boolean", "enum"]
@@ -27,6 +28,34 @@ LEGACY_OPERATOR_BY_TYPE: dict[RequirementType, RequirementOperator] = {
 }
 
 
+class FactVerification(BaseModel):
+    """A caller's human attestation, bound to the exact proposal returned by the service."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    state: Literal["UNVERIFIED", "HUMAN_VERIFIED"] = "UNVERIFIED"
+    reviewer: Optional[str] = None
+    verified_at: Optional[datetime] = None
+    fingerprint: Optional[str] = None
+
+    @model_validator(mode="after")
+    def _validate_attestation(self) -> "FactVerification":
+        if self.state == "UNVERIFIED":
+            if any(value is not None for value in (self.reviewer, self.verified_at, self.fingerprint)):
+                raise ValueError("UNVERIFIED facts cannot carry a human attestation.")
+        else:
+            if not self.reviewer or not self.reviewer.strip():
+                raise ValueError("HUMAN_VERIFIED requires a named reviewer.")
+            self.reviewer = self.reviewer.strip()
+            if self.verified_at is None or self.verified_at.tzinfo is None:
+                raise ValueError("HUMAN_VERIFIED requires a timezone-aware verified_at.")
+            if self.verified_at > datetime.now(timezone.utc):
+                raise ValueError("verified_at cannot be in the future.")
+            if not self.fingerprint or len(self.fingerprint) != 64:
+                raise ValueError("HUMAN_VERIFIED requires the proposal fingerprint.")
+        return self
+
+
 class PARequest(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
@@ -36,6 +65,7 @@ class PARequest(BaseModel):
     site_of_care: str = "outpatient"
     specialty: str = "unknown"
     note_text: str = ""
+    fact_verifications: Dict[str, FactVerification] = Field(default_factory=dict)
 
     @field_validator("payer", "procedure_code", "site_of_care", "specialty")
     @classmethod
@@ -82,10 +112,11 @@ class EvidenceSpan(BaseModel):
             raise ValueError("Evidence span offsets must be non-negative.")
         return value
 
-    @field_validator("text")
-    @classmethod
-    def _strip_text(cls, value: str) -> str:
-        return value.strip()
+    @model_validator(mode="after")
+    def _validate_span(self) -> "EvidenceSpan":
+        if self.end <= self.start or not self.text:
+            raise ValueError("Evidence spans must be nonempty with end greater than start.")
+        return self
 
 
 class RequirementDefinition(BaseModel):
@@ -146,6 +177,9 @@ class RequirementResult(BaseModel):
     evidence: Optional[str] = None
     evidence_snippets: List[str] = Field(default_factory=list)
     evidence_spans: List[EvidenceSpan] = Field(default_factory=list)
+    fact_value: Any = None
+    verification: FactVerification = Field(default_factory=FactVerification)
+    verification_fingerprint: Optional[str] = None
 
     @field_validator("key", "label", "reason")
     @classmethod
@@ -371,6 +405,7 @@ class AuditTrace(BaseModel):
     policy_trust_level: PolicyTrustLevel
     provenance_snapshot: Dict[str, Any] = Field(default_factory=dict)
     facts_extracted: Dict[str, Any] = Field(default_factory=dict)
+    fact_verifications: Dict[str, FactVerification] = Field(default_factory=dict)
     evidence_map: Dict[str, List[EvidenceSpan]] = Field(default_factory=dict)
     requirements_checked: List[str] = Field(default_factory=list)
     overall_status: OverallStatus

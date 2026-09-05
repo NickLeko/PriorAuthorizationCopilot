@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+from datetime import datetime, timezone
 from pathlib import Path
 
 import streamlit as st
@@ -145,15 +146,20 @@ def status_panel(evaluation: EvaluationResult) -> None:
     status = evaluation.overall_status
     klass = {
         "READY": "status-ready",
+        "PENDING_VERIFICATION": "status-needs-review",
         "NOT_READY": "status-not-ready",
         "CANNOT_DETERMINE": "status-cannot-determine",
         "NEEDS_REVIEW": "status-needs-review",
     }.get(status, "status-unknown")
 
     summaries = {
+        "PENDING_VERIFICATION": (
+            "Human verification is required before READY.",
+            "Automated extraction is a drafting aid; proposed facts must be checked against the original note.",
+        ),
         "READY": (
             "Documentation status is READY under the current versioned rules.",
-            "All required elements were explicitly documented and met threshold; submission readiness is reported separately.",
+            "Every requirement fact has a recorded human verification and meets its operator; submission readiness is reported separately.",
         ),
         "NOT_READY": (
             "Not ready to submit under the current versioned rules.",
@@ -637,6 +643,62 @@ else:
     evaluation = EvaluationResult.model_validate(st.session_state["last_eval_payload"])
     status_panel(evaluation)
 
+    st.markdown("#### Verify proposed facts")
+    st.caption(
+        "MET is an operator result on a proposed fact, not a claim that the note supports it. "
+        "Only attest to facts you have personally checked. Reviewer identity is self-reported in this local prototype."
+    )
+    with st.expander("Original note for this evaluation", expanded=False):
+        st.code(evaluation.request.note_text, language=None)
+    with st.form("fact_verification_form"):
+        reviewer = st.text_input("Human verifier name", key="human_verifier_name")
+        selected_verifications = {}
+        for requirement_result in evaluation.results:
+            st.write(f"{requirement_result.label}: proposed {requirement_result.fact_value!r} | {requirement_result.status}")
+            for evidence_span in requirement_result.evidence_spans:
+                st.text(f"[{evidence_span.start}:{evidence_span.end}] {evidence_span.text}")
+            st.caption(
+                f"Verification: {requirement_result.verification.state}; "
+                f"reviewer: {requirement_result.verification.reviewer or 'none'}; "
+                f"time: {requirement_result.verification.verified_at or 'none'}"
+            )
+            selected_verifications[requirement_result.key] = st.checkbox(
+                f"I verified {requirement_result.key} against the original note and rule",
+                value=requirement_result.verification.state == "HUMAN_VERIFIED",
+                key=f"verify_{requirement_result.verification_fingerprint}",
+            )
+        verify_submitted = st.form_submit_button("Record human verification")
+    if verify_submitted:
+        if not reviewer.strip():
+            st.error("Enter the name of the human who verified these facts.")
+        else:
+            attestations = {}
+            for requirement_result in evaluation.results:
+                if selected_verifications[requirement_result.key]:
+                    attestations[requirement_result.key] = (
+                        requirement_result.verification.model_dump(mode="json")
+                        if requirement_result.verification.state == "HUMAN_VERIFIED"
+                        else {
+                            "state": "HUMAN_VERIFIED",
+                            "reviewer": reviewer.strip(),
+                            "verified_at": datetime.now(timezone.utc).isoformat(),
+                            "fingerprint": requirement_result.verification_fingerprint,
+                        }
+                    )
+            try:
+                verified_request = PARequest.model_validate(
+                    {
+                        **evaluation.request.model_dump(mode="json"),
+                        "fact_verifications": attestations,
+                    }
+                )
+                st.session_state["last_eval_payload"] = service.evaluate(verified_request).model_dump(mode="json")
+                st.session_state["letter_text"] = ""
+                st.session_state["letter_meta"] = {}
+                st.rerun()
+            except (ValueError, ServiceError) as exc:
+                st.error(str(exc))
+
     if evaluation.overall_status == "READY" and not evaluation.submission_readiness:
         st.warning(
             "Documentation status is READY, but submission readiness is NO because policy or rulebook trust is not verified and current."
@@ -669,7 +731,9 @@ else:
 
     with tabs[0]:
         st.markdown("#### Blockers")
-        if not evaluation.blockers.not_documented and not evaluation.blockers.not_met and not evaluation.blockers.needs_review:
+        if evaluation.overall_status == "PENDING_VERIFICATION":
+            st.info("All operators pass on proposed facts; human verification is still outstanding.")
+        elif not evaluation.blockers.not_documented and not evaluation.blockers.not_met and not evaluation.blockers.needs_review:
             st.success("No blockers detected under the current rules.")
         else:
             if evaluation.blockers.not_documented:

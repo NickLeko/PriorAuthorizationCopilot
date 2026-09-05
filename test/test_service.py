@@ -3,6 +3,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 import pytest
+from verification_helpers import attest
 
 from engine.config import load_app_config
 from engine.policy_monitor import SNAPSHOT_NORMALIZATION_VERSION, hash_text
@@ -65,8 +66,8 @@ def test_service_evaluates_known_ready_demo_case():
 
     evaluation = service.evaluate(request)
 
-    assert evaluation.overall_status == "READY"
-    assert evaluation.submission_readiness is True
+    assert evaluation.overall_status == "PENDING_VERIFICATION"
+    assert evaluation.submission_readiness is False
     assert evaluation.audit_trail.note_hash
     assert evaluation.audit_trail.evidence_map["cpb_0236_conservative_therapy_weeks"]
     assert evaluation.results[0].evidence_spans
@@ -166,8 +167,8 @@ def test_recognized_negative_imaging_remains_extraction_only_for_verified_lumbar
     evaluation = service.evaluate(request)
     assert evaluation.facts["prior_imaging_result"] == "negative"
     assert all(result.key != "prior_imaging_result" for result in evaluation.results)
-    assert evaluation.overall_status == "READY"
-    assert evaluation.submission_readiness is True
+    assert evaluation.overall_status == "PENDING_VERIFICATION"
+    assert evaluation.submission_readiness is False
     assert not evaluation.blockers.not_met
     assert not evaluation.blockers.needs_review
 
@@ -263,7 +264,7 @@ def test_service_evaluates_new_cervical_demo_case():
 
     evaluation = service.evaluate(request)
 
-    assert evaluation.overall_status == "READY"
+    assert evaluation.overall_status == "PENDING_VERIFICATION"
     assert evaluation.supported_procedure.procedure_code == "MRI_CERVICAL"
     assert evaluation.supported_procedure.metadata.rule_family == "spine_mri_conservative_therapy"
 
@@ -274,7 +275,7 @@ def test_service_evaluates_new_knee_demo_case():
 
     evaluation = service.evaluate(request)
 
-    assert evaluation.overall_status == "READY"
+    assert evaluation.overall_status == "PENDING_VERIFICATION"
     assert evaluation.supported_procedure.procedure_code == "MRI_KNEE"
     assert evaluation.supported_procedure.metadata.rule_family == "extremity_mri_conservative_therapy"
 
@@ -409,7 +410,7 @@ def test_verified_provenance_downgrades_when_monitoring_baseline_is_missing(tmp_
     config = load_app_config().model_copy(update={"snapshot_root": tmp_path})
     service = ReadinessService(config)
 
-    evaluation = service.evaluate(service.get_demo_case_request("MRI-01-complete"))
+    evaluation = service.evaluate(attest(service.evaluate(service.get_demo_case_request("MRI-01-complete"))))
 
     assert evaluation.overall_status == "READY"
     assert evaluation.policy_trust_level == "demo"
@@ -436,7 +437,7 @@ def test_verified_provenance_downgrades_when_baseline_hash_does_not_match(tmp_pa
     config = load_app_config().model_copy(update={"snapshot_root": tmp_path})
     service = ReadinessService(config)
 
-    evaluation = service.evaluate(service.get_demo_case_request("MRI-01-complete"))
+    evaluation = service.evaluate(attest(service.evaluate(service.get_demo_case_request("MRI-01-complete"))))
 
     assert evaluation.overall_status == "READY"
     assert evaluation.policy_trust_level == "demo"
@@ -449,7 +450,7 @@ def test_verified_provenance_downgrades_when_baseline_hash_does_not_match(tmp_pa
         (
             "Low back pain with right leg radiculopathy. NSAIDs for 8 weeks with no improvement. "
             "Objective motor exam in the right L5 distribution: ankle dorsiflexion strength 4/5.",
-            "READY",
+            "PENDING_VERIFICATION",
             None,
         ),
         (
@@ -487,7 +488,7 @@ def test_verified_lumbar_policy_branch_positive_negative_missing_and_ambiguous(n
     assert evaluation.overall_status == expected_status
     assert evaluation.policy_trust_level == "verified"
     if expected_blocker is None:
-        assert evaluation.submission_readiness is True
+        assert evaluation.submission_readiness is False
     else:
         blockers = evaluation.blockers.not_documented + evaluation.blockers.not_met + evaluation.blockers.needs_review
         assert any(blocker.key == expected_blocker for blocker in blockers)
@@ -503,12 +504,12 @@ def test_verified_lumbar_policy_branch_positive_negative_missing_and_ambiguous(n
         "expected_response_status",
     ),
     [
-        ("NSAIDs for 6 weeks with no improvement.", 6, True, "READY", "MET", "MET"),
+        ("NSAIDs for 6 weeks with no improvement.", 6, True, "PENDING_VERIFICATION", "MET", "MET"),
         (
             "Analgesics for 2 weeks were stopped. NSAIDs and muscle relaxants for 6 weeks with no improvement.",
             6,
             True,
-            "READY",
+            "PENDING_VERIFICATION",
             "MET",
             "MET",
         ),
@@ -889,7 +890,7 @@ def test_questioned_cpap_evidence_requires_review(note_text):
 
 def test_demo_policy_can_preserve_ready_status_but_never_be_submission_ready():
     service = ReadinessService()
-    evaluation = service.evaluate(service.get_demo_case_request("CPAP-01-complete"))
+    evaluation = service.evaluate(attest(service.evaluate(service.get_demo_case_request("CPAP-01-complete"))))
 
     assert evaluation.overall_status == "READY"
     assert evaluation.policy_trust_level == "demo"
@@ -901,7 +902,7 @@ def test_stale_policy_snapshot_blocks_submission_readiness(tmp_path):
     _write_policy_snapshot(tmp_path, "2020-01-01T00:00:00Z")
     service = ReadinessService(load_app_config().model_copy(update={"snapshot_root": tmp_path}))
 
-    evaluation = service.evaluate(service.get_demo_case_request("MRI-01-complete"))
+    evaluation = service.evaluate(attest(service.evaluate(service.get_demo_case_request("MRI-01-complete"))))
 
     assert evaluation.overall_status == "READY"
     assert evaluation.policy_trust_level == "demo"
@@ -919,7 +920,7 @@ def test_unresolved_policy_drift_blocks_submission_readiness(tmp_path):
     )
     service = ReadinessService(load_app_config().model_copy(update={"snapshot_root": tmp_path}))
 
-    evaluation = service.evaluate(service.get_demo_case_request("MRI-01-complete"))
+    evaluation = service.evaluate(attest(service.evaluate(service.get_demo_case_request("MRI-01-complete"))))
 
     assert evaluation.overall_status == "READY"
     assert evaluation.policy_trust_level == "demo"
@@ -932,7 +933,7 @@ def test_malformed_drift_log_fails_policy_trust_closed(tmp_path):
     service = ReadinessService(load_app_config().model_copy(update={"snapshot_root": tmp_path}))
 
     drift = service.get_drift_status(payer="Aetna", procedure_code="MRI_LUMBAR")
-    evaluation = service.evaluate(service.get_demo_case_request("MRI-01-complete"))
+    evaluation = service.evaluate(attest(service.evaluate(service.get_demo_case_request("MRI-01-complete"))))
 
     assert drift.any_review_required is True
     assert drift.sources[0].status == "INVALID_DRIFT_LOG"
@@ -957,7 +958,7 @@ def test_later_non_drift_event_does_not_clear_unresolved_drift(tmp_path):
     service = ReadinessService(load_app_config().model_copy(update={"snapshot_root": tmp_path}))
 
     drift = service.get_drift_status(payer="Aetna", procedure_code="MRI_LUMBAR")
-    evaluation = service.evaluate(service.get_demo_case_request("MRI-01-complete"))
+    evaluation = service.evaluate(attest(service.evaluate(service.get_demo_case_request("MRI-01-complete"))))
 
     assert drift.any_review_required is True
     assert drift.sources[0].status == "REVIEW_REQUIRED"
@@ -971,7 +972,7 @@ def test_invalid_runtime_rulebook_blocks_submission_readiness(tmp_path):
     changed_rules.write_text(source_rules.replace("version: 1.0", "version: 1.0-unreleased", 1), encoding="utf-8")
     service = ReadinessService(load_app_config().model_copy(update={"rules_path": changed_rules}))
 
-    evaluation = service.evaluate(service.get_demo_case_request("MRI-01-complete"))
+    evaluation = service.evaluate(attest(service.evaluate(service.get_demo_case_request("MRI-01-complete"))))
 
     assert evaluation.overall_status == "READY"
     assert evaluation.policy_trust_level == "demo"
@@ -997,7 +998,7 @@ def test_invalid_policy_snapshot_integrity_blocks_submission_readiness(tmp_path,
     service = ReadinessService(config.model_copy(update={"snapshot_root": tmp_path}))
 
     drift = service.get_drift_status(payer="Aetna", procedure_code="MRI_LUMBAR")
-    evaluation = service.evaluate(service.get_demo_case_request("MRI-01-complete"))
+    evaluation = service.evaluate(attest(service.evaluate(service.get_demo_case_request("MRI-01-complete"))))
 
     assert drift.any_review_required is True
     assert drift.sources[0].status == "INVALID_SNAPSHOT"

@@ -52,8 +52,8 @@ def test_reviewer_demo_cases_preserve_status_meanings_and_audit_fields():
     service = ReadinessService()
 
     ready = service.evaluate(service.get_demo_case_request("MRI-01-complete"))
-    assert ready.overall_status == "READY"
-    assert ready.submission_readiness is True
+    assert ready.overall_status == "PENDING_VERIFICATION"
+    assert ready.submission_readiness is False
     assert not ready.blockers.not_documented
     assert not ready.blockers.not_met
     assert ready.evidence_map["cpb_0236_conservative_therapy_weeks"]

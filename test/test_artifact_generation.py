@@ -53,7 +53,7 @@ def test_artifact_generation_writes_enriched_outputs(tmp_path, monkeypatch):
 
     safety_metrics = json.loads((tmp_path / "safety_metrics.json").read_text(encoding="utf-8"))
     assert safety_metrics["total_labeled_cases"] == 52
-    assert safety_metrics["expected_non_ready_count"] == 45
+    assert safety_metrics["expected_non_ready_count"] == 52
     assert safety_metrics["exact_status_correct_count"] == 52
     assert safety_metrics["false_ready_count"] == 0
     assert safety_metrics["abstention_count"] == 42

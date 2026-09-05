@@ -4,10 +4,12 @@ from copy import deepcopy
 from typing import Any, Dict
 
 from .rendering import export_evaluation_payload
+from .schemas import PARequest
 from .service import ReadinessService
 
 DEFAULT_ACCEPTANCE_CASE_IDS = [
     "MRI-01-complete",
+    "MRI-01-human-verified",
     "MRI-08-edge-below-threshold",
     "CPAP-02-borderline",
     "MRI-KNEE-01-ready",
@@ -42,8 +44,25 @@ def normalize_drift_payload(payload: Dict[str, Any]) -> Dict[str, Any]:
 
 
 def build_acceptance_evaluation_payload(service: ReadinessService, case_id: str) -> Dict[str, Any]:
-    request = service.get_demo_case_request(case_id)
+    request = service.get_demo_case_request("MRI-01-complete" if case_id == "MRI-01-human-verified" else case_id)
     evaluation = service.evaluate(request)
+    if case_id == "MRI-01-human-verified":
+        # Explicit acceptance fixture, never used by the interactive evaluation path.
+        request = PARequest.model_validate(
+            {
+                **request.model_dump(mode="json"),
+                "fact_verifications": {
+                    result.key: {
+                        "state": "HUMAN_VERIFIED",
+                        "reviewer": "Synthetic acceptance reviewer (fixture only)",
+                        "verified_at": "2026-01-01T00:00:00Z",
+                        "fingerprint": result.verification_fingerprint,
+                    }
+                    for result in evaluation.results
+                },
+            }
+        )
+        evaluation = service.evaluate(request)
     return normalize_evaluation_payload(export_evaluation_payload(evaluation))
 
 

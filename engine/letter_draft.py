@@ -94,13 +94,15 @@ def _derive_overall_status(draft_input: LetterDraftInput) -> OverallStatus:
     # - Any NOT_DOCUMENTED => CANNOT_DETERMINE
     # - Else any NEEDS_REVIEW => NEEDS_REVIEW
     # - Else any NOT_MET => NOT_READY
-    # - Else READY
+    # - Else any unverified fact => PENDING_VERIFICATION; otherwise READY
     if draft_input.not_documented_count > 0:
         return "CANNOT_DETERMINE"
     if draft_input.needs_review_count > 0:
         return "NEEDS_REVIEW"
     if draft_input.not_met_count > 0:
         return "NOT_READY"
+    if any(result.verification.state != "HUMAN_VERIFIED" for result in draft_input.results):
+        return "PENDING_VERIFICATION"
     return "READY"
 
 
@@ -316,6 +318,13 @@ def draft_letter(
             summary = (
                 "Summary:\n"
                 "This letter supports administrative submission readiness based on the documentation present in the record. "
+                "This does not guarantee payer approval.\n"
+            )
+        elif overall == "PENDING_VERIFICATION":
+            summary = (
+                "Summary:\n"
+                "Automated extraction is a drafting aid. Proposed criteria pass, but human verification "
+                "of every fact and its evidence is required before READY. "
                 "This does not guarantee payer approval.\n"
             )
         elif overall == "NOT_READY":

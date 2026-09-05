@@ -1,5 +1,54 @@
 # API
 
+## v1.5 human verification
+
+Automated extraction is a drafting aid. An otherwise all-MET request returns
+`PENDING_VERIFICATION` with `submission_readiness=false`. Every requirement result
+contains its proposed `fact_value`, `verification` (default UNVERIFIED) and
+`verification_fingerprint`. Existing NOT_READY, CANNOT_DETERMINE and NEEDS_REVIEW
+precedence is unchanged. READY requires every fact HUMAN_VERIFIED.
+
+After personally checking a proposal against the original note and requirement,
+repeat `POST /evaluate` with the same request plus this mapping (one record for
+each fact actually verified; use the actual reviewer, time and returned hash):
+
+```json
+{
+  "fact_verifications": {
+    "back_pain_with_radiculopathy": {
+      "state": "HUMAN_VERIFIED",
+      "reviewer": "Reviewer name",
+      "verified_at": "2026-09-04T12:00:00Z",
+      "fingerprint": "<copy this requirement's verification_fingerprint>"
+    }
+  }
+}
+```
+
+The fragment must be merged into a complete PARequest; the placeholder is not a
+valid hash. Review every requirement individually. Omit an attestation or send
+`{"state":"UNVERIFIED"}` to leave/revert that fact unverified. HUMAN_VERIFIED
+requires nonblank identity, a timezone-aware nonfuture timestamp and the matching
+fingerprint. Malformed records return 422; unknown keys or stale/mismatched
+fingerprints return 400. Attestations cannot override proposed values or statuses.
+Changed notes, scope or runtime rule bundles require fresh review. The running
+service rereads rules, provenance and sources; a detected bundle change between
+evaluation start and end fails the request for retry. Filesystem reads are not
+a transactional deployment mechanism; promote bundles while evaluations are idle.
+
+Identity is self-reported in this local prototype. This is not an authenticated
+signature or durable verification ledger. Human verification cannot bypass demo,
+stale or invalid policy/rulebook trust. Unknown monitoring frequencies fail
+freshness checks closed. Captured evidence offsets are original-note Python
+character offsets, not byte/UTF-16 offsets; text equals the source slice, which
+does not prove semantic support.
+
+Streamlit exposes per-fact checkboxes and reviewer entry under **Verify proposed
+facts**. CLI accepts the same PARequest with `evaluate --request-file request.json
+--json`, or a mapping file with `--verifications-file attestations.json` alongside
+`--demo-case`. The cross-surface regression submits identical unverified and
+human-verified requests and compares status, submission readiness and attestations.
+
 The FastAPI layer exposes the current deterministic capabilities of the repo without widening scope.
 
 Run locally:

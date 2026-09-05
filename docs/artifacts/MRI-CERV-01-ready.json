@@ -6,8 +6,8 @@
       "not_met": []
     },
     "evaluation_warnings": [
-      "Policy trust remains DEMO for this procedure. Verify against official policy before real-world use.",
-      "Documentation criteria evaluate to READY, but submission_readiness is false because the active policy and rulebook state is not fully trusted."
+      "Automated extraction is a drafting aid. All proposed facts require human verification before READY.",
+      "Policy trust remains DEMO for this procedure. Verify against official policy before real-world use."
     ],
     "evidence_map": {
       "conservative_therapy_weeks": [
@@ -51,6 +51,32 @@
         }
       ]
     },
+    "fact_verifications": {
+      "conservative_therapy_weeks": {
+        "fingerprint": null,
+        "reviewer": null,
+        "state": "UNVERIFIED",
+        "verified_at": null
+      },
+      "neuro_red_flags_documented": {
+        "fingerprint": null,
+        "reviewer": null,
+        "state": "UNVERIFIED",
+        "verified_at": null
+      },
+      "prior_imaging_result": {
+        "fingerprint": null,
+        "reviewer": null,
+        "state": "UNVERIFIED",
+        "verified_at": null
+      },
+      "symptom_duration_weeks": {
+        "fingerprint": null,
+        "reviewer": null,
+        "state": "UNVERIFIED",
+        "verified_at": null
+      }
+    },
     "facts_extracted": {
       "ahi_documented": null,
       "back_pain_with_radiculopathy": null,
@@ -78,7 +104,7 @@
     },
     "note_hash": "449f7c6ef1838637",
     "note_length": 193,
-    "overall_status": "READY",
+    "overall_status": "PENDING_VERIFICATION",
     "payer": "Aetna",
     "policy_trust_level": "demo",
     "procedure_code": "MRI_CERVICAL",
@@ -190,10 +216,10 @@
       "letter_hash_sha256_16": "__LETTER_HASH_SHA256_16__",
       "letter_type": "submission_cover_letter",
       "letter_version": "1.2",
-      "overall_status": "READY",
+      "overall_status": "PENDING_VERIFICATION",
       "policy_trust_level": "demo"
     },
-    "text": "PRIOR AUTHORIZATION ADMINISTRATIVE READINESS SUMMARY\n\nPayer: Aetna\nProcedure: MRI_CERVICAL\nSite of care: outpatient\nSpecialty: Orthopedics\nGenerated: __TIMESTAMP_UTC__\nDx codes: M54.12\nPolicy trust level: DEMO \u2014 criteria are illustrative only. Verify against the official payer policy before submission.\n\nOverall Status: READY\n\nSummary:\nThe documentation satisfies the configured demonstration criteria, but this is not a submission-ready determination because policy trust is not verified. Verify the criteria against the current official payer policy before use.\n\nRequirements:\n- Conservative therapy duration (weeks) (conservative_therapy_weeks): MET\n  Reason: Documented value: 8.\n  Evidence:\n   - \"PT for 8 weeks\"\n- Neuro red flags explicitly addressed (present or denied) (neuro_red_flags_documented): MET\n  Reason: Explicitly addressed in documentation (present/affirmed).\n  Evidence:\n   - \"Denies weakness\"\n   - \"Denies bowel/bladder changes\"\n- Prior imaging result (prior_imaging_result): MET\n  Reason: Documented: inconclusive.\n  Evidence:\n   - \"inconclusive\"\n- Symptom duration (weeks) (symptom_duration_weeks): MET\n  Reason: Documented value: 8.\n  Evidence:\n   - \"8 weeks\"\nClosing:\nThis letter summarizes documentation-based administrative readiness for prior authorization submission. It does not provide clinical recommendations and does not predict approval outcomes.\n"
+    "text": "PRIOR AUTHORIZATION ADMINISTRATIVE READINESS SUMMARY\n\nPayer: Aetna\nProcedure: MRI_CERVICAL\nSite of care: outpatient\nSpecialty: Orthopedics\nGenerated: __TIMESTAMP_UTC__\nDx codes: M54.12\nPolicy trust level: DEMO \u2014 criteria are illustrative only. Verify against the official payer policy before submission.\n\nOverall Status: PENDING_VERIFICATION\n\nSummary:\nAutomated extraction is a drafting aid. Proposed criteria pass, but human verification of every fact and its evidence is required before READY. This does not guarantee payer approval.\n\nRequirements:\n- Conservative therapy duration (weeks) (conservative_therapy_weeks): MET\n  Reason: Documented value: 8.\n  Evidence:\n   - \"PT for 8 weeks\"\n- Neuro red flags explicitly addressed (present or denied) (neuro_red_flags_documented): MET\n  Reason: Explicitly addressed in documentation (present/affirmed).\n  Evidence:\n   - \"Denies weakness\"\n   - \"Denies bowel/bladder changes\"\n- Prior imaging result (prior_imaging_result): MET\n  Reason: Documented: inconclusive.\n  Evidence:\n   - \"inconclusive\"\n- Symptom duration (weeks) (symptom_duration_weeks): MET\n  Reason: Documented value: 8.\n  Evidence:\n   - \"8 weeks\"\nClosing:\nThis letter summarizes documentation-based administrative readiness for prior authorization submission. It does not provide clinical recommendations and does not predict approval outcomes.\n"
   },
   "metrics": {
     "criteria_met_count": 4,
@@ -205,7 +231,7 @@
     "missing_requirement_count": 0,
     "total_requirements": 4
   },
-  "overall_status": "READY",
+  "overall_status": "PENDING_VERIFICATION",
   "policy_trust_level": "demo",
   "provenance": {
     "accessed_date": null,
@@ -237,8 +263,8 @@
         "not_met": []
       },
       "evaluation_warnings": [
-        "Policy trust remains DEMO for this procedure. Verify against official policy before real-world use.",
-        "Documentation criteria evaluate to READY, but submission_readiness is false because the active policy and rulebook state is not fully trusted."
+        "Automated extraction is a drafting aid. All proposed facts require human verification before READY.",
+        "Policy trust remains DEMO for this procedure. Verify against official policy before real-world use."
       ],
       "evidence_map": {
         "conservative_therapy_weeks": [
@@ -282,6 +308,32 @@
           }
         ]
       },
+      "fact_verifications": {
+        "conservative_therapy_weeks": {
+          "fingerprint": null,
+          "reviewer": null,
+          "state": "UNVERIFIED",
+          "verified_at": null
+        },
+        "neuro_red_flags_documented": {
+          "fingerprint": null,
+          "reviewer": null,
+          "state": "UNVERIFIED",
+          "verified_at": null
+        },
+        "prior_imaging_result": {
+          "fingerprint": null,
+          "reviewer": null,
+          "state": "UNVERIFIED",
+          "verified_at": null
+        },
+        "symptom_duration_weeks": {
+          "fingerprint": null,
+          "reviewer": null,
+          "state": "UNVERIFIED",
+          "verified_at": null
+        }
+      },
       "facts_extracted": {
         "ahi_documented": null,
         "back_pain_with_radiculopathy": null,
@@ -309,7 +361,7 @@
       },
       "note_hash": "449f7c6ef1838637",
       "note_length": 193,
-      "overall_status": "READY",
+      "overall_status": "PENDING_VERIFICATION",
       "payer": "Aetna",
       "policy_trust_level": "demo",
       "procedure_code": "MRI_CERVICAL",
@@ -368,10 +420,18 @@
             "text": "PT for 8 weeks"
           }
         ],
+        "fact_value": 8,
         "key": "conservative_therapy_weeks",
         "label": "Conservative therapy duration (weeks)",
         "reason": "Documented value: 8.",
-        "status": "MET"
+        "status": "MET",
+        "verification": {
+          "fingerprint": null,
+          "reviewer": null,
+          "state": "UNVERIFIED",
+          "verified_at": null
+        },
+        "verification_fingerprint": "0ccb4001c8212679605604b520ff53aedbb2a5aee1e3f544c83741ca7023bbda"
       },
       {
         "evidence": "Weakness, numbness, bowel/bladder changes, or related escalation findings explicitly documented",
@@ -391,10 +451,18 @@
             "text": "Denies bowel/bladder changes"
           }
         ],
+        "fact_value": true,
         "key": "neuro_red_flags_documented",
         "label": "Neuro red flags explicitly addressed (present or denied)",
         "reason": "Explicitly addressed in documentation (present/affirmed).",
-        "status": "MET"
+        "status": "MET",
+        "verification": {
+          "fingerprint": null,
+          "reviewer": null,
+          "state": "UNVERIFIED",
+          "verified_at": null
+        },
+        "verification_fingerprint": "437d2842bb1c0fba87f4e1a1a270db3310e04451fdd73e2da4ef467258a1aa68"
       },
       {
         "evidence": "X-ray/CT results or note of none",
@@ -408,10 +476,18 @@
             "text": "inconclusive"
           }
         ],
+        "fact_value": "inconclusive",
         "key": "prior_imaging_result",
         "label": "Prior imaging result",
         "reason": "Documented: inconclusive.",
-        "status": "MET"
+        "status": "MET",
+        "verification": {
+          "fingerprint": null,
+          "reviewer": null,
+          "state": "UNVERIFIED",
+          "verified_at": null
+        },
+        "verification_fingerprint": "5fa2d20ae1908847f0f07e5439a18036ec5b7c04c518a4c4389f82ed23b96327"
       },
       {
         "evidence": "Duration supports guideline-based escalation",
@@ -425,10 +501,18 @@
             "text": "8 weeks"
           }
         ],
+        "fact_value": 8,
         "key": "symptom_duration_weeks",
         "label": "Symptom duration (weeks)",
         "reason": "Documented value: 8.",
-        "status": "MET"
+        "status": "MET",
+        "verification": {
+          "fingerprint": null,
+          "reviewer": null,
+          "state": "UNVERIFIED",
+          "verified_at": null
+        },
+        "verification_fingerprint": "c918da1f1ce1a7910fd48e72b95298cf08de62b63d622eee09ce449e5c115518"
       }
     ],
     "rule_reasons": []
@@ -437,6 +521,7 @@
     "dx_codes": [
       "M54.12"
     ],
+    "fact_verifications": {},
     "note_text": "sha256:449f7c6ef1838637 [redacted for repository]",
     "payer": "Aetna",
     "procedure_code": "MRI_CERVICAL",
@@ -456,10 +541,18 @@
           "text": "PT for 8 weeks"
         }
       ],
+      "fact_value": 8,
       "key": "conservative_therapy_weeks",
       "label": "Conservative therapy duration (weeks)",
       "reason": "Documented value: 8.",
-      "status": "MET"
+      "status": "MET",
+      "verification": {
+        "fingerprint": null,
+        "reviewer": null,
+        "state": "UNVERIFIED",
+        "verified_at": null
+      },
+      "verification_fingerprint": "0ccb4001c8212679605604b520ff53aedbb2a5aee1e3f544c83741ca7023bbda"
     },
     {
       "evidence": "Weakness, numbness, bowel/bladder changes, or related escalation findings explicitly documented",
@@ -479,10 +572,18 @@
           "text": "Denies bowel/bladder changes"
         }
       ],
+      "fact_value": true,
       "key": "neuro_red_flags_documented",
       "label": "Neuro red flags explicitly addressed (present or denied)",
       "reason": "Explicitly addressed in documentation (present/affirmed).",
-      "status": "MET"
+      "status": "MET",
+      "verification": {
+        "fingerprint": null,
+        "reviewer": null,
+        "state": "UNVERIFIED",
+        "verified_at": null
+      },
+      "verification_fingerprint": "437d2842bb1c0fba87f4e1a1a270db3310e04451fdd73e2da4ef467258a1aa68"
     },
     {
       "evidence": "X-ray/CT results or note of none",
@@ -496,10 +597,18 @@
           "text": "inconclusive"
         }
       ],
+      "fact_value": "inconclusive",
       "key": "prior_imaging_result",
       "label": "Prior imaging result",
       "reason": "Documented: inconclusive.",
-      "status": "MET"
+      "status": "MET",
+      "verification": {
+        "fingerprint": null,
+        "reviewer": null,
+        "state": "UNVERIFIED",
+        "verified_at": null
+      },
+      "verification_fingerprint": "5fa2d20ae1908847f0f07e5439a18036ec5b7c04c518a4c4389f82ed23b96327"
     },
     {
       "evidence": "Duration supports guideline-based escalation",
@@ -513,10 +622,18 @@
           "text": "8 weeks"
         }
       ],
+      "fact_value": 8,
       "key": "symptom_duration_weeks",
       "label": "Symptom duration (weeks)",
       "reason": "Documented value: 8.",
-      "status": "MET"
+      "status": "MET",
+      "verification": {
+        "fingerprint": null,
+        "reviewer": null,
+        "state": "UNVERIFIED",
+        "verified_at": null
+      },
+      "verification_fingerprint": "c918da1f1ce1a7910fd48e72b95298cf08de62b63d622eee09ce449e5c115518"
     }
   ],
   "rule_reasons": [],
@@ -614,7 +731,7 @@
     ]
   },
   "warnings": [
-    "Policy trust remains DEMO for this procedure. Verify against official policy before real-world use.",
-    "Documentation criteria evaluate to READY, but submission_readiness is false because the active policy and rulebook state is not fully trusted."
+    "Automated extraction is a drafting aid. All proposed facts require human verification before READY.",
+    "Policy trust remains DEMO for this procedure. Verify against official policy before real-world use."
   ]
 }

@@ -2,7 +2,7 @@ import pytest
 from pydantic import ValidationError
 
 from engine.letter_draft import draft_letter
-from engine.schemas import LetterDraftInput, LetterRequestMetadata, PARequest, RequirementResult
+from engine.schemas import FactVerification, LetterDraftInput, LetterRequestMetadata, PARequest, RequirementResult
 
 
 def _base_metadata():
@@ -44,7 +44,7 @@ def test_ready_letter():
     )
 
     text, meta = draft_letter(draft_input)
-    assert "Overall Status: READY" in text
+    assert "Overall Status: PENDING_VERIFICATION" in text
     assert "Missing Documentation" not in text
     assert meta["draft_blocked"] is False
 
@@ -61,6 +61,9 @@ def test_demo_trust_ready_letter_does_not_claim_submission_readiness():
                 label="Criterion",
                 status="MET",
                 reason="Documented.",
+                verification=FactVerification(
+                    state="HUMAN_VERIFIED", reviewer="Test reviewer", verified_at="2026-01-01T00:00:00Z", fingerprint="a" * 64
+                ),
             )
         ],
         policy_trust_level="demo",

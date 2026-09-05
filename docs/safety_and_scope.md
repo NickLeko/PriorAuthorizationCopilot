@@ -2,7 +2,13 @@
 
 ## Product Boundary
 
-This repo determines whether a request appears administratively ready under narrow, versioned payer rules.
+Automated extraction is a drafting aid, not a decision gate. The engine applies
+narrow versioned operators to proposed facts and requires human verification of
+every requirement fact before READY. All-MET proposals without those attestations
+return PENDING_VERIFICATION. v1.4.0 over-trusted extraction; known negation,
+temporality and attribution failures remain in v1.5.0. Source spans now guarantee
+exact original-note offsets/text, not semantic support. Self-reported verification
+identity does not establish that a person actually checked the record.
 
 It does not:
 
