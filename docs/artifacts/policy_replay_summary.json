@@ -29,6 +29,7 @@
           "denominator": 14
         }
       },
+      "count_context": "14 hand-authored synthetic cases across 3 synthetic policy versions, constructed to exercise each differential category. Counts demonstrate that the mechanism correctly distinguishes outcome flips, newly-undeterminable cases, unchanged outcomes with changed reasoning, and resolved refusals. They are not an estimate of how often real policy changes produce each outcome.",
       "newly_required_evidence_missing": {
         "count": 0,
         "denominator": 14
@@ -74,6 +75,7 @@
           "denominator": 14
         }
       },
+      "count_context": "14 hand-authored synthetic cases across 3 synthetic policy versions, constructed to exercise each differential category. Counts demonstrate that the mechanism correctly distinguishes outcome flips, newly-undeterminable cases, unchanged outcomes with changed reasoning, and resolved refusals. They are not an estimate of how often real policy changes produce each outcome.",
       "newly_required_evidence_missing": {
         "count": 3,
         "denominator": 14
@@ -119,6 +121,7 @@
           "denominator": 14
         }
       },
+      "count_context": "14 hand-authored synthetic cases across 3 synthetic policy versions, constructed to exercise each differential category. Counts demonstrate that the mechanism correctly distinguishes outcome flips, newly-undeterminable cases, unchanged outcomes with changed reasoning, and resolved refusals. They are not an estimate of how often real policy changes produce each outcome.",
       "newly_required_evidence_missing": {
         "count": 3,
         "denominator": 14
@@ -164,6 +167,7 @@
           "denominator": 14
         }
       },
+      "count_context": "14 hand-authored synthetic cases across 3 synthetic policy versions, constructed to exercise each differential category. Counts demonstrate that the mechanism correctly distinguishes outcome flips, newly-undeterminable cases, unchanged outcomes with changed reasoning, and resolved refusals. They are not an estimate of how often real policy changes produce each outcome.",
       "newly_required_evidence_missing": {
         "count": 0,
         "denominator": 14
@@ -209,6 +213,7 @@
           "denominator": 14
         }
       },
+      "count_context": "14 hand-authored synthetic cases across 3 synthetic policy versions, constructed to exercise each differential category. Counts demonstrate that the mechanism correctly distinguishes outcome flips, newly-undeterminable cases, unchanged outcomes with changed reasoning, and resolved refusals. They are not an estimate of how often real policy changes produce each outcome.",
       "newly_required_evidence_missing": {
         "count": 0,
         "denominator": 14
@@ -254,6 +259,7 @@
           "denominator": 14
         }
       },
+      "count_context": "14 hand-authored synthetic cases across 3 synthetic policy versions, constructed to exercise each differential category. Counts demonstrate that the mechanism correctly distinguishes outcome flips, newly-undeterminable cases, unchanged outcomes with changed reasoning, and resolved refusals. They are not an estimate of how often real policy changes produce each outcome.",
       "newly_required_evidence_missing": {
         "count": 0,
         "denominator": 14
@@ -299,6 +305,7 @@
           "denominator": 14
         }
       },
+      "count_context": "14 hand-authored synthetic cases across 3 synthetic policy versions, constructed to exercise each differential category. Counts demonstrate that the mechanism correctly distinguishes outcome flips, newly-undeterminable cases, unchanged outcomes with changed reasoning, and resolved refusals. They are not an estimate of how often real policy changes produce each outcome.",
       "newly_required_evidence_missing": {
         "count": 1,
         "denominator": 14
@@ -344,6 +351,7 @@
           "denominator": 14
         }
       },
+      "count_context": "14 hand-authored synthetic cases across 3 synthetic policy versions, constructed to exercise each differential category. Counts demonstrate that the mechanism correctly distinguishes outcome flips, newly-undeterminable cases, unchanged outcomes with changed reasoning, and resolved refusals. They are not an estimate of how often real policy changes produce each outcome.",
       "newly_required_evidence_missing": {
         "count": 1,
         "denominator": 14
@@ -389,6 +397,7 @@
           "denominator": 14
         }
       },
+      "count_context": "14 hand-authored synthetic cases across 3 synthetic policy versions, constructed to exercise each differential category. Counts demonstrate that the mechanism correctly distinguishes outcome flips, newly-undeterminable cases, unchanged outcomes with changed reasoning, and resolved refusals. They are not an estimate of how often real policy changes produce each outcome.",
       "newly_required_evidence_missing": {
         "count": 0,
         "denominator": 14
@@ -408,7 +417,8 @@
       "total_decisions": 14
     }
   ],
-  "fixture": "14 synthetic cervical MRI cases; hypothetical policy changes, not actual Aetna revisions.",
+  "count_context": "14 hand-authored synthetic cases across 3 synthetic policy versions, constructed to exercise each differential category. Counts demonstrate that the mechanism correctly distinguishes outcome flips, newly-undeterminable cases, unchanged outcomes with changed reasoning, and resolved refusals. They are not an estimate of how often real policy changes produce each outcome.",
+  "fixture": "14 hand-authored synthetic cervical MRI cases; three synthetic policy versions, not actual Aetna revisions.",
   "historical_decision_count": 42,
   "policy_changes": {
     "v1_to_v2": "Conservative therapy minimum 6 to 8 weeks; neurologic red-flag documentation added.",

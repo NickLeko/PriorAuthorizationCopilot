@@ -46,8 +46,15 @@ def run_demo(output: Path) -> dict:
                     result = service.evaluate(request, policy)
                 store.record(result, f"{policy.version_id}:{case['id']}")
     archive_hash_before = content_hash((output / "history.sqlite").read_bytes().hex())
+    count_context = (
+        f"{len(cases)} hand-authored synthetic cases across {len(policies)} synthetic policy versions, "
+        "constructed to exercise each differential category. Counts demonstrate that the mechanism correctly distinguishes "
+        "outcome flips, newly-undeterminable cases, unchanged outcomes with changed reasoning, and resolved refusals. "
+        "They are not an estimate of how often real policy changes produce each outcome."
+    )
     summary = {
-        "fixture": "14 synthetic cervical MRI cases; hypothetical policy changes, not actual Aetna revisions.",
+        "count_context": count_context,
+        "fixture": "14 hand-authored synthetic cervical MRI cases; three synthetic policy versions, not actual Aetna revisions.",
         "policy_changes": {
             "v1_to_v2": "Conservative therapy minimum 6 to 8 weeks; neurologic red-flag documentation added.",
             "v2_to_v3": "Prior-imaging criterion removed.",
@@ -61,10 +68,12 @@ def run_demo(output: Path) -> dict:
             ids = store.decision_ids(source.policy_id, source.version_id)
             for target in policies:
                 report = replay(store, ids, target)
+                report["count_context"] = count_context
                 filename = f"{source.version_id}-to-{target.version_id}.json"
                 (output / filename).write_text(json.dumps(report, indent=2, sort_keys=True) + "\n")
                 summary["comparisons"].append(
                     {
+                        "count_context": count_context,
                         "source_version": source.version_id,
                         "target_version": target.version_id,
                         **{

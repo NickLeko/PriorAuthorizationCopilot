@@ -111,10 +111,25 @@ Each case belongs to exactly one category:
 | --- | --- |
 | `BECAME_UNDETERMINABLE` | Target requires missing evidence; source was not `CANNOT_DETERMINE`. |
 | `BECAME_REVIEW_REQUIRED` | Target requires ambiguous evidence; source was not `NEEDS_REVIEW`. |
-| `REFUSAL_RESOLVED` | Original refusal becomes evaluable under the target criteria. |
+| `REFUSAL_RESOLVED` | Original `CANNOT_DETERMINE` or `NEEDS_REVIEW` becomes evaluable using the same captured evidence under the target criteria. Relaxing evidence requirements can resolve a refusal; fresh human review is still required and READY is never automatic. |
 | `OUTCOME_CHANGED` | Evaluable criterion outcome flips between `CRITERIA_MET` and `NOT_READY`. |
 | `REASONING_CHANGED` | Criterion outcome stays the same, but criterion definitions or results differ. |
 | `UNCHANGED` | Same criterion outcome, definitions, and results. Verification reset is reported separately. |
+
+Resolved refusal is the mirror image of becoming newly undeterminable: adding
+evidence requirements can make an old case insufficient, while relaxing them can
+make its existing evidence sufficient. It is a separate category from an outcome
+flip between two determinations. The old refusal was correct under the old
+policy; resolving it does not mean the old decision was an error or that missing
+evidence has since been collected.
+
+Operationally, this is a reason to re-run an archive when a policy changes.
+A case correctly refused under an older policy may now be determinable, so
+leaving old refusals untouched can miss cases that warrant another review.
+The replay surfaces the removed or relaxed criterion and the resulting proposal
+for human review. Even when every remaining criterion is met, a resolved refusal
+returns `PENDING_VERIFICATION`, with `human_review_required=true` and
+`submission_readiness=false`; it does not automatically become `READY`.
 
 `criterion_differences` provides added/removed/modified criterion keys, old/new
 definitions, statuses, and reasons. `outcome_driving_criteria` identifies the
@@ -140,7 +155,9 @@ revisions, not actual Aetna changes or coverage guidance:
 | v2 | 2026-04-01 | Therapy tightened to ≥8 weeks; explicit neurologic red-flag documentation added. |
 | v3 | 2026-07-01 | Prior-imaging criterion removed; v2's other criteria retained. |
 
-The 14 synthetic cases include six-/seven-/eight-week therapy, short symptoms,
+The 14 hand-authored synthetic cases were constructed to exercise each
+differential category across three synthetic policy versions. They include
+six-/seven-/eight-week therapy, short symptoms,
 abnormal/unrecognized/missing imaging, missing neurologic documentation, missing
 therapy duration, and conflicting symptom durations. Three cases carry explicitly
 labeled **fabricated historical human-verification fixtures** when all criteria
@@ -152,14 +169,23 @@ Run the full demonstration into a **new** directory:
 .venv/bin/python -m scripts.replay_demo --output-dir /tmp/pa-replay-run
 ```
 
-The command records 14 cases under each of three versions (42 historical
-decisions), then replays every source cohort against every target, including
-same-version controls: **126 comparisons across nine reports**. It writes the
+The command records the same 14 hand-authored synthetic cases under each of
+three synthetic policy versions (42 synthetic historical decisions), then replays
+every source cohort against every target, including same-version controls:
+**126 comparisons across nine reports**. These constructed cases exercise the
+differential categories; the counts demonstrate the mechanism's distinctions,
+not how frequently real policy changes produce each outcome. It writes the
 archive, all nine detailed JSON reports, and `summary.json`. The archive's bytes
 are checked before and after replay. A checked-in summary of the actual run is
 [policy_replay_summary.json](artifacts/policy_replay_summary.json).
 
-Every count below has denominator **14 decisions** for that row:
+Every row below has denominator **14 decisions from the same 14 hand-authored
+synthetic cases**, evaluated across **three synthetic policy versions**. The
+cases were constructed to exercise each differential category. These counts
+demonstrate that the mechanism correctly distinguishes outcome flips,
+newly-undeterminable cases, unchanged outcomes with changed reasoning, and
+resolved refusals. **They are not an estimate of how often real policy changes
+produce each outcome.**
 
 | Replay | Outcome flip | Newly undeterminable | Newly needs review | Refusal resolved | Same outcome, different reasoning | Unchanged |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: |
@@ -173,17 +199,25 @@ Every count below has denominator **14 decisions** for that row:
 | v3 → v2 | 1 | 1 | 1 | 0 | 11 | 0 |
 | v3 → v3 | 0 | 0 | 0 | 0 | 0 | 14 |
 
-For v1 → v2, C01/C02 fail the tightened therapy threshold; C06/C07/C08 lack
+For v1 → v2 in this constructed set of 14 hand-authored synthetic cases,
+C01/C02 fail the tightened therapy threshold; C06/C07/C08 lack
 the newly required neurologic documentation. C07 also fails the new threshold,
 and C08 already failed the old threshold: both correctly become undeterminable.
-All four original refusals remain refusals (4/4).
+All four original refusals remain refusals (4/4). This is a demonstration of
+correct refusal preservation in selected synthetic cases, not a real-world
+frequency estimate.
 
-For v2 → v3, C09's abnormal-imaging failure disappears, C10's missing-imaging
+For v2 → v3 in the same constructed set of 14 hand-authored synthetic cases,
+C09's abnormal-imaging failure disappears, C10's missing-imaging
 refusal resolves, and C12's unrecognized-imaging review requirement disappears.
 All three become `PENDING_VERIFICATION`, never automatically `READY`.
-Five of seven original refusals remain refusals (5/7); the two resolved refusals
-are explained by the removed criterion. Missing therapy and conflicting symptom
-durations continue to refuse across all versions.
+Five of seven original refusals remain refusals (5/7); two cases resolve their
+refusals (2/14 of the synthetic cohort, 2/7 of its original refusals). These counts
+demonstrate the resolved-refusal mechanism, not its prevalence under real policy
+changes. The newer synthetic policy requires less evidence: removing the imaging
+criterion makes the existing case files sufficient for the remaining criteria.
+These cases still require human review and fresh verification. Missing therapy
+and conflicting symptom durations continue to refuse across all versions.
 
 These are fixture counts, not estimates of policy impact in a real population.
 SQLite triggers and hashes protect the supported local workflow and detect
