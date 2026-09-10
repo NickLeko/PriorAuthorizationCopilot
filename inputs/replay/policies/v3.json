@@ -1,0 +1,12 @@
+{
+  "content_hash": "e1f1629bcb2b92f32913d72a562bf272eddf3baefd0316678975198f1b5ce008",
+  "criteria_json": "[{\"allowed\":[],\"evidence\":\"PT/NSAIDs/activity modification trial documented\",\"key\":\"conservative_therapy_weeks\",\"label\":\"Conservative therapy duration (weeks)\",\"min\":8.0,\"operator\":\"minimum\",\"type\":\"number\"},{\"allowed\":[],\"evidence\":\"Duration supports guideline-based escalation\",\"key\":\"symptom_duration_weeks\",\"label\":\"Symptom duration (weeks)\",\"min\":6.0,\"operator\":\"minimum\",\"type\":\"number\"},{\"allowed\":[],\"evidence\":\"Weakness, numbness, bowel/bladder changes, or related escalation findings explicitly documented\",\"key\":\"neuro_red_flags_documented\",\"label\":\"Neuro red flags explicitly addressed (present or denied)\",\"operator\":\"documented\",\"type\":\"boolean\"}]",
+  "effective_date": "2026-07-01",
+  "payer": "Aetna",
+  "policy_id": "synthetic-cervical-mri",
+  "procedure_code": "MRI_CERVICAL",
+  "supported_sites": [
+    "outpatient"
+  ],
+  "version_id": "v3"
+}

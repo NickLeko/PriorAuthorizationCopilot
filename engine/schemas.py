@@ -1,6 +1,8 @@
 from __future__ import annotations
 
-from datetime import datetime, timezone
+import json
+from datetime import date, datetime, timezone
+from hashlib import sha256
 from typing import Any, Dict, List, Literal, Optional
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
@@ -164,6 +166,49 @@ class RequirementDefinition(BaseModel):
             raise ValueError("minimum requirements must define min.")
         if self.operator == "one_of" and not self.allowed:
             raise ValueError("one_of requirements must define allowed values.")
+        return self
+
+
+class PolicyVersion(BaseModel):
+    """Deeply immutable: criteria are canonical JSON, decoded to fresh copies on use."""
+
+    model_config = ConfigDict(extra="forbid", frozen=True)
+
+    policy_id: str
+    version_id: str
+    effective_date: date
+    payer: str
+    procedure_code: str
+    supported_sites: tuple[str, ...]
+    criteria_json: str
+    content_hash: str
+
+    def content(self) -> Dict[str, Any]:
+        return self.model_dump(mode="json", exclude={"content_hash"})
+
+    @property
+    def requirements(self) -> List[Dict[str, Any]]:
+        return json.loads(self.criteria_json)
+
+    @model_validator(mode="after")
+    def _validate_content(self) -> "PolicyVersion":
+        for value in (self.policy_id, self.version_id, self.payer, self.procedure_code):
+            if not value.strip():
+                raise ValueError("Policy identifiers and scope must be non-empty.")
+        if not self.supported_sites or any(not site.strip() for site in self.supported_sites):
+            raise ValueError("Policy supported_sites must be non-empty.")
+        requirements = self.requirements
+        if not isinstance(requirements, list) or not requirements:
+            raise ValueError("Policy must contain criteria.")
+        normalized = [RequirementDefinition.model_validate(item).model_dump(exclude_none=True) for item in requirements]
+        keys = [item["key"] for item in normalized]
+        if any(not key for key in keys) or len(set(keys)) != len(keys):
+            raise ValueError("Criterion keys must be non-empty and unique.")
+        if self.criteria_json != json.dumps(normalized, sort_keys=True, separators=(",", ":"), allow_nan=False):
+            raise ValueError("Criteria must use canonical validated JSON.")
+        digest = sha256(json.dumps(self.content(), sort_keys=True, separators=(",", ":"), allow_nan=False).encode()).hexdigest()
+        if self.content_hash != digest:
+            raise ValueError("Policy content hash mismatch.")
         return self
 
 
@@ -401,6 +446,7 @@ class AuditTrace(BaseModel):
     site_of_care: str
     specialty: str
     rules_version: Optional[str] = None
+    policy_version: PolicyVersion
     rulebook_active_release_id: Optional[str] = None
     policy_trust_level: PolicyTrustLevel
     provenance_snapshot: Dict[str, Any] = Field(default_factory=dict)
@@ -466,6 +512,8 @@ class EvaluationResult(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
     request: PARequest
+    policy_version: PolicyVersion
+    captured_fact_states: Dict[str, Literal["CAPTURED", "MISSING", "NEEDS_REVIEW"]]
     supported_procedure: SupportedProcedure
     overall_status: OverallStatus
     submission_readiness: bool

@@ -203,6 +203,19 @@ Full API notes: [docs/api.md](docs/api.md)
 
 ## CLI
 
+Policy versioning and non-destructive replay extend the frozen v1.5.0 engine.
+Every evaluation now embeds an immutable, dated policy snapshot with a content
+hash. The CLI can archive decisions and replay their captured evidence under a
+different version, separating outcome flips, newly missing evidence, and changed
+reasoning. Replays require fresh human verification and never become READY
+automatically. See [policy versioning and replay](docs/policy_replay.md) for the
+storage contract, CLI commands, and actual results across three synthetic policy
+versions. Run the complete fixture with:
+
+```bash
+.venv/bin/python -m scripts.replay_demo --output-dir /tmp/pa-replay-run
+```
+
 ```bash
 .venv/bin/python cli.py status
 .venv/bin/python cli.py list-procedures

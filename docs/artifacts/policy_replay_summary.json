@@ -1,0 +1,417 @@
+{
+  "archive_unchanged_after_replay": true,
+  "case_count": 14,
+  "comparisons": [
+    {
+      "categories": {
+        "BECAME_REVIEW_REQUIRED": {
+          "count": 0,
+          "denominator": 14
+        },
+        "BECAME_UNDETERMINABLE": {
+          "count": 0,
+          "denominator": 14
+        },
+        "OUTCOME_CHANGED": {
+          "count": 0,
+          "denominator": 14
+        },
+        "REASONING_CHANGED": {
+          "count": 0,
+          "denominator": 14
+        },
+        "REFUSAL_RESOLVED": {
+          "count": 0,
+          "denominator": 14
+        },
+        "UNCHANGED": {
+          "count": 14,
+          "denominator": 14
+        }
+      },
+      "newly_required_evidence_missing": {
+        "count": 0,
+        "denominator": 14
+      },
+      "refusals_preserved": {
+        "count": 4,
+        "denominator": 4
+      },
+      "source_version": "v1",
+      "target_outcomes": {
+        "CANNOT_DETERMINE": 2,
+        "CRITERIA_MET": 6,
+        "NEEDS_REVIEW": 2,
+        "NOT_READY": 4
+      },
+      "target_version": "v1",
+      "total_decisions": 14
+    },
+    {
+      "categories": {
+        "BECAME_REVIEW_REQUIRED": {
+          "count": 0,
+          "denominator": 14
+        },
+        "BECAME_UNDETERMINABLE": {
+          "count": 3,
+          "denominator": 14
+        },
+        "OUTCOME_CHANGED": {
+          "count": 2,
+          "denominator": 14
+        },
+        "REASONING_CHANGED": {
+          "count": 9,
+          "denominator": 14
+        },
+        "REFUSAL_RESOLVED": {
+          "count": 0,
+          "denominator": 14
+        },
+        "UNCHANGED": {
+          "count": 0,
+          "denominator": 14
+        }
+      },
+      "newly_required_evidence_missing": {
+        "count": 3,
+        "denominator": 14
+      },
+      "refusals_preserved": {
+        "count": 4,
+        "denominator": 4
+      },
+      "source_version": "v1",
+      "target_outcomes": {
+        "CANNOT_DETERMINE": 5,
+        "CRITERIA_MET": 2,
+        "NEEDS_REVIEW": 2,
+        "NOT_READY": 5
+      },
+      "target_version": "v2",
+      "total_decisions": 14
+    },
+    {
+      "categories": {
+        "BECAME_REVIEW_REQUIRED": {
+          "count": 0,
+          "denominator": 14
+        },
+        "BECAME_UNDETERMINABLE": {
+          "count": 3,
+          "denominator": 14
+        },
+        "OUTCOME_CHANGED": {
+          "count": 3,
+          "denominator": 14
+        },
+        "REASONING_CHANGED": {
+          "count": 6,
+          "denominator": 14
+        },
+        "REFUSAL_RESOLVED": {
+          "count": 2,
+          "denominator": 14
+        },
+        "UNCHANGED": {
+          "count": 0,
+          "denominator": 14
+        }
+      },
+      "newly_required_evidence_missing": {
+        "count": 3,
+        "denominator": 14
+      },
+      "refusals_preserved": {
+        "count": 2,
+        "denominator": 4
+      },
+      "source_version": "v1",
+      "target_outcomes": {
+        "CANNOT_DETERMINE": 4,
+        "CRITERIA_MET": 5,
+        "NEEDS_REVIEW": 1,
+        "NOT_READY": 4
+      },
+      "target_version": "v3",
+      "total_decisions": 14
+    },
+    {
+      "categories": {
+        "BECAME_REVIEW_REQUIRED": {
+          "count": 0,
+          "denominator": 14
+        },
+        "BECAME_UNDETERMINABLE": {
+          "count": 0,
+          "denominator": 14
+        },
+        "OUTCOME_CHANGED": {
+          "count": 2,
+          "denominator": 14
+        },
+        "REASONING_CHANGED": {
+          "count": 9,
+          "denominator": 14
+        },
+        "REFUSAL_RESOLVED": {
+          "count": 3,
+          "denominator": 14
+        },
+        "UNCHANGED": {
+          "count": 0,
+          "denominator": 14
+        }
+      },
+      "newly_required_evidence_missing": {
+        "count": 0,
+        "denominator": 14
+      },
+      "refusals_preserved": {
+        "count": 4,
+        "denominator": 7
+      },
+      "source_version": "v2",
+      "target_outcomes": {
+        "CANNOT_DETERMINE": 2,
+        "CRITERIA_MET": 6,
+        "NEEDS_REVIEW": 2,
+        "NOT_READY": 4
+      },
+      "target_version": "v1",
+      "total_decisions": 14
+    },
+    {
+      "categories": {
+        "BECAME_REVIEW_REQUIRED": {
+          "count": 0,
+          "denominator": 14
+        },
+        "BECAME_UNDETERMINABLE": {
+          "count": 0,
+          "denominator": 14
+        },
+        "OUTCOME_CHANGED": {
+          "count": 0,
+          "denominator": 14
+        },
+        "REASONING_CHANGED": {
+          "count": 0,
+          "denominator": 14
+        },
+        "REFUSAL_RESOLVED": {
+          "count": 0,
+          "denominator": 14
+        },
+        "UNCHANGED": {
+          "count": 14,
+          "denominator": 14
+        }
+      },
+      "newly_required_evidence_missing": {
+        "count": 0,
+        "denominator": 14
+      },
+      "refusals_preserved": {
+        "count": 7,
+        "denominator": 7
+      },
+      "source_version": "v2",
+      "target_outcomes": {
+        "CANNOT_DETERMINE": 5,
+        "CRITERIA_MET": 2,
+        "NEEDS_REVIEW": 2,
+        "NOT_READY": 5
+      },
+      "target_version": "v2",
+      "total_decisions": 14
+    },
+    {
+      "categories": {
+        "BECAME_REVIEW_REQUIRED": {
+          "count": 0,
+          "denominator": 14
+        },
+        "BECAME_UNDETERMINABLE": {
+          "count": 0,
+          "denominator": 14
+        },
+        "OUTCOME_CHANGED": {
+          "count": 1,
+          "denominator": 14
+        },
+        "REASONING_CHANGED": {
+          "count": 11,
+          "denominator": 14
+        },
+        "REFUSAL_RESOLVED": {
+          "count": 2,
+          "denominator": 14
+        },
+        "UNCHANGED": {
+          "count": 0,
+          "denominator": 14
+        }
+      },
+      "newly_required_evidence_missing": {
+        "count": 0,
+        "denominator": 14
+      },
+      "refusals_preserved": {
+        "count": 5,
+        "denominator": 7
+      },
+      "source_version": "v2",
+      "target_outcomes": {
+        "CANNOT_DETERMINE": 4,
+        "CRITERIA_MET": 5,
+        "NEEDS_REVIEW": 1,
+        "NOT_READY": 4
+      },
+      "target_version": "v3",
+      "total_decisions": 14
+    },
+    {
+      "categories": {
+        "BECAME_REVIEW_REQUIRED": {
+          "count": 1,
+          "denominator": 14
+        },
+        "BECAME_UNDETERMINABLE": {
+          "count": 1,
+          "denominator": 14
+        },
+        "OUTCOME_CHANGED": {
+          "count": 3,
+          "denominator": 14
+        },
+        "REASONING_CHANGED": {
+          "count": 6,
+          "denominator": 14
+        },
+        "REFUSAL_RESOLVED": {
+          "count": 3,
+          "denominator": 14
+        },
+        "UNCHANGED": {
+          "count": 0,
+          "denominator": 14
+        }
+      },
+      "newly_required_evidence_missing": {
+        "count": 1,
+        "denominator": 14
+      },
+      "refusals_preserved": {
+        "count": 2,
+        "denominator": 5
+      },
+      "source_version": "v3",
+      "target_outcomes": {
+        "CANNOT_DETERMINE": 2,
+        "CRITERIA_MET": 6,
+        "NEEDS_REVIEW": 2,
+        "NOT_READY": 4
+      },
+      "target_version": "v1",
+      "total_decisions": 14
+    },
+    {
+      "categories": {
+        "BECAME_REVIEW_REQUIRED": {
+          "count": 1,
+          "denominator": 14
+        },
+        "BECAME_UNDETERMINABLE": {
+          "count": 1,
+          "denominator": 14
+        },
+        "OUTCOME_CHANGED": {
+          "count": 1,
+          "denominator": 14
+        },
+        "REASONING_CHANGED": {
+          "count": 11,
+          "denominator": 14
+        },
+        "REFUSAL_RESOLVED": {
+          "count": 0,
+          "denominator": 14
+        },
+        "UNCHANGED": {
+          "count": 0,
+          "denominator": 14
+        }
+      },
+      "newly_required_evidence_missing": {
+        "count": 1,
+        "denominator": 14
+      },
+      "refusals_preserved": {
+        "count": 5,
+        "denominator": 5
+      },
+      "source_version": "v3",
+      "target_outcomes": {
+        "CANNOT_DETERMINE": 5,
+        "CRITERIA_MET": 2,
+        "NEEDS_REVIEW": 2,
+        "NOT_READY": 5
+      },
+      "target_version": "v2",
+      "total_decisions": 14
+    },
+    {
+      "categories": {
+        "BECAME_REVIEW_REQUIRED": {
+          "count": 0,
+          "denominator": 14
+        },
+        "BECAME_UNDETERMINABLE": {
+          "count": 0,
+          "denominator": 14
+        },
+        "OUTCOME_CHANGED": {
+          "count": 0,
+          "denominator": 14
+        },
+        "REASONING_CHANGED": {
+          "count": 0,
+          "denominator": 14
+        },
+        "REFUSAL_RESOLVED": {
+          "count": 0,
+          "denominator": 14
+        },
+        "UNCHANGED": {
+          "count": 14,
+          "denominator": 14
+        }
+      },
+      "newly_required_evidence_missing": {
+        "count": 0,
+        "denominator": 14
+      },
+      "refusals_preserved": {
+        "count": 5,
+        "denominator": 5
+      },
+      "source_version": "v3",
+      "target_outcomes": {
+        "CANNOT_DETERMINE": 4,
+        "CRITERIA_MET": 5,
+        "NEEDS_REVIEW": 1,
+        "NOT_READY": 4
+      },
+      "target_version": "v3",
+      "total_decisions": 14
+    }
+  ],
+  "fixture": "14 synthetic cervical MRI cases; hypothetical policy changes, not actual Aetna revisions.",
+  "historical_decision_count": 42,
+  "policy_changes": {
+    "v1_to_v2": "Conservative therapy minimum 6 to 8 weeks; neurologic red-flag documentation added.",
+    "v2_to_v3": "Prior-imaging criterion removed."
+  }
+}

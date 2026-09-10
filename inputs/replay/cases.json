@@ -1,0 +1,212 @@
+[
+  {
+    "id": "C01",
+    "description": "Six-week therapy at original threshold",
+    "synthetic_human_verification_fixture": true,
+    "request": {
+      "payer": "Aetna",
+      "procedure_code": "MRI_CERVICAL",
+      "dx_codes": [
+        "M54.2"
+      ],
+      "site_of_care": "outpatient",
+      "specialty": "Orthopedics",
+      "note_text": "Neck pain x 12 weeks. PT for 6 weeks documented. Prior cervical xray normal. Denies weakness. Denies bowel/bladder changes."
+    }
+  },
+  {
+    "id": "C02",
+    "description": "Seven-week therapy below tightened threshold",
+    "synthetic_human_verification_fixture": false,
+    "request": {
+      "payer": "Aetna",
+      "procedure_code": "MRI_CERVICAL",
+      "dx_codes": [
+        "M54.2"
+      ],
+      "site_of_care": "outpatient",
+      "specialty": "Orthopedics",
+      "note_text": "Neck pain x 12 weeks. PT for 7 weeks documented. Prior cervical xray normal. Denies weakness. Denies bowel/bladder changes."
+    }
+  },
+  {
+    "id": "C03",
+    "description": "Eight-week therapy at new threshold",
+    "synthetic_human_verification_fixture": true,
+    "request": {
+      "payer": "Aetna",
+      "procedure_code": "MRI_CERVICAL",
+      "dx_codes": [
+        "M54.2"
+      ],
+      "site_of_care": "outpatient",
+      "specialty": "Orthopedics",
+      "note_text": "Neck pain x 12 weeks. PT for 8 weeks documented. Prior cervical xray normal. Denies weakness. Denies bowel/bladder changes."
+    }
+  },
+  {
+    "id": "C04",
+    "description": "Twelve-week therapy above both thresholds",
+    "synthetic_human_verification_fixture": false,
+    "request": {
+      "payer": "Aetna",
+      "procedure_code": "MRI_CERVICAL",
+      "dx_codes": [
+        "M54.2"
+      ],
+      "site_of_care": "outpatient",
+      "specialty": "Orthopedics",
+      "note_text": "Neck pain x 12 weeks. PT for 12 weeks documented. Prior cervical xray normal. Denies weakness. Denies bowel/bladder changes."
+    }
+  },
+  {
+    "id": "C05",
+    "description": "Four-week therapy fails both thresholds",
+    "synthetic_human_verification_fixture": false,
+    "request": {
+      "payer": "Aetna",
+      "procedure_code": "MRI_CERVICAL",
+      "dx_codes": [
+        "M54.2"
+      ],
+      "site_of_care": "outpatient",
+      "specialty": "Orthopedics",
+      "note_text": "Neck pain x 12 weeks. PT for 4 weeks documented. Prior cervical xray normal. Denies weakness. Denies bowel/bladder changes."
+    }
+  },
+  {
+    "id": "C06",
+    "description": "Neurologic review never captured",
+    "synthetic_human_verification_fixture": true,
+    "request": {
+      "payer": "Aetna",
+      "procedure_code": "MRI_CERVICAL",
+      "dx_codes": [
+        "M54.2"
+      ],
+      "site_of_care": "outpatient",
+      "specialty": "Orthopedics",
+      "note_text": "Neck pain x 12 weeks. PT for 8 weeks documented. Prior cervical xray normal."
+    }
+  },
+  {
+    "id": "C07",
+    "description": "Missing neurologic review and newly insufficient therapy",
+    "synthetic_human_verification_fixture": false,
+    "request": {
+      "payer": "Aetna",
+      "procedure_code": "MRI_CERVICAL",
+      "dx_codes": [
+        "M54.2"
+      ],
+      "site_of_care": "outpatient",
+      "specialty": "Orthopedics",
+      "note_text": "Neck pain x 12 weeks. PT for 6 weeks documented. Prior cervical xray normal."
+    }
+  },
+  {
+    "id": "C08",
+    "description": "Missing neurologic review takes precedence over existing failure",
+    "synthetic_human_verification_fixture": false,
+    "request": {
+      "payer": "Aetna",
+      "procedure_code": "MRI_CERVICAL",
+      "dx_codes": [
+        "M54.2"
+      ],
+      "site_of_care": "outpatient",
+      "specialty": "Orthopedics",
+      "note_text": "Neck pain x 12 weeks. PT for 4 weeks documented. Prior cervical xray normal."
+    }
+  },
+  {
+    "id": "C09",
+    "description": "Abnormal prior imaging fails original enumerated pathway",
+    "synthetic_human_verification_fixture": false,
+    "request": {
+      "payer": "Aetna",
+      "procedure_code": "MRI_CERVICAL",
+      "dx_codes": [
+        "M54.2"
+      ],
+      "site_of_care": "outpatient",
+      "specialty": "Orthopedics",
+      "note_text": "Neck pain x 12 weeks. PT for 8 weeks documented. Prior cervical xray abnormal. Denies weakness. Denies bowel/bladder changes."
+    }
+  },
+  {
+    "id": "C10",
+    "description": "Prior imaging never captured",
+    "synthetic_human_verification_fixture": false,
+    "request": {
+      "payer": "Aetna",
+      "procedure_code": "MRI_CERVICAL",
+      "dx_codes": [
+        "M54.2"
+      ],
+      "site_of_care": "outpatient",
+      "specialty": "Orthopedics",
+      "note_text": "Neck pain x 12 weeks. PT for 8 weeks documented. Denies weakness. Denies bowel/bladder changes."
+    }
+  },
+  {
+    "id": "C11",
+    "description": "Therapy duration never captured",
+    "synthetic_human_verification_fixture": false,
+    "request": {
+      "payer": "Aetna",
+      "procedure_code": "MRI_CERVICAL",
+      "dx_codes": [
+        "M54.2"
+      ],
+      "site_of_care": "outpatient",
+      "specialty": "Orthopedics",
+      "note_text": "Neck pain x 12 weeks. Prior cervical xray normal. Denies weakness. Denies bowel/bladder changes."
+    }
+  },
+  {
+    "id": "C12",
+    "description": "Unrecognized imaging description requires review",
+    "synthetic_human_verification_fixture": false,
+    "request": {
+      "payer": "Aetna",
+      "procedure_code": "MRI_CERVICAL",
+      "dx_codes": [
+        "M54.2"
+      ],
+      "site_of_care": "outpatient",
+      "specialty": "Orthopedics",
+      "note_text": "Neck pain x 12 weeks. PT for 8 weeks documented. Prior cervical xray showed unusual findings. Denies weakness. Denies bowel/bladder changes."
+    }
+  },
+  {
+    "id": "C13",
+    "description": "Conflicting symptom durations require review",
+    "synthetic_human_verification_fixture": false,
+    "request": {
+      "payer": "Aetna",
+      "procedure_code": "MRI_CERVICAL",
+      "dx_codes": [
+        "M54.2"
+      ],
+      "site_of_care": "outpatient",
+      "specialty": "Orthopedics",
+      "note_text": "Neck pain x 12 weeks. Neck pain x 3 weeks. PT for 8 weeks documented. Prior cervical xray normal. Denies weakness. Denies bowel/bladder changes."
+    }
+  },
+  {
+    "id": "C14",
+    "description": "Short symptom duration fails every version",
+    "synthetic_human_verification_fixture": false,
+    "request": {
+      "payer": "Aetna",
+      "procedure_code": "MRI_CERVICAL",
+      "dx_codes": [
+        "M54.2"
+      ],
+      "site_of_care": "outpatient",
+      "specialty": "Orthopedics",
+      "note_text": "Neck pain x 4 weeks. PT for 8 weeks documented. Prior cervical xray normal. Denies weakness. Denies bowel/bladder changes."
+    }
+  }
+]

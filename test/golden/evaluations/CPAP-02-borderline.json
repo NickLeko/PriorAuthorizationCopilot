@@ -87,6 +87,18 @@
     "overall_status": "CANNOT_DETERMINE",
     "payer": "Aetna",
     "policy_trust_level": "demo",
+    "policy_version": {
+      "content_hash": "d640e268da5bc5cff9ba487d9154131c4257cef93b4ffe00d7df82d414040383",
+      "criteria_json": "[{\"allowed\":[],\"evidence\":\"Diagnosis present\",\"key\":\"osa_diagnosis\",\"label\":\"OSA diagnosis documented\",\"operator\":\"equals_true\",\"type\":\"boolean\"},{\"allowed\":[],\"evidence\":\"Date in chart\",\"key\":\"sleep_study_date\",\"label\":\"Sleep study date documented\",\"operator\":\"equals_true\",\"type\":\"boolean\"},{\"allowed\":[],\"evidence\":\"AHI value included\",\"key\":\"ahi_documented\",\"label\":\"AHI/RDI documented\",\"operator\":\"equals_true\",\"type\":\"boolean\"}]",
+      "effective_date": "2026-04-09",
+      "payer": "Aetna",
+      "policy_id": "Aetna:CPAP_DEVICE",
+      "procedure_code": "CPAP_DEVICE",
+      "supported_sites": [
+        "outpatient"
+      ],
+      "version_id": "runtime-1.0-2026-04-09-c1dec378482c682c"
+    },
     "procedure_code": "CPAP_DEVICE",
     "procedure_name": "CPAP Device (HCPCS E0601)",
     "provenance_snapshot": {
@@ -142,6 +154,20 @@
     ],
     "not_met": []
   },
+  "captured_fact_states": {
+    "ahi_documented": "MISSING",
+    "back_pain_with_radiculopathy": "MISSING",
+    "conservative_therapy_weeks": "MISSING",
+    "cpb_0236_conservative_therapy_no_improvement": "MISSING",
+    "cpb_0236_conservative_therapy_weeks": "MISSING",
+    "mechanical_symptoms_documented": "MISSING",
+    "neuro_red_flags_documented": "MISSING",
+    "objective_motor_or_reflex_change_in_root_distribution": "MISSING",
+    "osa_diagnosis": "CAPTURED",
+    "prior_imaging_result": "MISSING",
+    "sleep_study_date": "MISSING",
+    "symptom_duration_weeks": "MISSING"
+  },
   "evidence_map": {
     "ahi_documented": [
       {
@@ -184,6 +210,18 @@
   },
   "overall_status": "CANNOT_DETERMINE",
   "policy_trust_level": "demo",
+  "policy_version": {
+    "content_hash": "d640e268da5bc5cff9ba487d9154131c4257cef93b4ffe00d7df82d414040383",
+    "criteria_json": "[{\"allowed\":[],\"evidence\":\"Diagnosis present\",\"key\":\"osa_diagnosis\",\"label\":\"OSA diagnosis documented\",\"operator\":\"equals_true\",\"type\":\"boolean\"},{\"allowed\":[],\"evidence\":\"Date in chart\",\"key\":\"sleep_study_date\",\"label\":\"Sleep study date documented\",\"operator\":\"equals_true\",\"type\":\"boolean\"},{\"allowed\":[],\"evidence\":\"AHI value included\",\"key\":\"ahi_documented\",\"label\":\"AHI/RDI documented\",\"operator\":\"equals_true\",\"type\":\"boolean\"}]",
+    "effective_date": "2026-04-09",
+    "payer": "Aetna",
+    "policy_id": "Aetna:CPAP_DEVICE",
+    "procedure_code": "CPAP_DEVICE",
+    "supported_sites": [
+      "outpatient"
+    ],
+    "version_id": "runtime-1.0-2026-04-09-c1dec378482c682c"
+  },
   "provenance": {
     "accessed_date": null,
     "content_hash_sha256": null,
@@ -295,6 +333,18 @@
       "overall_status": "CANNOT_DETERMINE",
       "payer": "Aetna",
       "policy_trust_level": "demo",
+      "policy_version": {
+        "content_hash": "d640e268da5bc5cff9ba487d9154131c4257cef93b4ffe00d7df82d414040383",
+        "criteria_json": "[{\"allowed\":[],\"evidence\":\"Diagnosis present\",\"key\":\"osa_diagnosis\",\"label\":\"OSA diagnosis documented\",\"operator\":\"equals_true\",\"type\":\"boolean\"},{\"allowed\":[],\"evidence\":\"Date in chart\",\"key\":\"sleep_study_date\",\"label\":\"Sleep study date documented\",\"operator\":\"equals_true\",\"type\":\"boolean\"},{\"allowed\":[],\"evidence\":\"AHI value included\",\"key\":\"ahi_documented\",\"label\":\"AHI/RDI documented\",\"operator\":\"equals_true\",\"type\":\"boolean\"}]",
+        "effective_date": "2026-04-09",
+        "payer": "Aetna",
+        "policy_id": "Aetna:CPAP_DEVICE",
+        "procedure_code": "CPAP_DEVICE",
+        "supported_sites": [
+          "outpatient"
+        ],
+        "version_id": "runtime-1.0-2026-04-09-c1dec378482c682c"
+      },
       "procedure_code": "CPAP_DEVICE",
       "procedure_name": "CPAP Device (HCPCS E0601)",
       "provenance_snapshot": {

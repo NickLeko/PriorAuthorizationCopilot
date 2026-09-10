@@ -16,6 +16,7 @@ from .evaluate import compute_overall_status, evaluate_requirements, summarize_r
 from .extract import extract_facts
 from .letter_draft import draft_letter
 from .logging_utils import configure_logging, get_logger, log_event
+from .policies import facts_for_policy, runtime_policy
 from .policy_monitor import SnapshotValidationError, load_policy_sources, read_latest_snapshot
 from .provenance import (
     get_provenance_entry,
@@ -40,6 +41,7 @@ from .schemas import (
     LetterRequestMetadata,
     LetterType,
     PARequest,
+    PolicyVersion,
     ProcedureMetadata,
     ProcedureProvenance,
     ReadinessReport,
@@ -308,7 +310,9 @@ class ReadinessService:
             )
         ).hexdigest()
 
-    def evaluate(self, request: PARequest) -> EvaluationResult:
+    def evaluate(self, request: PARequest, policy_version: PolicyVersion | None = None) -> EvaluationResult:
+        if policy_version is not None:
+            policy_version = PolicyVersion.model_validate_json(policy_version.model_dump_json())
         bundle_digest = self._bundle_digest()
         normalized_request = request.model_copy(
             update={
@@ -318,11 +322,24 @@ class ReadinessService:
         )
         warnings = self.validate_request(normalized_request)
         supported = self.get_supported_procedure(normalized_request.payer, normalized_request.procedure_code)
+        runtime_version = runtime_policy(supported, str(self.rules.get("version", "unknown")))
+        selected_policy = policy_version or runtime_version
+        if (selected_policy.payer, selected_policy.procedure_code) != (request.payer, request.procedure_code):
+            raise UnsupportedScopeError("Policy scope does not match the request.")
+        if request.site_of_care not in selected_policy.supported_sites:
+            raise UnsupportedScopeError("Site of care is not supported by the selected policy.")
+        if policy_version is not None:
+            supported = supported.model_copy(
+                update={
+                    "requirements": [RequirementDefinition.model_validate(item) for item in selected_policy.requirements],
+                }
+            )
 
         raw_facts, raw_evidence_map = extract_facts(normalized_request.note_text)
         public_facts = _public_facts(raw_facts)
         requirement_payloads = [requirement.model_dump(exclude_none=True) for requirement in supported.requirements]
-        results, reasons = evaluate_requirements(requirement_payloads, raw_facts, evidence_map=raw_evidence_map)
+        evaluation_facts = facts_for_policy(raw_facts, selected_policy)[0] if policy_version is not None else raw_facts
+        results, reasons = evaluate_requirements(requirement_payloads, evaluation_facts, evidence_map=raw_evidence_map)
         unknown_keys = set(normalized_request.fact_verifications) - {result.key for result in results}
         if unknown_keys:
             raise InvalidRequestError(f"Unknown verification requirements: {sorted(unknown_keys)}")
@@ -336,6 +353,8 @@ class ReadinessService:
                 "status": result.status,
                 "evidence": [span.model_dump() for span in result.evidence_spans],
             }
+            if policy_version is not None:
+                proposal["policy_content_hash"] = selected_policy.content_hash
             result.verification_fingerprint = sha256(json.dumps(proposal, sort_keys=True).encode("utf-8")).hexdigest()
             attestation = normalized_request.fact_verifications.get(result.key)
             if attestation is not None:
@@ -365,6 +384,8 @@ class ReadinessService:
             provenance_entry,
             [requirement.key for requirement in supported.requirements],
         )
+        if selected_policy != runtime_version:
+            policy_trust_level = "demo"
         if policy_trust_level != "verified":
             warnings.append("Policy trust remains DEMO for this procedure. Verify against official policy before real-world use.")
 
@@ -381,6 +402,7 @@ class ReadinessService:
         structured_provenance = supported.provenance.model_dump(mode="json")
 
         audit = AuditTrace(
+            policy_version=selected_policy,
             run_id=str(uuid.uuid4()),
             timestamp_utc=_utc_now_iso(),
             note_hash=_hash_note(normalized_request.note_text),
@@ -418,6 +440,11 @@ class ReadinessService:
         )
 
         result = EvaluationResult(
+            policy_version=selected_policy,
+            captured_fact_states={
+                key: "NEEDS_REVIEW" if value == REVIEW_REQUIRED_FACT else "MISSING" if value is None else "CAPTURED"
+                for key, value in raw_facts.items()
+            },
             request=normalized_request,
             supported_procedure=supported,
             overall_status=overall["overall_status"],

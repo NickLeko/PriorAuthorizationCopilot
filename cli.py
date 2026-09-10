@@ -2,13 +2,16 @@ from __future__ import annotations
 
 import argparse
 import json
+import sqlite3
 import sys
 from pathlib import Path
 from typing import Sequence
 
 from pydantic import ValidationError
 
+from engine.decision_store import DecisionStore
 from engine.demo_cases import expected_overall_status_for_demo_case
+from engine.policies import create_policy
 from engine.rendering import (
     export_evaluation_payload,
     render_cli_evaluation,
@@ -17,7 +20,8 @@ from engine.rendering import (
     render_rulebook_status,
     write_json_artifact,
 )
-from engine.schemas import PARequest
+from engine.replay import replay
+from engine.schemas import PARequest, PolicyVersion
 from engine.service import ReadinessService, ServiceError
 
 
@@ -45,6 +49,10 @@ def build_parser() -> argparse.ArgumentParser:
     evaluation_input.add_argument("--request-file", help="JSON PARequest, including any fact_verifications.")
     evaluate.add_argument("--verifications-file", help="JSON mapping of requirement keys to human attestations.")
     evaluate.add_argument("--json", action="store_true", help="Emit JSON instead of a text summary.")
+    evaluate.add_argument("--store", help="Append this decision and its policy snapshot to a SQLite archive.")
+    evaluate.add_argument("--decision-id", help="Unique archive identity; defaults to the evaluation run ID.")
+    evaluate.add_argument("--policy-id", help="Policy family from policy-list (requires --store and --policy-version).")
+    evaluate.add_argument("--policy-version", help="Explicit archived policy version; does not promote runtime rules.")
 
     export = subparsers.add_parser("export-report", help="Export a stable JSON artifact for one demo case.")
     export.add_argument("--demo-case", required=True, help="Case ID from list-demo-cases.")
@@ -71,15 +79,58 @@ def build_parser() -> argparse.ArgumentParser:
     validate = subparsers.add_parser("validate-demo-case", help="Validate a bundled synthetic input before evaluation.")
     validate.add_argument("--demo-case", required=True, help="Case ID from list-demo-cases.")
 
+    policy_add = subparsers.add_parser("policy-add", help="Register an immutable JSON policy version.")
+    policy_add.add_argument("--store", required=True)
+    policy_add.add_argument("--file", required=True, help="Policy descriptor or hash-validated snapshot JSON.")
+    policy_list = subparsers.add_parser("policy-list", help="List archived policy snapshots.")
+    policy_list.add_argument("--store", required=True)
+    decision_show = subparsers.add_parser("decision-show", help="Read an immutable historical decision.")
+    decision_show.add_argument("--store", required=True)
+    decision_show.add_argument("--decision-id", required=True)
+    replay_command = subparsers.add_parser("replay", help="Replay captured evidence; never changes original decisions.")
+    replay_command.add_argument("--store", required=True)
+    replay_command.add_argument("--policy-id", required=True)
+    replay_command.add_argument("--target-version", required=True)
+    selection = replay_command.add_mutually_exclusive_group()
+    selection.add_argument("--from-version", help="Select all historical decisions under this version.")
+    selection.add_argument("--decision-id", action="append", help="Select a historical decision; repeat for multiple cases.")
+    replay_command.add_argument("--output", help="Create a new JSON report file (existing paths are rejected).")
+
     return parser
 
 
 def main(argv: Sequence[str] | None = None) -> int:
     parser = build_parser()
     args = parser.parse_args(argv)
-    service = ReadinessService()
-
     try:
+        if args.command == "policy-add":
+            payload = json.loads(Path(args.file).read_text(encoding="utf-8"))
+            policy = PolicyVersion.model_validate(payload) if "content_hash" in payload else create_policy(**payload)
+            with DecisionStore(args.store) as store:
+                store.add_policy(policy)
+            print(json.dumps(policy.model_dump(mode="json"), indent=2, sort_keys=True))
+            return 0
+
+        if args.command in {"policy-list", "decision-show", "replay"}:
+            with DecisionStore(args.store, readonly=True) as store:
+                if args.command == "policy-list":
+                    payload = store.list_policies()
+                elif args.command == "decision-show":
+                    payload = store.get_decision(args.decision_id).model_dump(mode="json")
+                else:
+                    target = store.get_policy(args.policy_id, args.target_version)
+                    ids = args.decision_id if args.decision_id is not None else store.decision_ids(args.policy_id, args.from_version)
+                    payload = replay(store, ids, target)
+            serialized = json.dumps(payload, indent=2, sort_keys=True) + "\n"
+            if args.command == "replay" and args.output:
+                with Path(args.output).open("x", encoding="utf-8") as output:
+                    output.write(serialized)
+                print(args.output)
+            else:
+                print(serialized, end="")
+            return 0
+
+        service = ReadinessService()
         if args.command == "status":
             print(json.dumps(service.get_status().model_dump(mode="json"), indent=2, sort_keys=True))
             return 0
@@ -117,6 +168,8 @@ def main(argv: Sequence[str] | None = None) -> int:
             return 0
 
         if args.command == "evaluate":
+            if bool(args.policy_id) != bool(args.policy_version) or ((args.policy_id or args.decision_id) and not args.store):
+                raise ValueError("Policy selection needs --policy-id, --policy-version and --store; --decision-id needs --store.")
             request = (
                 PARequest.model_validate_json(Path(args.request_file).read_text(encoding="utf-8"))
                 if args.request_file
@@ -129,7 +182,14 @@ def main(argv: Sequence[str] | None = None) -> int:
                         "fact_verifications": json.loads(Path(args.verifications_file).read_text(encoding="utf-8")),
                     }
                 )
-            evaluation = service.evaluate(request)
+            selected_policy = None
+            if args.policy_id:
+                with DecisionStore(args.store, readonly=True) as store:
+                    selected_policy = store.get_policy(args.policy_id, args.policy_version)
+            evaluation = service.evaluate(request, policy_version=selected_policy)
+            if args.store:
+                with DecisionStore(args.store) as store:
+                    store.record(evaluation, args.decision_id)
             if args.json:
                 print(json.dumps(export_evaluation_payload(evaluation), indent=2, sort_keys=True))
             else:
@@ -187,7 +247,7 @@ def main(argv: Sequence[str] | None = None) -> int:
                 print("warnings: none")
             return 0
 
-    except (ValidationError, ValueError, OSError) as exc:
+    except (ValidationError, ValueError, OSError, sqlite3.DatabaseError, TypeError) as exc:
         print(str(exc), file=sys.stderr)
         return 2
     except KeyError as exc:

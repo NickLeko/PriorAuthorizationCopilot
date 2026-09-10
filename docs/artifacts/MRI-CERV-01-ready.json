@@ -107,6 +107,18 @@
     "overall_status": "PENDING_VERIFICATION",
     "payer": "Aetna",
     "policy_trust_level": "demo",
+    "policy_version": {
+      "content_hash": "15aa06650a48dda47b185bce7a87ae8737c148ca3e0bbfb4b41e4a4a2c72a5c7",
+      "criteria_json": "[{\"allowed\":[],\"evidence\":\"PT/NSAIDs/activity modification trial documented\",\"key\":\"conservative_therapy_weeks\",\"label\":\"Conservative therapy duration (weeks)\",\"min\":6.0,\"operator\":\"minimum\",\"type\":\"number\"},{\"allowed\":[],\"evidence\":\"Weakness, numbness, bowel/bladder changes, or related escalation findings explicitly documented\",\"key\":\"neuro_red_flags_documented\",\"label\":\"Neuro red flags explicitly addressed (present or denied)\",\"operator\":\"documented\",\"type\":\"boolean\"},{\"allowed\":[\"none\",\"normal\",\"negative\",\"inconclusive\",\"abnormal\"],\"evidence\":\"X-ray/CT results or note of none\",\"key\":\"prior_imaging_result\",\"label\":\"Prior imaging result\",\"operator\":\"one_of\",\"type\":\"enum\"},{\"allowed\":[],\"evidence\":\"Duration supports guideline-based escalation\",\"key\":\"symptom_duration_weeks\",\"label\":\"Symptom duration (weeks)\",\"min\":6.0,\"operator\":\"minimum\",\"type\":\"number\"}]",
+      "effective_date": "2026-04-09",
+      "payer": "Aetna",
+      "policy_id": "Aetna:MRI_CERVICAL",
+      "procedure_code": "MRI_CERVICAL",
+      "supported_sites": [
+        "outpatient"
+      ],
+      "version_id": "runtime-1.0-2026-04-09-ecdaa8d01b979ac6"
+    },
     "procedure_code": "MRI_CERVICAL",
     "procedure_name": "MRI Cervical Spine (no contrast)",
     "provenance_snapshot": {
@@ -149,6 +161,20 @@
     "needs_review": [],
     "not_documented": [],
     "not_met": []
+  },
+  "captured_fact_states": {
+    "ahi_documented": "MISSING",
+    "back_pain_with_radiculopathy": "MISSING",
+    "conservative_therapy_weeks": "CAPTURED",
+    "cpb_0236_conservative_therapy_no_improvement": "CAPTURED",
+    "cpb_0236_conservative_therapy_weeks": "MISSING",
+    "mechanical_symptoms_documented": "MISSING",
+    "neuro_red_flags_documented": "CAPTURED",
+    "objective_motor_or_reflex_change_in_root_distribution": "MISSING",
+    "osa_diagnosis": "MISSING",
+    "prior_imaging_result": "CAPTURED",
+    "sleep_study_date": "MISSING",
+    "symptom_duration_weeks": "CAPTURED"
   },
   "evidence_map": {
     "conservative_therapy_weeks": [
@@ -233,6 +259,18 @@
   },
   "overall_status": "PENDING_VERIFICATION",
   "policy_trust_level": "demo",
+  "policy_version": {
+    "content_hash": "15aa06650a48dda47b185bce7a87ae8737c148ca3e0bbfb4b41e4a4a2c72a5c7",
+    "criteria_json": "[{\"allowed\":[],\"evidence\":\"PT/NSAIDs/activity modification trial documented\",\"key\":\"conservative_therapy_weeks\",\"label\":\"Conservative therapy duration (weeks)\",\"min\":6.0,\"operator\":\"minimum\",\"type\":\"number\"},{\"allowed\":[],\"evidence\":\"Weakness, numbness, bowel/bladder changes, or related escalation findings explicitly documented\",\"key\":\"neuro_red_flags_documented\",\"label\":\"Neuro red flags explicitly addressed (present or denied)\",\"operator\":\"documented\",\"type\":\"boolean\"},{\"allowed\":[\"none\",\"normal\",\"negative\",\"inconclusive\",\"abnormal\"],\"evidence\":\"X-ray/CT results or note of none\",\"key\":\"prior_imaging_result\",\"label\":\"Prior imaging result\",\"operator\":\"one_of\",\"type\":\"enum\"},{\"allowed\":[],\"evidence\":\"Duration supports guideline-based escalation\",\"key\":\"symptom_duration_weeks\",\"label\":\"Symptom duration (weeks)\",\"min\":6.0,\"operator\":\"minimum\",\"type\":\"number\"}]",
+    "effective_date": "2026-04-09",
+    "payer": "Aetna",
+    "policy_id": "Aetna:MRI_CERVICAL",
+    "procedure_code": "MRI_CERVICAL",
+    "supported_sites": [
+      "outpatient"
+    ],
+    "version_id": "runtime-1.0-2026-04-09-ecdaa8d01b979ac6"
+  },
   "provenance": {
     "accessed_date": null,
     "content_hash_sha256": null,
@@ -364,6 +402,18 @@
       "overall_status": "PENDING_VERIFICATION",
       "payer": "Aetna",
       "policy_trust_level": "demo",
+      "policy_version": {
+        "content_hash": "15aa06650a48dda47b185bce7a87ae8737c148ca3e0bbfb4b41e4a4a2c72a5c7",
+        "criteria_json": "[{\"allowed\":[],\"evidence\":\"PT/NSAIDs/activity modification trial documented\",\"key\":\"conservative_therapy_weeks\",\"label\":\"Conservative therapy duration (weeks)\",\"min\":6.0,\"operator\":\"minimum\",\"type\":\"number\"},{\"allowed\":[],\"evidence\":\"Weakness, numbness, bowel/bladder changes, or related escalation findings explicitly documented\",\"key\":\"neuro_red_flags_documented\",\"label\":\"Neuro red flags explicitly addressed (present or denied)\",\"operator\":\"documented\",\"type\":\"boolean\"},{\"allowed\":[\"none\",\"normal\",\"negative\",\"inconclusive\",\"abnormal\"],\"evidence\":\"X-ray/CT results or note of none\",\"key\":\"prior_imaging_result\",\"label\":\"Prior imaging result\",\"operator\":\"one_of\",\"type\":\"enum\"},{\"allowed\":[],\"evidence\":\"Duration supports guideline-based escalation\",\"key\":\"symptom_duration_weeks\",\"label\":\"Symptom duration (weeks)\",\"min\":6.0,\"operator\":\"minimum\",\"type\":\"number\"}]",
+        "effective_date": "2026-04-09",
+        "payer": "Aetna",
+        "policy_id": "Aetna:MRI_CERVICAL",
+        "procedure_code": "MRI_CERVICAL",
+        "supported_sites": [
+          "outpatient"
+        ],
+        "version_id": "runtime-1.0-2026-04-09-ecdaa8d01b979ac6"
+      },
       "procedure_code": "MRI_CERVICAL",
       "procedure_name": "MRI Cervical Spine (no contrast)",
       "provenance_snapshot": {

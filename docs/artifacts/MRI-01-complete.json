@@ -127,6 +127,18 @@
     "overall_status": "PENDING_VERIFICATION",
     "payer": "Aetna",
     "policy_trust_level": "verified",
+    "policy_version": {
+      "content_hash": "be1461a07b8ede0231f6033d0130302e070f49b8d78540a36542d18f2985dcd6",
+      "criteria_json": "[{\"allowed\":[],\"evidence\":\"Back pain and radiculopathy documented together\",\"key\":\"back_pain_with_radiculopathy\",\"label\":\"Persistent back pain with radiculopathy documented\",\"operator\":\"equals_true\",\"type\":\"boolean\"},{\"allowed\":[],\"evidence\":\"Objective motor strength or reflex change documented in a named nerve-root distribution\",\"key\":\"objective_motor_or_reflex_change_in_root_distribution\",\"label\":\"Objective motor or reflex change in a nerve-root distribution\",\"operator\":\"equals_true\",\"type\":\"boolean\"},{\"allowed\":[],\"evidence\":\"At least 6 weeks of CPB 0236 Footnote 1 conservative therapy documented\",\"key\":\"cpb_0236_conservative_therapy_weeks\",\"label\":\"Conservative therapy duration (weeks)\",\"min\":6.0,\"operator\":\"minimum\",\"type\":\"number\"},{\"allowed\":[],\"evidence\":\"Explicit no, minimal, or insufficient improvement after CPB 0236 Footnote 1 conservative therapy\",\"key\":\"cpb_0236_conservative_therapy_no_improvement\",\"label\":\"No improvement after conservative therapy\",\"operator\":\"equals_true\",\"type\":\"boolean\"}]",
+      "effective_date": "2026-08-22",
+      "payer": "Aetna",
+      "policy_id": "Aetna:MRI_LUMBAR",
+      "procedure_code": "MRI_LUMBAR",
+      "supported_sites": [
+        "outpatient"
+      ],
+      "version_id": "runtime-1.0-2026-08-22-6ee790b526750a37"
+    },
     "procedure_code": "MRI_LUMBAR",
     "procedure_name": "MRI Lumbar Spine (no contrast)",
     "provenance_snapshot": {
@@ -174,6 +186,20 @@
     "needs_review": [],
     "not_documented": [],
     "not_met": []
+  },
+  "captured_fact_states": {
+    "ahi_documented": "MISSING",
+    "back_pain_with_radiculopathy": "CAPTURED",
+    "conservative_therapy_weeks": "CAPTURED",
+    "cpb_0236_conservative_therapy_no_improvement": "CAPTURED",
+    "cpb_0236_conservative_therapy_weeks": "CAPTURED",
+    "mechanical_symptoms_documented": "MISSING",
+    "neuro_red_flags_documented": "CAPTURED",
+    "objective_motor_or_reflex_change_in_root_distribution": "CAPTURED",
+    "osa_diagnosis": "MISSING",
+    "prior_imaging_result": "CAPTURED",
+    "sleep_study_date": "MISSING",
+    "symptom_duration_weeks": "CAPTURED"
   },
   "evidence_map": {
     "back_pain_with_radiculopathy": [
@@ -279,6 +305,18 @@
   },
   "overall_status": "PENDING_VERIFICATION",
   "policy_trust_level": "verified",
+  "policy_version": {
+    "content_hash": "be1461a07b8ede0231f6033d0130302e070f49b8d78540a36542d18f2985dcd6",
+    "criteria_json": "[{\"allowed\":[],\"evidence\":\"Back pain and radiculopathy documented together\",\"key\":\"back_pain_with_radiculopathy\",\"label\":\"Persistent back pain with radiculopathy documented\",\"operator\":\"equals_true\",\"type\":\"boolean\"},{\"allowed\":[],\"evidence\":\"Objective motor strength or reflex change documented in a named nerve-root distribution\",\"key\":\"objective_motor_or_reflex_change_in_root_distribution\",\"label\":\"Objective motor or reflex change in a nerve-root distribution\",\"operator\":\"equals_true\",\"type\":\"boolean\"},{\"allowed\":[],\"evidence\":\"At least 6 weeks of CPB 0236 Footnote 1 conservative therapy documented\",\"key\":\"cpb_0236_conservative_therapy_weeks\",\"label\":\"Conservative therapy duration (weeks)\",\"min\":6.0,\"operator\":\"minimum\",\"type\":\"number\"},{\"allowed\":[],\"evidence\":\"Explicit no, minimal, or insufficient improvement after CPB 0236 Footnote 1 conservative therapy\",\"key\":\"cpb_0236_conservative_therapy_no_improvement\",\"label\":\"No improvement after conservative therapy\",\"operator\":\"equals_true\",\"type\":\"boolean\"}]",
+    "effective_date": "2026-08-22",
+    "payer": "Aetna",
+    "policy_id": "Aetna:MRI_LUMBAR",
+    "procedure_code": "MRI_LUMBAR",
+    "supported_sites": [
+      "outpatient"
+    ],
+    "version_id": "runtime-1.0-2026-08-22-6ee790b526750a37"
+  },
   "provenance": {
     "accessed_date": "2026-08-22",
     "content_hash_sha256": "5688a01dea8d5e55d9bb074fb4184f4b0722c89a7a35aacd343bf3444577e622",
@@ -435,6 +473,18 @@
       "overall_status": "PENDING_VERIFICATION",
       "payer": "Aetna",
       "policy_trust_level": "verified",
+      "policy_version": {
+        "content_hash": "be1461a07b8ede0231f6033d0130302e070f49b8d78540a36542d18f2985dcd6",
+        "criteria_json": "[{\"allowed\":[],\"evidence\":\"Back pain and radiculopathy documented together\",\"key\":\"back_pain_with_radiculopathy\",\"label\":\"Persistent back pain with radiculopathy documented\",\"operator\":\"equals_true\",\"type\":\"boolean\"},{\"allowed\":[],\"evidence\":\"Objective motor strength or reflex change documented in a named nerve-root distribution\",\"key\":\"objective_motor_or_reflex_change_in_root_distribution\",\"label\":\"Objective motor or reflex change in a nerve-root distribution\",\"operator\":\"equals_true\",\"type\":\"boolean\"},{\"allowed\":[],\"evidence\":\"At least 6 weeks of CPB 0236 Footnote 1 conservative therapy documented\",\"key\":\"cpb_0236_conservative_therapy_weeks\",\"label\":\"Conservative therapy duration (weeks)\",\"min\":6.0,\"operator\":\"minimum\",\"type\":\"number\"},{\"allowed\":[],\"evidence\":\"Explicit no, minimal, or insufficient improvement after CPB 0236 Footnote 1 conservative therapy\",\"key\":\"cpb_0236_conservative_therapy_no_improvement\",\"label\":\"No improvement after conservative therapy\",\"operator\":\"equals_true\",\"type\":\"boolean\"}]",
+        "effective_date": "2026-08-22",
+        "payer": "Aetna",
+        "policy_id": "Aetna:MRI_LUMBAR",
+        "procedure_code": "MRI_LUMBAR",
+        "supported_sites": [
+          "outpatient"
+        ],
+        "version_id": "runtime-1.0-2026-08-22-6ee790b526750a37"
+      },
       "procedure_code": "MRI_LUMBAR",
       "procedure_name": "MRI Lumbar Spine (no contrast)",
       "provenance_snapshot": {
