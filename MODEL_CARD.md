@@ -11,9 +11,10 @@ Automated extraction is a drafting aid, not a decision gate. v1.4.0's posture ov
 
 - Deterministic administrative readiness review
 - Deterministic write-only letter drafting
+- Sealed policy snapshots on every service evaluation; opt-in CLI SQLite decision archive and non-destructive replay
 - No LLM implementation
 - Verified provenance is limited to the supported Aetna CPB 0236 lumbar-radiculopathy branch; all other pathways remain synthetic/demo
-- All bundled data is synthetic; input is not screened and must not contain real PHI, with screening remaining the operator's responsibility
+- Bundled case data is synthetic; the official policy snapshot and rule provenance are source material; input is not screened and must not contain real PHI, with screening remaining the operator's responsibility
 
 ## Intended Use
 
@@ -45,7 +46,8 @@ Automated extraction is a drafting aid, not a decision gate. v1.4.0's posture ov
 - Each requirement's proposed value, verification state, reviewer/time and proposal fingerprint
 - Blocking issues
 - Deterministic write-only letter draft
-- Audit JSON
+- Audit JSON including the selected policy snapshot
+- CLI replay reports with criterion differences, category counts and denominators; all-met replays are PENDING_VERIFICATION
 
 ## Safety Boundaries
 
@@ -58,7 +60,7 @@ Automated extraction is a drafting aid, not a decision gate. v1.4.0's posture ov
 
 ## Evaluation
 
-The repo includes pytest coverage for extraction, verification, evaluation, drafting, rule loading, and policy-monitor helpers. All bundled evaluation cases are synthetic. The checked-in fixture reports 52/52 exact statuses and 0 false `READY` results among 52 expected non-`READY` cases, including seven `PENDING_VERIFICATION` cases. Zero automated READY is enforced structurally; it is not an extraction-accuracy estimate. The executable contract tests cover every numbered guarantee and published exact example, starting with the known negation failure and its pending outcome.
+The repo includes pytest coverage for extraction, verification, evaluation, drafting, rule loading, policy-monitor helpers, archive immutability, and replay categories. All bundled evaluation cases are synthetic. The checked-in fixture reports 52/52 exact statuses and 0 false `READY` results among 52 expected non-`READY` cases, including seven `PENDING_VERIFICATION` cases. Zero automated READY is enforced structurally; it is not an extraction-accuracy estimate. The executable contract tests cover every numbered guarantee and published exact example, starting with the known negation failure and its pending outcome.
 
 ## Known Limits
 
@@ -70,6 +72,8 @@ The repo includes pytest coverage for extraction, verification, evaluation, draf
 - `MRI_LUMBAR` is monitored for drift; `MRI_CERVICAL`, `MRI_KNEE`, and `CPAP_DEVICE` are supported in rules but not monitored for drift
 - `MRI_LUMBAR` receives `verified` trust only for the implemented Aetna CPB 0236 radiculopathy branch while its scoped source hash and freshness checks remain valid; all other procedures remain `demo`
 - CPB 0236 does not explicitly prescribe a required combination of its listed conservative-therapy modalities; the prototype accepts a qualifying documented modality and does not sum shorter sequential courses without explicit overall duration
+- The local archive retains full synthetic requests and verification records without authentication, encryption, or production retention controls; ordinary UI/API evaluation is not automatically persisted
+- Replay uses captured evidence only, never re-extracts notes, and never carries attestations forward; removed requirements can resolve old refusals without creating READY
 - No production integration
 
 ## Possible Extensions

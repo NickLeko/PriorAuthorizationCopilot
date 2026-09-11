@@ -13,13 +13,13 @@
 Current repo status:
 - deterministic implementation
 - no LLM implementation
-- all bundled data is synthetic; input is not screened and must not contain real PHI, with screening remaining the operator's responsibility
+- bundled case data is synthetic; the official policy snapshot and rule provenance are source material; input is not screened and must not contain real PHI, with screening remaining the operator's responsibility
 
 Automated extraction is a **drafting aid, not a decision gate**. v1.4.0's posture over-trusted extraction. Negated diagnoses returned affirmative facts, contradicting the extraction contract as written. v1.5.0 resolves that contradiction by changing what the engine may assert rather than by making extraction match the contract. The language patterns remain unchanged, including known negation, temporality and attribution errors.
 
-It evaluates whether payer-required administrative criteria are:
-- documented and met (`MET`)
-- documented but not met (`NOT_MET`)
+Requirement results describe the captured proposals:
+- proposed scalar passes the operator (`MET`), without asserting source support
+- proposed scalar fails the operator (`NOT_MET`)
 - not documented (`NOT_DOCUMENTED`)
 - documented but ambiguous, contradictory, uncertain, or not safely evaluable (`NEEDS_REVIEW`)
 
@@ -57,17 +57,17 @@ Invariant violations are surfaced in:
 - Captured spans have original-note character offsets and exact source-slice text, including Unicode case expansion. This guarantees location integrity, not semantic support or complete context.
 - Requirement facts default to `UNVERIFIED`. `HUMAN_VERIFIED` records reviewer/time and is bound to the exact request, rule bundle, proposal and evidence.
 - A reviewer must leave unsupported facts unverified. Verification cannot edit scalars or override missing, ambiguous or failed requirements.
-- Self-reported identity is not authentication. Rubber-stamping or fabricated attestations can still permit false READY; there is no production attestation store.
+- Self-reported identity is not authentication. Rubber-stamping or fabricated attestations can still permit false READY; the CLI archive can retain these records, but is not an authenticated or tamper-resistant production attestation ledger.
 
 ### 2.3 Write-only Letter Guarantee
 Letter drafting:
 - accepts only `LetterDraftInput`, whose typed request metadata has no `note_text` field and rejects extra fields
 - cannot change requirement results or readiness status
 - renders caller-supplied structured reasons without independently validating them against evidence snippets
-- must include non-guarantee framing (“does not guarantee payer approval”)
+- successful templates include non-guarantee framing (“does not guarantee payer approval”); blocked drafts return `DRAFT_BLOCKED` and reasons instead of a complete letter
 
 ### 2.4 Policy Drift Governance Guarantee
-- Policy drift detection for configured monitored sources only triggers **human review**
+- Policy drift detection flags **human review** for configured sources and can downgrade policy trust, blocking submission readiness
 - Rules are never auto-updated
 - Policy meaning is never inferred (no LLM policy interpretation)
 - UI gates evaluation if drift is detected for a monitored source (`REVIEW_REQUIRED` acknowledgement required)
@@ -85,6 +85,7 @@ Letter drafting:
 - Extraction over-reads numbers (e.g., symptom duration misread as PT duration)
 - Regex false positives under noisy notes
 - Rule mapping mismatch vs policy source
+- Incorrect or fabricated human attestations to unsupported proposals
 
 **Mitigations:**
 - v1.5.0 blocks READY on automated extraction alone; every requirement fact needs human verification
@@ -119,7 +120,7 @@ These were failures in the over-extraction direction, which is the direction the
 **Mitigations:**
 - Expand deterministic extraction patterns over time with tests
 - Treat “imaging performed but unclear” as documented `inconclusive`
-- Evidence snippets shown so humans can override with documentation edits
+- Evidence snippets and the original note support review; editing synthetic input creates a new evaluation, not an override of an archived decision. Verification alone cannot correct scalars or clear missingness.
 
 **Residual risk:** Some note styles remain unsupported; that’s acceptable given refusal-first posture.
 
@@ -148,7 +149,7 @@ These were failures in the over-extraction direction, which is the direction the
 
 **Mitigations:**
 - Evidence map stores spans from extraction layer
-- UI shows “No supporting snippet available” (never invents evidence)
+- UI shows “No supporting snippet was captured for this requirement.” when its snippet list is empty
 - Tests validate snippet presence for key pathways
 
 **Residual risk:** Evidence gaps reduce reviewer trust; requires iterative pattern tuning.
@@ -166,8 +167,10 @@ These were failures in the over-extraction direction, which is the direction the
 - Snapshot + hash drift detection
 - Snapshot structure, source identity, timestamp, stored-content hash, and drift-log validation
 - Diff artifact generation
-- Append-only drift log
+- Drift checker appends events to a JSONL file; unlike the SQLite decision archive, this file has no update/delete enforcement
 - UI `REVIEW_REQUIRED` gate
+- sealed policy snapshots and opt-in append-only decision archiving identify the version behind each historical result
+- replay reports policy-change effects without rewriting history or transferring attestations; relaxed requirements may resolve a correct old refusal for fresh review
 
 **Residual risk:** Drift between checks; mitigated by check frequency + governance.
 
@@ -197,7 +200,7 @@ These were failures in the over-extraction direction, which is the direction the
 - Explicit non-goals in README, MODEL_CARD, and safety docs
 - Runtime evaluation records retain the full request, including note text, and runtime exports serialize it; checked-in repository artifacts replace full `note_text` values with a short hash and `[redacted for repository]`
 - Audit and export payloads include the request, note hash, facts, evidence spans, provenance, requirements, blockers, warnings, and metrics
-- “Administrative decision support only” banner in UI
+- scope panel states that the product checks administrative readiness only
 
 ---
 

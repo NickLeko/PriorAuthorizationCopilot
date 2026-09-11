@@ -35,17 +35,23 @@ Tradeoff:
 
 - some engine modules still use dictionary-shaped internals under the service boundary
 
-## 4. FastAPI And CLI Added, No Database Added
+## 4. Shared Surfaces And An Explicit Local Archive
 
 Reason:
 
-- multiple inspectable product surfaces without duplicating decision logic
-- no need for persistence in the current scope
+- UI, API, and CLI share evaluation logic
+- every service evaluation embeds a sealed policy snapshot
+- CLI `evaluate --store` explicitly persists decisions and their policies in an append-only SQLite archive
+- replay reads captured evidence and writes a separate report, preserving historical decisions and refusals
 
 Tradeoff:
 
-- no multi-user state
-- no historical run store
+- ordinary UI/API evaluations are not automatically persisted; archive and replay have no web/API endpoints
+- the archive is a local file, with no multi-user workflow, authenticated reviewer identity, encryption, or production retention controls
+- triggers reject updates, deletes, and replacements; hashes detect corruption, but do not protect against a privileged database/schema rewrite
+- replay requires fresh human verification even when criteria are unchanged or an old refusal resolves
+
+See [policy versioning and replay](docs/policy_replay.md).
 
 ## 5. Governance-Only Drift Monitoring
 
@@ -61,7 +67,8 @@ Tradeoff:
 
 Reason:
 
-- one source of truth across demo, tests, CLI, API, and artifact generation
+- reusable cases in `inputs/synthetic_cases.json` support the UI/API/CLI and ordinary artifacts
+- a separate hand-authored corpus in `inputs/replay/cases.json` exercises policy-change categories; test-specific fixtures also exist
 
 Tradeoff:
 

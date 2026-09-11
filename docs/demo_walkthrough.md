@@ -1,141 +1,79 @@
-# Demo Walkthrough
+# Five-Minute Demo Walkthrough
 
-## Goal
+Demonstrate three decisions in order: distinct evidence outcomes, human verification despite exact citations, and policy-change replay that preserves history. Installation, app startup, and generating the replay fixture happen before the five-minute presentation.
 
-Demonstrate the product boundary, deterministic decision trace, failure behavior, and policy-governance controls.
-
-For clone/install/test/artifact inspection steps, use the shorter reviewer path in [docs/reviewer_guide.md](reviewer_guide.md).
-
-## Setup
+## Prepare Before Starting The Clock
 
 ```bash
 make install PYTHON=python3.12
 make run
 ```
 
-Optional:
-
-```bash
-make api
-.venv/bin/python cli.py list-demo-cases
-```
-
-## Recommended 5-Minute Demo Flow
-
-### 1. Open the Streamlit app
-
-Start with the scope language:
-
-- deterministic
-- bundled synthetic demo data; free-form input is not screened
-- administrative readiness only
-- no clinical judgment
-- no approval prediction
-
-### 2. Show the quality gates
-
-Point out:
-
-- exact-status regression accuracy, false-READY count, and abstention rate
-- policy drift status
-- rulebook governance with reviewed vs active snapshots
-- supported procedure registry with category, rule family, and provenance labels
-
-These checks make regression behavior and governance state visible during a review.
-
-### 3. Run the complete proposal and verify it
-
-Use `MRI-01-complete`.
-
-It initially returns PENDING_VERIFICATION. Open the original note, inspect every
-proposed fact and rule, enter the reviewer name, and check only facts actually
-verified. Recording all four attestations changes this synthetic case to `READY`
-because every operator is `MET` and every requirement fact is `HUMAN_VERIFIED`.
-Policy trust is not a prerequisite for documentation status `READY`. The separate
-`submission_readiness=true` gate additionally requires current verified policy
-provenance, a trusted active rulebook, and no unresolved drift. Documentation can
-remain `READY` while `submission_readiness=false`. Leave an unsupported proposal
-unverified. The prototype records the supplied identity;
-it does not authenticate a reviewer or prove review happened.
-
-Call out:
-
-- evidence mapping
-- requirement-level reasoning
-- audit trace
-- deterministic letter drafting
-
-### 4. Run the documented-but-not-ready case
-
-Use `MRI-08-edge-below-threshold`.
-
-Call out the difference between:
-
-- present but below threshold -> `NOT_READY`
-- missing or unclear -> not this case
-- ambiguous, contradictory, or otherwise unsafe-to-resolve evidence -> `NEEDS_REVIEW`, not a threshold failure
-
-### 5. Run the refusal-first case
-
-Use `CPAP-02-borderline`.
-
-Call out:
-
-- `CANNOT_DETERMINE` is deliberate
-- the system refuses to infer missing documentation
-- this is safer than pretending certainty
-
-### 6. Show the same logic through API or CLI
-
-Example:
+In a second terminal:
 
 ```bash
 .venv/bin/python cli.py evaluate --demo-case CPAP-02-borderline
-curl http://127.0.0.1:8000/supported-procedures
+.venv/bin/python cli.py evaluate --demo-case MRI-08-edge-below-threshold
+.venv/bin/python cli.py evaluate --demo-case MRI-KNEE-05-conflict-deny-then-positive
+.venv/bin/python -m scripts.replay_demo --output-dir /tmp/pa-replay-run
 ```
 
-That makes the artifact feel like a compact internal product instead of a UI-only demo.
+Use a new output directory for each replay run; existing directories are rejected. Keep the three short CLI outputs available. Open `v1-to-v2.json`, `v2-to-v3.json`, and `summary.json` from the generated directory in an editor. Find the case IDs below in advance. In Streamlit, load `MRI-01-complete` and scroll to Results.
 
-### 7. Show the second supported spine MRI pathway
+The replay fixture consists of **14 hand-authored synthetic cases across three synthetic policy versions**, constructed to exercise the differential categories. All counts in the generated reports demonstrate that the mechanism distinguishes outcome flips, newly undeterminable cases, unchanged outcomes with changed reasoning, and resolved refusals. They do not estimate how often real policy changes produce these outcomes. Fabricated historical attestations are labeled as fixture data.
 
-Use `MRI-CERV-01-ready`.
+If setup is unavailable, use the checked-in [ordinary artifacts](artifacts/README.md), [human-verified golden fixture](../test/golden/evaluations/MRI-01-human-verified.json), [replay explanation and case results](policy_replay.md), and [synthetic replay summary](artifacts/policy_replay_summary.json). The summary comes from the same 14 constructed synthetic cases and three synthetic policy versions; its counts are mechanism demonstrations, not prevalence estimates.
 
-Call out:
+## 0:00–1:30 — Different Evidence Problems Need Different Outcomes
 
-- the engine was not rewritten to add it
-- the same deterministic extraction contract was reused
-- the procedure registry now surfaces rule family and provenance metadata
-- procedure-specific behavior remains explicit and testable
+State the scope in one sentence: “This is a synthetic administrative documentation demo; it does not determine medical necessity or predict payer approval.”
 
-### 8. Show the non-spine deterministic expansion
+Show the prepared CLI outputs:
 
-Use `MRI-KNEE-01-ready`.
+| Case | Result | What the reviewer needs to distinguish |
+| --- | --- | --- |
+| `CPAP-02-borderline` | `CANNOT_DETERMINE` | Sleep-study date and numeric AHI/RDI evidence were not captured. Missing evidence must not be treated as a failed threshold. |
+| `MRI-08-edge-below-threshold` | `NOT_READY` | Five captured therapy weeks fail the six-week minimum. The other three lumbar requirements pass. |
+| `MRI-KNEE-05-conflict-deny-then-positive` | `NEEDS_REVIEW` | Denied locking and later reported buckling create conflicting mechanical-symptom evidence requiring interpretation. |
 
-Call out:
+Point out the precedence: missing evidence, then ambiguity, then a failed operator. These are results over captured proposals; the next step is reviewing whether those proposals are supported.
 
-- this is a different clinical domain but still a narrow administrative contract
-- only one new extractor field was added
-- prior imaging is now a documented threshold, not just a missingness check
-- the repo still avoids medical-necessity scoring or approval prediction
+## 1:30–2:45 — Exact Citations Do Not Establish Correct Facts
 
-### 9. Show the governance diff
+Show the prepared `MRI-01-complete` result in Streamlit. All four operators pass, but the result is `PENDING_VERIFICATION`.
 
-Use:
+Open the original synthetic note and inspect each proposed fact and cited source span. Enter the reviewer's name and check only the facts actually verified. Select **Record human verification**. This example becomes `READY` after all four attestations because every operator is `MET` and every requirement fact is `HUMAN_VERIFIED`. Policy trust is not a prerequisite for documentation status `READY`. The separate `submission_readiness=true` gate additionally requires current verified policy provenance, a trusted active rulebook, and no unresolved drift. Documentation can remain `READY` while `submission_readiness=false`.
+
+Explain: “The extractor can produce an affirmative lumbar diagnosis from a negated sentence. Exact offsets only prove where the text came from. A person must check its meaning.” The [executable extraction contract](../EXTRACTION_CONTRACT.md) retains that failure explicitly.
+
+Reviewer identity is self-reported, and the app cannot prove review happened. If source freshness has expired, acknowledge the governance warning for inspection; do not claim that acknowledgement restores trust. The [verified golden fixture](../test/golden/evaluations/MRI-01-human-verified.json) shows the fixed historical example with synthetic attestations.
+
+## 2:45–4:45 — Replay Changed Policy Without Rewriting History
+
+Show the prepared replay reports. These examples use the same 14 hand-authored synthetic cases across three synthetic policy versions; they were constructed to exercise categories, and any displayed counts demonstrate the mechanism rather than real-world prevalence.
+
+In `v1-to-v2.json`, inspect:
+
+- `v1:C01`: `OUTCOME_CHANGED`; therapy minimum changes from six to eight weeks, and the captured six weeks now fail. `outcome_driving_criteria` identifies `conservative_therapy_weeks`.
+- `v1:C06`: `BECAME_UNDETERMINABLE`; the target adds neurologic documentation that was never captured. Replay leaves the gap missing rather than manufacturing a determination.
+- `v1:C03`: `REASONING_CHANGED`; its eight weeks still pass, but the threshold and required criteria differ.
+
+In `v2-to-v3.json`, inspect `v2:C10`: `REFUSAL_RESOLVED`. The old missing-imaging refusal was correct. The new policy removes that requirement, so the same captured evidence can now be evaluated. This is a reason to revisit old refusals instead of leaving them untouched. `v2:C12` similarly resolves an unrecognized-imaging refusal.
+
+Show `human_review_required=true`, `submission_readiness=false`, and `PENDING_VERIFICATION` on the all-met replay. Even a resolved refusal never automatically becomes READY. The original decision and its policy remain intact; the report is a separate artifact.
+
+## 4:45–5:00 — Close On The Boundary
+
+Point to `archive_unchanged_after_replay` in the prepared summary. Explain: “Policy identity makes the old decision explainable; replay shows what changes; fresh human review decides whether the new proposal is supported.”
+
+The summary counts refer only to the 14 constructed synthetic cases across three synthetic policy versions. They demonstrate category distinctions, not policy-change prevalence. The archive is local append-only SQLite, not a production patient-record or authenticated review system.
+
+## Optional Follow-Up After The Five Minutes
+
+Read an original record with the existing CLI:
 
 ```bash
-.venv/bin/python cli.py rulebook-diff --from-release 2026-04-09-reviewed-v0.4 --to-release 2026-08-22-active-v1.0
+.venv/bin/python cli.py decision-show --store /tmp/pa-replay-run/history.sqlite --decision-id v2:C10
 ```
 
-Call out:
-
-- a human can see exactly what changed between reviewed and active rulebooks
-- drift monitoring remains separate from promotion
-- this is a compact governance story without pretending to be a platform
-
-## Good Sound Bites During The Demo
-
-- "This checks administrative readiness, not approval likelihood."
-- "Every proposed fact needs human verification before READY; source citations can still be semantically wrong."
-- "Missing data produces refusal, not fake confidence."
-- "The same deterministic workflow powers the UI, API, CLI, and exported artifacts."
-- "The active release keeps one verified policy branch separate from three synthetic demo pathways, with versioned rules and reproducible acceptance artifacts."
+See [policy versioning and replay](policy_replay.md) for import, archive, selection, and read-only replay commands. `make reviewer-demo` remains the original evaluation/export smoke path; it does not run replay. The [reviewer guide](reviewer_guide.md) covers installation, artifacts, and broader boundaries.

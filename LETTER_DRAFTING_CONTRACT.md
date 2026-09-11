@@ -1,7 +1,8 @@
 # Letter Drafting Contract v1.2
 
 Project: Prior Authorization Readiness Copilot  
-Scope: Write-only letter drafting (no extraction, no evaluation, no state mutation)  
+Scope: Write-only letter drafting (no extraction or criterion re-evaluation; derives a display status from supplied results without mutating them)
+
 Primary goal: Produce payer-facing administrative documentation from supplied request metadata, deterministic outputs, and captured evidence snippets.
 Current repo status: deterministic letter drafting only; no LLM implementation
 
@@ -56,17 +57,17 @@ The standard templates are designed to:
   - `demo`
   - `verified`
 
-### 2.2 Forbidden Inputs
-- raw clinical note text; the typed public drafting boundary has no note field and rejects extra fields
-- external policy text (unless explicitly included as allowed excerpts)
-- model outputs from any upstream LLM extraction
+### 2.2 Input Limits
+- the typed public drafting boundary has no raw-note or policy-document field and rejects extra fields
+- callers must supply structured evaluation results; this repository has no upstream LLM
+- the renderer does not identify the origin of strings in reasons, hints, or snippets. It cannot enforce a general ban on external policy text, raw-note fragments, or model-produced text placed in those accepted fields; configured output checks still apply
 
 ---
 
 ## 3) Outputs (Required)
 
 ### 3.1 Letter Text
-Letter must include:
+Successful letters include the following; `DRAFT_BLOCKED` output contains reasons instead of a complete letter:
 - header: payer, procedure, site, specialty, generated timestamp, dx codes (if any)
 - policy trust line:
   - if `demo`: MUST include DEMO disclaimer line in header
@@ -80,7 +81,7 @@ Letter must include:
   - built from evidence hints where present
 
 ### 3.2 Letter Metadata (Machine-readable)
-Must return metadata including:
+Input-validation blocks report `overall_status=UNKNOWN`; output-language blocks retain the derived status. These are drafting metadata, not additional engine outcomes. Metadata includes:
 - letter_version
 - generated_timestamp_utc
 - overall_status
@@ -97,7 +98,7 @@ Must return metadata including:
 
 ### 4.1 READY
 - Requires all supplied requirement facts HUMAN_VERIFIED as well as all operators MET. The service checks proposal fingerprints before constructing this input; the write-only renderer trusts its supplied structured results.
-- Allowed framing: “administrative submission readiness”
+- Verified policy trust allows “administrative submission readiness” framing; DEMO trust explicitly says the result is not a submission-ready determination. The renderer does not independently check runtime governance.
 - Must NOT imply approval or clinical appropriateness
 
 ### 4.1a PENDING_VERIFICATION
@@ -133,7 +134,7 @@ After composing a draft, the implementation performs a case-insensitive substrin
 - “hx”
 - “history”
 - “treatment”
-- “medically necessary” (unless explicitly sanctioned by policy module; default: prohibited)
+- “medically necessary” (no policy-module exemption is implemented; the same `Dx codes:` line exclusion described above applies)
 - “meets medical necessity”
 - “medical necessity determination”
 - “recommended”
@@ -149,7 +150,7 @@ After composing a draft, the implementation performs a case-insensitive substrin
 - “guaranteed approval”
 - “authorization approved”
 - “payer will authorize”
-- “clinically indicated” (default: prohibited)
+- “clinically indicated”
 - dosing patterns consisting of a number adjacent to `mg`, `mcg`, `g`, `mL`, `units`, `IU`, `tablets`, or `capsules`, or the frequency forms `daily`, `BID`, `TID`, `QID`, `q#h`, `every N hours`, or `N times per day`
 
 Administrative references to already supplied Dx codes or requirement labels such as "diagnosis documented" are allowed when they are copied from request fields, rule labels, or evidence snippets.
@@ -179,6 +180,8 @@ If any of the following are true, letter generation must return `DRAFT_BLOCKED`:
 - empty requirements list
 - requirement results contain invalid statuses
 - result counts do not match computed totals from results list
+- a requirement reason is blank
+- the composed draft matches a configured prohibited phrase or dosing pattern
 
 ---
 

@@ -27,7 +27,7 @@ inserts. A decision includes its original request, captured facts, evidence span
 verification records, requirement results, policy snapshot, and audit trace. Its
 SHA-256 hash binds the decision ID and the serialized evaluation. Reads validate
 both decision and policy hashes. Replays open SQLite in read-only mode and return
-new reports. CLI report output uses exclusive creation and cannot overwrite an
+new reports. CLI `replay --output` uses exclusive creation and cannot overwrite an
 existing decision export, database, or report.
 
 Persistent recording is explicit through `evaluate --store`; ordinary UI/API/CLI

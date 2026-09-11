@@ -1,20 +1,32 @@
 # Prior Authorization Readiness Copilot
 
-Prior authorization often fails before medical necessity is even evaluated: missing documentation, unclear payer requirements, policy variation, rule drift, and handoff gaps between provider and payer teams.
+This self-directed prototype demonstrates deterministic prior-authorization documentation review, human verification, and policy-change replay. It uses synthetic cases and narrow rules; it does not authorize care or predict payer approval.
 
-This project is a deterministic drafting and human-verification workflow for prior-authorization documentation against versioned payer rules. It returns `PENDING_VERIFICATION`, `READY`, `NOT_READY`, `CANNOT_DETERMINE`, or `NEEDS_REVIEW`, with source spans and audit artifacts.
+## Three Design Decisions
 
-**v1.5.0: automated extraction is a drafting aid, not a decision gate.** v1.4.0's posture over-trusted extraction. Negated diagnoses such as “Patient does not have low back pain with radiculopathy” returned affirmative facts, contradicting the extraction contract as written. Resolved findings and unrelated therapy can still produce incorrect proposals. v1.5.0 resolves the contradiction by changing what the engine may assert rather than by making extraction match that contract: READY now requires explicit human verification of every requirement-level fact. The language extraction logic is unchanged.
+### 1. Missing evidence, failed criteria, and ambiguity need different outcomes
 
-Evidence offsets now refer to the original note, and each span's text equals that exact source slice, including Unicode. This guarantees source-location integrity, not semantic support, correct attribution or complete context. Human reviewers must check the original note and decline unsupported proposals. The existing design did contain one audited case: a borrowed sleep-study date yielded READY documentation status but `submission_readiness=false` under demo policy trust, as this README already allowed.
+A missing sleep-study date requires more documentation (`CANNOT_DETERMINE`). A captured duration below a rule's minimum fails that criterion (`NOT_READY`). Conflicting or unrecognized captured evidence requires interpretation (`NEEDS_REVIEW`). Combining them would hide what a reviewer needs to do next. Missing evidence takes precedence over ambiguity, which takes precedence over a failed criterion.
 
-Its central design is an inspectable `source span → proposed fact → rule/operator → requirement result → human verification → overall status` trace. One `Aetna:MRI_LUMBAR` pathway demonstrates verified official-policy provenance; the cervical MRI, knee MRI, and CPAP pathways remain synthetic demos.
+### 2. Plausible extraction and exact citations still require human verification
 
-It is a self-directed prototype, not a production payer integration or clinical decision system. The goal is to show how prior-auth workflows can be made more reviewable, auditable, and implementation-aware.
+Automated extraction is a drafting aid, not a decision gate. Regex proposals can misread negation, resolved findings, or unrelated evidence even when their citations exactly match the original note. All passing operators therefore produce `PENDING_VERIFICATION` until every requirement fact is explicitly `HUMAN_VERIFIED`. Only then can the result become `READY`; policy trust independently controls submission readiness.
 
-![Prior Authorization Readiness Copilot showing a CANNOT_DETERMINE result with explicit missing-documentation blockers](assets/readme/prior-auth-readiness-demo.jpg)
+The trace is `source span → proposed fact → rule/operator → requirement result → human verification → overall status`. Reviewer identity is self-reported. See the [extraction and verification contract](EXTRACTION_CONTRACT.md) for executable examples of known errors and the [v1.5.0 release](docs/releases/v1.5.0.md) for why the gate changed while language extraction remained unchanged.
 
-_Synthetic CPAP demo case. The workflow refuses to infer a missing sleep-study date or AHI/RDI value and surfaces both documentation gaps for review._
+### 3. Policy changes require replay without rewriting history
+
+Every service evaluation records an immutable policy snapshot with an identifier, effective date, and content hash. Here, “immutable” policy snapshots and rule releases mean content-hashed, version-fixed records, not enforced tamper resistance. For legacy runtime rules, the date is the local rule-update date, not a claimed payer effective date. The CLI can explicitly archive decisions in append-only SQLite and replay their captured evidence under another version. A report distinguishes outcome flips, newly undeterminable or review-required cases, unchanged outcomes with changed reasoning, resolved refusals, and unchanged cases.
+
+A correctly refused case can become determinable when a new policy removes an evidence requirement. That is a reason to revisit an archive; it does not make the original refusal wrong. Replay never overwrites the original decision, invents missing evidence, or transfers human attestations. All-met replays remain `PENDING_VERIFICATION` and require fresh human review.
+
+Read the [policy versioning and replay contract](docs/policy_replay.md), inspect the [synthetic replay summary](docs/artifacts/policy_replay_summary.json), or follow the [five-minute walkthrough](docs/demo_walkthrough.md). Its 14 hand-authored synthetic cases across three synthetic policy versions were constructed to exercise the differential categories; their counts demonstrate the mechanism, not the prevalence of real policy-change outcomes.
+
+One `Aetna:MRI_LUMBAR` pathway demonstrates official-policy provenance for a limited CPB 0236 branch. Cervical MRI, knee MRI, CPAP, and the replay policy revisions remain synthetic demonstrations. This is a portfolio artifact, not a production payer integration or clinical decision system.
+
+![Prior Authorization Readiness Copilot showing a CANNOT_DETERMINE result with explicit missing-documentation blockers](assets/readme/prior-auth-readiness-demo.png)
+
+_Current app, captured September 11, 2026: synthetic CPAP case `CPAP-02-borderline`, with the 52-case regression suite and explicit missing-documentation refusal. These fixture checks do not estimate extraction accuracy on clinical notes._
 
 ## Read This First
 
@@ -24,7 +36,7 @@ This is a synthetic workflow-readiness demo, not a payer or clinical deployment.
 - Outputs are administrative readiness signals under narrow versioned rules. One lumbar-MRI pathway is mapped to an official Aetna policy; the remaining pathways are synthetic demonstrations.
 - `READY` means every requirement's proposed fact is `HUMAN_VERIFIED` and every operator is `MET`. It is never an authorization or medical-necessity determination.
 - `PENDING_VERIFICATION` means every operator is `MET`, but at least one fact is `UNVERIFIED`; submission readiness is always false. `MET` alone is a result over a proposed scalar, not proof of source support.
-- `NOT_READY` means required documentation was found and evaluable, but failed a threshold.
+- `NOT_READY` means captured evidence is evaluable, but fails a configured operator (a minimum, allowed category, or required affirmation).
 - `CANNOT_DETERMINE` means required documentation is missing or not explicit enough.
 - `NEEDS_REVIEW` means documentation was found but at least one result was ambiguous, contradictory, or not safely evaluable; it is not an adjudicated threshold failure.
 - `submission_readiness=true` additionally requires current verified policy provenance, a trusted active rulebook, and no unresolved drift. A documentation result may remain `READY` while submission readiness is false.
@@ -49,7 +61,13 @@ The `make reviewer-demo` target runs a deterministic local path through:
 - one refusal-first missing-information case: `CPAP-02-borderline`
 - one exported JSON artifact at `/tmp/pa-copilot-reviewer-demo.json`
 
-Then inspect the checked-in sample artifacts:
+The target does not run replay. Continue with the separate replay demonstration (the output directory must not already exist):
+
+```bash
+.venv/bin/python -m scripts.replay_demo --output-dir /tmp/pa-replay-run
+```
+
+This generates an archive and reports for 14 hand-authored synthetic cases across three synthetic policy versions, constructed to distinguish the differential categories, not estimate real-world prevalence. For a no-setup review, use the [five-minute walkthrough](docs/demo_walkthrough.md) and checked-in artifacts:
 
 - [docs/artifacts/MRI-01-complete.json](docs/artifacts/MRI-01-complete.json)
 - [docs/artifacts/MRI-08-edge-below-threshold.json](docs/artifacts/MRI-08-edge-below-threshold.json)
@@ -59,11 +77,12 @@ For a guided review of inputs, evidence mapping, missing-information flags, outp
 
 ## What This Repo Does
 
-- extracts a narrow set of required facts from demo note text using deterministic rules
+- proposes a narrow set of facts from demo note text using deterministic patterns
 - evaluates those facts against versioned payer requirements
 - returns requirement-level reasoning, blocker summaries, evidence mapping, and audit trace data
 - exposes the same workflow through Streamlit, FastAPI, and a CLI
-- monitors configured policy sources for drift without auto-changing rules or outcomes
+- monitors configured sources for drift without rewriting criteria; stale or invalid governance can lower policy trust and block submission readiness
+- embeds policy snapshots in every service evaluation; explicitly archives and replays decisions through the CLI
 
 ## What This Repo Does Not Do
 
@@ -88,9 +107,8 @@ At a high level:
    - otherwise any `NOT_MET` requirement forces `NOT_READY`
    - all `MET` requirements with any unverified fact return `PENDING_VERIFICATION`
    - only all `MET` requirements with all facts `HUMAN_VERIFIED` return `READY`
-5. `engine/service.py` assembles blockers, facts, evidence maps, provenance, warnings, audit trace data, and standard output payloads.
-
-Here, “immutable” policy snapshots and rule releases mean content-hashed, version-fixed records, not enforced tamper resistance.
+5. `engine/service.py` assembles blockers, proposed facts, evidence maps, provenance, warnings, a sealed policy snapshot, audit trace data, and standard output payloads.
+6. `evaluate --store` appends the result to a local archive. `replay` evaluates captured facts against an explicit target snapshot and produces a separate report; ordinary UI/API evaluations are not automatically archived.
 
 The engine records human attestations; it cannot prove a person reviewed the note. Reviewer identity is self-reported, with no authentication or tamper-resistant attestation store. A real workflow would still require policy interpretation, chart review, escalation handling, final submission decisions, PHI controls, auth, audit operations, and payer integration layers.
 
@@ -106,7 +124,7 @@ This problem is intentionally narrow. Deterministic logic is the right backbone 
 - safe to refuse when documentation is missing
 - testable with synthetic fixtures and regression cases
 - payer-qualified in rule identity and procedure-scoped in policy trust
-- versioned through immutable rule releases with policy provenance and drift signals
+- versioned through sealed policy snapshots and a file-based rulebook release convention with provenance and drift signals
 - reproducible through adversarial extraction tests and generated artifacts
 
 `CANNOT_DETERMINE` is a feature here, not a failure mode.
@@ -138,6 +156,9 @@ Bundled inputs remain synthetic; free-form input is not screened and must not co
 - `engine/service.py`: shared orchestration for UI, API, CLI, and artifacts
 - `engine/policy_monitor.py`: governance-only drift detection and snapshot handling
 - `engine/rulebook.py`: versioned rulebook validation and diffing
+- `engine/policies.py`: canonical policy snapshots and captured-fact type compatibility
+- `engine/decision_store.py`: append-only local SQLite archive
+- `engine/replay.py`: non-destructive comparison using archived evidence
 - `engine/acceptance.py`: golden-output normalization for acceptance checks
 - `app.py`: Streamlit operator demo
 - `api.py`: FastAPI surface
@@ -205,18 +226,7 @@ Full API notes: [docs/api.md](docs/api.md)
 
 ## CLI
 
-Policy versioning and non-destructive replay extend the frozen v1.5.0 engine.
-Every evaluation now embeds an immutable, dated policy snapshot with a content
-hash. The CLI can archive decisions and replay their captured evidence under a
-different version, separating outcome flips, newly missing evidence, and changed
-reasoning. Replays require fresh human verification and never become READY
-automatically. See [policy versioning and replay](docs/policy_replay.md) for the
-storage contract, CLI commands, and actual results across three synthetic policy
-versions. Run the complete fixture with:
-
-```bash
-.venv/bin/python -m scripts.replay_demo --output-dir /tmp/pa-replay-run
-```
+Evaluation and export commands below share the service used by the UI/API. Archiving, explicit policy selection, and replay are CLI capabilities; see [policy versioning and replay](docs/policy_replay.md) for commands. The archive is an opt-in local SQLite file containing full requests, proposed facts, verification records, policy snapshots, and results. It has no authenticated reviewer ledger, multi-user workflow, encryption, or production retention controls. SQLite triggers prevent supported updates/deletes/replacements, and hashes detect corruption; a privileged filesystem owner can rewrite the database and schema.
 
 ```bash
 .venv/bin/python cli.py status
@@ -251,8 +261,9 @@ See [docs/artifacts/README.md](docs/artifacts/README.md) for how to inspect thes
 - [rulebook_diff_reviewed_vs_active.md](docs/artifacts/rulebook_diff_reviewed_vs_active.md)
 - [status.json](docs/artifacts/status.json)
 - [safety_metrics.json](docs/artifacts/safety_metrics.json)
+- [policy_replay_summary.json](docs/artifacts/policy_replay_summary.json): separate replay generator, 14 constructed synthetic cases across three synthetic policy versions; category counts demonstrate distinctions, not real-world prevalence
 
-Regenerate demo artifacts with:
+Regenerate ordinary evaluation and governance artifacts with (the replay summary is produced separately by `scripts.replay_demo`):
 
 ```bash
 .venv/bin/python -m scripts.generate_artifacts
@@ -266,6 +277,7 @@ Regenerate golden acceptance snapshots with:
 
 ## Key Docs
 
+- [docs/policy_replay.md](docs/policy_replay.md)
 - [docs/architecture.md](docs/architecture.md)
 - [docs/api.md](docs/api.md)
 - [docs/demo_walkthrough.md](docs/demo_walkthrough.md)

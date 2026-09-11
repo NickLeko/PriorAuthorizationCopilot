@@ -8,6 +8,8 @@ Prior Authorization Readiness Copilot is a local administrative prior-authorizat
 
 It checks whether narrow documentation requirements are present and threshold-compliant for a small set of versioned rules. The Aetna `MRI_LUMBAR` path demonstrates one clause-level mapping to official [CPB 0236](https://www.aetna.com/cpb/medical/data/200_299/0236.html), _Magnetic Resonance Imaging (MRI) and Computed Tomography (CT) of the Spine_; the source was last reviewed April 9, 2026 and accessed August 22, 2026. Every other pathway remains synthetic/demo. It does not authorize care, predict approval or denial, determine medical necessity, provide medical advice, submit anything to a payer, or integrate with real payer systems. Free-form input text is not screened for PHI, so do not submit real patient information.
 
+The review follows three decisions: distinguish missing, failed, and ambiguous evidence; require human verification even with exact citations; then replay changed policy against captured evidence without rewriting history. See the [five-minute walkthrough](demo_walkthrough.md).
+
 ## Quick Reviewer Path
 
 From a fresh clone, enter the repo and run:
@@ -23,6 +25,14 @@ What this runs:
 - `make install PYTHON=python3.12`: creates `.venv` and installs pinned local dependencies.
 - `make reviewer-demo`: prints repo status, lists demo cases, evaluates three representative cases, and exports one missing-information artifact to `/tmp/pa-copilot-reviewer-demo.json`.
 - `make acceptance`: checks stable golden snapshots for representative evaluation and governance outputs.
+
+`make reviewer-demo` does not include replay. Continue with:
+
+```bash
+.venv/bin/python -m scripts.replay_demo --output-dir /tmp/pa-replay-run
+```
+
+Use a new output directory. The 14 hand-authored synthetic cases across three synthetic policy versions were constructed to exercise each differential category; their counts demonstrate distinctions, not real-world prevalence. Inspect [the replay contract and results](policy_replay.md), including resolved refusals that still need fresh human review.
 
 For full local verification, run:
 
@@ -43,11 +53,11 @@ The evaluation input is a `PARequest` with:
 
 The bundled examples live in `inputs/synthetic_cases.json`. The request schema lives in `engine/schemas.py`.
 
-The bundled examples are synthetic, but free-form note text is not screened; do not submit real patient information. Core evaluation is fully offline and has no patient database or payer submission channel. The optional drift-monitoring feature performs live HTTP fetches against configured payer URLs.
+The bundled examples are synthetic, but free-form note text is not screened; do not submit real patient information. Core evaluation is offline and has no payer submission channel. An opt-in CLI SQLite archive stores full synthetic requests and decision history; ordinary UI/API evaluations are not automatically saved. It has no production patient-record, access-control, encryption, or retention features. The optional drift-monitoring feature performs live HTTP fetches against configured payer URLs.
 
 ## What Evidence Does It Map?
 
-`engine/extract.py` maps only the supported fact fields needed by the current rulebook:
+`engine/extract.py` proposes the supported fact fields below, including fields not required by the selected pathway:
 
 - conservative therapy duration in weeks
 - CPB 0236 qualifying conservative-therapy duration and explicit non-response
@@ -73,8 +83,8 @@ The rulebook in `rules/payer_rules.yaml` defines required fields and thresholds 
 
 Requirement statuses mean:
 
-- `MET`: the required field was documented and met the configured-rule threshold.
-- `NOT_MET`: the field was documented but failed a threshold, such as 5 weeks documented where 6 weeks are required.
+- `MET`: the operator passes on the proposed scalar; this does not prove the original note supports it.
+- `NOT_MET`: a captured scalar fails an operator, such as a proposed duration of 5 weeks where 6 are required; the proposal still needs source review.
 - `NOT_DOCUMENTED`: the field was missing or not explicit enough for deterministic extraction.
 - `NEEDS_REVIEW`: the field was documented, but its value was ambiguous, contradictory, uncertain, or could not be evaluated safely; this is not a threshold failure.
 
@@ -103,6 +113,7 @@ The output is an administrative readiness artifact for a synthetic demo case. In
 - `blockers`
 - `facts`
 - `evidence_map`
+- `policy_version` and `captured_fact_states`
 - `audit_trail`
 - optional `letter`
 
@@ -112,7 +123,7 @@ Checked-in examples are in `docs/artifacts`:
 - `docs/artifacts/MRI-08-edge-below-threshold.json`
 - `docs/artifacts/CPAP-02-borderline.json`
 
-`audit_trail` contains rule version, active rulebook release, note hash, facts extracted, evidence map, requirements checked, blockers, warnings, and invariant errors. Volatile values are normalized in checked-in artifacts so diffs stay reviewable.
+`audit_trail` contains the sealed policy snapshot, rule version, active rulebook release, note hash, facts extracted, evidence map, requirements checked, blockers, warnings, and invariant errors. Volatile values are normalized in checked-in artifacts so diffs stay reviewable.
 
 ## What Does The Output Not Mean?
 
@@ -164,7 +175,7 @@ Documented-but-insufficient behavior appears as `NOT_READY`.
 
 Example:
 
-- `MRI-08-edge-below-threshold` documents symptom and therapy duration, but both are below threshold.
+- `MRI-08-edge-below-threshold` captures five weeks of qualifying conservative therapy against the six-week minimum. Its other three lumbar criteria pass; symptom duration is not a requirement of this branch.
 
 Letter drafting receives a dedicated structured input containing no raw note field: request metadata, requirement results, evidence snippets, hints, counts, and policy trust. Supplied result reasons are rendered as structured evaluation output and are not independently fact-checked; the draft applies an enumerated, case-insensitive phrase check plus configured dosing-pattern checks. Diagnosis-code sanitation is minimal: trim, uppercase, and removal of spaces and `%` only.
 
@@ -180,7 +191,8 @@ Determinism and auditability are tied to concrete repo files:
 - `engine/acceptance.py`: output normalization for stable golden snapshots.
 - `test/golden`: representative expected evaluation and governance outputs.
 - `test/test_acceptance_snapshots.py`: exact snapshot regression checks.
-- `docs/artifacts`: checked-in outputs generated by `scripts/generate_artifacts`.
+- `engine/decision_store.py` and `engine/replay.py`: immutable archived decisions and separate replay reports.
+- `docs/artifacts`: ordinary outputs generated by `scripts/generate_artifacts`; `policy_replay_summary.json` comes from the separate replay demonstration.
 
 The audit trail stores note hash, original-note evidence spans and per-fact verification records. Span offsets and text are exact source slices, including Unicode; their presence does not prove semantic support. This is not a production record system.
 
@@ -188,12 +200,12 @@ For the verified pathway, the inspectable chain is `official source → validate
 
 ## What Would Be Needed Before A Real Enterprise Workflow?
 
-This repo intentionally does not implement these pieces. Before becoming an enterprise workflow, it would need at least:
+The repo includes a local review UI, archive, drift monitor, and release convention. Before becoming an enterprise workflow, those demonstrations would need operational ownership and controls, including:
 
 - real payer policy ingestion and review operations
 - payer-specific policy governance and approval workflows
 - PHI handling, security controls, retention policy, and access control
-- human-in-the-loop review UX and escalation paths
+- authenticated review assignments, structured correction/rejection, and escalation paths beyond the existing per-fact attestation UI
 - integration with EHR, document management, payer portals, or clearinghouses
 - monitoring, incident response, audit log retention, and release management
 - clinical, compliance, legal, and operational validation

@@ -13,7 +13,7 @@ The most important things to protect are:
 - supported-scope boundaries
 - API and CLI surfaces sharing the same core workflow
 
-Two regression layers exist on purpose:
+The main fixture/output regression layers are:
 
 - the bundled labeled fixture suite checks exact expected overall statuses for every included case and reports fixture-scoped false-READY, exact-status, and abstention metrics; these are regression metrics, not estimates of real-world clinical-language performance
 - acceptance snapshots lock representative exact outputs for evaluation and governance surfaces
@@ -30,6 +30,8 @@ and snapshot expectation updates. Governance tests explicitly attest facts befor
 checking their independent submission gate, so PENDING cannot mask those checks.
 
 Current bundled-fixture snapshot: 52 labeled synthetic cases; 52/52 exact overall statuses; 0 false `READY` results among 52 expected non-`READY` cases; 12 `NEEDS_REVIEW` results (23.1%); and 42 combined `NEEDS_REVIEW`/`CANNOT_DETERMINE` abstentions (80.8%).
+
+Archive and replay tests separately cover immutable policy content, append-only storage, corruption detection, type compatibility, each differential category, correct denominators, preserved refusals, resolved refusals, and fresh verification. See `test/test_policy_replay.py`. Its cases are separate from the main labeled fixture corpus.
 
 ## Commands
 
@@ -91,6 +93,7 @@ Regenerate golden snapshots intentionally after a reviewed product change:
 - provenance and policy trust behavior
 - policy drift normalization and snapshot handling
 - rulebook validation and release diffs
+- policy snapshots, append-only decision storage, and deterministic non-destructive replay
 - letter drafting contracts
 - shared service behavior
 - API endpoints
@@ -105,7 +108,7 @@ Regenerate golden snapshots intentionally after a reviewed product change:
 
 The bundled synthetic case set intentionally includes:
 
-- ready cases
+- all-MET proposal cases
 - seven formerly automated READY cases now expect PENDING_VERIFICATION; a separate golden fixture covers fully human-verified READY
 - documented-but-not-ready cases
 - cannot-determine cases

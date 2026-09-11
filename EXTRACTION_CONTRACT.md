@@ -24,7 +24,7 @@ new contract claims must receive executable coverage in that class.
   source-location integrity, not a guarantee of semantic support, complete
   context, correct attribution, or preservation of every relevant sentence.
   The evidence map may be empty for missing fields.
-- **G03**: Every requirement result exposes `fact_value`, `verification`, and a
+- **G03**: Every service evaluation requirement result exposes `fact_value`, `verification`, and a
   `verification_fingerprint`. Verification defaults to `UNVERIFIED` without
   metadata. `HUMAN_VERIFIED` requires a nonblank reviewer, timezone-aware,
   nonfuture timestamp, and the matching proposal fingerprint. Identity is

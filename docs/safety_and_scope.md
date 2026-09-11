@@ -63,7 +63,7 @@ It does:
 It does not:
 
 - rewrite rules
-- change readiness outcomes automatically
+- rewrite criterion outcomes; monitoring state can downgrade policy trust and make `submission_readiness=false`
 - claim the monitored source is fully production-governed
 
 ## Rulebook Promotion Boundary
@@ -82,6 +82,12 @@ It does not:
 - auto-sync runtime rules from drift signals
 - replace human policy review
 - enforce that a human approved the configured runtime files
+
+## Archive And Replay Boundary
+
+Every service result includes a sealed policy snapshot. CLI `evaluate --store` persists full synthetic requests, captured facts, verification records, and results in append-only SQLite. UI/API evaluations are not automatically archived. Triggers and hashes protect the supported local workflow, but do not provide authentication, encryption, retention controls, or resistance to a privileged rewrite.
+
+Replay uses originally captured evidence and an explicit target version. Missing and ambiguous evidence keep their refusal semantics. A relaxed policy can resolve a correct old refusal using the same evidence; that is a reason to revisit history, not to overwrite it. All replay reports require fresh human review and have `submission_readiness=false`; passing criteria produce `PENDING_VERIFICATION`. See [policy replay](policy_replay.md).
 
 ## Human Review In A Real Workflow
 
