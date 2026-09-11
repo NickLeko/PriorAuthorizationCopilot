@@ -90,6 +90,8 @@ At a high level:
    - only all `MET` requirements with all facts `HUMAN_VERIFIED` return `READY`
 5. `engine/service.py` assembles blockers, facts, evidence maps, provenance, warnings, audit trace data, and standard output payloads.
 
+Here, “immutable” policy snapshots and rule releases mean content-hashed, version-fixed records, not enforced tamper resistance.
+
 The engine records human attestations; it cannot prove a person reviewed the note. Reviewer identity is self-reported, with no authentication or tamper-resistant attestation store. A real workflow would still require policy interpretation, chart review, escalation handling, final submission decisions, PHI controls, auth, audit operations, and payer integration layers.
 
 In Streamlit, inspect the original note and each proposal, enter your reviewer name, check the facts you actually verified, and select **Record human verification**. In FastAPI, repeat `POST /evaluate` with the same request and `fact_verifications` keyed by requirement. Each record contains `state: "HUMAN_VERIFIED"`, `reviewer`, timezone-aware `verified_at`, and the result's `verification_fingerprint` as `fingerprint`. In CLI, use `evaluate --request-file request.json --json`, or add `--verifications-file attestations.json` to a demo evaluation. Unverified is the default everywhere. Changed notes, request scope or rule bundles invalidate old attestations; verification cannot edit a proposed value or override a failed requirement. See [docs/api.md](docs/api.md) for the payload.
