@@ -5,7 +5,7 @@ Prior Authorization Readiness Copilot is a deterministic internal-product demo f
 ## What It Does
 
 - checks whether a request is administratively ready under narrow, versioned payer rules; bundled examples are synthetic
-- extracts only a small supported fact set from note text
+- proposes a small supported fact set from note text; proposals can be wrong and require human verification before READY
 - returns requirement-level reasoning, blockers, evidence spans, and audit metadata
 - exposes the same logic through Streamlit, FastAPI, CLI, exported artifacts, and acceptance snapshots
 
@@ -15,7 +15,7 @@ Prior Authorization Readiness Copilot is a deterministic internal-product demo f
 - no medical-necessity review
 - no approval prediction
 - no autonomous action
-- all bundled data is synthetic; input is not screened and must not contain real PHI, with screening remaining the operator's responsibility
+- bundled case data is synthetic; the official policy snapshot and rule provenance are source material; input is not screened and must not contain real PHI, with screening remaining the operator's responsibility
 
 ## Current Scope
 
@@ -36,7 +36,9 @@ Prior Authorization Readiness Copilot is a deterministic internal-product demo f
 - evidence-to-fact-to-rule-to-result traceability
 - explicit unsupported-scope handling
 - refusal-first `CANNOT_DETERMINE` behavior
-- payer-qualified rule identity, procedure-scoped trust, and immutable rule releases
+- payer-qualified rule identity, procedure-scoped trust, and file-based rule releases retained by convention
+- sealed policy snapshots on every service evaluation, opt-in append-only SQLite archiving, and CLI replay without overwriting history
+- replay distinguishes changed outcomes, new refusals, changed reasoning, resolved refusals, and unchanged cases; every replay still requires fresh human review
 - official-source provenance mapping and governance-only drift detection for the verified pathway
 - golden output snapshots and regression tests
 

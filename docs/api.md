@@ -37,7 +37,7 @@ evaluation start and end fails the request for retry. Filesystem reads are not
 a transactional deployment mechanism; promote bundles while evaluations are idle.
 
 Identity is self-reported in this local prototype. This is not an authenticated
-signature or durable verification ledger. Human verification cannot bypass demo,
+signature. This HTTP surface does not persist attestations; CLI archiving can durably retain supplied verification records, but does not authenticate reviewers or prove review occurred. Human verification cannot bypass demo,
 stale or invalid policy/rulebook trust. Unknown monitoring frequencies fail
 freshness checks closed. Captured evidence offsets are original-note Python
 character offsets, not byte/UTF-16 offsets; text equals the source slice, which
@@ -49,7 +49,7 @@ facts**. CLI accepts the same PARequest with `evaluate --request-file request.js
 `--demo-case`. The cross-surface regression submits identical unverified and
 human-verified requests and compares status, submission readiness and attestations.
 
-The FastAPI layer exposes the current deterministic capabilities of the repo without widening scope.
+The FastAPI layer exposes evaluation and read-only governance views. Archive registration, explicit policy-version selection, historical decision reads, and replay are available through the CLI, not these HTTP endpoints.
 
 Run locally:
 
@@ -62,6 +62,8 @@ Direct equivalent: `.venv/bin/python -m uvicorn api:app --reload`
 Base URL in local examples: `http://127.0.0.1:8000`
 
 ## Endpoints
+
+`GET /` and `GET /status` also return the same status payload as `GET /health`.
 
 ### `GET /health`
 
@@ -125,6 +127,8 @@ Response highlights:
 - `blockers`
 - public `facts` (`null` is used when an internal candidate requires review; consult requirement status and evidence for the distinction)
 - `evidence_map`
+- `captured_fact_states` (distinguishes missing and ambiguous captures, including fields outside current requirements)
+- `policy_version` (sealed criteria, identity, date, and content hash)
 - `audit_trail`
 
 ### `GET /drift-status`
@@ -189,6 +193,6 @@ The API is intentionally conservative:
 ## Notes
 
 - The API is designed for synthetic demo inputs, but `note_text` is not screened; do not submit real patient information.
-- There is no persistence layer.
+- API evaluations embed `policy_version` in the result and audit trace but are not automatically persisted. The opt-in CLI SQLite archive retains decisions, full requests, captured evidence, and verification records; see [policy replay](policy_replay.md). It is not an authenticated, encrypted, or production patient-record service.
 - There is no authentication layer.
 - There is no autonomous action endpoint.

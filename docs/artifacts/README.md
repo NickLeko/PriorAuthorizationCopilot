@@ -6,6 +6,8 @@ This directory contains checked-in sample outputs. The procedure evaluation JSON
 
 These artifacts are intentionally committed because they make reviewer inspection easier and support stable diffs. Full `note_text` values are replaced by a short SHA-256 hash and `[redacted for repository]`; the files are not patient records, payer responses, production logs, or PHI-bearing outputs.
 
+`policy_replay_summary.json` is generated separately by `scripts.replay_demo`. Its 14 hand-authored synthetic cases across three synthetic policy versions were constructed to exercise the differential categories; counts demonstrate those distinctions, not the frequency of real policy-change outcomes. See [policy replay](../policy_replay.md) for the full run and archive contract.
+
 ## How To Inspect An Artifact
 
 Start with:
@@ -20,7 +22,9 @@ The most useful fields are:
 - `submission_readiness`: true only when the overall status is `READY` and policy/rulebook trust is verified and current.
 - `results[]`: requirement-level `MET`, `NOT_MET`, `NOT_DOCUMENTED`, or `NEEDS_REVIEW` results.
 - `blockers`: grouped missing, documented-but-not-met, and documented-but-unevaluable requirements.
-- `facts`: extracted deterministic facts.
+- `facts`: deterministic proposals requiring source review.
+- `policy_version`: sealed policy identity, date, criteria, and hash; also recorded in the audit trail.
+- `captured_fact_states`: distinguishes missing from review-required captures, including fields outside the selected policy requirements.
 - `evidence_map`: copied evidence snippets with character offsets.
 - `audit_trail`: note hash, rules version, active rulebook release, requirements checked, warnings, and invariant errors.
 - `letter`: optional deterministic administrative draft and metadata.
@@ -39,7 +43,7 @@ The safety metrics are fixture-scoped regression checks. They do not estimate ac
 
 ## Regeneration
 
-Regenerate the checked-in artifacts with:
+Regenerate ordinary evaluation and governance artifacts with (the replay summary uses the separate command documented above):
 
 ```bash
 make artifacts

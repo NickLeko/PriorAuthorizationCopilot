@@ -28,7 +28,10 @@ guarantee source location, not semantic support. See EXTRACTION_CONTRACT.md.
 
 ## Product Limits
 
-- no persistence
+- opt-in CLI persistence in a local append-only SQLite decision/policy archive; ordinary UI/API evaluations are not automatically saved
+- archive records retain full requests and verification metadata, but have no encryption, access control, or production retention/deletion workflow
+- triggers and hashes protect the supported workflow, not against a privileged database/schema rewrite
+- replay uses only originally captured evidence and explicit target policy snapshots; it does not re-extract old notes, collect missing evidence, or make a case automatically READY
 - no authentication
 - no user management
 - no deployment packaging beyond local/demo use
