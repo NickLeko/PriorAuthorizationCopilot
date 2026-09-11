@@ -49,9 +49,13 @@ Use `MRI-01-complete`.
 
 It initially returns PENDING_VERIFICATION. Open the original note, inspect every
 proposed fact and rule, enter the reviewer name, and check only facts actually
-verified. Recording all four attestations changes this synthetic case to READY
-while the policy source and rulebook remain trusted and current. Leave an
-unsupported proposal unverified. The prototype records the supplied identity;
+verified. Recording all four attestations changes this synthetic case to `READY`
+because every operator is `MET` and every requirement fact is `HUMAN_VERIFIED`.
+Policy trust is not a prerequisite for documentation status `READY`. The separate
+`submission_readiness=true` gate additionally requires current verified policy
+provenance, a trusted active rulebook, and no unresolved drift. Documentation can
+remain `READY` while `submission_readiness=false`. Leave an unsupported proposal
+unverified. The prototype records the supplied identity;
 it does not authenticate a reviewer or prove review happened.
 
 Call out:
