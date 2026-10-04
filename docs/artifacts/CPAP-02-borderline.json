@@ -560,6 +560,7 @@
     "Sleep study date documented: NOT_DOCUMENTED \u2014 Not found in note. Add explicit affirmative documentation.",
     "AHI/RDI documented: NOT_DOCUMENTED \u2014 Not found in note. Add explicit affirmative documentation."
   ],
+  "schema_version": "1.5.0",
   "submission_readiness": false,
   "supported_procedure": {
     "display_name": "CPAP Device (HCPCS E0601)",

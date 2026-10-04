@@ -42,6 +42,12 @@ This is a synthetic workflow-readiness demo, not a payer or clinical deployment.
 - `submission_readiness=true` additionally requires current verified policy provenance, a trusted active rulebook, and no unresolved drift. A documentation result may remain `READY` while submission readiness is false.
 - No output means payer approval, denial prediction, medical necessity, clinical appropriateness, or medical advice.
 
+`READY` with `submission_readiness=false` is a defined state, retained by archive
+validation. For example, incorrectly attesting every proposal in the known
+borrowed sleep-study-date case produces documentation READY, while CPAP's demo
+policy trust keeps submission readiness false. This demonstrates the independent
+trust gate; it does not validate the borrowed date or the incorrect attestations.
+
 ## Quick Reviewer Path
 
 From a fresh clone, enter the repo and run:
