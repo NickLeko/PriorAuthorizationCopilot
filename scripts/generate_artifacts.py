@@ -63,8 +63,8 @@ def normalize_artifact_evaluation_payload(payload: Dict[str, Any]) -> Dict[str, 
     return normalized
 
 
-def main() -> int:
-    service = ReadinessService()
+def main(*, utc_now_provider=None) -> int:
+    service = ReadinessService(utc_now_provider=utc_now_provider)
     artifact_dir = service.config.docs_artifacts_dir
     artifact_dir.mkdir(parents=True, exist_ok=True)
     drift_report = service.get_drift_status()

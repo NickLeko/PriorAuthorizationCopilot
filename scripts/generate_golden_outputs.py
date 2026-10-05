@@ -13,8 +13,8 @@ from engine.service import ReadinessService
 GOLDEN_ROOT = Path("test/golden")
 
 
-def main() -> int:
-    service = ReadinessService()
+def main(*, utc_now_provider=None) -> int:
+    service = ReadinessService(utc_now_provider=utc_now_provider)
     evaluation_dir = GOLDEN_ROOT / "evaluations"
     governance_dir = GOLDEN_ROOT / "governance"
 

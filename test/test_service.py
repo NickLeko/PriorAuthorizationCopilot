@@ -1,8 +1,8 @@
 import json
-from datetime import datetime, timezone
 from pathlib import Path
 
 import pytest
+from conftest import GOVERNANCE_NOW
 from verification_helpers import attest
 
 from engine.config import load_app_config
@@ -456,7 +456,7 @@ def test_verified_provenance_downgrades_when_baseline_hash_does_not_match(tmp_pa
                 "payer": "Aetna",
                 "procedure_code": "MRI_LUMBAR",
                 "url": "https://www.aetna.com/cpb/medical/data/200_299/0236.html",
-                "fetched_at_utc": datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z"),
+                "fetched_at_utc": GOVERNANCE_NOW.isoformat().replace("+00:00", "Z"),
                 "content_hash_sha256": "b" * 64,
             }
         ),
@@ -940,7 +940,7 @@ def test_stale_policy_snapshot_blocks_submission_readiness(tmp_path):
 def test_unresolved_policy_drift_blocks_submission_readiness(tmp_path):
     _write_policy_snapshot(
         tmp_path,
-        datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z"),
+        GOVERNANCE_NOW.isoformat().replace("+00:00", "Z"),
     )
     tmp_path.joinpath("drift_log.jsonl").write_text(
         json.dumps({"id": "aetna_mri_lumbar", "event": "POLICY_DRIFT_DETECTED"}) + "\n",

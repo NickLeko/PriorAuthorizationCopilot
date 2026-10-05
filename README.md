@@ -2,6 +2,10 @@
 
 This self-directed prototype demonstrates deterministic prior-authorization documentation review, human verification, and policy-change replay. It uses synthetic cases and narrow rules; it does not authorize care or predict payer approval.
 
+The lumbar MRI pathway is the only live-monitored source. After its monthly monitoring window (35 days since the last successful check), a visitor sees a stale warning and must acknowledge it before evaluating that pathway. After all passing facts are human-verified, it can return `READY` with `submission_readiness=false`. This is the governance gate working as designed; acknowledgement does not restore trust.
+
+Before a live demo, run one genuine source check: `.venv/bin/python -m engine.policy_monitor --check --write`. A successful unchanged check records its actual check time; detected changes require human policy review and do not automatically update rules or restore trust.
+
 ## Three Design Decisions
 
 ### 1. Missing evidence, failed criteria, and ambiguity need different outcomes
@@ -50,7 +54,7 @@ trust gate; it does not validate the borrowed date or the incorrect attestations
 
 ## Quick Reviewer Path
 
-The record schema version and the release version are versioned independently: release `1.6.0` retains record `schema_version: "1.5.0"`.
+The record schema version and the release version are versioned independently: release `1.6.1` retains record `schema_version: "1.5.0"`.
 
 From a fresh clone, enter the repo and run:
 
