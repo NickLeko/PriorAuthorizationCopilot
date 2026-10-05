@@ -17,6 +17,7 @@ from .schemas import REVIEW_REQUIRED_FACT, OriginalProposal, ReviewerCorrection
 
 CONTRACT_VERSION = content_hash({key: asdict(contract) for key, contract in FACT_CONTRACTS.items()})
 MAX_SET_VALUE_SPAN_CHARACTERS = 300
+MAX_SET_VALUE_SPANS = 3
 
 
 def note_hash(note: str) -> str:
@@ -61,6 +62,8 @@ def validate_note_evidence(correction: ReviewerCorrection, note: str) -> None:
 
 def validate_set_value_span_lengths(spans) -> None:
     """Reject oversized SET_VALUE quotations; never truncate exact source text."""
+    if len(spans) > MAX_SET_VALUE_SPANS:
+        raise ValueError("SET_VALUE evidence allows at most 3 spans.")
     if any(len(span.text) > MAX_SET_VALUE_SPAN_CHARACTERS for span in spans):
         raise ValueError("SET_VALUE evidence spans must be at most 300 characters each.")
 
@@ -236,6 +239,12 @@ def validate_v2_result(result) -> None:
     if overall["overall_status"] != result.overall_status:
         raise ValueError("Overall status does not match effective evaluation.")
     summary = summarize_results(expected_results)
+    from .service import _compute_metrics
+
+    if result.metrics != _compute_metrics(summary):
+        raise ValueError("Metrics disagree with validated requirement results.")
+    if result.supported_procedure.policy_trust_level != result.policy_trust_level:
+        raise ValueError("Supported-procedure policy trust disagrees with decision trust.")
     for field in ("met_count", "not_met_count", "not_documented_count", "needs_review_count"):
         if getattr(result.report, field) != summary[field]:
             raise ValueError("Report counts disagree with effective evaluation.")

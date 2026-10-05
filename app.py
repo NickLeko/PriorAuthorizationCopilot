@@ -151,9 +151,65 @@ def clear_evaluation_outputs() -> None:
     st.session_state["last_eval_payload"] = None
     st.session_state["letter_text"] = ""
     st.session_state["letter_meta"] = {}
+    for name in ("result_context", "attestation_context", "letter_context"):
+        st.session_state[name] = None
     for key in list(st.session_state):
         if str(key).startswith("verify_"):
             del st.session_state[key]
+
+
+def evaluation_context(evaluation: EvaluationResult) -> dict:
+    scoped_drift = service.get_drift_status(evaluation.request.payer, evaluation.request.procedure_code).model_dump(mode="json")
+    # Age within the same window is not a governance-state change.
+    for source in scoped_drift["sources"]:
+        source.pop("days_since_last_checked", None)
+    return {
+        "bundle_digest": evaluation.bundle_fingerprint,
+        "fact_set_fingerprint": evaluation.fact_set_fingerprint,
+        "governance": {
+            "policy_trust_level": evaluation.policy_trust_level,
+            "drift": scoped_drift,
+            "rulebook": service.get_rulebook_status().model_dump(mode="json"),
+        },
+    }
+
+
+def cache_evaluation(evaluation: EvaluationResult) -> None:
+    context = evaluation_context(evaluation)
+    st.session_state["last_eval_payload"] = evaluation.model_dump(mode="json")
+    st.session_state["result_context"] = context
+    st.session_state["attestation_context"] = context if evaluation.request.fact_verifications else None
+
+
+def validate_cached_context() -> None:
+    if not st.session_state.get("last_eval_payload"):
+        return
+    try:
+        # Recompute against current input, bundles and governance without reusing attestations.
+        current = service.evaluate(current_request())
+        context = evaluation_context(current)
+        stored = st.session_state.get("result_context")
+        if stored != context:
+            changed = [key for key in context if not stored or stored.get(key) != context[key]]
+            raise ValueError("Cached review context changed: " + ", ".join(changed))
+        cached_attestations = bool(st.session_state["last_eval_payload"]["request"].get("fact_verifications"))
+        for key, present in (("attestation_context", cached_attestations), ("letter_context", bool(st.session_state["letter_text"]))):
+            if (present or st.session_state.get(key) is not None) and st.session_state.get(key) != context:
+                raise ValueError(f"Cached {key} changed or missing.")
+        # Also reject a corrupted cached envelope even if its context key matches.
+        EvaluationResult.model_validate(st.session_state["last_eval_payload"])
+    except (ValueError, ServiceError, OSError) as exc:
+        clear_evaluation_outputs()
+        st.session_state["evaluation_clear_reason"] = f"Results, attestations and letters cleared: {exc}"
+
+
+def correction_number_literal(raw: str):
+    # JSON is the entry representation, just as for API/CLI: 6 is int; 6.5 is float.
+    # No int()/float() conversion of the candidate before contract validation.
+    try:
+        return json.loads(raw)
+    except (ValueError, TypeError):
+        return raw
 
 
 def render_corrections(evaluation: EvaluationResult) -> None:
@@ -203,9 +259,11 @@ def render_corrections(evaluation: EvaluationResult) -> None:
                     if contract.fact_kind in {"boolean", "enum", "date_presence"}:
                         value = st.selectbox("Reviewer-enterable value", list(contract.reviewer_enterable), key=f"correction_value_{key}")
                     elif contract.fact_kind == "duration_weeks":
-                        value = st.number_input("Duration (weeks)", min_value=0, value=0, step=1, key=f"correction_value_{key}")
+                        raw_value = st.text_input("Duration (weeks; JSON integer)", value="0", key=f"correction_value_{key}")
+                        value = correction_number_literal(raw_value)
                     else:
-                        value = st.number_input(f"Numeric value ({contract.unit})", value=0.0, key=f"correction_value_{key}")
+                        raw_value = st.text_input(f"Numeric value ({contract.unit}; JSON number)", value="0", key=f"correction_value_{key}")
+                        value = correction_number_literal(raw_value)
                     if contract.fact_kind == "date_presence":
                         date_detail = st.text_input(
                             "Optional ISO supporting date; no recency or ordering check", key=f"correction_date_{key}"
@@ -218,9 +276,7 @@ def render_corrections(evaluation: EvaluationResult) -> None:
                     ["incorrect_value", "missed_documented_fact", "wrong_attribution", "incorrect_citation", "withdrawal", "restore"],
                     key=f"correction_reason_{key}",
                 )
-                comment = st.text_input(
-                    "Optional audit-only comment; excluded from letters", max_chars=1000, key=f"correction_comment_{key}"
-                )
+                comment = st.text_input("Optional audit-only comment; excluded from letters", key=f"correction_comment_{key}")
                 applied = st.form_submit_button(f"Apply correction: {key}")
             if applied:
                 payload = evaluation.request.model_dump(mode="json")
@@ -246,7 +302,7 @@ def render_corrections(evaluation: EvaluationResult) -> None:
                     corrected_request = PARequest.model_validate(payload)
                     corrected = service.evaluate(corrected_request)
                     st.session_state["corrections"] = corrected_request.model_dump(mode="json")["corrections"]
-                    st.session_state["last_eval_payload"] = corrected.model_dump(mode="json")
+                    cache_evaluation(corrected)
                     st.rerun()
                 except (ValueError, ServiceError) as exc:
                     st.error(str(exc))
@@ -732,6 +788,10 @@ with right:
         st.write("- Human review remains required before any real submission")
 
 
+validate_cached_context()
+if st.session_state.get("evaluation_clear_reason"):
+    st.warning(st.session_state.pop("evaluation_clear_reason"))
+
 should_run = submitted or showcase_submitted
 if should_run:
     scope = {field: st.session_state[field] for field in ("payer", "procedure_code", "note_text", "dx_codes", "site_of_care", "specialty")}
@@ -746,7 +806,7 @@ if should_run:
     else:
         try:
             evaluation = service.evaluate(request)
-            st.session_state["last_eval_payload"] = evaluation.model_dump(mode="json")
+            cache_evaluation(evaluation)
         except ServiceError as exc:
             st.error(str(exc))
             st.session_state["last_eval_payload"] = None
@@ -810,12 +870,16 @@ else:
                         "fact_verifications": attestations,
                     }
                 )
-                st.session_state["last_eval_payload"] = service.evaluate(verified_request).model_dump(mode="json")
+                cache_evaluation(service.evaluate(verified_request))
                 st.session_state["letter_text"] = ""
                 st.session_state["letter_meta"] = {}
+                st.session_state["letter_context"] = None
                 st.rerun()
-            except (ValueError, ServiceError) as exc:
-                st.error(str(exc))
+            except Exception as exc:
+                # Any failed re-verification, including a backend failure, invalidates cached outputs.
+                clear_evaluation_outputs()
+                st.error(f"Results, attestations and letters cleared after failed re-verification: {exc}")
+                st.stop()
 
     if evaluation.overall_status == "READY" and not evaluation.submission_readiness:
         st.warning(
@@ -945,10 +1009,12 @@ else:
                 letter_text, letter_meta = service.generate_letter(evaluation, letter_type=letter_type)
                 st.session_state["letter_text"] = letter_text
                 st.session_state["letter_meta"] = letter_meta
+                st.session_state["letter_context"] = st.session_state["result_context"]
         with letter_cols[1]:
             if st.button("Clear letter", width="stretch"):
                 st.session_state["letter_text"] = ""
                 st.session_state["letter_meta"] = {}
+                st.session_state["letter_context"] = None
 
         if st.session_state["letter_text"]:
             st.markdown("**Letter draft**")

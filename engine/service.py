@@ -513,6 +513,8 @@ class ReadinessService:
     def generate_letter(
         self, evaluation: EvaluationResult, letter_type: LetterType = "submission_cover_letter"
     ) -> tuple[str, Dict[str, Any]]:
+        # Nested models are mutable; never draft from an unchecked envelope.
+        evaluation = EvaluationResult.model_validate_json(evaluation.model_dump_json())
         disclosures = []
         events = {event.requirement_key: event for event in getattr(evaluation.request, "corrections", [])}
         for result in evaluation.results:

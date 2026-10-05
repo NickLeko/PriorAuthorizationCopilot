@@ -8,7 +8,7 @@ v2.0.0 permits typed reviewer corrections over retained original proposals. The 
 - Reviewer identity remains self-reported. The mechanism enforces self-reported timestamp ordering, not action separation, distinct reviewers, or proof of review. A single request with correction at T and attestation at T+1s can pass without backdating. Correction does not imply verification: all effective requirement facts must pass and be HUMAN_VERIFIED before READY.
 - Corrected decisions are viewable, not replayable, including after RESTORE_ORIGINAL or restoration of an original value.
 - Supporting dates attached to requirement facts are not checked for recency or ordering.
-- Each SET_VALUE evidence span is limited to 300 Python Unicode characters. Multiple spans are allowed. Overlength spans are rejected, never truncated; letters retain the full exact quotation.
+- SET_VALUE allows at most 3 evidence spans, each limited to 300 Python Unicode characters. Multiple spans are allowed within that count. Overlength spans are rejected, never truncated; letters retain the full exact quotation.
 - Letters disclose reviewer-supplied facts and self-reported identities; audit comments do not enter letter reasoning. Structured exports retain original proposals and the full ordered correction list.
 
 No authentication, multi-user workflow, broader procedure coverage, extraction changes, cross-policy correction replay, revision lineage, or correction metrics framework is added. Evaluation remains deterministic with no ontology, LLM or RAG in the decision path; outputs are administrative evaluations, never clinical truth or coverage decisions.

@@ -1,5 +1,8 @@
 from __future__ import annotations
 
+import json
+import math
+
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
 
@@ -27,6 +30,35 @@ app = FastAPI(
 )
 
 service = ReadinessService()
+
+
+class NonfiniteJSONNumber(ValueError):
+    pass
+
+
+def finite_json_number(token: str) -> float:
+    value = float(token)
+    if not math.isfinite(value):
+        raise NonfiniteJSONNumber("JSON numbers must be finite; overflow is not permitted.")
+    return value
+
+
+def reject_nonfinite_constant(token: str):
+    raise NonfiniteJSONNumber(f"Non-finite JSON number {token} is not permitted.")
+
+
+@app.middleware("http")
+async def reject_nonfinite_json(request: Request, call_next):
+    # Inspect raw JSON before Pydantic can put an infinity/NaN in an error input.
+    media_type = request.headers.get("content-type", "").split(";", 1)[0].strip().lower()
+    if not media_type or media_type == "application/json" or (media_type.startswith("application/") and media_type.endswith("+json")):
+        try:
+            json.loads(await request.body(), parse_float=finite_json_number, parse_constant=reject_nonfinite_constant)
+        except NonfiniteJSONNumber as exc:
+            return JSONResponse(status_code=422, content=ErrorResponse(error="invalid_request", detail=str(exc)).model_dump())
+        except (json.JSONDecodeError, UnicodeDecodeError):
+            pass  # Ordinary malformed JSON retains FastAPI's normal 422 handling.
+    return await call_next(request)
 
 
 @app.exception_handler(UnsupportedScopeError)

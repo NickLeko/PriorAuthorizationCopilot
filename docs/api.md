@@ -2,7 +2,7 @@
 
 ## v2.0 source-located corrections
 
-The existing `POST /evaluate` path accepts an ordered `corrections` list in PARequest. Each SET_VALUE evidence span must contain at most 300 Python Unicode characters; multiple spans are allowed. Overlength spans are rejected, never truncated. Values must match the requirement contract without coercion; boolean/numeric strings, unknown enums and reviewer-excluded values are rejected. Clients cannot supply statuses, reasons, effective facts or derived annotations. The original proposal is retained; the last correction event for a key supplies its effective fact. This synthetic example produces NOT_READY because reviewer-supplied false fails the OSA equals_true operator, not because the API determines a clinical diagnosis:
+The existing `POST /evaluate` path accepts an ordered `corrections` list in PARequest. SET_VALUE allows at most 3 evidence spans, each containing at most 300 Python Unicode characters. Overlength spans are rejected, never truncated. Values must match the requirement contract without coercion; boolean/numeric strings, unknown enums and reviewer-excluded values are rejected. Clients cannot supply statuses, reasons, effective facts or derived annotations. The original proposal is retained; the last correction event for a key supplies its effective fact. This synthetic example produces NOT_READY because reviewer-supplied false fails the OSA equals_true operator, not because the API determines a clinical diagnosis:
 
 ```json
 {
