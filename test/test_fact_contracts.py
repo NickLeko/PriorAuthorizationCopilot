@@ -17,13 +17,31 @@ from engine.fact_contracts import (
     get_fact_contract,
     validate_fact_value,
 )
-from engine.schemas import REVIEW_REQUIRED_FACT
+from engine.schemas import REVIEW_REQUIRED_FACT, PolicyVersion
 
-POLICY_FILES = [Path("rules/payer_rules.yaml"), *sorted(Path("rulebook/releases").glob("*/payer_rules.yaml"))]
+
+def make_contract(key, fact_kind, **kwargs):
+    """Synthetic declarations for kind-boundary tests, with explicit meanings."""
+    defaults = {"meaning": "Synthetic fact for strict representation tests."}
+    if fact_kind in {"boolean", "date_presence"}:
+        defaults.update(extractor_emittable=(True, False), reviewer_enterable=(True, False))
+    return FactContract(key, fact_kind, **(defaults | kwargs))
+
+
+POLICY_FILES = [
+    Path("rules/payer_rules.yaml"),
+    *sorted(Path("rulebook/releases").glob("*/payer_rules.yaml")),
+    *sorted(Path("inputs/replay/policies").glob("*.json")),
+]
 PATHWAYS = {"MRI_LUMBAR", "MRI_CERVICAL", "MRI_KNEE", "CPAP_DEVICE"}
 
 
 def requirements_from(path):
+    if path.suffix == ".json":
+        policy = PolicyVersion.model_validate_json(path.read_text())
+        assert policy.procedure_code in PATHWAYS
+        yield from policy.requirements
+        return
     rules = yaml.safe_load(path.read_text())
     for payer in rules["payers"].values():
         for procedure, policy in payer["procedures"].items():
@@ -43,11 +61,123 @@ def test_every_policy_is_contract_compatible(path):
     check_policy_compatibility(requirements_from(path))
 
 
+def test_replay_policy_declarations_are_included():
+    paths = [path for path in POLICY_FILES if path.suffix == ".json"]
+    assert {path.name for path in paths} == {"v1.json", "v2.json", "v3.json"}
+    assert sum(len(list(requirements_from(path))) for path in paths) == 10
+
+
+def test_compatibility_calls_existing_policy_logic(monkeypatch):
+    import engine.fact_contracts as contracts
+
+    calls = []
+    original = contracts.facts_for_policy
+
+    def checked(facts, policy):
+        calls.append(policy)
+        return original(facts, policy)
+
+    monkeypatch.setattr(contracts, "facts_for_policy", checked)
+    check_policy_compatibility([{"key": "osa_diagnosis", "label": "Test", "type": "boolean", "operator": "equals_true"}])
+    assert len(calls) == 1
+
+
 def test_registry_and_contracts_are_immutable():
     with pytest.raises(TypeError):
-        FACT_CONTRACTS["new_key"] = FactContract("new_key", "boolean")
+        FACT_CONTRACTS["new_key"] = make_contract("new_key", "boolean")
     with pytest.raises(FrozenInstanceError):
         get_fact_contract("symptom_duration_weeks").unit = "months"
+
+
+@pytest.mark.parametrize("key", list(FACT_CONTRACTS))
+def test_every_contract_has_a_required_meaning(key):
+    assert get_fact_contract(key).meaning.strip()
+
+
+@pytest.mark.parametrize("meaning", [None, "", " ", True, 1])
+def test_invalid_meanings_are_rejected(meaning):
+    with pytest.raises(ValueError, match="meaning"):
+        make_contract("test", "boolean", meaning=meaning)
+
+
+def test_meaning_cannot_be_omitted():
+    with pytest.raises(TypeError, match="meaning"):
+        FactContract("test", "boolean")
+
+
+@pytest.mark.parametrize("value", ["none", "normal", "negative", "inconclusive", "abnormal"])
+def test_reviewer_imaging_categories_include_policy_failing_values(value):
+    assert validate_fact_value(get_fact_contract("prior_imaging_result"), value) is value
+
+
+def test_unrecognized_is_extractor_only():
+    contract = get_fact_contract("prior_imaging_result")
+    assert validate_fact_value(contract, "unrecognized", vocabulary="extractor_emittable") == "unrecognized"
+    with pytest.raises(FactContractError, match="value_not_reviewer_enterable"):
+        validate_fact_value(contract, "unrecognized")
+
+
+@pytest.mark.parametrize("key", ["neuro_red_flags_documented", "ahi_documented", "sleep_study_date"])
+def test_undefined_false_meanings_remain_ambiguous_and_not_reviewer_enterable(key):
+    contract = get_fact_contract(key)
+    assert "False: AMBIGUOUS" in contract.meaning
+    assert contract.extractor_emittable == contract.reviewer_enterable == (True,)
+    with pytest.raises(FactContractError, match="value_not_reviewer_enterable"):
+        validate_fact_value(contract, False)
+    with pytest.raises(FactContractError, match="value_not_extractor_emittable"):
+        validate_fact_value(contract, False, vocabulary="extractor_emittable")
+
+
+def test_explicit_osa_denial_is_reviewer_enterable_but_not_public_extractor_output():
+    contract = get_fact_contract("osa_diagnosis")
+    assert validate_fact_value(contract, False) is False
+    with pytest.raises(FactContractError, match="value_not_extractor_emittable"):
+        validate_fact_value(contract, False, vocabulary="extractor_emittable")
+    assert extract_facts("Patient denies OSA.")[0]["osa_diagnosis"] is None
+
+
+def test_documentation_boolean_meanings_match_actual_extraction():
+    facts, _ = extract_facts("Denies weakness. Denies locking. AHI 22.")
+    assert facts["neuro_red_flags_documented"] is True
+    assert facts["mechanical_symptoms_documented"] is False
+    assert facts["ahi_documented"] is True
+    assert extract_facts("AHI not documented.")[0]["ahi_documented"] is None
+
+
+def test_unknown_vocabulary_selection_is_rejected():
+    with pytest.raises(FactContractError, match="unknown_vocabulary"):
+        validate_fact_value(get_fact_contract("osa_diagnosis"), True, vocabulary="other")
+
+
+@pytest.mark.parametrize(
+    "key, emitted, entered",
+    [
+        ("back_pain_with_radiculopathy", (True, False), (True, False)),
+        ("objective_motor_or_reflex_change_in_root_distribution", (True, False), (True, False)),
+        ("cpb_0236_conservative_therapy_weeks", (), ()),
+        ("cpb_0236_conservative_therapy_no_improvement", (True, False), (True, False)),
+        ("conservative_therapy_weeks", (), ()),
+        ("symptom_duration_weeks", (), ()),
+        ("neuro_red_flags_documented", (True,), (True,)),
+        (
+            "prior_imaging_result",
+            ("none", "normal", "negative", "inconclusive", "abnormal", "unrecognized"),
+            ("none", "normal", "negative", "inconclusive", "abnormal"),
+        ),
+        ("mechanical_symptoms_documented", (True, False), (True, False)),
+        ("osa_diagnosis", (True,), (True, False)),
+        ("sleep_study_date", (True,), (True,)),
+        ("ahi_documented", (True,), (True,)),
+    ],
+)
+def test_every_vocabulary_split_is_explicit(key, emitted, entered):
+    contract = get_fact_contract(key)
+    assert contract.extractor_emittable == emitted
+    assert contract.reviewer_enterable == entered
+    for value in emitted:
+        assert validate_fact_value(contract, value, vocabulary="extractor_emittable") is value
+    for value in entered:
+        assert validate_fact_value(contract, value) is value
 
 
 def test_missing_contract_is_an_error():
@@ -61,9 +191,11 @@ def test_missing_contract_is_an_error():
 def test_state_permissions_are_separate_from_captured_scalars(kind):
     unit = "weeks" if kind == "duration_weeks" else "dimensionless" if kind == "numeric" else None
     vocabulary = ("normal",) if kind == "enum" else ()
-    contract = FactContract("test", kind, unit=unit, captured_values=vocabulary)
+    vocabularies = {"extractor_emittable": vocabulary, "reviewer_enterable": vocabulary} if kind == "enum" else {}
+    contract = make_contract("test", kind, unit=unit, **vocabularies)
     assert contract.permitted_states == ("CAPTURED", "MISSING", "NEEDS_REVIEW")
-    assert FactContract("test", kind, unit, vocabulary, False, False).permitted_states == ("CAPTURED",)
+    captured_only = make_contract("test", kind, unit=unit, permits_missing=False, permits_needs_review=False, **vocabularies)
+    assert captured_only.permitted_states == ("CAPTURED",)
     for state_value in (None, REVIEW_REQUIRED_FACT):
         with pytest.raises(FactContractError):
             validate_fact_value(contract, state_value)
@@ -100,25 +232,25 @@ def test_weeks_reject_negative_values():
 def test_numeric_preserves_finite_numeric_representation(value):
     # No existing pathway has a generic numeric fact. Exercise the declared kind
     # with a synthetic dimensionless contract, not a new registry requirement.
-    contract = FactContract("numeric_test", "numeric", unit="dimensionless")
+    contract = make_contract("numeric_test", "numeric", unit="dimensionless")
     assert validate_fact_value(contract, value) is value
 
 
 @pytest.mark.parametrize("value", [True, False, "1", "1.25", None, {}, []])
 def test_numeric_rejects_nonnumbers(value):
     with pytest.raises(FactContractError, match="expected_number"):
-        validate_fact_value(FactContract("numeric_test", "numeric", unit="dimensionless"), value)
+        validate_fact_value(make_contract("numeric_test", "numeric", unit="dimensionless"), value)
 
 
 @pytest.mark.parametrize("value", [float("nan"), float("inf"), -float("inf")])
 def test_numeric_rejects_nonfinite_values(value):
     with pytest.raises(FactContractError, match="nonfinite_number"):
-        validate_fact_value(FactContract("numeric_test", "numeric", unit="dimensionless"), value)
+        validate_fact_value(make_contract("numeric_test", "numeric", unit="dimensionless"), value)
 
 
 @pytest.mark.parametrize("value", ["none", "normal", "negative", "inconclusive", "abnormal", "unrecognized"])
 def test_imaging_vocabulary_includes_failing_and_unrecognized_categories(value):
-    assert validate_fact_value(get_fact_contract("prior_imaging_result"), value) is value
+    assert validate_fact_value(get_fact_contract("prior_imaging_result"), value, vocabulary="extractor_emittable") is value
 
 
 @pytest.mark.parametrize("value", ["edema", "NORMAL", " normal", "normal ", "", "missing", "needs_review", None, True, 1])
@@ -129,7 +261,7 @@ def test_enum_rejects_unknown_members_without_normalization(value):
 
 @pytest.mark.parametrize("value", [True, False, DatePresence(True), DatePresence(False), DatePresence(True, "2024-02-29")])
 def test_date_presence_accepts_boolean_and_optional_date(value):
-    assert validate_fact_value(get_fact_contract("sleep_study_date"), value) is value
+    assert validate_fact_value(make_contract("date_test", "date_presence"), value) is value
 
 
 @pytest.mark.parametrize("value", ["true", "false", "2024-02-29", 0, 1, None, {"value": True}, DatePresence(1)])
@@ -169,14 +301,14 @@ def test_date_detail_has_no_recency_or_ordering_gate(detail):
         {"fact_kind": "boolean", "unit": "weeks"},
         {"fact_kind": "date_presence", "unit": "days"},
         {"fact_kind": "enum"},
-        {"fact_kind": "enum", "captured_values": ("normal", "normal")},
-        {"fact_kind": "boolean", "captured_values": ("true",)},
+        {"fact_kind": "enum", "extractor_emittable": ("normal", "normal")},
+        {"fact_kind": "boolean", "extractor_emittable": ("true",)},
         {"fact_kind": "boolean", "permits_missing": "true"},
     ],
 )
 def test_contract_declarations_reject_invalid_units_and_vocabularies(kwargs):
     with pytest.raises(ValueError):
-        FactContract("test", **kwargs)
+        make_contract("test", **kwargs)
 
 
 @pytest.mark.parametrize(
@@ -216,7 +348,7 @@ def corpus_conformance_report():
             else:
                 captured += 1
                 try:
-                    validate_fact_value(contract, value)
+                    validate_fact_value(contract, value, vocabulary="extractor_emittable")
                 except FactContractError as exc:
                     failures.append({"case_id": case["id"], "requirement_key": key, "emitted_value": value, "reason": exc.reason})
     return {"cases": len(cases), "captured": captured, "missing": missing, "needs_review": needs_review, "nonconforming": failures}
