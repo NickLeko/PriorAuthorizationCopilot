@@ -47,6 +47,7 @@ from .schemas import (
     EvaluationMetrics,
     EvaluationResult,
     EvidenceSpan,
+    LetterCorrectionDisclosure,
     LetterDraftInput,
     LetterRequestMetadata,
     LetterType,
@@ -357,8 +358,9 @@ class ReadinessService:
         original = capture_original(raw_facts, raw_evidence_map)
         requirement_payloads = [requirement.model_dump(exclude_none=True) for requirement in supported.requirements]
         try:
-            effective = materialize(original, normalized_request.corrections, normalized_request.note_text,
-                                    [item["key"] for item in requirement_payloads])
+            effective = materialize(
+                original, normalized_request.corrections, normalized_request.note_text, [item["key"] for item in requirement_payloads]
+            )
         except ValueError as exc:
             raise InvalidRequestError(str(exc)) from exc
         public_facts = effective["facts"]
@@ -511,8 +513,27 @@ class ReadinessService:
     def generate_letter(
         self, evaluation: EvaluationResult, letter_type: LetterType = "submission_cover_letter"
     ) -> tuple[str, Dict[str, Any]]:
-        if getattr(evaluation.request, "corrections", []) or getattr(evaluation, "uses_reviewer_corrections", False):
-            raise InvalidRequestError("Letters for corrected requests are not yet supported; pass 2b must disclose corrections.")
+        disclosures = []
+        events = {event.requirement_key: event for event in getattr(evaluation.request, "corrections", [])}
+        for result in evaluation.results:
+            event = events.get(result.key)
+            if event is None:
+                continue
+            spans = evaluation.evidence_map.get(result.key, [])
+            if event.action == "SET_MISSING":
+                spans = event.document_review.proposal_spans
+            disclosures.append(
+                LetterCorrectionDisclosure(
+                    requirement_key=result.key,
+                    effective_value=result.fact_value,
+                    captured_state=evaluation.captured_fact_states[result.key],
+                    action=event.action,
+                    editor=event.editor,
+                    verifier=result.verification.reviewer,
+                    supporting_date=event.value.get("supporting_date") if type(event.value) is dict else None,
+                    source_spans=[span.model_dump() for span in spans],
+                )
+            )
         return draft_letter(
             LetterDraftInput(
                 request=LetterRequestMetadata(
@@ -528,6 +549,7 @@ class ReadinessService:
                 needs_review_count=evaluation.report.needs_review_count,
                 results=evaluation.report.results,
                 policy_trust_level=evaluation.policy_trust_level,
+                correction_disclosures=disclosures,
             ),
             letter_type=letter_type,
         )

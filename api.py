@@ -21,7 +21,7 @@ app = FastAPI(
     title="Prior Authorization Readiness Copilot API",
     version=__version__,
     description=(
-        "Deterministic administrative readiness review for synthetic prior authorization demo cases. "
+        "Deterministic administrative readiness review with typed, source-located reviewer corrections for synthetic demo cases. "
         "No clinical judgment, approval prediction, or autonomous action."
     ),
 )

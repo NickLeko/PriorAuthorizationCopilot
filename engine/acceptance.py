@@ -4,6 +4,7 @@ from copy import deepcopy
 from datetime import datetime, timezone
 from typing import Any, Dict
 
+from .corrections import note_hash
 from .rendering import export_evaluation_payload
 from .schemas import PARequest
 from .service import ReadinessService
@@ -18,6 +19,65 @@ DEFAULT_ACCEPTANCE_CASE_IDS = [
     "CPAP-02-borderline",
     "MRI-KNEE-01-ready",
 ]
+
+CORRECTED_ACCEPTANCE_NOTE = (
+    "Lumbosacral radicular syndrome documented. Right L5 distribution: strength 4/5. NSAIDs for 8 weeks with no improvement."
+)
+
+
+def build_corrected_acceptance_payloads(service: ReadinessService) -> Dict[str, Dict[str, Any]]:
+    """Synthetic ordered correction/review fixture, never an interactive attestation."""
+    original_request = PARequest(payer="Aetna", procedure_code="MRI_LUMBAR", note_text=CORRECTED_ACCEPTANCE_NOTE)
+    original = service.evaluate(original_request)
+    quote = "Lumbosacral radicular syndrome documented."
+    correction = {
+        "requirement_key": "back_pain_with_radiculopathy",
+        "action": "SET_VALUE",
+        "value": True,
+        "reason": "missed_documented_fact",
+        "editor": "Synthetic correction editor (fixture only)",
+        "edited_at": "2026-01-01T00:00:00Z",
+        "note_hash": note_hash(CORRECTED_ACCEPTANCE_NOTE),
+        "evidence_spans": [{"start": 0, "end": len(quote), "text": quote}],
+        "comment": "AUDIT_ONLY_EXCLUDED_FROM_LETTER",
+    }
+    corrected_request = PARequest.model_validate(original_request.model_dump(mode="json") | {"corrections": [correction]})
+    corrected = service.evaluate(corrected_request)
+    verified_request = PARequest.model_validate(
+        corrected_request.model_dump(mode="json")
+        | {
+            "fact_verifications": {
+                result.key: {
+                    "state": "HUMAN_VERIFIED",
+                    "reviewer": "Synthetic correction verifier (fixture only)",
+                    "verified_at": "2026-01-02T00:00:00Z",
+                    "fingerprint": result.verification_fingerprint,
+                }
+                for result in corrected.results
+            },
+        }
+    )
+    verified = service.evaluate(verified_request)
+    text, meta = service.generate_letter(verified)
+    actual_time = meta["generated_timestamp_utc"]
+    meta = meta | {"generated_timestamp_utc": "__TIMESTAMP_UTC__", "letter_hash_sha256_16": "__LETTER_HASH_SHA256_16__"}
+    text = text.replace(actual_time, "__TIMESTAMP_UTC__")
+    full = normalize_evaluation_payload(export_evaluation_payload(verified, letter_text=text, letter_meta=meta))
+    timeline = {
+        "fixture": "Synthetic reviewer correction and verification; no claim of clinical truth or approval.",
+        "transitions": [
+            {
+                "stage": stage,
+                "overall_status": result.overall_status,
+                "submission_readiness": result.submission_readiness,
+                "fact_value": result.facts["back_pain_with_radiculopathy"],
+                "verification_states": {r.key: r.verification.state for r in result.results},
+            }
+            for stage, result in (("original", original), ("corrected", corrected), ("attested", verified))
+        ],
+        "letter": full["letter"],
+    }
+    return {"reviewer-corrected-e2e": timeline, "reviewer-corrected-full-projection": full}
 
 
 def _normalize_audit_trail(audit: Dict[str, Any]) -> Dict[str, Any]:

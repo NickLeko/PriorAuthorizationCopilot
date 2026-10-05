@@ -316,6 +316,20 @@ class RequirementResult(BaseModel):
         return snippets
 
 
+class LetterCorrectionDisclosure(BaseModel):
+    """Renderer metadata only; no comments, note parsing, or decision operators."""
+
+    model_config = ConfigDict(extra="forbid")
+    requirement_key: str
+    effective_value: Any
+    captured_state: Literal["CAPTURED", "MISSING", "NEEDS_REVIEW"]
+    action: str
+    editor: str
+    verifier: Optional[str] = None
+    supporting_date: Optional[str] = None
+    source_spans: List[EvidenceSpan] = Field(default_factory=list)
+
+
 class LetterDraftInput(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
@@ -326,6 +340,7 @@ class LetterDraftInput(BaseModel):
     needs_review_count: int = 0
     results: List[RequirementResult]
     policy_trust_level: PolicyTrustLevel = "demo"
+    correction_disclosures: List[LetterCorrectionDisclosure] = Field(default_factory=list)
 
     @field_validator("met_count", "not_met_count", "not_documented_count", "needs_review_count")
     @classmethod
@@ -653,7 +668,8 @@ class OriginalProposal(BaseModel):
 
         snapshot = json.loads(self.snapshot_json)
         if (
-            type(snapshot) is not dict or set(snapshot) != {"facts", "states", "evidence"}
+            type(snapshot) is not dict
+            or set(snapshot) != {"facts", "states", "evidence"}
             or any(type(snapshot[key]) is not dict for key in ("facts", "states", "evidence"))
             or any(type(spans) is not list for spans in snapshot["evidence"].values())
         ):

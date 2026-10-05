@@ -46,7 +46,7 @@ def build_parser() -> argparse.ArgumentParser:
     evaluate = subparsers.add_parser("evaluate", help="Evaluate one bundled synthetic demo case.")
     evaluation_input = evaluate.add_mutually_exclusive_group(required=True)
     evaluation_input.add_argument("--demo-case", help="Case ID from list-demo-cases.")
-    evaluation_input.add_argument("--request-file", help="JSON PARequest, including any fact_verifications.")
+    evaluation_input.add_argument("--request-file", help="JSON PARequest, including ordered corrections and any fact_verifications.")
     evaluate.add_argument("--verifications-file", help="JSON mapping of requirement keys to human attestations.")
     evaluate.add_argument("--json", action="store_true", help="Emit JSON instead of a text summary.")
     evaluate.add_argument("--store", help="Append this decision and its policy snapshot to a SQLite archive.")

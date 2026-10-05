@@ -1,7 +1,8 @@
 """Deterministic corrections over captured proposals, never clinical truth.
 
 Edits and attestation timestamps are self-reported. Strict temporal ordering
-blocks equal-time verification, not a dishonest caller who backdates an edit.
+is not action separation: one request can supply correction T and verification
+T+1s without backdating. It does not prove distinct reviewers or actual review.
 There is no authentication, persisted workflow, or cross-decision lineage.
 """
 
@@ -36,9 +37,11 @@ def validate_spans(spans, note: str) -> None:
         item = span.model_dump() if hasattr(span, "model_dump") else span
         if (
             set(item) != {"start", "end", "text"}
-            or type(item["start"]) is not int or type(item["end"]) is not int or type(item["text"]) is not str
+            or type(item["start"]) is not int
+            or type(item["end"]) is not int
+            or type(item["text"]) is not str
             or not 0 <= item["start"] < item["end"] <= len(note)
-            or note[item["start"]:item["end"]] != item["text"]
+            or note[item["start"] : item["end"]] != item["text"]
         ):
             raise ValueError("Evidence offsets/text must match the exact submitted note slice.")
 
@@ -57,8 +60,10 @@ def validate_note_evidence(correction: ReviewerCorrection, note: str) -> None:
 def capture_original(facts: dict, evidence: dict) -> OriginalProposal:
     snapshot = {
         "facts": {key: None if value == REVIEW_REQUIRED_FACT else value for key, value in facts.items()},
-        "states": {key: "NEEDS_REVIEW" if value == REVIEW_REQUIRED_FACT else "MISSING" if value is None else "CAPTURED"
-                   for key, value in facts.items()},
+        "states": {
+            key: "NEEDS_REVIEW" if value == REVIEW_REQUIRED_FACT else "MISSING" if value is None else "CAPTURED"
+            for key, value in facts.items()
+        },
         "evidence": evidence,
     }
     return OriginalProposal(snapshot_json=canonical_json(snapshot), content_hash=content_hash(snapshot))
@@ -119,17 +124,25 @@ def materialize(original: OriginalProposal, corrections, note: str, requirement_
 
 
 def input_fingerprint(request, policy, bundle_fingerprint: str, contract_version: str) -> str:
-    return content_hash({
-        "request": request.model_dump(mode="json", exclude={"fact_verifications", "corrections"}),
-        "policy": policy.content_hash, "bundle": bundle_fingerprint, "contract_version": contract_version,
-    })
+    return content_hash(
+        {
+            "request": request.model_dump(mode="json", exclude={"fact_verifications", "corrections"}),
+            "policy": policy.content_hash,
+            "bundle": bundle_fingerprint,
+            "contract_version": contract_version,
+        }
+    )
 
 
 def fact_set_fingerprint(input_hash: str, original: OriginalProposal, corrections, effective: dict) -> str:
-    return content_hash({
-        "input_fingerprint": input_hash, "original_snapshot_hash": original.content_hash,
-        "corrections": [event.model_dump(mode="json") for event in corrections], "effective": effective,
-    })
+    return content_hash(
+        {
+            "input_fingerprint": input_hash,
+            "original_snapshot_hash": original.content_hash,
+            "corrections": [event.model_dump(mode="json") for event in corrections],
+            "effective": effective,
+        }
+    )
 
 
 def verification_fingerprint(fact_set_hash: str, key: str) -> str:
@@ -145,8 +158,7 @@ def validate_attestation(attestation, expected_fingerprint: str, corrections) ->
 
 
 def evaluator_facts(effective: dict) -> dict:
-    return {key: REVIEW_REQUIRED_FACT if effective["states"][key] == "NEEDS_REVIEW" else value
-            for key, value in effective["facts"].items()}
+    return {key: REVIEW_REQUIRED_FACT if effective["states"][key] == "NEEDS_REVIEW" else value for key, value in effective["facts"].items()}
 
 
 def validate_v2_result(result) -> None:

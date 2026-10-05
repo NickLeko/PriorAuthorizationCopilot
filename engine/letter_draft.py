@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 import re
 from dataclasses import dataclass
 from datetime import datetime, timezone
@@ -251,7 +252,7 @@ def draft_letter(
             "The letter could not be generated due to input validation errors:\n" + "\n".join([f"- {r}" for r in blocked_reasons]) + "\n"
         )
         meta = LetterMeta(
-            letter_version="1.2",
+            letter_version="2.0",
             generated_timestamp_utc=ts,
             overall_status="UNKNOWN",
             letter_type=letter_type,
@@ -283,6 +284,7 @@ def draft_letter(
     trust_line = _policy_trust_line(policy_trust_level)
     if trust_line:
         header_lines.append(trust_line)
+    header_lines.append("Supporting dates attached to requirement facts are not checked for recency or ordering.")
 
     # Summary framing (administrative only)
     if letter_type == "missing_info_request" and draft_input.not_documented_count > 0:
@@ -356,10 +358,30 @@ def draft_letter(
     # Track unique, non-empty snippets actually included
     cited_snips_unique: List[str] = []
     cited_seen = set()
+    disclosures = {item.requirement_key: item for item in draft_input.correction_disclosures}
 
     for r in draft_input.results:
         req_lines.append(f"- {r.label} ({r.key}): {r.status}")
         req_lines.append(f"  Reason: {r.reason}")
+
+        disclosure = disclosures.get(r.key)
+        if disclosure is not None:
+            req_lines.append("  Reviewer-supplied requirement fact; source-located correction, not proof of semantic support.")
+            req_lines.append(
+                f"  Effective value: {json.dumps(disclosure.effective_value, ensure_ascii=False)} ({disclosure.captured_state})"
+            )
+            req_lines.append(f"  Correction action: {disclosure.action}")
+            req_lines.append(f"  Editor (self-reported): {disclosure.editor}")
+            req_lines.append(f"  Verifier (self-reported): {disclosure.verifier or 'none'}; {r.verification.state}")
+            if disclosure.supporting_date is not None:
+                req_lines.append(f"  Supporting date only: {disclosure.supporting_date}")
+            for span in disclosure.source_spans:
+                req_lines.append(f'  Source quotation [{span.start}:{span.end}]: "{span.text}"')
+                if span.text not in cited_seen:
+                    cited_seen.add(span.text)
+                    cited_snips_unique.append(span.text)
+            if not disclosure.source_spans:
+                req_lines.append("  Source quotation: none; reviewer marked the fact missing or requiring review.")
 
         if r.evidence_snippets:
             req_lines.append("  Evidence:")
@@ -413,7 +435,7 @@ def draft_letter(
             "DRAFT_BLOCKED\n\nThe letter was blocked due to prohibited language:\n" + "\n".join([f"- {r}" for r in blocked_reasons]) + "\n"
         )
         meta = LetterMeta(
-            letter_version="1.2",
+            letter_version="2.0",
             generated_timestamp_utc=ts,
             overall_status=overall,
             letter_type=letter_type,
@@ -427,7 +449,7 @@ def draft_letter(
         return text, meta.__dict__
 
     meta = LetterMeta(
-        letter_version="1.2",
+        letter_version="2.0",
         generated_timestamp_utc=ts,
         overall_status=overall,
         letter_type=letter_type,

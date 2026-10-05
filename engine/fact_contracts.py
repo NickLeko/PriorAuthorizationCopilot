@@ -9,7 +9,8 @@ such false values are excluded from reviewer entries, not interpreted as missing
 DatePresence.value is the boolean consumed by the existing operator. Its optional
 ISO date is supporting detail only: it is never evaluated for recency or ordering.
 Validation returns the original value without coercion, normalization or parsing
-into a different representation. This module is not wired into the runtime.
+into a different representation. The correction engine validates reviewer entries
+against these declarations; evaluation operators are unchanged.
 """
 
 from __future__ import annotations
@@ -92,46 +93,61 @@ FACT_CONTRACTS: Mapping[str, FactContract] = MappingProxyType(
         contract.requirement_key: contract
         for contract in (
             FactContract(
-                "back_pain_with_radiculopathy", "boolean",
+                "back_pain_with_radiculopathy",
+                "boolean",
                 "True: patient back pain and radiculopathy are documented together affirmatively. "
                 "False: at least one is explicitly negated in the paired documentation; not missing documentation.",
-                extractor_emittable=(True, False), reviewer_enterable=(True, False),
+                extractor_emittable=(True, False),
+                reviewer_enterable=(True, False),
             ),
             FactContract(
-                "objective_motor_or_reflex_change_in_root_distribution", "boolean",
+                "objective_motor_or_reflex_change_in_root_distribution",
+                "boolean",
                 "True: objective motor weakness or a reflex change is documented in a named nerve-root distribution. "
                 "False: the documented finding is normal or explicitly denied in that distribution; not missing documentation.",
-                extractor_emittable=(True, False), reviewer_enterable=(True, False),
+                extractor_emittable=(True, False),
+                reviewer_enterable=(True, False),
             ),
             FactContract(
-                "cpb_0236_conservative_therapy_weeks", "duration_weeks",
-                "Nonnegative integer weeks of the documented CPB 0236 conservative-therapy course; not symptom duration.", unit="weeks",
+                "cpb_0236_conservative_therapy_weeks",
+                "duration_weeks",
+                "Nonnegative integer weeks of the documented CPB 0236 conservative-therapy course; not symptom duration.",
+                unit="weeks",
             ),
             FactContract(
-                "cpb_0236_conservative_therapy_no_improvement", "boolean",
+                "cpb_0236_conservative_therapy_no_improvement",
+                "boolean",
                 "True: no, minimal, little, or insufficient improvement is documented for the linked conservative-therapy course. "
                 "False: substantial, significant, meaningful, or good improvement, or symptom resolution, is documented for that course.",
-                extractor_emittable=(True, False), reviewer_enterable=(True, False),
+                extractor_emittable=(True, False),
+                reviewer_enterable=(True, False),
             ),
             FactContract(
-                "conservative_therapy_weeks", "duration_weeks",
-                "Nonnegative integer weeks explicitly attached to conservative therapy, not symptom duration.", unit="weeks",
+                "conservative_therapy_weeks",
+                "duration_weeks",
+                "Nonnegative integer weeks explicitly attached to conservative therapy, not symptom duration.",
+                unit="weeks",
             ),
             FactContract(
-                "symptom_duration_weeks", "duration_weeks",
+                "symptom_duration_weeks",
+                "duration_weeks",
                 "Nonnegative integer weeks of documented symptoms, not treatment duration. "
-                "The existing extractor represents a documented month as four weeks; corrections must already be in weeks.", unit="weeks",
+                "The existing extractor represents a documented month as four weeks; corrections must already be in weeks.",
+                unit="weeks",
             ),
             # extract.py:757-760, 803-813: explicit denial also becomes public True.
             FactContract(
-                "neuro_red_flags_documented", "boolean",
+                "neuro_red_flags_documented",
+                "boolean",
                 "True: neurological red flags are explicitly addressed, whether present or denied; it does not mean red flags are present. "
                 "False: AMBIGUOUS; the public extractor emits True or a missing/review state, never False. "
                 "Do not reinterpret False as absent red flags or missing documentation.",
-                extractor_emittable=(True,), reviewer_enterable=(True,),
+                extractor_emittable=(True,),
+                reviewer_enterable=(True,),
             ),
             FactContract(
-                "prior_imaging_result", "enum",
+                "prior_imaging_result",
+                "enum",
                 "none: no prior imaging is documented. normal: a normal, unremarkable, or no-acute-findings result is documented. "
                 "negative: an abnormal finding is explicitly negated. inconclusive: the result is indeterminate, unclear, unknown, "
                 "or not specified. abnormal: an abnormal finding is documented. unrecognized: imaging-result language is present "
@@ -141,30 +157,38 @@ FACT_CONTRACTS: Mapping[str, FactContract] = MappingProxyType(
             ),
             # extract.py:887-892, 921-930: False is explicit denial, not missingness.
             FactContract(
-                "mechanical_symptoms_documented", "boolean",
+                "mechanical_symptoms_documented",
+                "boolean",
                 "True: positive mechanical symptoms such as locking, catching, buckling, or instability are documented. "
                 "False: mechanical symptoms are explicitly denied or described as absent; not missing documentation.",
-                extractor_emittable=(True, False), reviewer_enterable=(True, False),
+                extractor_emittable=(True, False),
+                reviewer_enterable=(True, False),
             ),
             FactContract(
-                "osa_diagnosis", "boolean",
+                "osa_diagnosis",
+                "boolean",
                 "True: an affirmative patient OSA diagnosis is documented. False: OSA is explicitly negated in the documentation. "
                 "The extractor represents a negative-only mention as MISSING, not public False.",
-                extractor_emittable=(True,), reviewer_enterable=(True, False),
+                extractor_emittable=(True,),
+                reviewer_enterable=(True, False),
             ),
             FactContract(
-                "sleep_study_date", "date_presence",
+                "sleep_study_date",
+                "date_presence",
                 "True: a completed sleep study is documented; scheduled, ordered, or pending studies do not count as presence. "
                 "An optional ISO date is supporting detail only and is never checked for recency or ordering. "
                 "False: AMBIGUOUS; the extractor uses missing/review states rather than False and does not define its meaning.",
-                extractor_emittable=(True,), reviewer_enterable=(True,),
+                extractor_emittable=(True,),
+                reviewer_enterable=(True,),
             ),
             # extract.py:989-1015: missing numeric AHI/RDI becomes None, never False.
             FactContract(
-                "ahi_documented", "boolean",
+                "ahi_documented",
+                "boolean",
                 "True: a numeric AHI or RDI value is documented; this boolean is not the measurement or its clinical interpretation. "
                 "False: AMBIGUOUS; absent or explicitly missing measurements become MISSING, never public False.",
-                extractor_emittable=(True,), reviewer_enterable=(True,),
+                extractor_emittable=(True,),
+                reviewer_enterable=(True,),
             ),
         )
     }
@@ -179,16 +203,19 @@ def get_fact_contract(requirement_key: str) -> FactContract:
 
 
 def validate_fact_value(
-    contract: FactContract, candidate: Any, *, vocabulary: Literal["extractor_emittable", "reviewer_enterable"] = "reviewer_enterable",
+    contract: FactContract,
+    candidate: Any,
+    *,
+    vocabulary: Literal["extractor_emittable", "reviewer_enterable"] = "reviewer_enterable",
 ) -> Any:
     """Validate a CAPTURED value; return it unchanged or raise FactContractError.
 
-State markers (including None and the extractor's internal review sentinel) are
-not CAPTURED values. State permissions are declared separately on the contract.
-An integer-valued float is still not the integer representation of week duration.
-Reviewer entries are the default; conformance checks explicitly select extractor
-outputs. This selects a representation vocabulary, never a policy passing set.
-"""
+    State markers (including None and the extractor's internal review sentinel) are
+    not CAPTURED values. State permissions are declared separately on the contract.
+    An integer-valued float is still not the integer representation of week duration.
+    Reviewer entries are the default; conformance checks explicitly select extractor
+    outputs. This selects a representation vocabulary, never a policy passing set.
+    """
     key = contract.requirement_key
     if vocabulary not in {"extractor_emittable", "reviewer_enterable"}:
         raise FactContractError(key, "unknown_vocabulary")
@@ -232,22 +259,30 @@ outputs. This selects a representation vocabulary, never a policy passing set.
 def check_policy_compatibility(requirements: Iterable[dict[str, Any] | RequirementDefinition]) -> None:
     """Check declared contracts, not policy satisfaction or source semantics.
 
-Reuse policies.create_policy for operator/type validation and
-policies.facts_for_policy for captured representation compatibility.
-Policies do not declare units; the duration representation fixes them to weeks.
-"""
+    Reuse policies.create_policy for operator/type validation and
+    policies.facts_for_policy for captured representation compatibility.
+    Policies do not declare units; the duration representation fixes them to weeks.
+    """
     for requirement in requirements:
         raw = requirement.model_dump(exclude_none=True) if isinstance(requirement, RequirementDefinition) else requirement
         contract = get_fact_contract(raw["key"])
         # This single-requirement snapshot is only an in-memory compatibility
         # probe, never a runtime or archived policy.
         policy = create_policy(
-            policy_id="fact-contract-compatibility", version_id="probe", effective_date="2000-01-01",
-            payer="contract-check", procedure_code="MRI_LUMBAR", supported_sites=["outpatient"], requirements=[raw],
+            policy_id="fact-contract-compatibility",
+            version_id="probe",
+            effective_date="2000-01-01",
+            payer="contract-check",
+            procedure_code="MRI_LUMBAR",
+            supported_sites=["outpatient"],
+            requirements=[raw],
         )
         probe = (
-            contract.extractor_emittable[0] if contract.fact_kind == "enum"
-            else 0 if contract.fact_kind in {"duration_weeks", "numeric"} else True
+            contract.extractor_emittable[0]
+            if contract.fact_kind == "enum"
+            else 0
+            if contract.fact_kind in {"duration_weeks", "numeric"}
+            else True
         )
         _, incompatible = facts_for_policy({contract.requirement_key: probe}, policy)
         if incompatible:

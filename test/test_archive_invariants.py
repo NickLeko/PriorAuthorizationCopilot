@@ -27,8 +27,15 @@ def set_status(payload, status, readiness):
 def v15_payload(proposal):
     """Exercise genuine historical shape, not a downgraded v2 envelope."""
     payload = proposal.model_dump(mode="json")
-    for key in ("original_snapshot", "bundle_fingerprint", "contract_version", "input_fingerprint", "fact_set_fingerprint",
-                "uses_reviewer_corrections", "corrected_requirement_keys"):
+    for key in (
+        "original_snapshot",
+        "bundle_fingerprint",
+        "contract_version",
+        "input_fingerprint",
+        "fact_set_fingerprint",
+        "uses_reviewer_corrections",
+        "corrected_requirement_keys",
+    ):
         payload.pop(key)
     for audit in (payload["audit_trail"], payload["report"]["audit_trail"]):
         audit.pop("input_fingerprint")

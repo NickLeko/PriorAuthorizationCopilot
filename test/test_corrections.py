@@ -1,4 +1,5 @@
 import json
+import time
 from copy import deepcopy
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
@@ -34,24 +35,42 @@ def request(note=NOTE, procedure="MRI_LUMBAR", events=()):
 
 def event(note=NOTE, key=THERAPY_KEY, value=8, **overrides):
     payload = dict(
-        requirement_key=key, action="SET_VALUE", value=value, reason="incorrect_value",
-        editor="Self-reported test editor", edited_at=EDITED_AT.isoformat(), note_hash=note_hash(note),
+        requirement_key=key,
+        action="SET_VALUE",
+        value=value,
+        reason="incorrect_value",
+        editor="Self-reported test editor",
+        edited_at=EDITED_AT.isoformat(),
+        note_hash=note_hash(note),
         evidence_spans=[{"start": 0, "end": len(note), "text": note}],
     )
     return payload | overrides
 
 
 def nonvalue_event(key, action, **overrides):
-    return dict(requirement_key=key, action=action, reason="restore" if action == "RESTORE_ORIGINAL" else "withdrawal",
-                editor="Self-reported test editor", edited_at=EDITED_AT.isoformat()) | overrides
+    return (
+        dict(
+            requirement_key=key,
+            action=action,
+            reason="restore" if action == "RESTORE_ORIGINAL" else "withdrawal",
+            editor="Self-reported test editor",
+            edited_at=EDITED_AT.isoformat(),
+        )
+        | overrides
+    )
 
 
 def insert_history(store, result, payload, decision_id="history"):
     store.add_policy(result.policy_version)
     store.connection.execute(
         "INSERT INTO decisions VALUES (?, ?, ?, ?, ?)",
-        (decision_id, result.policy_version.policy_id, result.policy_version.version_id, canonical_json(payload),
-         content_hash({"decision_id": decision_id, "evaluation": payload})),
+        (
+            decision_id,
+            result.policy_version.policy_id,
+            result.policy_version.version_id,
+            canonical_json(payload),
+            content_hash({"decision_id": decision_id, "evaluation": payload}),
+        ),
     )
     store.connection.commit()
 
@@ -59,11 +78,22 @@ def insert_history(store, result, payload, decision_id="history"):
 @pytest.mark.parametrize(
     "key,value",
     [
-        ("osa_diagnosis", "false"), ("osa_diagnosis", "true"), ("osa_diagnosis", 1),
-        (THERAPY_KEY, "8"), (THERAPY_KEY, True), (THERAPY_KEY, -1), (THERAPY_KEY, 8.0), (THERAPY_KEY, 8.5),
-        (THERAPY_KEY, float("nan")), (THERAPY_KEY, float("inf")), (THERAPY_KEY, -float("inf")),
-        ("prior_imaging_result", "edema"), ("prior_imaging_result", "unrecognized"),
-        ("neuro_red_flags_documented", False), ("ahi_documented", False), ("sleep_study_date", False),
+        ("osa_diagnosis", "false"),
+        ("osa_diagnosis", "true"),
+        ("osa_diagnosis", 1),
+        (THERAPY_KEY, "8"),
+        (THERAPY_KEY, True),
+        (THERAPY_KEY, -1),
+        (THERAPY_KEY, 8.0),
+        (THERAPY_KEY, 8.5),
+        (THERAPY_KEY, float("nan")),
+        (THERAPY_KEY, float("inf")),
+        (THERAPY_KEY, -float("inf")),
+        ("prior_imaging_result", "edema"),
+        ("prior_imaging_result", "unrecognized"),
+        ("neuro_red_flags_documented", False),
+        ("ahi_documented", False),
+        ("sleep_study_date", False),
         ("sleep_study_date", {"value": True, "supporting_date": "2023-02-29"}),
         ("sleep_study_date", {"value": "true", "supporting_date": "2024-02-29"}),
         ("unknown_requirement", True),
@@ -104,9 +134,18 @@ def test_unicode_spans_use_original_code_points_not_lowercase_or_utf8_offsets():
     note = "😀 İ note. " + NOTE
     start = note.index("NSAIDs")
     quote = note[start:]
-    corrected = ReadinessService().evaluate(request(note, events=[event(
-        note, value=9, evidence_spans=[{"start": start, "end": len(note), "text": quote}],
-    )]))
+    corrected = ReadinessService().evaluate(
+        request(
+            note,
+            events=[
+                event(
+                    note,
+                    value=9,
+                    evidence_spans=[{"start": start, "end": len(note), "text": quote}],
+                )
+            ],
+        )
+    )
     assert corrected.facts[THERAPY_KEY] == 9
     assert corrected.evidence_map[THERAPY_KEY][0].start == start
     assert corrected.original_snapshot.content["facts"][THERAPY_KEY] == 8
@@ -139,7 +178,8 @@ def test_explicit_states_apply_without_reinterpreting_original(action, expected)
     patch = nonvalue_event(THERAPY_KEY, action)
     if action == "SET_MISSING":
         patch["document_review"] = {
-            "note_hash": note_hash(NOTE), "proposal_spans": original.original_snapshot.content["evidence"][THERAPY_KEY],
+            "note_hash": note_hash(NOTE),
+            "proposal_spans": original.original_snapshot.content["evidence"][THERAPY_KEY],
         }
     result = service.evaluate(request(events=[patch]))
     assert result.overall_status == expected
@@ -155,16 +195,23 @@ def test_missing_requires_offending_proposal_span_where_one_exists():
 
 
 def test_missing_review_rejects_valid_quote_that_is_not_the_offending_proposal():
-    patch = nonvalue_event(THERAPY_KEY, "SET_MISSING", document_review={
-        "note_hash": note_hash(NOTE), "proposal_spans": [{"start": 0, "end": 3, "text": "Low"}],
-    })
+    patch = nonvalue_event(
+        THERAPY_KEY,
+        "SET_MISSING",
+        document_review={
+            "note_hash": note_hash(NOTE),
+            "proposal_spans": [{"start": 0, "end": 3, "text": "Low"}],
+        },
+    )
     with pytest.raises(InvalidRequestError, match="offending proposal"):
         ReadinessService().evaluate(request(events=[patch]))
 
 
 def test_failing_correction_and_original_negation_error():
-    note = ("Patient does not have low back pain with radiculopathy. Right L5 distribution: strength 4/5. "
-            "NSAIDs for 8 weeks with no improvement.")
+    note = (
+        "Patient does not have low back pain with radiculopathy. Right L5 distribution: strength 4/5. "
+        "NSAIDs for 8 weeks with no improvement."
+    )
     service = ReadinessService()
     original = service.evaluate(request(note))
     assert original.facts["back_pain_with_radiculopathy"] is True  # Known drafting error is not rebuilt.
@@ -270,12 +317,15 @@ def test_equal_or_earlier_attestation_time_is_not_self_verification(delta):
         service.evaluate(PARequest.model_validate(payload))
 
 
-def test_self_reported_timestamps_cannot_prove_separate_actions_or_people():
-    # Deliberate limitation: a caller can compute public hashes offline, backdate
-    # an edit, and supply a later attestation in ONE call. No workflow/authentication
-    # claim is made; the mechanism enforces ordering of the supplied timestamps only.
+def test_self_reported_timestamp_ordering_is_not_action_separation():
+    # Self-reported timestamp ordering is not action separation. A single
+    # corrected request with correction at T and attestation at T+1s passes;
+    # no backdating is required. Compute public hashes offline and wait for
+    # the real clock so both timestamps are nonfuture when submitted together.
     service = ReadinessService()
-    corrected_request = request(events=[event()])
+    edited_at = datetime.now(timezone.utc)
+    verified_at = edited_at + timedelta(seconds=1)
+    corrected_request = request(events=[event(edited_at=edited_at.isoformat())])
     policy = service.evaluate(request()).policy_version
     original = capture_original(*extract_facts(NOTE))
     effective = materialize(original, corrected_request.corrections, NOTE, [item["key"] for item in policy.requirements])
@@ -283,16 +333,31 @@ def test_self_reported_timestamps_cannot_prove_separate_actions_or_people():
     fact_hash = fact_set_fingerprint(input_hash, original, corrected_request.corrections, effective)
     payload = corrected_request.model_dump(mode="json")
     payload["fact_verifications"] = {
-        item["key"]: {"state": "HUMAN_VERIFIED", "reviewer": "Same self-reported editor",
-                      "verified_at": (EDITED_AT + timedelta(seconds=1)).isoformat(),
-                      "fingerprint": verification_fingerprint(fact_hash, item["key"])}
+        item["key"]: {
+            "state": "HUMAN_VERIFIED",
+            "reviewer": "Same self-reported editor",
+            "verified_at": verified_at.isoformat(),
+            "fingerprint": verification_fingerprint(fact_hash, item["key"]),
+        }
         for item in policy.requirements
     }
+    time.sleep(max(0, (verified_at - datetime.now(timezone.utc)).total_seconds()))
     assert service.evaluate(PARequest.model_validate(payload)).overall_status == "READY"
 
 
-@pytest.mark.parametrize("field", ["effective_facts", "facts", "original_snapshot", "overall_status", "rule_reasons",
-                                   "uses_reviewer_corrections", "corrected_requirement_keys", "fact_set_fingerprint"])
+@pytest.mark.parametrize(
+    "field",
+    [
+        "effective_facts",
+        "facts",
+        "original_snapshot",
+        "overall_status",
+        "rule_reasons",
+        "uses_reviewer_corrections",
+        "corrected_requirement_keys",
+        "fact_set_fingerprint",
+    ],
+)
 def test_client_cannot_supply_derived_state(field):
     with pytest.raises(ValidationError, match="Extra inputs"):
         PARequest.model_validate(request().model_dump(mode="json") | {field: True})
@@ -332,7 +397,7 @@ def test_archive_rejects_forged_corrected_records(tmp_path, mode):
             store.record(forged, "forged")
 
 
-def test_corrected_archive_is_viewable_but_not_replayable_and_letters_refuse(tmp_path):
+def test_corrected_archive_is_viewable_but_not_replayable_and_letters_disclose(tmp_path):
     service = ReadinessService()
     corrected = service.evaluate(attest(service.evaluate(request(events=[event(value=9)]))))
     with DecisionStore(tmp_path / "archive.sqlite") as store:
@@ -345,12 +410,15 @@ def test_corrected_archive_is_viewable_but_not_replayable_and_letters_refuse(tmp
         with pytest.raises(ValueError, match="viewable but not replayable"):
             replay_decision(loaded, loaded.policy_version)
         for kind in ("submission_cover_letter", "missing_info_request", "appeal_template"):
-            with pytest.raises(InvalidRequestError, match="not yet supported"):
-                service.generate_letter(loaded, kind)
+            text, meta = service.generate_letter(loaded, kind)
+            assert not meta["draft_blocked"]
+            assert "Reviewer-supplied requirement fact" in text
+            assert "Effective value: 9" in text
 
 
 def test_v15_reads_are_unchanged_and_uncorrected_v2_replay_has_parity(tmp_path):
-    old_payload = json.loads(Path("docs/artifacts/MRI-01-complete.json").read_text())
+    # Frozen verbatim from v1.6.1; current documentation artifacts are v2.
+    old_payload = json.loads(Path("test/fixtures/v1.5/MRI-01-complete.json").read_text())
     old_payload.pop("letter")  # Export-only attachment was never part of the v1.5 archive schema.
     old = EvaluationResultV15.model_validate(old_payload)
     assert old.model_dump(mode="json") == old_payload
@@ -418,11 +486,13 @@ def test_nonvalue_actions_reject_even_explicit_null_value(action):
         request(events=[patch])
 
 
-def test_restored_decision_still_refuses_letters():
+def test_restored_decision_still_discloses_correction_history_in_letters():
     service = ReadinessService()
     restored = service.evaluate(request(events=[event(), nonvalue_event(THERAPY_KEY, "RESTORE_ORIGINAL")]))
-    with pytest.raises(InvalidRequestError, match="not yet supported"):
-        service.generate_letter(restored)
+    text, meta = service.generate_letter(restored)
+    assert not meta["draft_blocked"]
+    assert "Reviewer-supplied requirement fact" in text
+    assert "RESTORE_ORIGINAL" in text
 
 
 def test_acceptance_projection_keeps_original_snapshot_fingerprint_without_hiding_corrected_decisions():
