@@ -1,8 +1,17 @@
 # Safety And Scope
 
-v2.0.0 permits typed, source-located reviewer corrections over retained original proposals. Exact quotations and hashes establish location integrity, not semantic support: human misreading of negation or borrowed qualifiers remains a risk. All effective requirement facts must pass and be HUMAN_VERIFIED before READY; correction does not imply verification. The mechanism is self-reported timestamp ordering, not action separation, distinct reviewers, or proof of review. A single correction-T/attestation-T+1s request can pass without backdating.
+## Correction Limits
 
-Letters disclose reviewer-supplied facts and self-reported identities; audit comments do not enter letter reasoning. Supporting dates are not checked for recency or ordering. Corrected decisions are viewable, not replayable. No authentication, multi-user workflow, broader procedure coverage, extraction changes, cross-policy correction replay, revision lineage, or correction metrics framework is added. Evaluation remains deterministic with no ontology, LLM or RAG in the decision path; outputs are administrative evaluations, never clinical truth or coverage decisions.
+v2.0.0 permits typed reviewer corrections over retained original proposals. The limits below apply to every surface:
+
+- Corrections are source-located: exact quotations and hashes establish location integrity, not semantic support. Human misreading of negation or borrowed qualifiers remains a risk; corrections do not establish clinical truth or coverage.
+- Reviewer identity remains self-reported. The mechanism enforces self-reported timestamp ordering, not action separation, distinct reviewers, or proof of review. A single request with correction at T and attestation at T+1s can pass without backdating. Correction does not imply verification: all effective requirement facts must pass and be HUMAN_VERIFIED before READY.
+- Corrected decisions are viewable, not replayable, including after RESTORE_ORIGINAL or restoration of an original value.
+- Supporting dates attached to requirement facts are not checked for recency or ordering.
+- Each SET_VALUE evidence span is limited to 300 Python Unicode characters. Multiple spans are allowed. Overlength spans are rejected, never truncated; letters retain the full exact quotation.
+- Letters disclose reviewer-supplied facts and self-reported identities; audit comments do not enter letter reasoning. Structured exports retain original proposals and the full ordered correction list.
+
+No authentication, multi-user workflow, broader procedure coverage, extraction changes, cross-policy correction replay, revision lineage, or correction metrics framework is added. Evaluation remains deterministic with no ontology, LLM or RAG in the decision path; outputs are administrative evaluations, never clinical truth or coverage decisions.
 
 ## Product Boundary
 
@@ -10,9 +19,7 @@ Automated extraction is a drafting aid, not a decision gate. The engine applies
 narrow versioned operators to proposed facts and requires human verification of
 every requirement fact before READY. All-MET proposals without those attestations
 return PENDING_VERIFICATION. v1.4.0 over-trusted extraction; known negation,
-temporality and attribution failures remain in v1.5.0. Source spans now guarantee
-exact original-note offsets/text, not semantic support. Self-reported verification
-identity does not establish that a person actually checked the record.
+temporality and attribution failures remain in v1.5.0. Source spans preserve exact original-note offsets/text.
 
 It does not:
 

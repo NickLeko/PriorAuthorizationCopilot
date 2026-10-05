@@ -1,8 +1,8 @@
 # Letter Drafting Contract v2.0
 
-Corrected requirements are disclosed as reviewer-supplied, with effective value/state, correction action, exact source quotation and self-reported editor/verifier. Corrections are source-located; their quotations do not prove semantic support. Human misreading of negation or borrowed qualifiers remains a risk. Audit comments are excluded from letter inputs and reasoning. Supporting dates attached to requirement facts are not checked for recency or ordering; that statement appears in every standard letter.
+Corrected requirements are disclosed as reviewer-supplied, with effective value/state, correction action, exact source quotation and self-reported editor/verifier. SET_VALUE quotations retain the full exact span, bounded to 300 characters per span by correction validation; multiple spans remain allowed. Audit comments are excluded from letter inputs and reasoning. Every standard letter states: "Supporting dates attached to requirement facts are not checked for recency or ordering."
 
-The verification mechanism is self-reported timestamp ordering, not action separation, distinct reviewers, or proof of review. Structured exports retain the immutable original proposal and full ordered correction list, including audit comments. Corrected decisions are viewable, not replayable, even after RESTORE_ORIGINAL. Letters render supplied administrative evaluations, never clinical truth or coverage decisions.
+Structured exports retain the immutable original proposal and full ordered correction list, including audit comments. Letters render supplied administrative evaluations. See the canonical [correction limits](docs/safety_and_scope.md#correction-limits).
 
 Project: Prior Authorization Readiness Copilot  
 Scope: Write-only letter drafting (no extraction or criterion re-evaluation; derives a display status from supplied results without mutating them)

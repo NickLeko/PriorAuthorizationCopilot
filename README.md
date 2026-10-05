@@ -2,9 +2,7 @@
 
 This self-directed prototype demonstrates deterministic prior-authorization documentation review, human verification, and policy-change replay. It uses synthetic cases and narrow rules; it does not authorize care or predict payer approval.
 
-v2.0.0 adds typed, source-located reviewer corrections for wrong or missed requirement facts. Streamlit shows each fact contract's meaning, the original proposal and the effective value. Applying a correction clears all attestations and letters; an otherwise passing fact set remains `PENDING_VERIFICATION` until reviewed and attested again. Exact quotations locate text but do not prove its meaning. Human misreading of negation or borrowed qualifiers remains a risk.
-
-The engine enforces self-reported timestamp ordering, not action separation, distinct reviewers, or proof of review. A single request containing a correction at T and an attestation at T+1s can pass. Corrected decisions are viewable, not replayable, including after restoration of an original value. Letters disclose reviewer-supplied facts, quotations, and self-reported editor/verifier identities; audit comments are excluded from letter reasoning. Supporting dates are never checked for recency or ordering.
+v2.0.0 adds typed, source-located reviewer corrections for wrong or missed facts, with contract meanings and original/effective values shown in Streamlit. Applying a correction clears attestations and letters; passing facts remain `PENDING_VERIFICATION` until reviewed and attested again. Letters disclose reviewer-supplied facts, quotations and self-reported identities, excluding audit comments from reasoning. See the canonical [correction limits](docs/safety_and_scope.md#correction-limits).
 
 The lumbar MRI pathway is the only live-monitored source. After its monthly monitoring window (35 days since the last successful check), a visitor sees a stale warning and must acknowledge it before evaluating that pathway. After all passing facts are human-verified, it can return `READY` with `submission_readiness=false`. This is the governance gate working as designed; acknowledgement does not restore trust.
 

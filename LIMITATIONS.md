@@ -1,12 +1,10 @@
 # Limitations
 
-v2.0.0 adds typed, source-located correction of wrong or missed proposals; it does not improve extraction or prove that a quotation supports the entered fact. Human misreading of negation or borrowed qualifiers remains a risk. Reviewer identity remains self-reported. Timestamp ordering is not action separation, distinct reviewers, or proof of review; one request with correction T and attestation T+1s can pass without backdating. Supporting dates are never checked for recency or ordering. Letters disclose corrections and exclude audit comments from reasoning; structured exports retain proposals and the full correction list. Corrected decisions are viewable, not replayable, including restored originals.
+Typed corrections do not improve extraction; a SET_VALUE quotation is limited to 300 characters per span, with multiple spans allowed. See the canonical [correction limits](docs/safety_and_scope.md#correction-limits).
 
-v1.5.0 treats extraction as a drafting aid. Negation, temporality and attribution
-errors remain, including negated lumbar diagnoses returning true. All-MET
-proposals require per-fact human verification before READY; identity is
-self-reported, so this is not a production attestation system. Exact source spans
-guarantee source location, not semantic support. See EXTRACTION_CONTRACT.md.
+Extraction remains a drafting aid. Negation, temporality and attribution errors
+remain, including negated lumbar diagnoses returning true. See
+[extraction guarantees](EXTRACTION_CONTRACT.md).
 
 ## Scope Limits
 

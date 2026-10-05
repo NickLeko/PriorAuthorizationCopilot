@@ -4,7 +4,7 @@
 
 In Results, open a requirement's correction controls and read its meaning beside the original proposal and effective value. Choose only a reviewer-enterable value in the declared units, enter an exact quotation from the displayed evaluated note, and select its occurrence(s). Record a reason and self-reported editor, then apply. SET_MISSING records document review; SET_NEEDS_REVIEW marks ambiguity; RESTORE_ORIGINAL restores the proposal while retaining history. Applying any correction discards prior results, attestations and letters. Review the new UNVERIFIED fact set, then use Record human verification; passing values alone do not produce READY.
 
-Corrections are source-located, not proof of semantic support. Human misreading of negation or borrowed qualifiers remains a risk. The mechanism enforces self-reported timestamp ordering, not action separation, distinct reviewers, or proof of review; one request with correction T and attestation T+1s can pass. Letters disclose reviewer-supplied effective values, quotations and self-reported identities, exclude audit comments, and state that supporting dates are not checked for recency or ordering. Corrected decisions are viewable, not replayable, including restored originals.
+Use quotations of at most 300 characters each; select multiple occurrences or spans as needed. Overlength SET_VALUE spans are rejected without truncation. See the canonical [correction limits](safety_and_scope.md#correction-limits).
 
 This guide is for healthcare product, operations, and technical reviewers who want to understand what this repo does, run a deterministic demo, and inspect the evidence trail.
 

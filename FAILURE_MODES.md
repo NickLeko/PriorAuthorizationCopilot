@@ -1,6 +1,7 @@
 # FAILURE_MODES.md
 
-v2.0.0 risk: source-located corrections can still misread negation or borrow qualifiers from unrelated text. Exact quotations do not prove semantic support. Typed validation and the unchanged HUMAN_VERIFIED gate constrain the administrative workflow; they do not establish clinical truth or coverage. Self-reported timestamp ordering is not action separation, distinct reviewers, or proof of review: a single request with correction T and attestation T+1s can pass without backdating. Changed correction content/order invalidates every attestation; Streamlit clears stale letters when corrections are applied. Letters disclose reviewer-supplied effective values and identities and exclude audit comments. Supporting dates are not checked for recency or ordering. Corrected decisions are viewable, not replayable, even after restoring an original value.
+v2.0.0 mitigation: typed correction validation rejects SET_VALUE spans over 300 characters without truncation. Changed correction content/order invalidates every attestation; Streamlit clears stale results and letters when corrections are applied. See the canonical [correction limits](docs/safety_and_scope.md#correction-limits).
+
 ## Failure Modes, Safety Analysis, and Mitigations
 
 **Project:** Prior Authorization Readiness Copilot  

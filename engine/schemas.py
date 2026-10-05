@@ -94,7 +94,7 @@ class ReviewerCorrection(BaseModel):
 
     @model_validator(mode="after")
     def _validate_event(self):
-        from .corrections import validate_correction_value
+        from .corrections import validate_correction_value, validate_set_value_span_lengths
 
         if not self.editor.strip() or self.requirement_key != self.requirement_key.strip():
             raise ValueError("Correction editor and requirement key must be nonblank.")
@@ -104,6 +104,7 @@ class ReviewerCorrection(BaseModel):
             validate_correction_value(self.requirement_key, self.value)
             if not self.evidence_spans or self.note_hash is None or self.document_review is not None:
                 raise ValueError("SET_VALUE requires quoted evidence and note hash only.")
+            validate_set_value_span_lengths(self.evidence_spans)
         else:
             if "value" in self.model_fields_set or self.evidence_spans or self.note_hash is not None:
                 raise ValueError("Only SET_VALUE may carry a value or quoted evidence.")

@@ -16,6 +16,7 @@ from .policies import canonical_json, content_hash, facts_for_policy
 from .schemas import REVIEW_REQUIRED_FACT, OriginalProposal, ReviewerCorrection
 
 CONTRACT_VERSION = content_hash({key: asdict(contract) for key, contract in FACT_CONTRACTS.items()})
+MAX_SET_VALUE_SPAN_CHARACTERS = 300
 
 
 def note_hash(note: str) -> str:
@@ -48,6 +49,7 @@ def validate_spans(spans, note: str) -> None:
 
 def validate_note_evidence(correction: ReviewerCorrection, note: str) -> None:
     if correction.action == "SET_VALUE":
+        validate_set_value_span_lengths(correction.evidence_spans)
         if correction.note_hash != note_hash(note):
             raise ValueError("Correction note hash does not match submitted note.")
         validate_spans(correction.evidence_spans, note)
@@ -55,6 +57,12 @@ def validate_note_evidence(correction: ReviewerCorrection, note: str) -> None:
         if correction.document_review.note_hash != note_hash(note):
             raise ValueError("Document-review note hash does not match submitted note.")
         validate_spans(correction.document_review.proposal_spans, note)
+
+
+def validate_set_value_span_lengths(spans) -> None:
+    """Reject oversized SET_VALUE quotations; never truncate exact source text."""
+    if any(len(span.text) > MAX_SET_VALUE_SPAN_CHARACTERS for span in spans):
+        raise ValueError("SET_VALUE evidence spans must be at most 300 characters each.")
 
 
 def capture_original(facts: dict, evidence: dict) -> OriginalProposal:

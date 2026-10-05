@@ -4,7 +4,7 @@ Replay retains the frozen deterministic operators. `engine/evaluate.py`,
 `engine/extract.py`, the runtime rule files, and the existing rulebook releases
 are unchanged. There is no language model in evaluation or replay.
 
-v2.0.0 corrected decisions are viewable, not replayable, including RESTORE_ORIGINAL histories. Uncorrected v2 decisions retain replay over captured evidence under an explicit target policy, without re-extraction or transferred attestations. Corrections are source-located and do not prove semantic support; human misreading of negation or borrowed qualifiers remains a risk. Self-reported timestamp ordering is not action separation, distinct reviewers, or proof of review. Supporting dates are not checked for recency or ordering.
+Corrected decisions are excluded from replay, including RESTORE_ORIGINAL histories. Uncorrected v2 decisions retain replay over captured evidence under an explicit target policy, without re-extraction or transferred attestations. See the canonical [correction limits](safety_and_scope.md#correction-limits).
 
 Every service evaluation now embeds a `policy_version` in its result and audit
 trace. The snapshot contains a policy-family identifier, version identifier,
@@ -40,7 +40,7 @@ that lack a policy snapshot and capture states are not guessed into replayable
 history. Re-evaluating an old note now creates a new decision, not a historical
 reconstruction.
 
-New evaluation payloads declare `schema_version: "2.0.0"`. Archive writes recompute correction materialization, validate contract values and exact spans, check input/fact-set fingerprints and derived correction annotations, and reject schema downgrade. The immutable original proposal, ordered corrections and effective facts are retained. READY requires the complete, nonempty
+New evaluation payloads declare `schema_version: "2.0.0"`. Archive writes recompute correction materialization, validate contract values and exact spans (including the 300-character SET_VALUE per-span cap), check input/fact-set fingerprints and derived correction annotations, and reject schema downgrade. The immutable original proposal, ordered corrections and effective facts are retained. READY requires the complete, nonempty
 requirement set to be MET and HUMAN_VERIFIED; submission readiness additionally
 requires verified policy trust. Result, request verification records, report and
 audit copies must agree. This checks stored structure, not historical policy
