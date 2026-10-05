@@ -50,6 +50,7 @@
         }
       ]
     },
+    "fact_set_fingerprint": "75037b8f97290e601466e5efeeac93ed44965db5df3c273f61a3562cffb8f213",
     "fact_verifications": {
       "back_pain_with_radiculopathy": {
         "fingerprint": null,
@@ -90,6 +91,7 @@
       "sleep_study_date": null,
       "symptom_duration_weeks": null
     },
+    "input_fingerprint": "310565c5f3e3d18534aea79a5bc4d194e2e7d6cc5168e20f2a30f5022e543359",
     "invariant_errors": [],
     "metrics": {
       "criteria_met_count": 3,
@@ -173,6 +175,7 @@
       }
     ]
   },
+  "bundle_fingerprint": "f36b9be0bb209bc39960e80ab8b4a804dd9b6fd11054ccaa32332eb7d69586ba",
   "captured_fact_states": {
     "ahi_documented": "MISSING",
     "back_pain_with_radiculopathy": "CAPTURED",
@@ -187,6 +190,7 @@
     "sleep_study_date": "MISSING",
     "symptom_duration_weeks": "MISSING"
   },
+  "contract_version": "6779fd812df9d1fa44d8c17af56bff917d91c0395f00fea78846b643bcdaf74c",
   "evidence_map": {
     "back_pain_with_radiculopathy": [
       {
@@ -224,6 +228,7 @@
       }
     ]
   },
+  "fact_set_fingerprint": "75037b8f97290e601466e5efeeac93ed44965db5df3c273f61a3562cffb8f213",
   "facts": {
     "ahi_documented": null,
     "back_pain_with_radiculopathy": true,
@@ -238,6 +243,7 @@
     "sleep_study_date": null,
     "symptom_duration_weeks": null
   },
+  "input_fingerprint": "310565c5f3e3d18534aea79a5bc4d194e2e7d6cc5168e20f2a30f5022e543359",
   "metrics": {
     "criteria_met_count": 3,
     "criteria_not_met_count": 1,
@@ -248,6 +254,7 @@
     "missing_requirement_count": 0,
     "total_requirements": 4
   },
+  "original_snapshot_fingerprint": "0873fbd3f1a07417cc76545f809a1f769489e6345d9d7ca2c0385e76ce97eb02",
   "overall_status": "NOT_READY",
   "policy_trust_level": "verified",
   "policy_version": {
@@ -341,6 +348,7 @@
           }
         ]
       },
+      "fact_set_fingerprint": "75037b8f97290e601466e5efeeac93ed44965db5df3c273f61a3562cffb8f213",
       "fact_verifications": {
         "back_pain_with_radiculopathy": {
           "fingerprint": null,
@@ -381,6 +389,7 @@
         "sleep_study_date": null,
         "symptom_duration_weeks": null
       },
+      "input_fingerprint": "310565c5f3e3d18534aea79a5bc4d194e2e7d6cc5168e20f2a30f5022e543359",
       "invariant_errors": [],
       "metrics": {
         "criteria_met_count": 3,
@@ -481,7 +490,7 @@
           "state": "UNVERIFIED",
           "verified_at": null
         },
-        "verification_fingerprint": "4e6403244b450f2bca630bf7f48a4f366f8a343669a20560fd5253f45597ffbf"
+        "verification_fingerprint": "6268f2d7b288c4892b3aff6166adec67a078bddfd9fec48ae175dc545ca4bb92"
       },
       {
         "evidence": "Objective motor strength or reflex change documented in a named nerve-root distribution",
@@ -506,7 +515,7 @@
           "state": "UNVERIFIED",
           "verified_at": null
         },
-        "verification_fingerprint": "f3187951fc58624ced59fc7e229140a4c84472ad0b27c14546f474c198dd8707"
+        "verification_fingerprint": "f1fede56da8b8cb1afdf0770eb5da07368ac0a4a4826fc4d4d4f6b1ddff1006f"
       },
       {
         "evidence": "At least 6 weeks of CPB 0236 Footnote 1 conservative therapy documented",
@@ -531,7 +540,7 @@
           "state": "UNVERIFIED",
           "verified_at": null
         },
-        "verification_fingerprint": "f459d60e54eb5fdb0a998c81ec061b6d5e3ef9dc15cecb4bd0d52a9545e8d697"
+        "verification_fingerprint": "b95537e4dff576baea2bb52f1fd6ba2686878db85e639c3d00a180fd8c7897fa"
       },
       {
         "evidence": "Explicit no, minimal, or insufficient improvement after CPB 0236 Footnote 1 conservative therapy",
@@ -556,7 +565,7 @@
           "state": "UNVERIFIED",
           "verified_at": null
         },
-        "verification_fingerprint": "a48d9b7ee3ca157959593e796b01dca4436e07dcdaa72c2c972220531a617058"
+        "verification_fingerprint": "8bc629210b31c21a55ec62accc93ad4de978b23308c291549157ff921ab081f3"
       }
     ],
     "rule_reasons": [
@@ -598,7 +607,7 @@
         "state": "UNVERIFIED",
         "verified_at": null
       },
-      "verification_fingerprint": "4e6403244b450f2bca630bf7f48a4f366f8a343669a20560fd5253f45597ffbf"
+      "verification_fingerprint": "6268f2d7b288c4892b3aff6166adec67a078bddfd9fec48ae175dc545ca4bb92"
     },
     {
       "evidence": "Objective motor strength or reflex change documented in a named nerve-root distribution",
@@ -623,7 +632,7 @@
         "state": "UNVERIFIED",
         "verified_at": null
       },
-      "verification_fingerprint": "f3187951fc58624ced59fc7e229140a4c84472ad0b27c14546f474c198dd8707"
+      "verification_fingerprint": "f1fede56da8b8cb1afdf0770eb5da07368ac0a4a4826fc4d4d4f6b1ddff1006f"
     },
     {
       "evidence": "At least 6 weeks of CPB 0236 Footnote 1 conservative therapy documented",
@@ -648,7 +657,7 @@
         "state": "UNVERIFIED",
         "verified_at": null
       },
-      "verification_fingerprint": "f459d60e54eb5fdb0a998c81ec061b6d5e3ef9dc15cecb4bd0d52a9545e8d697"
+      "verification_fingerprint": "b95537e4dff576baea2bb52f1fd6ba2686878db85e639c3d00a180fd8c7897fa"
     },
     {
       "evidence": "Explicit no, minimal, or insufficient improvement after CPB 0236 Footnote 1 conservative therapy",
@@ -673,13 +682,13 @@
         "state": "UNVERIFIED",
         "verified_at": null
       },
-      "verification_fingerprint": "a48d9b7ee3ca157959593e796b01dca4436e07dcdaa72c2c972220531a617058"
+      "verification_fingerprint": "8bc629210b31c21a55ec62accc93ad4de978b23308c291549157ff921ab081f3"
     }
   ],
   "rule_reasons": [
     "Conservative therapy duration (weeks): NOT_MET \u2014 Documented value (5) below requirement (>= 6.0). Clarify or justify."
   ],
-  "schema_version": "1.5.0",
+  "schema_version": "2.0.0",
   "submission_readiness": false,
   "supported_procedure": {
     "display_name": "MRI Lumbar Spine (no contrast)",

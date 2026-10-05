@@ -31,6 +31,17 @@ def _normalize_audit_trail(audit: Dict[str, Any]) -> Dict[str, Any]:
 
 def normalize_evaluation_payload(payload: Dict[str, Any]) -> Dict[str, Any]:
     normalized = deepcopy(payload)
+    if normalized.get("schema_version", "").startswith("2.") and not normalized["request"].get("corrections"):
+        # Baseline uncorrected goldens compare the unchanged facts/evidence already
+        # present below. The new immutable snapshot envelope is asserted separately
+        # by v2 archive tests; retain its fingerprint in the acceptance projection.
+        original = normalized.pop("original_snapshot")
+        normalized["original_snapshot_fingerprint"] = original["content_hash"]
+        normalized.pop("uses_reviewer_corrections")
+        normalized.pop("corrected_requirement_keys")
+        for audit in (normalized["audit_trail"], normalized["report"]["audit_trail"]):
+            audit.pop("uses_reviewer_corrections")
+            audit.pop("corrected_requirement_keys")
     if isinstance(normalized.get("audit_trail"), dict):
         normalized["audit_trail"] = _normalize_audit_trail(normalized["audit_trail"])
     report = normalized.get("report")

@@ -9,7 +9,7 @@ from cli import main
 from engine.decision_store import DecisionStore
 from engine.policies import canonical_json, content_hash
 from engine.replay import replay_decision
-from engine.schemas import EvaluationResult, LegacyEvaluationRecord, PARequest
+from engine.schemas import EvaluationResult, EvaluationResultV15, LegacyEvaluationRecord, PARequest
 from engine.service import ReadinessService
 
 
@@ -22,6 +22,21 @@ def proposal():
 def set_status(payload, status, readiness):
     for copy in (payload, payload["audit_trail"], payload["report"]["audit_trail"]):
         copy.update(overall_status=status, submission_readiness=readiness)
+
+
+def v15_payload(proposal):
+    """Exercise genuine historical shape, not a downgraded v2 envelope."""
+    payload = proposal.model_dump(mode="json")
+    for key in ("original_snapshot", "bundle_fingerprint", "contract_version", "input_fingerprint", "fact_set_fingerprint",
+                "uses_reviewer_corrections", "corrected_requirement_keys"):
+        payload.pop(key)
+    for audit in (payload["audit_trail"], payload["report"]["audit_trail"]):
+        audit.pop("input_fingerprint")
+        audit.pop("fact_set_fingerprint")
+        audit.pop("uses_reviewer_corrections")
+        audit.pop("corrected_requirement_keys")
+    payload["schema_version"] = "1.5.0"
+    return payload
 
 
 def insert_historical(store, proposal, payload):
@@ -63,7 +78,7 @@ def test_exact_audit_forgery_rejected_by_schema_and_archive_writer(tmp_path, pro
 
 @pytest.mark.parametrize("version", ["1.5.0", "1.10.0", "2.0.0", None])
 def test_modern_archive_reads_reject_forgery(tmp_path, proposal, version):
-    payload = proposal.model_dump(mode="json")
+    payload = proposal.model_dump(mode="json") if version == "2.0.0" else v15_payload(proposal)
     if version is None:
         payload.pop("schema_version")  # Existing unversioned v1.5 records stay strict.
     else:
@@ -147,7 +162,7 @@ def test_borrowed_date_verified_ready_without_submission_readiness_roundtrips(tm
 
 @pytest.mark.parametrize("version", ["1.4.0", None])
 def test_legacy_v14_record_loads_flagged_without_migration(tmp_path, proposal, version, capsys):
-    payload = proposal.model_dump(mode="json")
+    payload = v15_payload(proposal)
     if version is None:
         payload.pop("schema_version")
     else:
@@ -186,9 +201,9 @@ def test_legacy_v14_record_loads_flagged_without_migration(tmp_path, proposal, v
 def test_legacy_version_cannot_relax_new_writes(tmp_path, proposal):
     forged = proposal.model_copy(update={"schema_version": "1.4.0", "overall_status": "READY", "submission_readiness": True})
     with DecisionStore(tmp_path / "archive.sqlite") as store:
-        with pytest.raises(ValidationError, match="READY requires"):
+        with pytest.raises(ValidationError, match="schema_version"):
             store.record(forged)
-        with pytest.raises(ValueError, match="version >= 1.5.0"):
+        with pytest.raises(ValidationError, match="schema_version"):
             store.record(proposal.model_copy(update={"schema_version": "1.4.0"}))
 
 
@@ -196,10 +211,10 @@ def test_current_and_unversioned_valid_records_load_strictly(tmp_path, proposal)
     with DecisionStore(tmp_path / "archive.sqlite") as store:
         store.record(proposal, "current")
         assert store.get_decision("current") == proposal
-        payload = proposal.model_dump(mode="json")
+        payload = v15_payload(proposal)
         payload.pop("schema_version")
         insert_historical(store, proposal, payload)
-        assert store.get_decision("historical") == proposal
+        assert store.get_decision("historical") == EvaluationResultV15.model_validate(v15_payload(proposal))
 
 
 @pytest.mark.parametrize("version", ["invalid", "1.5", "1.x.0"])
@@ -214,7 +229,7 @@ def test_invalid_archive_version_fails_closed(tmp_path, proposal, version):
 @pytest.mark.parametrize("schema_version", ["1.4.0", None])
 @pytest.mark.parametrize("engine_version", ["1.5.0", "1.6.0"])
 def test_modern_engine_version_keeps_reads_strict(tmp_path, proposal, schema_version, engine_version):
-    payload = proposal.model_dump(mode="json") | {"engine_version": engine_version}
+    payload = v15_payload(proposal) | {"engine_version": engine_version}
     if schema_version is None:
         payload.pop("schema_version")
     else:
