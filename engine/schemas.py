@@ -58,7 +58,61 @@ class FactVerification(BaseModel):
         return self
 
 
-class PARequest(BaseModel):
+class CorrectionSpan(BaseModel):
+    """Python Unicode code-point offsets into the submitted note, without coercion."""
+
+    model_config = ConfigDict(extra="forbid", frozen=True)
+    start: int = Field(strict=True, ge=0)
+    end: int = Field(strict=True, gt=0)
+    text: str = Field(strict=True, min_length=1)
+
+    @model_validator(mode="after")
+    def _ordered(self):
+        if self.end <= self.start:
+            raise ValueError("Correction span end must follow start.")
+        return self
+
+
+class DocumentReview(BaseModel):
+    model_config = ConfigDict(extra="forbid", frozen=True)
+    note_hash: str = Field(strict=True, pattern=r"^[0-9a-f]{64}$")
+    proposal_spans: tuple[CorrectionSpan, ...] = ()
+
+
+class ReviewerCorrection(BaseModel):
+    model_config = ConfigDict(extra="forbid", frozen=True)
+    requirement_key: str = Field(strict=True, min_length=1)
+    action: Literal["SET_VALUE", "SET_MISSING", "SET_NEEDS_REVIEW", "RESTORE_ORIGINAL"]
+    value: Any = Field(default=None, exclude_if=lambda value: value is None)
+    reason: Literal["incorrect_value", "missed_documented_fact", "wrong_attribution", "incorrect_citation", "withdrawal", "restore"]
+    editor: str = Field(strict=True, min_length=1)
+    edited_at: datetime
+    comment: Optional[str] = Field(default=None, strict=True, max_length=1000)
+    note_hash: Optional[str] = Field(default=None, strict=True, pattern=r"^[0-9a-f]{64}$")
+    evidence_spans: tuple[CorrectionSpan, ...] = ()
+    document_review: Optional[DocumentReview] = None
+
+    @model_validator(mode="after")
+    def _validate_event(self):
+        from .corrections import validate_correction_value
+
+        if not self.editor.strip() or self.requirement_key != self.requirement_key.strip():
+            raise ValueError("Correction editor and requirement key must be nonblank.")
+        if self.edited_at.tzinfo is None or self.edited_at > datetime.now(timezone.utc):
+            raise ValueError("Correction edited_at must be timezone-aware and not in the future.")
+        if self.action == "SET_VALUE":
+            validate_correction_value(self.requirement_key, self.value)
+            if not self.evidence_spans or self.note_hash is None or self.document_review is not None:
+                raise ValueError("SET_VALUE requires quoted evidence and note hash only.")
+        else:
+            if "value" in self.model_fields_set or self.evidence_spans or self.note_hash is not None:
+                raise ValueError("Only SET_VALUE may carry a value or quoted evidence.")
+            if (self.action == "SET_MISSING") != (self.document_review is not None):
+                raise ValueError("SET_MISSING requires a document-review record; other actions cannot carry one.")
+        return self
+
+
+class PARequestV15(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
     payer: str
@@ -78,6 +132,18 @@ class PARequest(BaseModel):
     @classmethod
     def _ensure_dx_codes_not_none(cls, value: List[str]) -> List[str]:
         return [str(code) for code in value if str(code).strip()]
+
+
+class PARequest(PARequestV15):
+    corrections: List[ReviewerCorrection] = Field(default_factory=list, exclude_if=lambda value: not value)
+
+    @model_validator(mode="after")
+    def _validate_correction_note(self):
+        from .corrections import validate_note_evidence
+
+        for correction in self.corrections:
+            validate_note_evidence(correction, self.note_text)
+        return self
 
 
 class LetterRequestMetadata(BaseModel):
@@ -508,12 +574,12 @@ class ReadinessReport(BaseModel):
         return [str(reason).strip() for reason in value if str(reason).strip()]
 
 
-class EvaluationResult(BaseModel):
+class EvaluationResultV15(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
     schema_version: str = "1.5.0"
     engine_version: Optional[str] = Field(default=None, exclude_if=lambda value: value is None)
-    request: PARequest
+    request: PARequestV15
     policy_version: PolicyVersion
     captured_fact_states: Dict[str, Literal["CAPTURED", "MISSING", "NEEDS_REVIEW"]]
     supported_procedure: SupportedProcedure
@@ -556,7 +622,7 @@ class EvaluationResult(BaseModel):
             self.request.fact_verifications.get(key, FactVerification()) != verification for key, verification in verifications.items()
         ):
             raise ValueError("Request verifications disagree with requirement results.")
-        report_audit = AuditTrace.model_validate(self.report.audit_trail)
+        report_audit = type(self.audit_trail).model_validate(self.report.audit_trail)
         for audit in (self.audit_trail, report_audit):
             if (audit.overall_status, audit.submission_readiness) != (self.overall_status, self.submission_readiness):
                 raise ValueError("Audit status/readiness disagree with top-level result.")
@@ -572,6 +638,61 @@ class EvaluationResult(BaseModel):
         if any(fact == REVIEW_REQUIRED_FACT for fact in value.values()):
             raise ValueError("Internal review-required markers must not appear in public evaluation facts.")
         return value
+
+
+class OriginalProposal(BaseModel):
+    """Canonical immutable snapshot; decoded properties always return fresh copies."""
+
+    model_config = ConfigDict(extra="forbid", frozen=True)
+    snapshot_json: str
+    content_hash: str
+
+    @model_validator(mode="after")
+    def _canonical(self):
+        from .policies import canonical_json, content_hash
+
+        snapshot = json.loads(self.snapshot_json)
+        if (
+            type(snapshot) is not dict or set(snapshot) != {"facts", "states", "evidence"}
+            or any(type(snapshot[key]) is not dict for key in ("facts", "states", "evidence"))
+            or any(type(spans) is not list for spans in snapshot["evidence"].values())
+        ):
+            raise ValueError("Invalid original snapshot structure.")
+        if self.snapshot_json != canonical_json(snapshot) or self.content_hash != content_hash(snapshot):
+            raise ValueError("Original snapshot content hash/canonical representation mismatch.")
+        return self
+
+    @property
+    def content(self):
+        return json.loads(self.snapshot_json)
+
+
+class AuditTraceV2(AuditTrace):
+    input_fingerprint: str
+    fact_set_fingerprint: str
+    uses_reviewer_corrections: bool = Field(default=False, strict=True)
+    corrected_requirement_keys: List[str] = Field(default_factory=list)
+    effective_facts: Optional[Dict[str, Any]] = Field(default=None, exclude_if=lambda value: value is None)
+
+
+class EvaluationResult(EvaluationResultV15):
+    schema_version: str = Field(default="2.0.0", pattern=r"^2\.\d+\.\d+(?:[-+][0-9A-Za-z.-]+)?$")
+    request: PARequest
+    audit_trail: AuditTraceV2
+    original_snapshot: OriginalProposal
+    bundle_fingerprint: str
+    contract_version: str
+    input_fingerprint: str
+    fact_set_fingerprint: str
+    uses_reviewer_corrections: bool = Field(default=False, strict=True)
+    corrected_requirement_keys: List[str] = Field(default_factory=list)
+
+    @model_validator(mode="after")
+    def _v2_consistency(self):
+        from .corrections import validate_v2_result
+
+        validate_v2_result(self)
+        return self
 
 
 class LegacyEvaluationRecord(BaseModel):
