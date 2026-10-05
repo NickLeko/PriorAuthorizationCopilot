@@ -154,7 +154,8 @@ FACT_CONTRACTS: Mapping[str, FactContract] = MappingProxyType(
             ),
             FactContract(
                 "sleep_study_date", "date_presence",
-                "True: dated sleep-study documentation is present; an optional ISO date is supporting detail only. "
+                "True: a completed sleep study is documented; scheduled, ordered, or pending studies do not count as presence. "
+                "An optional ISO date is supporting detail only and is never checked for recency or ordering. "
                 "False: AMBIGUOUS; the extractor uses missing/review states rather than False and does not define its meaning.",
                 extractor_emittable=(True,), reviewer_enterable=(True,),
             ),

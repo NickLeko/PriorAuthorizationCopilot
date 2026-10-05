@@ -105,6 +105,14 @@ def test_meaning_cannot_be_omitted():
         FactContract("test", "boolean")
 
 
+def test_sleep_study_meaning_excludes_incomplete_studies():
+    meaning = get_fact_contract("sleep_study_date").meaning
+    assert "a completed sleep study is documented" in meaning
+    assert "scheduled, ordered, or pending studies do not count as presence" in meaning
+    assert "supporting detail only" in meaning
+    assert "never checked for recency or ordering" in meaning
+
+
 @pytest.mark.parametrize("value", ["none", "normal", "negative", "inconclusive", "abnormal"])
 def test_reviewer_imaging_categories_include_policy_failing_values(value):
     assert validate_fact_value(get_fact_contract("prior_imaging_result"), value) is value
