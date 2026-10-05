@@ -30,11 +30,16 @@ jobs:
       - name: Run pytest
         run: pytest -q
 
-      - name: Generate demo artifacts
-        run: python -m scripts.generate_artifacts
-
-      - name: Generate golden outputs
-        run: python -m scripts.generate_golden_outputs
+      - name: Generate historical artifacts and golden outputs
+        run: |
+          python - <<'PY'
+          from engine.acceptance import ACCEPTANCE_GOVERNANCE_NOW
+          from scripts.generate_artifacts import main as artifacts
+          from scripts.generate_golden_outputs import main as goldens
+          clock = lambda: ACCEPTANCE_GOVERNANCE_NOW
+          artifacts(utc_now_provider=clock)
+          goldens(utc_now_provider=clock)
+          PY
 
       - name: Verify generated files are current
         run: git diff --exit-code -- docs/artifacts test/golden

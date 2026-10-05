@@ -1,11 +1,15 @@
 from __future__ import annotations
 
 from copy import deepcopy
+from datetime import datetime, timezone
 from typing import Any, Dict
 
 from .rendering import export_evaluation_payload
 from .schemas import PARequest
 from .service import ReadinessService
+
+# Historical acceptance fixtures, never the service's runtime default clock.
+ACCEPTANCE_GOVERNANCE_NOW = datetime(2026, 9, 1, tzinfo=timezone.utc)
 
 DEFAULT_ACCEPTANCE_CASE_IDS = [
     "MRI-01-complete",

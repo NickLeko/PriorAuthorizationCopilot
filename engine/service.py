@@ -7,7 +7,7 @@ from datetime import datetime, timezone
 from functools import cached_property
 from hashlib import sha256
 from pathlib import Path
-from typing import Any, Dict, List
+from typing import Any, Callable, Dict, List
 
 from . import __version__
 from .config import AppConfig, load_app_config
@@ -80,6 +80,11 @@ def _hash_note(note_text: str) -> str:
 
 def _utc_now_iso() -> str:
     return datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
+
+
+def utc_now() -> datetime:
+    """Real UTC clock; callers may inject a governance clock for reproducible checks."""
+    return datetime.now(timezone.utc)
 
 
 def _parse_utc_iso(value: str | None) -> datetime | None:
@@ -177,8 +182,9 @@ def _read_drift_log(log_path: Path) -> tuple[List[Dict[str, Any]], List[str]]:
 
 
 class ReadinessService:
-    def __init__(self, config: AppConfig | None = None) -> None:
+    def __init__(self, config: AppConfig | None = None, *, utc_now_provider: Callable[[], datetime] | None = None) -> None:
         self.config = config or load_app_config()
+        self._utc_now = utc_now_provider or (lambda: utc_now())
         configure_logging(self.config.log_level)
         self.logger = get_logger("pa_copilot.service")
 
@@ -549,17 +555,17 @@ class ReadinessService:
             if drift_log_errors:
                 status = "INVALID_DRIFT_LOG"
                 any_review_required = True
-                review_reason = " ".join(drift_log_errors)
+                review_reason = " ".join(filter(None, [review_reason, *drift_log_errors]))
 
             if last_checked_dt is not None:
-                now_utc = datetime.now(timezone.utc)
+                now_utc = self._utc_now()
                 age_seconds = (now_utc - last_checked_dt).total_seconds()
                 fetched_future_seconds = (fetched_at_dt - now_utc).total_seconds() if fetched_at_dt is not None else 0
                 if age_seconds < -MAX_POLICY_CLOCK_SKEW_SECONDS or fetched_future_seconds > MAX_POLICY_CLOCK_SKEW_SECONDS:
                     status = "INVALID_SNAPSHOT"
                     freshness_status = "INVALID"
                     any_review_required = True
-                    review_reason = "Policy snapshot contains a materially future timestamp."
+                    review_reason = " ".join(filter(None, [review_reason, "Policy snapshot contains a materially future timestamp."]))
                 else:
                     age_seconds = max(age_seconds, 0)
                     days_since_last_checked = int(age_seconds // 86400)
@@ -567,19 +573,33 @@ class ReadinessService:
                     if freshness_window_days is None:
                         freshness_status = "UNKNOWN"
                         any_review_required = True
-                        review_reason = "Unsupported policy monitoring frequency; freshness cannot be established."
+                        review_reason = " ".join(
+                            filter(None, [review_reason, "Unsupported policy monitoring frequency; freshness cannot be established."])
+                        )
                     elif age_seconds > freshness_window_days * 86400:
                         freshness_status = "STALE"
                         stale_source_count += 1
                         any_review_required = True
-                        review_reason = f"Last successful policy check exceeds the configured {source.check_frequency} monitoring window."
+                        review_reason = " ".join(
+                            filter(
+                                None,
+                                [
+                                    review_reason,
+                                    f"Last successful policy check exceeds the configured {source.check_frequency} monitoring window.",
+                                ],
+                            )
+                        )
             elif latest_snapshot is None:
                 any_review_required = True
                 if snapshot_error is None:
-                    review_reason = "No baseline snapshot exists yet for this monitored source."
+                    review_reason = " ".join(filter(None, [review_reason, "No baseline snapshot exists yet for this monitored source."]))
 
             if status == "REVIEW_REQUIRED":
-                review_reason = "Detected policy drift requires human rule review before the related rule should be trusted."
+                review_reason = " ".join(
+                    filter(
+                        None, [review_reason, "Detected policy drift requires human rule review before the related rule should be trusted."]
+                    )
+                )
 
             statuses.append(
                 DriftSourceStatus(

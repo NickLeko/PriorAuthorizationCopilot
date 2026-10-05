@@ -74,17 +74,22 @@ Run lint:
 .venv/bin/python -m ruff check .
 ```
 
-Regenerate stable artifacts:
+Freshness-dependent tests and historical acceptance fixtures use a shared UTC instant, `2026-09-01T00:00:00Z`. Runtime service checks retain the real clock. Boundary tests exercise the exact window, elapsed window, future timestamps, and combined governance errors separately.
+
+Regenerate historical artifacts and golden snapshots intentionally after a reviewed product change, using the same clock as CI:
 
 ```bash
-.venv/bin/python -m scripts.generate_artifacts
+.venv/bin/python - <<'PY'
+from engine.acceptance import ACCEPTANCE_GOVERNANCE_NOW
+from scripts.generate_artifacts import main as artifacts
+from scripts.generate_golden_outputs import main as goldens
+clock = lambda: ACCEPTANCE_GOVERNANCE_NOW
+artifacts(utc_now_provider=clock)
+goldens(utc_now_provider=clock)
+PY
 ```
 
-Regenerate golden snapshots intentionally after a reviewed product change:
-
-```bash
-.venv/bin/python -m scripts.generate_golden_outputs
-```
+Ordinary generator module commands use the real clock and describe current governance state; they are not a way to refresh a monitored source.
 
 ## What Is Covered
 

@@ -2,6 +2,10 @@
 
 Demonstrate three decisions in order: distinct evidence outcomes, human verification despite exact citations, and policy-change replay that preserves history. Installation, app startup, and generating the replay fixture happen before the five-minute presentation.
 
+The lumbar MRI pathway is the only live-monitored source. After its monthly monitoring window (35 days since the last successful check), a visitor sees a stale warning and must acknowledge it before evaluating that pathway. After all passing facts are human-verified, it can return `READY` with `submission_readiness=false`. This is the governance gate working as designed; acknowledgement does not restore trust.
+
+Before a live demo, run one genuine source check: `.venv/bin/python -m engine.policy_monitor --check --write`. A successful unchanged check records its actual check time; detected changes require human policy review and do not automatically update rules or restore trust.
+
 ## Prepare Before Starting The Clock
 
 ```bash
