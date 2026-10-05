@@ -2,6 +2,10 @@
 
 This self-directed prototype demonstrates deterministic prior-authorization documentation review, human verification, and policy-change replay. It uses synthetic cases and narrow rules; it does not authorize care or predict payer approval.
 
+v2.0.0 adds typed, source-located reviewer corrections for wrong or missed requirement facts. Streamlit shows each fact contract's meaning, the original proposal and the effective value. Applying a correction clears all attestations and letters; an otherwise passing fact set remains `PENDING_VERIFICATION` until reviewed and attested again. Exact quotations locate text but do not prove its meaning. Human misreading of negation or borrowed qualifiers remains a risk.
+
+The engine enforces self-reported timestamp ordering, not action separation, distinct reviewers, or proof of review. A single request containing a correction at T and an attestation at T+1s can pass. Corrected decisions are viewable, not replayable, including after restoration of an original value. Letters disclose reviewer-supplied facts, quotations, and self-reported editor/verifier identities; audit comments are excluded from letter reasoning. Supporting dates are never checked for recency or ordering.
+
 The lumbar MRI pathway is the only live-monitored source. After its monthly monitoring window (35 days since the last successful check), a visitor sees a stale warning and must acknowledge it before evaluating that pathway. After all passing facts are human-verified, it can return `READY` with `submission_readiness=false`. This is the governance gate working as designed; acknowledgement does not restore trust.
 
 Before a live demo, run one genuine source check: `.venv/bin/python -m engine.policy_monitor --check --write`. A successful unchanged check records its actual check time; detected changes require human policy review and do not automatically update rules or restore trust.
@@ -16,7 +20,7 @@ A missing sleep-study date requires more documentation (`CANNOT_DETERMINE`). A c
 
 Automated extraction is a drafting aid, not a decision gate. Regex proposals can misread negation, resolved findings, or unrelated evidence even when their citations exactly match the original note. All passing operators therefore produce `PENDING_VERIFICATION` until every requirement fact is explicitly `HUMAN_VERIFIED`. Only then can the result become `READY`; policy trust independently controls submission readiness.
 
-The trace is `source span → proposed fact → rule/operator → requirement result → human verification → overall status`. Reviewer identity is self-reported. See the [extraction and verification contract](EXTRACTION_CONTRACT.md) for executable examples of known errors and the [v1.5.0 release](docs/releases/v1.5.0.md) for why the gate changed while language extraction remained unchanged.
+The trace is `source span → original proposal → optional typed correction → effective fact → rule/operator → requirement result → human verification → overall status`. Reviewer identity is self-reported. See the [extraction and verification contract](EXTRACTION_CONTRACT.md) for executable examples of known errors and the [v1.5.0 release](docs/releases/v1.5.0.md) for why the gate changed while language extraction remained unchanged.
 
 ### 3. Policy changes require replay without rewriting history
 
@@ -54,7 +58,7 @@ trust gate; it does not validate the borrowed date or the incorrect attestations
 
 ## Quick Reviewer Path
 
-The record schema version and the release version are versioned independently: release `1.6.1` retains record `schema_version: "1.5.0"`.
+The record schema version and release version are versioned independently. v2.0.0 writes record `schema_version: "2.0.0"`; v1.5 records retain their existing validation, and legacy records remain explicitly labeled and viewable only.
 
 From a fresh clone, enter the repo and run:
 

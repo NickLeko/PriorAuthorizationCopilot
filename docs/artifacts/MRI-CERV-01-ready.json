@@ -51,6 +51,7 @@
         }
       ]
     },
+    "fact_set_fingerprint": "071c16d57b3d4d0890ed35ad88dac3660c0ddf52d783613d2abaff1997abd978",
     "fact_verifications": {
       "conservative_therapy_weeks": {
         "fingerprint": null,
@@ -91,6 +92,7 @@
       "sleep_study_date": null,
       "symptom_duration_weeks": 8
     },
+    "input_fingerprint": "bc54e15f90200a5791b08021247fb8cc15b2e11d8202d743d12a5ec3f3659bbc",
     "invariant_errors": [],
     "metrics": {
       "criteria_met_count": 4,
@@ -162,6 +164,7 @@
     "not_documented": [],
     "not_met": []
   },
+  "bundle_fingerprint": "f36b9be0bb209bc39960e80ab8b4a804dd9b6fd11054ccaa32332eb7d69586ba",
   "captured_fact_states": {
     "ahi_documented": "MISSING",
     "back_pain_with_radiculopathy": "MISSING",
@@ -176,6 +179,7 @@
     "sleep_study_date": "MISSING",
     "symptom_duration_weeks": "CAPTURED"
   },
+  "contract_version": "6779fd812df9d1fa44d8c17af56bff917d91c0395f00fea78846b643bcdaf74c",
   "evidence_map": {
     "conservative_therapy_weeks": [
       {
@@ -218,6 +222,7 @@
       }
     ]
   },
+  "fact_set_fingerprint": "071c16d57b3d4d0890ed35ad88dac3660c0ddf52d783613d2abaff1997abd978",
   "facts": {
     "ahi_documented": null,
     "back_pain_with_radiculopathy": null,
@@ -232,6 +237,7 @@
     "sleep_study_date": null,
     "symptom_duration_weeks": 8
   },
+  "input_fingerprint": "bc54e15f90200a5791b08021247fb8cc15b2e11d8202d743d12a5ec3f3659bbc",
   "letter": {
     "metadata": {
       "cited_snippets_count": 5,
@@ -241,11 +247,11 @@
       "generated_timestamp_utc": "__TIMESTAMP_UTC__",
       "letter_hash_sha256_16": "__LETTER_HASH_SHA256_16__",
       "letter_type": "submission_cover_letter",
-      "letter_version": "1.2",
+      "letter_version": "2.0",
       "overall_status": "PENDING_VERIFICATION",
       "policy_trust_level": "demo"
     },
-    "text": "PRIOR AUTHORIZATION ADMINISTRATIVE READINESS SUMMARY\n\nPayer: Aetna\nProcedure: MRI_CERVICAL\nSite of care: outpatient\nSpecialty: Orthopedics\nGenerated: __TIMESTAMP_UTC__\nDx codes: M54.12\nPolicy trust level: DEMO \u2014 criteria are illustrative only. Verify against the official payer policy before submission.\n\nOverall Status: PENDING_VERIFICATION\n\nSummary:\nAutomated extraction is a drafting aid. Proposed criteria pass, but human verification of every fact and its evidence is required before READY. This does not guarantee payer approval.\n\nRequirements:\n- Conservative therapy duration (weeks) (conservative_therapy_weeks): MET\n  Reason: Documented value: 8.\n  Evidence:\n   - \"PT for 8 weeks\"\n- Neuro red flags explicitly addressed (present or denied) (neuro_red_flags_documented): MET\n  Reason: Explicitly addressed in documentation (present/affirmed).\n  Evidence:\n   - \"Denies weakness\"\n   - \"Denies bowel/bladder changes\"\n- Prior imaging result (prior_imaging_result): MET\n  Reason: Documented: inconclusive.\n  Evidence:\n   - \"inconclusive\"\n- Symptom duration (weeks) (symptom_duration_weeks): MET\n  Reason: Documented value: 8.\n  Evidence:\n   - \"8 weeks\"\nClosing:\nThis letter summarizes documentation-based administrative readiness for prior authorization submission. It does not provide clinical recommendations and does not predict approval outcomes.\n"
+    "text": "PRIOR AUTHORIZATION ADMINISTRATIVE READINESS SUMMARY\n\nPayer: Aetna\nProcedure: MRI_CERVICAL\nSite of care: outpatient\nSpecialty: Orthopedics\nGenerated: __TIMESTAMP_UTC__\nDx codes: M54.12\nPolicy trust level: DEMO \u2014 criteria are illustrative only. Verify against the official payer policy before submission.\nSupporting dates attached to requirement facts are not checked for recency or ordering.\n\nOverall Status: PENDING_VERIFICATION\n\nSummary:\nAutomated extraction is a drafting aid. Proposed criteria pass, but human verification of every fact and its evidence is required before READY. This does not guarantee payer approval.\n\nRequirements:\n- Conservative therapy duration (weeks) (conservative_therapy_weeks): MET\n  Reason: Documented value: 8.\n  Evidence:\n   - \"PT for 8 weeks\"\n- Neuro red flags explicitly addressed (present or denied) (neuro_red_flags_documented): MET\n  Reason: Explicitly addressed in documentation (present/affirmed).\n  Evidence:\n   - \"Denies weakness\"\n   - \"Denies bowel/bladder changes\"\n- Prior imaging result (prior_imaging_result): MET\n  Reason: Documented: inconclusive.\n  Evidence:\n   - \"inconclusive\"\n- Symptom duration (weeks) (symptom_duration_weeks): MET\n  Reason: Documented value: 8.\n  Evidence:\n   - \"8 weeks\"\nClosing:\nThis letter summarizes documentation-based administrative readiness for prior authorization submission. It does not provide clinical recommendations and does not predict approval outcomes.\n"
   },
   "metrics": {
     "criteria_met_count": 4,
@@ -257,6 +263,7 @@
     "missing_requirement_count": 0,
     "total_requirements": 4
   },
+  "original_snapshot_fingerprint": "4d7067e16e5e5580d0b0aa6af60ca29329e5634a0355b5277cb0db8b880416d7",
   "overall_status": "PENDING_VERIFICATION",
   "policy_trust_level": "demo",
   "policy_version": {
@@ -346,6 +353,7 @@
           }
         ]
       },
+      "fact_set_fingerprint": "071c16d57b3d4d0890ed35ad88dac3660c0ddf52d783613d2abaff1997abd978",
       "fact_verifications": {
         "conservative_therapy_weeks": {
           "fingerprint": null,
@@ -386,6 +394,7 @@
         "sleep_study_date": null,
         "symptom_duration_weeks": 8
       },
+      "input_fingerprint": "bc54e15f90200a5791b08021247fb8cc15b2e11d8202d743d12a5ec3f3659bbc",
       "invariant_errors": [],
       "metrics": {
         "criteria_met_count": 4,
@@ -481,7 +490,7 @@
           "state": "UNVERIFIED",
           "verified_at": null
         },
-        "verification_fingerprint": "0ccb4001c8212679605604b520ff53aedbb2a5aee1e3f544c83741ca7023bbda"
+        "verification_fingerprint": "bd822cefb18ae708b4f02605d2e541b234a97e4477e44ecd79c0be76b99993fd"
       },
       {
         "evidence": "Weakness, numbness, bowel/bladder changes, or related escalation findings explicitly documented",
@@ -512,7 +521,7 @@
           "state": "UNVERIFIED",
           "verified_at": null
         },
-        "verification_fingerprint": "437d2842bb1c0fba87f4e1a1a270db3310e04451fdd73e2da4ef467258a1aa68"
+        "verification_fingerprint": "ea385fcde6df4b7f066628093fb3ee9f1c8cdf848a82010eb74c0cde25d9d32d"
       },
       {
         "evidence": "X-ray/CT results or note of none",
@@ -537,7 +546,7 @@
           "state": "UNVERIFIED",
           "verified_at": null
         },
-        "verification_fingerprint": "5fa2d20ae1908847f0f07e5439a18036ec5b7c04c518a4c4389f82ed23b96327"
+        "verification_fingerprint": "e9b555ff70cab08a53a57f7b5786f5f37f030bc0d5d05c8224b759dc4ccbaf3d"
       },
       {
         "evidence": "Duration supports guideline-based escalation",
@@ -562,7 +571,7 @@
           "state": "UNVERIFIED",
           "verified_at": null
         },
-        "verification_fingerprint": "c918da1f1ce1a7910fd48e72b95298cf08de62b63d622eee09ce449e5c115518"
+        "verification_fingerprint": "d8912ed19bd2002255e40b9587d5c472e8ae158ed2fea99bee8fe1cf2557688e"
       }
     ],
     "rule_reasons": []
@@ -602,7 +611,7 @@
         "state": "UNVERIFIED",
         "verified_at": null
       },
-      "verification_fingerprint": "0ccb4001c8212679605604b520ff53aedbb2a5aee1e3f544c83741ca7023bbda"
+      "verification_fingerprint": "bd822cefb18ae708b4f02605d2e541b234a97e4477e44ecd79c0be76b99993fd"
     },
     {
       "evidence": "Weakness, numbness, bowel/bladder changes, or related escalation findings explicitly documented",
@@ -633,7 +642,7 @@
         "state": "UNVERIFIED",
         "verified_at": null
       },
-      "verification_fingerprint": "437d2842bb1c0fba87f4e1a1a270db3310e04451fdd73e2da4ef467258a1aa68"
+      "verification_fingerprint": "ea385fcde6df4b7f066628093fb3ee9f1c8cdf848a82010eb74c0cde25d9d32d"
     },
     {
       "evidence": "X-ray/CT results or note of none",
@@ -658,7 +667,7 @@
         "state": "UNVERIFIED",
         "verified_at": null
       },
-      "verification_fingerprint": "5fa2d20ae1908847f0f07e5439a18036ec5b7c04c518a4c4389f82ed23b96327"
+      "verification_fingerprint": "e9b555ff70cab08a53a57f7b5786f5f37f030bc0d5d05c8224b759dc4ccbaf3d"
     },
     {
       "evidence": "Duration supports guideline-based escalation",
@@ -683,11 +692,11 @@
         "state": "UNVERIFIED",
         "verified_at": null
       },
-      "verification_fingerprint": "c918da1f1ce1a7910fd48e72b95298cf08de62b63d622eee09ce449e5c115518"
+      "verification_fingerprint": "d8912ed19bd2002255e40b9587d5c472e8ae158ed2fea99bee8fe1cf2557688e"
     }
   ],
   "rule_reasons": [],
-  "schema_version": "1.5.0",
+  "schema_version": "2.0.0",
   "submission_readiness": false,
   "supported_procedure": {
     "display_name": "MRI Cervical Spine (no contrast)",

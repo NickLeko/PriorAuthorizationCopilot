@@ -1,4 +1,8 @@
-# Letter Drafting Contract v1.2
+# Letter Drafting Contract v2.0
+
+Corrected requirements are disclosed as reviewer-supplied, with effective value/state, correction action, exact source quotation and self-reported editor/verifier. Corrections are source-located; their quotations do not prove semantic support. Human misreading of negation or borrowed qualifiers remains a risk. Audit comments are excluded from letter inputs and reasoning. Supporting dates attached to requirement facts are not checked for recency or ordering; that statement appears in every standard letter.
+
+The verification mechanism is self-reported timestamp ordering, not action separation, distinct reviewers, or proof of review. Structured exports retain the immutable original proposal and full ordered correction list, including audit comments. Corrected decisions are viewable, not replayable, even after RESTORE_ORIGINAL. Letters render supplied administrative evaluations, never clinical truth or coverage decisions.
 
 Project: Prior Authorization Readiness Copilot  
 Scope: Write-only letter drafting (no extraction or criterion re-evaluation; derives a display status from supplied results without mutating them)
@@ -20,6 +24,7 @@ The standard templates are designed to:
   - structured `results[]` (status, reason, evidence hint, evidence_snippets)
   - structured counts (met_count, not_met_count, not_documented_count, needs_review_count)
   - `policy_trust_level`
+  - typed `correction_disclosures` containing reviewer-supplied effective values/states, actions, source spans, supporting dates and self-reported identities; no audit comments or full-note field
 - not intentionally:
   - infer undocumented facts
   - re-interpret clinical meaning
@@ -30,7 +35,7 @@ The standard templates are designed to:
   - independently validate factual assertions in caller-supplied structured reasons
 - consistently:
   - include “does not guarantee payer approval” language in summary framing
-  - keep evidence snippets short (<= 25 whitespace-delimited words) and copied from supplied snippets
+  - keep ordinary evidence snippets short (<= 25 whitespace-delimited words); correction source quotations retain the full exact supplied span
 
 ---
 
@@ -187,7 +192,7 @@ If any of the following are true, letter generation must return `DRAFT_BLOCKED`:
 
 ## 8) Versioning
 
-- Current version: 1.2
+- Current version: 2.0
 - Any behavioral modification requires:
   - updating this contract
   - updating/adding tests

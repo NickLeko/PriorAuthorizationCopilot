@@ -1,5 +1,9 @@
 # Safety And Scope
 
+v2.0.0 permits typed, source-located reviewer corrections over retained original proposals. Exact quotations and hashes establish location integrity, not semantic support: human misreading of negation or borrowed qualifiers remains a risk. All effective requirement facts must pass and be HUMAN_VERIFIED before READY; correction does not imply verification. The mechanism is self-reported timestamp ordering, not action separation, distinct reviewers, or proof of review. A single correction-T/attestation-T+1s request can pass without backdating.
+
+Letters disclose reviewer-supplied facts and self-reported identities; audit comments do not enter letter reasoning. Supporting dates are not checked for recency or ordering. Corrected decisions are viewable, not replayable. No authentication, multi-user workflow, broader procedure coverage, extraction changes, cross-policy correction replay, revision lineage, or correction metrics framework is added. Evaluation remains deterministic with no ontology, LLM or RAG in the decision path; outputs are administrative evaluations, never clinical truth or coverage decisions.
+
 ## Product Boundary
 
 Automated extraction is a drafting aid, not a decision gate. The engine applies

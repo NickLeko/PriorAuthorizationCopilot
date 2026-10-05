@@ -1,5 +1,31 @@
 # API
 
+## v2.0 source-located corrections
+
+The existing `POST /evaluate` path accepts an ordered `corrections` list in PARequest. Values must match the requirement contract without coercion; boolean/numeric strings, unknown enums and reviewer-excluded values are rejected. Clients cannot supply statuses, reasons, effective facts or derived annotations. The original proposal is retained; the last correction event for a key supplies its effective fact. This synthetic example produces NOT_READY because reviewer-supplied false fails the OSA equals_true operator, not because the API determines a clinical diagnosis:
+
+```json
+{
+  "payer": "Aetna",
+  "procedure_code": "CPAP_DEVICE",
+  "note_text": "Patient denies OSA. Sleep study completed 2024-02-29. AHI 22.",
+  "corrections": [{
+    "requirement_key": "osa_diagnosis",
+    "action": "SET_VALUE",
+    "value": false,
+    "reason": "incorrect_value",
+    "editor": "Synthetic example editor",
+    "edited_at": "2026-01-01T00:00:00Z",
+    "note_hash": "181305c61d87d0bb5d3df6caf4f408521955b04d2ade313a2d8a465e1eb57159",
+    "evidence_spans": [{"start": 0, "end": 19, "text": "Patient denies OSA."}]
+  }]
+}
+```
+
+Save a complete request as `correction-request.json` and use `.venv/bin/python cli.py evaluate --request-file correction-request.json --json`, or POST the same JSON to `/evaluate`. The editor and timestamp above are synthetic fixture metadata; use actual self-reported metadata for an interactive review. SET_MISSING carries `document_review` with the submitted note's full SHA-256 and offending proposal spans where present. SET_NEEDS_REVIEW and RESTORE_ORIGINAL carry no value or quotation. Supporting dates for date-presence facts are optional ISO detail, never checked for recency or ordering; completed sleep studies count, scheduled/ordered/pending studies do not.
+
+For a passing correction, first evaluate without `fact_verifications`, then review the returned effective facts and submit the returned requirement fingerprints with attestations. Any correction content/order change invalidates every attestation through the whole fact-set fingerprint. All requirement facts still need HUMAN_VERIFIED before READY. The engine enforces self-reported timestamp ordering: attestation time must be strictly later than the latest correction. This is not action separation, distinct reviewers, or proof of review; a single correction-T/attestation-T+1s request can pass without backdating. Exact spans are source-located, not proof of semantic support; human misreading of negation or borrowed qualifiers remains a risk. Corrected decisions are viewable, not replayable, even after RESTORE_ORIGINAL. Structured exports retain original proposals and the full correction list; letters disclose supplied facts/identities and exclude audit comments from reasoning.
+
 ## v1.5 human verification
 
 Automated extraction is a drafting aid. An otherwise all-MET request returns
