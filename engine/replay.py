@@ -7,7 +7,7 @@ from collections import Counter
 from .decision_store import DecisionStore
 from .evaluate import compute_overall_status, evaluate_requirements
 from .policies import facts_for_policy
-from .schemas import REVIEW_REQUIRED_FACT, EvaluationResult, FactVerification, PolicyVersion
+from .schemas import REVIEW_REQUIRED_FACT, EvaluationResult, FactVerification, LegacyEvaluationRecord, PolicyVersion
 
 CATEGORIES = (
     "BECAME_UNDETERMINABLE",
@@ -28,6 +28,8 @@ def comparison_status(results) -> str:
 
 
 def replay_decision(original: EvaluationResult, target: PolicyVersion) -> dict:
+    if isinstance(original, LegacyEvaluationRecord):
+        raise ValueError("Legacy records are inspectable only; they are not migrated or replayed as v1.5 evaluations.")
     target = PolicyVersion.model_validate_json(target.model_dump_json())
     source = original.policy_version
     if (source.policy_id, source.payer, source.procedure_code) != (target.policy_id, target.payer, target.procedure_code):

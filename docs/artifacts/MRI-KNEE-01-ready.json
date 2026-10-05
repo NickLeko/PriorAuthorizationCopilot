@@ -660,6 +660,7 @@
     }
   ],
   "rule_reasons": [],
+  "schema_version": "1.5.0",
   "submission_readiness": false,
   "supported_procedure": {
     "display_name": "MRI Knee (no contrast)",

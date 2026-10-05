@@ -511,6 +511,8 @@ class ReadinessReport(BaseModel):
 class EvaluationResult(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
+    schema_version: str = "1.5.0"
+    engine_version: Optional[str] = Field(default=None, exclude_if=lambda value: value is None)
     request: PARequest
     policy_version: PolicyVersion
     captured_fact_states: Dict[str, Literal["CAPTURED", "MISSING", "NEEDS_REVIEW"]]
@@ -529,12 +531,56 @@ class EvaluationResult(BaseModel):
     audit_trail: AuditTrace
     report: ReadinessReport
 
+    @model_validator(mode="after")
+    def _validate_readiness_consistency(self) -> "EvaluationResult":
+        keys = [result.key for result in self.results]
+        required_keys = [item["key"] for item in self.policy_version.requirements]
+        if len(keys) != len(set(keys)) or set(keys) != set(required_keys):
+            raise ValueError("Requirement results must cover the policy requirement set exactly.")
+        if self.report.results != self.results:
+            raise ValueError("Report requirement results disagree with top-level results.")
+        if self.overall_status == "READY" and (
+            not self.results or any(result.status != "MET" or result.verification.state != "HUMAN_VERIFIED" for result in self.results)
+        ):
+            raise ValueError("READY requires nonempty, passing, HUMAN_VERIFIED requirements.")
+        if self.submission_readiness and (self.overall_status != "READY" or self.policy_trust_level != "verified"):
+            raise ValueError("submission_readiness requires verified READY and verified policy trust.")
+        if any(
+            result.verification.state == "HUMAN_VERIFIED" and result.verification.fingerprint != result.verification_fingerprint
+            for result in self.results
+        ):
+            raise ValueError("Requirement verification does not match its proposal fingerprint.")
+
+        verifications = {result.key: result.verification for result in self.results}
+        if set(self.request.fact_verifications) - set(keys) or any(
+            self.request.fact_verifications.get(key, FactVerification()) != verification for key, verification in verifications.items()
+        ):
+            raise ValueError("Request verifications disagree with requirement results.")
+        report_audit = AuditTrace.model_validate(self.report.audit_trail)
+        for audit in (self.audit_trail, report_audit):
+            if (audit.overall_status, audit.submission_readiness) != (self.overall_status, self.submission_readiness):
+                raise ValueError("Audit status/readiness disagree with top-level result.")
+            if audit.fact_verifications != verifications or set(audit.requirements_checked) != set(keys):
+                raise ValueError("Audit requirements/verifications disagree with top-level results.")
+            if audit.policy_trust_level != self.policy_trust_level:
+                raise ValueError("Audit policy trust disagrees with top-level result.")
+        return self
+
     @field_validator("facts")
     @classmethod
     def _reject_internal_fact_sentinel(cls, value: Dict[str, Any]) -> Dict[str, Any]:
         if any(fact == REVIEW_REQUIRED_FACT for fact in value.values()):
             raise ValueError("Internal review-required markers must not appear in public evaluation facts.")
         return value
+
+
+class LegacyEvaluationRecord(BaseModel):
+    """Unmodified historical payload, explicitly outside the v1.5 structural contract."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    legacy_record: Literal[True] = True
+    payload: Dict[str, Any]
 
 
 class DriftSourceStatus(BaseModel):

@@ -38,6 +38,23 @@ that lack a policy snapshot and capture states are not guessed into replayable
 history. Re-evaluating an old note now creates a new decision, not a historical
 reconstruction.
 
+New evaluation payloads declare `schema_version: "1.5.0"`. Archive writes always
+validate the v1.5 structural contract: READY requires the complete, nonempty
+requirement set to be MET and HUMAN_VERIFIED; submission readiness additionally
+requires verified policy trust. Result, request verification records, report and
+audit copies must agree. This checks stored structure, not historical policy
+interpretation or whether a human actually reviewed the note.
+
+Reads enforce that contract for engine/schema versions at least 1.5.0. Existing
+unversioned v1.5 records are identified by their verification fields and remain
+subject to strict validation. Explicitly older records, or unversioned records
+without verification fields, return `{"legacy_record": true, "payload": ...}`.
+The payload is preserved without migration; its historical READY is not a v1.5
+verified READY. Legacy records are inspectable through `decision-show`, cannot be
+written as new evaluations, and cannot be replayed. Hash validation still applies
+before either current or legacy records are returned. Invalid version metadata
+fails closed.
+
 From the repository root:
 
 ```bash

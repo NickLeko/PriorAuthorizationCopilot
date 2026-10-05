@@ -2,11 +2,32 @@
 
 from __future__ import annotations
 
+import json
+import re
 import sqlite3
 from pathlib import Path
 
 from .policies import canonical_json, content_hash
-from .schemas import EvaluationResult, PolicyVersion
+from .schemas import EvaluationResult, LegacyEvaluationRecord, PolicyVersion
+
+
+def _is_legacy_payload(payload: dict) -> bool:
+    versions = [payload[key] for key in ("schema_version", "engine_version") if key in payload]
+    if versions:
+        parsed = []
+        for version in versions:
+            match = re.fullmatch(r"(\d+)\.(\d+)\.(\d+)(?:[-+][0-9A-Za-z.-]+)?", str(version))
+            if match is None:
+                raise ValueError("Invalid archived engine/schema version.")
+            parsed.append(tuple(int(part) for part in match.groups()))
+        return all(version < (1, 5, 0) for version in parsed)
+    # Existing v1.5 exports did not have a version field. Their verification
+    # fields identify the v1.5 contract even without an explicit version.
+    return not (
+        "fact_verifications" in payload.get("request", {})
+        or "fact_verifications" in payload.get("audit_trail", {})
+        or any("verification" in result for result in payload.get("results", []))
+    )
 
 
 class DecisionStore:
@@ -80,7 +101,11 @@ class DecisionStore:
         return [self.get_policy(*row).model_dump(mode="json") for row in rows]
 
     def record(self, evaluation: EvaluationResult, decision_id: str | None = None) -> str:
+        if not isinstance(evaluation, EvaluationResult):
+            raise ValueError("Legacy records cannot be written as new evaluations.")
         evaluation = EvaluationResult.model_validate_json(evaluation.model_dump_json())
+        if _is_legacy_payload(evaluation.model_dump(mode="json")):
+            raise ValueError("New archive writes require engine/schema version >= 1.5.0.")
         policy = evaluation.policy_version
         if policy != evaluation.audit_trail.policy_version:
             raise ValueError("Decision and audit policy versions disagree.")
@@ -104,15 +129,19 @@ class DecisionStore:
             )
         return decision_id
 
-    def get_decision(self, decision_id: str) -> EvaluationResult:
+    def get_decision(self, decision_id: str) -> EvaluationResult | LegacyEvaluationRecord:
         row = self.connection.execute(
             "SELECT payload, content_hash, policy_id, version_id FROM decisions WHERE decision_id = ?", (decision_id,)
         ).fetchone()
         if row is None:
             raise ValueError(f"Unknown historical decision: {decision_id}")
-        result = EvaluationResult.model_validate_json(row[0])
-        if content_hash({"decision_id": decision_id, "evaluation": result.model_dump(mode="json")}) != row[1]:
+        payload = json.loads(row[0])
+        if content_hash({"decision_id": decision_id, "evaluation": payload}) != row[1]:
             raise ValueError(f"Decision content hash mismatch: {decision_id}")
+        if _is_legacy_payload(payload):
+            self.get_policy(row[2], row[3])
+            return LegacyEvaluationRecord(payload=payload)
+        result = EvaluationResult.model_validate(payload)
         if result.policy_version != self.get_policy(row[2], row[3]) or result.policy_version != result.audit_trail.policy_version:
             raise ValueError("Stored decision policy mismatch.")
         return result

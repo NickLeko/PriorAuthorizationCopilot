@@ -694,6 +694,7 @@
   "rule_reasons": [
     "Conservative therapy duration (weeks): NOT_MET \u2014 Documented value (5) below requirement (>= 6.0). Clarify or justify."
   ],
+  "schema_version": "1.5.0",
   "submission_readiness": false,
   "supported_procedure": {
     "display_name": "MRI Lumbar Spine (no contrast)",

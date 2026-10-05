@@ -757,6 +757,7 @@
     }
   ],
   "rule_reasons": [],
+  "schema_version": "1.5.0",
   "submission_readiness": true,
   "supported_procedure": {
     "display_name": "MRI Lumbar Spine (no contrast)",

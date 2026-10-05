@@ -108,16 +108,16 @@ def test_service_returns_cannot_determine_for_missing_documentation_case():
             None,
         ),
         (
-            "MRI_LUMBAR",
-            "Seen 3 months ago. Back pain for 2 weeks. PT for 8 weeks. Denies weakness. No prior imaging.",
-            "CANNOT_DETERMINE",
+            "MRI_CERVICAL",
+            "Seen 3 months ago. Neck pain for 2 weeks. PT for 8 weeks. Denies weakness. No prior imaging.",
+            "NOT_READY",
             "symptom_duration_weeks",
             2,
         ),
         (
-            "MRI_LUMBAR",
-            "Follow-up occurred 4 months ago. Back pain x 3 weeks. PT for 8 weeks. Denies weakness. No prior imaging.",
-            "CANNOT_DETERMINE",
+            "MRI_CERVICAL",
+            "Follow-up occurred 4 months ago. Neck pain x 3 weeks. PT for 8 weeks. Denies weakness. No prior imaging.",
+            "NOT_READY",
             "symptom_duration_weeks",
             3,
         ),
@@ -139,6 +139,34 @@ def test_adversarial_notes_cannot_produce_false_ready(procedure_code, note_text,
     assert evaluation.overall_status == expected_status
     assert evaluation.submission_readiness is False
     assert evaluation.facts[fact_key] == expected_fact
+    if procedure_code == "MRI_CERVICAL":
+        assert next(result for result in evaluation.results if result.key == fact_key).status == "NOT_MET"
+        assert all(result.status == "MET" for result in evaluation.results if result.key != fact_key)
+
+
+@pytest.mark.parametrize(
+    "diagnosis",
+    ["Low back pain with radiculopathy.", "Patient does not have low back pain with radiculopathy."],
+)
+def test_complete_lumbar_proposals_require_every_human_verification(diagnosis):
+    service = ReadinessService()
+    request = PARequest(
+        payer="Aetna",
+        procedure_code="MRI_LUMBAR",
+        note_text=f"{diagnosis} Right L5 distribution: strength 4/5. NSAIDs for 8 weeks with minimal improvement.",
+    )
+    proposal = service.evaluate(request)
+    assert proposal.facts["back_pain_with_radiculopathy"] is True
+    assert proposal.facts["cpb_0236_conservative_therapy_weeks"] == 8
+    assert all(result.status == "MET" for result in proposal.results)
+    assert proposal.overall_status == "PENDING_VERIFICATION"
+    assert proposal.submission_readiness is False
+    for omitted in proposal.results:
+        partial = service.evaluate(attest(proposal, [result.key for result in proposal.results if result.key != omitted.key]))
+        assert partial.overall_status == "PENDING_VERIFICATION"
+        assert partial.submission_readiness is False
+    # Deliberately synthetic attestations test the gate, not extraction accuracy.
+    assert service.evaluate(attest(proposal)).overall_status == "READY"
 
 
 @pytest.mark.parametrize(
