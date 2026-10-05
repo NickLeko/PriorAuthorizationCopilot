@@ -212,8 +212,9 @@ def test_invalid_archive_version_fails_closed(tmp_path, proposal, version):
 
 
 @pytest.mark.parametrize("schema_version", ["1.4.0", None])
-def test_modern_engine_version_keeps_reads_strict(tmp_path, proposal, schema_version):
-    payload = proposal.model_dump(mode="json") | {"engine_version": "1.5.0"}
+@pytest.mark.parametrize("engine_version", ["1.5.0", "1.6.0"])
+def test_modern_engine_version_keeps_reads_strict(tmp_path, proposal, schema_version, engine_version):
+    payload = proposal.model_dump(mode="json") | {"engine_version": engine_version}
     if schema_version is None:
         payload.pop("schema_version")
     else:

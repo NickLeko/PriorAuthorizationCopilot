@@ -50,6 +50,8 @@ trust gate; it does not validate the borrowed date or the incorrect attestations
 
 ## Quick Reviewer Path
 
+The record schema version and the release version are versioned independently: release `1.6.0` retains record `schema_version: "1.5.0"`.
+
 From a fresh clone, enter the repo and run:
 
 ```bash
