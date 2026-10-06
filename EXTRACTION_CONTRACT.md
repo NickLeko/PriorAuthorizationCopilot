@@ -1,4 +1,8 @@
-# Extraction and verification contract v1.5
+# Extraction, correction and verification contract v2.0
+
+v2.0.0 retains the extractor and deterministic operators. Typed, source-located corrections materialize effective facts over an immutable original proposal; every ordered event is retained and the last event wins. SET_VALUE requires exact quotations of at most 300 characters per span and the submitted note hash; multiple spans are allowed and overlength spans are rejected, never truncated. SET_MISSING records document review and any offending proposal spans. SET_NEEDS_REVIEW and RESTORE_ORIGINAL preserve explicit state/history. Types, units and reviewer-enterable values come from fact contracts; there is no scalar coercion or free-text fact value.
+
+Sleep-study presence means a completed study, excluding scheduled, ordered or pending studies. Corrections do not verify facts: an otherwise passing effective fact set needs HUMAN_VERIFIED for every requirement before READY. See the canonical [correction limits](docs/safety_and_scope.md#correction-limits).
 
 Automated extraction is a drafting aid, not a decision gate. A requirement's `MET`
 status describes an operator applied to a proposed scalar; it does not establish
@@ -35,9 +39,12 @@ new contract claims must receive executable coverage in that class.
   `PENDING_VERIFICATION`; otherwise `READY`. Empty requirements give
   `CANNOT_DETERMINE`. `PENDING_VERIFICATION` always has `submission_readiness=false`.
 - **G05**: Attestations cannot change scalars or requirement statuses. Each is
-  bound to the normalized request, runtime rules/provenance/source/manifest
-  bytes, requirement definition, proposed value, operator result and evidence.
-  Changed inputs or rule bundles invalidate prior attestations; unknown keys
+  bound to the whole fact-set fingerprint plus its requirement key. The input
+  fingerprint covers the normalized request excluding attestations/corrections,
+  policy, bundle and contract version. The fact-set fingerprint additionally
+  covers the immutable original snapshot, ordered correction events, effective
+  values, states and evidence. Any correction content/order change invalidates
+  every attestation, including facts not directly edited. Changed inputs or rule bundles invalidate prior attestations; unknown keys
   are rejected. The caller submits `fact_verifications` keyed by requirement.
 - **G06**: Internal `__REVIEW_REQUIRED__` becomes public `null` in facts and
   requirement fact values, with `NEEDS_REVIEW` and captured spans preserved.

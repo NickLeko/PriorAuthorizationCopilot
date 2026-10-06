@@ -1,7 +1,7 @@
 # Model Card
 
 Project: Prior Authorization Readiness Copilot  
-Version: 1.6.1
+Version: 2.0.0
 
 Changelog: 1.5.0 — Requires per-fact human verification before READY, adds PENDING_VERIFICATION, repairs Unicode source offsets, reloads runtime rule bundles and fails unknown monitoring frequencies closed. No negation, temporality or attribution patterns were changed.
 

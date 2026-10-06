@@ -1,4 +1,7 @@
 # FAILURE_MODES.md
+
+v2.0.0 mitigation: typed correction validation rejects SET_VALUE spans over 300 characters without truncation. Changed correction content/order invalidates every attestation; Streamlit clears stale results and letters when corrections are applied. See the canonical [correction limits](docs/safety_and_scope.md#correction-limits).
+
 ## Failure Modes, Safety Analysis, and Mitigations
 
 **Project:** Prior Authorization Readiness Copilot  

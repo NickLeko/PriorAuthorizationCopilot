@@ -30,6 +30,10 @@ def comparison_status(results) -> str:
 def replay_decision(original: EvaluationResult, target: PolicyVersion) -> dict:
     if isinstance(original, LegacyEvaluationRecord):
         raise ValueError("Legacy records are inspectable only; they are not migrated or replayed as v1.5 evaluations.")
+    if getattr(original.request, "corrections", []):
+        raise ValueError("Corrected decisions are viewable but not replayable; cross-policy correction replay is not supported.")
+    if isinstance(original, EvaluationResult):
+        original = EvaluationResult.model_validate_json(original.model_dump_json())
     target = PolicyVersion.model_validate_json(target.model_dump_json())
     source = original.policy_version
     if (source.policy_id, source.payer, source.procedure_code) != (target.policy_id, target.payer, target.procedure_code):

@@ -1,8 +1,10 @@
 # Policy versions and historical replay
 
-This extension wraps the v1.5.0 deterministic evaluator. `engine/evaluate.py`,
+Replay retains the frozen deterministic operators. `engine/evaluate.py`,
 `engine/extract.py`, the runtime rule files, and the existing rulebook releases
 are unchanged. There is no language model in evaluation or replay.
+
+Corrected decisions are excluded from replay, including RESTORE_ORIGINAL histories. Uncorrected v2 decisions retain replay over captured evidence under an explicit target policy, without re-extraction or transferred attestations. See the canonical [correction limits](safety_and_scope.md#correction-limits).
 
 Every service evaluation now embeds a `policy_version` in its result and audit
 trace. The snapshot contains a policy-family identifier, version identifier,
@@ -38,14 +40,13 @@ that lack a policy snapshot and capture states are not guessed into replayable
 history. Re-evaluating an old note now creates a new decision, not a historical
 reconstruction.
 
-New evaluation payloads declare `schema_version: "1.5.0"`. Archive writes always
-validate the v1.5 structural contract: READY requires the complete, nonempty
+New evaluation payloads declare `schema_version: "2.0.0"`. Archive writes recompute correction materialization, validate contract values and exact spans (including the 300-character SET_VALUE per-span cap), check input/fact-set fingerprints and derived correction annotations, and reject schema downgrade. The immutable original proposal, ordered corrections and effective facts are retained. READY requires the complete, nonempty
 requirement set to be MET and HUMAN_VERIFIED; submission readiness additionally
 requires verified policy trust. Result, request verification records, report and
 audit copies must agree. This checks stored structure, not historical policy
 interpretation or whether a human actually reviewed the note.
 
-Reads enforce that contract for engine/schema versions at least 1.5.0. Existing
+Reads dispatch 2.x records to v2 validation and retain existing v1.5 validation for older modern records. Unknown major versions fail closed. Existing
 unversioned v1.5 records are identified by their verification fields and remain
 subject to strict validation. Explicitly older records, or unversioned records
 without verification fields, return `{"legacy_record": true, "payload": ...}`.

@@ -6,6 +6,7 @@ from engine.acceptance import (
     DEFAULT_ACCEPTANCE_CASE_IDS,
     build_acceptance_evaluation_payload,
     build_acceptance_governance_payloads,
+    build_corrected_acceptance_payloads,
 )
 from engine.rendering import write_json_artifact
 from engine.service import ReadinessService
@@ -26,6 +27,9 @@ def main(*, utc_now_provider=None) -> int:
 
     for name, payload in build_acceptance_governance_payloads(service).items():
         write_json_artifact(payload, governance_dir / f"{name}.json")
+
+    for name, payload in build_corrected_acceptance_payloads(service).items():
+        write_json_artifact(payload, evaluation_dir / f"{name}.json")
 
     return 0
 

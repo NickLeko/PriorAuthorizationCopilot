@@ -11,6 +11,16 @@ from typing import Any, Callable, Dict, List
 
 from . import __version__
 from .config import AppConfig, load_app_config
+from .corrections import (
+    CONTRACT_VERSION,
+    capture_original,
+    evaluator_facts,
+    fact_set_fingerprint,
+    input_fingerprint,
+    materialize,
+    validate_attestation,
+    verification_fingerprint,
+)
 from .demo_cases import demo_case_to_request, get_demo_case, list_demo_cases
 from .evaluate import compute_overall_status, evaluate_requirements, summarize_results
 from .extract import extract_facts
@@ -28,7 +38,7 @@ from .rulebook import RulebookError, get_rulebook_diff, get_rulebook_status
 from .rules_loader import load_rules
 from .schemas import (
     REVIEW_REQUIRED_FACT,
-    AuditTrace,
+    AuditTraceV2,
     BlockingIssue,
     BlockingIssueSummary,
     DemoCase,
@@ -37,6 +47,7 @@ from .schemas import (
     EvaluationMetrics,
     EvaluationResult,
     EvidenceSpan,
+    LetterCorrectionDisclosure,
     LetterDraftInput,
     LetterRequestMetadata,
     LetterType,
@@ -317,6 +328,8 @@ class ReadinessService:
         ).hexdigest()
 
     def evaluate(self, request: PARequest, policy_version: PolicyVersion | None = None) -> EvaluationResult:
+        # Revalidate mutable requests rather than trusting model_copy updates.
+        request = PARequest.model_validate_json(request.model_dump_json())
         if policy_version is not None:
             policy_version = PolicyVersion.model_validate_json(policy_version.model_dump_json())
         bundle_digest = self._bundle_digest()
@@ -342,33 +355,36 @@ class ReadinessService:
             )
 
         raw_facts, raw_evidence_map = extract_facts(normalized_request.note_text)
-        public_facts = _public_facts(raw_facts)
+        original = capture_original(raw_facts, raw_evidence_map)
         requirement_payloads = [requirement.model_dump(exclude_none=True) for requirement in supported.requirements]
-        evaluation_facts = facts_for_policy(raw_facts, selected_policy)[0] if policy_version is not None else raw_facts
-        results, reasons = evaluate_requirements(requirement_payloads, evaluation_facts, evidence_map=raw_evidence_map)
+        try:
+            effective = materialize(
+                original, normalized_request.corrections, normalized_request.note_text, [item["key"] for item in requirement_payloads]
+            )
+        except ValueError as exc:
+            raise InvalidRequestError(str(exc)) from exc
+        public_facts = effective["facts"]
+        effective_evidence = effective["evidence"]
+        evaluation_facts = facts_for_policy(evaluator_facts(effective), selected_policy)[0]
+        input_hash = input_fingerprint(normalized_request, selected_policy, bundle_digest, CONTRACT_VERSION)
+        fact_hash = fact_set_fingerprint(input_hash, original, normalized_request.corrections, effective)
+        corrected_keys = sorted({event.requirement_key for event in normalized_request.corrections})
+        results, reasons = evaluate_requirements(requirement_payloads, evaluation_facts, evidence_map=effective_evidence)
         unknown_keys = set(normalized_request.fact_verifications) - {result.key for result in results}
         if unknown_keys:
             raise InvalidRequestError(f"Unknown verification requirements: {sorted(unknown_keys)}")
-        for result, requirement in zip(results, requirement_payloads):
+        for result in results:
             result.fact_value = public_facts.get(result.key)
-            proposal = {
-                "request": normalized_request.model_dump(mode="json", exclude={"fact_verifications"}),
-                "bundle": bundle_digest,
-                "requirement": requirement,
-                "fact": result.fact_value,
-                "status": result.status,
-                "evidence": [span.model_dump() for span in result.evidence_spans],
-            }
-            if policy_version is not None:
-                proposal["policy_content_hash"] = selected_policy.content_hash
-            result.verification_fingerprint = sha256(json.dumps(proposal, sort_keys=True).encode("utf-8")).hexdigest()
+            result.verification_fingerprint = verification_fingerprint(fact_hash, result.key)
             attestation = normalized_request.fact_verifications.get(result.key)
             if attestation is not None:
-                if attestation.state == "HUMAN_VERIFIED" and attestation.fingerprint != result.verification_fingerprint:
-                    raise InvalidRequestError(f"Stale or mismatched verification for {result.key}; review the current proposal.")
+                try:
+                    validate_attestation(attestation, result.verification_fingerprint, normalized_request.corrections)
+                except ValueError as exc:
+                    raise InvalidRequestError(f"{exc} ({result.key})") from exc
                 result.verification = attestation
 
-        if raw_facts.get("prior_imaging_result") == "unrecognized" and any(
+        if public_facts.get("prior_imaging_result") == "unrecognized" and any(
             result.key == "prior_imaging_result" and result.status == "NEEDS_REVIEW" for result in results
         ):
             review_reason = "Imaging result is documented but its category is unrecognized; human review is required."
@@ -407,7 +423,12 @@ class ReadinessService:
         supported = supported.model_copy(update={"policy_trust_level": policy_trust_level})
         structured_provenance = supported.provenance.model_dump(mode="json")
 
-        audit = AuditTrace(
+        audit = AuditTraceV2(
+            input_fingerprint=input_hash,
+            fact_set_fingerprint=fact_hash,
+            uses_reviewer_corrections=bool(corrected_keys),
+            corrected_requirement_keys=corrected_keys,
+            effective_facts=public_facts if corrected_keys else None,
             policy_version=selected_policy,
             run_id=str(uuid.uuid4()),
             timestamp_utc=_utc_now_iso(),
@@ -422,9 +443,9 @@ class ReadinessService:
             rulebook_active_release_id=rulebook_status.active_release_id,
             policy_trust_level=policy_trust_level,
             provenance_snapshot=structured_provenance,
-            facts_extracted=public_facts,
+            facts_extracted=original.content["facts"],
             fact_verifications={result.key: result.verification for result in results},
-            evidence_map=self._coerce_evidence_map(raw_evidence_map),
+            evidence_map=self._coerce_evidence_map(effective_evidence),
             requirements_checked=[result.key for result in results],
             overall_status=overall["overall_status"],
             submission_readiness=submission_readiness,
@@ -446,11 +467,15 @@ class ReadinessService:
         )
 
         result = EvaluationResult(
+            original_snapshot=original,
+            bundle_fingerprint=bundle_digest,
+            contract_version=CONTRACT_VERSION,
+            input_fingerprint=input_hash,
+            fact_set_fingerprint=fact_hash,
+            uses_reviewer_corrections=bool(corrected_keys),
+            corrected_requirement_keys=corrected_keys,
             policy_version=selected_policy,
-            captured_fact_states={
-                key: "NEEDS_REVIEW" if value == REVIEW_REQUIRED_FACT else "MISSING" if value is None else "CAPTURED"
-                for key, value in raw_facts.items()
-            },
+            captured_fact_states=effective["states"],
             request=normalized_request,
             supported_procedure=supported,
             overall_status=overall["overall_status"],
@@ -458,7 +483,7 @@ class ReadinessService:
             results=results,
             rule_reasons=reasons,
             facts=public_facts,
-            evidence_map=self._coerce_evidence_map(raw_evidence_map),
+            evidence_map=self._coerce_evidence_map(effective_evidence),
             blockers=blockers,
             metrics=metrics,
             warnings=warnings,
@@ -488,6 +513,29 @@ class ReadinessService:
     def generate_letter(
         self, evaluation: EvaluationResult, letter_type: LetterType = "submission_cover_letter"
     ) -> tuple[str, Dict[str, Any]]:
+        # Nested models are mutable; never draft from an unchecked envelope.
+        evaluation = EvaluationResult.model_validate_json(evaluation.model_dump_json())
+        disclosures = []
+        events = {event.requirement_key: event for event in getattr(evaluation.request, "corrections", [])}
+        for result in evaluation.results:
+            event = events.get(result.key)
+            if event is None:
+                continue
+            spans = evaluation.evidence_map.get(result.key, [])
+            if event.action == "SET_MISSING":
+                spans = event.document_review.proposal_spans
+            disclosures.append(
+                LetterCorrectionDisclosure(
+                    requirement_key=result.key,
+                    effective_value=result.fact_value,
+                    captured_state=evaluation.captured_fact_states[result.key],
+                    action=event.action,
+                    editor=event.editor,
+                    verifier=result.verification.reviewer,
+                    supporting_date=event.value.get("supporting_date") if type(event.value) is dict else None,
+                    source_spans=[span.model_dump() for span in spans],
+                )
+            )
         return draft_letter(
             LetterDraftInput(
                 request=LetterRequestMetadata(
@@ -503,6 +551,7 @@ class ReadinessService:
                 needs_review_count=evaluation.report.needs_review_count,
                 results=evaluation.report.results,
                 policy_trust_level=evaluation.policy_trust_level,
+                correction_disclosures=disclosures,
             ),
             letter_type=letter_type,
         )

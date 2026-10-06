@@ -37,6 +37,7 @@
         }
       ]
     },
+    "fact_set_fingerprint": "978ed65fed8973c40ac8d4de4e0ce0dbd11b864d5e228eb2fb1f51a69ab1dfe7",
     "fact_verifications": {
       "ahi_documented": {
         "fingerprint": null,
@@ -71,6 +72,7 @@
       "sleep_study_date": null,
       "symptom_duration_weeks": null
     },
+    "input_fingerprint": "cc61faea4b68cddab2a203574c2d5c0d3a8737265e5d636378baf39f90cff08e",
     "invariant_errors": [],
     "metrics": {
       "criteria_met_count": 1,
@@ -154,6 +156,7 @@
     ],
     "not_met": []
   },
+  "bundle_fingerprint": "f36b9be0bb209bc39960e80ab8b4a804dd9b6fd11054ccaa32332eb7d69586ba",
   "captured_fact_states": {
     "ahi_documented": "MISSING",
     "back_pain_with_radiculopathy": "MISSING",
@@ -168,6 +171,7 @@
     "sleep_study_date": "MISSING",
     "symptom_duration_weeks": "MISSING"
   },
+  "contract_version": "6779fd812df9d1fa44d8c17af56bff917d91c0395f00fea78846b643bcdaf74c",
   "evidence_map": {
     "ahi_documented": [
       {
@@ -184,6 +188,7 @@
       }
     ]
   },
+  "fact_set_fingerprint": "978ed65fed8973c40ac8d4de4e0ce0dbd11b864d5e228eb2fb1f51a69ab1dfe7",
   "facts": {
     "ahi_documented": null,
     "back_pain_with_radiculopathy": null,
@@ -198,6 +203,7 @@
     "sleep_study_date": null,
     "symptom_duration_weeks": null
   },
+  "input_fingerprint": "cc61faea4b68cddab2a203574c2d5c0d3a8737265e5d636378baf39f90cff08e",
   "metrics": {
     "criteria_met_count": 1,
     "criteria_not_met_count": 0,
@@ -208,6 +214,7 @@
     "missing_requirement_count": 2,
     "total_requirements": 3
   },
+  "original_snapshot_fingerprint": "33f025dfaa57d4b61a438bca0ec070aaae0b64eef2a79a727e8da9c6672b2ffd",
   "overall_status": "CANNOT_DETERMINE",
   "policy_trust_level": "demo",
   "policy_version": {
@@ -283,6 +290,7 @@
           }
         ]
       },
+      "fact_set_fingerprint": "978ed65fed8973c40ac8d4de4e0ce0dbd11b864d5e228eb2fb1f51a69ab1dfe7",
       "fact_verifications": {
         "ahi_documented": {
           "fingerprint": null,
@@ -317,6 +325,7 @@
         "sleep_study_date": null,
         "symptom_duration_weeks": null
       },
+      "input_fingerprint": "cc61faea4b68cddab2a203574c2d5c0d3a8737265e5d636378baf39f90cff08e",
       "invariant_errors": [],
       "metrics": {
         "criteria_met_count": 1,
@@ -411,7 +420,7 @@
           "state": "UNVERIFIED",
           "verified_at": null
         },
-        "verification_fingerprint": "998a45c4016365863510b023d3b91440e2322609455361ccdf5dce4d5930906a"
+        "verification_fingerprint": "22a7ca58f2d402e344c299a223d4563c2df2a631b0cdff79ee81fdb6ed20291d"
       },
       {
         "evidence": "Date in chart",
@@ -428,7 +437,7 @@
           "state": "UNVERIFIED",
           "verified_at": null
         },
-        "verification_fingerprint": "6bc45eb9c1c4b915f731b58ee3fd43413c1cbe3ac6394a3cbe40ffd22c1a7106"
+        "verification_fingerprint": "f847dd50482a5b485e6bf016ac6b4f2a67b91578906351285f1e9d5cd50b0b64"
       },
       {
         "evidence": "AHI value included",
@@ -453,7 +462,7 @@
           "state": "UNVERIFIED",
           "verified_at": null
         },
-        "verification_fingerprint": "fae9a91b101f06ed59fb8c2def35e855df3a48efa303ee194e2da37e95973502"
+        "verification_fingerprint": "efeac04fc9301aaa5e6767557bd10d823038cbdde3553dcca5cc5c2170ca0f21"
       }
     ],
     "rule_reasons": [
@@ -496,7 +505,7 @@
         "state": "UNVERIFIED",
         "verified_at": null
       },
-      "verification_fingerprint": "998a45c4016365863510b023d3b91440e2322609455361ccdf5dce4d5930906a"
+      "verification_fingerprint": "22a7ca58f2d402e344c299a223d4563c2df2a631b0cdff79ee81fdb6ed20291d"
     },
     {
       "evidence": "Date in chart",
@@ -513,7 +522,7 @@
         "state": "UNVERIFIED",
         "verified_at": null
       },
-      "verification_fingerprint": "6bc45eb9c1c4b915f731b58ee3fd43413c1cbe3ac6394a3cbe40ffd22c1a7106"
+      "verification_fingerprint": "f847dd50482a5b485e6bf016ac6b4f2a67b91578906351285f1e9d5cd50b0b64"
     },
     {
       "evidence": "AHI value included",
@@ -538,14 +547,14 @@
         "state": "UNVERIFIED",
         "verified_at": null
       },
-      "verification_fingerprint": "fae9a91b101f06ed59fb8c2def35e855df3a48efa303ee194e2da37e95973502"
+      "verification_fingerprint": "efeac04fc9301aaa5e6767557bd10d823038cbdde3553dcca5cc5c2170ca0f21"
     }
   ],
   "rule_reasons": [
     "Sleep study date documented: NOT_DOCUMENTED \u2014 Not found in note. Add explicit affirmative documentation.",
     "AHI/RDI documented: NOT_DOCUMENTED \u2014 Not found in note. Add explicit affirmative documentation."
   ],
-  "schema_version": "1.5.0",
+  "schema_version": "2.0.0",
   "submission_readiness": false,
   "supported_procedure": {
     "display_name": "CPAP Device (HCPCS E0601)",

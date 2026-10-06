@@ -149,7 +149,7 @@ def test_archive_roundtrip_independent_of_mutable_callers(tmp_path, history):
         loaded.results.clear()
         assert store.get_decision("original").results
         with pytest.raises(sqlite3.IntegrityError):
-            store.record(original, "original")
+            store.record(history["v1"]["C01"], "original")
 
 
 @pytest.mark.parametrize(
@@ -218,12 +218,25 @@ def test_replay_never_reextracts_or_loads_current_rules(policies, history, monke
     def forbidden(*args, **kwargs):
         raise AssertionError("Replay must use the archived evidence and target snapshot only")
 
+    original = history["v1"]["C03"].model_copy(deep=True)
+    # Even a value spelled out in the old note is unavailable unless captured at decision time.
+    from engine.corrections import capture_original
+
+    # A v2 snapshot cannot be edited after capture. Simulate a genuinely missing
+    # capture at the extraction boundary, then use only its archived result.
+    request = original.request
+    captured = original.original_snapshot.content
+    facts = captured["facts"]
+    facts.pop("neuro_red_flags_documented")
+    captured["evidence"].pop("neuro_red_flags_documented", None)
+    original_snapshot = capture_original(facts, captured["evidence"])
+    monkeypatch.setattr("engine.service.extract_facts", lambda note: (facts, captured["evidence"]))
+    service = ReadinessService()
+    original = service.evaluate(request, policy_version=policies["v1"])
+    assert original.original_snapshot == original_snapshot
     monkeypatch.setattr("engine.service.extract_facts", forbidden)
     monkeypatch.setattr("engine.extract.extract_facts", forbidden)
     monkeypatch.setattr("engine.service.load_rules", forbidden)
-    original = history["v1"]["C03"].model_copy(deep=True)
-    # Even a value spelled out in the old note is unavailable unless captured at decision time.
-    original.captured_fact_states.pop("neuro_red_flags_documented")
     assert replay_decision(original, policies["v2"])["overall_status"] == "CANNOT_DETERMINE"
 
 
