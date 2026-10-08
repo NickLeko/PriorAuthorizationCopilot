@@ -212,6 +212,12 @@ def test_api_and_cli_result_context_matches(tmp_path, capsys):
     assert "but significant improvement in pain" in str(payload["citation_context"])
     assert main(["evaluate", "--request-file", str(path)]) == 0
     assert "but significant improvement in pain" in capsys.readouterr().out
+    export = tmp_path / "review.json"
+    assert main(["export-report", "--demo-case", "MRI-01-complete", "--output", str(export)]) == 0
+    capsys.readouterr()
+    exported = json.loads(export.read_text())
+    assert exported["citation_context"]
+    assert "citation_context" not in EvaluationResult.model_validate(exported).model_dump()
 
 
 def test_streamlit_verification_and_correction_show_full_contrast_context():

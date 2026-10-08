@@ -208,7 +208,9 @@ def main(argv: Sequence[str] | None = None) -> int:
             letter_meta = None
             if args.with_letter:
                 letter_text, letter_meta = service.generate_letter(evaluation, letter_type=args.letter_type)
-            artifact = export_evaluation_payload(evaluation, letter_text=letter_text, letter_meta=letter_meta)
+            artifact = export_evaluation_payload(
+                evaluation, letter_text=letter_text, letter_meta=letter_meta, include_citation_context=True
+            )
             output_path = write_json_artifact(artifact, Path(args.output))
             print(output_path)
             return 0

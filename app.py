@@ -1034,6 +1034,7 @@ else:
             evaluation,
             letter_text=st.session_state.get("letter_text") or None,
             letter_meta=st.session_state.get("letter_meta") or None,
+            include_citation_context=True,
         )
         st.download_button(
             "Download JSON artifact",

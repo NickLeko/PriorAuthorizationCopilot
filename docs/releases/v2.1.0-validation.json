@@ -34,7 +34,7 @@
     ],
     "before_suite": "760 passed in 359.36s (original checkout run)",
     "pristine_before_suite": "760 passed in 363.69s (0:06:03)",
-    "after_suite": "798 passed, 7 xfailed in 32.46s",
+    "after_suite": "798 passed, 7 xfailed in 29.17s",
     "pristine_evaluation_confirmation": {
       "python": "3.12.3",
       "case": "MRI-01-complete",
