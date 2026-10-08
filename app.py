@@ -6,6 +6,7 @@ from pathlib import Path
 
 import streamlit as st
 
+from engine import __version__
 from engine.citation_context import citation_context
 from engine.config import load_app_config
 from engine.corrections import note_hash
@@ -105,11 +106,15 @@ st.markdown(
 
 
 @st.cache_resource
-def get_service() -> ReadinessService:
+def get_service(engine_version: str, bundle_digest: str) -> ReadinessService:
+    # Both arguments participate in Streamlit's resource cache key.
     return ReadinessService(load_app_config(BASE_DIR))
 
 
-service = get_service()
+# Hash current bundle bytes on each rerun; warm manifest parsing is cached.
+# Use an uncached probe so an old service cannot determine its own cache key.
+bundle_digest = ReadinessService(load_app_config(BASE_DIR))._bundle_digest()
+service = get_service(__version__, bundle_digest)
 config = service.config
 
 
