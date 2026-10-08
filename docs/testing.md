@@ -95,6 +95,10 @@ Ordinary generator module commands use the real clock and describe current gover
 CI tests the code, not the running deployment. After every release tag, the
 hosting owner must complete these checks before calling the live release verified:
 
+Every push to `main`, including docs-only pushes, requires an owner reboot:
+this host updates files in place and reruns `app.py` without restarting the
+process, which can leave engine modules from different loads alive together.
+
 1. In the Streamlit Community Cloud **My apps** dashboard, inspect the app's
    repository/branch/entry-file label and deployment configuration. Confirm
    repository `NickLeko/PriorAuthorizationCopilot`, branch `main`, and main file

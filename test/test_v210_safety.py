@@ -2,6 +2,7 @@
 
 import json
 import shutil
+from pathlib import Path
 from unittest.mock import patch
 
 import pytest
@@ -205,7 +206,7 @@ def test_api_and_cli_result_context_matches(tmp_path, capsys):
     payload = json.loads(capsys.readouterr().out)
     assert payload["citation_context"] == response.json()["citation_context"]
     canonical = EvaluationResult.model_validate(payload)
-    assert canonical.engine_version == "2.1.1"
+    assert canonical.engine_version == "2.1.2"
     assert "citation_context" not in canonical.model_dump()
     with pytest.raises(ValidationError, match="Derived citation context"):
         EvaluationResult.model_validate(payload | {"citation_context": {}})
@@ -267,6 +268,12 @@ def test_streamlit_engine_version_change_builds_new_service(monkeypatch):
     import engine
 
     instances = []
+    read_text = Path.read_text
+
+    def release_source(path, *args, **kwargs):
+        if path == Path("engine/__init__.py").resolve():
+            return f'__version__ = "{engine.__version__}"\n'
+        return read_text(path, *args, **kwargs)
 
     def build_service(*args, **kwargs):
         instance = ReadinessService(*args, **kwargs)
@@ -274,6 +281,7 @@ def test_streamlit_engine_version_change_builds_new_service(monkeypatch):
         return instance
 
     monkeypatch.setattr(service_module, "ReadinessService", build_service)
+    monkeypatch.setattr(Path, "read_text", release_source)
     monkeypatch.setattr(engine, "__version__", "99.0.1")
     at = AppTest.from_file("app.py").run(timeout=15)
     assert not at.exception

@@ -546,7 +546,7 @@ class ReadinessService:
             provenance_entry,
             [requirement.key for requirement in supported.requirements],
         )
-        if selected_policy != runtime_version:
+        if selected_policy.model_dump() != runtime_version.model_dump():
             policy_trust_level = "demo"
         if policy_trust_level != "verified":
             warnings.append("Policy trust remains DEMO for this procedure. Verify against official policy before real-world use.")
