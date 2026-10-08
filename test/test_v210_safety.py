@@ -205,7 +205,7 @@ def test_api_and_cli_result_context_matches(tmp_path, capsys):
     payload = json.loads(capsys.readouterr().out)
     assert payload["citation_context"] == response.json()["citation_context"]
     canonical = EvaluationResult.model_validate(payload)
-    assert canonical.engine_version == "2.1.0"
+    assert canonical.engine_version == "2.1.1"
     assert "citation_context" not in canonical.model_dump()
     with pytest.raises(ValidationError, match="Derived citation context"):
         EvaluationResult.model_validate(payload | {"citation_context": {}})
@@ -222,10 +222,68 @@ def test_api_and_cli_result_context_matches(tmp_path, capsys):
 
 def test_streamlit_verification_and_correction_show_full_contrast_context():
     at = AppTest.from_file("app.py").run(timeout=15)
+    assert not at.exception
     next(button for button in at.button if button.key == "case_MRI-01-complete").click().run(timeout=15)
+    assert not at.exception
     # Preserve the normal UI review setup while reproducing the exact note.
     next(widget for widget in at.text_area if widget.key == "note_text").set_value(CONTRAST_NOTE)
     next(button for button in at.button if button.label == "Run deterministic readiness review").click().run(timeout=15)
     assert not at.exception
-    displayed = [item.value for item in at.text]
-    assert sum("⟦NSAIDs" in text and "but significant improvement in pain" in text for text in displayed) >= 2
+    payload = at.session_state["last_eval_payload"]
+    assert payload["overall_status"] == "NEEDS_REVIEW"
+    assert payload["submission_readiness"] is False
+    assert any("status-panel" in item.value and "NEEDS_REVIEW" in item.value for item in at.markdown)
+    assert any(item.value == "#### Correct requirement facts" for item in at.markdown)
+    assert any(item.value == "#### Verify proposed facts" for item in at.markdown)
+    context = "⟦NSAIDs for 8 weeks with no improvement in sleep⟧ but significant improvement in pain."
+    therapy_keys = ("cpb_0236_conservative_therapy_weeks", "cpb_0236_conservative_therapy_no_improvement")
+    for key in therapy_keys:
+        result = next(result for result in payload["results"] if result["key"] == key)
+        assert result["status"] == "NEEDS_REVIEW"
+        assert result["fact_value"] is None
+        expander = next(item for item in at.expander if item.label == f"Correct {result['label']}")
+        assert any(item.value == "Effective citations in sentence context (⟦quoted span⟧):" for item in expander.caption)
+        assert any(item.value == "Original proposal citations in sentence context:" for item in expander.caption)
+        assert [item.value for item in expander.text] == [context, context]
+        assert any(f"{result['label']}: proposed None | NEEDS_REVIEW" == item.value for item in at.markdown)
+        assert any(item.label == f"I verified {key} against the original note and rule" for item in at.checkbox)
+    # Two correction copies per therapy fact plus one verification copy each.
+    assert [item.value for item in at.text].count(context) == 6
+    key = therapy_keys[1]
+    next(item for item in at.text_input if item.key == f"correction_quote_{key}").set_value(
+        "NSAIDs for 8 weeks with no improvement in sleep"
+    ).run(timeout=15)
+    assert not at.exception
+    occurrences = next(item for item in at.multiselect if item.key == f"correction_spans_{key}")
+    assert occurrences.options == [context]
+    start = CONTRAST_NOTE.index("NSAIDs")
+    occurrences.set_value([(start, start + len("NSAIDs for 8 weeks with no improvement in sleep"))]).run(timeout=15)
+    assert not at.exception
+    assert at.session_state["last_eval_payload"]["overall_status"] == "NEEDS_REVIEW"
+    assert [item.value for item in at.text].count(context) == 7
+
+
+def test_streamlit_engine_version_change_builds_new_service(monkeypatch):
+    import engine
+
+    instances = []
+
+    def build_service(*args, **kwargs):
+        instance = ReadinessService(*args, **kwargs)
+        instances.append(instance)
+        return instance
+
+    monkeypatch.setattr(service_module, "ReadinessService", build_service)
+    monkeypatch.setattr(engine, "__version__", "99.0.1")
+    at = AppTest.from_file("app.py").run(timeout=15)
+    assert not at.exception
+    assert len(instances) == 2  # Digest probe, then cached factory.
+    first_service = instances[-1]
+    at.run(timeout=15)
+    assert not at.exception
+    assert len(instances) == 3  # Only the probe; factory reused its instance.
+    monkeypatch.setattr(engine, "__version__", "99.0.2")
+    at.run(timeout=15)
+    assert not at.exception
+    assert len(instances) == 5
+    assert instances[-1] is not first_service
