@@ -11,7 +11,7 @@ Its claim that a diagnosis returned True only without supported negation was
 contradicted by `Patient does not have low back pain with radiculopathy`.
 v1.5.0 resolves that contradiction by changing what the engine may assert,
 not by making extraction match the old contract. Negation, temporality and
-attribution errors remain. v2.1 repairs the bounded safety cases listed below.
+attribution errors remain. v2.1 handles the specific patterns listed below; each failure class remains open.
 
 The normative guarantees are G01–G07 below and the exact examples in the JSON
 block. `TestExtractionContractAlignment` executes correct expectations; remaining known failures are strict xfails. These finite examples are not universal language claims;
@@ -111,19 +111,30 @@ proposals. This API records attestations; it cannot prove a person read the note
 Use synthetic notes only. There is no production clinical-language guarantee.
 
 
-## v2.1 safety repairs and remaining failures
+## v2.1 patterns handled; failure classes remain open
 
-Fixed: unqualified response language after but/however/though/although/yet/whereas
-in the therapy sentence forces review; passive ruled-out OSA is missing; never/not
-completed and prescribed/recommended/ordered therapy durations are missing;
-cancelled/canceled sleep studies are missing; unrelated N/A or unknown text in
-another sentence no longer suppresses numeric AHI presence; resolved findings in
-the same sentence require review. Evidence spans remain source quotations;
-review surfaces derive full containing sentences with ⟦span⟧ markers without
-changing facts, evidence, fingerprints or the record schema (2.0.0).
+The following patterns are handled; the class remains open in every row:
+
+| Pattern covered by regressions | Current behavior | Open class |
+| --- | --- | --- |
+| Therapy nonresponse with unqualified but/however/though/although/yet/whereas response, including semicolon contrast | Response requires review; ambiguous linkage also reviews duration. An explicitly initial response in a single course preserves its documented duration. | Response/attribute association |
+| OSA with ruled out anywhere in its sentence, including passive tense and intervening adverbs | Diagnosis is missing. A completed PSG in that sentence is still a documented study, not the diagnosis being excluded. | Negation |
+| Therapy/study ordered, prescribed, recommended, not yet started, has not started, not completed, never completed, cancelled/canceled anywhere in its sentence | Therapy duration/response or study presence is missing. Other qualifying findings with these exclusions require review. | Planned/incomplete events |
+| Resolved, history of, prior episode, previous episode in the candidate's sentence | Qualifying findings and durations require review. | Temporality |
+| Numeric AHI with N/A or unknown in a different sentence | AHI presence remains captured; missingness in its own sentence refuses. | Missingness scope |
+
+Safety triggers use real sentence boundaries: period, question mark, exclamation
+mark, or newline; semicolons and decimal points do not end that context. Narrow
+finding clauses retain their existing attribute scope. Review surfaces derive
+full containing sentences with ⟦span⟧ markers without changing facts, evidence,
+fingerprints or the record schema (2.0.0).
 
 Remaining strict xfails assert correct expectations for `negation_first`,
 `negated_strength`, `reflex_attribution`, `unrelated_therapy`, `borrowed_date`,
-and resolved historical episodes across sentences. These failure classes remain
-unsupported; the human gate does not establish extractor correctness. The
-`resolved_diagnosis` example is fixed and passes without an xfail.
+and resolved historical episodes across sentences. The 20 frozen independent
+inputs are now named regressions, with additional correct-value strict xfails
+for case 12 (cross-sentence temporality), case 17's study citation, case 18
+(intact reflexes), and case 2's secondary generic analgesic duration. These
+inputs are no longer a held-out measure. The `resolved_diagnosis` example passes;
+that example does not establish correctness for the temporality class. The
+human gate does not establish extractor correctness.

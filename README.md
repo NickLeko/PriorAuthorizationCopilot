@@ -4,9 +4,11 @@ This self-directed prototype demonstrates deterministic prior-authorization docu
 
 v2.0.0 adds typed, source-located reviewer corrections for wrong or missed facts, with contract meanings and original/effective values shown in Streamlit. Applying a correction clears attestations and letters; passing facts remain `PENDING_VERIFICATION` until reviewed and attested again. Letters disclose reviewer-supplied facts, quotations and self-reported identities, excluding audit comments from reasoning. See the canonical [correction limits](docs/safety_and_scope.md#correction-limits).
 
-v2.1.0 repairs bounded extraction safety cases, shows full sentence context with
+v2.1.0 handles specific sentence-scoped exclusion, review, contrast and missingness
+patterns; each failure class remains open. It shows full sentence context with
 ⟦citation⟧ markers during fact verification/correction, and caches immutable rule
 bundles by content digest. Engine version is 2.1.0; record schema remains 2.0.0.
+The 20 independent notes now serve as regressions, not a held-out accuracy measure.
 See the [v2.1 release report](docs/releases/v2.1.0.md) for measurements and remaining strict xfails.
 
 
@@ -162,7 +164,7 @@ The bundled labeled fixture currently contains 52 synthetic cases. Its regressio
 
 `MRI_LUMBAR` implements only the persistent back pain with radiculopathy alternative in official [Aetna Clinical Policy Bulletin 0236](https://www.aetna.com/cpb/medical/data/200_299/0236.html), _Magnetic Resonance Imaging (MRI) and Computed Tomography (CT) of the Spine_. The source was last reviewed April 9, 2026 and accessed August 22, 2026. The implemented branch requires back pain with radiculopathy, objective motor/reflex findings in an explicit nerve-root distribution, at least six weeks of qualifying conservative therapy, and explicit lack of improvement. Other CPB 0236 indications are not modeled.
 
-Footnote 1 identifies moderate activity, analgesics, NSAIDs/anti-inflammatory medication, and muscle relaxants as conservative-therapy modalities, but it does not explicitly say that every modality, a specific combination, or only one modality is required. The prototype interprets a documented qualifying modality as sufficient evidence of therapy type. For a duration and response to satisfy the implemented branch together, they must resolve to one unambiguous supported modality candidate; conflicting candidates, unsupported cross-modality linkage, and same-sentence response contrast clauses without a named modality route to review. This is a bounded deterministic interpretation, not quoted Aetna policy language or general episode resolution.
+Footnote 1 identifies moderate activity, analgesics, NSAIDs/anti-inflammatory medication, and muscle relaxants as conservative-therapy modalities, but it does not explicitly say that every modality, a specific combination, or only one modality is required. The prototype interprets a documented qualifying modality as sufficient evidence of therapy type. For a duration and response to satisfy the implemented branch together, they must resolve to one unambiguous supported modality candidate; conflicting candidates, unsupported cross-modality linkage, and same-sentence response contrast clauses without a named modality (including semicolon clauses) route the response to review. An explicitly initial response in a single documented course preserves its duration; otherwise ambiguous linkage reviews both facts. This is a bounded deterministic interpretation, not quoted Aetna policy language or general episode resolution.
 
 The verified provenance chain is `official source → validated normalized snapshot/hash → requirement-to-clause mapping → structured rule → extracted evidence → deterministic evaluation`. Snapshot structure, source identity, stored content, recomputed hash, timestamps, freshness, and unresolved drift are checked before trust can remain verified. Invalid state downgrades only the affected payer/procedure to demo and forces `submission_readiness=false`; this is still local prototype governance, not production policy management.
 
