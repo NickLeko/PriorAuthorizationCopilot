@@ -6,7 +6,7 @@ v2.0.0 mitigation: typed correction validation rejects SET_VALUE spans over 300 
 
 **Project:** Prior Authorization Readiness Copilot  
 **Owner:** Nicholas Leko  
-**Last Updated:** September 4, 2026 — v1.5.0
+**Last Updated:** October 8, 2026 — v2.1.0
 **Status:** Versioned current behavior. Changes should update tests and docs.
 
 ---
@@ -18,7 +18,7 @@ Current repo status:
 - no LLM implementation
 - bundled case data is synthetic; the official policy snapshot and rule provenance are source material; input is not screened and must not contain real PHI, with screening remaining the operator's responsibility
 
-Automated extraction is a **drafting aid, not a decision gate**. v1.4.0's posture over-trusted extraction. Negated diagnoses returned affirmative facts, contradicting the extraction contract as written. v1.5.0 resolves that contradiction by changing what the engine may assert rather than by making extraction match the contract. The language patterns remain unchanged, including known negation, temporality and attribution errors.
+Automated extraction is a **drafting aid, not a decision gate**. v1.4.0's posture over-trusted extraction. Negated diagnoses returned affirmative facts, contradicting the extraction contract as written. v1.5.0 resolves that contradiction by changing what the engine may assert rather than by making extraction match the contract. v2.1.0 handles the bounded patterns below; the negation, temporality, attribution and other failure classes remain open.
 
 Requirement results describe the captured proposals:
 - proposed scalar passes the operator (`MET`), without asserting source support
@@ -231,3 +231,46 @@ requires:
 - updated docs (README, model card, safety docs, and this file as needed)
 
 ---
+
+
+## v2.1.0 patterns handled; classes remain open (October 8, 2026)
+
+These patterns are handled; the class remains open. No row establishes general
+correctness for negation, temporality, therapy response, event completion,
+attribute association, or missingness scope.
+
+| Failure class and reproduced input | v2.1 disposition |
+| --- | --- |
+| NSAIDs for 8 weeks with no improvement in sleep **but significant improvement in pain** | Pattern handled; class remains open: linked duration/response require review, including however/though/although/yet/whereas and semicolon variants; full context is displayed with the unchanged citation marked. |
+| OSA with ruled out anywhere in its sentence (any passive tense or intervening adverb) | Pattern handled; class remains open: diagnosis is missing, never affirmative. |
+| PT x 8 weeks was never completed / not completed | Pattern handled; class remains open: duration is missing. |
+| Stopped PT after 1 week. PT x 8 weeks was prescribed. | Pattern handled; class remains open: no completed duration is captured; the 1-week phrasing remains outside the supported duration forms. |
+| PT x 8 weeks recommended / ordered / prescribed / not yet started / has not started (anywhere in its sentence) | Pattern handled; class remains open: duration is missing; qualifying NSAID courses receive the same exclusion. |
+| Sleep study 2026-01-05 was cancelled / canceled | Pattern handled; class remains open: completed-study presence is missing. |
+| OSA confirmed on PSG 2026-01-05, AHI 32. Allergies: N/A. / Bed partner unknown. | Pattern handled; class remains open: AHI presence is captured; unknown/N/A in its own sentence still refuses. No AHI threshold change. |
+| Low back pain with radiculopathy resolved last year | Pattern handled; class remains open: same-sentence resolved/history of/prior episode/previous episode findings require review, including qualifying strength, mechanical, OSA and imaging findings. |
+| Low back pain with radiculopathy. It resolved last year. | Remaining: cross-sentence historical episode coreference; strict xfail asserts review. |
+| Negated lumbar diagnosis / negated strength / reflex qualifier borrowed from pain | Remaining: strict xfails assert false/missing, never the wrong affirmative proposal. |
+| Lumbar therapy actually for headaches / visit date borrowed for an undated sleep study | Remaining: attribution and date association; strict xfails assert missing. |
+
+
+The independent check used 20 fresh inputs and found five wrong captures before
+this pass: case 2 (semicolon response contrast), case 9 (ruled-out negation with
+an adverb), case 10 (historical/prior-episode temporality), case 12 (resolved
+historical episode across sentences), and case 13 (ordered/not-started therapy).
+This pass handles cases 2, 9, 10 and 13; case 12 remains a strict xfail asserting
+review. Case 17's unrelated appointment citation, case 18's missed intact-reflex
+normal finding, and case 2's secondary missed generic analgesic duration also
+have strict xfails asserting correct expectations. All 20 notes are frozen named
+regressions and are no longer a held-out measure. See the
+[release report](docs/releases/v2.1.0.md) for the complete validation results.
+
+Rule bundles now include runtime rules, provenance, policy sources, manifest and
+referenced release files in their digest. Immutable parsed bundles and rulebook
+status are cached by that identity. The final digest guard rejects concurrent
+changes; changed disk content loads freshly on the next evaluation. Monitoring
+snapshots and clock freshness continue to be checked live.
+
+`ReadinessReport.letter_draft` is always initialized empty; generated letters are
+returned separately by `generate_letter`. The obsolete corrected-letter guard
+was removed. All existing correction/letter integrity validation remains.

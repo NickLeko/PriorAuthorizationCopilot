@@ -120,13 +120,14 @@ def _validate_rules(data: Dict[str, Any]) -> None:
             raise ValueError("Invalid rules file: 'policy_notes' entries must be non-empty strings.")
 
 
-def load_rules(path: str) -> Dict[str, Any]:
+def load_rules(path: str, *, data: Dict[str, Any] | None = None) -> Dict[str, Any]:
     rules_path = Path(path)
     if not rules_path.exists():
         raise FileNotFoundError(f"Rules file not found: {rules_path}")
 
-    with rules_path.open("r", encoding="utf-8") as f:
-        data = yaml.safe_load(f)
+    if data is None:
+        with rules_path.open("r", encoding="utf-8") as f:
+            data = yaml.safe_load(f)
     if not isinstance(data, dict) or "payers" not in data:
         raise ValueError("Invalid rules file: expected top-level 'payers'.")
     _validate_rules(data)

@@ -1,0 +1,3203 @@
+{
+  "base": "fd76248",
+  "engine_version": "2.1.0",
+  "schema_version": "2.0.0",
+  "performance": {
+    "python": "3.12.3",
+    "before_evaluations": [
+      {
+        "label": "cold",
+        "seconds": 0.4508780000032857,
+        "yaml_loads": 289,
+        "rulebook_computations": 10
+      },
+      {
+        "label": "warm",
+        "seconds": 0.45295804197667167,
+        "yaml_loads": 289,
+        "rulebook_computations": 10
+      }
+    ],
+    "after_evaluations": [
+      {
+        "cache": "cold",
+        "seconds": 0.054870624968316406,
+        "yaml_loads": 25,
+        "rulebook_status_computations": 1
+      },
+      {
+        "cache": "warm",
+        "seconds": 0.006025290989782661,
+        "yaml_loads": 0,
+        "rulebook_status_computations": 0
+      }
+    ],
+    "before_suite": "760 passed in 359.36s (original checkout run)",
+    "pristine_before_suite": "760 passed in 363.69s (0:06:03)",
+    "after_suite": "798 passed, 7 xfailed in 29.17s",
+    "pristine_evaluation_confirmation": {
+      "python": "3.12.3",
+      "case": "MRI-01-complete",
+      "evaluations": [
+        {
+          "cache": "cold",
+          "seconds": 0.5059409159584902,
+          "yaml_loads": 289,
+          "rulebook_status_computations": 10
+        },
+        {
+          "cache": "warm",
+          "seconds": 0.5216208330239169,
+          "yaml_loads": 289,
+          "rulebook_status_computations": 10
+        }
+      ]
+    }
+  },
+  "inputs": [
+    {
+      "note": "Low back pain with right leg radiculopathy. NSAIDs for 8 weeks with no improvement in sleep but significant improvement in pain. Ankle dorsiflexion strength 4/5 in the right L5 distribution.",
+      "values": {
+        "cpb_0236_conservative_therapy_weeks": {
+          "before": 8,
+          "after": "__REVIEW_REQUIRED__"
+        },
+        "cpb_0236_conservative_therapy_no_improvement": {
+          "before": true,
+          "after": "__REVIEW_REQUIRED__"
+        }
+      }
+    },
+    {
+      "note": "OSA was ruled out",
+      "values": {
+        "osa_diagnosis": {
+          "before": true,
+          "after": null
+        }
+      }
+    },
+    {
+      "note": "OSA were ruled out",
+      "values": {
+        "osa_diagnosis": {
+          "before": true,
+          "after": null
+        }
+      }
+    },
+    {
+      "note": "OSA has been ruled out",
+      "values": {
+        "osa_diagnosis": {
+          "before": true,
+          "after": null
+        }
+      }
+    },
+    {
+      "note": "OSA had been ruled out",
+      "values": {
+        "osa_diagnosis": {
+          "before": true,
+          "after": null
+        }
+      }
+    },
+    {
+      "note": "PT x 8 weeks was never completed",
+      "values": {
+        "conservative_therapy_weeks": {
+          "before": 8,
+          "after": null
+        }
+      }
+    },
+    {
+      "note": "PT x 8 weeks was not completed",
+      "values": {
+        "conservative_therapy_weeks": {
+          "before": 8,
+          "after": null
+        }
+      }
+    },
+    {
+      "note": "Stopped PT after 1 week. PT x 8 weeks was prescribed.",
+      "values": {
+        "conservative_therapy_weeks": {
+          "before": 8,
+          "after": null
+        }
+      }
+    },
+    {
+      "note": "PT x 8 weeks was recommended",
+      "values": {
+        "conservative_therapy_weeks": {
+          "before": 8,
+          "after": null
+        }
+      }
+    },
+    {
+      "note": "PT x 8 weeks was ordered",
+      "values": {
+        "conservative_therapy_weeks": {
+          "before": 8,
+          "after": null
+        }
+      }
+    },
+    {
+      "note": "Sleep study 2026-01-05 was cancelled.",
+      "values": {
+        "sleep_study_date": {
+          "before": true,
+          "after": null
+        }
+      }
+    },
+    {
+      "note": "Sleep study 2026-01-05 was canceled.",
+      "values": {
+        "sleep_study_date": {
+          "before": true,
+          "after": null
+        }
+      }
+    },
+    {
+      "note": "OSA confirmed on PSG 2026-01-05, AHI 32. Allergies: N/A.",
+      "values": {
+        "ahi_documented": {
+          "before": null,
+          "after": true
+        }
+      }
+    },
+    {
+      "note": "OSA confirmed on PSG 2026-01-05, AHI 32. Bed partner unknown.",
+      "values": {
+        "ahi_documented": {
+          "before": null,
+          "after": true
+        }
+      }
+    },
+    {
+      "note": "Low back pain with radiculopathy resolved.",
+      "values": {
+        "back_pain_with_radiculopathy": {
+          "before": true,
+          "after": "__REVIEW_REQUIRED__"
+        }
+      }
+    },
+    {
+      "note": "Right L5 distribution: strength 4/5, weakness resolved.",
+      "values": {
+        "objective_motor_or_reflex_change_in_root_distribution": {
+          "before": true,
+          "after": "__REVIEW_REQUIRED__"
+        }
+      }
+    },
+    {
+      "note": "Low back pain with radiculopathy. It resolved last year.",
+      "values": {
+        "back_pain_with_radiculopathy": {
+          "before": true,
+          "after": true,
+          "correct_expectation": "__REVIEW_REQUIRED__"
+        }
+      }
+    }
+  ],
+  "corpus": {
+    "metrics": {
+      "total_labeled_cases": 52,
+      "expected_non_ready_count": 52,
+      "exact_status_correct_count": 52,
+      "exact_overall_status_accuracy_pct": 100.0,
+      "false_ready_count": 0,
+      "false_ready_rate_pct": 0.0,
+      "needs_review_count": 12,
+      "needs_review_rate_pct": 23.1,
+      "cannot_determine_count": 30,
+      "cannot_determine_rate_pct": 57.7,
+      "pending_verification_count": 7,
+      "pending_verification_rate_pct": 13.5,
+      "abstention_count": 42,
+      "abstention_rate_pct": 80.8
+    },
+    "statuses": {
+      "PENDING_VERIFICATION": 7,
+      "CANNOT_DETERMINE": 30,
+      "NOT_READY": 3,
+      "NEEDS_REVIEW": 12
+    },
+    "nonmatching": [],
+    "conformance": {
+      "cases": 52,
+      "captured": 163,
+      "missing": 446,
+      "needs_review": 15,
+      "nonconforming": []
+    }
+  },
+  "corpus_status_or_fact_changes": [],
+  "golden_diffs": [
+    {
+      "file": "test/golden/evaluations/CPAP-02-borderline.json",
+      "changed_fields": [
+        "audit_trail.fact_set_fingerprint",
+        "audit_trail.input_fingerprint",
+        "bundle_fingerprint",
+        "engine_version",
+        "fact_set_fingerprint",
+        "input_fingerprint",
+        "report.audit_trail.fact_set_fingerprint",
+        "report.audit_trail.input_fingerprint",
+        "report.results[0].verification_fingerprint",
+        "report.results[1].verification_fingerprint",
+        "report.results[2].verification_fingerprint",
+        "results[0].verification_fingerprint",
+        "results[1].verification_fingerprint",
+        "results[2].verification_fingerprint"
+      ]
+    },
+    {
+      "file": "test/golden/evaluations/MRI-01-complete.json",
+      "changed_fields": [
+        "audit_trail.fact_set_fingerprint",
+        "audit_trail.input_fingerprint",
+        "bundle_fingerprint",
+        "engine_version",
+        "fact_set_fingerprint",
+        "input_fingerprint",
+        "report.audit_trail.fact_set_fingerprint",
+        "report.audit_trail.input_fingerprint",
+        "report.results[0].verification_fingerprint",
+        "report.results[1].verification_fingerprint",
+        "report.results[2].verification_fingerprint",
+        "report.results[3].verification_fingerprint",
+        "results[0].verification_fingerprint",
+        "results[1].verification_fingerprint",
+        "results[2].verification_fingerprint",
+        "results[3].verification_fingerprint"
+      ]
+    },
+    {
+      "file": "test/golden/evaluations/MRI-01-human-verified.json",
+      "changed_fields": [
+        "audit_trail.fact_set_fingerprint",
+        "audit_trail.fact_verifications.back_pain_with_radiculopathy.fingerprint",
+        "audit_trail.fact_verifications.cpb_0236_conservative_therapy_no_improvement.fingerprint",
+        "audit_trail.fact_verifications.cpb_0236_conservative_therapy_weeks.fingerprint",
+        "audit_trail.fact_verifications.objective_motor_or_reflex_change_in_root_distribution.fingerprint",
+        "audit_trail.input_fingerprint",
+        "bundle_fingerprint",
+        "engine_version",
+        "fact_set_fingerprint",
+        "input_fingerprint",
+        "report.audit_trail.fact_set_fingerprint",
+        "report.audit_trail.fact_verifications.back_pain_with_radiculopathy.fingerprint",
+        "report.audit_trail.fact_verifications.cpb_0236_conservative_therapy_no_improvement.fingerprint",
+        "report.audit_trail.fact_verifications.cpb_0236_conservative_therapy_weeks.fingerprint",
+        "report.audit_trail.fact_verifications.objective_motor_or_reflex_change_in_root_distribution.fingerprint",
+        "report.audit_trail.input_fingerprint",
+        "report.results[0].verification.fingerprint",
+        "report.results[0].verification_fingerprint",
+        "report.results[1].verification.fingerprint",
+        "report.results[1].verification_fingerprint",
+        "report.results[2].verification.fingerprint",
+        "report.results[2].verification_fingerprint",
+        "report.results[3].verification.fingerprint",
+        "report.results[3].verification_fingerprint",
+        "request.fact_verifications.back_pain_with_radiculopathy.fingerprint",
+        "request.fact_verifications.cpb_0236_conservative_therapy_no_improvement.fingerprint",
+        "request.fact_verifications.cpb_0236_conservative_therapy_weeks.fingerprint",
+        "request.fact_verifications.objective_motor_or_reflex_change_in_root_distribution.fingerprint",
+        "results[0].verification.fingerprint",
+        "results[0].verification_fingerprint",
+        "results[1].verification.fingerprint",
+        "results[1].verification_fingerprint",
+        "results[2].verification.fingerprint",
+        "results[2].verification_fingerprint",
+        "results[3].verification.fingerprint",
+        "results[3].verification_fingerprint"
+      ]
+    },
+    {
+      "file": "test/golden/evaluations/MRI-08-edge-below-threshold.json",
+      "changed_fields": [
+        "audit_trail.fact_set_fingerprint",
+        "audit_trail.input_fingerprint",
+        "bundle_fingerprint",
+        "engine_version",
+        "fact_set_fingerprint",
+        "input_fingerprint",
+        "report.audit_trail.fact_set_fingerprint",
+        "report.audit_trail.input_fingerprint",
+        "report.results[0].verification_fingerprint",
+        "report.results[1].verification_fingerprint",
+        "report.results[2].verification_fingerprint",
+        "report.results[3].verification_fingerprint",
+        "results[0].verification_fingerprint",
+        "results[1].verification_fingerprint",
+        "results[2].verification_fingerprint",
+        "results[3].verification_fingerprint"
+      ]
+    },
+    {
+      "file": "test/golden/evaluations/MRI-KNEE-01-ready.json",
+      "changed_fields": [
+        "audit_trail.fact_set_fingerprint",
+        "audit_trail.input_fingerprint",
+        "bundle_fingerprint",
+        "engine_version",
+        "fact_set_fingerprint",
+        "input_fingerprint",
+        "report.audit_trail.fact_set_fingerprint",
+        "report.audit_trail.input_fingerprint",
+        "report.results[0].verification_fingerprint",
+        "report.results[1].verification_fingerprint",
+        "report.results[2].verification_fingerprint",
+        "report.results[3].verification_fingerprint",
+        "results[0].verification_fingerprint",
+        "results[1].verification_fingerprint",
+        "results[2].verification_fingerprint",
+        "results[3].verification_fingerprint"
+      ]
+    },
+    {
+      "file": "test/golden/evaluations/reviewer-corrected-full-projection.json",
+      "changed_fields": [
+        "audit_trail.fact_set_fingerprint",
+        "audit_trail.fact_verifications.back_pain_with_radiculopathy.fingerprint",
+        "audit_trail.fact_verifications.cpb_0236_conservative_therapy_no_improvement.fingerprint",
+        "audit_trail.fact_verifications.cpb_0236_conservative_therapy_weeks.fingerprint",
+        "audit_trail.fact_verifications.objective_motor_or_reflex_change_in_root_distribution.fingerprint",
+        "audit_trail.input_fingerprint",
+        "bundle_fingerprint",
+        "engine_version",
+        "fact_set_fingerprint",
+        "input_fingerprint",
+        "report.audit_trail.fact_set_fingerprint",
+        "report.audit_trail.fact_verifications.back_pain_with_radiculopathy.fingerprint",
+        "report.audit_trail.fact_verifications.cpb_0236_conservative_therapy_no_improvement.fingerprint",
+        "report.audit_trail.fact_verifications.cpb_0236_conservative_therapy_weeks.fingerprint",
+        "report.audit_trail.fact_verifications.objective_motor_or_reflex_change_in_root_distribution.fingerprint",
+        "report.audit_trail.input_fingerprint",
+        "report.results[0].verification.fingerprint",
+        "report.results[0].verification_fingerprint",
+        "report.results[1].verification.fingerprint",
+        "report.results[1].verification_fingerprint",
+        "report.results[2].verification.fingerprint",
+        "report.results[2].verification_fingerprint",
+        "report.results[3].verification.fingerprint",
+        "report.results[3].verification_fingerprint",
+        "request.fact_verifications.back_pain_with_radiculopathy.fingerprint",
+        "request.fact_verifications.cpb_0236_conservative_therapy_no_improvement.fingerprint",
+        "request.fact_verifications.cpb_0236_conservative_therapy_weeks.fingerprint",
+        "request.fact_verifications.objective_motor_or_reflex_change_in_root_distribution.fingerprint",
+        "results[0].verification.fingerprint",
+        "results[0].verification_fingerprint",
+        "results[1].verification.fingerprint",
+        "results[1].verification_fingerprint",
+        "results[2].verification.fingerprint",
+        "results[2].verification_fingerprint",
+        "results[3].verification.fingerprint",
+        "results[3].verification_fingerprint"
+      ]
+    },
+    {
+      "file": "docs/artifacts/CPAP-02-borderline.json",
+      "changed_fields": [
+        "audit_trail.fact_set_fingerprint",
+        "audit_trail.input_fingerprint",
+        "bundle_fingerprint",
+        "engine_version",
+        "fact_set_fingerprint",
+        "input_fingerprint",
+        "report.audit_trail.fact_set_fingerprint",
+        "report.audit_trail.input_fingerprint",
+        "report.results[0].verification_fingerprint",
+        "report.results[1].verification_fingerprint",
+        "report.results[2].verification_fingerprint",
+        "results[0].verification_fingerprint",
+        "results[1].verification_fingerprint",
+        "results[2].verification_fingerprint"
+      ]
+    },
+    {
+      "file": "docs/artifacts/MRI-01-complete.json",
+      "changed_fields": [
+        "audit_trail.fact_set_fingerprint",
+        "audit_trail.input_fingerprint",
+        "bundle_fingerprint",
+        "engine_version",
+        "fact_set_fingerprint",
+        "input_fingerprint",
+        "report.audit_trail.fact_set_fingerprint",
+        "report.audit_trail.input_fingerprint",
+        "report.results[0].verification_fingerprint",
+        "report.results[1].verification_fingerprint",
+        "report.results[2].verification_fingerprint",
+        "report.results[3].verification_fingerprint",
+        "results[0].verification_fingerprint",
+        "results[1].verification_fingerprint",
+        "results[2].verification_fingerprint",
+        "results[3].verification_fingerprint"
+      ]
+    },
+    {
+      "file": "docs/artifacts/MRI-08-edge-below-threshold.json",
+      "changed_fields": [
+        "audit_trail.fact_set_fingerprint",
+        "audit_trail.input_fingerprint",
+        "bundle_fingerprint",
+        "engine_version",
+        "fact_set_fingerprint",
+        "input_fingerprint",
+        "report.audit_trail.fact_set_fingerprint",
+        "report.audit_trail.input_fingerprint",
+        "report.results[0].verification_fingerprint",
+        "report.results[1].verification_fingerprint",
+        "report.results[2].verification_fingerprint",
+        "report.results[3].verification_fingerprint",
+        "results[0].verification_fingerprint",
+        "results[1].verification_fingerprint",
+        "results[2].verification_fingerprint",
+        "results[3].verification_fingerprint"
+      ]
+    },
+    {
+      "file": "docs/artifacts/MRI-CERV-01-ready.json",
+      "changed_fields": [
+        "audit_trail.fact_set_fingerprint",
+        "audit_trail.input_fingerprint",
+        "bundle_fingerprint",
+        "engine_version",
+        "fact_set_fingerprint",
+        "input_fingerprint",
+        "report.audit_trail.fact_set_fingerprint",
+        "report.audit_trail.input_fingerprint",
+        "report.results[0].verification_fingerprint",
+        "report.results[1].verification_fingerprint",
+        "report.results[2].verification_fingerprint",
+        "report.results[3].verification_fingerprint",
+        "results[0].verification_fingerprint",
+        "results[1].verification_fingerprint",
+        "results[2].verification_fingerprint",
+        "results[3].verification_fingerprint"
+      ]
+    },
+    {
+      "file": "docs/artifacts/MRI-KNEE-01-ready.json",
+      "changed_fields": [
+        "audit_trail.fact_set_fingerprint",
+        "audit_trail.input_fingerprint",
+        "bundle_fingerprint",
+        "engine_version",
+        "fact_set_fingerprint",
+        "input_fingerprint",
+        "report.audit_trail.fact_set_fingerprint",
+        "report.audit_trail.input_fingerprint",
+        "report.results[0].verification_fingerprint",
+        "report.results[1].verification_fingerprint",
+        "report.results[2].verification_fingerprint",
+        "report.results[3].verification_fingerprint",
+        "results[0].verification_fingerprint",
+        "results[1].verification_fingerprint",
+        "results[2].verification_fingerprint",
+        "results[3].verification_fingerprint"
+      ]
+    },
+    {
+      "file": "docs/artifacts/status.json",
+      "changed_fields": [
+        "app_version"
+      ]
+    }
+  ],
+  "xfails": [
+    {
+      "example": "negation_first",
+      "reason": "negation: unsupported does-not-have scope",
+      "correct_value": false
+    },
+    {
+      "example": "negated_strength",
+      "reason": "negation: explicitly negated score",
+      "correct_value": false
+    },
+    {
+      "example": "reflex_attribution",
+      "reason": "attribution: decreased pain borrowed as reflex finding",
+      "correct_value": null
+    },
+    {
+      "example": "unrelated_therapy",
+      "reason": "attribution: headache therapy borrowed for lumbar episode",
+      "correct_value": null
+    },
+    {
+      "example": "borrowed_date",
+      "reason": "date association: visit date borrowed for undated study",
+      "correct_value": null
+    },
+    {
+      "example": "G07_borrowed_date_remains_contained_by_demo_submission_gate",
+      "reason": "date association: visit date borrowed for undated study",
+      "correct_value": null
+    },
+    {
+      "example": "resolved_historical_episode_across_sentences_requires_review",
+      "reason": "temporality: historical episode coreference across sentences",
+      "correct_value": "__REVIEW_REQUIRED__"
+    }
+  ],
+  "second_pass": {
+    "base": "0d3f6d3",
+    "corpus": {
+      "cases": 52,
+      "exact_status_matches": 52,
+      "changes": [],
+      "statuses": {
+        "PENDING_VERIFICATION": 7,
+        "CANNOT_DETERMINE": 30,
+        "NOT_READY": 3,
+        "NEEDS_REVIEW": 12
+      }
+    },
+    "conformance": {
+      "cases": 52,
+      "captured": 163,
+      "missing": 446,
+      "needs_review": 15,
+      "nonconforming": []
+    },
+    "performance": {
+      "python": "3.12.3",
+      "case": "MRI-01-complete",
+      "evaluations": [
+        {
+          "cache": "cold",
+          "seconds": 0.04913145903265104,
+          "yaml_loads": 25,
+          "rulebook_status_computations": 1
+        },
+        {
+          "cache": "warm",
+          "seconds": 0.005556999996770173,
+          "yaml_loads": 0,
+          "rulebook_status_computations": 0
+        }
+      ]
+    },
+    "suite": "861 passed, 11 strict xfailed in 28.88s (final run)",
+    "golden_diffs": [],
+    "artifact_diffs": [],
+    "independent_check": {
+      "fresh_inputs_before_development": 20,
+      "before_primary_counts": {
+        "wrong_capture": 5,
+        "false_refusal": 1,
+        "correct": 14
+      },
+      "after_primary_counts": {
+        "wrong_capture": 1,
+        "false_refusal": 1,
+        "correct": 18
+      },
+      "original_wrong_captures": {
+        "2": "semicolon therapy-response contrast",
+        "9": "adverb inside ruled-out negation",
+        "10": "historical/prior-episode temporality",
+        "12": "cross-sentence resolved prior episode",
+        "13": "ordered/not-started therapy"
+      },
+      "now_regressions_not_held_out": true,
+      "new_strict_xfails": {
+        "12": "correct diagnosis value NEEDS_REVIEW",
+        "17": "citation must reference the completed-study sentence",
+        "18": "normal intact reflexes: correct value false",
+        "2_secondary": "generic analgesic duration: correct value 8"
+      }
+    },
+    "independent_inputs": [
+      {
+        "regression": "nonpain_response_contrast",
+        "input": "Low back pain radiates into the right leg with radiculopathy. Right L5 distribution: ankle dorsiflexion strength 4/5. NSAIDs for 7 weeks gave no meaningful relief of insomnia, although the back and leg pain improved substantially.",
+        "procedure": "MRI_LUMBAR",
+        "reviewer_correct_values": {
+          "conservative_therapy_weeks": 7,
+          "cpb_0236_conservative_therapy_weeks": "__REVIEW_REQUIRED__",
+          "cpb_0236_conservative_therapy_no_improvement": "__REVIEW_REQUIRED__",
+          "back_pain_with_radiculopathy": true,
+          "objective_motor_or_reflex_change_in_root_distribution": true,
+          "neuro_red_flags_documented": null,
+          "prior_imaging_result": null,
+          "symptom_duration_weeks": null,
+          "mechanical_symptoms_documented": null,
+          "osa_diagnosis": null,
+          "sleep_study_date": null,
+          "ahi_documented": null
+        },
+        "reviewer_correct_requirement_statuses": {
+          "back_pain_with_radiculopathy": "MET",
+          "objective_motor_or_reflex_change_in_root_distribution": "MET",
+          "cpb_0236_conservative_therapy_weeks": "NEEDS_REVIEW",
+          "cpb_0236_conservative_therapy_no_improvement": "NEEDS_REVIEW"
+        },
+        "reviewer_correct_overall": "NEEDS_REVIEW",
+        "before": {
+          "id": 1,
+          "procedure": "MRI_LUMBAR",
+          "note": "Low back pain radiates into the right leg with radiculopathy. Right L5 distribution: ankle dorsiflexion strength 4/5. NSAIDs for 7 weeks gave no meaningful relief of insomnia, although the back and leg pain improved substantially.",
+          "facts": {
+            "conservative_therapy_weeks": 7,
+            "cpb_0236_conservative_therapy_weeks": "__REVIEW_REQUIRED__",
+            "cpb_0236_conservative_therapy_no_improvement": "__REVIEW_REQUIRED__",
+            "back_pain_with_radiculopathy": true,
+            "objective_motor_or_reflex_change_in_root_distribution": true,
+            "neuro_red_flags_documented": null,
+            "prior_imaging_result": null,
+            "symptom_duration_weeks": null,
+            "mechanical_symptoms_documented": null,
+            "osa_diagnosis": null,
+            "sleep_study_date": null,
+            "ahi_documented": null
+          },
+          "states": {
+            "ahi_documented": "MISSING",
+            "back_pain_with_radiculopathy": "CAPTURED",
+            "conservative_therapy_weeks": "CAPTURED",
+            "cpb_0236_conservative_therapy_no_improvement": "NEEDS_REVIEW",
+            "cpb_0236_conservative_therapy_weeks": "NEEDS_REVIEW",
+            "mechanical_symptoms_documented": "MISSING",
+            "neuro_red_flags_documented": "MISSING",
+            "objective_motor_or_reflex_change_in_root_distribution": "CAPTURED",
+            "osa_diagnosis": "MISSING",
+            "prior_imaging_result": "MISSING",
+            "sleep_study_date": "MISSING",
+            "symptom_duration_weeks": "MISSING"
+          },
+          "requirements": {
+            "back_pain_with_radiculopathy": "MET",
+            "objective_motor_or_reflex_change_in_root_distribution": "MET",
+            "cpb_0236_conservative_therapy_weeks": "NEEDS_REVIEW",
+            "cpb_0236_conservative_therapy_no_improvement": "NEEDS_REVIEW"
+          },
+          "overall": "NEEDS_REVIEW",
+          "submission_readiness": false,
+          "context": {
+            "back_pain_with_radiculopathy": [
+              "\u27e6Low back pain radiates into the right leg with radiculopathy\u27e7."
+            ],
+            "objective_motor_or_reflex_change_in_root_distribution": [
+              "\u27e6Right L5 distribution: ankle dorsiflexion strength 4/5\u27e7."
+            ],
+            "cpb_0236_conservative_therapy_weeks": [
+              "\u27e6NSAIDs for 7 weeks gave no meaningful relief of insomnia\u27e7, although the back and leg pain improved substantially."
+            ],
+            "cpb_0236_conservative_therapy_no_improvement": [
+              "\u27e6NSAIDs for 7 weeks gave no meaningful relief of insomnia\u27e7, although the back and leg pain improved substantially."
+            ]
+          }
+        },
+        "after": {
+          "id": 1,
+          "name": "nonpain_response_contrast",
+          "facts": {
+            "conservative_therapy_weeks": 7,
+            "cpb_0236_conservative_therapy_weeks": "__REVIEW_REQUIRED__",
+            "cpb_0236_conservative_therapy_no_improvement": "__REVIEW_REQUIRED__",
+            "back_pain_with_radiculopathy": true,
+            "objective_motor_or_reflex_change_in_root_distribution": true,
+            "neuro_red_flags_documented": null,
+            "prior_imaging_result": null,
+            "symptom_duration_weeks": null,
+            "mechanical_symptoms_documented": null,
+            "osa_diagnosis": null,
+            "sleep_study_date": null,
+            "ahi_documented": null
+          },
+          "states": {
+            "ahi_documented": "MISSING",
+            "back_pain_with_radiculopathy": "CAPTURED",
+            "conservative_therapy_weeks": "CAPTURED",
+            "cpb_0236_conservative_therapy_no_improvement": "NEEDS_REVIEW",
+            "cpb_0236_conservative_therapy_weeks": "NEEDS_REVIEW",
+            "mechanical_symptoms_documented": "MISSING",
+            "neuro_red_flags_documented": "MISSING",
+            "objective_motor_or_reflex_change_in_root_distribution": "CAPTURED",
+            "osa_diagnosis": "MISSING",
+            "prior_imaging_result": "MISSING",
+            "sleep_study_date": "MISSING",
+            "symptom_duration_weeks": "MISSING"
+          },
+          "requirements": {
+            "back_pain_with_radiculopathy": "MET",
+            "objective_motor_or_reflex_change_in_root_distribution": "MET",
+            "cpb_0236_conservative_therapy_weeks": "NEEDS_REVIEW",
+            "cpb_0236_conservative_therapy_no_improvement": "NEEDS_REVIEW"
+          },
+          "overall": "NEEDS_REVIEW",
+          "citation_context": {
+            "back_pain_with_radiculopathy": [
+              "\u27e6Low back pain radiates into the right leg with radiculopathy\u27e7."
+            ],
+            "objective_motor_or_reflex_change_in_root_distribution": [
+              "\u27e6Right L5 distribution: ankle dorsiflexion strength 4/5\u27e7."
+            ],
+            "cpb_0236_conservative_therapy_weeks": [
+              "\u27e6NSAIDs for 7 weeks gave no meaningful relief of insomnia\u27e7, although the back and leg pain improved substantially."
+            ],
+            "cpb_0236_conservative_therapy_no_improvement": [
+              "\u27e6NSAIDs for 7 weeks gave no meaningful relief of insomnia\u27e7, although the back and leg pain improved substantially."
+            ]
+          }
+        }
+      },
+      {
+        "regression": "semicolon_response_contrast",
+        "input": "Low back pain with left leg radiculopathy. Left L5 distribution: strength 4/5. Analgesics for 8 weeks provided little improvement initially; however, she now reports good relief and is walking comfortably.",
+        "procedure": "MRI_LUMBAR",
+        "reviewer_correct_values": {
+          "conservative_therapy_weeks": 8,
+          "cpb_0236_conservative_therapy_weeks": 8,
+          "cpb_0236_conservative_therapy_no_improvement": "__REVIEW_REQUIRED__",
+          "back_pain_with_radiculopathy": true,
+          "objective_motor_or_reflex_change_in_root_distribution": true,
+          "neuro_red_flags_documented": null,
+          "prior_imaging_result": null,
+          "symptom_duration_weeks": null,
+          "mechanical_symptoms_documented": null,
+          "osa_diagnosis": null,
+          "sleep_study_date": null,
+          "ahi_documented": null
+        },
+        "reviewer_correct_requirement_statuses": {
+          "back_pain_with_radiculopathy": "MET",
+          "objective_motor_or_reflex_change_in_root_distribution": "MET",
+          "cpb_0236_conservative_therapy_weeks": "MET",
+          "cpb_0236_conservative_therapy_no_improvement": "NEEDS_REVIEW"
+        },
+        "reviewer_correct_overall": "NEEDS_REVIEW",
+        "before": {
+          "id": 2,
+          "procedure": "MRI_LUMBAR",
+          "note": "Low back pain with left leg radiculopathy. Left L5 distribution: strength 4/5. Analgesics for 8 weeks provided little improvement initially; however, she now reports good relief and is walking comfortably.",
+          "facts": {
+            "conservative_therapy_weeks": null,
+            "cpb_0236_conservative_therapy_weeks": 8,
+            "cpb_0236_conservative_therapy_no_improvement": true,
+            "back_pain_with_radiculopathy": true,
+            "objective_motor_or_reflex_change_in_root_distribution": true,
+            "neuro_red_flags_documented": null,
+            "prior_imaging_result": null,
+            "symptom_duration_weeks": null,
+            "mechanical_symptoms_documented": null,
+            "osa_diagnosis": null,
+            "sleep_study_date": null,
+            "ahi_documented": null
+          },
+          "states": {
+            "ahi_documented": "MISSING",
+            "back_pain_with_radiculopathy": "CAPTURED",
+            "conservative_therapy_weeks": "MISSING",
+            "cpb_0236_conservative_therapy_no_improvement": "CAPTURED",
+            "cpb_0236_conservative_therapy_weeks": "CAPTURED",
+            "mechanical_symptoms_documented": "MISSING",
+            "neuro_red_flags_documented": "MISSING",
+            "objective_motor_or_reflex_change_in_root_distribution": "CAPTURED",
+            "osa_diagnosis": "MISSING",
+            "prior_imaging_result": "MISSING",
+            "sleep_study_date": "MISSING",
+            "symptom_duration_weeks": "MISSING"
+          },
+          "requirements": {
+            "back_pain_with_radiculopathy": "MET",
+            "objective_motor_or_reflex_change_in_root_distribution": "MET",
+            "cpb_0236_conservative_therapy_weeks": "MET",
+            "cpb_0236_conservative_therapy_no_improvement": "MET"
+          },
+          "overall": "PENDING_VERIFICATION",
+          "submission_readiness": false,
+          "context": {
+            "back_pain_with_radiculopathy": [
+              "\u27e6Low back pain with left leg radiculopathy\u27e7."
+            ],
+            "objective_motor_or_reflex_change_in_root_distribution": [
+              "\u27e6Left L5 distribution: strength 4/5\u27e7."
+            ],
+            "cpb_0236_conservative_therapy_weeks": [
+              "\u27e6Analgesics for 8 weeks provided little improvement initially\u27e7;"
+            ],
+            "cpb_0236_conservative_therapy_no_improvement": [
+              "\u27e6Analgesics for 8 weeks provided little improvement initially\u27e7;"
+            ]
+          }
+        },
+        "after": {
+          "id": 2,
+          "name": "semicolon_response_contrast",
+          "facts": {
+            "conservative_therapy_weeks": null,
+            "cpb_0236_conservative_therapy_weeks": 8,
+            "cpb_0236_conservative_therapy_no_improvement": "__REVIEW_REQUIRED__",
+            "back_pain_with_radiculopathy": true,
+            "objective_motor_or_reflex_change_in_root_distribution": true,
+            "neuro_red_flags_documented": null,
+            "prior_imaging_result": null,
+            "symptom_duration_weeks": null,
+            "mechanical_symptoms_documented": null,
+            "osa_diagnosis": null,
+            "sleep_study_date": null,
+            "ahi_documented": null
+          },
+          "states": {
+            "ahi_documented": "MISSING",
+            "back_pain_with_radiculopathy": "CAPTURED",
+            "conservative_therapy_weeks": "MISSING",
+            "cpb_0236_conservative_therapy_no_improvement": "NEEDS_REVIEW",
+            "cpb_0236_conservative_therapy_weeks": "CAPTURED",
+            "mechanical_symptoms_documented": "MISSING",
+            "neuro_red_flags_documented": "MISSING",
+            "objective_motor_or_reflex_change_in_root_distribution": "CAPTURED",
+            "osa_diagnosis": "MISSING",
+            "prior_imaging_result": "MISSING",
+            "sleep_study_date": "MISSING",
+            "symptom_duration_weeks": "MISSING"
+          },
+          "requirements": {
+            "back_pain_with_radiculopathy": "MET",
+            "objective_motor_or_reflex_change_in_root_distribution": "MET",
+            "cpb_0236_conservative_therapy_weeks": "MET",
+            "cpb_0236_conservative_therapy_no_improvement": "NEEDS_REVIEW"
+          },
+          "overall": "NEEDS_REVIEW",
+          "citation_context": {
+            "back_pain_with_radiculopathy": [
+              "\u27e6Low back pain with left leg radiculopathy\u27e7."
+            ],
+            "objective_motor_or_reflex_change_in_root_distribution": [
+              "\u27e6Left L5 distribution: strength 4/5\u27e7."
+            ],
+            "cpb_0236_conservative_therapy_weeks": [
+              "\u27e6Analgesics for 8 weeks provided little improvement initially\u27e7; however, she now reports good relief and is walking comfortably."
+            ],
+            "cpb_0236_conservative_therapy_no_improvement": [
+              "\u27e6Analgesics for 8 weeks provided little improvement initially\u27e7; however, she now reports good relief and is walking comfortably."
+            ]
+          }
+        }
+      },
+      {
+        "regression": "distinct_therapy_response",
+        "input": "Low back pain with right radiculopathy. Right L5 distribution: strength 4/5. NSAIDs for 9 weeks produced no improvement, though physical therapy has significantly improved her pain.",
+        "procedure": "MRI_LUMBAR",
+        "reviewer_correct_values": {
+          "conservative_therapy_weeks": 9,
+          "cpb_0236_conservative_therapy_weeks": 9,
+          "cpb_0236_conservative_therapy_no_improvement": true,
+          "back_pain_with_radiculopathy": true,
+          "objective_motor_or_reflex_change_in_root_distribution": true,
+          "neuro_red_flags_documented": null,
+          "prior_imaging_result": null,
+          "symptom_duration_weeks": null,
+          "mechanical_symptoms_documented": null,
+          "osa_diagnosis": null,
+          "sleep_study_date": null,
+          "ahi_documented": null
+        },
+        "reviewer_correct_requirement_statuses": {
+          "back_pain_with_radiculopathy": "MET",
+          "objective_motor_or_reflex_change_in_root_distribution": "MET",
+          "cpb_0236_conservative_therapy_weeks": "MET",
+          "cpb_0236_conservative_therapy_no_improvement": "MET"
+        },
+        "reviewer_correct_overall": "PENDING_VERIFICATION",
+        "before": {
+          "id": 3,
+          "procedure": "MRI_LUMBAR",
+          "note": "Low back pain with right radiculopathy. Right L5 distribution: strength 4/5. NSAIDs for 9 weeks produced no improvement, though physical therapy has significantly improved her pain.",
+          "facts": {
+            "conservative_therapy_weeks": 9,
+            "cpb_0236_conservative_therapy_weeks": 9,
+            "cpb_0236_conservative_therapy_no_improvement": true,
+            "back_pain_with_radiculopathy": true,
+            "objective_motor_or_reflex_change_in_root_distribution": true,
+            "neuro_red_flags_documented": null,
+            "prior_imaging_result": null,
+            "symptom_duration_weeks": null,
+            "mechanical_symptoms_documented": null,
+            "osa_diagnosis": null,
+            "sleep_study_date": null,
+            "ahi_documented": null
+          },
+          "states": {
+            "ahi_documented": "MISSING",
+            "back_pain_with_radiculopathy": "CAPTURED",
+            "conservative_therapy_weeks": "CAPTURED",
+            "cpb_0236_conservative_therapy_no_improvement": "CAPTURED",
+            "cpb_0236_conservative_therapy_weeks": "CAPTURED",
+            "mechanical_symptoms_documented": "MISSING",
+            "neuro_red_flags_documented": "MISSING",
+            "objective_motor_or_reflex_change_in_root_distribution": "CAPTURED",
+            "osa_diagnosis": "MISSING",
+            "prior_imaging_result": "MISSING",
+            "sleep_study_date": "MISSING",
+            "symptom_duration_weeks": "MISSING"
+          },
+          "requirements": {
+            "back_pain_with_radiculopathy": "MET",
+            "objective_motor_or_reflex_change_in_root_distribution": "MET",
+            "cpb_0236_conservative_therapy_weeks": "MET",
+            "cpb_0236_conservative_therapy_no_improvement": "MET"
+          },
+          "overall": "PENDING_VERIFICATION",
+          "submission_readiness": false,
+          "context": {
+            "back_pain_with_radiculopathy": [
+              "\u27e6Low back pain with right radiculopathy\u27e7."
+            ],
+            "objective_motor_or_reflex_change_in_root_distribution": [
+              "\u27e6Right L5 distribution: strength 4/5\u27e7."
+            ],
+            "cpb_0236_conservative_therapy_weeks": [
+              "\u27e6NSAIDs for 9 weeks produced no improvement, though physical therapy has significantly improved her pain\u27e7."
+            ],
+            "cpb_0236_conservative_therapy_no_improvement": [
+              "\u27e6NSAIDs for 9 weeks produced no improvement, though physical therapy has significantly improved her pain\u27e7."
+            ]
+          }
+        },
+        "after": {
+          "id": 3,
+          "name": "distinct_therapy_response",
+          "facts": {
+            "conservative_therapy_weeks": 9,
+            "cpb_0236_conservative_therapy_weeks": 9,
+            "cpb_0236_conservative_therapy_no_improvement": true,
+            "back_pain_with_radiculopathy": true,
+            "objective_motor_or_reflex_change_in_root_distribution": true,
+            "neuro_red_flags_documented": null,
+            "prior_imaging_result": null,
+            "symptom_duration_weeks": null,
+            "mechanical_symptoms_documented": null,
+            "osa_diagnosis": null,
+            "sleep_study_date": null,
+            "ahi_documented": null
+          },
+          "states": {
+            "ahi_documented": "MISSING",
+            "back_pain_with_radiculopathy": "CAPTURED",
+            "conservative_therapy_weeks": "CAPTURED",
+            "cpb_0236_conservative_therapy_no_improvement": "CAPTURED",
+            "cpb_0236_conservative_therapy_weeks": "CAPTURED",
+            "mechanical_symptoms_documented": "MISSING",
+            "neuro_red_flags_documented": "MISSING",
+            "objective_motor_or_reflex_change_in_root_distribution": "CAPTURED",
+            "osa_diagnosis": "MISSING",
+            "prior_imaging_result": "MISSING",
+            "sleep_study_date": "MISSING",
+            "symptom_duration_weeks": "MISSING"
+          },
+          "requirements": {
+            "back_pain_with_radiculopathy": "MET",
+            "objective_motor_or_reflex_change_in_root_distribution": "MET",
+            "cpb_0236_conservative_therapy_weeks": "MET",
+            "cpb_0236_conservative_therapy_no_improvement": "MET"
+          },
+          "overall": "PENDING_VERIFICATION",
+          "citation_context": {
+            "back_pain_with_radiculopathy": [
+              "\u27e6Low back pain with right radiculopathy\u27e7."
+            ],
+            "objective_motor_or_reflex_change_in_root_distribution": [
+              "\u27e6Right L5 distribution: strength 4/5\u27e7."
+            ],
+            "cpb_0236_conservative_therapy_weeks": [
+              "\u27e6NSAIDs for 9 weeks produced no improvement\u27e7, though physical therapy has significantly improved her pain."
+            ],
+            "cpb_0236_conservative_therapy_no_improvement": [
+              "\u27e6NSAIDs for 9 weeks produced no improvement\u27e7, though physical therapy has significantly improved her pain."
+            ]
+          }
+        }
+      },
+      {
+        "regression": "denies_radiculopathy",
+        "input": "The patient denies low back pain with radiculopathy today. Right L5 distribution: strength 4/5. NSAIDs for 8 weeks with minimal improvement.",
+        "procedure": "MRI_LUMBAR",
+        "reviewer_correct_values": {
+          "conservative_therapy_weeks": 8,
+          "cpb_0236_conservative_therapy_weeks": 8,
+          "cpb_0236_conservative_therapy_no_improvement": true,
+          "back_pain_with_radiculopathy": false,
+          "objective_motor_or_reflex_change_in_root_distribution": true,
+          "neuro_red_flags_documented": null,
+          "prior_imaging_result": null,
+          "symptom_duration_weeks": null,
+          "mechanical_symptoms_documented": null,
+          "osa_diagnosis": null,
+          "sleep_study_date": null,
+          "ahi_documented": null
+        },
+        "reviewer_correct_requirement_statuses": {
+          "back_pain_with_radiculopathy": "NOT_MET",
+          "objective_motor_or_reflex_change_in_root_distribution": "MET",
+          "cpb_0236_conservative_therapy_weeks": "MET",
+          "cpb_0236_conservative_therapy_no_improvement": "MET"
+        },
+        "reviewer_correct_overall": "NOT_READY",
+        "before": {
+          "id": 4,
+          "procedure": "MRI_LUMBAR",
+          "note": "The patient denies low back pain with radiculopathy today. Right L5 distribution: strength 4/5. NSAIDs for 8 weeks with minimal improvement.",
+          "facts": {
+            "conservative_therapy_weeks": 8,
+            "cpb_0236_conservative_therapy_weeks": 8,
+            "cpb_0236_conservative_therapy_no_improvement": true,
+            "back_pain_with_radiculopathy": false,
+            "objective_motor_or_reflex_change_in_root_distribution": true,
+            "neuro_red_flags_documented": null,
+            "prior_imaging_result": null,
+            "symptom_duration_weeks": null,
+            "mechanical_symptoms_documented": null,
+            "osa_diagnosis": null,
+            "sleep_study_date": null,
+            "ahi_documented": null
+          },
+          "states": {
+            "ahi_documented": "MISSING",
+            "back_pain_with_radiculopathy": "CAPTURED",
+            "conservative_therapy_weeks": "CAPTURED",
+            "cpb_0236_conservative_therapy_no_improvement": "CAPTURED",
+            "cpb_0236_conservative_therapy_weeks": "CAPTURED",
+            "mechanical_symptoms_documented": "MISSING",
+            "neuro_red_flags_documented": "MISSING",
+            "objective_motor_or_reflex_change_in_root_distribution": "CAPTURED",
+            "osa_diagnosis": "MISSING",
+            "prior_imaging_result": "MISSING",
+            "sleep_study_date": "MISSING",
+            "symptom_duration_weeks": "MISSING"
+          },
+          "requirements": {
+            "back_pain_with_radiculopathy": "NOT_MET",
+            "objective_motor_or_reflex_change_in_root_distribution": "MET",
+            "cpb_0236_conservative_therapy_weeks": "MET",
+            "cpb_0236_conservative_therapy_no_improvement": "MET"
+          },
+          "overall": "NOT_READY",
+          "submission_readiness": false,
+          "context": {
+            "back_pain_with_radiculopathy": [
+              "\u27e6The patient denies low back pain with radiculopathy today\u27e7."
+            ],
+            "objective_motor_or_reflex_change_in_root_distribution": [
+              "\u27e6Right L5 distribution: strength 4/5\u27e7."
+            ],
+            "cpb_0236_conservative_therapy_weeks": [
+              "\u27e6NSAIDs for 8 weeks with minimal improvement\u27e7."
+            ],
+            "cpb_0236_conservative_therapy_no_improvement": [
+              "\u27e6NSAIDs for 8 weeks with minimal improvement\u27e7."
+            ]
+          }
+        },
+        "after": {
+          "id": 4,
+          "name": "denies_radiculopathy",
+          "facts": {
+            "conservative_therapy_weeks": 8,
+            "cpb_0236_conservative_therapy_weeks": 8,
+            "cpb_0236_conservative_therapy_no_improvement": true,
+            "back_pain_with_radiculopathy": false,
+            "objective_motor_or_reflex_change_in_root_distribution": true,
+            "neuro_red_flags_documented": null,
+            "prior_imaging_result": null,
+            "symptom_duration_weeks": null,
+            "mechanical_symptoms_documented": null,
+            "osa_diagnosis": null,
+            "sleep_study_date": null,
+            "ahi_documented": null
+          },
+          "states": {
+            "ahi_documented": "MISSING",
+            "back_pain_with_radiculopathy": "CAPTURED",
+            "conservative_therapy_weeks": "CAPTURED",
+            "cpb_0236_conservative_therapy_no_improvement": "CAPTURED",
+            "cpb_0236_conservative_therapy_weeks": "CAPTURED",
+            "mechanical_symptoms_documented": "MISSING",
+            "neuro_red_flags_documented": "MISSING",
+            "objective_motor_or_reflex_change_in_root_distribution": "CAPTURED",
+            "osa_diagnosis": "MISSING",
+            "prior_imaging_result": "MISSING",
+            "sleep_study_date": "MISSING",
+            "symptom_duration_weeks": "MISSING"
+          },
+          "requirements": {
+            "back_pain_with_radiculopathy": "NOT_MET",
+            "objective_motor_or_reflex_change_in_root_distribution": "MET",
+            "cpb_0236_conservative_therapy_weeks": "MET",
+            "cpb_0236_conservative_therapy_no_improvement": "MET"
+          },
+          "overall": "NOT_READY",
+          "citation_context": {
+            "back_pain_with_radiculopathy": [
+              "\u27e6The patient denies low back pain with radiculopathy today\u27e7."
+            ],
+            "objective_motor_or_reflex_change_in_root_distribution": [
+              "\u27e6Right L5 distribution: strength 4/5\u27e7."
+            ],
+            "cpb_0236_conservative_therapy_weeks": [
+              "\u27e6NSAIDs for 8 weeks with minimal improvement\u27e7."
+            ],
+            "cpb_0236_conservative_therapy_no_improvement": [
+              "\u27e6NSAIDs for 8 weeks with minimal improvement\u27e7."
+            ]
+          }
+        }
+      },
+      {
+        "regression": "postnegated_radiculopathy",
+        "input": "Low back pain with radiculopathy is absent on today's assessment. Right L5 distribution: strength 4/5. NSAIDs for 8 weeks with no improvement.",
+        "procedure": "MRI_LUMBAR",
+        "reviewer_correct_values": {
+          "conservative_therapy_weeks": 8,
+          "cpb_0236_conservative_therapy_weeks": 8,
+          "cpb_0236_conservative_therapy_no_improvement": true,
+          "back_pain_with_radiculopathy": false,
+          "objective_motor_or_reflex_change_in_root_distribution": true,
+          "neuro_red_flags_documented": null,
+          "prior_imaging_result": null,
+          "symptom_duration_weeks": null,
+          "mechanical_symptoms_documented": null,
+          "osa_diagnosis": null,
+          "sleep_study_date": null,
+          "ahi_documented": null
+        },
+        "reviewer_correct_requirement_statuses": {
+          "back_pain_with_radiculopathy": "NOT_MET",
+          "objective_motor_or_reflex_change_in_root_distribution": "MET",
+          "cpb_0236_conservative_therapy_weeks": "MET",
+          "cpb_0236_conservative_therapy_no_improvement": "MET"
+        },
+        "reviewer_correct_overall": "NOT_READY",
+        "before": {
+          "id": 5,
+          "procedure": "MRI_LUMBAR",
+          "note": "Low back pain with radiculopathy is absent on today's assessment. Right L5 distribution: strength 4/5. NSAIDs for 8 weeks with no improvement.",
+          "facts": {
+            "conservative_therapy_weeks": 8,
+            "cpb_0236_conservative_therapy_weeks": 8,
+            "cpb_0236_conservative_therapy_no_improvement": true,
+            "back_pain_with_radiculopathy": false,
+            "objective_motor_or_reflex_change_in_root_distribution": true,
+            "neuro_red_flags_documented": null,
+            "prior_imaging_result": null,
+            "symptom_duration_weeks": null,
+            "mechanical_symptoms_documented": null,
+            "osa_diagnosis": null,
+            "sleep_study_date": null,
+            "ahi_documented": null
+          },
+          "states": {
+            "ahi_documented": "MISSING",
+            "back_pain_with_radiculopathy": "CAPTURED",
+            "conservative_therapy_weeks": "CAPTURED",
+            "cpb_0236_conservative_therapy_no_improvement": "CAPTURED",
+            "cpb_0236_conservative_therapy_weeks": "CAPTURED",
+            "mechanical_symptoms_documented": "MISSING",
+            "neuro_red_flags_documented": "MISSING",
+            "objective_motor_or_reflex_change_in_root_distribution": "CAPTURED",
+            "osa_diagnosis": "MISSING",
+            "prior_imaging_result": "MISSING",
+            "sleep_study_date": "MISSING",
+            "symptom_duration_weeks": "MISSING"
+          },
+          "requirements": {
+            "back_pain_with_radiculopathy": "NOT_MET",
+            "objective_motor_or_reflex_change_in_root_distribution": "MET",
+            "cpb_0236_conservative_therapy_weeks": "MET",
+            "cpb_0236_conservative_therapy_no_improvement": "MET"
+          },
+          "overall": "NOT_READY",
+          "submission_readiness": false,
+          "context": {
+            "back_pain_with_radiculopathy": [
+              "\u27e6Low back pain with radiculopathy is absent on today's assessment\u27e7."
+            ],
+            "objective_motor_or_reflex_change_in_root_distribution": [
+              "\u27e6Right L5 distribution: strength 4/5\u27e7."
+            ],
+            "cpb_0236_conservative_therapy_weeks": [
+              "\u27e6NSAIDs for 8 weeks with no improvement\u27e7."
+            ],
+            "cpb_0236_conservative_therapy_no_improvement": [
+              "\u27e6NSAIDs for 8 weeks with no improvement\u27e7."
+            ]
+          }
+        },
+        "after": {
+          "id": 5,
+          "name": "postnegated_radiculopathy",
+          "facts": {
+            "conservative_therapy_weeks": 8,
+            "cpb_0236_conservative_therapy_weeks": 8,
+            "cpb_0236_conservative_therapy_no_improvement": true,
+            "back_pain_with_radiculopathy": false,
+            "objective_motor_or_reflex_change_in_root_distribution": true,
+            "neuro_red_flags_documented": null,
+            "prior_imaging_result": null,
+            "symptom_duration_weeks": null,
+            "mechanical_symptoms_documented": null,
+            "osa_diagnosis": null,
+            "sleep_study_date": null,
+            "ahi_documented": null
+          },
+          "states": {
+            "ahi_documented": "MISSING",
+            "back_pain_with_radiculopathy": "CAPTURED",
+            "conservative_therapy_weeks": "CAPTURED",
+            "cpb_0236_conservative_therapy_no_improvement": "CAPTURED",
+            "cpb_0236_conservative_therapy_weeks": "CAPTURED",
+            "mechanical_symptoms_documented": "MISSING",
+            "neuro_red_flags_documented": "MISSING",
+            "objective_motor_or_reflex_change_in_root_distribution": "CAPTURED",
+            "osa_diagnosis": "MISSING",
+            "prior_imaging_result": "MISSING",
+            "sleep_study_date": "MISSING",
+            "symptom_duration_weeks": "MISSING"
+          },
+          "requirements": {
+            "back_pain_with_radiculopathy": "NOT_MET",
+            "objective_motor_or_reflex_change_in_root_distribution": "MET",
+            "cpb_0236_conservative_therapy_weeks": "MET",
+            "cpb_0236_conservative_therapy_no_improvement": "MET"
+          },
+          "overall": "NOT_READY",
+          "citation_context": {
+            "back_pain_with_radiculopathy": [
+              "\u27e6Low back pain with radiculopathy is absent on today's assessment\u27e7."
+            ],
+            "objective_motor_or_reflex_change_in_root_distribution": [
+              "\u27e6Right L5 distribution: strength 4/5\u27e7."
+            ],
+            "cpb_0236_conservative_therapy_weeks": [
+              "\u27e6NSAIDs for 8 weeks with no improvement\u27e7."
+            ],
+            "cpb_0236_conservative_therapy_no_improvement": [
+              "\u27e6NSAIDs for 8 weeks with no improvement\u27e7."
+            ]
+          }
+        }
+      },
+      {
+        "regression": "negative_for_radiculopathy",
+        "input": "Examination is negative for low back pain with radiculopathy. Right L5 distribution: strength 4/5. NSAIDs for 8 weeks with little relief.",
+        "procedure": "MRI_LUMBAR",
+        "reviewer_correct_values": {
+          "conservative_therapy_weeks": 8,
+          "cpb_0236_conservative_therapy_weeks": 8,
+          "cpb_0236_conservative_therapy_no_improvement": true,
+          "back_pain_with_radiculopathy": false,
+          "objective_motor_or_reflex_change_in_root_distribution": true,
+          "neuro_red_flags_documented": null,
+          "prior_imaging_result": null,
+          "symptom_duration_weeks": null,
+          "mechanical_symptoms_documented": null,
+          "osa_diagnosis": null,
+          "sleep_study_date": null,
+          "ahi_documented": null
+        },
+        "reviewer_correct_requirement_statuses": {
+          "back_pain_with_radiculopathy": "NOT_MET",
+          "objective_motor_or_reflex_change_in_root_distribution": "MET",
+          "cpb_0236_conservative_therapy_weeks": "MET",
+          "cpb_0236_conservative_therapy_no_improvement": "MET"
+        },
+        "reviewer_correct_overall": "NOT_READY",
+        "before": {
+          "id": 6,
+          "procedure": "MRI_LUMBAR",
+          "note": "Examination is negative for low back pain with radiculopathy. Right L5 distribution: strength 4/5. NSAIDs for 8 weeks with little relief.",
+          "facts": {
+            "conservative_therapy_weeks": 8,
+            "cpb_0236_conservative_therapy_weeks": 8,
+            "cpb_0236_conservative_therapy_no_improvement": true,
+            "back_pain_with_radiculopathy": false,
+            "objective_motor_or_reflex_change_in_root_distribution": true,
+            "neuro_red_flags_documented": null,
+            "prior_imaging_result": null,
+            "symptom_duration_weeks": null,
+            "mechanical_symptoms_documented": null,
+            "osa_diagnosis": null,
+            "sleep_study_date": null,
+            "ahi_documented": null
+          },
+          "states": {
+            "ahi_documented": "MISSING",
+            "back_pain_with_radiculopathy": "CAPTURED",
+            "conservative_therapy_weeks": "CAPTURED",
+            "cpb_0236_conservative_therapy_no_improvement": "CAPTURED",
+            "cpb_0236_conservative_therapy_weeks": "CAPTURED",
+            "mechanical_symptoms_documented": "MISSING",
+            "neuro_red_flags_documented": "MISSING",
+            "objective_motor_or_reflex_change_in_root_distribution": "CAPTURED",
+            "osa_diagnosis": "MISSING",
+            "prior_imaging_result": "MISSING",
+            "sleep_study_date": "MISSING",
+            "symptom_duration_weeks": "MISSING"
+          },
+          "requirements": {
+            "back_pain_with_radiculopathy": "NOT_MET",
+            "objective_motor_or_reflex_change_in_root_distribution": "MET",
+            "cpb_0236_conservative_therapy_weeks": "MET",
+            "cpb_0236_conservative_therapy_no_improvement": "MET"
+          },
+          "overall": "NOT_READY",
+          "submission_readiness": false,
+          "context": {
+            "back_pain_with_radiculopathy": [
+              "\u27e6Examination is negative for low back pain with radiculopathy\u27e7."
+            ],
+            "objective_motor_or_reflex_change_in_root_distribution": [
+              "\u27e6Right L5 distribution: strength 4/5\u27e7."
+            ],
+            "cpb_0236_conservative_therapy_weeks": [
+              "\u27e6NSAIDs for 8 weeks with little relief\u27e7."
+            ],
+            "cpb_0236_conservative_therapy_no_improvement": [
+              "\u27e6NSAIDs for 8 weeks with little relief\u27e7."
+            ]
+          }
+        },
+        "after": {
+          "id": 6,
+          "name": "negative_for_radiculopathy",
+          "facts": {
+            "conservative_therapy_weeks": 8,
+            "cpb_0236_conservative_therapy_weeks": 8,
+            "cpb_0236_conservative_therapy_no_improvement": true,
+            "back_pain_with_radiculopathy": false,
+            "objective_motor_or_reflex_change_in_root_distribution": true,
+            "neuro_red_flags_documented": null,
+            "prior_imaging_result": null,
+            "symptom_duration_weeks": null,
+            "mechanical_symptoms_documented": null,
+            "osa_diagnosis": null,
+            "sleep_study_date": null,
+            "ahi_documented": null
+          },
+          "states": {
+            "ahi_documented": "MISSING",
+            "back_pain_with_radiculopathy": "CAPTURED",
+            "conservative_therapy_weeks": "CAPTURED",
+            "cpb_0236_conservative_therapy_no_improvement": "CAPTURED",
+            "cpb_0236_conservative_therapy_weeks": "CAPTURED",
+            "mechanical_symptoms_documented": "MISSING",
+            "neuro_red_flags_documented": "MISSING",
+            "objective_motor_or_reflex_change_in_root_distribution": "CAPTURED",
+            "osa_diagnosis": "MISSING",
+            "prior_imaging_result": "MISSING",
+            "sleep_study_date": "MISSING",
+            "symptom_duration_weeks": "MISSING"
+          },
+          "requirements": {
+            "back_pain_with_radiculopathy": "NOT_MET",
+            "objective_motor_or_reflex_change_in_root_distribution": "MET",
+            "cpb_0236_conservative_therapy_weeks": "MET",
+            "cpb_0236_conservative_therapy_no_improvement": "MET"
+          },
+          "overall": "NOT_READY",
+          "citation_context": {
+            "back_pain_with_radiculopathy": [
+              "\u27e6Examination is negative for low back pain with radiculopathy\u27e7."
+            ],
+            "objective_motor_or_reflex_change_in_root_distribution": [
+              "\u27e6Right L5 distribution: strength 4/5\u27e7."
+            ],
+            "cpb_0236_conservative_therapy_weeks": [
+              "\u27e6NSAIDs for 8 weeks with little relief\u27e7."
+            ],
+            "cpb_0236_conservative_therapy_no_improvement": [
+              "\u27e6NSAIDs for 8 weeks with little relief\u27e7."
+            ]
+          }
+        }
+      },
+      {
+        "regression": "passive_ruled_out",
+        "input": "Obstructive sleep apnea had been ruled out by the sleep specialist. Polysomnography completed 2026-02-12. AHI 3.",
+        "procedure": "CPAP_DEVICE",
+        "reviewer_correct_values": {
+          "conservative_therapy_weeks": null,
+          "cpb_0236_conservative_therapy_weeks": null,
+          "cpb_0236_conservative_therapy_no_improvement": null,
+          "back_pain_with_radiculopathy": null,
+          "objective_motor_or_reflex_change_in_root_distribution": null,
+          "neuro_red_flags_documented": null,
+          "prior_imaging_result": null,
+          "symptom_duration_weeks": null,
+          "mechanical_symptoms_documented": null,
+          "osa_diagnosis": null,
+          "sleep_study_date": true,
+          "ahi_documented": true
+        },
+        "reviewer_correct_requirement_statuses": {
+          "osa_diagnosis": "NOT_DOCUMENTED",
+          "sleep_study_date": "MET",
+          "ahi_documented": "MET"
+        },
+        "reviewer_correct_overall": "CANNOT_DETERMINE",
+        "before": {
+          "id": 7,
+          "procedure": "CPAP_DEVICE",
+          "note": "Obstructive sleep apnea had been ruled out by the sleep specialist. Polysomnography completed 2026-02-12. AHI 3.",
+          "facts": {
+            "conservative_therapy_weeks": null,
+            "cpb_0236_conservative_therapy_weeks": null,
+            "cpb_0236_conservative_therapy_no_improvement": null,
+            "back_pain_with_radiculopathy": null,
+            "objective_motor_or_reflex_change_in_root_distribution": null,
+            "neuro_red_flags_documented": null,
+            "prior_imaging_result": null,
+            "symptom_duration_weeks": null,
+            "mechanical_symptoms_documented": null,
+            "osa_diagnosis": null,
+            "sleep_study_date": true,
+            "ahi_documented": true
+          },
+          "states": {
+            "ahi_documented": "CAPTURED",
+            "back_pain_with_radiculopathy": "MISSING",
+            "conservative_therapy_weeks": "MISSING",
+            "cpb_0236_conservative_therapy_no_improvement": "MISSING",
+            "cpb_0236_conservative_therapy_weeks": "MISSING",
+            "mechanical_symptoms_documented": "MISSING",
+            "neuro_red_flags_documented": "MISSING",
+            "objective_motor_or_reflex_change_in_root_distribution": "MISSING",
+            "osa_diagnosis": "MISSING",
+            "prior_imaging_result": "MISSING",
+            "sleep_study_date": "CAPTURED",
+            "symptom_duration_weeks": "MISSING"
+          },
+          "requirements": {
+            "osa_diagnosis": "NOT_DOCUMENTED",
+            "sleep_study_date": "MET",
+            "ahi_documented": "MET"
+          },
+          "overall": "CANNOT_DETERMINE",
+          "submission_readiness": false,
+          "context": {
+            "osa_diagnosis": [],
+            "sleep_study_date": [
+              "Polysomnography completed \u27e62026-02-12\u27e7."
+            ],
+            "ahi_documented": [
+              "\u27e6AHI 3\u27e7."
+            ]
+          }
+        },
+        "after": {
+          "id": 7,
+          "name": "passive_ruled_out",
+          "facts": {
+            "conservative_therapy_weeks": null,
+            "cpb_0236_conservative_therapy_weeks": null,
+            "cpb_0236_conservative_therapy_no_improvement": null,
+            "back_pain_with_radiculopathy": null,
+            "objective_motor_or_reflex_change_in_root_distribution": null,
+            "neuro_red_flags_documented": null,
+            "prior_imaging_result": null,
+            "symptom_duration_weeks": null,
+            "mechanical_symptoms_documented": null,
+            "osa_diagnosis": null,
+            "sleep_study_date": true,
+            "ahi_documented": true
+          },
+          "states": {
+            "ahi_documented": "CAPTURED",
+            "back_pain_with_radiculopathy": "MISSING",
+            "conservative_therapy_weeks": "MISSING",
+            "cpb_0236_conservative_therapy_no_improvement": "MISSING",
+            "cpb_0236_conservative_therapy_weeks": "MISSING",
+            "mechanical_symptoms_documented": "MISSING",
+            "neuro_red_flags_documented": "MISSING",
+            "objective_motor_or_reflex_change_in_root_distribution": "MISSING",
+            "osa_diagnosis": "MISSING",
+            "prior_imaging_result": "MISSING",
+            "sleep_study_date": "CAPTURED",
+            "symptom_duration_weeks": "MISSING"
+          },
+          "requirements": {
+            "osa_diagnosis": "NOT_DOCUMENTED",
+            "sleep_study_date": "MET",
+            "ahi_documented": "MET"
+          },
+          "overall": "CANNOT_DETERMINE",
+          "citation_context": {
+            "osa_diagnosis": [],
+            "sleep_study_date": [
+              "Polysomnography completed \u27e62026-02-12\u27e7."
+            ],
+            "ahi_documented": [
+              "\u27e6AHI 3\u27e7."
+            ]
+          }
+        }
+      },
+      {
+        "regression": "denies_osa",
+        "input": "She denies OSA. Sleep study completed 2026-02-12. AHI 4.",
+        "procedure": "CPAP_DEVICE",
+        "reviewer_correct_values": {
+          "conservative_therapy_weeks": null,
+          "cpb_0236_conservative_therapy_weeks": null,
+          "cpb_0236_conservative_therapy_no_improvement": null,
+          "back_pain_with_radiculopathy": null,
+          "objective_motor_or_reflex_change_in_root_distribution": null,
+          "neuro_red_flags_documented": null,
+          "prior_imaging_result": null,
+          "symptom_duration_weeks": null,
+          "mechanical_symptoms_documented": null,
+          "osa_diagnosis": null,
+          "sleep_study_date": true,
+          "ahi_documented": true
+        },
+        "reviewer_correct_requirement_statuses": {
+          "osa_diagnosis": "NOT_DOCUMENTED",
+          "sleep_study_date": "MET",
+          "ahi_documented": "MET"
+        },
+        "reviewer_correct_overall": "CANNOT_DETERMINE",
+        "before": {
+          "id": 8,
+          "procedure": "CPAP_DEVICE",
+          "note": "She denies OSA. Sleep study completed 2026-02-12. AHI 4.",
+          "facts": {
+            "conservative_therapy_weeks": null,
+            "cpb_0236_conservative_therapy_weeks": null,
+            "cpb_0236_conservative_therapy_no_improvement": null,
+            "back_pain_with_radiculopathy": null,
+            "objective_motor_or_reflex_change_in_root_distribution": null,
+            "neuro_red_flags_documented": null,
+            "prior_imaging_result": null,
+            "symptom_duration_weeks": null,
+            "mechanical_symptoms_documented": null,
+            "osa_diagnosis": null,
+            "sleep_study_date": true,
+            "ahi_documented": true
+          },
+          "states": {
+            "ahi_documented": "CAPTURED",
+            "back_pain_with_radiculopathy": "MISSING",
+            "conservative_therapy_weeks": "MISSING",
+            "cpb_0236_conservative_therapy_no_improvement": "MISSING",
+            "cpb_0236_conservative_therapy_weeks": "MISSING",
+            "mechanical_symptoms_documented": "MISSING",
+            "neuro_red_flags_documented": "MISSING",
+            "objective_motor_or_reflex_change_in_root_distribution": "MISSING",
+            "osa_diagnosis": "MISSING",
+            "prior_imaging_result": "MISSING",
+            "sleep_study_date": "CAPTURED",
+            "symptom_duration_weeks": "MISSING"
+          },
+          "requirements": {
+            "osa_diagnosis": "NOT_DOCUMENTED",
+            "sleep_study_date": "MET",
+            "ahi_documented": "MET"
+          },
+          "overall": "CANNOT_DETERMINE",
+          "submission_readiness": false,
+          "context": {
+            "osa_diagnosis": [],
+            "sleep_study_date": [
+              "Sleep study completed \u27e62026-02-12\u27e7."
+            ],
+            "ahi_documented": [
+              "\u27e6AHI 4\u27e7."
+            ]
+          }
+        },
+        "after": {
+          "id": 8,
+          "name": "denies_osa",
+          "facts": {
+            "conservative_therapy_weeks": null,
+            "cpb_0236_conservative_therapy_weeks": null,
+            "cpb_0236_conservative_therapy_no_improvement": null,
+            "back_pain_with_radiculopathy": null,
+            "objective_motor_or_reflex_change_in_root_distribution": null,
+            "neuro_red_flags_documented": null,
+            "prior_imaging_result": null,
+            "symptom_duration_weeks": null,
+            "mechanical_symptoms_documented": null,
+            "osa_diagnosis": null,
+            "sleep_study_date": true,
+            "ahi_documented": true
+          },
+          "states": {
+            "ahi_documented": "CAPTURED",
+            "back_pain_with_radiculopathy": "MISSING",
+            "conservative_therapy_weeks": "MISSING",
+            "cpb_0236_conservative_therapy_no_improvement": "MISSING",
+            "cpb_0236_conservative_therapy_weeks": "MISSING",
+            "mechanical_symptoms_documented": "MISSING",
+            "neuro_red_flags_documented": "MISSING",
+            "objective_motor_or_reflex_change_in_root_distribution": "MISSING",
+            "osa_diagnosis": "MISSING",
+            "prior_imaging_result": "MISSING",
+            "sleep_study_date": "CAPTURED",
+            "symptom_duration_weeks": "MISSING"
+          },
+          "requirements": {
+            "osa_diagnosis": "NOT_DOCUMENTED",
+            "sleep_study_date": "MET",
+            "ahi_documented": "MET"
+          },
+          "overall": "CANNOT_DETERMINE",
+          "citation_context": {
+            "osa_diagnosis": [],
+            "sleep_study_date": [
+              "Sleep study completed \u27e62026-02-12\u27e7."
+            ],
+            "ahi_documented": [
+              "\u27e6AHI 4\u27e7."
+            ]
+          }
+        }
+      },
+      {
+        "regression": "adverb_ruled_out",
+        "input": "OSA was definitively ruled out after review of the completed PSG dated 2026-02-12. AHI 2.",
+        "procedure": "CPAP_DEVICE",
+        "reviewer_correct_values": {
+          "conservative_therapy_weeks": null,
+          "cpb_0236_conservative_therapy_weeks": null,
+          "cpb_0236_conservative_therapy_no_improvement": null,
+          "back_pain_with_radiculopathy": null,
+          "objective_motor_or_reflex_change_in_root_distribution": null,
+          "neuro_red_flags_documented": null,
+          "prior_imaging_result": null,
+          "symptom_duration_weeks": null,
+          "mechanical_symptoms_documented": null,
+          "osa_diagnosis": null,
+          "sleep_study_date": true,
+          "ahi_documented": true
+        },
+        "reviewer_correct_requirement_statuses": {
+          "osa_diagnosis": "NOT_DOCUMENTED",
+          "sleep_study_date": "MET",
+          "ahi_documented": "MET"
+        },
+        "reviewer_correct_overall": "CANNOT_DETERMINE",
+        "before": {
+          "id": 9,
+          "procedure": "CPAP_DEVICE",
+          "note": "OSA was definitively ruled out after review of the completed PSG dated 2026-02-12. AHI 2.",
+          "facts": {
+            "conservative_therapy_weeks": null,
+            "cpb_0236_conservative_therapy_weeks": null,
+            "cpb_0236_conservative_therapy_no_improvement": null,
+            "back_pain_with_radiculopathy": null,
+            "objective_motor_or_reflex_change_in_root_distribution": null,
+            "neuro_red_flags_documented": null,
+            "prior_imaging_result": null,
+            "symptom_duration_weeks": null,
+            "mechanical_symptoms_documented": null,
+            "osa_diagnosis": true,
+            "sleep_study_date": true,
+            "ahi_documented": true
+          },
+          "states": {
+            "ahi_documented": "CAPTURED",
+            "back_pain_with_radiculopathy": "MISSING",
+            "conservative_therapy_weeks": "MISSING",
+            "cpb_0236_conservative_therapy_no_improvement": "MISSING",
+            "cpb_0236_conservative_therapy_weeks": "MISSING",
+            "mechanical_symptoms_documented": "MISSING",
+            "neuro_red_flags_documented": "MISSING",
+            "objective_motor_or_reflex_change_in_root_distribution": "MISSING",
+            "osa_diagnosis": "CAPTURED",
+            "prior_imaging_result": "MISSING",
+            "sleep_study_date": "CAPTURED",
+            "symptom_duration_weeks": "MISSING"
+          },
+          "requirements": {
+            "osa_diagnosis": "MET",
+            "sleep_study_date": "MET",
+            "ahi_documented": "MET"
+          },
+          "overall": "PENDING_VERIFICATION",
+          "submission_readiness": false,
+          "context": {
+            "osa_diagnosis": [
+              "\u27e6OSA\u27e7 was definitively ruled out after review of the completed PSG dated 2026-02-12."
+            ],
+            "sleep_study_date": [
+              "OSA was definitively ruled out after review of the completed PSG dated \u27e62026-02-12\u27e7."
+            ],
+            "ahi_documented": [
+              "\u27e6AHI 2\u27e7."
+            ]
+          }
+        },
+        "after": {
+          "id": 9,
+          "name": "adverb_ruled_out",
+          "facts": {
+            "conservative_therapy_weeks": null,
+            "cpb_0236_conservative_therapy_weeks": null,
+            "cpb_0236_conservative_therapy_no_improvement": null,
+            "back_pain_with_radiculopathy": null,
+            "objective_motor_or_reflex_change_in_root_distribution": null,
+            "neuro_red_flags_documented": null,
+            "prior_imaging_result": null,
+            "symptom_duration_weeks": null,
+            "mechanical_symptoms_documented": null,
+            "osa_diagnosis": null,
+            "sleep_study_date": true,
+            "ahi_documented": true
+          },
+          "states": {
+            "ahi_documented": "CAPTURED",
+            "back_pain_with_radiculopathy": "MISSING",
+            "conservative_therapy_weeks": "MISSING",
+            "cpb_0236_conservative_therapy_no_improvement": "MISSING",
+            "cpb_0236_conservative_therapy_weeks": "MISSING",
+            "mechanical_symptoms_documented": "MISSING",
+            "neuro_red_flags_documented": "MISSING",
+            "objective_motor_or_reflex_change_in_root_distribution": "MISSING",
+            "osa_diagnosis": "MISSING",
+            "prior_imaging_result": "MISSING",
+            "sleep_study_date": "CAPTURED",
+            "symptom_duration_weeks": "MISSING"
+          },
+          "requirements": {
+            "osa_diagnosis": "NOT_DOCUMENTED",
+            "sleep_study_date": "MET",
+            "ahi_documented": "MET"
+          },
+          "overall": "CANNOT_DETERMINE",
+          "citation_context": {
+            "osa_diagnosis": [],
+            "sleep_study_date": [
+              "OSA was definitively ruled out after review of the completed PSG dated \u27e62026-02-12\u27e7."
+            ],
+            "ahi_documented": [
+              "\u27e6AHI 2\u27e7."
+            ]
+          }
+        }
+      },
+      {
+        "regression": "prior_episode",
+        "input": "History of low back pain with radiculopathy during a prior episode in 2019. Right L5 distribution: strength 4/5. NSAIDs for 8 weeks with minimal improvement.",
+        "procedure": "MRI_LUMBAR",
+        "reviewer_correct_values": {
+          "conservative_therapy_weeks": 8,
+          "cpb_0236_conservative_therapy_weeks": 8,
+          "cpb_0236_conservative_therapy_no_improvement": true,
+          "back_pain_with_radiculopathy": "__REVIEW_REQUIRED__",
+          "objective_motor_or_reflex_change_in_root_distribution": true,
+          "neuro_red_flags_documented": null,
+          "prior_imaging_result": null,
+          "symptom_duration_weeks": null,
+          "mechanical_symptoms_documented": null,
+          "osa_diagnosis": null,
+          "sleep_study_date": null,
+          "ahi_documented": null
+        },
+        "reviewer_correct_requirement_statuses": {
+          "back_pain_with_radiculopathy": "NEEDS_REVIEW",
+          "objective_motor_or_reflex_change_in_root_distribution": "MET",
+          "cpb_0236_conservative_therapy_weeks": "MET",
+          "cpb_0236_conservative_therapy_no_improvement": "MET"
+        },
+        "reviewer_correct_overall": "NEEDS_REVIEW",
+        "before": {
+          "id": 10,
+          "procedure": "MRI_LUMBAR",
+          "note": "History of low back pain with radiculopathy during a prior episode in 2019. Right L5 distribution: strength 4/5. NSAIDs for 8 weeks with minimal improvement.",
+          "facts": {
+            "conservative_therapy_weeks": 8,
+            "cpb_0236_conservative_therapy_weeks": 8,
+            "cpb_0236_conservative_therapy_no_improvement": true,
+            "back_pain_with_radiculopathy": true,
+            "objective_motor_or_reflex_change_in_root_distribution": true,
+            "neuro_red_flags_documented": null,
+            "prior_imaging_result": null,
+            "symptom_duration_weeks": null,
+            "mechanical_symptoms_documented": null,
+            "osa_diagnosis": null,
+            "sleep_study_date": null,
+            "ahi_documented": null
+          },
+          "states": {
+            "ahi_documented": "MISSING",
+            "back_pain_with_radiculopathy": "CAPTURED",
+            "conservative_therapy_weeks": "CAPTURED",
+            "cpb_0236_conservative_therapy_no_improvement": "CAPTURED",
+            "cpb_0236_conservative_therapy_weeks": "CAPTURED",
+            "mechanical_symptoms_documented": "MISSING",
+            "neuro_red_flags_documented": "MISSING",
+            "objective_motor_or_reflex_change_in_root_distribution": "CAPTURED",
+            "osa_diagnosis": "MISSING",
+            "prior_imaging_result": "MISSING",
+            "sleep_study_date": "MISSING",
+            "symptom_duration_weeks": "MISSING"
+          },
+          "requirements": {
+            "back_pain_with_radiculopathy": "MET",
+            "objective_motor_or_reflex_change_in_root_distribution": "MET",
+            "cpb_0236_conservative_therapy_weeks": "MET",
+            "cpb_0236_conservative_therapy_no_improvement": "MET"
+          },
+          "overall": "PENDING_VERIFICATION",
+          "submission_readiness": false,
+          "context": {
+            "back_pain_with_radiculopathy": [
+              "\u27e6History of low back pain with radiculopathy during a prior episode in 2019\u27e7."
+            ],
+            "objective_motor_or_reflex_change_in_root_distribution": [
+              "\u27e6Right L5 distribution: strength 4/5\u27e7."
+            ],
+            "cpb_0236_conservative_therapy_weeks": [
+              "\u27e6NSAIDs for 8 weeks with minimal improvement\u27e7."
+            ],
+            "cpb_0236_conservative_therapy_no_improvement": [
+              "\u27e6NSAIDs for 8 weeks with minimal improvement\u27e7."
+            ]
+          }
+        },
+        "after": {
+          "id": 10,
+          "name": "prior_episode",
+          "facts": {
+            "conservative_therapy_weeks": 8,
+            "cpb_0236_conservative_therapy_weeks": 8,
+            "cpb_0236_conservative_therapy_no_improvement": true,
+            "back_pain_with_radiculopathy": "__REVIEW_REQUIRED__",
+            "objective_motor_or_reflex_change_in_root_distribution": true,
+            "neuro_red_flags_documented": null,
+            "prior_imaging_result": null,
+            "symptom_duration_weeks": null,
+            "mechanical_symptoms_documented": null,
+            "osa_diagnosis": null,
+            "sleep_study_date": null,
+            "ahi_documented": null
+          },
+          "states": {
+            "ahi_documented": "MISSING",
+            "back_pain_with_radiculopathy": "NEEDS_REVIEW",
+            "conservative_therapy_weeks": "CAPTURED",
+            "cpb_0236_conservative_therapy_no_improvement": "CAPTURED",
+            "cpb_0236_conservative_therapy_weeks": "CAPTURED",
+            "mechanical_symptoms_documented": "MISSING",
+            "neuro_red_flags_documented": "MISSING",
+            "objective_motor_or_reflex_change_in_root_distribution": "CAPTURED",
+            "osa_diagnosis": "MISSING",
+            "prior_imaging_result": "MISSING",
+            "sleep_study_date": "MISSING",
+            "symptom_duration_weeks": "MISSING"
+          },
+          "requirements": {
+            "back_pain_with_radiculopathy": "NEEDS_REVIEW",
+            "objective_motor_or_reflex_change_in_root_distribution": "MET",
+            "cpb_0236_conservative_therapy_weeks": "MET",
+            "cpb_0236_conservative_therapy_no_improvement": "MET"
+          },
+          "overall": "NEEDS_REVIEW",
+          "citation_context": {
+            "back_pain_with_radiculopathy": [
+              "\u27e6History of low back pain with radiculopathy during a prior episode in 2019\u27e7."
+            ],
+            "objective_motor_or_reflex_change_in_root_distribution": [
+              "\u27e6Right L5 distribution: strength 4/5\u27e7."
+            ],
+            "cpb_0236_conservative_therapy_weeks": [
+              "\u27e6NSAIDs for 8 weeks with minimal improvement\u27e7."
+            ],
+            "cpb_0236_conservative_therapy_no_improvement": [
+              "\u27e6NSAIDs for 8 weeks with minimal improvement\u27e7."
+            ]
+          }
+        }
+      },
+      {
+        "regression": "same_sentence_resolved",
+        "input": "Low back pain with radiculopathy has resolved since the last visit. Right L5 distribution: strength 4/5. NSAIDs for 8 weeks with no improvement.",
+        "procedure": "MRI_LUMBAR",
+        "reviewer_correct_values": {
+          "conservative_therapy_weeks": 8,
+          "cpb_0236_conservative_therapy_weeks": 8,
+          "cpb_0236_conservative_therapy_no_improvement": true,
+          "back_pain_with_radiculopathy": "__REVIEW_REQUIRED__",
+          "objective_motor_or_reflex_change_in_root_distribution": true,
+          "neuro_red_flags_documented": null,
+          "prior_imaging_result": null,
+          "symptom_duration_weeks": null,
+          "mechanical_symptoms_documented": null,
+          "osa_diagnosis": null,
+          "sleep_study_date": null,
+          "ahi_documented": null
+        },
+        "reviewer_correct_requirement_statuses": {
+          "back_pain_with_radiculopathy": "NEEDS_REVIEW",
+          "objective_motor_or_reflex_change_in_root_distribution": "MET",
+          "cpb_0236_conservative_therapy_weeks": "MET",
+          "cpb_0236_conservative_therapy_no_improvement": "MET"
+        },
+        "reviewer_correct_overall": "NEEDS_REVIEW",
+        "before": {
+          "id": 11,
+          "procedure": "MRI_LUMBAR",
+          "note": "Low back pain with radiculopathy has resolved since the last visit. Right L5 distribution: strength 4/5. NSAIDs for 8 weeks with no improvement.",
+          "facts": {
+            "conservative_therapy_weeks": 8,
+            "cpb_0236_conservative_therapy_weeks": 8,
+            "cpb_0236_conservative_therapy_no_improvement": true,
+            "back_pain_with_radiculopathy": "__REVIEW_REQUIRED__",
+            "objective_motor_or_reflex_change_in_root_distribution": true,
+            "neuro_red_flags_documented": null,
+            "prior_imaging_result": null,
+            "symptom_duration_weeks": null,
+            "mechanical_symptoms_documented": null,
+            "osa_diagnosis": null,
+            "sleep_study_date": null,
+            "ahi_documented": null
+          },
+          "states": {
+            "ahi_documented": "MISSING",
+            "back_pain_with_radiculopathy": "NEEDS_REVIEW",
+            "conservative_therapy_weeks": "CAPTURED",
+            "cpb_0236_conservative_therapy_no_improvement": "CAPTURED",
+            "cpb_0236_conservative_therapy_weeks": "CAPTURED",
+            "mechanical_symptoms_documented": "MISSING",
+            "neuro_red_flags_documented": "MISSING",
+            "objective_motor_or_reflex_change_in_root_distribution": "CAPTURED",
+            "osa_diagnosis": "MISSING",
+            "prior_imaging_result": "MISSING",
+            "sleep_study_date": "MISSING",
+            "symptom_duration_weeks": "MISSING"
+          },
+          "requirements": {
+            "back_pain_with_radiculopathy": "NEEDS_REVIEW",
+            "objective_motor_or_reflex_change_in_root_distribution": "MET",
+            "cpb_0236_conservative_therapy_weeks": "MET",
+            "cpb_0236_conservative_therapy_no_improvement": "MET"
+          },
+          "overall": "NEEDS_REVIEW",
+          "submission_readiness": false,
+          "context": {
+            "back_pain_with_radiculopathy": [
+              "\u27e6Low back pain with radiculopathy has resolved since the last visit\u27e7."
+            ],
+            "objective_motor_or_reflex_change_in_root_distribution": [
+              "\u27e6Right L5 distribution: strength 4/5\u27e7."
+            ],
+            "cpb_0236_conservative_therapy_weeks": [
+              "\u27e6NSAIDs for 8 weeks with no improvement\u27e7."
+            ],
+            "cpb_0236_conservative_therapy_no_improvement": [
+              "\u27e6NSAIDs for 8 weeks with no improvement\u27e7."
+            ]
+          }
+        },
+        "after": {
+          "id": 11,
+          "name": "same_sentence_resolved",
+          "facts": {
+            "conservative_therapy_weeks": 8,
+            "cpb_0236_conservative_therapy_weeks": 8,
+            "cpb_0236_conservative_therapy_no_improvement": true,
+            "back_pain_with_radiculopathy": "__REVIEW_REQUIRED__",
+            "objective_motor_or_reflex_change_in_root_distribution": true,
+            "neuro_red_flags_documented": null,
+            "prior_imaging_result": null,
+            "symptom_duration_weeks": null,
+            "mechanical_symptoms_documented": null,
+            "osa_diagnosis": null,
+            "sleep_study_date": null,
+            "ahi_documented": null
+          },
+          "states": {
+            "ahi_documented": "MISSING",
+            "back_pain_with_radiculopathy": "NEEDS_REVIEW",
+            "conservative_therapy_weeks": "CAPTURED",
+            "cpb_0236_conservative_therapy_no_improvement": "CAPTURED",
+            "cpb_0236_conservative_therapy_weeks": "CAPTURED",
+            "mechanical_symptoms_documented": "MISSING",
+            "neuro_red_flags_documented": "MISSING",
+            "objective_motor_or_reflex_change_in_root_distribution": "CAPTURED",
+            "osa_diagnosis": "MISSING",
+            "prior_imaging_result": "MISSING",
+            "sleep_study_date": "MISSING",
+            "symptom_duration_weeks": "MISSING"
+          },
+          "requirements": {
+            "back_pain_with_radiculopathy": "NEEDS_REVIEW",
+            "objective_motor_or_reflex_change_in_root_distribution": "MET",
+            "cpb_0236_conservative_therapy_weeks": "MET",
+            "cpb_0236_conservative_therapy_no_improvement": "MET"
+          },
+          "overall": "NEEDS_REVIEW",
+          "citation_context": {
+            "back_pain_with_radiculopathy": [
+              "\u27e6Low back pain with radiculopathy has resolved since the last visit\u27e7."
+            ],
+            "objective_motor_or_reflex_change_in_root_distribution": [
+              "\u27e6Right L5 distribution: strength 4/5\u27e7."
+            ],
+            "cpb_0236_conservative_therapy_weeks": [
+              "\u27e6NSAIDs for 8 weeks with no improvement\u27e7."
+            ],
+            "cpb_0236_conservative_therapy_no_improvement": [
+              "\u27e6NSAIDs for 8 weeks with no improvement\u27e7."
+            ]
+          }
+        }
+      },
+      {
+        "regression": "cross_sentence_resolved",
+        "input": "Low back pain with radiculopathy was documented during last year's flare. That episode has completely resolved. Right L5 distribution: strength 4/5. NSAIDs for 8 weeks with minimal improvement.",
+        "procedure": "MRI_LUMBAR",
+        "reviewer_correct_values": {
+          "conservative_therapy_weeks": 8,
+          "cpb_0236_conservative_therapy_weeks": 8,
+          "cpb_0236_conservative_therapy_no_improvement": true,
+          "back_pain_with_radiculopathy": "__REVIEW_REQUIRED__",
+          "objective_motor_or_reflex_change_in_root_distribution": true,
+          "neuro_red_flags_documented": null,
+          "prior_imaging_result": null,
+          "symptom_duration_weeks": null,
+          "mechanical_symptoms_documented": null,
+          "osa_diagnosis": null,
+          "sleep_study_date": null,
+          "ahi_documented": null
+        },
+        "reviewer_correct_requirement_statuses": {
+          "back_pain_with_radiculopathy": "NEEDS_REVIEW",
+          "objective_motor_or_reflex_change_in_root_distribution": "MET",
+          "cpb_0236_conservative_therapy_weeks": "MET",
+          "cpb_0236_conservative_therapy_no_improvement": "MET"
+        },
+        "reviewer_correct_overall": "NEEDS_REVIEW",
+        "before": {
+          "id": 12,
+          "procedure": "MRI_LUMBAR",
+          "note": "Low back pain with radiculopathy was documented during last year's flare. That episode has completely resolved. Right L5 distribution: strength 4/5. NSAIDs for 8 weeks with minimal improvement.",
+          "facts": {
+            "conservative_therapy_weeks": 8,
+            "cpb_0236_conservative_therapy_weeks": 8,
+            "cpb_0236_conservative_therapy_no_improvement": true,
+            "back_pain_with_radiculopathy": true,
+            "objective_motor_or_reflex_change_in_root_distribution": true,
+            "neuro_red_flags_documented": null,
+            "prior_imaging_result": null,
+            "symptom_duration_weeks": null,
+            "mechanical_symptoms_documented": null,
+            "osa_diagnosis": null,
+            "sleep_study_date": null,
+            "ahi_documented": null
+          },
+          "states": {
+            "ahi_documented": "MISSING",
+            "back_pain_with_radiculopathy": "CAPTURED",
+            "conservative_therapy_weeks": "CAPTURED",
+            "cpb_0236_conservative_therapy_no_improvement": "CAPTURED",
+            "cpb_0236_conservative_therapy_weeks": "CAPTURED",
+            "mechanical_symptoms_documented": "MISSING",
+            "neuro_red_flags_documented": "MISSING",
+            "objective_motor_or_reflex_change_in_root_distribution": "CAPTURED",
+            "osa_diagnosis": "MISSING",
+            "prior_imaging_result": "MISSING",
+            "sleep_study_date": "MISSING",
+            "symptom_duration_weeks": "MISSING"
+          },
+          "requirements": {
+            "back_pain_with_radiculopathy": "MET",
+            "objective_motor_or_reflex_change_in_root_distribution": "MET",
+            "cpb_0236_conservative_therapy_weeks": "MET",
+            "cpb_0236_conservative_therapy_no_improvement": "MET"
+          },
+          "overall": "PENDING_VERIFICATION",
+          "submission_readiness": false,
+          "context": {
+            "back_pain_with_radiculopathy": [
+              "\u27e6Low back pain with radiculopathy was documented during last year's flare\u27e7."
+            ],
+            "objective_motor_or_reflex_change_in_root_distribution": [
+              "\u27e6Right L5 distribution: strength 4/5\u27e7."
+            ],
+            "cpb_0236_conservative_therapy_weeks": [
+              "\u27e6NSAIDs for 8 weeks with minimal improvement\u27e7."
+            ],
+            "cpb_0236_conservative_therapy_no_improvement": [
+              "\u27e6NSAIDs for 8 weeks with minimal improvement\u27e7."
+            ]
+          }
+        },
+        "after": {
+          "id": 12,
+          "name": "cross_sentence_resolved",
+          "facts": {
+            "conservative_therapy_weeks": 8,
+            "cpb_0236_conservative_therapy_weeks": 8,
+            "cpb_0236_conservative_therapy_no_improvement": true,
+            "back_pain_with_radiculopathy": true,
+            "objective_motor_or_reflex_change_in_root_distribution": true,
+            "neuro_red_flags_documented": null,
+            "prior_imaging_result": null,
+            "symptom_duration_weeks": null,
+            "mechanical_symptoms_documented": null,
+            "osa_diagnosis": null,
+            "sleep_study_date": null,
+            "ahi_documented": null
+          },
+          "states": {
+            "ahi_documented": "MISSING",
+            "back_pain_with_radiculopathy": "CAPTURED",
+            "conservative_therapy_weeks": "CAPTURED",
+            "cpb_0236_conservative_therapy_no_improvement": "CAPTURED",
+            "cpb_0236_conservative_therapy_weeks": "CAPTURED",
+            "mechanical_symptoms_documented": "MISSING",
+            "neuro_red_flags_documented": "MISSING",
+            "objective_motor_or_reflex_change_in_root_distribution": "CAPTURED",
+            "osa_diagnosis": "MISSING",
+            "prior_imaging_result": "MISSING",
+            "sleep_study_date": "MISSING",
+            "symptom_duration_weeks": "MISSING"
+          },
+          "requirements": {
+            "back_pain_with_radiculopathy": "MET",
+            "objective_motor_or_reflex_change_in_root_distribution": "MET",
+            "cpb_0236_conservative_therapy_weeks": "MET",
+            "cpb_0236_conservative_therapy_no_improvement": "MET"
+          },
+          "overall": "PENDING_VERIFICATION",
+          "citation_context": {
+            "back_pain_with_radiculopathy": [
+              "\u27e6Low back pain with radiculopathy was documented during last year's flare\u27e7."
+            ],
+            "objective_motor_or_reflex_change_in_root_distribution": [
+              "\u27e6Right L5 distribution: strength 4/5\u27e7."
+            ],
+            "cpb_0236_conservative_therapy_weeks": [
+              "\u27e6NSAIDs for 8 weeks with minimal improvement\u27e7."
+            ],
+            "cpb_0236_conservative_therapy_no_improvement": [
+              "\u27e6NSAIDs for 8 weeks with minimal improvement\u27e7."
+            ]
+          }
+        }
+      },
+      {
+        "regression": "ordered_not_started",
+        "input": "Low back pain with radiculopathy. Right L5 distribution: strength 4/5. NSAIDs for 8 weeks were ordered yesterday; the patient has not yet started them.",
+        "procedure": "MRI_LUMBAR",
+        "reviewer_correct_values": {
+          "conservative_therapy_weeks": null,
+          "cpb_0236_conservative_therapy_weeks": null,
+          "cpb_0236_conservative_therapy_no_improvement": null,
+          "back_pain_with_radiculopathy": true,
+          "objective_motor_or_reflex_change_in_root_distribution": true,
+          "neuro_red_flags_documented": null,
+          "prior_imaging_result": null,
+          "symptom_duration_weeks": null,
+          "mechanical_symptoms_documented": null,
+          "osa_diagnosis": null,
+          "sleep_study_date": null,
+          "ahi_documented": null
+        },
+        "reviewer_correct_requirement_statuses": {
+          "back_pain_with_radiculopathy": "MET",
+          "objective_motor_or_reflex_change_in_root_distribution": "MET",
+          "cpb_0236_conservative_therapy_weeks": "NOT_DOCUMENTED",
+          "cpb_0236_conservative_therapy_no_improvement": "NOT_DOCUMENTED"
+        },
+        "reviewer_correct_overall": "CANNOT_DETERMINE",
+        "before": {
+          "id": 13,
+          "procedure": "MRI_LUMBAR",
+          "note": "Low back pain with radiculopathy. Right L5 distribution: strength 4/5. NSAIDs for 8 weeks were ordered yesterday; the patient has not yet started them.",
+          "facts": {
+            "conservative_therapy_weeks": 8,
+            "cpb_0236_conservative_therapy_weeks": null,
+            "cpb_0236_conservative_therapy_no_improvement": null,
+            "back_pain_with_radiculopathy": true,
+            "objective_motor_or_reflex_change_in_root_distribution": true,
+            "neuro_red_flags_documented": null,
+            "prior_imaging_result": null,
+            "symptom_duration_weeks": null,
+            "mechanical_symptoms_documented": null,
+            "osa_diagnosis": null,
+            "sleep_study_date": null,
+            "ahi_documented": null
+          },
+          "states": {
+            "ahi_documented": "MISSING",
+            "back_pain_with_radiculopathy": "CAPTURED",
+            "conservative_therapy_weeks": "CAPTURED",
+            "cpb_0236_conservative_therapy_no_improvement": "MISSING",
+            "cpb_0236_conservative_therapy_weeks": "MISSING",
+            "mechanical_symptoms_documented": "MISSING",
+            "neuro_red_flags_documented": "MISSING",
+            "objective_motor_or_reflex_change_in_root_distribution": "CAPTURED",
+            "osa_diagnosis": "MISSING",
+            "prior_imaging_result": "MISSING",
+            "sleep_study_date": "MISSING",
+            "symptom_duration_weeks": "MISSING"
+          },
+          "requirements": {
+            "back_pain_with_radiculopathy": "MET",
+            "objective_motor_or_reflex_change_in_root_distribution": "MET",
+            "cpb_0236_conservative_therapy_weeks": "NOT_DOCUMENTED",
+            "cpb_0236_conservative_therapy_no_improvement": "NOT_DOCUMENTED"
+          },
+          "overall": "CANNOT_DETERMINE",
+          "submission_readiness": false,
+          "context": {
+            "back_pain_with_radiculopathy": [
+              "\u27e6Low back pain with radiculopathy\u27e7."
+            ],
+            "objective_motor_or_reflex_change_in_root_distribution": [
+              "\u27e6Right L5 distribution: strength 4/5\u27e7."
+            ],
+            "cpb_0236_conservative_therapy_weeks": [],
+            "cpb_0236_conservative_therapy_no_improvement": []
+          }
+        },
+        "after": {
+          "id": 13,
+          "name": "ordered_not_started",
+          "facts": {
+            "conservative_therapy_weeks": null,
+            "cpb_0236_conservative_therapy_weeks": null,
+            "cpb_0236_conservative_therapy_no_improvement": null,
+            "back_pain_with_radiculopathy": true,
+            "objective_motor_or_reflex_change_in_root_distribution": true,
+            "neuro_red_flags_documented": null,
+            "prior_imaging_result": null,
+            "symptom_duration_weeks": null,
+            "mechanical_symptoms_documented": null,
+            "osa_diagnosis": null,
+            "sleep_study_date": null,
+            "ahi_documented": null
+          },
+          "states": {
+            "ahi_documented": "MISSING",
+            "back_pain_with_radiculopathy": "CAPTURED",
+            "conservative_therapy_weeks": "MISSING",
+            "cpb_0236_conservative_therapy_no_improvement": "MISSING",
+            "cpb_0236_conservative_therapy_weeks": "MISSING",
+            "mechanical_symptoms_documented": "MISSING",
+            "neuro_red_flags_documented": "MISSING",
+            "objective_motor_or_reflex_change_in_root_distribution": "CAPTURED",
+            "osa_diagnosis": "MISSING",
+            "prior_imaging_result": "MISSING",
+            "sleep_study_date": "MISSING",
+            "symptom_duration_weeks": "MISSING"
+          },
+          "requirements": {
+            "back_pain_with_radiculopathy": "MET",
+            "objective_motor_or_reflex_change_in_root_distribution": "MET",
+            "cpb_0236_conservative_therapy_weeks": "NOT_DOCUMENTED",
+            "cpb_0236_conservative_therapy_no_improvement": "NOT_DOCUMENTED"
+          },
+          "overall": "CANNOT_DETERMINE",
+          "citation_context": {
+            "back_pain_with_radiculopathy": [
+              "\u27e6Low back pain with radiculopathy\u27e7."
+            ],
+            "objective_motor_or_reflex_change_in_root_distribution": [
+              "\u27e6Right L5 distribution: strength 4/5\u27e7."
+            ],
+            "cpb_0236_conservative_therapy_weeks": [],
+            "cpb_0236_conservative_therapy_no_improvement": []
+          }
+        }
+      },
+      {
+        "regression": "prescribed_not_completed",
+        "input": "Neck pain for 12 weeks. Prior cervical X-ray normal. PT for 8 weeks was prescribed, but she did not complete the course.",
+        "procedure": "MRI_CERVICAL",
+        "reviewer_correct_values": {
+          "conservative_therapy_weeks": null,
+          "cpb_0236_conservative_therapy_weeks": null,
+          "cpb_0236_conservative_therapy_no_improvement": null,
+          "back_pain_with_radiculopathy": null,
+          "objective_motor_or_reflex_change_in_root_distribution": null,
+          "neuro_red_flags_documented": null,
+          "prior_imaging_result": "normal",
+          "symptom_duration_weeks": 12,
+          "mechanical_symptoms_documented": null,
+          "osa_diagnosis": null,
+          "sleep_study_date": null,
+          "ahi_documented": null
+        },
+        "reviewer_correct_requirement_statuses": {
+          "conservative_therapy_weeks": "NOT_DOCUMENTED",
+          "neuro_red_flags_documented": "NOT_DOCUMENTED",
+          "prior_imaging_result": "MET",
+          "symptom_duration_weeks": "MET"
+        },
+        "reviewer_correct_overall": "CANNOT_DETERMINE",
+        "before": {
+          "id": 14,
+          "procedure": "MRI_CERVICAL",
+          "note": "Neck pain for 12 weeks. Prior cervical X-ray normal. PT for 8 weeks was prescribed, but she did not complete the course.",
+          "facts": {
+            "conservative_therapy_weeks": null,
+            "cpb_0236_conservative_therapy_weeks": null,
+            "cpb_0236_conservative_therapy_no_improvement": null,
+            "back_pain_with_radiculopathy": null,
+            "objective_motor_or_reflex_change_in_root_distribution": null,
+            "neuro_red_flags_documented": null,
+            "prior_imaging_result": "normal",
+            "symptom_duration_weeks": 12,
+            "mechanical_symptoms_documented": null,
+            "osa_diagnosis": null,
+            "sleep_study_date": null,
+            "ahi_documented": null
+          },
+          "states": {
+            "ahi_documented": "MISSING",
+            "back_pain_with_radiculopathy": "MISSING",
+            "conservative_therapy_weeks": "MISSING",
+            "cpb_0236_conservative_therapy_no_improvement": "MISSING",
+            "cpb_0236_conservative_therapy_weeks": "MISSING",
+            "mechanical_symptoms_documented": "MISSING",
+            "neuro_red_flags_documented": "MISSING",
+            "objective_motor_or_reflex_change_in_root_distribution": "MISSING",
+            "osa_diagnosis": "MISSING",
+            "prior_imaging_result": "CAPTURED",
+            "sleep_study_date": "MISSING",
+            "symptom_duration_weeks": "CAPTURED"
+          },
+          "requirements": {
+            "conservative_therapy_weeks": "NOT_DOCUMENTED",
+            "neuro_red_flags_documented": "NOT_DOCUMENTED",
+            "prior_imaging_result": "MET",
+            "symptom_duration_weeks": "MET"
+          },
+          "overall": "CANNOT_DETERMINE",
+          "submission_readiness": false,
+          "context": {
+            "conservative_therapy_weeks": [],
+            "neuro_red_flags_documented": [],
+            "prior_imaging_result": [
+              "Prior cervical X-ray \u27e6normal\u27e7."
+            ],
+            "symptom_duration_weeks": [
+              "Neck pain for \u27e612 weeks\u27e7."
+            ]
+          }
+        },
+        "after": {
+          "id": 14,
+          "name": "prescribed_not_completed",
+          "facts": {
+            "conservative_therapy_weeks": null,
+            "cpb_0236_conservative_therapy_weeks": null,
+            "cpb_0236_conservative_therapy_no_improvement": null,
+            "back_pain_with_radiculopathy": null,
+            "objective_motor_or_reflex_change_in_root_distribution": null,
+            "neuro_red_flags_documented": null,
+            "prior_imaging_result": "normal",
+            "symptom_duration_weeks": 12,
+            "mechanical_symptoms_documented": null,
+            "osa_diagnosis": null,
+            "sleep_study_date": null,
+            "ahi_documented": null
+          },
+          "states": {
+            "ahi_documented": "MISSING",
+            "back_pain_with_radiculopathy": "MISSING",
+            "conservative_therapy_weeks": "MISSING",
+            "cpb_0236_conservative_therapy_no_improvement": "MISSING",
+            "cpb_0236_conservative_therapy_weeks": "MISSING",
+            "mechanical_symptoms_documented": "MISSING",
+            "neuro_red_flags_documented": "MISSING",
+            "objective_motor_or_reflex_change_in_root_distribution": "MISSING",
+            "osa_diagnosis": "MISSING",
+            "prior_imaging_result": "CAPTURED",
+            "sleep_study_date": "MISSING",
+            "symptom_duration_weeks": "CAPTURED"
+          },
+          "requirements": {
+            "conservative_therapy_weeks": "NOT_DOCUMENTED",
+            "neuro_red_flags_documented": "NOT_DOCUMENTED",
+            "prior_imaging_result": "MET",
+            "symptom_duration_weeks": "MET"
+          },
+          "overall": "CANNOT_DETERMINE",
+          "citation_context": {
+            "conservative_therapy_weeks": [],
+            "neuro_red_flags_documented": [],
+            "prior_imaging_result": [
+              "Prior cervical X-ray \u27e6normal\u27e7."
+            ],
+            "symptom_duration_weeks": [
+              "Neck pain for \u27e612 weeks\u27e7."
+            ]
+          }
+        }
+      },
+      {
+        "regression": "canceled_study",
+        "input": "OSA confirmed. Sleep study dated 2026-03-09 was canceled because of transportation problems. AHI 28 is documented from an earlier assessment.",
+        "procedure": "CPAP_DEVICE",
+        "reviewer_correct_values": {
+          "conservative_therapy_weeks": null,
+          "cpb_0236_conservative_therapy_weeks": null,
+          "cpb_0236_conservative_therapy_no_improvement": null,
+          "back_pain_with_radiculopathy": null,
+          "objective_motor_or_reflex_change_in_root_distribution": null,
+          "neuro_red_flags_documented": null,
+          "prior_imaging_result": null,
+          "symptom_duration_weeks": null,
+          "mechanical_symptoms_documented": null,
+          "osa_diagnosis": true,
+          "sleep_study_date": null,
+          "ahi_documented": true
+        },
+        "reviewer_correct_requirement_statuses": {
+          "osa_diagnosis": "MET",
+          "sleep_study_date": "NOT_DOCUMENTED",
+          "ahi_documented": "MET"
+        },
+        "reviewer_correct_overall": "CANNOT_DETERMINE",
+        "before": {
+          "id": 15,
+          "procedure": "CPAP_DEVICE",
+          "note": "OSA confirmed. Sleep study dated 2026-03-09 was canceled because of transportation problems. AHI 28 is documented from an earlier assessment.",
+          "facts": {
+            "conservative_therapy_weeks": null,
+            "cpb_0236_conservative_therapy_weeks": null,
+            "cpb_0236_conservative_therapy_no_improvement": null,
+            "back_pain_with_radiculopathy": null,
+            "objective_motor_or_reflex_change_in_root_distribution": null,
+            "neuro_red_flags_documented": null,
+            "prior_imaging_result": null,
+            "symptom_duration_weeks": null,
+            "mechanical_symptoms_documented": null,
+            "osa_diagnosis": true,
+            "sleep_study_date": null,
+            "ahi_documented": true
+          },
+          "states": {
+            "ahi_documented": "CAPTURED",
+            "back_pain_with_radiculopathy": "MISSING",
+            "conservative_therapy_weeks": "MISSING",
+            "cpb_0236_conservative_therapy_no_improvement": "MISSING",
+            "cpb_0236_conservative_therapy_weeks": "MISSING",
+            "mechanical_symptoms_documented": "MISSING",
+            "neuro_red_flags_documented": "MISSING",
+            "objective_motor_or_reflex_change_in_root_distribution": "MISSING",
+            "osa_diagnosis": "CAPTURED",
+            "prior_imaging_result": "MISSING",
+            "sleep_study_date": "MISSING",
+            "symptom_duration_weeks": "MISSING"
+          },
+          "requirements": {
+            "osa_diagnosis": "MET",
+            "sleep_study_date": "NOT_DOCUMENTED",
+            "ahi_documented": "MET"
+          },
+          "overall": "CANNOT_DETERMINE",
+          "submission_readiness": false,
+          "context": {
+            "osa_diagnosis": [
+              "\u27e6OSA\u27e7 confirmed."
+            ],
+            "sleep_study_date": [],
+            "ahi_documented": [
+              "\u27e6AHI 28\u27e7 is documented from an earlier assessment."
+            ]
+          }
+        },
+        "after": {
+          "id": 15,
+          "name": "canceled_study",
+          "facts": {
+            "conservative_therapy_weeks": null,
+            "cpb_0236_conservative_therapy_weeks": null,
+            "cpb_0236_conservative_therapy_no_improvement": null,
+            "back_pain_with_radiculopathy": null,
+            "objective_motor_or_reflex_change_in_root_distribution": null,
+            "neuro_red_flags_documented": null,
+            "prior_imaging_result": null,
+            "symptom_duration_weeks": null,
+            "mechanical_symptoms_documented": null,
+            "osa_diagnosis": true,
+            "sleep_study_date": null,
+            "ahi_documented": true
+          },
+          "states": {
+            "ahi_documented": "CAPTURED",
+            "back_pain_with_radiculopathy": "MISSING",
+            "conservative_therapy_weeks": "MISSING",
+            "cpb_0236_conservative_therapy_no_improvement": "MISSING",
+            "cpb_0236_conservative_therapy_weeks": "MISSING",
+            "mechanical_symptoms_documented": "MISSING",
+            "neuro_red_flags_documented": "MISSING",
+            "objective_motor_or_reflex_change_in_root_distribution": "MISSING",
+            "osa_diagnosis": "CAPTURED",
+            "prior_imaging_result": "MISSING",
+            "sleep_study_date": "MISSING",
+            "symptom_duration_weeks": "MISSING"
+          },
+          "requirements": {
+            "osa_diagnosis": "MET",
+            "sleep_study_date": "NOT_DOCUMENTED",
+            "ahi_documented": "MET"
+          },
+          "overall": "CANNOT_DETERMINE",
+          "citation_context": {
+            "osa_diagnosis": [
+              "\u27e6OSA\u27e7 confirmed."
+            ],
+            "sleep_study_date": [],
+            "ahi_documented": [
+              "\u27e6AHI 28\u27e7 is documented from an earlier assessment."
+            ]
+          }
+        }
+      },
+      {
+        "regression": "planned_study",
+        "input": "OSA confirmed. PSG planned for 2026-03-09; testing has not been performed. AHI unknown.",
+        "procedure": "CPAP_DEVICE",
+        "reviewer_correct_values": {
+          "conservative_therapy_weeks": null,
+          "cpb_0236_conservative_therapy_weeks": null,
+          "cpb_0236_conservative_therapy_no_improvement": null,
+          "back_pain_with_radiculopathy": null,
+          "objective_motor_or_reflex_change_in_root_distribution": null,
+          "neuro_red_flags_documented": null,
+          "prior_imaging_result": null,
+          "symptom_duration_weeks": null,
+          "mechanical_symptoms_documented": null,
+          "osa_diagnosis": true,
+          "sleep_study_date": null,
+          "ahi_documented": null
+        },
+        "reviewer_correct_requirement_statuses": {
+          "osa_diagnosis": "MET",
+          "sleep_study_date": "NOT_DOCUMENTED",
+          "ahi_documented": "NOT_DOCUMENTED"
+        },
+        "reviewer_correct_overall": "CANNOT_DETERMINE",
+        "before": {
+          "id": 16,
+          "procedure": "CPAP_DEVICE",
+          "note": "OSA confirmed. PSG planned for 2026-03-09; testing has not been performed. AHI unknown.",
+          "facts": {
+            "conservative_therapy_weeks": null,
+            "cpb_0236_conservative_therapy_weeks": null,
+            "cpb_0236_conservative_therapy_no_improvement": null,
+            "back_pain_with_radiculopathy": null,
+            "objective_motor_or_reflex_change_in_root_distribution": null,
+            "neuro_red_flags_documented": null,
+            "prior_imaging_result": null,
+            "symptom_duration_weeks": null,
+            "mechanical_symptoms_documented": null,
+            "osa_diagnosis": true,
+            "sleep_study_date": null,
+            "ahi_documented": null
+          },
+          "states": {
+            "ahi_documented": "MISSING",
+            "back_pain_with_radiculopathy": "MISSING",
+            "conservative_therapy_weeks": "MISSING",
+            "cpb_0236_conservative_therapy_no_improvement": "MISSING",
+            "cpb_0236_conservative_therapy_weeks": "MISSING",
+            "mechanical_symptoms_documented": "MISSING",
+            "neuro_red_flags_documented": "MISSING",
+            "objective_motor_or_reflex_change_in_root_distribution": "MISSING",
+            "osa_diagnosis": "CAPTURED",
+            "prior_imaging_result": "MISSING",
+            "sleep_study_date": "MISSING",
+            "symptom_duration_weeks": "MISSING"
+          },
+          "requirements": {
+            "osa_diagnosis": "MET",
+            "sleep_study_date": "NOT_DOCUMENTED",
+            "ahi_documented": "NOT_DOCUMENTED"
+          },
+          "overall": "CANNOT_DETERMINE",
+          "submission_readiness": false,
+          "context": {
+            "osa_diagnosis": [
+              "\u27e6OSA\u27e7 confirmed."
+            ],
+            "sleep_study_date": [],
+            "ahi_documented": [
+              "\u27e6AHI unknown\u27e7."
+            ]
+          }
+        },
+        "after": {
+          "id": 16,
+          "name": "planned_study",
+          "facts": {
+            "conservative_therapy_weeks": null,
+            "cpb_0236_conservative_therapy_weeks": null,
+            "cpb_0236_conservative_therapy_no_improvement": null,
+            "back_pain_with_radiculopathy": null,
+            "objective_motor_or_reflex_change_in_root_distribution": null,
+            "neuro_red_flags_documented": null,
+            "prior_imaging_result": null,
+            "symptom_duration_weeks": null,
+            "mechanical_symptoms_documented": null,
+            "osa_diagnosis": true,
+            "sleep_study_date": null,
+            "ahi_documented": null
+          },
+          "states": {
+            "ahi_documented": "MISSING",
+            "back_pain_with_radiculopathy": "MISSING",
+            "conservative_therapy_weeks": "MISSING",
+            "cpb_0236_conservative_therapy_no_improvement": "MISSING",
+            "cpb_0236_conservative_therapy_weeks": "MISSING",
+            "mechanical_symptoms_documented": "MISSING",
+            "neuro_red_flags_documented": "MISSING",
+            "objective_motor_or_reflex_change_in_root_distribution": "MISSING",
+            "osa_diagnosis": "CAPTURED",
+            "prior_imaging_result": "MISSING",
+            "sleep_study_date": "MISSING",
+            "symptom_duration_weeks": "MISSING"
+          },
+          "requirements": {
+            "osa_diagnosis": "MET",
+            "sleep_study_date": "NOT_DOCUMENTED",
+            "ahi_documented": "NOT_DOCUMENTED"
+          },
+          "overall": "CANNOT_DETERMINE",
+          "citation_context": {
+            "osa_diagnosis": [
+              "\u27e6OSA\u27e7 confirmed."
+            ],
+            "sleep_study_date": [],
+            "ahi_documented": [
+              "\u27e6AHI unknown\u27e7."
+            ]
+          }
+        }
+      },
+      {
+        "regression": "borrowed_citation_date",
+        "input": "OSA confirmed. Follow-up appointment was on 2026-03-09. Sleep study completed, but the study date cannot be located. AHI 26.",
+        "procedure": "CPAP_DEVICE",
+        "reviewer_correct_values": {
+          "conservative_therapy_weeks": null,
+          "cpb_0236_conservative_therapy_weeks": null,
+          "cpb_0236_conservative_therapy_no_improvement": null,
+          "back_pain_with_radiculopathy": null,
+          "objective_motor_or_reflex_change_in_root_distribution": null,
+          "neuro_red_flags_documented": null,
+          "prior_imaging_result": null,
+          "symptom_duration_weeks": null,
+          "mechanical_symptoms_documented": null,
+          "osa_diagnosis": true,
+          "sleep_study_date": true,
+          "ahi_documented": true
+        },
+        "reviewer_correct_requirement_statuses": {
+          "osa_diagnosis": "MET",
+          "sleep_study_date": "MET",
+          "ahi_documented": "MET"
+        },
+        "reviewer_correct_overall": "PENDING_VERIFICATION",
+        "before": {
+          "id": 17,
+          "procedure": "CPAP_DEVICE",
+          "note": "OSA confirmed. Follow-up appointment was on 2026-03-09. Sleep study completed, but the study date cannot be located. AHI 26.",
+          "facts": {
+            "conservative_therapy_weeks": null,
+            "cpb_0236_conservative_therapy_weeks": null,
+            "cpb_0236_conservative_therapy_no_improvement": null,
+            "back_pain_with_radiculopathy": null,
+            "objective_motor_or_reflex_change_in_root_distribution": null,
+            "neuro_red_flags_documented": null,
+            "prior_imaging_result": null,
+            "symptom_duration_weeks": null,
+            "mechanical_symptoms_documented": null,
+            "osa_diagnosis": true,
+            "sleep_study_date": true,
+            "ahi_documented": true
+          },
+          "states": {
+            "ahi_documented": "CAPTURED",
+            "back_pain_with_radiculopathy": "MISSING",
+            "conservative_therapy_weeks": "MISSING",
+            "cpb_0236_conservative_therapy_no_improvement": "MISSING",
+            "cpb_0236_conservative_therapy_weeks": "MISSING",
+            "mechanical_symptoms_documented": "MISSING",
+            "neuro_red_flags_documented": "MISSING",
+            "objective_motor_or_reflex_change_in_root_distribution": "MISSING",
+            "osa_diagnosis": "CAPTURED",
+            "prior_imaging_result": "MISSING",
+            "sleep_study_date": "CAPTURED",
+            "symptom_duration_weeks": "MISSING"
+          },
+          "requirements": {
+            "osa_diagnosis": "MET",
+            "sleep_study_date": "MET",
+            "ahi_documented": "MET"
+          },
+          "overall": "PENDING_VERIFICATION",
+          "submission_readiness": false,
+          "context": {
+            "osa_diagnosis": [
+              "\u27e6OSA\u27e7 confirmed."
+            ],
+            "sleep_study_date": [
+              "Follow-up appointment was on \u27e62026-03-09\u27e7."
+            ],
+            "ahi_documented": [
+              "\u27e6AHI 26\u27e7."
+            ]
+          }
+        },
+        "after": {
+          "id": 17,
+          "name": "borrowed_citation_date",
+          "facts": {
+            "conservative_therapy_weeks": null,
+            "cpb_0236_conservative_therapy_weeks": null,
+            "cpb_0236_conservative_therapy_no_improvement": null,
+            "back_pain_with_radiculopathy": null,
+            "objective_motor_or_reflex_change_in_root_distribution": null,
+            "neuro_red_flags_documented": null,
+            "prior_imaging_result": null,
+            "symptom_duration_weeks": null,
+            "mechanical_symptoms_documented": null,
+            "osa_diagnosis": true,
+            "sleep_study_date": true,
+            "ahi_documented": true
+          },
+          "states": {
+            "ahi_documented": "CAPTURED",
+            "back_pain_with_radiculopathy": "MISSING",
+            "conservative_therapy_weeks": "MISSING",
+            "cpb_0236_conservative_therapy_no_improvement": "MISSING",
+            "cpb_0236_conservative_therapy_weeks": "MISSING",
+            "mechanical_symptoms_documented": "MISSING",
+            "neuro_red_flags_documented": "MISSING",
+            "objective_motor_or_reflex_change_in_root_distribution": "MISSING",
+            "osa_diagnosis": "CAPTURED",
+            "prior_imaging_result": "MISSING",
+            "sleep_study_date": "CAPTURED",
+            "symptom_duration_weeks": "MISSING"
+          },
+          "requirements": {
+            "osa_diagnosis": "MET",
+            "sleep_study_date": "MET",
+            "ahi_documented": "MET"
+          },
+          "overall": "PENDING_VERIFICATION",
+          "citation_context": {
+            "osa_diagnosis": [
+              "\u27e6OSA\u27e7 confirmed."
+            ],
+            "sleep_study_date": [
+              "Follow-up appointment was on \u27e62026-03-09\u27e7."
+            ],
+            "ahi_documented": [
+              "\u27e6AHI 26\u27e7."
+            ]
+          }
+        }
+      },
+      {
+        "regression": "intact_reflexes",
+        "input": "Low back pain with radiculopathy. Right L5 distribution: reflexes intact; decreased sensation over the dorsal foot. NSAIDs for 8 weeks with minimal improvement.",
+        "procedure": "MRI_LUMBAR",
+        "reviewer_correct_values": {
+          "conservative_therapy_weeks": 8,
+          "cpb_0236_conservative_therapy_weeks": 8,
+          "cpb_0236_conservative_therapy_no_improvement": true,
+          "back_pain_with_radiculopathy": true,
+          "objective_motor_or_reflex_change_in_root_distribution": false,
+          "neuro_red_flags_documented": null,
+          "prior_imaging_result": null,
+          "symptom_duration_weeks": null,
+          "mechanical_symptoms_documented": null,
+          "osa_diagnosis": null,
+          "sleep_study_date": null,
+          "ahi_documented": null
+        },
+        "reviewer_correct_requirement_statuses": {
+          "back_pain_with_radiculopathy": "MET",
+          "objective_motor_or_reflex_change_in_root_distribution": "NOT_MET",
+          "cpb_0236_conservative_therapy_weeks": "MET",
+          "cpb_0236_conservative_therapy_no_improvement": "MET"
+        },
+        "reviewer_correct_overall": "NOT_READY",
+        "before": {
+          "id": 18,
+          "procedure": "MRI_LUMBAR",
+          "note": "Low back pain with radiculopathy. Right L5 distribution: reflexes intact; decreased sensation over the dorsal foot. NSAIDs for 8 weeks with minimal improvement.",
+          "facts": {
+            "conservative_therapy_weeks": 8,
+            "cpb_0236_conservative_therapy_weeks": 8,
+            "cpb_0236_conservative_therapy_no_improvement": true,
+            "back_pain_with_radiculopathy": true,
+            "objective_motor_or_reflex_change_in_root_distribution": null,
+            "neuro_red_flags_documented": null,
+            "prior_imaging_result": null,
+            "symptom_duration_weeks": null,
+            "mechanical_symptoms_documented": null,
+            "osa_diagnosis": null,
+            "sleep_study_date": null,
+            "ahi_documented": null
+          },
+          "states": {
+            "ahi_documented": "MISSING",
+            "back_pain_with_radiculopathy": "CAPTURED",
+            "conservative_therapy_weeks": "CAPTURED",
+            "cpb_0236_conservative_therapy_no_improvement": "CAPTURED",
+            "cpb_0236_conservative_therapy_weeks": "CAPTURED",
+            "mechanical_symptoms_documented": "MISSING",
+            "neuro_red_flags_documented": "MISSING",
+            "objective_motor_or_reflex_change_in_root_distribution": "MISSING",
+            "osa_diagnosis": "MISSING",
+            "prior_imaging_result": "MISSING",
+            "sleep_study_date": "MISSING",
+            "symptom_duration_weeks": "MISSING"
+          },
+          "requirements": {
+            "back_pain_with_radiculopathy": "MET",
+            "objective_motor_or_reflex_change_in_root_distribution": "NOT_DOCUMENTED",
+            "cpb_0236_conservative_therapy_weeks": "MET",
+            "cpb_0236_conservative_therapy_no_improvement": "MET"
+          },
+          "overall": "CANNOT_DETERMINE",
+          "submission_readiness": false,
+          "context": {
+            "back_pain_with_radiculopathy": [
+              "\u27e6Low back pain with radiculopathy\u27e7."
+            ],
+            "objective_motor_or_reflex_change_in_root_distribution": [],
+            "cpb_0236_conservative_therapy_weeks": [
+              "\u27e6NSAIDs for 8 weeks with minimal improvement\u27e7."
+            ],
+            "cpb_0236_conservative_therapy_no_improvement": [
+              "\u27e6NSAIDs for 8 weeks with minimal improvement\u27e7."
+            ]
+          }
+        },
+        "after": {
+          "id": 18,
+          "name": "intact_reflexes",
+          "facts": {
+            "conservative_therapy_weeks": 8,
+            "cpb_0236_conservative_therapy_weeks": 8,
+            "cpb_0236_conservative_therapy_no_improvement": true,
+            "back_pain_with_radiculopathy": true,
+            "objective_motor_or_reflex_change_in_root_distribution": null,
+            "neuro_red_flags_documented": null,
+            "prior_imaging_result": null,
+            "symptom_duration_weeks": null,
+            "mechanical_symptoms_documented": null,
+            "osa_diagnosis": null,
+            "sleep_study_date": null,
+            "ahi_documented": null
+          },
+          "states": {
+            "ahi_documented": "MISSING",
+            "back_pain_with_radiculopathy": "CAPTURED",
+            "conservative_therapy_weeks": "CAPTURED",
+            "cpb_0236_conservative_therapy_no_improvement": "CAPTURED",
+            "cpb_0236_conservative_therapy_weeks": "CAPTURED",
+            "mechanical_symptoms_documented": "MISSING",
+            "neuro_red_flags_documented": "MISSING",
+            "objective_motor_or_reflex_change_in_root_distribution": "MISSING",
+            "osa_diagnosis": "MISSING",
+            "prior_imaging_result": "MISSING",
+            "sleep_study_date": "MISSING",
+            "symptom_duration_weeks": "MISSING"
+          },
+          "requirements": {
+            "back_pain_with_radiculopathy": "MET",
+            "objective_motor_or_reflex_change_in_root_distribution": "NOT_DOCUMENTED",
+            "cpb_0236_conservative_therapy_weeks": "MET",
+            "cpb_0236_conservative_therapy_no_improvement": "MET"
+          },
+          "overall": "CANNOT_DETERMINE",
+          "citation_context": {
+            "back_pain_with_radiculopathy": [
+              "\u27e6Low back pain with radiculopathy\u27e7."
+            ],
+            "objective_motor_or_reflex_change_in_root_distribution": [],
+            "cpb_0236_conservative_therapy_weeks": [
+              "\u27e6NSAIDs for 8 weeks with minimal improvement\u27e7."
+            ],
+            "cpb_0236_conservative_therapy_no_improvement": [
+              "\u27e6NSAIDs for 8 weeks with minimal improvement\u27e7."
+            ]
+          }
+        }
+      },
+      {
+        "regression": "unknown_other_sentence",
+        "input": "OSA confirmed on PSG completed 2026-02-12 with AHI 24. Medication allergies unknown. No other sleep-study data are missing.",
+        "procedure": "CPAP_DEVICE",
+        "reviewer_correct_values": {
+          "conservative_therapy_weeks": null,
+          "cpb_0236_conservative_therapy_weeks": null,
+          "cpb_0236_conservative_therapy_no_improvement": null,
+          "back_pain_with_radiculopathy": null,
+          "objective_motor_or_reflex_change_in_root_distribution": null,
+          "neuro_red_flags_documented": null,
+          "prior_imaging_result": null,
+          "symptom_duration_weeks": null,
+          "mechanical_symptoms_documented": null,
+          "osa_diagnosis": true,
+          "sleep_study_date": true,
+          "ahi_documented": true
+        },
+        "reviewer_correct_requirement_statuses": {
+          "osa_diagnosis": "MET",
+          "sleep_study_date": "MET",
+          "ahi_documented": "MET"
+        },
+        "reviewer_correct_overall": "PENDING_VERIFICATION",
+        "before": {
+          "id": 19,
+          "procedure": "CPAP_DEVICE",
+          "note": "OSA confirmed on PSG completed 2026-02-12 with AHI 24. Medication allergies unknown. No other sleep-study data are missing.",
+          "facts": {
+            "conservative_therapy_weeks": null,
+            "cpb_0236_conservative_therapy_weeks": null,
+            "cpb_0236_conservative_therapy_no_improvement": null,
+            "back_pain_with_radiculopathy": null,
+            "objective_motor_or_reflex_change_in_root_distribution": null,
+            "neuro_red_flags_documented": null,
+            "prior_imaging_result": null,
+            "symptom_duration_weeks": null,
+            "mechanical_symptoms_documented": null,
+            "osa_diagnosis": true,
+            "sleep_study_date": true,
+            "ahi_documented": true
+          },
+          "states": {
+            "ahi_documented": "CAPTURED",
+            "back_pain_with_radiculopathy": "MISSING",
+            "conservative_therapy_weeks": "MISSING",
+            "cpb_0236_conservative_therapy_no_improvement": "MISSING",
+            "cpb_0236_conservative_therapy_weeks": "MISSING",
+            "mechanical_symptoms_documented": "MISSING",
+            "neuro_red_flags_documented": "MISSING",
+            "objective_motor_or_reflex_change_in_root_distribution": "MISSING",
+            "osa_diagnosis": "CAPTURED",
+            "prior_imaging_result": "MISSING",
+            "sleep_study_date": "CAPTURED",
+            "symptom_duration_weeks": "MISSING"
+          },
+          "requirements": {
+            "osa_diagnosis": "MET",
+            "sleep_study_date": "MET",
+            "ahi_documented": "MET"
+          },
+          "overall": "PENDING_VERIFICATION",
+          "submission_readiness": false,
+          "context": {
+            "osa_diagnosis": [
+              "\u27e6OSA\u27e7 confirmed on PSG completed 2026-02-12 with AHI 24."
+            ],
+            "sleep_study_date": [
+              "OSA confirmed on PSG completed \u27e62026-02-12\u27e7 with AHI 24."
+            ],
+            "ahi_documented": [
+              "OSA confirmed on PSG completed 2026-02-12 with \u27e6AHI 24\u27e7."
+            ]
+          }
+        },
+        "after": {
+          "id": 19,
+          "name": "unknown_other_sentence",
+          "facts": {
+            "conservative_therapy_weeks": null,
+            "cpb_0236_conservative_therapy_weeks": null,
+            "cpb_0236_conservative_therapy_no_improvement": null,
+            "back_pain_with_radiculopathy": null,
+            "objective_motor_or_reflex_change_in_root_distribution": null,
+            "neuro_red_flags_documented": null,
+            "prior_imaging_result": null,
+            "symptom_duration_weeks": null,
+            "mechanical_symptoms_documented": null,
+            "osa_diagnosis": true,
+            "sleep_study_date": true,
+            "ahi_documented": true
+          },
+          "states": {
+            "ahi_documented": "CAPTURED",
+            "back_pain_with_radiculopathy": "MISSING",
+            "conservative_therapy_weeks": "MISSING",
+            "cpb_0236_conservative_therapy_no_improvement": "MISSING",
+            "cpb_0236_conservative_therapy_weeks": "MISSING",
+            "mechanical_symptoms_documented": "MISSING",
+            "neuro_red_flags_documented": "MISSING",
+            "objective_motor_or_reflex_change_in_root_distribution": "MISSING",
+            "osa_diagnosis": "CAPTURED",
+            "prior_imaging_result": "MISSING",
+            "sleep_study_date": "CAPTURED",
+            "symptom_duration_weeks": "MISSING"
+          },
+          "requirements": {
+            "osa_diagnosis": "MET",
+            "sleep_study_date": "MET",
+            "ahi_documented": "MET"
+          },
+          "overall": "PENDING_VERIFICATION",
+          "citation_context": {
+            "osa_diagnosis": [
+              "\u27e6OSA\u27e7 confirmed on PSG completed 2026-02-12 with AHI 24."
+            ],
+            "sleep_study_date": [
+              "OSA confirmed on PSG completed \u27e62026-02-12\u27e7 with AHI 24."
+            ],
+            "ahi_documented": [
+              "OSA confirmed on PSG completed 2026-02-12 with \u27e6AHI 24\u27e7."
+            ]
+          }
+        }
+      },
+      {
+        "regression": "na_other_sentence",
+        "input": "OSA confirmed on PSG completed 2026-02-12; AHI 24 is recorded in the report. Family history: N/A.",
+        "procedure": "CPAP_DEVICE",
+        "reviewer_correct_values": {
+          "conservative_therapy_weeks": null,
+          "cpb_0236_conservative_therapy_weeks": null,
+          "cpb_0236_conservative_therapy_no_improvement": null,
+          "back_pain_with_radiculopathy": null,
+          "objective_motor_or_reflex_change_in_root_distribution": null,
+          "neuro_red_flags_documented": null,
+          "prior_imaging_result": null,
+          "symptom_duration_weeks": null,
+          "mechanical_symptoms_documented": null,
+          "osa_diagnosis": true,
+          "sleep_study_date": true,
+          "ahi_documented": true
+        },
+        "reviewer_correct_requirement_statuses": {
+          "osa_diagnosis": "MET",
+          "sleep_study_date": "MET",
+          "ahi_documented": "MET"
+        },
+        "reviewer_correct_overall": "PENDING_VERIFICATION",
+        "before": {
+          "id": 20,
+          "procedure": "CPAP_DEVICE",
+          "note": "OSA confirmed on PSG completed 2026-02-12; AHI 24 is recorded in the report. Family history: N/A.",
+          "facts": {
+            "conservative_therapy_weeks": null,
+            "cpb_0236_conservative_therapy_weeks": null,
+            "cpb_0236_conservative_therapy_no_improvement": null,
+            "back_pain_with_radiculopathy": null,
+            "objective_motor_or_reflex_change_in_root_distribution": null,
+            "neuro_red_flags_documented": null,
+            "prior_imaging_result": null,
+            "symptom_duration_weeks": null,
+            "mechanical_symptoms_documented": null,
+            "osa_diagnosis": true,
+            "sleep_study_date": true,
+            "ahi_documented": true
+          },
+          "states": {
+            "ahi_documented": "CAPTURED",
+            "back_pain_with_radiculopathy": "MISSING",
+            "conservative_therapy_weeks": "MISSING",
+            "cpb_0236_conservative_therapy_no_improvement": "MISSING",
+            "cpb_0236_conservative_therapy_weeks": "MISSING",
+            "mechanical_symptoms_documented": "MISSING",
+            "neuro_red_flags_documented": "MISSING",
+            "objective_motor_or_reflex_change_in_root_distribution": "MISSING",
+            "osa_diagnosis": "CAPTURED",
+            "prior_imaging_result": "MISSING",
+            "sleep_study_date": "CAPTURED",
+            "symptom_duration_weeks": "MISSING"
+          },
+          "requirements": {
+            "osa_diagnosis": "MET",
+            "sleep_study_date": "MET",
+            "ahi_documented": "MET"
+          },
+          "overall": "PENDING_VERIFICATION",
+          "submission_readiness": false,
+          "context": {
+            "osa_diagnosis": [
+              "\u27e6OSA\u27e7 confirmed on PSG completed 2026-02-12;"
+            ],
+            "sleep_study_date": [
+              "OSA confirmed on PSG completed \u27e62026-02-12\u27e7;"
+            ],
+            "ahi_documented": [
+              "\u27e6AHI 24\u27e7 is recorded in the report."
+            ]
+          }
+        },
+        "after": {
+          "id": 20,
+          "name": "na_other_sentence",
+          "facts": {
+            "conservative_therapy_weeks": null,
+            "cpb_0236_conservative_therapy_weeks": null,
+            "cpb_0236_conservative_therapy_no_improvement": null,
+            "back_pain_with_radiculopathy": null,
+            "objective_motor_or_reflex_change_in_root_distribution": null,
+            "neuro_red_flags_documented": null,
+            "prior_imaging_result": null,
+            "symptom_duration_weeks": null,
+            "mechanical_symptoms_documented": null,
+            "osa_diagnosis": true,
+            "sleep_study_date": true,
+            "ahi_documented": true
+          },
+          "states": {
+            "ahi_documented": "CAPTURED",
+            "back_pain_with_radiculopathy": "MISSING",
+            "conservative_therapy_weeks": "MISSING",
+            "cpb_0236_conservative_therapy_no_improvement": "MISSING",
+            "cpb_0236_conservative_therapy_weeks": "MISSING",
+            "mechanical_symptoms_documented": "MISSING",
+            "neuro_red_flags_documented": "MISSING",
+            "objective_motor_or_reflex_change_in_root_distribution": "MISSING",
+            "osa_diagnosis": "CAPTURED",
+            "prior_imaging_result": "MISSING",
+            "sleep_study_date": "CAPTURED",
+            "symptom_duration_weeks": "MISSING"
+          },
+          "requirements": {
+            "osa_diagnosis": "MET",
+            "sleep_study_date": "MET",
+            "ahi_documented": "MET"
+          },
+          "overall": "PENDING_VERIFICATION",
+          "citation_context": {
+            "osa_diagnosis": [
+              "\u27e6OSA\u27e7 confirmed on PSG completed 2026-02-12; AHI 24 is recorded in the report."
+            ],
+            "sleep_study_date": [
+              "OSA confirmed on PSG completed \u27e62026-02-12\u27e7; AHI 24 is recorded in the report."
+            ],
+            "ahi_documented": [
+              "OSA confirmed on PSG completed 2026-02-12; \u27e6AHI 24\u27e7 is recorded in the report."
+            ]
+          }
+        }
+      }
+    ]
+  }
+}

@@ -36,8 +36,8 @@ def _display_path(repo_root: Path, raw_path: str) -> str:
         return resolved.as_posix()
 
 
-def load_rulebook_manifest(path: Path) -> Dict[str, Any]:
-    manifest = _load_yaml(path)
+def load_rulebook_manifest(path: Path, *, data=None) -> Dict[str, Any]:
+    manifest = _load_yaml(path) if data is None else data
     if "stages" not in manifest or "releases" not in manifest:
         raise RulebookError("rulebook manifest must include 'stages' and 'releases'")
     if not isinstance(manifest["stages"], dict):
@@ -79,6 +79,7 @@ def _extract_policy_source_map(policy_sources_data: Dict[str, Any]) -> Dict[str,
 def _load_release_bundle(
     repo_root: Path,
     raw_release: Dict[str, Any],
+    load_yaml=_load_yaml,
 ) -> Tuple[RulebookFileSet, Dict[str, Any], Dict[str, Any], Dict[str, Any]]:
     files = raw_release.get("files") or {}
     if not isinstance(files, dict):
@@ -95,14 +96,28 @@ def _load_release_bundle(
 
     return (
         bundle,
-        _load_yaml(rules_path),
-        _load_yaml(provenance_path),
-        _load_yaml(policy_sources_path),
+        load_yaml(rules_path),
+        load_yaml(provenance_path),
+        load_yaml(policy_sources_path),
     )
 
 
-def get_rulebook_status(repo_root: Path, manifest_path: Path, runtime_files: RulebookFileSet) -> RulebookStatusResponse:
-    manifest = load_rulebook_manifest(manifest_path)
+def get_rulebook_status(
+    repo_root: Path,
+    manifest_path: Path,
+    runtime_files: RulebookFileSet,
+    *,
+    documents=None,
+) -> RulebookStatusResponse:
+    def load_yaml(path):
+        if documents is None:
+            return _load_yaml(path)
+        payload = documents[path.resolve().as_posix()]
+        if isinstance(payload, Exception):
+            raise payload
+        return payload
+
+    manifest = load_rulebook_manifest(manifest_path, data=None if documents is None else load_yaml(manifest_path))
     stages = manifest.get("stages") or {}
     releases_raw = manifest.get("releases") or {}
     validation_errors: list[str] = []
@@ -111,9 +126,9 @@ def get_rulebook_status(repo_root: Path, manifest_path: Path, runtime_files: Rul
         if required_stage not in stages:
             validation_errors.append(f"Missing stage assignment for '{required_stage}'.")
 
-    runtime_rules = _load_yaml(Path(runtime_files.rules_path))
-    runtime_provenance = _load_yaml(Path(runtime_files.provenance_path))
-    runtime_policy_sources = _load_yaml(Path(runtime_files.policy_sources_path))
+    runtime_rules = load_yaml(Path(runtime_files.rules_path))
+    runtime_provenance = load_yaml(Path(runtime_files.provenance_path))
+    runtime_policy_sources = load_yaml(Path(runtime_files.policy_sources_path))
 
     releases: list[RulebookRelease] = []
     active_release_id = stages.get("active")
@@ -124,7 +139,7 @@ def get_rulebook_status(repo_root: Path, manifest_path: Path, runtime_files: Rul
             continue
 
         try:
-            file_set, rules_data, provenance_data, policy_sources_data = _load_release_bundle(repo_root, raw_release)
+            file_set, rules_data, provenance_data, policy_sources_data = _load_release_bundle(repo_root, raw_release, load_yaml)
         except Exception as exc:
             validation_errors.append(f"Release '{release_id}' could not be loaded: {exc}")
             continue

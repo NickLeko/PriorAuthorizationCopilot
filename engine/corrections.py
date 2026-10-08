@@ -220,7 +220,7 @@ def validate_v2_result(result) -> None:
     # Exactly the unchanged evaluator's operators over effective facts.
     facts = facts_for_policy(evaluator_facts(effective), result.policy_version)[0]
     expected_results, reasons = evaluate_requirements(result.policy_version.requirements, facts, evidence_map=effective["evidence"])
-    for expected, actual in zip(expected_results, result.results):
+    for expected, actual in zip(expected_results, result.results, strict=True):
         expected.fact_value = effective["facts"].get(expected.key)
         expected.verification_fingerprint = verification_fingerprint(fact_hash, expected.key)
         validate_attestation(actual.verification, expected.verification_fingerprint, result.request.corrections)
@@ -248,5 +248,3 @@ def validate_v2_result(result) -> None:
     for field in ("met_count", "not_met_count", "not_documented_count", "needs_review_count"):
         if getattr(result.report, field) != summary[field]:
             raise ValueError("Report counts disagree with effective evaluation.")
-    if corrected_keys and result.report.letter_draft:
-        raise ValueError("Letters for corrected evaluations are not yet supported (pass 2b required).")

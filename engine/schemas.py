@@ -704,6 +704,27 @@ class EvaluationResult(EvaluationResultV15):
     uses_reviewer_corrections: bool = Field(default=False, strict=True)
     corrected_requirement_keys: List[str] = Field(default_factory=list)
 
+    @model_validator(mode="before")
+    @classmethod
+    def _consume_derived_citation_context(cls, value):
+        # API/CLI review projections may accompany a canonical record. Validate
+        # and discard the derived display field; never persist or fingerprint it.
+        if isinstance(value, dict) and "citation_context" in value:
+            from .citation_context import citation_context
+
+            try:
+                note = value["request"]["note_text"]
+                expected = {
+                    result["key"]: [citation_context(note, span["start"], span["end"]) for span in result["evidence_spans"]]
+                    for result in value["results"]
+                }
+            except (KeyError, TypeError, ValueError) as exc:
+                raise ValueError("Invalid note/evidence for derived citation context.") from exc
+            if value["citation_context"] != expected:
+                raise ValueError("Derived citation context disagrees with note/evidence.")
+            value = {key: item for key, item in value.items() if key != "citation_context"}
+        return value
+
     @model_validator(mode="after")
     def _v2_consistency(self):
         from .corrections import validate_v2_result

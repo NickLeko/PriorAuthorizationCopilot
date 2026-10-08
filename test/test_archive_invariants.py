@@ -42,6 +42,7 @@ def v15_payload(proposal):
         audit.pop("fact_set_fingerprint")
         audit.pop("uses_reviewer_corrections")
         audit.pop("corrected_requirement_keys")
+    payload.pop("engine_version", None)  # Historical fixtures predate the v2.1 engine stamp.
     payload["schema_version"] = "1.5.0"
     return payload
 

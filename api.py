@@ -5,8 +5,11 @@ import math
 
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
+from pydantic import computed_field
 
 from engine import __version__
+from engine.citation_context import evaluation_citation_context
+from engine.rendering import export_evaluation_payload
 from engine.schemas import (
     DemoCase,
     DriftStatusReport,
@@ -91,9 +94,18 @@ def demo_cases() -> list[DemoCase]:
     return service.list_demo_case_summaries()
 
 
-@app.post("/evaluate", response_model=EvaluationResult, tags=["evaluation"])
-def evaluate(request: PARequest) -> EvaluationResult:
-    return service.evaluate(request)
+class EvaluationReviewResponse(EvaluationResult):
+    """HTTP review projection; canonical stored records remain schema 2.0.0."""
+
+    @computed_field
+    @property
+    def citation_context(self) -> dict[str, list[str]]:
+        return evaluation_citation_context(self)
+
+
+@app.post("/evaluate", response_model=EvaluationReviewResponse, tags=["evaluation"])
+def evaluate(request: PARequest) -> JSONResponse:
+    return JSONResponse(export_evaluation_payload(service.evaluate(request), include_citation_context=True))
 
 
 @app.get("/drift-status", response_model=DriftStatusReport, tags=["governance"])

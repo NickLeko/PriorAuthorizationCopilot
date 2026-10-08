@@ -1,8 +1,8 @@
-# Extraction, correction and verification contract v2.0
+# Extraction, correction and verification contract v2.1
 
 v2.0.0 retains the extractor and deterministic operators. Typed, source-located corrections materialize effective facts over an immutable original proposal; every ordered event is retained and the last event wins. SET_VALUE requires exact quotations of at most 300 characters per span and the submitted note hash; multiple spans are allowed and overlength spans are rejected, never truncated. SET_MISSING records document review and any offending proposal spans. SET_NEEDS_REVIEW and RESTORE_ORIGINAL preserve explicit state/history. Types, units and reviewer-enterable values come from fact contracts; there is no scalar coercion or free-text fact value.
 
-Sleep-study presence means a completed study, excluding scheduled, ordered or pending studies. Corrections do not verify facts: an otherwise passing effective fact set needs HUMAN_VERIFIED for every requirement before READY. See the canonical [correction limits](docs/safety_and_scope.md#correction-limits).
+Sleep-study presence means a completed study, excluding scheduled, ordered, pending or cancelled/canceled studies. Corrections do not verify facts: an otherwise passing effective fact set needs HUMAN_VERIFIED for every requirement before READY. See the canonical [correction limits](docs/safety_and_scope.md#correction-limits).
 
 Automated extraction is a drafting aid, not a decision gate. A requirement's `MET`
 status describes an operator applied to a proposed scalar; it does not establish
@@ -11,11 +11,10 @@ Its claim that a diagnosis returned True only without supported negation was
 contradicted by `Patient does not have low back pain with radiculopathy`.
 v1.5.0 resolves that contradiction by changing what the engine may assert,
 not by making extraction match the old contract. Negation, temporality and
-attribution errors remain. No language patterns were repaired in this release.
+attribution errors remain. v2.1 handles the specific patterns listed below; each failure class remains open.
 
 The normative guarantees are G01–G07 below and the exact examples in the JSON
-block. `TestExtractionContractAlignment` executes them, including the known
-incorrect proposals. These finite examples are not universal language claims;
+block. `TestExtractionContractAlignment` executes correct expectations; remaining known failures are strict xfails. These finite examples are not universal language claims;
 new contract claims must receive executable coverage in that class.
 
 ## Guarantees
@@ -59,18 +58,18 @@ red-flag documentation, mechanical documentation, OSA, date and AHI), integer
 week proposals, or imaging category proposals. Missing values are `null`;
 ambiguity can use the internal review marker. The sleep-date and AHI fields
 do not return parsed dates or numeric AHI values. The examples below specify
-exact behavior, including known errors, rather than promising semantic accuracy
+correct expectations, with known failures explicitly marked, rather than promising semantic accuracy
 for whole phrase families. Optional `procedure` and `status` exercise the service
 with Aetna/outpatient and no human attestations.
 
 ```json
 [
-  {"id":"negation_first","note":"Patient does not have low back pain with radiculopathy. Right L5 distribution: strength 4/5. NSAIDs for 8 weeks with minimal improvement.","expected":{"back_pain_with_radiculopathy":true},"procedure":"MRI_LUMBAR","status":"PENDING_VERIFICATION"},
-  {"id":"negated_strength","note":"Low back pain with radiculopathy. Right L5 distribution: dorsiflexion strength not 4/5. NSAIDs for 8 weeks with minimal improvement.","expected":{"objective_motor_or_reflex_change_in_root_distribution":true},"procedure":"MRI_LUMBAR","status":"PENDING_VERIFICATION"},
-  {"id":"reflex_attribution","note":"Low back pain with radiculopathy. Right L5 distribution: reflexes assessed, pain decreased. NSAIDs for 8 weeks with minimal improvement.","expected":{"objective_motor_or_reflex_change_in_root_distribution":true},"procedure":"MRI_LUMBAR","status":"PENDING_VERIFICATION"},
-  {"id":"resolved_diagnosis","note":"Low back pain with radiculopathy resolved last year. Right L5 distribution: strength 4/5. NSAIDs for 8 weeks with minimal improvement.","expected":{"back_pain_with_radiculopathy":true},"procedure":"MRI_LUMBAR","status":"PENDING_VERIFICATION"},
-  {"id":"unrelated_therapy","note":"Low back pain with radiculopathy. Right L5 distribution: strength 4/5. NSAIDs for 8 weeks for headaches with minimal improvement.","expected":{"cpb_0236_conservative_therapy_weeks":8,"cpb_0236_conservative_therapy_no_improvement":true},"procedure":"MRI_LUMBAR","status":"PENDING_VERIFICATION"},
-  {"id":"borrowed_date","note":"OSA. Visit date 2024-05-18. Sleep study date not recorded. AHI 22.","expected":{"sleep_study_date":true},"procedure":"CPAP_DEVICE","status":"PENDING_VERIFICATION"},
+  {"id":"negation_first","note":"Patient does not have low back pain with radiculopathy. Right L5 distribution: strength 4/5. NSAIDs for 8 weeks with minimal improvement.","expected":{"back_pain_with_radiculopathy":false},"procedure":"MRI_LUMBAR","status":"NOT_READY","known_failure":"negation: unsupported does-not-have scope"},
+  {"id":"negated_strength","note":"Low back pain with radiculopathy. Right L5 distribution: dorsiflexion strength not 4/5. NSAIDs for 8 weeks with minimal improvement.","expected":{"objective_motor_or_reflex_change_in_root_distribution":false},"procedure":"MRI_LUMBAR","status":"NOT_READY","known_failure":"negation: score is explicitly negated"},
+  {"id":"reflex_attribution","note":"Low back pain with radiculopathy. Right L5 distribution: reflexes assessed, pain decreased. NSAIDs for 8 weeks with minimal improvement.","expected":{"objective_motor_or_reflex_change_in_root_distribution":null},"procedure":"MRI_LUMBAR","status":"CANNOT_DETERMINE","known_failure":"attribution: decreased pain borrowed as reflex finding"},
+  {"id":"resolved_diagnosis","note":"Low back pain with radiculopathy resolved last year. Right L5 distribution: strength 4/5. NSAIDs for 8 weeks with minimal improvement.","expected":{"back_pain_with_radiculopathy":"__REVIEW_REQUIRED__"},"procedure":"MRI_LUMBAR","status":"NEEDS_REVIEW"},
+  {"id":"unrelated_therapy","note":"Low back pain with radiculopathy. Right L5 distribution: strength 4/5. NSAIDs for 8 weeks for headaches with minimal improvement.","expected":{"cpb_0236_conservative_therapy_weeks":null,"cpb_0236_conservative_therapy_no_improvement":null},"procedure":"MRI_LUMBAR","status":"CANNOT_DETERMINE","known_failure":"attribution: headache therapy borrowed for lumbar episode"},
+  {"id":"borrowed_date","note":"OSA. Visit date 2024-05-18. Sleep study date not recorded. AHI 22.","expected":{"sleep_study_date":null},"procedure":"CPAP_DEVICE","status":"CANNOT_DETERMINE","known_failure":"date association: visit date borrowed for undated study"},
   {"id":"unicode","note":"İ. OSA. Sleep study completed 2024-05-18. AHI 22.","expected":{"osa_diagnosis":true,"sleep_study_date":true,"ahi_documented":true},"procedure":"CPAP_DEVICE","status":"PENDING_VERIFICATION"},
   {"id":"therapy_weeks","note":"Completed PT for 8 weeks.","expected":{"conservative_therapy_weeks":8,"symptom_duration_weeks":null}},
   {"id":"therapy_negation_supported","note":"Patient denies completing PT x 8 weeks.","expected":{"conservative_therapy_weeks":null}},
@@ -110,3 +109,32 @@ policies. v1.5.0 returns `PENDING_VERIFICATION` without attestations; the date
 association itself remains incorrect. Human reviewers must decline unsupported
 proposals. This API records attestations; it cannot prove a person read the note.
 Use synthetic notes only. There is no production clinical-language guarantee.
+
+
+## v2.1 patterns handled; failure classes remain open
+
+The following patterns are handled; the class remains open in every row:
+
+| Pattern covered by regressions | Current behavior | Open class |
+| --- | --- | --- |
+| Therapy nonresponse with unqualified but/however/though/although/yet/whereas response, including semicolon contrast | Response requires review; ambiguous linkage also reviews duration. An explicitly initial response in a single course preserves its documented duration. | Response/attribute association |
+| OSA with ruled out anywhere in its sentence, including passive tense and intervening adverbs | Diagnosis is missing. A completed PSG in that sentence is still a documented study, not the diagnosis being excluded. | Negation |
+| Therapy/study ordered, prescribed, recommended, not yet started, has not started, not completed, never completed, cancelled/canceled anywhere in its sentence | Therapy duration/response or study presence is missing. Other qualifying findings with these exclusions require review. | Planned/incomplete events |
+| Resolved, history of, prior episode, previous episode in the candidate's sentence | Qualifying findings and durations require review. | Temporality |
+| Numeric AHI with N/A or unknown in a different sentence | AHI presence remains captured; missingness in its own sentence refuses. | Missingness scope |
+
+Safety triggers use real sentence boundaries: period, question mark, exclamation
+mark, or newline; semicolons and decimal points do not end that context. Narrow
+finding clauses retain their existing attribute scope. Review surfaces derive
+full containing sentences with ⟦span⟧ markers without changing facts, evidence,
+fingerprints or the record schema (2.0.0).
+
+Remaining strict xfails assert correct expectations for `negation_first`,
+`negated_strength`, `reflex_attribution`, `unrelated_therapy`, `borrowed_date`,
+and resolved historical episodes across sentences. The 20 frozen independent
+inputs are now named regressions, with additional correct-value strict xfails
+for case 12 (cross-sentence temporality), case 17's study citation, case 18
+(intact reflexes), and case 2's secondary generic analgesic duration. These
+inputs are no longer a held-out measure. The `resolved_diagnosis` example passes;
+that example does not establish correctness for the temporality class. The
+human gate does not establish extractor correctness.

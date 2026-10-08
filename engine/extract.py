@@ -32,7 +32,13 @@ CPB_0236_RESPONSE_RE = re.compile(
     r"\b(?:substantial|significant|meaningful|good)\s+(?:improvement|relief|response)\b"
     r"|\bsymptoms? resolved\b"
 )
-THERAPY_CLAUSE_BOUNDARY_RE = re.compile(r"\s*,?\s*\b(?:whereas|while|however|but|although|yet|in contrast)\b\s*[:,]?\s*")
+THERAPY_CLAUSE_BOUNDARY_RE = re.compile(r"\s*(?:;\s*|,?\s*\b(?:whereas|while|however|but|though|although|yet|in contrast)\b\s*[:,]?\s*)")
+EXCLUSION_TRIGGER = (
+    r"\b(?:ruled\s+out|ordered|prescribed|recommended|not\s+yet\s+started|"
+    r"has\s+not\s+started|not\s+completed|never\s+completed|cancelled|canceled)\b"
+)
+THERAPY_EXCLUSION_TRIGGER = EXCLUSION_TRIGGER.replace("ruled\\s+out|", "")
+REVIEW_TRIGGER = r"\b(?:resolved|history\s+of|prior\s+episode|previous\s+episode)\b"
 SYMPTOM_CONTEXT = r"(?:symptoms?|(?:low\s+)?back pain|neck pain|cervical pain|knee pain|radicular pain|radiculopathy|pain)"
 SYMPTOM_DURATION_AFTER_RE = re.compile(rf"\b{SYMPTOM_CONTEXT}\b[^.!?;\n]{{0,60}}?\b(?P<value>\d+)\s*(?P<unit>week|weeks|month|months)\b")
 SYMPTOM_DURATION_BEFORE_RE = re.compile(rf"\b(?P<value>\d+)\s*(?P<unit>week|weeks|month|months)\b\s+(?:of\s+)?\b{SYMPTOM_CONTEXT}\b")
@@ -133,6 +139,7 @@ class _TherapyCourseCandidate:
     start: int
     end: int
     ambiguous_linkage: bool = False
+    response_only_review: bool = False
 
 
 def _add_span(evidence: Dict[str, List[Dict[str, Any]]], key: str, start: int, end: int, text: str) -> None:
@@ -183,10 +190,13 @@ def _mention_is_in_questioned_sentence(text: str, end: int) -> bool:
     return bool(boundary and boundary.group(0) == "?")
 
 
-def _sentence_spans(text: str) -> List[Tuple[int, int]]:
+def _sentence_spans(text: str, *, therapy: bool = False) -> List[Tuple[int, int]]:
     spans: List[Tuple[int, int]] = []
     start = 0
-    for boundary in re.finditer(r"[.!?;\n]+", text):
+    # Keep legacy finding clauses narrow to avoid borrowing sensory attributes.
+    # Therapy safety checks need the whole sentence, including semicolon contrast.
+    boundaries = r"(?<!\d)[.!?]|[.!?](?!\d)|\n" if therapy else r"[.!?;\n]+"
+    for boundary in re.finditer(boundaries, text):
         end = boundary.start()
         if text[start:end].strip():
             left_trim = len(text[start:end]) - len(text[start:end].lstrip())
@@ -216,7 +226,37 @@ def _therapy_clause_spans(sentence: str) -> List[Tuple[int, int]]:
     return spans
 
 
+def _context_trigger(text: str, start: int, end: int, pattern: str, *, scope: str = "sentence"):
+    """Match a safety trigger only in the cited mention's own sentence.
+
+    Decimal points inside numeric findings are not sentence boundaries.
+    Use one helper for the v2.1 safety exclusions and AHI missingness scope.
+    """
+    boundaries = list(re.finditer(r"(?<!\d)[.!?]|[.!?](?!\d)|\n", text))
+    left = max((match.end() for match in boundaries if match.end() <= start), default=0)
+    right = min((match.start() for match in boundaries if match.start() >= end), default=len(text))
+    context = text[end:right] if scope == "after" else text[left:right]
+    return re.search(pattern, context)
+
+
+def _unqualified_contrast_response(text: str) -> bool:
+    for marker in re.finditer(r";|\b(?:but|however|though|although|yet|whereas)\b", text):
+        tail = text[marker.end() :]
+        if _context_trigger(
+            text, marker.start(), marker.end(), CPB_0236_NONRESPONSE_RE.pattern + "|" + CPB_0236_RESPONSE_RE.pattern, scope="after"
+        ) and not CPB_0236_THERAPY_CONTEXT_RE.search(tail):
+            return True
+    return False
+
+
 def _therapy_duration_is_disqualified(text: str, match: re.Match[str]) -> bool:
+    if _context_trigger(
+        text,
+        match.start(),
+        match.end(),
+        EXCLUSION_TRIGGER,
+    ):
+        return True
     before = _bounded_context_before(text, match.start())
     matched = text[match.start() : match.end()]
     after = _bounded_context_after(text, match.end())
@@ -230,10 +270,12 @@ def _therapy_duration_is_disqualified(text: str, match: re.Match[str]) -> bool:
     return False
 
 
-def _osa_mention_is_negated(text: str, match: re.Match[str]) -> bool:
+def _osa_mention_is_negated(text: str, match: re.Match[str], *, source_text: str | None = None, offset: int = 0) -> bool:
     before = _bounded_context_before(text, match.start(), max_chars=48)
     after = _bounded_context_after(text, match.end(), max_chars=32)
 
+    if _context_trigger(source_text or text, offset + match.start(), offset + match.end(), r"\bruled\s+out\b"):
+        return True
     return bool(
         re.search(
             r"\b(?:"
@@ -265,7 +307,11 @@ def _finding_is_negated(text: str, match: re.Match[str]) -> bool:
     )
 
 
-def _finding_is_uncertain(text: str, match: re.Match[str]) -> bool:
+def _finding_is_uncertain(
+    text: str, match: re.Match[str], *, source_text: str | None = None, offset: int = 0, exclusion: str = EXCLUSION_TRIGGER
+) -> bool:
+    if _context_trigger(source_text or text, offset + match.start(), offset + match.end(), REVIEW_TRIGGER + "|" + exclusion):
+        return True
     before = text[max(0, match.start() - 80) : match.start()]
     after = text[match.end() : min(len(text), match.end() + 56)]
     return bool(UNCERTAINTY_BEFORE_RE.search(before) or UNCERTAINTY_AFTER_RE.match(after) or after.lstrip().startswith("?"))
@@ -338,9 +384,11 @@ def _dedup_matches(matches: List[re.Match[str]]) -> List[re.Match[str]]:
 def _collect_cpb_therapy_candidates(text: str) -> List[_TherapyCourseCandidate]:
     candidates: List[_TherapyCourseCandidate] = []
 
-    for sentence_start, sentence_end in _sentence_spans(text):
+    for sentence_start, sentence_end in _sentence_spans(text, therapy=True):
         sentence = text[sentence_start:sentence_end]
         sentence_is_questioned = text[sentence_end : sentence_end + 1] == "?"
+        if _context_trigger(text, sentence_start, sentence_end, EXCLUSION_TRIGGER):
+            continue
         for clause_start, clause_end in _therapy_clause_spans(sentence):
             clause = sentence[clause_start:clause_end]
             absolute_start = sentence_start + clause_start
@@ -375,12 +423,12 @@ def _collect_cpb_therapy_candidates(text: str) -> List[_TherapyCourseCandidate]:
             response_mentions: List[Tuple[bool | str, re.Match[str]]] = []
             for match in CPB_0236_NONRESPONSE_RE.finditer(clause):
                 value: bool | str = True
-                if _finding_is_uncertain(clause, match):
+                if _finding_is_uncertain(clause, match, source_text=text, offset=absolute_start):
                     value = REVIEW_REQUIRED_FACT
                 response_mentions.append((value, match))
             for match in CPB_0236_RESPONSE_RE.finditer(clause):
                 value = False
-                if _finding_is_uncertain(clause, match):
+                if _finding_is_uncertain(clause, match, source_text=text, offset=absolute_start):
                     value = REVIEW_REQUIRED_FACT
                 response_mentions.append((value, match))
 
@@ -390,6 +438,13 @@ def _collect_cpb_therapy_candidates(text: str) -> List[_TherapyCourseCandidate]:
                 response_value = REVIEW_REQUIRED_FACT
             elif response_values:
                 response_value = next(iter(response_values))
+
+            contrast_ambiguous = _unqualified_contrast_response(sentence)
+            # An explicitly initial response can change without disputing the
+            # duration of the one documented course (independent case 2).
+            response_only_review = contrast_ambiguous and bool(re.search(r"\binitially\b", clause))
+            if contrast_ambiguous and response_value is not None:
+                response_value = REVIEW_REQUIRED_FACT
 
             duration_values = {int(match.group("value")) for match in duration_matches}
             duration_value = next(iter(duration_values)) if len(duration_values) == 1 else None
@@ -404,11 +459,21 @@ def _collect_cpb_therapy_candidates(text: str) -> List[_TherapyCourseCandidate]:
             )
             linkage_ambiguous = bool(
                 subject_ambiguous
+                or contrast_ambiguous
                 or sentence_is_questioned
                 or len(duration_values) > 1
                 or REVIEW_REQUIRED_FACT in response_values
                 or len(response_values) > 1
                 or (len(set(modality_keys)) > 1 and not coordinated_group)
+            )
+            response_only_review = bool(
+                response_only_review
+                and not subject_ambiguous
+                and not sentence_is_questioned
+                and len(duration_values) == 1
+                and len(set(modality_keys)) == 1
+                and REVIEW_REQUIRED_FACT not in response_values
+                and len(response_values) <= 1
             )
 
             if duration_value is None and response_value is None and not linkage_ambiguous:
@@ -421,6 +486,7 @@ def _collect_cpb_therapy_candidates(text: str) -> List[_TherapyCourseCandidate]:
                     start=absolute_start,
                     end=absolute_end,
                     ambiguous_linkage=linkage_ambiguous,
+                    response_only_review=response_only_review,
                 )
             )
 
@@ -433,6 +499,8 @@ def _resolve_cpb_therapy_candidates(
     if not candidates:
         return None, None
     if any(candidate.ambiguous_linkage for candidate in candidates):
+        if len(candidates) == 1 and candidates[0].response_only_review and candidates[0].duration_weeks is not None:
+            return candidates[0].duration_weeks, REVIEW_REQUIRED_FACT
         return REVIEW_REQUIRED_FACT, REVIEW_REQUIRED_FACT
 
     paired = [candidate for candidate in candidates if candidate.duration_weeks is not None and candidate.no_improvement is not None]
@@ -566,7 +634,7 @@ def extract_facts(note_text: str) -> Tuple[Dict[str, Any], Dict[str, List[Dict[s
             if _therapy_duration_is_disqualified(t, candidate) or _match_is_nonpatient_context(t, candidate):
                 continue
             value: int | str = int(candidate.group("value"))
-            if _mention_is_in_questioned_sentence(t, candidate.end()):
+            if _finding_is_uncertain(t, candidate) or _mention_is_in_questioned_sentence(t, candidate.end()):
                 value = REVIEW_REQUIRED_FACT
             generic_duration_candidates.append((value, candidate))
 
@@ -632,7 +700,7 @@ def extract_facts(note_text: str) -> Tuple[Dict[str, Any], Dict[str, List[Dict[s
 
         back_values: set[bool | str] = set()
         for match in back_pain_matches:
-            if _finding_is_uncertain(sentence, match):
+            if _finding_is_uncertain(sentence, match, source_text=t, offset=sentence_start):
                 back_values.add(REVIEW_REQUIRED_FACT)
             else:
                 back_values.add(not _finding_is_negated(sentence, match))
@@ -640,7 +708,7 @@ def extract_facts(note_text: str) -> Tuple[Dict[str, Any], Dict[str, List[Dict[s
         radiculopathy_values: set[bool | str] = set()
         for match in radiculopathy_matches:
             mention_is_questioned = t[sentence_end : sentence_end + 1] == "?"
-            if _finding_is_uncertain(sentence, match) or mention_is_questioned:
+            if _finding_is_uncertain(sentence, match, source_text=t, offset=sentence_start) or mention_is_questioned:
                 radiculopathy_values.add(REVIEW_REQUIRED_FACT)
             else:
                 radiculopathy_values.add(not _finding_is_negated(sentence, match))
@@ -686,21 +754,21 @@ def extract_facts(note_text: str) -> Tuple[Dict[str, Any], Dict[str, List[Dict[s
         for match in strength_matches:
             if _mention_is_nonpatient_context(sentence, match.start(), match.end()):
                 continue
-            if _finding_is_uncertain(sentence, match) or t[sentence_end : sentence_end + 1] == "?":
+            if _finding_is_uncertain(sentence, match, source_text=t, offset=sentence_start) or t[sentence_end : sentence_end + 1] == "?":
                 finding_values.append(REVIEW_REQUIRED_FACT)
             else:
                 finding_values.append(float(match.group("score")) < 5)
         for match in abnormal_reflex_matches + objective_weakness_matches:
             if _mention_is_nonpatient_context(sentence, match.start(), match.end()):
                 continue
-            if _finding_is_uncertain(sentence, match) or t[sentence_end : sentence_end + 1] == "?":
+            if _finding_is_uncertain(sentence, match, source_text=t, offset=sentence_start) or t[sentence_end : sentence_end + 1] == "?":
                 finding_values.append(REVIEW_REQUIRED_FACT)
             else:
                 finding_values.append(not _finding_is_negated(sentence, match))
         for match in normal_reflex_matches:
             if _mention_is_nonpatient_context(sentence, match.start(), match.end()):
                 continue
-            if _finding_is_uncertain(sentence, match) or t[sentence_end : sentence_end + 1] == "?":
+            if _finding_is_uncertain(sentence, match, source_text=t, offset=sentence_start) or t[sentence_end : sentence_end + 1] == "?":
                 finding_values.append(REVIEW_REQUIRED_FACT)
             else:
                 finding_values.append(False)
@@ -738,7 +806,10 @@ def extract_facts(note_text: str) -> Tuple[Dict[str, Any], Dict[str, List[Dict[s
                 continue
             value = int(candidate.group("value"))
             weeks: int | str = value * 4 if candidate.group("unit").startswith("month") else value
-            if t[sentence_end : sentence_end + 1] == "?":
+            if (
+                _finding_is_uncertain(sentence, candidate, source_text=t, offset=sentence_start)
+                or t[sentence_end : sentence_end + 1] == "?"
+            ):
                 weeks = REVIEW_REQUIRED_FACT
             symptom_duration_matches.append((weeks, value_start, value_end))
 
@@ -796,7 +867,7 @@ def extract_facts(note_text: str) -> Tuple[Dict[str, Any], Dict[str, List[Dict[s
             continue
         if denial_match is not None and positive_match is not None:
             neuro_candidates.append((REVIEW_REQUIRED_FACT, sentence_start, sentence_end))
-        elif _finding_is_uncertain(sentence, matched) or t[sentence_end : sentence_end + 1] == "?":
+        elif _finding_is_uncertain(sentence, matched, source_text=t, offset=sentence_start) or t[sentence_end : sentence_end + 1] == "?":
             neuro_candidates.append((REVIEW_REQUIRED_FACT, sentence_start, sentence_end))
         elif positive_match is not None:
             neuro_candidates.append((True, sentence_start, sentence_end))
@@ -852,7 +923,9 @@ def extract_facts(note_text: str) -> Tuple[Dict[str, Any], Dict[str, List[Dict[s
         result_match = m_no_img or m_unclear or m_abn or m_norm or m_negated_abn or result_language
         if result_match is None:
             continue
-        if (_finding_is_uncertain(sentence, result_match) or t[sentence_end : sentence_end + 1] == "?") and m_unclear is None:
+        if (
+            _finding_is_uncertain(sentence, result_match, source_text=t, offset=sentence_start) or t[sentence_end : sentence_end + 1] == "?"
+        ) and m_unclear is None:
             category = REVIEW_REQUIRED_FACT
         elif m_no_img:
             category = "none"
@@ -916,7 +989,7 @@ def extract_facts(note_text: str) -> Tuple[Dict[str, Any], Dict[str, List[Dict[s
             continue
         if denial_match is not None and positive_match is not None:
             value = REVIEW_REQUIRED_FACT
-        elif _finding_is_uncertain(sentence, matched) or t[sentence_end : sentence_end + 1] == "?":
+        elif _finding_is_uncertain(sentence, matched, source_text=t, offset=sentence_start) or t[sentence_end : sentence_end + 1] == "?":
             value: bool | str = REVIEW_REQUIRED_FACT
         else:
             value = positive_match is not None and denial_match is None
@@ -938,9 +1011,12 @@ def extract_facts(note_text: str) -> Tuple[Dict[str, Any], Dict[str, List[Dict[s
         for candidate in re.finditer(r"\b(obstructive sleep apnea|osa)\b", sentence):
             if _mention_is_nonpatient_context(sentence, candidate.start(), candidate.end()):
                 continue
-            if _finding_is_uncertain(sentence, candidate) or t[sentence_end : sentence_end + 1] == "?":
+            if (
+                _finding_is_uncertain(sentence, candidate, source_text=t, offset=sentence_start, exclusion=THERAPY_EXCLUSION_TRIGGER)
+                or t[sentence_end : sentence_end + 1] == "?"
+            ):
                 value = REVIEW_REQUIRED_FACT
-            elif _osa_mention_is_negated(sentence, candidate):
+            elif _osa_mention_is_negated(sentence, candidate, source_text=t, offset=sentence_start):
                 value = False
             else:
                 value = True
@@ -974,10 +1050,16 @@ def extract_facts(note_text: str) -> Tuple[Dict[str, Any], Dict[str, List[Dict[s
 
         if (
             SLEEP_CTX.search(window)
+            and not _context_trigger(t, m_date.start(), m_date.end(), THERAPY_EXCLUSION_TRIGGER)
             and not _match_is_nonpatient_context(t, m_date)
             and not _has_pattern(THERAPY_FUTURE_LOOKBACK_PATTERNS + THERAPY_FUTURE_AFTER_PATTERNS, window)
         ):
-            sleep_study_date = REVIEW_REQUIRED_FACT if _mention_is_in_questioned_sentence(t, m_date.end()) else True
+            sleep_study_date = (
+                REVIEW_REQUIRED_FACT
+                if _finding_is_uncertain(t, m_date, exclusion=THERAPY_EXCLUSION_TRIGGER)
+                or _mention_is_in_questioned_sentence(t, m_date.end())
+                else True
+            )
             _add_span(evidence, "sleep_study_date", m_date.start(), m_date.end(), raw[m_date.start() : m_date.end()])
             break
 
@@ -986,7 +1068,13 @@ def extract_facts(note_text: str) -> Tuple[Dict[str, Any], Dict[str, List[Dict[s
     # ----------------------------
     ahi_doc: Optional[bool] | str = None
 
-    m_ahi_missing = re.search(r"\b(ahi|rdi)\b.*\b(not documented|not stated|not available|unknown|n/?a|missing)\b", t)
+    m_ahi_missing = None
+    missing_pattern = r".*\b(not documented|not stated|not available|unknown|n/?a|missing)\b"
+    for mention in re.finditer(r"\b(ahi|rdi)\b", t):
+        trigger = _context_trigger(t, mention.start(), mention.end(), missing_pattern, scope="after")
+        if trigger is not None:
+            m_ahi_missing = re.compile(r"\b(ahi|rdi)\b" + missing_pattern).match(t, mention.start(), mention.end() + trigger.end())
+            break
     if m_ahi_missing is not None and _match_is_nonpatient_context(t, m_ahi_missing):
         m_ahi_missing = None
     if m_ahi_missing:

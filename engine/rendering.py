@@ -4,6 +4,7 @@ import json
 from pathlib import Path
 from typing import Any, Dict, Optional
 
+from .citation_context import evaluation_citation_context
 from .schemas import DriftStatusReport, EvaluationResult, RulebookDiffResponse, RulebookStatusResponse
 
 
@@ -11,8 +12,12 @@ def export_evaluation_payload(
     evaluation: EvaluationResult,
     letter_text: Optional[str] = None,
     letter_meta: Optional[Dict[str, Any]] = None,
+    *,
+    include_citation_context: bool = False,
 ) -> Dict[str, Any]:
     payload = evaluation.model_dump(mode="json")
+    if include_citation_context:
+        payload["citation_context"] = evaluation_citation_context(evaluation)
     if letter_text is not None or letter_meta is not None:
         payload["letter"] = {
             "text": letter_text or "",
@@ -60,8 +65,10 @@ def render_cli_evaluation(evaluation: EvaluationResult) -> str:
         lines.extend([f"- {warning}" for warning in evaluation.warnings])
 
     lines.extend(["", "Requirement results:"])
+    contexts = evaluation_citation_context(evaluation)
     for result in evaluation.results:
         lines.append(f"- {result.label}: {result.status} | {result.reason} | verification={result.verification.state}")
+        lines.extend(f"  Citation context: {context}" for context in contexts[result.key])
         if result.verification.state == "HUMAN_VERIFIED":
             lines.append(f"  Verified by {result.verification.reviewer} at {result.verification.verified_at.isoformat()}")
 

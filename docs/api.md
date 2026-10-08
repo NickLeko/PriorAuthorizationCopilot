@@ -222,3 +222,21 @@ The API is intentionally conservative:
 - API evaluations embed `policy_version` in the result and audit trace but are not automatically persisted. The opt-in CLI SQLite archive retains decisions, full requests, captured evidence, and verification records; see [policy replay](policy_replay.md). It is not an authenticated, encrypted, or production patient-record service.
 - There is no authentication layer.
 - There is no autonomous action endpoint.
+
+
+### Derived citation context (v2.1)
+
+`POST /evaluate`, CLI `evaluate --json` / `decision-show` / `export-report`, and
+Streamlit JSON downloads include
+`citation_context`, mapping each requirement key to the full sentence(s)
+containing every effective cited span, with `⟦…⟧` marking the span. The human CLI
+prints these contexts, and Streamlit shows them for original/effective proposals,
+correction source selection and verification. Derivation uses character offsets
+in the submitted note; decimal points inside numbers are not boundaries.
+
+This display projection does not alter evidence spans, extracted/effective facts,
+original snapshots or fingerprints. Canonical archive records and generated acceptance fixtures
+retain schema `2.0.0` and omit the derived field. Review/report exports carry the
+derived field as a surface projection. The canonical result reader can
+consume a review projection: it verifies the context against note/evidence and
+then discards it. `engine_version` is stamped `2.1.0`.

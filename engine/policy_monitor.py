@@ -49,7 +49,7 @@ def _safe_mkdir(p: Path) -> None:
     p.mkdir(parents=True, exist_ok=True)
 
 
-def load_policy_sources(path: Path = DEFAULT_SOURCES_YAML) -> List[PolicySource]:
+def load_policy_sources(path: Path = DEFAULT_SOURCES_YAML, *, data: dict | None = None) -> List[PolicySource]:
     if not path.exists():
         raise FileNotFoundError(f"Missing policy sources registry: {path.as_posix()}")
 
@@ -58,7 +58,8 @@ def load_policy_sources(path: Path = DEFAULT_SOURCES_YAML) -> List[PolicySource]
     except Exception as e:
         raise RuntimeError("PyYAML is required to load rules/policy_sources.yaml. Install pyyaml or vendor a minimal YAML loader.") from e
 
-    data = yaml.safe_load(path.read_text(encoding="utf-8"))
+    if data is None:
+        data = yaml.safe_load(path.read_text(encoding="utf-8"))
     if not isinstance(data, dict) or "sources" not in data:
         raise ValueError("policy_sources.yaml must be a mapping with a top-level 'sources' list")
 
