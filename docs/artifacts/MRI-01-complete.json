@@ -205,7 +205,7 @@
     "symptom_duration_weeks": "CAPTURED"
   },
   "contract_version": "6779fd812df9d1fa44d8c17af56bff917d91c0395f00fea78846b643bcdaf74c",
-  "engine_version": "2.1.1",
+  "engine_version": "2.1.2",
   "evidence_map": {
     "back_pain_with_radiculopathy": [
       {

@@ -619,7 +619,7 @@ class EvaluationResultV15(BaseModel):
         required_keys = [item["key"] for item in self.policy_version.requirements]
         if len(keys) != len(set(keys)) or set(keys) != set(required_keys):
             raise ValueError("Requirement results must cover the policy requirement set exactly.")
-        if self.report.results != self.results:
+        if [result.model_dump() for result in self.report.results] != [result.model_dump() for result in self.results]:
             raise ValueError("Report requirement results disagree with top-level results.")
         if self.overall_status == "READY" and (
             not self.results or any(result.status != "MET" or result.verification.state != "HUMAN_VERIFIED" for result in self.results)
@@ -635,14 +635,17 @@ class EvaluationResultV15(BaseModel):
 
         verifications = {result.key: result.verification for result in self.results}
         if set(self.request.fact_verifications) - set(keys) or any(
-            self.request.fact_verifications.get(key, FactVerification()) != verification for key, verification in verifications.items()
+            self.request.fact_verifications.get(key, FactVerification()).model_dump() != verification.model_dump()
+            for key, verification in verifications.items()
         ):
             raise ValueError("Request verifications disagree with requirement results.")
         report_audit = type(self.audit_trail).model_validate(self.report.audit_trail)
         for audit in (self.audit_trail, report_audit):
             if (audit.overall_status, audit.submission_readiness) != (self.overall_status, self.submission_readiness):
                 raise ValueError("Audit status/readiness disagree with top-level result.")
-            if audit.fact_verifications != verifications or set(audit.requirements_checked) != set(keys):
+            if {key: item.model_dump() for key, item in audit.fact_verifications.items()} != {
+                key: item.model_dump() for key, item in verifications.items()
+            } or set(audit.requirements_checked) != set(keys):
                 raise ValueError("Audit requirements/verifications disagree with top-level results.")
             if audit.policy_trust_level != self.policy_trust_level:
                 raise ValueError("Audit policy trust disagrees with top-level result.")

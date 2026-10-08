@@ -1,26 +1,50 @@
 from __future__ import annotations
 
+import ast
 import json
 from datetime import datetime, timezone
 from pathlib import Path
 
 import streamlit as st
 
-from engine import __version__
-from engine.citation_context import citation_context
-from engine.config import load_app_config
-from engine.corrections import note_hash
-from engine.demo_cases import expected_overall_status_for_demo_case, featured_demo_cases
-from engine.fact_contracts import get_fact_contract
-from engine.rendering import export_evaluation_payload
-from engine.schemas import REVIEW_REQUIRED_FACT, EvaluationResult, PARequest
-from engine.service import ReadinessService, ServiceError
-from engine.test_suites import run_cases, summarize_safety_metrics
+import engine
 
 BASE_DIR = Path(__file__).resolve().parent
 
-
 st.set_page_config(page_title="PA Readiness Copilot", layout="wide")
+
+
+def read_engine_version() -> str:
+    """Read the on-disk release marker without executing or importing it."""
+    source = ast.parse((BASE_DIR / "engine" / "__init__.py").read_text(encoding="utf-8"))
+    for node in source.body:
+        if isinstance(node, ast.Assign) and any(isinstance(target, ast.Name) and target.id == "__version__" for target in node.targets):
+            version = ast.literal_eval(node.value)
+            if isinstance(version, str):
+                return version
+    raise ValueError("Missing engine version")
+
+
+try:
+    disk_engine_version = read_engine_version()
+except (OSError, SyntaxError, ValueError):
+    st.error("Unable to verify the app code version; the server needs a restart")
+    st.stop()
+if disk_engine_version != engine.__version__:
+    st.error("App code was updated; the server needs a restart")
+    st.stop()
+
+# Check the release marker before importing engine submodules or creating services.
+from engine import __version__  # noqa: E402
+from engine.citation_context import citation_context  # noqa: E402
+from engine.config import load_app_config  # noqa: E402
+from engine.corrections import note_hash  # noqa: E402
+from engine.demo_cases import expected_overall_status_for_demo_case, featured_demo_cases  # noqa: E402
+from engine.fact_contracts import get_fact_contract  # noqa: E402
+from engine.rendering import export_evaluation_payload  # noqa: E402
+from engine.schemas import REVIEW_REQUIRED_FACT, EvaluationResult, PARequest  # noqa: E402
+from engine.service import ReadinessService, ServiceError  # noqa: E402
+from engine.test_suites import run_cases, summarize_safety_metrics  # noqa: E402
 
 st.markdown(
     """

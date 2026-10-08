@@ -207,11 +207,11 @@ def validate_v2_result(result) -> None:
         raise ValueError("Audit original proposal disagrees with immutable snapshot.")
     if canonical_json(audit.effective_facts) != canonical_json(effective["facts"] if corrected_keys else None):
         raise ValueError("Audit effective facts/evidence disagree.")
-    if audit.evidence_map != result.evidence_map:
+    if {key: [span.model_dump() for span in spans] for key, spans in audit.evidence_map.items()} != evidence:
         raise ValueError("Audit effective facts/evidence disagree.")
     if result.report.audit_trail != audit.model_dump(mode="json"):
         raise ValueError("Report audit copy disagrees.")
-    if result.policy_version != audit.policy_version:
+    if result.policy_version.model_dump() != audit.policy_version.model_dump():
         raise ValueError("Decision and audit policy versions disagree.")
     if (result.request.payer, result.request.procedure_code) != (result.policy_version.payer, result.policy_version.procedure_code):
         raise ValueError("Decision and policy scope disagree.")
@@ -225,15 +225,17 @@ def validate_v2_result(result) -> None:
         expected.verification_fingerprint = verification_fingerprint(fact_hash, expected.key)
         validate_attestation(actual.verification, expected.verification_fingerprint, result.request.corrections)
         expected.verification = actual.verification
-        if expected.model_dump_json() != actual.model_dump_json():
+        if expected.model_dump() != actual.model_dump():
             raise ValueError("Requirement result does not match evaluation of effective facts.")
     if result.rule_reasons != reasons or result.report.rule_reasons != reasons:
         raise ValueError("Rule reasons do not match effective evaluation.")
-    if result.report.results != result.results or any(
-        a.model_dump_json() != b.model_dump_json() for a, b in zip(result.report.results, result.results)
-    ):
+    if [item.model_dump() for item in result.report.results] != [item.model_dump() for item in result.results]:
         raise ValueError("Report requirement copies disagree.")
-    if audit.metrics != result.metrics or audit.blocking_issues != result.blockers or audit.evaluation_warnings != result.warnings:
+    if (
+        audit.metrics.model_dump() != result.metrics.model_dump()
+        or audit.blocking_issues.model_dump() != result.blockers.model_dump()
+        or audit.evaluation_warnings != result.warnings
+    ):
         raise ValueError("Audit metrics/blockers/warnings disagree.")
     overall = compute_overall_status(expected_results)
     if overall["overall_status"] != result.overall_status:
@@ -241,7 +243,8 @@ def validate_v2_result(result) -> None:
     summary = summarize_results(expected_results)
     from .service import _compute_metrics
 
-    if result.metrics != _compute_metrics(summary):
+    # In-place host updates can leave same-named models from different loads.
+    if result.metrics.model_dump() != _compute_metrics(summary).model_dump():
         raise ValueError("Metrics disagree with validated requirement results.")
     if result.supported_procedure.policy_trust_level != result.policy_trust_level:
         raise ValueError("Supported-procedure policy trust disagrees with decision trust.")
