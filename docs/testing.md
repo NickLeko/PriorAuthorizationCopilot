@@ -90,6 +90,40 @@ PY
 
 Ordinary generator module commands use the real clock and describe current governance state; they are not a way to refresh a monitored source.
 
+## Manual release step (owner)
+
+CI tests the code, not the running deployment. After every release tag, the
+hosting owner must complete these checks before calling the live release verified:
+
+1. In the Streamlit Community Cloud **My apps** dashboard, inspect the app's
+   repository/branch/entry-file label and deployment configuration. Confirm
+   repository `NickLeko/PriorAuthorizationCopilot`, branch `main`, and main file
+   `app.py` at the repository root. Check **Manage app** logs for the source
+   revision; it must include the tagged main commit.
+2. Redeploy from current `main` after every tag, then reboot the deployed app.
+   A reboot alone is not evidence that the source revision changed. If the
+   existing app does not fetch current main, use **Create app → Yup, I have an
+   app** to deploy anew with the repository, branch and file above. Verify the
+   new deployment before replacing the existing demo link. See the official
+   [deployment instructions](https://docs.streamlit.io/deploy/streamlit-community-cloud/deploy-your-app/deploy)
+   and [hosting controls and logs](https://docs.streamlit.io/deploy/streamlit-community-cloud/manage-your-app).
+3. Open a fresh browser session, acknowledge any displayed governance gate, and
+   load `MRI-01-complete`. It must return `PENDING_VERIFICATION` without an
+   exception. In **Audit and Export**, inspect **Raw evaluation payload** or
+   download the JSON artifact. Its `engine_version` must match the release tag
+   without the `v` prefix (for `v2.1.1`, expect `2.1.1`).
+4. In a fresh session, load the same lumbar MRI case to establish request scope,
+   replace its note with the exact synthetic note below, and run the review.
+   Expect `NEEDS_REVIEW`, no exception, and **“but significant improvement in
+   pain”** in the verification and original/effective correction citation
+   context. Confirm this export's engine version also matches the tag. Record
+   the deployed revision, exported version, both statuses and citation check;
+   a version mismatch means the release is not yet verified.
+
+```text
+Low back pain with right leg radiculopathy. NSAIDs for 8 weeks with no improvement in sleep but significant improvement in pain. Ankle dorsiflexion strength 4/5 in the right L5 distribution.
+```
+
 ## What Is Covered
 
 - extraction contracts and determinism
