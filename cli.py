@@ -21,7 +21,7 @@ from engine.rendering import (
     write_json_artifact,
 )
 from engine.replay import replay
-from engine.schemas import PARequest, PolicyVersion
+from engine.schemas import EvaluationResult, PARequest, PolicyVersion
 from engine.service import ReadinessService, ServiceError
 
 
@@ -116,7 +116,12 @@ def main(argv: Sequence[str] | None = None) -> int:
                 if args.command == "policy-list":
                     payload = store.list_policies()
                 elif args.command == "decision-show":
-                    payload = store.get_decision(args.decision_id).model_dump(mode="json")
+                    decision = store.get_decision(args.decision_id)
+                    payload = (
+                        export_evaluation_payload(decision, include_citation_context=True)
+                        if isinstance(decision, EvaluationResult)
+                        else decision.model_dump(mode="json")
+                    )
                 else:
                     target = store.get_policy(args.policy_id, args.target_version)
                     ids = args.decision_id if args.decision_id is not None else store.decision_ids(args.policy_id, args.from_version)
@@ -191,7 +196,7 @@ def main(argv: Sequence[str] | None = None) -> int:
                 with DecisionStore(args.store) as store:
                     store.record(evaluation, args.decision_id)
             if args.json:
-                print(json.dumps(export_evaluation_payload(evaluation), indent=2, sort_keys=True))
+                print(json.dumps(export_evaluation_payload(evaluation, include_citation_context=True), indent=2, sort_keys=True))
             else:
                 print(render_cli_evaluation(evaluation))
             return 0

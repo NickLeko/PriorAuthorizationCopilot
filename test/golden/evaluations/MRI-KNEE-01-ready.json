@@ -46,7 +46,7 @@
         }
       ]
     },
-    "fact_set_fingerprint": "fc12d96b26b5c094f7f924db1851224667d846399097e47df01befab096712eb",
+    "fact_set_fingerprint": "b144ede322179c8937ce262c8e1ddf0d673a1e22fec7ea535f663b9c80dda34d",
     "fact_verifications": {
       "conservative_therapy_weeks": {
         "fingerprint": null,
@@ -87,7 +87,7 @@
       "sleep_study_date": null,
       "symptom_duration_weeks": 8
     },
-    "input_fingerprint": "e38b36a54a88823b5d302f5cedd6fc453b05bc41884ab77934184bf66e74324d",
+    "input_fingerprint": "aed879feb25b2b5d62187e298d4c0221dba22455cf77d3a4882c64abd3a141be",
     "invariant_errors": [],
     "metrics": {
       "criteria_met_count": 4,
@@ -159,7 +159,7 @@
     "not_documented": [],
     "not_met": []
   },
-  "bundle_fingerprint": "f36b9be0bb209bc39960e80ab8b4a804dd9b6fd11054ccaa32332eb7d69586ba",
+  "bundle_fingerprint": "1e3dea24499fa5619e8862e53c75ed3596d7e94812314c995f7508a44353d0ef",
   "captured_fact_states": {
     "ahi_documented": "MISSING",
     "back_pain_with_radiculopathy": "MISSING",
@@ -175,6 +175,7 @@
     "symptom_duration_weeks": "CAPTURED"
   },
   "contract_version": "6779fd812df9d1fa44d8c17af56bff917d91c0395f00fea78846b643bcdaf74c",
+  "engine_version": "2.1.0",
   "evidence_map": {
     "conservative_therapy_weeks": [
       {
@@ -212,7 +213,7 @@
       }
     ]
   },
-  "fact_set_fingerprint": "fc12d96b26b5c094f7f924db1851224667d846399097e47df01befab096712eb",
+  "fact_set_fingerprint": "b144ede322179c8937ce262c8e1ddf0d673a1e22fec7ea535f663b9c80dda34d",
   "facts": {
     "ahi_documented": null,
     "back_pain_with_radiculopathy": null,
@@ -227,7 +228,7 @@
     "sleep_study_date": null,
     "symptom_duration_weeks": 8
   },
-  "input_fingerprint": "e38b36a54a88823b5d302f5cedd6fc453b05bc41884ab77934184bf66e74324d",
+  "input_fingerprint": "aed879feb25b2b5d62187e298d4c0221dba22455cf77d3a4882c64abd3a141be",
   "metrics": {
     "criteria_met_count": 4,
     "criteria_not_met_count": 0,
@@ -323,7 +324,7 @@
           }
         ]
       },
-      "fact_set_fingerprint": "fc12d96b26b5c094f7f924db1851224667d846399097e47df01befab096712eb",
+      "fact_set_fingerprint": "b144ede322179c8937ce262c8e1ddf0d673a1e22fec7ea535f663b9c80dda34d",
       "fact_verifications": {
         "conservative_therapy_weeks": {
           "fingerprint": null,
@@ -364,7 +365,7 @@
         "sleep_study_date": null,
         "symptom_duration_weeks": 8
       },
-      "input_fingerprint": "e38b36a54a88823b5d302f5cedd6fc453b05bc41884ab77934184bf66e74324d",
+      "input_fingerprint": "aed879feb25b2b5d62187e298d4c0221dba22455cf77d3a4882c64abd3a141be",
       "invariant_errors": [],
       "metrics": {
         "criteria_met_count": 4,
@@ -460,7 +461,7 @@
           "state": "UNVERIFIED",
           "verified_at": null
         },
-        "verification_fingerprint": "1f4add44a21b793b287d71d29dc71f5d50afc3fd37eb70e844cb8d6e88f7594d"
+        "verification_fingerprint": "ce3357edfab819a5ffa259c0cf48edd8c566003fae796200c45fdeef36a3910b"
       },
       {
         "evidence": "Persistent symptoms documented long enough to justify escalation",
@@ -485,7 +486,7 @@
           "state": "UNVERIFIED",
           "verified_at": null
         },
-        "verification_fingerprint": "ce35698507c8c43fa5f995aaebe021e6c13ee6a1ae5b114bf6afd8cbd4d18f25"
+        "verification_fingerprint": "688c7a63a67e505265c7e21630c4015e25f983028550b0f54a1e5ffe5b3f0dde"
       },
       {
         "evidence": "Prior knee imaging such as x-ray is documented and not simply absent",
@@ -510,7 +511,7 @@
           "state": "UNVERIFIED",
           "verified_at": null
         },
-        "verification_fingerprint": "8c2aa23e089be38db1019115e2b688e2dafe14ed2b194b8398de0d19e287116f"
+        "verification_fingerprint": "5ffc4ad39f541cdb91f5821ede82aa8d098841160d38ce5d8f1df228043e5f52"
       },
       {
         "evidence": "Locking, catching, buckling, giving way, or instability explicitly documented",
@@ -535,7 +536,7 @@
           "state": "UNVERIFIED",
           "verified_at": null
         },
-        "verification_fingerprint": "2ea77171881f9d8674a49d6c3c0e64c829fe3ebb826db5ede5682e6b53eacbb7"
+        "verification_fingerprint": "36fdb5bdb9696c9b2fd634800742c64ea0e9b3500e52f4df5d17af1536ee5b58"
       }
     ],
     "rule_reasons": []
@@ -575,7 +576,7 @@
         "state": "UNVERIFIED",
         "verified_at": null
       },
-      "verification_fingerprint": "1f4add44a21b793b287d71d29dc71f5d50afc3fd37eb70e844cb8d6e88f7594d"
+      "verification_fingerprint": "ce3357edfab819a5ffa259c0cf48edd8c566003fae796200c45fdeef36a3910b"
     },
     {
       "evidence": "Persistent symptoms documented long enough to justify escalation",
@@ -600,7 +601,7 @@
         "state": "UNVERIFIED",
         "verified_at": null
       },
-      "verification_fingerprint": "ce35698507c8c43fa5f995aaebe021e6c13ee6a1ae5b114bf6afd8cbd4d18f25"
+      "verification_fingerprint": "688c7a63a67e505265c7e21630c4015e25f983028550b0f54a1e5ffe5b3f0dde"
     },
     {
       "evidence": "Prior knee imaging such as x-ray is documented and not simply absent",
@@ -625,7 +626,7 @@
         "state": "UNVERIFIED",
         "verified_at": null
       },
-      "verification_fingerprint": "8c2aa23e089be38db1019115e2b688e2dafe14ed2b194b8398de0d19e287116f"
+      "verification_fingerprint": "5ffc4ad39f541cdb91f5821ede82aa8d098841160d38ce5d8f1df228043e5f52"
     },
     {
       "evidence": "Locking, catching, buckling, giving way, or instability explicitly documented",
@@ -650,7 +651,7 @@
         "state": "UNVERIFIED",
         "verified_at": null
       },
-      "verification_fingerprint": "2ea77171881f9d8674a49d6c3c0e64c829fe3ebb826db5ede5682e6b53eacbb7"
+      "verification_fingerprint": "36fdb5bdb9696c9b2fd634800742c64ea0e9b3500e52f4df5d17af1536ee5b58"
     }
   ],
   "rule_reasons": [],

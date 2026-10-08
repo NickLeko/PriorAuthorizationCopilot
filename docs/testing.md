@@ -19,9 +19,8 @@ The main fixture/output regression layers are:
 - acceptance snapshots lock representative exact outputs for evaluation and governance surfaces
 
 `TestExtractionContractAlignment` is the executable specification for every numbered
-v1.5 extraction/verification guarantee and every published exact example. Its first
-example preserves the negated-diagnosis false proposal and verifies that the
-unverified case cannot become READY. It also exercises Unicode citation integrity,
+extraction/verification guarantee and every published exact example. Known wrong
+examples assert correct values as strict xfails; v2.1 fixed examples pass normally. It also exercises Unicode citation integrity,
 reviewer metadata, attestation binding, status precedence and governance gates.
 Cross-surface tests compare identical Streamlit, API and CLI requests before and
 after verification. A long-lived API test promotes a changed rule bundle without
@@ -141,3 +140,10 @@ their prior definition; pending verification is counted separately.
 - production deployment behavior
 
 Those are out of scope for this repo.
+
+
+The v2.1 reproductions live in `test/test_v210_safety.py`. Run
+`python -m scripts.benchmark_evaluation` on Python 3.12 for one cold and one warm
+MRI evaluation with YAML-load and rulebook-computation counts. Full-suite elapsed
+time comes from `python -m pytest -q`; timing is observational, not a pass/fail
+threshold. The [release report](releases/v2.1.0.md) includes before/after results.

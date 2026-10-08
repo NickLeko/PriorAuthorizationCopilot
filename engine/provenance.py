@@ -27,13 +27,14 @@ PROVENANCE_STRING_FIELDS = {
 }
 
 
-def load_provenance(path: str | Path) -> Dict[str, Any]:
+def load_provenance(path: str | Path, *, data: Dict[str, Any] | None = None) -> Dict[str, Any]:
     provenance_path = Path(path)
     if not provenance_path.exists():
         return {}
 
-    with provenance_path.open("r", encoding="utf-8") as handle:
-        data = yaml.safe_load(handle) or {}
+    if data is None:
+        with provenance_path.open("r", encoding="utf-8") as handle:
+            data = yaml.safe_load(handle) or {}
 
     if not isinstance(data, dict):
         raise ValueError("Invalid provenance file: expected a top-level mapping.")

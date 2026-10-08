@@ -3,11 +3,16 @@ from __future__ import annotations
 import json
 import logging
 import uuid
+from contextvars import ContextVar
+from dataclasses import dataclass
 from datetime import datetime, timezone
-from functools import cached_property
+from functools import cached_property, lru_cache
 from hashlib import sha256
 from pathlib import Path
+from types import MappingProxyType
 from typing import Any, Callable, Dict, List
+
+import yaml
 
 from . import __version__
 from .config import AppConfig, load_app_config
@@ -34,7 +39,7 @@ from .provenance import (
     normalized_dx_codes,
     policy_trust_from_provenance,
 )
-from .rulebook import RulebookError, get_rulebook_diff, get_rulebook_status
+from .rulebook import RulebookError, get_rulebook_diff, get_rulebook_status, load_rulebook_manifest
 from .rules_loader import load_rules
 from .schemas import (
     REVIEW_REQUIRED_FACT,
@@ -192,24 +197,95 @@ def _read_drift_log(log_path: Path) -> tuple[List[Dict[str, Any]], List[str]]:
     return events, errors
 
 
+def _freeze(value):
+    if isinstance(value, dict):
+        return MappingProxyType({key: _freeze(item) for key, item in value.items()})
+    if isinstance(value, list):
+        return tuple(_freeze(item) for item in value)
+    if isinstance(value, Exception):
+        return (type(value).__name__, str(value))
+    return value
+
+
+def _thaw(value):
+    if isinstance(value, MappingProxyType):
+        return {key: _thaw(item) for key, item in value.items()}
+    if isinstance(value, tuple):
+        return [_thaw(item) for item in value]
+    return value
+
+
+@dataclass(frozen=True)
+class _RuleBundle:
+    digest: str
+    documents: Any
+    rules: Any
+    provenance: Any
+    policy_sources: tuple[Any, ...]
+    status_json: str
+
+
+@lru_cache(maxsize=8)
+def _parsed_manifest(content: bytes):
+    return _freeze(yaml.safe_load(content))
+
+
+@lru_cache(maxsize=8)
+def _load_bundle(digest, snapshot, repo_root, runtime_paths, manifest_path):
+    documents = {}
+    for path, content in snapshot:
+        try:
+            if content is None:
+                raise FileNotFoundError(path)
+            payload = _thaw(_parsed_manifest(content)) if path == manifest_path else yaml.safe_load(content)
+            if not isinstance(payload, dict):
+                raise RulebookError(f"YAML file must contain a mapping: {path}")
+            documents[path] = payload
+        except Exception as exc:
+            documents[path] = exc
+    rules_path, provenance_path, sources_path = runtime_paths
+    for path in (*runtime_paths, manifest_path):
+        if isinstance(documents[path], Exception):
+            raise documents[path]
+    rules = load_rules(rules_path, data=documents[rules_path])
+    provenance = load_provenance(provenance_path, data=documents[provenance_path])
+    sources = load_policy_sources(Path(sources_path), data=documents[sources_path])
+    status = get_rulebook_status(
+        Path(repo_root),
+        Path(manifest_path),
+        RulebookFileSet(rules_path=rules_path, provenance_path=provenance_path, policy_sources_path=sources_path),
+        documents=documents,
+    )
+    return _RuleBundle(
+        digest,
+        _freeze(documents),
+        _freeze(rules),
+        _freeze(provenance),
+        tuple(sources),
+        status.model_dump_json(),
+    )
+
+
 class ReadinessService:
     def __init__(self, config: AppConfig | None = None, *, utc_now_provider: Callable[[], datetime] | None = None) -> None:
         self.config = config or load_app_config()
         self._utc_now = utc_now_provider or (lambda: utc_now())
         configure_logging(self.config.log_level)
         self.logger = get_logger("pa_copilot.service")
+        self._evaluation_bundle = ContextVar("evaluation_bundle", default=None)
+        self._digest_snapshot = ContextVar("digest_snapshot", default=None)
 
     @property
     def rules(self) -> Dict[str, Any]:
-        return load_rules(str(self.config.rules_path))
+        return _thaw(self._current_bundle().rules)
 
     @property
     def provenance(self) -> Dict[str, Any]:
-        return load_provenance(self.config.provenance_path)
+        return _thaw(self._current_bundle().provenance)
 
     @property
     def policy_sources(self):
-        return load_policy_sources(self.config.policy_sources_path)
+        return list(self._current_bundle().policy_sources)
 
     @property
     def policy_source_by_procedure(self) -> Dict[tuple[str, str], Any]:
@@ -264,15 +340,7 @@ class ReadinessService:
 
     def get_rulebook_status(self) -> RulebookStatusResponse:
         try:
-            return get_rulebook_status(
-                self.config.repo_root,
-                self.config.rulebook_manifest_path,
-                RulebookFileSet(
-                    rules_path=self.config.rules_path.as_posix(),
-                    provenance_path=self.config.provenance_path.as_posix(),
-                    policy_sources_path=self.config.policy_sources_path.as_posix(),
-                ),
-            )
+            return RulebookStatusResponse.model_validate_json(self._current_bundle().status_json)
         except RulebookError as exc:
             raise GovernanceConfigError(str(exc)) from exc
 
@@ -314,25 +382,97 @@ class ReadinessService:
 
         return warnings
 
+    def _bundle_snapshot(self):
+        runtime_paths = tuple(
+            path.resolve().as_posix()
+            for path in (
+                self.config.rules_path,
+                self.config.provenance_path,
+                self.config.policy_sources_path,
+            )
+        )
+        manifest_path = self.config.rulebook_manifest_path.resolve().as_posix()
+        manifest_bytes = Path(manifest_path).read_bytes()
+        manifest = load_rulebook_manifest(Path(manifest_path), data=_thaw(_parsed_manifest(manifest_bytes)))
+        paths = set(runtime_paths) | {manifest_path}
+        for release in manifest["releases"].values():
+            if not isinstance(release, dict):
+                continue
+            files = release.get("files") or {}
+            if not isinstance(files, dict):
+                continue
+            for key in ("rules", "provenance", "policy_sources"):
+                path = Path(str(files.get(key) or ""))
+                paths.add((self.config.repo_root / path).resolve().as_posix())
+        snapshot = []
+        for path in sorted(paths):
+            try:
+                content = manifest_bytes if path == manifest_path else Path(path).read_bytes()
+            except OSError:
+                if path in runtime_paths:
+                    raise
+                content = None
+            snapshot.append((path, content))
+        return tuple(snapshot)
+
     def _bundle_digest(self) -> str:
-        return sha256(
-            b"\0".join(
-                path.read_bytes()
+        snapshot = self._digest_snapshot.get()
+        return self._digest_for_snapshot(self._bundle_snapshot() if snapshot is None else snapshot)
+
+    def _digest_for_snapshot(self, snapshot) -> str:
+        # Include referenced releases as well as runtime files and the manifest.
+        # Path labels and lengths make the byte framing unambiguous.
+        digest = sha256()
+        for path, content in snapshot:
+            try:
+                label = Path(path).relative_to(self.config.repo_root.resolve()).as_posix().encode()
+            except ValueError:
+                label = path.encode()
+            digest.update(len(label).to_bytes(8, "big") + label)
+            digest.update(b"missing" if content is None else len(content).to_bytes(8, "big") + content)
+        return digest.hexdigest()
+
+    def _current_bundle(self, digest=None, snapshot=None):
+        bound = self._evaluation_bundle.get()
+        if bound is not None:
+            return bound
+        snapshot = self._bundle_snapshot() if snapshot is None else snapshot
+        return _load_bundle(
+            digest or self._digest_for_snapshot(snapshot),
+            snapshot,
+            self.config.repo_root.resolve().as_posix(),
+            tuple(
+                path.resolve().as_posix()
                 for path in (
                     self.config.rules_path,
                     self.config.provenance_path,
                     self.config.policy_sources_path,
-                    self.config.rulebook_manifest_path,
                 )
-            )
-        ).hexdigest()
+            ),
+            self.config.rulebook_manifest_path.resolve().as_posix(),
+        )
 
     def evaluate(self, request: PARequest, policy_version: PolicyVersion | None = None) -> EvaluationResult:
+        try:
+            snapshot = self._bundle_snapshot()
+        except RulebookError as exc:
+            raise GovernanceConfigError(str(exc)) from exc
+        digest_token = self._digest_snapshot.set(snapshot)
+        try:
+            bundle_digest = self._bundle_digest()
+        finally:
+            self._digest_snapshot.reset(digest_token)
+        token = self._evaluation_bundle.set(self._current_bundle(bundle_digest, snapshot))
+        try:
+            return self._evaluate(request, policy_version, bundle_digest)
+        finally:
+            self._evaluation_bundle.reset(token)
+
+    def _evaluate(self, request: PARequest, policy_version: PolicyVersion | None, bundle_digest: str) -> EvaluationResult:
         # Revalidate mutable requests rather than trusting model_copy updates.
         request = PARequest.model_validate_json(request.model_dump_json())
         if policy_version is not None:
             policy_version = PolicyVersion.model_validate_json(policy_version.model_dump_json())
-        bundle_digest = self._bundle_digest()
         normalized_request = request.model_copy(
             update={
                 "dx_codes": normalized_dx_codes(request.dx_codes),
@@ -467,6 +607,7 @@ class ReadinessService:
         )
 
         result = EvaluationResult(
+            engine_version=__version__,
             original_snapshot=original,
             bundle_fingerprint=bundle_digest,
             contract_version=CONTRACT_VERSION,

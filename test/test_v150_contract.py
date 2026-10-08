@@ -50,7 +50,16 @@ class TestExtractionContractAlignment:
         fields = set(extract_facts("")[0])
         assert fields == {key for example in EXAMPLES for key in example["expected"]}
 
-    @pytest.mark.parametrize("example", EXAMPLES, ids=lambda example: example["id"])
+    @pytest.mark.parametrize(
+        "example",
+        [
+            pytest.param(example, marks=pytest.mark.xfail(strict=True, reason=example["known_failure"]))
+            if "known_failure" in example
+            else example
+            for example in EXAMPLES
+        ],
+        ids=lambda example: example["id"],
+    )
     def test_G01_exact_examples_and_determinism(self, example):
         note = example["note"]
         facts, evidence = extract_facts(note)
@@ -225,13 +234,14 @@ class TestExtractionContractAlignment:
         assert verified.submission_readiness is False
         assert verified.policy_trust_level == "demo"
 
+    @pytest.mark.xfail(strict=True, reason="date association: visit date borrowed for undated study")
     def test_G07_borrowed_date_remains_contained_by_demo_submission_gate(self):
         example = next(example for example in EXAMPLES if example["id"] == "borrowed_date")
         service = ReadinessService()
         proposal = service.evaluate(PARequest(payer="Aetna", procedure_code="CPAP_DEVICE", note_text=example["note"]))
-        # Deliberately incorrect synthetic attestations demonstrate the independent trust gate.
         result = service.evaluate(attest(proposal))
-        assert result.overall_status == "READY"
+        assert result.facts["sleep_study_date"] is None
+        assert result.overall_status == "CANNOT_DETERMINE"
         assert result.submission_readiness is False
 
 

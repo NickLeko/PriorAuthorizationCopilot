@@ -6,7 +6,7 @@ v2.0.0 mitigation: typed correction validation rejects SET_VALUE spans over 300 
 
 **Project:** Prior Authorization Readiness Copilot  
 **Owner:** Nicholas Leko  
-**Last Updated:** September 4, 2026 — v1.5.0
+**Last Updated:** October 7, 2026 — v2.1.0
 **Status:** Versioned current behavior. Changes should update tests and docs.
 
 ---
@@ -18,7 +18,7 @@ Current repo status:
 - no LLM implementation
 - bundled case data is synthetic; the official policy snapshot and rule provenance are source material; input is not screened and must not contain real PHI, with screening remaining the operator's responsibility
 
-Automated extraction is a **drafting aid, not a decision gate**. v1.4.0's posture over-trusted extraction. Negated diagnoses returned affirmative facts, contradicting the extraction contract as written. v1.5.0 resolves that contradiction by changing what the engine may assert rather than by making extraction match the contract. The language patterns remain unchanged, including known negation, temporality and attribution errors.
+Automated extraction is a **drafting aid, not a decision gate**. v1.4.0's posture over-trusted extraction. Negated diagnoses returned affirmative facts, contradicting the extraction contract as written. v1.5.0 resolves that contradiction by changing what the engine may assert rather than by making extraction match the contract. v2.1.0 repairs the bounded cases below; other negation, temporality and attribution errors remain.
 
 Requirement results describe the captured proposals:
 - proposed scalar passes the operator (`MET`), without asserting source support
@@ -231,3 +231,30 @@ requires:
 - updated docs (README, model card, safety docs, and this file as needed)
 
 ---
+
+
+## v2.1.0 reproduced cases (October 7, 2026)
+
+| Failure class and reproduced input | v2.1 disposition |
+| --- | --- |
+| NSAIDs for 8 weeks with no improvement in sleep **but significant improvement in pain** | Fixed: linked duration/response require review, including however/though/although/yet/whereas variants; full context is displayed with the unchanged citation marked. |
+| OSA was/were/has been/had been ruled out | Fixed: diagnosis is missing, never affirmative. |
+| PT x 8 weeks was never completed / not completed | Fixed: duration is missing. |
+| Stopped PT after 1 week. PT x 8 weeks was prescribed. | Fixed: no completed duration is captured; the 1-week phrasing remains outside the supported duration forms. |
+| PT x 8 weeks was recommended / was ordered | Fixed: duration is missing; qualifying NSAID courses receive the same exclusion. |
+| Sleep study 2026-01-05 was cancelled / canceled | Fixed: completed-study presence is missing. |
+| OSA confirmed on PSG 2026-01-05, AHI 32. Allergies: N/A. / Bed partner unknown. | Fixed: AHI presence is captured; unknown/N/A in its own sentence still refuses. No AHI threshold change. |
+| Low back pain with radiculopathy resolved last year | Fixed: same-sentence resolved findings require review, including qualifying strength, mechanical, OSA and imaging findings. |
+| Low back pain with radiculopathy. It resolved last year. | Remaining: cross-sentence historical episode coreference; strict xfail asserts review. |
+| Negated lumbar diagnosis / negated strength / reflex qualifier borrowed from pain | Remaining: strict xfails assert false/missing, never the wrong affirmative proposal. |
+| Lumbar therapy actually for headaches / visit date borrowed for an undated sleep study | Remaining: attribution and date association; strict xfails assert missing. |
+
+Rule bundles now include runtime rules, provenance, policy sources, manifest and
+referenced release files in their digest. Immutable parsed bundles and rulebook
+status are cached by that identity. The final digest guard rejects concurrent
+changes; changed disk content loads freshly on the next evaluation. Monitoring
+snapshots and clock freshness continue to be checked live.
+
+`ReadinessReport.letter_draft` is always initialized empty; generated letters are
+returned separately by `generate_letter`. The obsolete corrected-letter guard
+was removed. All existing correction/letter integrity validation remains.

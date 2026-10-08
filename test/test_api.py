@@ -12,7 +12,7 @@ def test_health_endpoint():
     assert response.status_code == 200
     payload = response.json()
     assert payload["service"] == "Prior Authorization Readiness Copilot"
-    assert payload["app_version"] == "2.0.0"
+    assert payload["app_version"] == "2.1.0"
     assert "synthetic_only" not in payload
 
 

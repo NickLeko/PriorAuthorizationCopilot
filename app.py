@@ -6,6 +6,7 @@ from pathlib import Path
 
 import streamlit as st
 
+from engine.citation_context import citation_context
 from engine.config import load_app_config
 from engine.corrections import note_hash
 from engine.demo_cases import expected_overall_status_for_demo_case, featured_demo_cases
@@ -229,6 +230,12 @@ def render_corrections(evaluation: EvaluationResult) -> None:
             left.write(f"Original proposal: {original['facts'].get(key)!r} ({original['states'].get(key, 'MISSING')})")
             right.write(f"Effective value: {result.fact_value!r} ({evaluation.captured_fact_states.get(key, 'MISSING')})")
             st.caption(f"Meaning: {contract.meaning}")
+            st.caption("Effective citations in sentence context (⟦quoted span⟧):")
+            for span in result.evidence_spans:
+                st.text(citation_context(evaluation.request.note_text, span.start, span.end))
+            st.caption("Original proposal citations in sentence context:")
+            for span in original["evidence"].get(key, []):
+                st.text(citation_context(evaluation.request.note_text, span["start"], span["end"]))
             actions = ["SET_VALUE"]
             if contract.permits_missing:
                 actions.append("SET_MISSING")
@@ -248,9 +255,11 @@ def render_corrections(evaluation: EvaluationResult) -> None:
                     "Select source occurrences",
                     matches,
                     key=f"correction_spans_{key}",
-                    format_func=lambda pair: f"[{pair[0]}:{pair[1]}] {evaluation.request.note_text[pair[0] : pair[1]]}",
+                    format_func=lambda pair: citation_context(evaluation.request.note_text, pair[0], pair[1]),
                 )
                 spans = [{"start": start, "end": end, "text": evaluation.request.note_text[start:end]} for start, end in selected]
+                for start, end in selected:
+                    st.text(citation_context(evaluation.request.note_text, start, end))
                 if quote and not matches:
                     st.warning("Quotation does not occur exactly in the evaluated note.")
             with st.form(f"correction_form_{key}"):
@@ -834,7 +843,7 @@ else:
         for requirement_result in evaluation.results:
             st.write(f"{requirement_result.label}: proposed {requirement_result.fact_value!r} | {requirement_result.status}")
             for evidence_span in requirement_result.evidence_spans:
-                st.text(f"[{evidence_span.start}:{evidence_span.end}] {evidence_span.text}")
+                st.text(citation_context(evaluation.request.note_text, evidence_span.start, evidence_span.end))
             st.caption(
                 f"Verification: {requirement_result.verification.state}; "
                 f"reviewer: {requirement_result.verification.reviewer or 'none'}; "

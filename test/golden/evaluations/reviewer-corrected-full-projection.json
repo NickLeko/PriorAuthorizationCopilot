@@ -63,28 +63,28 @@
         }
       ]
     },
-    "fact_set_fingerprint": "c20face99d299b26afb78c51a52c621bf3f8ba13dc29a2eaa108dc5eee42bbe5",
+    "fact_set_fingerprint": "c1a593135487c47fafbb83070d5df5ec18bf46b7e95930c4edb87c026bb747a9",
     "fact_verifications": {
       "back_pain_with_radiculopathy": {
-        "fingerprint": "88eb687c088dca2269ecd4ce0349fd4f9c7fb8caeae99962355f6c41d0e87a2d",
+        "fingerprint": "5b1cfeabd42aab57ca172dc05a1327d5d95f605a43aac94e2b8f1628296f0647",
         "reviewer": "Synthetic correction verifier (fixture only)",
         "state": "HUMAN_VERIFIED",
         "verified_at": "2026-01-02T00:00:00Z"
       },
       "cpb_0236_conservative_therapy_no_improvement": {
-        "fingerprint": "f0447633e5142b359522440e2dd1bcd8a42edd2eb9a95d38292973dbdd93bf39",
+        "fingerprint": "d2c88d7444fe72496e9a71be196594896e2256780a2e14fcb32bd51858024ac1",
         "reviewer": "Synthetic correction verifier (fixture only)",
         "state": "HUMAN_VERIFIED",
         "verified_at": "2026-01-02T00:00:00Z"
       },
       "cpb_0236_conservative_therapy_weeks": {
-        "fingerprint": "d5f1c660a86cd3354cfa47d11e5d969ad5e1bba26dee7be3a40f638cdf1f3125",
+        "fingerprint": "ec1e52c5e33fe7ab1a78532d5e065b0c3fc36626d88e21fa7a658b57f29d1cd9",
         "reviewer": "Synthetic correction verifier (fixture only)",
         "state": "HUMAN_VERIFIED",
         "verified_at": "2026-01-02T00:00:00Z"
       },
       "objective_motor_or_reflex_change_in_root_distribution": {
-        "fingerprint": "62000944f4bd2a0dfc8b780c934e44cb66d018750a421fe956ea6f9968e0f5e6",
+        "fingerprint": "6c75d85cff9c856fdd24068da060272c7d9ae1559e5b5826cf44bc3d36691713",
         "reviewer": "Synthetic correction verifier (fixture only)",
         "state": "HUMAN_VERIFIED",
         "verified_at": "2026-01-02T00:00:00Z"
@@ -104,7 +104,7 @@
       "sleep_study_date": null,
       "symptom_duration_weeks": null
     },
-    "input_fingerprint": "649819f4325cf5a55896b712035e0832c93815fb5239372901893e2c932a17e8",
+    "input_fingerprint": "d0972f38bdebdc9629445341ef7a2978d787b887aab0490f71d0454a788bd929",
     "invariant_errors": [],
     "metrics": {
       "criteria_met_count": 4,
@@ -182,7 +182,7 @@
     "not_documented": [],
     "not_met": []
   },
-  "bundle_fingerprint": "f36b9be0bb209bc39960e80ab8b4a804dd9b6fd11054ccaa32332eb7d69586ba",
+  "bundle_fingerprint": "1e3dea24499fa5619e8862e53c75ed3596d7e94812314c995f7508a44353d0ef",
   "captured_fact_states": {
     "ahi_documented": "MISSING",
     "back_pain_with_radiculopathy": "CAPTURED",
@@ -201,6 +201,7 @@
   "corrected_requirement_keys": [
     "back_pain_with_radiculopathy"
   ],
+  "engine_version": "2.1.0",
   "evidence_map": {
     "back_pain_with_radiculopathy": [
       {
@@ -238,7 +239,7 @@
       }
     ]
   },
-  "fact_set_fingerprint": "c20face99d299b26afb78c51a52c621bf3f8ba13dc29a2eaa108dc5eee42bbe5",
+  "fact_set_fingerprint": "c1a593135487c47fafbb83070d5df5ec18bf46b7e95930c4edb87c026bb747a9",
   "facts": {
     "ahi_documented": null,
     "back_pain_with_radiculopathy": true,
@@ -253,7 +254,7 @@
     "sleep_study_date": null,
     "symptom_duration_weeks": null
   },
-  "input_fingerprint": "649819f4325cf5a55896b712035e0832c93815fb5239372901893e2c932a17e8",
+  "input_fingerprint": "d0972f38bdebdc9629445341ef7a2978d787b887aab0490f71d0454a788bd929",
   "letter": {
     "metadata": {
       "cited_snippets_count": 3,
@@ -389,28 +390,28 @@
           }
         ]
       },
-      "fact_set_fingerprint": "c20face99d299b26afb78c51a52c621bf3f8ba13dc29a2eaa108dc5eee42bbe5",
+      "fact_set_fingerprint": "c1a593135487c47fafbb83070d5df5ec18bf46b7e95930c4edb87c026bb747a9",
       "fact_verifications": {
         "back_pain_with_radiculopathy": {
-          "fingerprint": "88eb687c088dca2269ecd4ce0349fd4f9c7fb8caeae99962355f6c41d0e87a2d",
+          "fingerprint": "5b1cfeabd42aab57ca172dc05a1327d5d95f605a43aac94e2b8f1628296f0647",
           "reviewer": "Synthetic correction verifier (fixture only)",
           "state": "HUMAN_VERIFIED",
           "verified_at": "2026-01-02T00:00:00Z"
         },
         "cpb_0236_conservative_therapy_no_improvement": {
-          "fingerprint": "f0447633e5142b359522440e2dd1bcd8a42edd2eb9a95d38292973dbdd93bf39",
+          "fingerprint": "d2c88d7444fe72496e9a71be196594896e2256780a2e14fcb32bd51858024ac1",
           "reviewer": "Synthetic correction verifier (fixture only)",
           "state": "HUMAN_VERIFIED",
           "verified_at": "2026-01-02T00:00:00Z"
         },
         "cpb_0236_conservative_therapy_weeks": {
-          "fingerprint": "d5f1c660a86cd3354cfa47d11e5d969ad5e1bba26dee7be3a40f638cdf1f3125",
+          "fingerprint": "ec1e52c5e33fe7ab1a78532d5e065b0c3fc36626d88e21fa7a658b57f29d1cd9",
           "reviewer": "Synthetic correction verifier (fixture only)",
           "state": "HUMAN_VERIFIED",
           "verified_at": "2026-01-02T00:00:00Z"
         },
         "objective_motor_or_reflex_change_in_root_distribution": {
-          "fingerprint": "62000944f4bd2a0dfc8b780c934e44cb66d018750a421fe956ea6f9968e0f5e6",
+          "fingerprint": "6c75d85cff9c856fdd24068da060272c7d9ae1559e5b5826cf44bc3d36691713",
           "reviewer": "Synthetic correction verifier (fixture only)",
           "state": "HUMAN_VERIFIED",
           "verified_at": "2026-01-02T00:00:00Z"
@@ -430,7 +431,7 @@
         "sleep_study_date": null,
         "symptom_duration_weeks": null
       },
-      "input_fingerprint": "649819f4325cf5a55896b712035e0832c93815fb5239372901893e2c932a17e8",
+      "input_fingerprint": "d0972f38bdebdc9629445341ef7a2978d787b887aab0490f71d0454a788bd929",
       "invariant_errors": [],
       "metrics": {
         "criteria_met_count": 4,
@@ -527,12 +528,12 @@
         "reason": "Explicit affirmative documentation found.",
         "status": "MET",
         "verification": {
-          "fingerprint": "88eb687c088dca2269ecd4ce0349fd4f9c7fb8caeae99962355f6c41d0e87a2d",
+          "fingerprint": "5b1cfeabd42aab57ca172dc05a1327d5d95f605a43aac94e2b8f1628296f0647",
           "reviewer": "Synthetic correction verifier (fixture only)",
           "state": "HUMAN_VERIFIED",
           "verified_at": "2026-01-02T00:00:00Z"
         },
-        "verification_fingerprint": "88eb687c088dca2269ecd4ce0349fd4f9c7fb8caeae99962355f6c41d0e87a2d"
+        "verification_fingerprint": "5b1cfeabd42aab57ca172dc05a1327d5d95f605a43aac94e2b8f1628296f0647"
       },
       {
         "evidence": "Objective motor strength or reflex change documented in a named nerve-root distribution",
@@ -552,12 +553,12 @@
         "reason": "Explicit affirmative documentation found.",
         "status": "MET",
         "verification": {
-          "fingerprint": "62000944f4bd2a0dfc8b780c934e44cb66d018750a421fe956ea6f9968e0f5e6",
+          "fingerprint": "6c75d85cff9c856fdd24068da060272c7d9ae1559e5b5826cf44bc3d36691713",
           "reviewer": "Synthetic correction verifier (fixture only)",
           "state": "HUMAN_VERIFIED",
           "verified_at": "2026-01-02T00:00:00Z"
         },
-        "verification_fingerprint": "62000944f4bd2a0dfc8b780c934e44cb66d018750a421fe956ea6f9968e0f5e6"
+        "verification_fingerprint": "6c75d85cff9c856fdd24068da060272c7d9ae1559e5b5826cf44bc3d36691713"
       },
       {
         "evidence": "At least 6 weeks of CPB 0236 Footnote 1 conservative therapy documented",
@@ -577,12 +578,12 @@
         "reason": "Documented value: 8.",
         "status": "MET",
         "verification": {
-          "fingerprint": "d5f1c660a86cd3354cfa47d11e5d969ad5e1bba26dee7be3a40f638cdf1f3125",
+          "fingerprint": "ec1e52c5e33fe7ab1a78532d5e065b0c3fc36626d88e21fa7a658b57f29d1cd9",
           "reviewer": "Synthetic correction verifier (fixture only)",
           "state": "HUMAN_VERIFIED",
           "verified_at": "2026-01-02T00:00:00Z"
         },
-        "verification_fingerprint": "d5f1c660a86cd3354cfa47d11e5d969ad5e1bba26dee7be3a40f638cdf1f3125"
+        "verification_fingerprint": "ec1e52c5e33fe7ab1a78532d5e065b0c3fc36626d88e21fa7a658b57f29d1cd9"
       },
       {
         "evidence": "Explicit no, minimal, or insufficient improvement after CPB 0236 Footnote 1 conservative therapy",
@@ -602,12 +603,12 @@
         "reason": "Explicit affirmative documentation found.",
         "status": "MET",
         "verification": {
-          "fingerprint": "f0447633e5142b359522440e2dd1bcd8a42edd2eb9a95d38292973dbdd93bf39",
+          "fingerprint": "d2c88d7444fe72496e9a71be196594896e2256780a2e14fcb32bd51858024ac1",
           "reviewer": "Synthetic correction verifier (fixture only)",
           "state": "HUMAN_VERIFIED",
           "verified_at": "2026-01-02T00:00:00Z"
         },
-        "verification_fingerprint": "f0447633e5142b359522440e2dd1bcd8a42edd2eb9a95d38292973dbdd93bf39"
+        "verification_fingerprint": "d2c88d7444fe72496e9a71be196594896e2256780a2e14fcb32bd51858024ac1"
       }
     ],
     "rule_reasons": []
@@ -636,25 +637,25 @@
     "dx_codes": [],
     "fact_verifications": {
       "back_pain_with_radiculopathy": {
-        "fingerprint": "88eb687c088dca2269ecd4ce0349fd4f9c7fb8caeae99962355f6c41d0e87a2d",
+        "fingerprint": "5b1cfeabd42aab57ca172dc05a1327d5d95f605a43aac94e2b8f1628296f0647",
         "reviewer": "Synthetic correction verifier (fixture only)",
         "state": "HUMAN_VERIFIED",
         "verified_at": "2026-01-02T00:00:00Z"
       },
       "cpb_0236_conservative_therapy_no_improvement": {
-        "fingerprint": "f0447633e5142b359522440e2dd1bcd8a42edd2eb9a95d38292973dbdd93bf39",
+        "fingerprint": "d2c88d7444fe72496e9a71be196594896e2256780a2e14fcb32bd51858024ac1",
         "reviewer": "Synthetic correction verifier (fixture only)",
         "state": "HUMAN_VERIFIED",
         "verified_at": "2026-01-02T00:00:00Z"
       },
       "cpb_0236_conservative_therapy_weeks": {
-        "fingerprint": "d5f1c660a86cd3354cfa47d11e5d969ad5e1bba26dee7be3a40f638cdf1f3125",
+        "fingerprint": "ec1e52c5e33fe7ab1a78532d5e065b0c3fc36626d88e21fa7a658b57f29d1cd9",
         "reviewer": "Synthetic correction verifier (fixture only)",
         "state": "HUMAN_VERIFIED",
         "verified_at": "2026-01-02T00:00:00Z"
       },
       "objective_motor_or_reflex_change_in_root_distribution": {
-        "fingerprint": "62000944f4bd2a0dfc8b780c934e44cb66d018750a421fe956ea6f9968e0f5e6",
+        "fingerprint": "6c75d85cff9c856fdd24068da060272c7d9ae1559e5b5826cf44bc3d36691713",
         "reviewer": "Synthetic correction verifier (fixture only)",
         "state": "HUMAN_VERIFIED",
         "verified_at": "2026-01-02T00:00:00Z"
@@ -685,12 +686,12 @@
       "reason": "Explicit affirmative documentation found.",
       "status": "MET",
       "verification": {
-        "fingerprint": "88eb687c088dca2269ecd4ce0349fd4f9c7fb8caeae99962355f6c41d0e87a2d",
+        "fingerprint": "5b1cfeabd42aab57ca172dc05a1327d5d95f605a43aac94e2b8f1628296f0647",
         "reviewer": "Synthetic correction verifier (fixture only)",
         "state": "HUMAN_VERIFIED",
         "verified_at": "2026-01-02T00:00:00Z"
       },
-      "verification_fingerprint": "88eb687c088dca2269ecd4ce0349fd4f9c7fb8caeae99962355f6c41d0e87a2d"
+      "verification_fingerprint": "5b1cfeabd42aab57ca172dc05a1327d5d95f605a43aac94e2b8f1628296f0647"
     },
     {
       "evidence": "Objective motor strength or reflex change documented in a named nerve-root distribution",
@@ -710,12 +711,12 @@
       "reason": "Explicit affirmative documentation found.",
       "status": "MET",
       "verification": {
-        "fingerprint": "62000944f4bd2a0dfc8b780c934e44cb66d018750a421fe956ea6f9968e0f5e6",
+        "fingerprint": "6c75d85cff9c856fdd24068da060272c7d9ae1559e5b5826cf44bc3d36691713",
         "reviewer": "Synthetic correction verifier (fixture only)",
         "state": "HUMAN_VERIFIED",
         "verified_at": "2026-01-02T00:00:00Z"
       },
-      "verification_fingerprint": "62000944f4bd2a0dfc8b780c934e44cb66d018750a421fe956ea6f9968e0f5e6"
+      "verification_fingerprint": "6c75d85cff9c856fdd24068da060272c7d9ae1559e5b5826cf44bc3d36691713"
     },
     {
       "evidence": "At least 6 weeks of CPB 0236 Footnote 1 conservative therapy documented",
@@ -735,12 +736,12 @@
       "reason": "Documented value: 8.",
       "status": "MET",
       "verification": {
-        "fingerprint": "d5f1c660a86cd3354cfa47d11e5d969ad5e1bba26dee7be3a40f638cdf1f3125",
+        "fingerprint": "ec1e52c5e33fe7ab1a78532d5e065b0c3fc36626d88e21fa7a658b57f29d1cd9",
         "reviewer": "Synthetic correction verifier (fixture only)",
         "state": "HUMAN_VERIFIED",
         "verified_at": "2026-01-02T00:00:00Z"
       },
-      "verification_fingerprint": "d5f1c660a86cd3354cfa47d11e5d969ad5e1bba26dee7be3a40f638cdf1f3125"
+      "verification_fingerprint": "ec1e52c5e33fe7ab1a78532d5e065b0c3fc36626d88e21fa7a658b57f29d1cd9"
     },
     {
       "evidence": "Explicit no, minimal, or insufficient improvement after CPB 0236 Footnote 1 conservative therapy",
@@ -760,12 +761,12 @@
       "reason": "Explicit affirmative documentation found.",
       "status": "MET",
       "verification": {
-        "fingerprint": "f0447633e5142b359522440e2dd1bcd8a42edd2eb9a95d38292973dbdd93bf39",
+        "fingerprint": "d2c88d7444fe72496e9a71be196594896e2256780a2e14fcb32bd51858024ac1",
         "reviewer": "Synthetic correction verifier (fixture only)",
         "state": "HUMAN_VERIFIED",
         "verified_at": "2026-01-02T00:00:00Z"
       },
-      "verification_fingerprint": "f0447633e5142b359522440e2dd1bcd8a42edd2eb9a95d38292973dbdd93bf39"
+      "verification_fingerprint": "d2c88d7444fe72496e9a71be196594896e2256780a2e14fcb32bd51858024ac1"
     }
   ],
   "rule_reasons": [],

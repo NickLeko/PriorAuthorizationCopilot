@@ -51,7 +51,7 @@
         }
       ]
     },
-    "fact_set_fingerprint": "071c16d57b3d4d0890ed35ad88dac3660c0ddf52d783613d2abaff1997abd978",
+    "fact_set_fingerprint": "a2d10e22e1e7cc272854204a11f9e24f143920fbbdbaebde348f9a9e9ab45851",
     "fact_verifications": {
       "conservative_therapy_weeks": {
         "fingerprint": null,
@@ -92,7 +92,7 @@
       "sleep_study_date": null,
       "symptom_duration_weeks": 8
     },
-    "input_fingerprint": "bc54e15f90200a5791b08021247fb8cc15b2e11d8202d743d12a5ec3f3659bbc",
+    "input_fingerprint": "37917cc857cf926debb12b8284c844f80f60bc6ec1b7ae1a5f2b8f9af9ae1f37",
     "invariant_errors": [],
     "metrics": {
       "criteria_met_count": 4,
@@ -164,7 +164,7 @@
     "not_documented": [],
     "not_met": []
   },
-  "bundle_fingerprint": "f36b9be0bb209bc39960e80ab8b4a804dd9b6fd11054ccaa32332eb7d69586ba",
+  "bundle_fingerprint": "1e3dea24499fa5619e8862e53c75ed3596d7e94812314c995f7508a44353d0ef",
   "captured_fact_states": {
     "ahi_documented": "MISSING",
     "back_pain_with_radiculopathy": "MISSING",
@@ -180,6 +180,7 @@
     "symptom_duration_weeks": "CAPTURED"
   },
   "contract_version": "6779fd812df9d1fa44d8c17af56bff917d91c0395f00fea78846b643bcdaf74c",
+  "engine_version": "2.1.0",
   "evidence_map": {
     "conservative_therapy_weeks": [
       {
@@ -222,7 +223,7 @@
       }
     ]
   },
-  "fact_set_fingerprint": "071c16d57b3d4d0890ed35ad88dac3660c0ddf52d783613d2abaff1997abd978",
+  "fact_set_fingerprint": "a2d10e22e1e7cc272854204a11f9e24f143920fbbdbaebde348f9a9e9ab45851",
   "facts": {
     "ahi_documented": null,
     "back_pain_with_radiculopathy": null,
@@ -237,7 +238,7 @@
     "sleep_study_date": null,
     "symptom_duration_weeks": 8
   },
-  "input_fingerprint": "bc54e15f90200a5791b08021247fb8cc15b2e11d8202d743d12a5ec3f3659bbc",
+  "input_fingerprint": "37917cc857cf926debb12b8284c844f80f60bc6ec1b7ae1a5f2b8f9af9ae1f37",
   "letter": {
     "metadata": {
       "cited_snippets_count": 5,
@@ -353,7 +354,7 @@
           }
         ]
       },
-      "fact_set_fingerprint": "071c16d57b3d4d0890ed35ad88dac3660c0ddf52d783613d2abaff1997abd978",
+      "fact_set_fingerprint": "a2d10e22e1e7cc272854204a11f9e24f143920fbbdbaebde348f9a9e9ab45851",
       "fact_verifications": {
         "conservative_therapy_weeks": {
           "fingerprint": null,
@@ -394,7 +395,7 @@
         "sleep_study_date": null,
         "symptom_duration_weeks": 8
       },
-      "input_fingerprint": "bc54e15f90200a5791b08021247fb8cc15b2e11d8202d743d12a5ec3f3659bbc",
+      "input_fingerprint": "37917cc857cf926debb12b8284c844f80f60bc6ec1b7ae1a5f2b8f9af9ae1f37",
       "invariant_errors": [],
       "metrics": {
         "criteria_met_count": 4,
@@ -490,7 +491,7 @@
           "state": "UNVERIFIED",
           "verified_at": null
         },
-        "verification_fingerprint": "bd822cefb18ae708b4f02605d2e541b234a97e4477e44ecd79c0be76b99993fd"
+        "verification_fingerprint": "55883103e07fe90c8dccaa54865dff0e9bc9483d6d03ac94d939ec298320a2f7"
       },
       {
         "evidence": "Weakness, numbness, bowel/bladder changes, or related escalation findings explicitly documented",
@@ -521,7 +522,7 @@
           "state": "UNVERIFIED",
           "verified_at": null
         },
-        "verification_fingerprint": "ea385fcde6df4b7f066628093fb3ee9f1c8cdf848a82010eb74c0cde25d9d32d"
+        "verification_fingerprint": "2f679c2f81c59c80df8895f33d0a52a5efa3b40db11020205f62c170b652dc52"
       },
       {
         "evidence": "X-ray/CT results or note of none",
@@ -546,7 +547,7 @@
           "state": "UNVERIFIED",
           "verified_at": null
         },
-        "verification_fingerprint": "e9b555ff70cab08a53a57f7b5786f5f37f030bc0d5d05c8224b759dc4ccbaf3d"
+        "verification_fingerprint": "7a80a86e6dbf0bad8f0b0fbd16337c01f309428fe18f11dea5b87f34c20f7314"
       },
       {
         "evidence": "Duration supports guideline-based escalation",
@@ -571,7 +572,7 @@
           "state": "UNVERIFIED",
           "verified_at": null
         },
-        "verification_fingerprint": "d8912ed19bd2002255e40b9587d5c472e8ae158ed2fea99bee8fe1cf2557688e"
+        "verification_fingerprint": "8223ece3c3c80c73170026c1478a9eb9c3bcffbf7af204163a38b5134bf85d9e"
       }
     ],
     "rule_reasons": []
@@ -611,7 +612,7 @@
         "state": "UNVERIFIED",
         "verified_at": null
       },
-      "verification_fingerprint": "bd822cefb18ae708b4f02605d2e541b234a97e4477e44ecd79c0be76b99993fd"
+      "verification_fingerprint": "55883103e07fe90c8dccaa54865dff0e9bc9483d6d03ac94d939ec298320a2f7"
     },
     {
       "evidence": "Weakness, numbness, bowel/bladder changes, or related escalation findings explicitly documented",
@@ -642,7 +643,7 @@
         "state": "UNVERIFIED",
         "verified_at": null
       },
-      "verification_fingerprint": "ea385fcde6df4b7f066628093fb3ee9f1c8cdf848a82010eb74c0cde25d9d32d"
+      "verification_fingerprint": "2f679c2f81c59c80df8895f33d0a52a5efa3b40db11020205f62c170b652dc52"
     },
     {
       "evidence": "X-ray/CT results or note of none",
@@ -667,7 +668,7 @@
         "state": "UNVERIFIED",
         "verified_at": null
       },
-      "verification_fingerprint": "e9b555ff70cab08a53a57f7b5786f5f37f030bc0d5d05c8224b759dc4ccbaf3d"
+      "verification_fingerprint": "7a80a86e6dbf0bad8f0b0fbd16337c01f309428fe18f11dea5b87f34c20f7314"
     },
     {
       "evidence": "Duration supports guideline-based escalation",
@@ -692,7 +693,7 @@
         "state": "UNVERIFIED",
         "verified_at": null
       },
-      "verification_fingerprint": "d8912ed19bd2002255e40b9587d5c472e8ae158ed2fea99bee8fe1cf2557688e"
+      "verification_fingerprint": "8223ece3c3c80c73170026c1478a9eb9c3bcffbf7af204163a38b5134bf85d9e"
     }
   ],
   "rule_reasons": [],

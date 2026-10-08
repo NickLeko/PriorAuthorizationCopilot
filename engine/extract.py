@@ -216,7 +216,37 @@ def _therapy_clause_spans(sentence: str) -> List[Tuple[int, int]]:
     return spans
 
 
+def _context_trigger(text: str, start: int, end: int, pattern: str, *, scope: str = "sentence"):
+    """Match a safety trigger only in the cited mention's own sentence.
+
+    Decimal points inside numeric findings are not sentence boundaries.
+    Use one helper for the v2.1 safety exclusions and AHI missingness scope.
+    """
+    boundaries = list(re.finditer(r"(?<!\d)[.!?]|[.!?](?!\d)|[;\n]", text))
+    left = max((match.end() for match in boundaries if match.end() <= start), default=0)
+    right = min((match.start() for match in boundaries if match.start() >= end), default=len(text))
+    context = text[end:right] if scope == "after" else text[left:right]
+    return re.search(pattern, context)
+
+
+def _unqualified_contrast_response(text: str) -> bool:
+    for marker in re.finditer(r"\b(?:but|however|though|although|yet|whereas)\b", text):
+        tail = text[marker.end() :]
+        if _context_trigger(
+            text, marker.start(), marker.end(), CPB_0236_NONRESPONSE_RE.pattern + "|" + CPB_0236_RESPONSE_RE.pattern, scope="after"
+        ) and not CPB_0236_THERAPY_CONTEXT_RE.search(tail):
+            return True
+    return False
+
+
 def _therapy_duration_is_disqualified(text: str, match: re.Match[str]) -> bool:
+    if _context_trigger(
+        text,
+        match.start(),
+        match.end(),
+        r"\b(?:never completed|not completed|was prescribed|was recommended|was ordered)\b",
+    ):
+        return True
     before = _bounded_context_before(text, match.start())
     matched = text[match.start() : match.end()]
     after = _bounded_context_after(text, match.end())
@@ -234,6 +264,8 @@ def _osa_mention_is_negated(text: str, match: re.Match[str]) -> bool:
     before = _bounded_context_before(text, match.start(), max_chars=48)
     after = _bounded_context_after(text, match.end(), max_chars=32)
 
+    if _context_trigger(text, match.start(), match.end(), r"^\s+(?:was|were|has been|had been)\s+ruled out\b", scope="after"):
+        return True
     return bool(
         re.search(
             r"\b(?:"
@@ -266,6 +298,8 @@ def _finding_is_negated(text: str, match: re.Match[str]) -> bool:
 
 
 def _finding_is_uncertain(text: str, match: re.Match[str]) -> bool:
+    if _context_trigger(text, match.start(), match.end(), r"\bresolved\b"):
+        return True
     before = text[max(0, match.start() - 80) : match.start()]
     after = text[match.end() : min(len(text), match.end() + 56)]
     return bool(UNCERTAINTY_BEFORE_RE.search(before) or UNCERTAINTY_AFTER_RE.match(after) or after.lstrip().startswith("?"))
@@ -391,6 +425,10 @@ def _collect_cpb_therapy_candidates(text: str) -> List[_TherapyCourseCandidate]:
             elif response_values:
                 response_value = next(iter(response_values))
 
+            contrast_ambiguous = _unqualified_contrast_response(sentence)
+            if contrast_ambiguous and response_value is not None:
+                response_value = REVIEW_REQUIRED_FACT
+
             duration_values = {int(match.group("value")) for match in duration_matches}
             duration_value = next(iter(duration_values)) if len(duration_values) == 1 else None
 
@@ -404,6 +442,7 @@ def _collect_cpb_therapy_candidates(text: str) -> List[_TherapyCourseCandidate]:
             )
             linkage_ambiguous = bool(
                 subject_ambiguous
+                or contrast_ambiguous
                 or sentence_is_questioned
                 or len(duration_values) > 1
                 or REVIEW_REQUIRED_FACT in response_values
@@ -974,6 +1013,7 @@ def extract_facts(note_text: str) -> Tuple[Dict[str, Any], Dict[str, List[Dict[s
 
         if (
             SLEEP_CTX.search(window)
+            and not _context_trigger(t, m_date.start(), m_date.end(), r"\b(?:cancelled|canceled)\b")
             and not _match_is_nonpatient_context(t, m_date)
             and not _has_pattern(THERAPY_FUTURE_LOOKBACK_PATTERNS + THERAPY_FUTURE_AFTER_PATTERNS, window)
         ):
@@ -986,7 +1026,13 @@ def extract_facts(note_text: str) -> Tuple[Dict[str, Any], Dict[str, List[Dict[s
     # ----------------------------
     ahi_doc: Optional[bool] | str = None
 
-    m_ahi_missing = re.search(r"\b(ahi|rdi)\b.*\b(not documented|not stated|not available|unknown|n/?a|missing)\b", t)
+    m_ahi_missing = None
+    missing_pattern = r".*\b(not documented|not stated|not available|unknown|n/?a|missing)\b"
+    for mention in re.finditer(r"\b(ahi|rdi)\b", t):
+        trigger = _context_trigger(t, mention.start(), mention.end(), missing_pattern, scope="after")
+        if trigger is not None:
+            m_ahi_missing = re.compile(r"\b(ahi|rdi)\b" + missing_pattern).match(t, mention.start(), mention.end() + trigger.end())
+            break
     if m_ahi_missing is not None and _match_is_nonpatient_context(t, m_ahi_missing):
         m_ahi_missing = None
     if m_ahi_missing:

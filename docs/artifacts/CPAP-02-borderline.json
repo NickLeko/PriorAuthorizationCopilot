@@ -37,7 +37,7 @@
         }
       ]
     },
-    "fact_set_fingerprint": "978ed65fed8973c40ac8d4de4e0ce0dbd11b864d5e228eb2fb1f51a69ab1dfe7",
+    "fact_set_fingerprint": "16d6aac8854f2711f49819256c647506ac35cea1ffd5906a25e47b2598299c25",
     "fact_verifications": {
       "ahi_documented": {
         "fingerprint": null,
@@ -72,7 +72,7 @@
       "sleep_study_date": null,
       "symptom_duration_weeks": null
     },
-    "input_fingerprint": "cc61faea4b68cddab2a203574c2d5c0d3a8737265e5d636378baf39f90cff08e",
+    "input_fingerprint": "c011858a97bf1f99030bc1a4967c02ca1d090f95a7623ec103174998c4693259",
     "invariant_errors": [],
     "metrics": {
       "criteria_met_count": 1,
@@ -156,7 +156,7 @@
     ],
     "not_met": []
   },
-  "bundle_fingerprint": "f36b9be0bb209bc39960e80ab8b4a804dd9b6fd11054ccaa32332eb7d69586ba",
+  "bundle_fingerprint": "1e3dea24499fa5619e8862e53c75ed3596d7e94812314c995f7508a44353d0ef",
   "captured_fact_states": {
     "ahi_documented": "MISSING",
     "back_pain_with_radiculopathy": "MISSING",
@@ -172,6 +172,7 @@
     "symptom_duration_weeks": "MISSING"
   },
   "contract_version": "6779fd812df9d1fa44d8c17af56bff917d91c0395f00fea78846b643bcdaf74c",
+  "engine_version": "2.1.0",
   "evidence_map": {
     "ahi_documented": [
       {
@@ -188,7 +189,7 @@
       }
     ]
   },
-  "fact_set_fingerprint": "978ed65fed8973c40ac8d4de4e0ce0dbd11b864d5e228eb2fb1f51a69ab1dfe7",
+  "fact_set_fingerprint": "16d6aac8854f2711f49819256c647506ac35cea1ffd5906a25e47b2598299c25",
   "facts": {
     "ahi_documented": null,
     "back_pain_with_radiculopathy": null,
@@ -203,7 +204,7 @@
     "sleep_study_date": null,
     "symptom_duration_weeks": null
   },
-  "input_fingerprint": "cc61faea4b68cddab2a203574c2d5c0d3a8737265e5d636378baf39f90cff08e",
+  "input_fingerprint": "c011858a97bf1f99030bc1a4967c02ca1d090f95a7623ec103174998c4693259",
   "letter": {
     "metadata": {
       "cited_snippets_count": 2,
@@ -305,7 +306,7 @@
           }
         ]
       },
-      "fact_set_fingerprint": "978ed65fed8973c40ac8d4de4e0ce0dbd11b864d5e228eb2fb1f51a69ab1dfe7",
+      "fact_set_fingerprint": "16d6aac8854f2711f49819256c647506ac35cea1ffd5906a25e47b2598299c25",
       "fact_verifications": {
         "ahi_documented": {
           "fingerprint": null,
@@ -340,7 +341,7 @@
         "sleep_study_date": null,
         "symptom_duration_weeks": null
       },
-      "input_fingerprint": "cc61faea4b68cddab2a203574c2d5c0d3a8737265e5d636378baf39f90cff08e",
+      "input_fingerprint": "c011858a97bf1f99030bc1a4967c02ca1d090f95a7623ec103174998c4693259",
       "invariant_errors": [],
       "metrics": {
         "criteria_met_count": 1,
@@ -435,7 +436,7 @@
           "state": "UNVERIFIED",
           "verified_at": null
         },
-        "verification_fingerprint": "22a7ca58f2d402e344c299a223d4563c2df2a631b0cdff79ee81fdb6ed20291d"
+        "verification_fingerprint": "09d08d19fa236ca987274583520f4cf4f708cc4a3e7a5aaf4c5c0a7dd36e83b7"
       },
       {
         "evidence": "Date in chart",
@@ -452,7 +453,7 @@
           "state": "UNVERIFIED",
           "verified_at": null
         },
-        "verification_fingerprint": "f847dd50482a5b485e6bf016ac6b4f2a67b91578906351285f1e9d5cd50b0b64"
+        "verification_fingerprint": "d44b157ba624bb0d87f372d30f8cbdc2f8aa3f207cd125fcada065a9bc675ba5"
       },
       {
         "evidence": "AHI value included",
@@ -477,7 +478,7 @@
           "state": "UNVERIFIED",
           "verified_at": null
         },
-        "verification_fingerprint": "efeac04fc9301aaa5e6767557bd10d823038cbdde3553dcca5cc5c2170ca0f21"
+        "verification_fingerprint": "07f0c0be73b2058dfe6baf5ad2db5d22d126a647e7be9638f7a177c1bc9c0de0"
       }
     ],
     "rule_reasons": [
@@ -520,7 +521,7 @@
         "state": "UNVERIFIED",
         "verified_at": null
       },
-      "verification_fingerprint": "22a7ca58f2d402e344c299a223d4563c2df2a631b0cdff79ee81fdb6ed20291d"
+      "verification_fingerprint": "09d08d19fa236ca987274583520f4cf4f708cc4a3e7a5aaf4c5c0a7dd36e83b7"
     },
     {
       "evidence": "Date in chart",
@@ -537,7 +538,7 @@
         "state": "UNVERIFIED",
         "verified_at": null
       },
-      "verification_fingerprint": "f847dd50482a5b485e6bf016ac6b4f2a67b91578906351285f1e9d5cd50b0b64"
+      "verification_fingerprint": "d44b157ba624bb0d87f372d30f8cbdc2f8aa3f207cd125fcada065a9bc675ba5"
     },
     {
       "evidence": "AHI value included",
@@ -562,7 +563,7 @@
         "state": "UNVERIFIED",
         "verified_at": null
       },
-      "verification_fingerprint": "efeac04fc9301aaa5e6767557bd10d823038cbdde3553dcca5cc5c2170ca0f21"
+      "verification_fingerprint": "07f0c0be73b2058dfe6baf5ad2db5d22d126a647e7be9638f7a177c1bc9c0de0"
     }
   ],
   "rule_reasons": [
