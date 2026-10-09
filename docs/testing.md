@@ -185,3 +185,19 @@ The v2.1 reproductions live in `test/test_v210_safety.py`. Run
 MRI evaluation with YAML-load and rulebook-computation counts. Full-suite elapsed
 time comes from `python -m pytest -q`; timing is observational, not a pass/fail
 threshold. The [release report](releases/v2.1.0.md) includes before/after results.
+
+
+## v2.1.3 extraction migration check
+
+`test/test_v213_differential.py` and its frozen v2.1.2 copies in
+`test/frozen_v212/` are a **one-release migration check** for the performance-only
+v2.1.3 extraction rewrite. Remove the differential harness and those frozen
+copies the next time extraction behavior changes intentionally; they must not
+freeze extraction behavior indefinitely. Keep the ordinary corpus, independent
+regressions, and security tests as ongoing coverage.
+
+The harness compares 52 corpus cases and 20 independent regressions separately,
+then compares all 600 generated notes in one test that reports the total number
+of differences (also recorded as JUnit properties). To display that count, run
+`python -m pytest -q -s test/test_v213_differential.py`. All 672 notes still compare
+facts, states, exact spans, citation context, requirement results and statuses.

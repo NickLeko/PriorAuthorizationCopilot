@@ -51,6 +51,8 @@ def cases():
 
 
 CASES = cases()
+FIXTURE_CASES = [case for case in CASES if not case[0].startswith("generated-")]
+GENERATED_CASES = [case for case in CASES if case[0].startswith("generated-")]
 RULES = load_rules("rules/payer_rules.yaml")
 
 
@@ -74,6 +76,21 @@ def projection(extractor, context, note, procedure):
     return json.dumps(payload, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode()
 
 
-@pytest.mark.parametrize("name,note,procedure", CASES, ids=[c[0] for c in CASES])
+@pytest.mark.parametrize("name,note,procedure", FIXTURE_CASES, ids=[c[0] for c in FIXTURE_CASES])
 def test_byte_exact_v212_equivalence(name, note, procedure):
     assert projection(extract_facts, citation_context, note, procedure) == projection(old_extract, old_context, note, procedure), name
+
+
+def test_generated_v212_equivalence(record_property):
+    differences = [
+        name
+        for name, note, procedure in GENERATED_CASES
+        if projection(extract_facts, citation_context, note, procedure) != projection(old_extract, old_context, note, procedure)
+    ]
+    compared = len(GENERATED_CASES)
+    record_property("generated_cases_compared", compared)
+    record_property("generated_differences", len(differences))
+    summary = f"Generated differential: {compared} notes compared; {len(differences)} differences."
+    print(summary)
+    assert compared == 600
+    assert not differences, f"{summary} Differing cases: {', '.join(differences)}"
