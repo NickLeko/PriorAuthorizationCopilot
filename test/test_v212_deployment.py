@@ -72,7 +72,8 @@ def test_streamlit_version_guard_checks_disk_on_every_rerun(monkeypatch):
 
     def newer_release(path, *args, **kwargs):
         if path == Path("engine/__init__.py").resolve():
-            return '__version__ = "2.1.3"\n'
+            # Simulate a newer release than the version under test.
+            return '__version__ = "2.1.4"\n'
         return read_text(path, *args, **kwargs)
 
     monkeypatch.setattr(Path, "read_text", newer_release)

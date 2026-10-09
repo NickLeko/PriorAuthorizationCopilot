@@ -152,7 +152,7 @@ def test_streamlit_fractional_weeks_rejected_without_truncation():
     widget(at, "text_input", f"correction_editor_{key}").set_value("Audit")
     button(at, f"Apply correction: {key}").click().run(timeout=TIMEOUT)
     assert_caches_cleared(at)
-    assert any("expected_integer_weeks" in e.value for e in at.error)
+    assert any("expected_integer_weeks" in e.value for e in at.text)  # Validation details render as literal text.
     assert at.session_state["corrections"] == []
 
 
@@ -184,7 +184,7 @@ def test_streamlit_overlength_audit_comment_rejected_without_truncation():
     button(at, f"Apply correction: {key}").click().run(timeout=TIMEOUT)
     assert_caches_cleared(at)
     assert at.session_state[f"correction_comment_{key}"] == "x" * 1001
-    assert any("at most 1000 characters" in e.value for e in at.error)
+    assert any("at most 1000 characters" in e.value for e in at.text)  # Validation details render as literal text.
 
 
 def test_archive_rejects_matching_but_forged_metric_copies(tmp_path):

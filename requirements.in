@@ -1,0 +1,11 @@
+streamlit==1.55.0
+pyyaml==6.0.3
+pydantic==2.12.5
+requests==2.34.2
+pytest==9.0.3
+fastapi==0.115.14
+uvicorn==0.35.0
+httpx==0.28.1
+ruff==0.12.0
+# Minimum patched Tornado for the public Streamlit server.
+tornado>=6.5.9

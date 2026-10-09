@@ -76,7 +76,7 @@ class CorrectionSpan(BaseModel):
 class DocumentReview(BaseModel):
     model_config = ConfigDict(extra="forbid", frozen=True)
     note_hash: str = Field(strict=True, pattern=r"^[0-9a-f]{64}$")
-    proposal_spans: tuple[CorrectionSpan, ...] = ()
+    proposal_spans: tuple[CorrectionSpan, ...] = Field(default=(), max_length=10)
 
 
 class ReviewerCorrection(BaseModel):
@@ -121,7 +121,7 @@ class PARequestV15(BaseModel):
     dx_codes: List[str] = Field(default_factory=list)
     site_of_care: str = "outpatient"
     specialty: str = "unknown"
-    note_text: str = ""
+    note_text: str = Field(default="", max_length=20_000)
     fact_verifications: Dict[str, FactVerification] = Field(default_factory=dict)
 
     @field_validator("payer", "procedure_code", "site_of_care", "specialty")
@@ -136,7 +136,14 @@ class PARequestV15(BaseModel):
 
 
 class PARequest(PARequestV15):
-    corrections: List[ReviewerCorrection] = Field(default_factory=list, exclude_if=lambda value: not value)
+    corrections: List[ReviewerCorrection] = Field(default_factory=list, max_length=50, exclude_if=lambda value: not value)
+
+    @field_validator("note_text")
+    @classmethod
+    def _validate_note_limits(cls, value):
+        from .note_context import validate_note
+
+        return validate_note(value)
 
     @model_validator(mode="after")
     def _validate_correction_note(self):
@@ -289,6 +296,7 @@ class RequirementResult(BaseModel):
     evidence: Optional[str] = None
     evidence_snippets: List[str] = Field(default_factory=list)
     evidence_spans: List[EvidenceSpan] = Field(default_factory=list)
+    evidence_span_count: Optional[int] = Field(default=None, ge=0, exclude_if=lambda value: value is None)
     fact_value: Any = None
     verification: FactVerification = Field(default_factory=FactVerification)
     verification_fingerprint: Optional[str] = None
@@ -673,11 +681,19 @@ class OriginalProposal(BaseModel):
         snapshot = json.loads(self.snapshot_json)
         if (
             type(snapshot) is not dict
-            or set(snapshot) != {"facts", "states", "evidence"}
+            or set(snapshot) not in ({"facts", "states", "evidence"}, {"facts", "states", "evidence", "evidence_counts"})
             or any(type(snapshot[key]) is not dict for key in ("facts", "states", "evidence"))
             or any(type(spans) is not list for spans in snapshot["evidence"].values())
         ):
             raise ValueError("Invalid original snapshot structure.")
+        counts = snapshot.get("evidence_counts", {})
+        if type(counts) is not dict or any(
+            key not in snapshot["evidence"] or type(count) is not int or count <= 10 or len(snapshot["evidence"][key]) != 10
+            for key, count in counts.items()
+        ):
+            raise ValueError("Invalid truncated evidence counts.")
+        if counts and any(len(spans) > 10 for spans in snapshot["evidence"].values()):
+            raise ValueError("New truncated proposals allow at most 10 spans per fact.")
         if self.snapshot_json != canonical_json(snapshot) or self.content_hash != content_hash(snapshot):
             raise ValueError("Original snapshot content hash/canonical representation mismatch.")
         return self
@@ -707,11 +723,30 @@ class EvaluationResult(EvaluationResultV15):
     uses_reviewer_corrections: bool = Field(default=False, strict=True)
     corrected_requirement_keys: List[str] = Field(default_factory=list)
 
+    @property
+    def evidence_counts(self) -> Dict[str, int]:
+        from .corrections import materialize
+
+        return materialize(self.original_snapshot, self.request.corrections, self.request.note_text, [r.key for r in self.results]).get(
+            "evidence_counts", {}
+        )
+
     @model_validator(mode="before")
     @classmethod
     def _consume_derived_citation_context(cls, value):
         # API/CLI review projections may accompany a canonical record. Validate
         # and discard the derived display field; never persist or fingerprint it.
+        if isinstance(value, dict) and "evidence_counts" in value:
+            from .corrections import materialize
+
+            original = OriginalProposal.model_validate(value["original_snapshot"])
+            request = PARequest.model_validate(value["request"])
+            expected_counts = materialize(original, request.corrections, request.note_text, [r["key"] for r in value["results"]]).get(
+                "evidence_counts", {}
+            )
+            if value["evidence_counts"] != expected_counts:
+                raise ValueError("Derived evidence counts disagree with captured proposal.")
+            value = {k: v for k, v in value.items() if k != "evidence_counts"}
         if isinstance(value, dict) and "citation_context" in value:
             from .citation_context import citation_context
 

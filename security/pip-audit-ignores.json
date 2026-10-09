@@ -1,0 +1,30 @@
+{
+  "CVE-2025-54121": {
+    "package": "starlette",
+    "reason": "Local-only API has no multipart/form endpoint; public Streamlit explicitly uses Tornado."
+  },
+  "CVE-2025-62727": {
+    "package": "starlette",
+    "reason": "Local-only API has no FileResponse or StaticFiles routes; public Streamlit explicitly uses Tornado."
+  },
+  "CVE-2026-48710": {
+    "package": "starlette",
+    "reason": "Local-only API makes no security decision using reconstructed request URLs."
+  },
+  "CVE-2026-48817": {
+    "package": "starlette",
+    "reason": "Local-only API registers no unconstrained HTTPEndpoint subclass."
+  },
+  "CVE-2026-48818": {
+    "package": "starlette",
+    "reason": "Local-only API has no Windows StaticFiles endpoint; public Streamlit explicitly uses Tornado."
+  },
+  "CVE-2026-54282": {
+    "package": "starlette",
+    "reason": "Local-only API has no hostname/URL-based security middleware."
+  },
+  "CVE-2026-54283": {
+    "package": "starlette",
+    "reason": "Local-only API does not call request.form(); public Streamlit explicitly uses Tornado."
+  }
+}

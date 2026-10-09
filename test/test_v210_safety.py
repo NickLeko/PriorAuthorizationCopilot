@@ -206,7 +206,7 @@ def test_api_and_cli_result_context_matches(tmp_path, capsys):
     payload = json.loads(capsys.readouterr().out)
     assert payload["citation_context"] == response.json()["citation_context"]
     canonical = EvaluationResult.model_validate(payload)
-    assert canonical.engine_version == "2.1.2"
+    assert canonical.engine_version == "2.1.3"
     assert "citation_context" not in canonical.model_dump()
     with pytest.raises(ValidationError, match="Derived citation context"):
         EvaluationResult.model_validate(payload | {"citation_context": {}})
@@ -246,7 +246,7 @@ def test_streamlit_verification_and_correction_show_full_contrast_context():
         assert any(item.value == "Effective citations in sentence context (⟦quoted span⟧):" for item in expander.caption)
         assert any(item.value == "Original proposal citations in sentence context:" for item in expander.caption)
         assert [item.value for item in expander.text] == [context, context]
-        assert any(f"{result['label']}: proposed None | NEEDS_REVIEW" == item.value for item in at.markdown)
+        assert any(f"{result['label']}: proposed None | NEEDS_REVIEW" == item.value for item in at.text)
         assert any(item.label == f"I verified {key} against the original note and rule" for item in at.checkbox)
     # Two correction copies per therapy fact plus one verification copy each.
     assert [item.value for item in at.text].count(context) == 6

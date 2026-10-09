@@ -27,7 +27,8 @@ def test_streamlit_featured_case_load_produces_results():
     assert at.session_state["last_eval_payload"]["overall_status"] == "PENDING_VERIFICATION"
     assert at.session_state["last_eval_payload"]["submission_readiness"] is False
     assert any("status-panel" in markdown.value and "PENDING_VERIFICATION" in markdown.value for markdown in at.markdown)
-    assert any("All proposed facts require human verification before READY" in markdown.value for markdown in at.markdown)
+    # Backend messages are literal text as part of the injection fix.
+    assert any("All proposed facts require human verification before READY" in text.value for text in at.text)
     assert any(markdown.value == "#### Deterministic decision trace" for markdown in at.markdown)
 
 
@@ -54,7 +55,8 @@ def test_unrelated_drift_does_not_block_unmonitored_featured_case():
     assert any(metric.label == "Criteria met" and metric.value == "1 of 3" for metric in at.metric)
     assert any(metric.label == "Missing" and metric.value == "2 missing" for metric in at.metric)
     assert any(metric.label == "Needs review" and metric.value == "0 needs review" for metric in at.metric)
-    assert any(markdown.value == "“OSA”" for markdown in at.markdown)
+    # User-supplied evidence is literal text, never Markdown (F2).
+    assert any(text.value == "“OSA”" for text in at.text)
     assert any(caption.value == "osa_diagnosis" for caption in at.caption)
     assert any("`equals_true`" in markdown.value for markdown in at.markdown)
     assert any("❌ MISSING" in markdown.value for markdown in at.markdown)

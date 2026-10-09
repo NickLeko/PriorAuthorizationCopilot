@@ -161,7 +161,7 @@ def test_empty_quotation_cannot_apply_a_value_or_retain_old_letter():
     assert not at.exception
     assert at.session_state["last_eval_payload"] is None
     assert at.session_state["letter_text"] == ""
-    assert any("requires quoted evidence" in error.value for error in at.error)
+    assert any("requires quoted evidence" in error.value for error in at.text)  # Validation details render as literal text.
 
 
 @pytest.mark.parametrize("case", ["MRI-01-complete", "CPAP-02-borderline", "MRI-KNEE-01-ready", "MRI-CERV-01-ready"])

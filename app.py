@@ -343,7 +343,7 @@ def render_corrections(evaluation: EvaluationResult) -> None:
                     cache_evaluation(corrected)
                     st.rerun()
                 except (ValueError, ServiceError) as exc:
-                    st.error(str(exc))
+                    st.text(str(exc))
                     st.stop()
 
 
@@ -449,9 +449,10 @@ def render_decision_trace(evaluation: EvaluationResult) -> None:
             with columns[0]:
                 if result.evidence_snippets:
                     snippet = result.evidence_snippets[0]
-                    st.write(f"“{snippet}”")
-                    if len(result.evidence_snippets) > 1:
-                        st.caption(f"+{len(result.evidence_snippets) - 1} additional evidence span(s)")
+                    st.text(f"“{snippet}”")
+                    total = result.evidence_span_count or len(result.evidence_snippets)
+                    if total > 1:
+                        st.text(f"{total} total evidence spans; up to 10 retained.")
                 else:
                     st.caption("No matching note evidence")
             with columns[1]:
@@ -462,7 +463,7 @@ def render_decision_trace(evaluation: EvaluationResult) -> None:
                 st.write(f"`{requirement.operator}` · {format_rule_operator(requirement)}")
             with columns[3]:
                 st.write(f"**{status_icon[result.status]} {display_status[result.status]}**")
-                st.caption(result.reason)
+                st.text(result.reason)
 
     st.caption(f"Requirement results resolve deterministically to the overall decision shown above: {evaluation.overall_status}.")
 
@@ -475,7 +476,7 @@ def render_requirement_result(result) -> None:
         with c1:
             st.metric("Status", result.status)
         with c2:
-            st.write(result.reason)
+            st.text(result.reason)
 
         if result.evidence:
             st.info(f"What the rule expects: {result.evidence}")
@@ -625,7 +626,7 @@ with st.sidebar:
         passed, total = 0, 0
         synthetic_rows = []
         safety_metrics = {}
-        st.error(f"Exact-status regression unavailable: {exc}")
+        st.text(f"Exact-status regression unavailable: {exc}")
 
     tests_healthy = bool(total and passed == total)
 
@@ -837,7 +838,12 @@ if should_run:
         st.session_state["corrections"] = []
     st.session_state["evaluated_scope"] = scope
     clear_evaluation_outputs()
-    request = current_request()
+    try:
+        request = current_request()
+    except ValueError as exc:
+        st.error("Invalid synthetic input. Check the note and correction limits.")
+        st.text("; ".join(error["msg"] for error in exc.errors()) if hasattr(exc, "errors") else str(exc))
+        st.stop()
     if policy_gate_blocked(request.payer, request.procedure_code):
         st.info("Acknowledge the governance issue for this monitored payer/procedure before running the evaluation.")
         st.session_state["last_eval_payload"] = None
@@ -845,8 +851,8 @@ if should_run:
         try:
             evaluation = service.evaluate(request)
             cache_evaluation(evaluation)
-        except ServiceError as exc:
-            st.error(str(exc))
+        except (ValueError, ServiceError) as exc:
+            st.text(str(exc))
             st.session_state["last_eval_payload"] = None
 
 
@@ -870,10 +876,10 @@ else:
         reviewer = st.text_input("Human verifier name", key="human_verifier_name")
         selected_verifications = {}
         for requirement_result in evaluation.results:
-            st.write(f"{requirement_result.label}: proposed {requirement_result.fact_value!r} | {requirement_result.status}")
+            st.text(f"{requirement_result.label}: proposed {requirement_result.fact_value!r} | {requirement_result.status}")
             for evidence_span in requirement_result.evidence_spans:
                 st.text(citation_context(evaluation.request.note_text, evidence_span.start, evidence_span.end))
-            st.caption(
+            st.text(
                 f"Verification: {requirement_result.verification.state}; "
                 f"reviewer: {requirement_result.verification.reviewer or 'none'}; "
                 f"time: {requirement_result.verification.verified_at or 'none'}"
@@ -916,7 +922,8 @@ else:
             except Exception as exc:
                 # Any failed re-verification, including a backend failure, invalidates cached outputs.
                 clear_evaluation_outputs()
-                st.error(f"Results, attestations and letters cleared after failed re-verification: {exc}")
+                st.error("Results, attestations and letters cleared after failed re-verification.")
+                st.text(str(exc))
                 st.stop()
 
     if evaluation.overall_status == "READY" and not evaluation.submission_readiness:
@@ -932,7 +939,7 @@ else:
     if evaluation.warnings:
         with st.expander("Evaluation warnings", expanded=False):
             for warning in evaluation.warnings:
-                st.write(f"- {warning}")
+                st.text(f"- {warning}")
 
     metric_cols = st.columns(3)
     with metric_cols[0]:
@@ -978,12 +985,12 @@ else:
             or evaluation.supported_procedure.provenance.monitored_source_id
             or "n/a"
         )
-        st.write(f"- Payer: {evaluation.request.payer}")
-        st.write(f"- Procedure: {evaluation.request.procedure_code} ({evaluation.supported_procedure.display_name})")
+        st.text(f"- Payer: {evaluation.request.payer}")
+        st.text(f"- Procedure: {evaluation.request.procedure_code} ({evaluation.supported_procedure.display_name})")
         st.write(f"- Category: {evaluation.supported_procedure.metadata.category}")
         st.write(f"- Rule family: {evaluation.supported_procedure.metadata.rule_family}")
-        st.write(f"- Site of care: {evaluation.request.site_of_care}")
-        st.write(f"- Specialty: {evaluation.request.specialty}")
+        st.text(f"- Site of care: {evaluation.request.site_of_care}")
+        st.text(f"Specialty: {evaluation.request.specialty}")
         st.write(f"- Policy trust level: {evaluation.policy_trust_level.upper()}")
         st.write(f"- Required field keys: {', '.join(evaluation.supported_procedure.required_field_keys)}")
         st.write(f"- Rule source: {rule_source_label}")
@@ -1009,6 +1016,8 @@ else:
         for result in evaluation.results:
             with st.expander(result.label, expanded=False):
                 spans = evaluation.evidence_map.get(result.key, [])
+                if result.key in evaluation.evidence_counts:
+                    st.text(f"Showing {len(spans)} of {evaluation.evidence_counts[result.key]} evidence spans.")
                 if spans:
                     for span in spans:
                         st.code(span.text, language="text")

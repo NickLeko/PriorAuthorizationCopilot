@@ -2,9 +2,7 @@
 
 from __future__ import annotations
 
-from bisect import bisect_left, bisect_right
-
-from .note_context import indexed_note, note_index
+import re
 
 
 def citation_context(note: str, start: int, end: int) -> str:
@@ -15,18 +13,17 @@ def citation_context(note: str, start: int, end: int) -> str:
     """
     if not 0 <= start < end <= len(note):
         raise ValueError("Citation range must belong to the note.")
-    index = note_index(note)
-    left, _ = index.containing(start, end)
-    i = bisect_left(index.starts, end)
-    right = index.ends[i] if i < len(index.ends) else len(note)
-    if end and note[end - 1] in ".!?\n" and bisect_right(index.ends, end) != bisect_left(index.ends, end):
+    boundaries = list(re.finditer(r"(?<!\d)[.!?]|[.!?](?!\d)|\n", note))
+    left = max((match.end() for match in boundaries if match.end() <= start), default=0)
+    right = min((match.end() for match in boundaries if match.start() >= end), default=len(note))
+    # A span may include its sentence's final punctuation.
+    if end and note[end - 1] in ".!?\n" and any(match.end() == end for match in boundaries):
         right = end
     return (note[left:start] + "⟦" + note[start:end] + "⟧" + note[end:right]).strip()
 
 
 def evaluation_citation_context(evaluation) -> dict[str, list[str]]:
-    with indexed_note(evaluation.request.note_text):
-        return {
-            result.key: [citation_context(evaluation.request.note_text, span.start, span.end) for span in result.evidence_spans]
-            for result in evaluation.results
-        }
+    return {
+        result.key: [citation_context(evaluation.request.note_text, span.start, span.end) for span in result.evidence_spans]
+        for result in evaluation.results
+    }
