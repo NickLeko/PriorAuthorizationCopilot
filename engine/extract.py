@@ -618,6 +618,22 @@ def _duration_is_in_therapy_context(text: str, start: int, end: int) -> bool:
     return False
 
 
+def _denial_search(pattern: str, sentence: str):
+    """Preserve greedy matches without restarting the suffix at each prefix.
+
+    Callers supply newline-free spans from the precomputed sentence index.
+    Each linked denial pattern has a fixed prefix followed by one greedy `.*`.
+    If its earliest prefix has no following target, no later prefix can have
+    one either. Match that prefix once, retaining the original pattern's
+    alternation priority, greedy target and Match offsets/groups.
+    """
+    prefix, separator, _ = pattern.partition(".*")
+    if not separator:
+        return re.search(pattern, sentence)
+    first = re.search(prefix, sentence)
+    return re.compile(pattern).match(sentence, first.start()) if first is not None else None
+
+
 def _extract_facts(note_text: str) -> Tuple[Dict[str, Any], Dict[str, List[Dict[str, Any]]]]:
     """
     Deterministic extraction for MVP.
@@ -862,7 +878,7 @@ def _extract_facts(note_text: str) -> Tuple[Dict[str, Any], Dict[str, List[Dict[
     neuro_candidates: List[Tuple[bool | str, int, int]] = []
     for sentence_start, sentence_end in _sentence_spans(t):
         sentence = t[sentence_start:sentence_end]
-        denial_match = next((match for pat in denial_patterns if (match := re.search(pat, sentence))), None)
+        denial_match = next((match for pat in denial_patterns if (match := _denial_search(pat, sentence))), None)
         positive_match = next((match for pat in positive_patterns if (match := re.search(pat, sentence))), None)
         if (
             denial_match is not None
@@ -990,7 +1006,7 @@ def _extract_facts(note_text: str) -> Tuple[Dict[str, Any], Dict[str, List[Dict[
     mechanical_candidates: List[Tuple[bool | str, int, int]] = []
     for sentence_start, sentence_end in _sentence_spans(t):
         sentence = t[sentence_start:sentence_end]
-        denial_match = next((match for pat in mechanical_denial_patterns if (match := re.search(pat, sentence))), None)
+        denial_match = next((match for pat in mechanical_denial_patterns if (match := _denial_search(pat, sentence))), None)
         positive_match = next(
             (match for pat in mechanical_positive_patterns if (match := re.search(pat, sentence))),
             None,

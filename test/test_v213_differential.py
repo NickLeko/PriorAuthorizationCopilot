@@ -47,6 +47,17 @@ def cases():
         note = separator.join(pieces)
         note = note.replace(" ", rng.choice([" ", "  ", "\t", " \t "]))
         notes.append((f"generated-{i:03}", note, rng.choice(["MRI_LUMBAR", "MRI_KNEE", "CPAP_DEVICE"])))
+    # Supplemental short notes stress repeated denial prefixes and greedy target
+    # selection while keeping the frozen vulnerable implementation inexpensive.
+    for i in range(24):
+        negation = ["no", "denies", "without"][i % 3]
+        target = ["weakness and numbness", "locking and instability", "saddle anesthesia", "giving way"][i % 4]
+        whitespace = [" ", "  ", "\t"][i % 3]
+        prefix = whitespace.join([negation] * (12 + i))
+        ending = [target, "unrelated symptoms", f"{target}, no {target}"][i % 3]
+        separator = [". ", "; ", "\n", " but "][i % 4]
+        note = prefix + whitespace + ending + separator + "denies weakness; no locking but reports catching"
+        notes.append((f"generated-denial-{i:02}", note, ["MRI_LUMBAR", "MRI_KNEE"][i % 2]))
     return notes
 
 
@@ -92,5 +103,5 @@ def test_generated_v212_equivalence(record_property):
     record_property("generated_differences", len(differences))
     summary = f"Generated differential: {compared} notes compared; {len(differences)} differences."
     print(summary)
-    assert compared == 600
+    assert compared == 624
     assert not differences, f"{summary} Differing cases: {', '.join(differences)}"

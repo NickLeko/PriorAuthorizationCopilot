@@ -29,6 +29,20 @@ def test_audit_redos_inputs_finish_promptly(note):
     subprocess.run([sys.executable, "-B", "-c", script], check=True, timeout=2.0)
 
 
+@pytest.mark.parametrize("token", ["no ", "denies ", "without "])
+def test_near_cap_denial_search_does_not_rescan_suffixes(token):
+    note = (token * (20_000 // len(token))).rstrip()
+    script = (
+        "import time; from engine.extract import extract_facts; "
+        f"started = time.perf_counter(); extract_facts({note!r}); "
+        "elapsed = time.perf_counter() - started; "
+        "assert elapsed < 0.5, f'Denial extraction took {elapsed:.3f}s; suffix rescans may have returned'"
+    )
+    # The extraction deadline is generous relative to measured milliseconds;
+    # process startup is outside it. An outer deadline also catches a hang.
+    subprocess.run([sys.executable, "-B", "-c", script], check=True, timeout=4.0)
+
+
 @pytest.mark.parametrize("note", ["no " * 8000, "PT for 6 weeks. " * 2000])
 def test_audit_overlimit_inputs_rejected_before_extraction(note):
     started = time.perf_counter()

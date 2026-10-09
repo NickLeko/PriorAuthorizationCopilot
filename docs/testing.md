@@ -197,7 +197,8 @@ freeze extraction behavior indefinitely. Keep the ordinary corpus, independent
 regressions, and security tests as ongoing coverage.
 
 The harness compares 52 corpus cases and 20 independent regressions separately,
-then compares all 600 generated notes in one test that reports the total number
+then compares 600 seeded generated notes plus 24 denial-heavy generated notes
+in one test that reports the total number
 of differences (also recorded as JUnit properties). To display that count, run
-`python -m pytest -q -s test/test_v213_differential.py`. All 672 notes still compare
+`python -m pytest -q -s test/test_v213_differential.py`. All 696 notes compare
 facts, states, exact spans, citation context, requirement results and statuses.
