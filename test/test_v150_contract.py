@@ -82,7 +82,9 @@ class TestExtractionContractAlignment:
             if isinstance(node, (ast.Import, ast.ImportFrom))
             for alias in (node.names if isinstance(node, ast.Import) else [None])
         }
-        assert imports <= {"__future__", "re", "dataclasses", "typing", "schemas"}
+        # bisect: stdlib indexed boundary lookup replaces repeated note scans.
+        # note_context: internal per-operation indexes, no NLP or shared note cache.
+        assert imports <= {"__future__", "re", "dataclasses", "typing", "schemas", "bisect", "note_context"}
 
     @pytest.mark.parametrize("prefix", ["İ", "İİİ", "😀İ\n", "É\tİ\n", "ΟΣ İ "])
     def test_G02_unicode_offsets_and_literal_citations(self, prefix):

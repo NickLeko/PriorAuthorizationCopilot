@@ -9,6 +9,7 @@ from pydantic import computed_field
 
 from engine import __version__
 from engine.citation_context import evaluation_citation_context
+from engine.note_context import MAX_REQUEST_BYTES
 from engine.rendering import export_evaluation_payload
 from engine.schemas import (
     DemoCase,
@@ -31,6 +32,45 @@ app = FastAPI(
         "No clinical judgment, approval prediction, or autonomous action."
     ),
 )
+
+
+class RequestBodyLimit:
+    """Bound bytes before either JSON decoder, including chunked requests."""
+
+    def __init__(self, app):
+        self.app = app
+
+    async def __call__(self, scope, receive, send):
+        if scope["type"] != "http":
+            return await self.app(scope, receive, send)
+        headers = dict(scope.get("headers", []))
+        try:
+            declared = int(headers.get(b"content-length", b"0"))
+        except ValueError:
+            declared = 0
+        body = bytearray()
+        if declared <= MAX_REQUEST_BYTES:
+            while True:
+                event = await receive()
+                if event["type"] == "http.disconnect":
+                    return
+                body.extend(event.get("body", b""))
+                if len(body) > MAX_REQUEST_BYTES or not event.get("more_body", False):
+                    break
+        if declared > MAX_REQUEST_BYTES or len(body) > MAX_REQUEST_BYTES:
+            response = JSONResponse(status_code=413, content={"error": "invalid_request", "detail": "Request body exceeds 1048576 bytes."})
+            return await response(scope, receive, send)
+        delivered = False
+
+        async def bounded_receive():
+            nonlocal delivered
+            if not delivered:
+                delivered = True
+                return {"type": "http.request", "body": bytes(body), "more_body": False}
+            return await receive()
+
+        await self.app(scope, bounded_receive, send)
+
 
 service = ReadinessService()
 
@@ -62,6 +102,9 @@ async def reject_nonfinite_json(request: Request, call_next):
         except (json.JSONDecodeError, UnicodeDecodeError):
             pass  # Ordinary malformed JSON retains FastAPI's normal 422 handling.
     return await call_next(request)
+
+
+app.add_middleware(RequestBodyLimit)
 
 
 @app.exception_handler(UnsupportedScopeError)

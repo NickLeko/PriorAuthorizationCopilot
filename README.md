@@ -206,7 +206,7 @@ If you prefer direct commands:
 
 ```bash
 python3.12 -m venv .venv
-.venv/bin/python -m pip install -r requirements.txt
+.venv/bin/python -m pip install --require-hashes -r requirements.lock
 .venv/bin/python -m pytest -q
 .venv/bin/python -m pytest -q test/test_acceptance_snapshots.py
 .venv/bin/python -m ruff check .
@@ -215,6 +215,10 @@ python3.12 -m venv .venv
 .venv/bin/python -m scripts.generate_golden_outputs
 .venv/bin/python -m streamlit run app.py
 ```
+
+Security limits, dependency audit exceptions, and validation results are documented in
+[the v2.1.3 security release notes](docs/releases/v2.1.3.md). Streamlit Cloud installs
+the hashed transitive lock through `requirements.txt`. Use synthetic data only.
 
 ## FastAPI
 

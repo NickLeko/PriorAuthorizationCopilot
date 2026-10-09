@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import re
+import unicodedata
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from hashlib import sha256
@@ -107,6 +108,19 @@ def _derive_overall_status(draft_input: LetterDraftInput) -> OverallStatus:
     return "READY"
 
 
+def _literal_header(value: str) -> str:
+    """Identity/header values occupy one line; controls cannot forge structure."""
+    return " ".join(
+        "".join(" " if unicodedata.category(char).startswith("C") or char in "\u2028\u2029" else char for char in value).split()
+    )
+
+
+def _quotation(value: str) -> str:
+    # JSON string escaping keeps literal newlines, quotes, and control bytes
+    # inside one visibly delimited source quotation.
+    return json.dumps(value, ensure_ascii=False)
+
+
 def _sanitize_dx_codes(dx_codes: List[str]) -> List[str]:
     """
     Conservative sanitation:
@@ -117,7 +131,7 @@ def _sanitize_dx_codes(dx_codes: List[str]) -> List[str]:
     """
     out: List[str] = []
     for c in dx_codes or []:
-        s = (c or "").strip().upper().replace(" ", "").replace("%", "")
+        s = _literal_header(c or "").strip().upper().replace(" ", "").replace("%", "")
         if s:
             out.append(s)
     # Dedup preserve order
@@ -272,10 +286,10 @@ def draft_letter(
 
     # Header
     header_lines = [
-        f"Payer: {request.payer}",
-        f"Procedure: {request.procedure_code}",
-        f"Site of care: {request.site_of_care}",
-        f"Specialty: {request.specialty}",
+        f"Payer: {_literal_header(request.payer)}",
+        f"Procedure: {_literal_header(request.procedure_code)}",
+        f"Site of care: {_literal_header(request.site_of_care)}",
+        f"Specialty: {_literal_header(request.specialty)}",
         f"Generated: {ts}",
     ]
     if dx_codes:
@@ -371,12 +385,12 @@ def draft_letter(
                 f"  Effective value: {json.dumps(disclosure.effective_value, ensure_ascii=False)} ({disclosure.captured_state})"
             )
             req_lines.append(f"  Correction action: {disclosure.action}")
-            req_lines.append(f"  Editor (self-reported): {disclosure.editor}")
-            req_lines.append(f"  Verifier (self-reported): {disclosure.verifier or 'none'}; {r.verification.state}")
+            req_lines.append(f"  Editor (self-reported): {_literal_header(disclosure.editor)}")
+            req_lines.append(f"  Verifier (self-reported): {_literal_header(disclosure.verifier or 'none')}; {r.verification.state}")
             if disclosure.supporting_date is not None:
                 req_lines.append(f"  Supporting date only: {disclosure.supporting_date}")
             for span in disclosure.source_spans:
-                req_lines.append(f'  Source quotation [{span.start}:{span.end}]: "{span.text}"')
+                req_lines.append(f"  Source quotation [{span.start}:{span.end}]: {_quotation(span.text)}")
                 if span.text not in cited_seen:
                     cited_seen.add(span.text)
                     cited_snips_unique.append(span.text)
@@ -385,8 +399,12 @@ def draft_letter(
 
         if r.evidence_snippets:
             req_lines.append("  Evidence:")
+            if r.evidence_span_count is not None:
+                req_lines.append(f"  {r.evidence_span_count} total evidence spans; at most 10 retained in the report.")
             for snip in r.evidence_snippets[:5]:
                 s = str(snip or "").strip()
+                if any(char in s for char in '\n\r\t"\\') or any(unicodedata.category(char).startswith("C") for char in s):
+                    s = _quotation(s)[1:-1]
                 if not s:
                     continue
                 s_fmt = _format_snippet(s)

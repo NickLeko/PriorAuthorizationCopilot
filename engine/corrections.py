@@ -77,13 +77,17 @@ def capture_original(facts: dict, evidence: dict) -> OriginalProposal:
         },
         "evidence": evidence,
     }
+    if getattr(evidence, "total_counts", None):
+        snapshot["evidence_counts"] = evidence.total_counts
     return OriginalProposal(snapshot_json=canonical_json(snapshot), content_hash=content_hash(snapshot))
 
 
 def materialize(original: OriginalProposal, corrections, note: str, requirement_keys) -> dict:
     """Fresh effective facts; original canonical JSON is never modified."""
     snapshot = original.content
-    if set(snapshot) != {"facts", "states", "evidence"} or set(snapshot["facts"]) != set(snapshot["states"]):
+    if set(snapshot) not in ({"facts", "states", "evidence"}, {"facts", "states", "evidence", "evidence_counts"}) or set(
+        snapshot["facts"]
+    ) != set(snapshot["states"]):
         raise ValueError("Invalid original snapshot structure.")
     if set(snapshot["evidence"]) - set(snapshot["facts"]):
         raise ValueError("Original evidence contains unknown facts.")
@@ -104,6 +108,10 @@ def materialize(original: OriginalProposal, corrections, note: str, requirement_
             raise ValueError(f"Unknown correction requirement: {key}")
         contract = get_fact_contract(key)
         validate_note_evidence(event, note)
+        if event.action in {"SET_VALUE", "SET_MISSING"}:
+            effective.get("evidence_counts", {}).pop(key, None)
+        if event.action == "RESTORE_ORIGINAL" and key in snapshot.get("evidence_counts", {}):
+            effective.setdefault("evidence_counts", {})[key] = snapshot["evidence_counts"][key]
         if event.action == "SET_VALUE":
             effective["facts"][key] = validate_correction_value(key, event.value)
             effective["states"][key] = "CAPTURED"
@@ -131,6 +139,8 @@ def materialize(original: OriginalProposal, corrections, note: str, requirement_
             effective["evidence"].pop(key, None)
             if key in snapshot["evidence"]:
                 effective["evidence"][key] = snapshot["evidence"][key]
+    if "evidence_counts" in effective and not effective["evidence_counts"]:
+        effective.pop("evidence_counts")
     return effective
 
 
@@ -221,6 +231,7 @@ def validate_v2_result(result) -> None:
     facts = facts_for_policy(evaluator_facts(effective), result.policy_version)[0]
     expected_results, reasons = evaluate_requirements(result.policy_version.requirements, facts, evidence_map=effective["evidence"])
     for expected, actual in zip(expected_results, result.results, strict=True):
+        expected.evidence_span_count = effective.get("evidence_counts", {}).get(expected.key)
         expected.fact_value = effective["facts"].get(expected.key)
         expected.verification_fingerprint = verification_fingerprint(fact_hash, expected.key)
         validate_attestation(actual.verification, expected.verification_fingerprint, result.request.corrections)

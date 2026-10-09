@@ -16,6 +16,8 @@ def export_evaluation_payload(
     include_citation_context: bool = False,
 ) -> Dict[str, Any]:
     payload = evaluation.model_dump(mode="json")
+    if evaluation.evidence_counts:
+        payload["evidence_counts"] = evaluation.evidence_counts
     if include_citation_context:
         payload["citation_context"] = evaluation_citation_context(evaluation)
     if letter_text is not None or letter_meta is not None:
@@ -69,6 +71,8 @@ def render_cli_evaluation(evaluation: EvaluationResult) -> str:
     for result in evaluation.results:
         lines.append(f"- {result.label}: {result.status} | {result.reason} | verification={result.verification.state}")
         lines.extend(f"  Citation context: {context}" for context in contexts[result.key])
+        if result.key in evaluation.evidence_counts:
+            lines.append(f"  Evidence: showing {len(result.evidence_spans)} of {evaluation.evidence_counts[result.key]} spans")
         if result.verification.state == "HUMAN_VERIFIED":
             lines.append(f"  Verified by {result.verification.reviewer} at {result.verification.verified_at.isoformat()}")
 

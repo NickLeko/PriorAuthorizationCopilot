@@ -8,7 +8,7 @@ RUN_PYTHON := $(if $(wildcard $(VENV_PYTHON)),$(VENV_PYTHON),$(PYTHON))
 install:
 	$(PYTHON) -m venv .venv
 	$(VENV_PYTHON) -m pip install --upgrade pip
-	$(VENV_PYTHON) -m pip install -r requirements.txt
+	$(VENV_PYTHON) -m pip install --require-hashes -r requirements.lock
 
 run:
 	$(RUN_PYTHON) -m streamlit run app.py

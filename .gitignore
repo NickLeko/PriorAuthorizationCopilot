@@ -7,7 +7,8 @@ __pycache__/
 .venv/
 
 # Streamlit runtime
-.streamlit/
+.streamlit/*
+!.streamlit/config.toml
 
 # Policy snapshots (governance artifacts)
 # Keep normalized snapshots, diffs, and drift logs

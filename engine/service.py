@@ -494,7 +494,10 @@ class ReadinessService:
                 }
             )
 
-        raw_facts, raw_evidence_map = extract_facts(normalized_request.note_text)
+        try:
+            raw_facts, raw_evidence_map = extract_facts(normalized_request.note_text)
+        except ValueError as exc:
+            raise InvalidRequestError(str(exc)) from exc
         original = capture_original(raw_facts, raw_evidence_map)
         requirement_payloads = [requirement.model_dump(exclude_none=True) for requirement in supported.requirements]
         try:
@@ -514,6 +517,7 @@ class ReadinessService:
         if unknown_keys:
             raise InvalidRequestError(f"Unknown verification requirements: {sorted(unknown_keys)}")
         for result in results:
+            result.evidence_span_count = effective.get("evidence_counts", {}).get(result.key)
             result.fact_value = public_facts.get(result.key)
             result.verification_fingerprint = verification_fingerprint(fact_hash, result.key)
             attestation = normalized_request.fact_verifications.get(result.key)

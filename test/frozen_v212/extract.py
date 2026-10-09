@@ -1,12 +1,10 @@
 from __future__ import annotations
 
 import re
-from bisect import bisect_left, bisect_right
 from dataclasses import dataclass
 from typing import Any, Dict, List, Optional, Tuple
 
-from .note_context import EvidenceMap, indexed_note, note_index, validate_note
-from .schemas import REVIEW_REQUIRED_FACT
+from engine.schemas import REVIEW_REQUIRED_FACT
 
 THERAPY_CONTEXT = r"(?:pt|physical therapy|nsaids?|anti-?inflammator(?:y|ies)|activity modification|home exercise|hep|chiropractic|chiro)"
 THERAPY_AFTER_RE = re.compile(rf"\b{THERAPY_CONTEXT}\b(?:\s*(?:x|for|over|about)\s*)\b(?P<value>\d+)\s*(?:week|weeks)\b")
@@ -34,7 +32,7 @@ CPB_0236_RESPONSE_RE = re.compile(
     r"\b(?:substantial|significant|meaningful|good)\s+(?:improvement|relief|response)\b"
     r"|\bsymptoms? resolved\b"
 )
-THERAPY_CLAUSE_BOUNDARY_RE = re.compile(r";\s*|(?:,\s*)?\b(?:whereas|while|however|but|though|although|yet|in contrast)\b\s*[:,]?\s*")
+THERAPY_CLAUSE_BOUNDARY_RE = re.compile(r"\s*(?:;\s*|,?\s*\b(?:whereas|while|however|but|though|although|yet|in contrast)\b\s*[:,]?\s*)")
 EXCLUSION_TRIGGER = (
     r"\b(?:ruled\s+out|ordered|prescribed|recommended|not\s+yet\s+started|"
     r"has\s+not\s+started|not\s+completed|never\s+completed|cancelled|canceled)\b"
@@ -188,31 +186,26 @@ def _has_pattern(patterns: List[str], text: str) -> bool:
 
 def _mention_is_in_questioned_sentence(text: str, end: int) -> bool:
     """Treat a supported mention in a question as uncertain evidence."""
-    starts = note_index(text).punctuation
-    i = bisect_left(starts, end)
-    return i < len(starts) and text[starts[i]] == "?"
+    boundary = re.search(r"[.!?;\n]", text[end:])
+    return bool(boundary and boundary.group(0) == "?")
 
 
 def _sentence_spans(text: str, *, therapy: bool = False) -> List[Tuple[int, int]]:
-    index = note_index(text)
-    if therapy in index.spans:
-        return index.spans[therapy]
     spans: List[Tuple[int, int]] = []
     start = 0
     # Keep legacy finding clauses narrow to avoid borrowing sensory attributes.
     # Therapy safety checks need the whole sentence, including semicolon contrast.
-    boundaries = list(zip(index.starts, index.ends)) if therapy else [(m.start(), m.end()) for m in index.clauses]
-    for boundary_start, boundary_end in boundaries:
-        end = boundary_start
+    boundaries = r"(?<!\d)[.!?]|[.!?](?!\d)|\n" if therapy else r"[.!?;\n]+"
+    for boundary in re.finditer(boundaries, text):
+        end = boundary.start()
         if text[start:end].strip():
             left_trim = len(text[start:end]) - len(text[start:end].lstrip())
             right_trim = len(text[start:end].rstrip())
             spans.append((start + left_trim, start + right_trim))
-        start = boundary_end
+        start = boundary.end()
     if text[start:].strip():
         left_trim = len(text[start:]) - len(text[start:].lstrip())
         spans.append((start + left_trim, len(text.rstrip())))
-    index.spans[therapy] = spans
     return spans
 
 
@@ -239,14 +232,11 @@ def _context_trigger(text: str, start: int, end: int, pattern: str, *, scope: st
     Decimal points inside numeric findings are not sentence boundaries.
     Use one helper for the v2.1 safety exclusions and AHI missingness scope.
     """
-    index = note_index(text)
-    left, right = index.containing(start, end)
-    if scope == "after":
-        return re.search(pattern, text[end:right])
-    key = (left, right, pattern)
-    if key not in index.searches:
-        index.searches[key] = re.search(pattern, text[left:right])
-    return index.searches[key]
+    boundaries = list(re.finditer(r"(?<!\d)[.!?]|[.!?](?!\d)|\n", text))
+    left = max((match.end() for match in boundaries if match.end() <= start), default=0)
+    right = min((match.start() for match in boundaries if match.start() >= end), default=len(text))
+    context = text[end:right] if scope == "after" else text[left:right]
+    return re.search(pattern, context)
 
 
 def _unqualified_contrast_response(text: str) -> bool:
@@ -329,24 +319,21 @@ def _finding_is_uncertain(
 
 def _mention_is_nonpatient_context(text: str, start: int, end: int) -> bool:
     """Return True only for explicit family/non-patient context near a mention."""
-    after = text[end : end + 160]
-    index = note_index(text)
-    for name, pattern in (("family", FAMILY_SUBJECT_RE), ("patient", PATIENT_SUBJECT_RE)):
-        if name not in index.subjects:
-            index.subjects[name] = [(m.start(), m.end()) for m in pattern.finditer(text)]
-            index.subjects[name + "_ends"] = [m[1] for m in index.subjects[name]]
-    fi = bisect_right(index.subjects["family_ends"], start)
-    pi = bisect_right(index.subjects["patient_ends"], start)
-    last_family = index.subjects["family"][fi - 1][0] if fi else -1
-    last_patient = index.subjects["patient"][pi - 1][0] if pi else -1
+    before = text[:start]
+    after = text[end:]
+    family_before = list(FAMILY_SUBJECT_RE.finditer(before))
+    patient_before = list(PATIENT_SUBJECT_RE.finditer(before))
+    last_family = family_before[-1].start() if family_before else -1
+    last_patient = patient_before[-1].start() if patient_before else -1
 
     if last_family > last_patient:
         return True
-    if re.compile(
-        r"\s+(?:in|for)\s+(?:the\s+patient'?s\s+|his\s+|her\s+)?"
+    if re.match(
+        r"^\s+(?:in|for)\s+(?:the\s+patient'?s\s+|his\s+|her\s+)?"
         r"(?:mother|father|mom|dad|sister|brother|parent|son|daughter|spouse|wife|husband|"
         r"grandmother|grandfather|aunt|uncle|sibling|relative|caregiver|guardian)\b",
-    ).match(text, end):
+        after,
+    ):
         return True
 
     # Handle explicit non-patient attribution after the mention without trying
@@ -618,23 +605,7 @@ def _duration_is_in_therapy_context(text: str, start: int, end: int) -> bool:
     return False
 
 
-def _denial_search(pattern: str, sentence: str):
-    """Preserve greedy matches without restarting the suffix at each prefix.
-
-    Callers supply newline-free spans from the precomputed sentence index.
-    Each linked denial pattern has a fixed prefix followed by one greedy `.*`.
-    If its earliest prefix has no following target, no later prefix can have
-    one either. Match that prefix once, retaining the original pattern's
-    alternation priority, greedy target and Match offsets/groups.
-    """
-    prefix, separator, _ = pattern.partition(".*")
-    if not separator:
-        return re.search(pattern, sentence)
-    first = re.search(prefix, sentence)
-    return re.compile(pattern).match(sentence, first.start()) if first is not None else None
-
-
-def _extract_facts(note_text: str) -> Tuple[Dict[str, Any], Dict[str, List[Dict[str, Any]]]]:
+def extract_facts(note_text: str) -> Tuple[Dict[str, Any], Dict[str, List[Dict[str, Any]]]]:
     """
     Deterministic extraction for MVP.
 
@@ -878,7 +849,7 @@ def _extract_facts(note_text: str) -> Tuple[Dict[str, Any], Dict[str, List[Dict[
     neuro_candidates: List[Tuple[bool | str, int, int]] = []
     for sentence_start, sentence_end in _sentence_spans(t):
         sentence = t[sentence_start:sentence_end]
-        denial_match = next((match for pat in denial_patterns if (match := _denial_search(pat, sentence))), None)
+        denial_match = next((match for pat in denial_patterns if (match := re.search(pat, sentence))), None)
         positive_match = next((match for pat in positive_patterns if (match := re.search(pat, sentence))), None)
         if (
             denial_match is not None
@@ -1006,7 +977,7 @@ def _extract_facts(note_text: str) -> Tuple[Dict[str, Any], Dict[str, List[Dict[
     mechanical_candidates: List[Tuple[bool | str, int, int]] = []
     for sentence_start, sentence_end in _sentence_spans(t):
         sentence = t[sentence_start:sentence_end]
-        denial_match = next((match for pat in mechanical_denial_patterns if (match := _denial_search(pat, sentence))), None)
+        denial_match = next((match for pat in mechanical_denial_patterns if (match := re.search(pat, sentence))), None)
         positive_match = next(
             (match for pat in mechanical_positive_patterns if (match := re.search(pat, sentence))),
             None,
@@ -1099,16 +1070,10 @@ def _extract_facts(note_text: str) -> Tuple[Dict[str, Any], Dict[str, List[Dict[
 
     m_ahi_missing = None
     missing_pattern = r".*\b(not documented|not stated|not available|unknown|n/?a|missing)\b"
-    missing_tokens = list(re.finditer(r"\b(not documented|not stated|not available|unknown|n/?a|missing)\b", t))
-    missing_starts = [m.start() for m in missing_tokens]
-    index = note_index(t)
     for mention in re.finditer(r"\b(ahi|rdi)\b", t):
-        _, right = index.containing(mention.start(), mention.end())
-        i = bisect_left(missing_starts, right) - 1
-        if i >= 0 and missing_tokens[i].start() >= mention.end():
-            # Preserve the original greedy quotation (last missingness token),
-            # but search tokens once instead of every possible suffix start.
-            m_ahi_missing = re.compile(r"\b(ahi|rdi)\b" + missing_pattern).match(t, mention.start(), missing_tokens[i].end())
+        trigger = _context_trigger(t, mention.start(), mention.end(), missing_pattern, scope="after")
+        if trigger is not None:
+            m_ahi_missing = re.compile(r"\b(ahi|rdi)\b" + missing_pattern).match(t, mention.start(), mention.end() + trigger.end())
             break
     if m_ahi_missing is not None and _match_is_nonpatient_context(t, m_ahi_missing):
         m_ahi_missing = None
@@ -1167,10 +1132,4 @@ def _extract_facts(note_text: str) -> Tuple[Dict[str, Any], Dict[str, List[Dict[
             start = original_indices[span["start"]]
             end = original_indices[span["end"] - 1] + 1
             span.update(start=start, end=end, text=raw[start:end])
-    return facts, EvidenceMap(_dedup_spans(evidence))
-
-
-def extract_facts(note_text: str) -> Tuple[Dict[str, Any], Dict[str, List[Dict[str, Any]]]]:
-    validate_note(note_text or "")
-    with indexed_note((note_text or "").lower()):
-        return _extract_facts(note_text)
+    return facts, _dedup_spans(evidence)

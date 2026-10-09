@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import asyncio
 import datetime as dt
 import difflib
 import hashlib
@@ -20,6 +21,9 @@ DEFAULT_SOURCES_YAML = Path("rules/policy_sources.yaml")
 DEFAULT_SNAPSHOT_ROOT = Path("policy_snapshots")
 DEFAULT_LOG_PATH = DEFAULT_SNAPSHOT_ROOT / "drift_log.jsonl"
 SNAPSHOT_NORMALIZATION_VERSION = "engine.policy_monitor.normalize_policy:v1"
+SOURCE_ID_RE = re.compile(r"[a-z0-9]+(?:[-_][a-z0-9]+)*\Z")
+MAX_POLICY_BYTES = 2 * 1024 * 1024
+MAX_POLICY_REDIRECTS = 3
 
 
 @dataclass(frozen=True)
@@ -34,6 +38,14 @@ class PolicySource:
     check_frequency: str
     owner: str
     notes: str = ""
+
+    def __post_init__(self):
+        validate_source_id(self.id)
+
+
+def validate_source_id(source_id: str) -> None:
+    if not isinstance(source_id, str) or not SOURCE_ID_RE.fullmatch(source_id):
+        raise ValueError("Policy-source ID must be a lowercase slug using letters, digits, hyphens or underscores.")
 
 
 class SnapshotValidationError(ValueError):
@@ -105,21 +117,51 @@ def load_policy_sources(path: Path = DEFAULT_SOURCES_YAML, *, data: dict | None 
     return out
 
 
-def fetch_policy(url: str, timeout_s: int = 15) -> str:
+def fetch_policy(url: str, timeout_s: float = 15, *, max_bytes: int = MAX_POLICY_BYTES, max_redirects: int = MAX_POLICY_REDIRECTS) -> str:
     """
     Fetch raw policy content.
     Note: tests must NOT call this (offline fixtures only).
     """
-    try:
-        import requests  # type: ignore
-    except Exception as e:
-        raise RuntimeError("requests is required for live fetches (not used in tests).") from e
+    from urllib.parse import urljoin, urlsplit
 
-    headers = {"User-Agent": "PriorAuthorizationCopilot/PolicyMonitor (+governance; contact owner in policy_sources.yaml)"}
-    resp = requests.get(url, headers=headers, timeout=timeout_s)
-    resp.raise_for_status()
-    # Keep as text; normalization will reduce noise.
-    return resp.text
+    import httpx
+
+    async def fetch():
+        current = url
+        headers = {"User-Agent": "PriorAuthorizationCopilot/PolicyMonitor (+governance; contact owner in policy_sources.yaml)"}
+        async with httpx.AsyncClient(timeout=timeout_s, follow_redirects=False) as client:
+            for redirects in range(max_redirects + 1):
+                parsed = urlsplit(current)
+                if parsed.scheme not in {"https", "http"} or not parsed.hostname or parsed.username or parsed.password:
+                    raise ValueError("Policy URLs must be HTTP(S) URLs without credentials.")
+                async with client.stream("GET", current, headers=headers) as resp:
+                    if resp.status_code in {301, 302, 303, 307, 308}:
+                        if redirects == max_redirects or "location" not in resp.headers:
+                            raise ValueError("Policy fetch exceeded its redirect limit or has no redirect target.")
+                        target = urljoin(current, resp.headers["location"])
+                        if parsed.scheme == "https" and urlsplit(target).scheme != "https":
+                            raise ValueError("Policy redirects cannot downgrade HTTPS.")
+                        current = target
+                        continue
+                    resp.raise_for_status()
+                    content = bytearray()
+                    async for chunk in resp.aiter_bytes(chunk_size=1024):
+                        if len(content) + len(chunk) > max_bytes:
+                            raise ValueError("Policy response exceeds its byte limit.")
+                        content.extend(chunk)
+                    return bytes(content).decode(resp.encoding or "utf-8", errors="replace")
+        raise ValueError("Policy fetch exceeded its redirect limit.")
+
+    async def bounded_fetch():
+        try:
+            # Cancellation interrupts the actual socket reads, including a peer
+            # trickling data without completing an output chunk. No worker leaks.
+            async with asyncio.timeout(timeout_s):
+                return await fetch()
+        except TimeoutError as exc:
+            raise TimeoutError("Policy fetch exceeded its overall deadline.") from exc
+
+    return asyncio.run(bounded_fetch())
 
 
 class _HTMLTextExtractor:
@@ -311,19 +353,27 @@ def validate_snapshot(
 
 
 def _source_dir(root: Path, source_id: str) -> Path:
-    return root / source_id
+    validate_source_id(source_id)
+    return _contained(root, root / source_id)
+
+
+def _contained(root: Path, path: Path) -> Path:
+    resolved_root, resolved = root.resolve(), path.resolve()
+    if not resolved.is_relative_to(resolved_root):
+        raise ValueError("Policy snapshot path escapes its configured root.")
+    return resolved
 
 
 def _latest_snapshot_path(root: Path, source_id: str) -> Path:
-    return _source_dir(root, source_id) / "latest.json"
+    return _contained(root, _source_dir(root, source_id) / "latest.json")
 
 
 def _history_snapshot_path(root: Path, source_id: str, ts: str) -> Path:
-    return _source_dir(root, source_id) / "history" / f"{ts}.json"
+    return _contained(root, _source_dir(root, source_id) / "history" / f"{ts}.json")
 
 
 def _diff_path(root: Path, source_id: str, ts: str) -> Path:
-    return _source_dir(root, source_id) / "diffs" / f"{ts}.patch"
+    return _contained(root, _source_dir(root, source_id) / "diffs" / f"{ts}.patch")
 
 
 def read_latest_snapshot(
@@ -362,8 +412,8 @@ def write_snapshot(
     """
     src_dir = _source_dir(snapshot_root, source.id)
     _safe_mkdir(src_dir)
-    _safe_mkdir(src_dir / "history")
-    _safe_mkdir(src_dir / "diffs")
+    _safe_mkdir(_contained(snapshot_root, src_dir / "history"))
+    _safe_mkdir(_contained(snapshot_root, src_dir / "diffs"))
 
     recomputed_hash = hash_text(normalized_text)
     if content_hash != recomputed_hash:
@@ -485,7 +535,7 @@ def check_sources(
                         "old_hash": None,
                         "new_hash": new_hash,
                     },
-                    log_path=snapshot_root / "drift_log.jsonl",
+                    log_path=_contained(snapshot_root, snapshot_root / "drift_log.jsonl"),
                 )
 
             elif changed:
@@ -514,7 +564,7 @@ def check_sources(
                         "diff_path": diff_path,
                         "status": status,
                     },
-                    log_path=snapshot_root / "drift_log.jsonl",
+                    log_path=_contained(snapshot_root, snapshot_root / "drift_log.jsonl"),
                 )
 
             else:
