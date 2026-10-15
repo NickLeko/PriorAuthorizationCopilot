@@ -40,7 +40,22 @@ EXCLUSION_TRIGGER = (
     r"has\s+not\s+started|not\s+completed|never\s+completed|cancelled|canceled)\b"
 )
 THERAPY_EXCLUSION_TRIGGER = EXCLUSION_TRIGGER.replace("ruled\\s+out|", "")
-REVIEW_TRIGGER = r"\b(?:resolved|history\s+of|prior\s+episode|previous\s+episode)\b"
+# Stop at the next cue rather than rescanning a suffix for repeated prefixes.
+PERSISTENCE_REVIEW_TRIGGER = (
+    r"\bno\s+longer\b(?:(?!\bno\s+longer\b).)*?\b(?:present|has|have|reports|noted|seen|evident|active)\b"
+    r"|\b[\w/-]+\s+no\s+longer\b(?!\s+than\b)"
+)
+COPIED_NOTE_REVIEW_TRIGGER = (
+    r"\b(?:(?:previous|prior)\s+note|copied[\s-]+(?:from|forward)|carried[\s-]+forward|"
+    r"from\s+(?:the\s+)?(?:prior|previous)\s+(?:note|visit|encounter)|"
+    r"per\s+(?:the\s+)?(?:prior|previous)\s+(?:note|visit)|"
+    r"(?:note|visit|encounter)\s+(?:dated|from)\s+"
+    r"(?:\d{4}(?:[-/]\d{1,2}(?:[-/]\d{1,2})?)?|\d{1,2}[-/](?:\d{4}|\d{1,2}[-/]\d{2,4})))\b"
+)
+CHECKBOX_REVIEW_TRIGGER = r"\[\s+\]|\[x\]|[☐☑☒]"
+REVIEW_TRIGGER = (
+    r"\b(?:resolved|history\s+of|prior\s+episode|previous\s+episode)\b|" + PERSISTENCE_REVIEW_TRIGGER + "|" + COPIED_NOTE_REVIEW_TRIGGER
+)
 SYMPTOM_CONTEXT = r"(?:symptoms?|(?:low\s+)?back pain|neck pain|cervical pain|knee pain|radicular pain|radiculopathy|pain)"
 SYMPTOM_DURATION_AFTER_RE = re.compile(rf"\b{SYMPTOM_CONTEXT}\b[^.!?;\n]{{0,60}}?\b(?P<value>\d+)\s*(?P<unit>week|weeks|month|months)\b")
 SYMPTOM_DURATION_BEFORE_RE = re.compile(rf"\b(?P<value>\d+)\s*(?P<unit>week|weeks|month|months)\b\s+(?:of\s+)?\b{SYMPTOM_CONTEXT}\b")
@@ -246,7 +261,10 @@ def _context_trigger(text: str, start: int, end: int, pattern: str, *, scope: st
     key = (left, right, pattern)
     if key not in index.searches:
         index.searches[key] = re.search(pattern, text[left:right])
-    return index.searches[key]
+    match = index.searches[key]
+    if scope == "before" and match is not None and left + match.end() > start:
+        return None
+    return match
 
 
 def _unqualified_contrast_response(text: str) -> bool:
@@ -321,6 +339,8 @@ def _finding_is_uncertain(
     text: str, match: re.Match[str], *, source_text: str | None = None, offset: int = 0, exclusion: str = EXCLUSION_TRIGGER
 ) -> bool:
     if _context_trigger(source_text or text, offset + match.start(), offset + match.end(), REVIEW_TRIGGER + "|" + exclusion):
+        return True
+    if _context_trigger(source_text or text, offset + match.start(), offset + match.end(), CHECKBOX_REVIEW_TRIGGER, scope="before"):
         return True
     before = text[max(0, match.start() - 80) : match.start()]
     after = text[match.end() : min(len(text), match.end() + 56)]

@@ -121,6 +121,9 @@ The following patterns are handled; the class remains open in every row:
 | OSA with ruled out anywhere in its sentence, including passive tense and intervening adverbs | Diagnosis is missing. A completed PSG in that sentence is still a documented study, not the diagnosis being excluded. | Negation |
 | Therapy/study ordered, prescribed, recommended, not yet started, has not started, not completed, never completed, cancelled/canceled anywhere in its sentence | Therapy duration/response or study presence is missing. Other qualifying findings with these exclusions require review. | Planned/incomplete events |
 | Resolved, history of, prior episode, previous episode in the candidate's sentence | Qualifying findings and durations require review. | Temporality |
+| Same-sentence persistence negation with no longer present/has/have/reports/noted/seen/evident/active, or no longer directly after finding wording | Matching findings use the shared review path. Comparative no longer than wording alone is not a persistence cue. | Negation and temporality |
+| Copied-forward note text: previous/prior note, copied from/forward, carried forward, from the prior/previous note/visit/encounter, per the prior/previous note/visit, or note/visit/encounter dated/from a numeric year or date | Matching findings in that sentence use the shared review path; a header in another sentence does not scope later findings. | Copy-forward |
+| Template checkbox text: [ ], [x], [X], ☐, ☑ or ☒ before the finding in its sentence | Any of these checkbox tokens routes the matching finding to review; checked and unchecked states are not interpreted. | Template |
 | Numeric AHI with N/A or unknown in a different sentence | AHI presence remains captured; missingness in its own sentence refuses. | Missingness scope |
 
 Safety triggers use real sentence boundaries: period, question mark, exclamation
@@ -138,3 +141,14 @@ for case 12 (cross-sentence temporality), case 17's study citation, case 18
 inputs are no longer a held-out measure. The `resolved_diagnosis` example passes;
 that example does not establish correctness for the temporality class. The
 human gate does not establish extractor correctness.
+
+Negation, temporality, copy-forward, template, attribution and cross-sentence
+linkage **remain open failure classes**. The H1(a) regressions cover selected
+same-sentence cues, not general note provenance or clinical interpretation.
+Sentence-wide cues can over-trigger review when they refer to a different
+finding. Improvement on a following line, contralateral strength attributed to
+prior surgery, and copy-forward headers in another sentence remain correct-value
+strict xfails in `test/test_h1_review_triggers.py`. With supplied attestations,
+these remaining examples can still reach `READY` and
+`submission_readiness=true` on the verified lumbar pathway. Human attestation
+remains a necessary safety gate and does not establish extraction accuracy.

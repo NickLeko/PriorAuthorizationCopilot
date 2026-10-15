@@ -196,18 +196,30 @@ time comes from `python -m pytest -q`; timing is observational, not a pass/fail
 threshold. The [release report](releases/v2.1.0.md) includes before/after results.
 
 
-## v2.1.3 extraction migration check
+## Extraction regression coverage after the v2.1.3 migration check
 
-`test/test_v213_differential.py` and its frozen v2.1.2 copies in
-`test/frozen_v212/` are a **one-release migration check** for the performance-only
-v2.1.3 extraction rewrite. Remove the differential harness and those frozen
-copies the next time extraction behavior changes intentionally; they must not
-freeze extraction behavior indefinitely. Keep the ordinary corpus, independent
-regressions, and security tests as ongoing coverage.
+The one-release v2.1.2 differential harness and frozen copies were retired in a
+separate H1(a) commit after the intentional review-trigger change. Before
+retirement, `python -m pytest -q -s test/test_v213_differential.py` compared
+52 corpus cases, 20 independent regressions, 600 seeded generated notes and
+24 denial-heavy generated notes: **696 compared, 0 differences**. The comparison
+covered facts, states, exact spans, citation context, requirement results and
+statuses. This migration check does not define future extraction behavior.
 
-The harness compares 52 corpus cases and 20 independent regressions separately,
-then compares 600 seeded generated notes plus 24 denial-heavy generated notes
-in one test that reports the total number
-of differences (also recorded as JUnit properties). To display that count, run
-`python -m pytest -q -s test/test_v213_differential.py`. All 696 notes compare
-facts, states, exact spans, citation context, requirement results and statuses.
+Keep the ordinary corpus, independent regressions and security tests as ongoing
+coverage. `test/test_h1_review_triggers.py` checks selected same-sentence
+persistence, copied-forward and template checkbox cues; hard-coded baseline
+facts/spans for three unchanged controls; and three correct-value strict xfails
+for next-line improvement, contralateral attribution and cross-sentence
+copy-forward. The 20 independent inputs and every earlier strict xfail remain
+unchanged. Run:
+
+```bash
+python -m pytest -q test/test_h1_review_triggers.py test/test_v210_independent.py test/test_v210_safety.py
+```
+
+H1(a)'s five F1 extraction timing probes use 19,999-character AHI, whitespace-heavy
+NSAID, and repeated no/denies/without inputs. Python 3.13 medians of three warm
+calls were each below 100 ms. These finite probes do not establish general
+clinical-language correctness. All failure classes remain open; see
+`EXTRACTION_CONTRACT.md` and `FAILURE_MODES.md` for the remaining risks.
