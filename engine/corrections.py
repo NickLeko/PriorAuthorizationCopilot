@@ -12,7 +12,7 @@ from dataclasses import asdict
 from hashlib import sha256
 
 from .fact_contracts import FACT_CONTRACTS, DatePresence, get_fact_contract, validate_fact_value
-from .policies import canonical_json, content_hash, facts_for_policy
+from .policies import canonical_dump, canonical_json, content_hash, facts_for_policy
 from .schemas import REVIEW_REQUIRED_FACT, OriginalProposal, ReviewerCorrection
 
 CONTRACT_VERSION = content_hash({key: asdict(contract) for key, contract in FACT_CONTRACTS.items()})
@@ -196,8 +196,8 @@ def validate_v2_result(result) -> None:
     effective = materialize(result.original_snapshot, result.request.corrections, result.request.note_text, keys)
     if canonical_json(result.facts) != canonical_json(effective["facts"]) or result.captured_fact_states != effective["states"]:
         raise ValueError("Effective facts/states do not match correction materialization.")
-    evidence = {key: [span.model_dump() for span in spans] for key, spans in result.evidence_map.items()}
-    if evidence != effective["evidence"]:
+    evidence = result.evidence_map
+    if canonical_dump(evidence) != canonical_dump(effective["evidence"]):
         raise ValueError("Effective evidence does not match correction materialization.")
     input_hash = input_fingerprint(result.request, result.policy_version, result.bundle_fingerprint, result.contract_version)
     fact_hash = fact_set_fingerprint(input_hash, result.original_snapshot, result.request.corrections, effective)
@@ -217,11 +217,11 @@ def validate_v2_result(result) -> None:
         raise ValueError("Audit original proposal disagrees with immutable snapshot.")
     if canonical_json(audit.effective_facts) != canonical_json(effective["facts"] if corrected_keys else None):
         raise ValueError("Audit effective facts/evidence disagree.")
-    if {key: [span.model_dump() for span in spans] for key, spans in audit.evidence_map.items()} != evidence:
+    if canonical_dump(audit.evidence_map) != canonical_dump(evidence):
         raise ValueError("Audit effective facts/evidence disagree.")
-    if result.report.audit_trail != audit.model_dump(mode="json"):
+    if canonical_dump(result.report.audit_trail) != canonical_dump(audit):
         raise ValueError("Report audit copy disagrees.")
-    if result.policy_version.model_dump() != audit.policy_version.model_dump():
+    if canonical_dump(result.policy_version) != canonical_dump(audit.policy_version):
         raise ValueError("Decision and audit policy versions disagree.")
     if (result.request.payer, result.request.procedure_code) != (result.policy_version.payer, result.policy_version.procedure_code):
         raise ValueError("Decision and policy scope disagree.")
@@ -236,15 +236,15 @@ def validate_v2_result(result) -> None:
         expected.verification_fingerprint = verification_fingerprint(fact_hash, expected.key)
         validate_attestation(actual.verification, expected.verification_fingerprint, result.request.corrections)
         expected.verification = actual.verification
-        if expected.model_dump() != actual.model_dump():
+        if canonical_dump(expected) != canonical_dump(actual):
             raise ValueError("Requirement result does not match evaluation of effective facts.")
     if result.rule_reasons != reasons or result.report.rule_reasons != reasons:
         raise ValueError("Rule reasons do not match effective evaluation.")
-    if [item.model_dump() for item in result.report.results] != [item.model_dump() for item in result.results]:
+    if canonical_dump(result.report.results) != canonical_dump(result.results):
         raise ValueError("Report requirement copies disagree.")
     if (
-        audit.metrics.model_dump() != result.metrics.model_dump()
-        or audit.blocking_issues.model_dump() != result.blockers.model_dump()
+        canonical_dump(audit.metrics) != canonical_dump(result.metrics)
+        or canonical_dump(audit.blocking_issues) != canonical_dump(result.blockers)
         or audit.evaluation_warnings != result.warnings
     ):
         raise ValueError("Audit metrics/blockers/warnings disagree.")
@@ -255,7 +255,7 @@ def validate_v2_result(result) -> None:
     from .service import _compute_metrics
 
     # In-place host updates can leave same-named models from different loads.
-    if result.metrics.model_dump() != _compute_metrics(summary).model_dump():
+    if canonical_dump(result.metrics) != canonical_dump(_compute_metrics(summary)):
         raise ValueError("Metrics disagree with validated requirement results.")
     if result.supported_procedure.policy_trust_level != result.policy_trust_level:
         raise ValueError("Supported-procedure policy trust disagrees with decision trust.")
