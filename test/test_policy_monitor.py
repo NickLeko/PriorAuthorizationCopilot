@@ -20,6 +20,42 @@ from engine.policy_monitor import (
 FIXTURE_PATH = Path("test/fixtures/policy_aetna_0157_sample.html")
 
 
+@pytest.mark.parametrize(
+    ("content_type", "body", "expected"),
+    [
+        ("text/html", "<p>Synthetic café — criterion</p>".encode(), "<p>Synthetic cafÃ© â\x80\x94 criterion</p>"),
+        ("text/html; charset=utf-8", "<p>Synthetic café — criterion</p>".encode(), "<p>Synthetic café — criterion</p>"),
+        ("text/plain; charset=windows-1252", b"Synthetic \x93criterion\x94", "Synthetic “criterion”"),
+        ("application/json", '{"criterion": "café"}'.encode(), '{"criterion": "café"}'),
+        (None, "Synthetic criterion".encode("utf-16"), "Synthetic criterion"),
+        ("text/plain; charset=unknown-charset", b"Synthetic \xff criterion", "Synthetic � criterion"),
+        ("text/html; charset=utf-8", b"Synthetic \xff criterion", "Synthetic � criterion"),
+    ],
+)
+def test_fetch_decoding_matches_legacy_requests_without_network(monkeypatch, content_type, body, expected):
+    import httpx
+    import requests
+
+    headers = {"content-type": content_type} if content_type else {}
+    legacy = requests.Response()
+    legacy._content = body
+    legacy.headers.update(headers)
+    legacy.encoding = requests.utils.get_encoding_from_headers(legacy.headers)
+
+    original_client = httpx.AsyncClient
+    transport = httpx.MockTransport(lambda request: httpx.Response(200, headers=headers, content=body))
+    monkeypatch.setattr(httpx, "AsyncClient", lambda **kwargs: original_client(transport=transport, **kwargs))
+
+    actual = policy_monitor.fetch_policy("https://example.invalid/synthetic-policy")
+
+    assert actual == expected == legacy.text
+    assert hash_text(normalize_policy(actual)) == hash_text(normalize_policy(legacy.text))
+    if content_type == "text/html":
+        # Reproduce the live regression using only synthetic bytes. The legacy
+        # text/* default is Latin-1 even when the body is valid UTF-8.
+        assert hash_text(normalize_policy(actual)) != hash_text(normalize_policy(body.decode("utf-8")))
+
+
 def test_normalization_is_deterministic():
     raw = FIXTURE_PATH.read_text(encoding="utf-8")
     n1 = normalize_policy(raw)

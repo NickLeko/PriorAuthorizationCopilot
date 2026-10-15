@@ -125,6 +125,7 @@ def fetch_policy(url: str, timeout_s: float = 15, *, max_bytes: int = MAX_POLICY
     from urllib.parse import urljoin, urlsplit
 
     import httpx
+    import requests
 
     async def fetch():
         current = url
@@ -149,7 +150,12 @@ def fetch_policy(url: str, timeout_s: float = 15, *, max_bytes: int = MAX_POLICY
                         if len(content) + len(chunk) > max_bytes:
                             raise ValueError("Policy response exceeds its byte limit.")
                         content.extend(chunk)
-                    return bytes(content).decode(resp.encoding or "utf-8", errors="replace")
+                    # Preserve v2.1.2's Response.text decoding, including Latin-1
+                    # for text/* without a charset and apparent-encoding fallback.
+                    legacy_response = requests.Response()
+                    legacy_response._content = bytes(content)
+                    legacy_response.encoding = requests.utils.get_encoding_from_headers(resp.headers)
+                    return legacy_response.text
         raise ValueError("Policy fetch exceeded its redirect limit.")
 
     async def bounded_fetch():
