@@ -130,7 +130,17 @@ Safety triggers use real sentence boundaries: period, question mark, exclamation
 mark, or newline; semicolons and decimal points do not end that context. Narrow
 finding clauses retain their existing attribute scope. Review surfaces derive
 full containing sentences with ⟦span⟧ markers without changing facts, evidence,
-fingerprints or the record schema (2.0.0).
+fingerprints or the record schema (2.0.0). API/CLI citation context retains that
+representation. Streamlit attestation and correction citation lists show up to
+one neighboring sentence on either side, capped at 1,000 characters with an
+explicit truncation marker. The cited span is preserved in full; if it cannot
+fit, a literal notice directs the reviewer to the expanded original note.
+The attestation note is expanded by default, and context is rendered as literal
+text. Reviewers must still read the full note: contradiction farther than one
+sentence away can be outside the window, reviewers can still attest without
+reading, and reviewer identity remains self-reported. This display aid does not
+change extraction, statuses, the readiness gate or the remaining false-READY
+pathways.
 
 Remaining strict xfails assert correct expectations for `negation_first`,
 `negated_strength`, `reflex_attribution`, `unrelated_therapy`, `borrowed_date`,

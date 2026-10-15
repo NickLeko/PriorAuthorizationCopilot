@@ -237,6 +237,7 @@ def test_streamlit_verification_and_correction_show_full_contrast_context():
     assert any(item.value == "#### Correct requirement facts" for item in at.markdown)
     assert any(item.value == "#### Verify proposed facts" for item in at.markdown)
     context = "⟦NSAIDs for 8 weeks with no improvement in sleep⟧ but significant improvement in pain."
+    window = "Low back pain with right leg radiculopathy. " + context + " Ankle dorsiflexion strength 4/5 in the right L5 distribution."
     therapy_keys = ("cpb_0236_conservative_therapy_weeks", "cpb_0236_conservative_therapy_no_improvement")
     for key in therapy_keys:
         result = next(result for result in payload["results"] if result["key"] == key)
@@ -245,11 +246,11 @@ def test_streamlit_verification_and_correction_show_full_contrast_context():
         expander = next(item for item in at.expander if item.label == f"Correct {result['label']}")
         assert any(item.value == "Effective citations in sentence context (⟦quoted span⟧):" for item in expander.caption)
         assert any(item.value == "Original proposal citations in sentence context:" for item in expander.caption)
-        assert [item.value for item in expander.text] == [context, context]
+        assert [item.value for item in expander.text] == [window, window]
         assert any(f"{result['label']}: proposed None | NEEDS_REVIEW" == item.value for item in at.text)
         assert any(item.label == f"I verified {key} against the original note and rule" for item in at.checkbox)
     # Two correction copies per therapy fact plus one verification copy each.
-    assert [item.value for item in at.text].count(context) == 6
+    assert [item.value for item in at.text].count(window) == 6
     key = therapy_keys[1]
     next(item for item in at.text_input if item.key == f"correction_quote_{key}").set_value(
         "NSAIDs for 8 weeks with no improvement in sleep"
@@ -261,7 +262,7 @@ def test_streamlit_verification_and_correction_show_full_contrast_context():
     occurrences.set_value([(start, start + len("NSAIDs for 8 weeks with no improvement in sleep"))]).run(timeout=15)
     assert not at.exception
     assert at.session_state["last_eval_payload"]["overall_status"] == "NEEDS_REVIEW"
-    assert [item.value for item in at.text].count(context) == 7
+    assert [item.value for item in at.text].count(window) == 7
 
 
 def test_streamlit_engine_version_change_builds_new_service(monkeypatch):
