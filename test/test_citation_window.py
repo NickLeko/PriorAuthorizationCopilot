@@ -47,17 +47,43 @@ def test_citation_window_uses_original_unicode_fixture_offsets(prefix):
     assert "Sleep study completed 2024-05-18." in window
 
 
-@pytest.mark.parametrize("side", ("before", "after", "both"))
-def test_citation_window_caps_context_and_preserves_the_complete_span(side):
+@pytest.mark.parametrize(
+    "side,expected",
+    [
+        ("before", "[truncated]…" + "a" * 973 + "⟦完整 😀 citation⟧"),
+        ("after", "⟦完整 😀 citation⟧" + "b" * 973 + "…[truncated]"),
+        ("both", "[truncated]…" + "a" * 480 + "⟦完整 😀 citation⟧" + "b" * 481 + "…[truncated]"),
+    ],
+    ids=("left-only", "right-only", "both-sides"),
+)
+def test_citation_window_caps_context_and_preserves_the_complete_span(side, expected):
     before = "a" * 1500 if side in {"before", "both"} else ""
     after = "b" * 1500 if side in {"after", "both"} else ""
     quote = "完整 😀 citation"
     note = before + quote + after
     window = citation_window(note, len(before), len(before) + len(quote))
     assert len(window) == 1000
-    assert window.endswith("…[truncated]")
+    assert window == expected
     assert "⟦" + quote + "⟧" in window
     assert window.count("⟦") == window.count("⟧") == 1
+
+
+@pytest.mark.parametrize(
+    "before,after,expected",
+    [
+        ("a", "b" * 100, "a⟦" + "x" * 984 + "⟧b…[truncated]"),
+        ("a" * 100, "b", "[truncated]…a⟦" + "x" * 984 + "⟧b"),
+    ],
+)
+def test_citation_window_uses_only_one_marker_when_the_other_side_fits(before, after, expected):
+    quote = "x" * 984
+    assert citation_window(before + quote + after, len(before), len(before) + len(quote)) == expected
+    assert len(expected) == 1000
+
+
+def test_citation_window_rejects_when_two_required_markers_cannot_fit():
+    with pytest.raises(CitationWindowTooLarge, match="truncation markers"):
+        citation_window("a" * 100 + "x" * 984 + "b" * 100, 100, 1084)
 
 
 @pytest.mark.parametrize("quote,context", [("x" * 999, ""), ("x" * 987, "y" * 100)])
