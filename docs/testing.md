@@ -32,6 +32,15 @@ Current bundled-fixture snapshot: 52 labeled synthetic cases; 52/52 exact overal
 
 Archive and replay tests separately cover immutable policy content, append-only storage, corruption detection, type compatibility, each differential category, correct denominators, preserved refusals, resolved refusals, and fresh verification. See `test/test_policy_replay.py`. Its cases are separate from the main labeled fixture corpus.
 
+## Pre-demo live policy check
+
+Before a live demo, check the live source in two steps (use the project virtualenv):
+
+1. Run `python -m engine.policy_monitor --check` (read-only). Confirm `status` is `OK` and `new_hash == old_hash`.
+2. Only after that confirmation, run `python -m engine.policy_monitor --check --write` to record the successful check time.
+
+If step 1 shows a hash change or does not confirm an unchanged `OK` result, do not write; treat it as human policy review. A detected change does not automatically update rules or restore trust.
+
 ## Commands
 
 After setup, prefer the Make targets. They use `.venv/bin/python` when the local virtualenv exists:

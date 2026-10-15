@@ -4,7 +4,12 @@ Demonstrate three decisions in order: distinct evidence outcomes, human verifica
 
 The lumbar MRI pathway is the only live-monitored source. After its monthly monitoring window (35 days since the last successful check), a visitor sees a stale warning and must acknowledge it before evaluating that pathway. After all passing facts are human-verified, it can return `READY` with `submission_readiness=false`. This is the governance gate working as designed; acknowledgement does not restore trust.
 
-Before a live demo, run one genuine source check: `.venv/bin/python -m engine.policy_monitor --check --write`. A successful unchanged check records its actual check time; detected changes require human policy review and do not automatically update rules or restore trust.
+Before a live demo, check the live source in two steps (use the project virtualenv):
+
+1. Run `python -m engine.policy_monitor --check` (read-only). Confirm `status` is `OK` and `new_hash == old_hash`.
+2. Only after that confirmation, run `python -m engine.policy_monitor --check --write` to record the successful check time.
+
+If step 1 shows a hash change or does not confirm an unchanged `OK` result, do not write; treat it as human policy review. A detected change does not automatically update rules or restore trust.
 
 ## Prepare Before Starting The Clock
 
