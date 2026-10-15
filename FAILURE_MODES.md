@@ -253,6 +253,30 @@ attribute association, or missingness scope.
 | Negated lumbar diagnosis / negated strength / reflex qualifier borrowed from pain | Remaining: strict xfails assert false/missing, never the wrong affirmative proposal. |
 | Lumbar therapy actually for headaches / visit date borrowed for an undated sleep study | Remaining: attribution and date association; strict xfails assert missing. |
 
+### Copied-forward note text, template checkbox text, and persistence negation
+
+Copied-forward note text and template checkbox text are named extraction failure
+classes. The shared review path now recognizes previous/prior note,
+copied from/forward, carried forward, from (the) prior/previous
+note/visit/encounter, per (the) prior/previous note/visit, and
+note/visit/encounter dated/from a numeric year or date in the finding's sentence.
+The same path recognizes no longer persistence wording with
+present/has/have/reports/noted/seen/evident/active, or directly after finding
+wording. Checkbox tokens [ ], [x], [X], ☐, ☑ and ☒ before a finding in its
+sentence require review regardless of checked state. These cues do not establish
+that a finding is current or absent; they do not propose False.
+
+Negation, temporality, copy-forward, template, attribution and cross-sentence
+linkage **remain open**. A cue about one finding can over-trigger review of
+another finding in the same sentence. A copy-forward header in another sentence
+does not carry forward its scope. Improvement on the following line and
+contralateral strength from prior hip surgery remain outside this change.
+The three corresponding strict xfails assert review as the correct behavior;
+the current proposals can still reach `READY` and `submission_readiness=true`
+with supplied attestations and current verified governance. The new cues reduce
+some wrong captured proposals; they do not establish general extraction
+correctness or remove dependence on human review.
+
 
 The independent check used 20 fresh inputs and found five wrong captures before
 this pass: case 2 (semicolon response contrast), case 9 (ruled-out negation with
