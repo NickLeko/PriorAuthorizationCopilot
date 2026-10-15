@@ -7,7 +7,8 @@ from bisect import bisect_left, bisect_right
 from .note_context import indexed_note, note_index
 
 MAX_CITATION_WINDOW_CHARACTERS = 1_000
-_TRUNCATION_MARKER = "…[truncated]"
+_LEFT_TRUNCATION_MARKER = "[truncated]…"
+_RIGHT_TRUNCATION_MARKER = "…[truncated]"
 
 
 class CitationWindowTooLarge(ValueError):
@@ -35,7 +36,7 @@ def citation_window(note: str, start: int, end: int, neighbors: int = 1) -> str:
     """Containing sentences and adjacent context, bounded in Unicode characters.
 
     Reuse indexed_note for a batch of citations. Empty boundary segments do not
-    consume a neighbor. Clipped context has one trailing truncation marker;
+    consume a neighbor. Clipped context is marked on each side actually cut;
     the complete cited span is retained or CitationWindowTooLarge is raised.
     """
     if not 0 <= start < end <= len(note):
@@ -70,13 +71,21 @@ def citation_window(note: str, start: int, end: int, neighbors: int = 1) -> str:
     if len(before) + marked_length + len(after) <= MAX_CITATION_WINDOW_CHARACTERS:
         return before + citation + after
 
-    budget = MAX_CITATION_WINDOW_CHARACTERS - marked_length - len(_TRUNCATION_MARKER)
+    budget = MAX_CITATION_WINDOW_CHARACTERS - marked_length - len(_RIGHT_TRUNCATION_MARKER)
     if budget < 0:
         raise CitationWindowTooLarge("The complete citation and truncation marker exceed the context window.")
-    keep_before = min(len(before), budget // 2)
-    keep_after = min(len(after), budget - keep_before)
-    keep_before = min(len(before), budget - keep_after)
-    return (before[-keep_before:] if keep_before else "") + citation + after[:keep_after] + _TRUNCATION_MARKER
+    if len(before) <= budget:
+        keep_before, keep_after = len(before), budget - len(before)
+    elif len(after) <= budget:
+        keep_before, keep_after = budget - len(after), len(after)
+    else:
+        budget -= len(_LEFT_TRUNCATION_MARKER)
+        if budget < 0:
+            raise CitationWindowTooLarge("The complete citation and truncation markers exceed the context window.")
+        keep_before, keep_after = budget // 2, budget - budget // 2
+    prefix = _LEFT_TRUNCATION_MARKER if keep_before < len(before) else ""
+    suffix = _RIGHT_TRUNCATION_MARKER if keep_after < len(after) else ""
+    return prefix + (before[-keep_before:] if keep_before else "") + citation + after[:keep_after] + suffix
 
 
 def evaluation_citation_context(evaluation) -> dict[str, list[str]]:
