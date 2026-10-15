@@ -13,6 +13,22 @@ def canonical_json(value: Any) -> str:
     return json.dumps(value, sort_keys=True, separators=(",", ":"), allow_nan=False)
 
 
+def canonical_dump(value: Any) -> str:
+    """Compare JSON values without depending on a model's module identity."""
+
+    def convert(item):
+        dump = getattr(item, "model_dump", None)
+        if callable(dump):
+            return convert(dump(mode="json"))
+        if isinstance(item, dict):
+            return {key: convert(nested) for key, nested in item.items()}
+        if isinstance(item, (list, tuple)):
+            return [convert(nested) for nested in item]
+        return item
+
+    return canonical_json(convert(value))
+
+
 def content_hash(value: Any) -> str:
     return sha256(canonical_json(value).encode()).hexdigest()
 

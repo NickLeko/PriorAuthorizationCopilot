@@ -7,7 +7,7 @@ import re
 import sqlite3
 from pathlib import Path
 
-from .policies import canonical_json, content_hash
+from .policies import canonical_dump, canonical_json, content_hash
 from .schemas import EvaluationResult, EvaluationResultV15, LegacyEvaluationRecord, PolicyVersion
 
 
@@ -124,7 +124,7 @@ class DecisionStore:
             raise ValueError("New archive writes require schema version 2.0.0; downgrade is forbidden.")
         validate_archived_evaluation(evaluation.model_dump(mode="json"))
         policy = evaluation.policy_version
-        if policy.model_dump() != evaluation.audit_trail.policy_version.model_dump():
+        if canonical_dump(policy) != canonical_dump(evaluation.audit_trail.policy_version):
             raise ValueError("Decision and audit policy versions disagree.")
         if (policy.payer, policy.procedure_code) != (evaluation.request.payer, evaluation.request.procedure_code):
             raise ValueError("Decision and policy scope disagree.")
@@ -159,10 +159,9 @@ class DecisionStore:
         if isinstance(result, LegacyEvaluationRecord):
             self.get_policy(row[2], row[3])
             return result
-        if (
-            result.policy_version.model_dump() != self.get_policy(row[2], row[3]).model_dump()
-            or result.policy_version.model_dump() != result.audit_trail.policy_version.model_dump()
-        ):
+        if canonical_dump(result.policy_version) != canonical_dump(self.get_policy(row[2], row[3])) or canonical_dump(
+            result.policy_version
+        ) != canonical_dump(result.audit_trail.policy_version):
             raise ValueError("Stored decision policy mismatch.")
         return result
 
