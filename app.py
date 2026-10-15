@@ -36,11 +36,12 @@ if disk_engine_version != engine.__version__:
 
 # Check the release marker before importing engine submodules or creating services.
 from engine import __version__  # noqa: E402
-from engine.citation_context import citation_context  # noqa: E402
+from engine.citation_context import CitationWindowTooLarge, citation_context, citation_window  # noqa: E402
 from engine.config import load_app_config  # noqa: E402
 from engine.corrections import note_hash  # noqa: E402
 from engine.demo_cases import expected_overall_status_for_demo_case, featured_demo_cases  # noqa: E402
 from engine.fact_contracts import get_fact_contract  # noqa: E402
+from engine.note_context import indexed_note  # noqa: E402
 from engine.rendering import export_evaluation_payload  # noqa: E402
 from engine.schemas import REVIEW_REQUIRED_FACT, EvaluationResult, PARequest  # noqa: E402
 from engine.service import ReadinessService, ServiceError  # noqa: E402
@@ -242,6 +243,13 @@ def correction_number_literal(raw: str):
         return raw
 
 
+def render_citation_window(note: str, start: int, end: int) -> None:
+    try:
+        st.text(citation_window(note, start, end))
+    except CitationWindowTooLarge:
+        st.text("This citation is too long for the context window. Read it in the expanded original note.")
+
+
 def render_corrections(evaluation: EvaluationResult) -> None:
     st.markdown("#### Correct requirement facts")
     st.caption(
@@ -261,10 +269,10 @@ def render_corrections(evaluation: EvaluationResult) -> None:
             st.caption(f"Meaning: {contract.meaning}")
             st.caption("Effective citations in sentence context (⟦quoted span⟧):")
             for span in result.evidence_spans:
-                st.text(citation_context(evaluation.request.note_text, span.start, span.end))
+                render_citation_window(evaluation.request.note_text, span.start, span.end)
             st.caption("Original proposal citations in sentence context:")
             for span in original["evidence"].get(key, []):
-                st.text(citation_context(evaluation.request.note_text, span["start"], span["end"]))
+                render_citation_window(evaluation.request.note_text, span["start"], span["end"])
             actions = ["SET_VALUE"]
             if contract.permits_missing:
                 actions.append("SET_MISSING")
@@ -288,7 +296,7 @@ def render_corrections(evaluation: EvaluationResult) -> None:
                 )
                 spans = [{"start": start, "end": end, "text": evaluation.request.note_text[start:end]} for start, end in selected]
                 for start, end in selected:
-                    st.text(citation_context(evaluation.request.note_text, start, end))
+                    render_citation_window(evaluation.request.note_text, start, end)
                 if quote and not matches:
                     st.warning("Quotation does not occur exactly in the evaluated note.")
             with st.form(f"correction_form_{key}"):
@@ -863,27 +871,29 @@ else:
     evaluation = EvaluationResult.model_validate(st.session_state["last_eval_payload"])
     status_panel(evaluation)
 
-    render_corrections(evaluation)
+    with indexed_note(evaluation.request.note_text):
+        render_corrections(evaluation)
 
     st.markdown("#### Verify proposed facts")
     st.caption(
         "MET is an operator result on a proposed fact, not a claim that the note supports it. "
         "Only attest to facts you have personally checked. Reviewer identity is self-reported in this local prototype."
     )
-    with st.expander("Original note for this evaluation", expanded=False):
-        st.code(evaluation.request.note_text, language=None)
-    with st.form("fact_verification_form"):
+    with st.expander("Original note for this evaluation", expanded=True):
+        st.text(evaluation.request.note_text)
+    with st.form("fact_verification_form"), indexed_note(evaluation.request.note_text):
         reviewer = st.text_input("Human verifier name", key="human_verifier_name")
         selected_verifications = {}
         for requirement_result in evaluation.results:
             st.text(f"{requirement_result.label}: proposed {requirement_result.fact_value!r} | {requirement_result.status}")
             for evidence_span in requirement_result.evidence_spans:
-                st.text(citation_context(evaluation.request.note_text, evidence_span.start, evidence_span.end))
+                render_citation_window(evaluation.request.note_text, evidence_span.start, evidence_span.end)
             st.text(
                 f"Verification: {requirement_result.verification.state}; "
                 f"reviewer: {requirement_result.verification.reviewer or 'none'}; "
                 f"time: {requirement_result.verification.verified_at or 'none'}"
             )
+            st.caption("Context shown is an aid; read the full note before attesting.")
             selected_verifications[requirement_result.key] = st.checkbox(
                 f"I verified {requirement_result.key} against the original note and rule",
                 value=requirement_result.verification.state == "HUMAN_VERIFIED",
