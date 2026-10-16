@@ -31,11 +31,28 @@ CPB_COURSE_RESPONSE_SUFFIX = (
     r"\s+with\s+(?:no|minimal|little|insufficient|substantial|significant|meaningful|good)"
     r"\s+(?:improvement|relief|response)\s*$"
 )
+CPB_DURATION_NUMBER_WORDS = {
+    "one": 1,
+    "two": 2,
+    "three": 3,
+    "four": 4,
+    "five": 5,
+    "six": 6,
+    "seven": 7,
+    "eight": 8,
+    "nine": 9,
+    "ten": 10,
+    "eleven": 11,
+    "twelve": 12,
+}
+CPB_EXPLICIT_DURATION_VALUE = r"(?:\d+|" + "|".join(CPB_DURATION_NUMBER_WORDS) + ")"
 CPB_NEW_DURATION_AFTER_RE = re.compile(
-    rf"^(?:completed\s+)?{CPB_0236_THERAPY_CONTEXT}\s+(?:x|for)\s+(?P<value>\d+)\s+(?P<unit>days?|months?)" + CPB_COURSE_RESPONSE_SUFFIX
+    rf"^(?:completed\s+)?{CPB_0236_THERAPY_CONTEXT}\s+(?:x|for)\s+(?P<value>{CPB_EXPLICIT_DURATION_VALUE})\s+(?P<unit>days?|months?|weeks?)"
+    + CPB_COURSE_RESPONSE_SUFFIX
 )
 CPB_NEW_DURATION_BEFORE_RE = re.compile(
-    rf"^(?:completed\s+)?(?P<value>\d+)\s+(?P<unit>days?|months?)\s+of\s+{CPB_0236_THERAPY_CONTEXT}" + CPB_COURSE_RESPONSE_SUFFIX
+    rf"^(?:completed\s+)?(?P<value>{CPB_EXPLICIT_DURATION_VALUE})\s+(?P<unit>days?|months?|weeks?)\s+of\s+{CPB_0236_THERAPY_CONTEXT}"
+    + CPB_COURSE_RESPONSE_SUFFIX
 )
 CPB_0236_NONRESPONSE_RE = re.compile(
     r"\b(?:no|minimal|little|insufficient)\s+(?:meaningful\s+)?(?:improvement|relief|response)\b"
@@ -442,7 +459,8 @@ def _dedup_matches(matches: List[re.Match[str]]) -> List[re.Match[str]]:
 
 
 def _cpb_duration_weeks(match: re.Match[str]) -> int:
-    value = int(match.group("value"))
+    raw_value = match.group("value")
+    value = int(raw_value) if raw_value.isdigit() else CPB_DURATION_NUMBER_WORDS[raw_value]
     # Completed whole weeks only; 41 days cannot meet a six-week minimum.
     unit = match.groupdict().get("unit", "weeks")
     if unit.startswith("day"):

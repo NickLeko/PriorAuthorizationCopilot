@@ -113,3 +113,36 @@ end-date calendar arithmetic. Fractional, ranged, comparative or annotated
 month courses remain unsupported; fixed grammar is narrower than real narrative
 notes. Correct threshold outcomes on these pairs do not establish general time
 or episode understanding. Labels and previous paired cases were not changed.
+
+## Iteration 4 — accepted: number words in isolated qualifying courses
+
+Hypothesis (stated before cases/fix): writing six/eight/twelve instead of digits
+does not change the six-week Footnote 1 criterion. Source: that fixed threshold,
+qualifying classes, and the extractor's digit-only value regex; this is ordinary
+number spelling, not drug classification or ontology lookup.
+
+Prewritten `cases/iteration-4.json`: three positives (six weeks NSAIDs, eight
+weeks before analgesics, twelve weeks muscle relaxants), eleven negatives:
+five weeks, improvement, planned, non-patient, denied, PT-only, unrelated
+headaches inline/semicolon, fraction, comparison and range. All three new
+positives fail before implementation; negatives have zero false pending, with
+short/improved cases incorrectly abstaining.
+
+Fix: a finite one-through-twelve number-word mapping in the existing isolated
+course grammar. Existing numeric-week patterns remain unchanged. The new grammar
+continues to require a complete course and explicit response in one unsplit
+sentence, so a numeric substring of a fraction, range or indication cannot be
+selected. The shared helper retains conservative day/month conversions.
+
+After: cumulative positives **6/9 → 9/9 pass**; negatives **29/31 → 31/31 exact**,
+zero false pending throughout. Total **35/40 → 40/40 exact**; abstention
+**30/40 → 25/40**, matching expected **25/40**. Five-week and improved-course
+notes now correctly return NOT_READY. `make test`: **1163 passed, 10 xfailed**;
+then corpus output equals baseline byte-for-byte. No existing assertion,
+expected value or marker changed. Evidence: `evidence/iteration-4-*`.
+
+Gaming/limits: the word range and complete-statement grammar are deliberately
+bounded. Longer/compound numbers, comparative/ranged durations and narrative
+course qualifiers remain unsupported. Mapping basic numbers is general, but
+this is still a curated phrasing slice, not evidence of free-text clinical
+recall. Neither rejected cases nor negative labels were removed to raise scores.
