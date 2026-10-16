@@ -20,11 +20,7 @@ def evaluate(case):
 @pytest.mark.parametrize(
     "case",
     [
-        pytest.param(case, marks=pytest.mark.xfail(strict=True, reason="cross-sentence temporality"))
-        if case["id"] == 12
-        else pytest.param(case, marks=pytest.mark.xfail(strict=True, reason="intact reflex recognition"))
-        if case["id"] == 18
-        else case
+        pytest.param(case, marks=pytest.mark.xfail(strict=True, reason="cross-sentence temporality")) if case["id"] == 12 else case
         for case in CASES
     ],
     ids=lambda case: f"independent_{case['id']:02}_{case['name']}",

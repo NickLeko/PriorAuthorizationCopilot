@@ -160,3 +160,41 @@ Metric-gaming/limits: a small explicit predicate vocabulary and a 160-character
 lookback bound recognition; unusual legitimate reflex wording can still be
 missed. The rule is not a general syntax parser or a solution to attribution.
 No claim of held-out generalization is made.
+
+## Iteration 3 — accepted: intact reflexes incorrectly treated as missing
+
+Hypothesis (stated before testing): the normal-reflex vocabulary lacks `intact`,
+so explicit intact reflexes cannot produce a normal finding. Source: the existing
+strict `independent_18_intact_reflexes` xfail, normal-reflex extraction code,
+FM-2's under-capture class, and CPB 0236's objective motor/reflex-change criterion.
+An intact reflex alone does not satisfy a change requirement, so a complete
+otherwise qualifying note should be NOT_READY rather than missing/indeterminate.
+
+Minimal repro: `Low back pain with radiculopathy. Right L5 distribution: reflexes
+intact. NSAIDs for 8 weeks with minimal improvement.` Before CANNOT_DETERMINE;
+expected NOT_READY. Seven new fixed-label cases were appended without altering
+any previous case: intact before/after reflex wording, a different root,
+uncertainty, contradictory repeat, unrelated intact sensation, and abnormal
+reflexes alongside intact sensation.
+
+Fix: add `intact` to the normal-reflex vocabulary and the existing predicate
+link grammar. It retains iteration 2's subject linkage and the existing
+uncertainty and contradiction handlers.
+
+Evidence (`evidence/iteration-3-*`): **5 failed / 16 passed before**, all 21 pass
+after. Cumulative repro score **16/21 → 21/21 exact**, false pending **0 → 0**,
+missed passes **0 → 0**, abstention **13/21 → 10/21**, expected **10/21**. This fixes
+wrong abstention and a missed contradiction, without expanding the passing set.
+
+Removed only the strict marker on existing independent case 18. Its entire
+unchanged expected-fact mapping, requirement statuses, NOT_READY status and
+submission_readiness=false now pass.
+
+Gate: **1095 passed, 12 xfailed**. Then the corpus scoreboard remained byte-for-
+byte identical to baseline. Targeted lint/format checks passed after formatting
+the simplified marker expression.
+
+Metric-gaming/limits: this is a lexical extension justified by the existing
+correct-value test; it does not infer intact strength or reflexes from unrelated
+sensation, and does not claim general normal-exam recognition. Its test source
+is known rather than held out.

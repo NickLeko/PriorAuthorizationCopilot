@@ -66,7 +66,7 @@ ROOT_DISTRIBUTION_RE = re.compile(r"\b(?:l[1-5]|s[1-5])(?:\s+(?:nerve\s+)?root)?
 REFLEX_PREDICATE_LINK_RE = re.compile(
     r"\b(?:deep tendon\s+)?reflex(?:es)?(?:\s*:\s*|\s+)"
     r"(?:(?:is|are|was|were|remains?|remained|initially|later|now|then|on|repeat|but|and|"
-    r"normal|symmetric|diminished|decreased|absent|asymmetric|brisk)\s+)*$"
+    r"normal|symmetric|intact|diminished|decreased|absent|asymmetric|brisk)\s+)*$"
 )
 
 THERAPY_NEGATION_PATTERNS = [
@@ -819,7 +819,7 @@ def _extract_facts(note_text: str) -> Tuple[Dict[str, Any], Dict[str, List[Dict[
             else []
         )
         normal_reflex_matches = (
-            [match for match in re.finditer(r"\b(?:normal|symmetric)\b", sentence) if _reflex_descriptor_is_linked(sentence, match)]
+            [match for match in re.finditer(r"\b(?:normal|symmetric|intact)\b", sentence) if _reflex_descriptor_is_linked(sentence, match)]
             if has_reflex_context
             else []
         )
