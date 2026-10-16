@@ -81,3 +81,35 @@ legitimate narrative qualifiers. It does not solve attribution or references in
 other sentences, and does not repair the existing unrelated-week-course gap.
 It is a general course grammar, not case-ID or exact-sentence matching. The
 rejected iteration 1 cases remain in final totals, rather than being relabeled.
+
+## Iteration 3 — accepted: whole-month CPB courses
+
+Hypothesis (stated before cases/fix): a qualifying isolated course explicitly
+recorded as two or more whole months clears the same six-week minimum. Source:
+the fixed six-week policy and the existing extractor's four-week symptom-month
+convention. Use **four completed weeks per month as a lower bound**, not a
+calendar-date estimate; one month cannot meet six weeks.
+
+Prewritten `cases/iteration-3.json`: three positives (2 months NSAIDs, 2 months
+analgesics before modality, 3 months muscle relaxants) and ten negatives:
+1 month, improvement, planned, non-patient, denied, PT-only, headaches inline/
+semicolon, fraction and comparison. Current positives **0/3 pass before**;
+negative statuses are recorded, including two incorrect CANNOT_DETERMINE
+results for short/improved courses. The other eight already abstain correctly.
+
+Fix: extend ONLY the isolated-course unit grammar to integer months and convert
+them to four-week lower bounds in the shared duration helper. Preserve original
+week parsing and iteration 2's indication/whole-sentence restriction.
+
+After: cumulative positives **3/6 → 6/6 pass**; negatives **18/20 → 20/20 exact**,
+zero false pending throughout; total **21/26 → 26/26 exact**. Abstention falls
+**21/26 → 16/26**, matching expected **16/26**. One-month and improved-month
+notes now return NOT_READY. `make test`: **1149 passed, 10 xfailed**. Then the
+corpus is byte-for-byte baseline-equal. No existing assertion or marker changed.
+Full before/after cases and scores are in `evidence/iteration-3-*`.
+
+Gaming/limits: the conversion is intentionally a lower bound and has no start/
+end-date calendar arithmetic. Fractional, ranged, comparative or annotated
+month courses remain unsupported; fixed grammar is narrower than real narrative
+notes. Correct threshold outcomes on these pairs do not establish general time
+or episode understanding. Labels and previous paired cases were not changed.

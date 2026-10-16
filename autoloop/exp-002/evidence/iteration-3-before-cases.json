@@ -1,0 +1,240 @@
+[
+  {
+    "id": "days_threshold",
+    "pair_role": "positive",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Low back pain with radiculopathy. Right L5 distribution: strength 4/5. NSAIDs for 42 days with no improvement.",
+    "expected_overall_status": "PENDING_VERIFICATION",
+    "expected_facts": {
+      "cpb_0236_conservative_therapy_weeks": 6
+    }
+  },
+  {
+    "id": "days_before_modality",
+    "pair_role": "positive",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Low back pain with radiculopathy. Right L5 distribution: strength 4/5. 56 days of analgesics with minimal improvement.",
+    "expected_overall_status": "PENDING_VERIFICATION",
+    "expected_facts": {
+      "cpb_0236_conservative_therapy_weeks": 8
+    }
+  },
+  {
+    "id": "days_relaxant",
+    "pair_role": "positive",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Low back pain with radiculopathy. Right L5 distribution: strength 4/5. Completed muscle relaxants for 84 days with little relief.",
+    "expected_overall_status": "PENDING_VERIFICATION",
+    "expected_facts": {
+      "cpb_0236_conservative_therapy_weeks": 12
+    }
+  },
+  {
+    "id": "days_below_threshold",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Low back pain with radiculopathy. Right L5 distribution: strength 4/5. NSAIDs for 41 days with no improvement.",
+    "expected_overall_status": "NOT_READY",
+    "expected_facts": {
+      "cpb_0236_conservative_therapy_weeks": 5
+    }
+  },
+  {
+    "id": "days_improved",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Low back pain with radiculopathy. Right L5 distribution: strength 4/5. Analgesics for 56 days with significant improvement.",
+    "expected_overall_status": "NOT_READY",
+    "expected_facts": {
+      "cpb_0236_conservative_therapy_weeks": 8
+    }
+  },
+  {
+    "id": "days_planned",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Low back pain with radiculopathy. Right L5 distribution: strength 4/5. Will start NSAIDs for 56 days with no improvement expected.",
+    "expected_overall_status": "CANNOT_DETERMINE"
+  },
+  {
+    "id": "days_nonpatient",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Low back pain with radiculopathy. Right L5 distribution: strength 4/5. Mother completed muscle relaxants for 84 days with little relief.",
+    "expected_overall_status": "CANNOT_DETERMINE"
+  },
+  {
+    "id": "days_denied",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Low back pain with radiculopathy. Right L5 distribution: strength 4/5. Patient denies completing NSAIDs for 56 days with no improvement.",
+    "expected_overall_status": "CANNOT_DETERMINE"
+  },
+  {
+    "id": "days_nonqualifying",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Low back pain with radiculopathy. Right L5 distribution: strength 4/5. Physical therapy for 56 days with no improvement.",
+    "expected_overall_status": "CANNOT_DETERMINE"
+  },
+  {
+    "id": "days_other_indication",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Low back pain with radiculopathy. Right L5 distribution: strength 4/5. NSAIDs for 56 days for headaches with no improvement.",
+    "expected_overall_status": "CANNOT_DETERMINE"
+  },
+  {
+    "id": "days_other_indication_tail",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Low back pain with radiculopathy. Right L5 distribution: strength 4/5. NSAIDs for 56 days with no improvement; for headaches.",
+    "expected_overall_status": "CANNOT_DETERMINE"
+  },
+  {
+    "id": "days_fraction",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Low back pain with radiculopathy. Right L5 distribution: strength 4/5. 1.56 days of NSAIDs with no improvement.",
+    "expected_overall_status": "CANNOT_DETERMINE"
+  },
+  {
+    "id": "days_comparison",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Low back pain with radiculopathy. Right L5 distribution: strength 4/5. Less than 42 days of NSAIDs with no improvement.",
+    "expected_overall_status": "CANNOT_DETERMINE"
+  },
+  {
+    "id": "months_nsaid",
+    "pair_role": "positive",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Low back pain with radiculopathy. Right L5 distribution: strength 4/5. NSAIDs for 2 months with no improvement.",
+    "expected_overall_status": "PENDING_VERIFICATION",
+    "expected_facts": {
+      "cpb_0236_conservative_therapy_weeks": 8
+    }
+  },
+  {
+    "id": "months_before_modality",
+    "pair_role": "positive",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Low back pain with radiculopathy. Right L5 distribution: strength 4/5. 2 months of analgesics with minimal improvement.",
+    "expected_overall_status": "PENDING_VERIFICATION",
+    "expected_facts": {
+      "cpb_0236_conservative_therapy_weeks": 8
+    }
+  },
+  {
+    "id": "months_relaxant",
+    "pair_role": "positive",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Low back pain with radiculopathy. Right L5 distribution: strength 4/5. Completed muscle relaxants for 3 months with little relief.",
+    "expected_overall_status": "PENDING_VERIFICATION",
+    "expected_facts": {
+      "cpb_0236_conservative_therapy_weeks": 12
+    }
+  },
+  {
+    "id": "months_short",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Low back pain with radiculopathy. Right L5 distribution: strength 4/5. NSAIDs for 1 month with no improvement.",
+    "expected_overall_status": "NOT_READY",
+    "expected_facts": {
+      "cpb_0236_conservative_therapy_weeks": 4
+    }
+  },
+  {
+    "id": "months_improved",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Low back pain with radiculopathy. Right L5 distribution: strength 4/5. Analgesics for 3 months with significant improvement.",
+    "expected_overall_status": "NOT_READY",
+    "expected_facts": {
+      "cpb_0236_conservative_therapy_weeks": 12
+    }
+  },
+  {
+    "id": "months_planned",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Low back pain with radiculopathy. Right L5 distribution: strength 4/5. Will start NSAIDs for 2 months with no improvement expected.",
+    "expected_overall_status": "CANNOT_DETERMINE"
+  },
+  {
+    "id": "months_nonpatient",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Low back pain with radiculopathy. Right L5 distribution: strength 4/5. Mother completed muscle relaxants for 3 months with little relief.",
+    "expected_overall_status": "CANNOT_DETERMINE"
+  },
+  {
+    "id": "months_denied",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Low back pain with radiculopathy. Right L5 distribution: strength 4/5. Patient denies completing NSAIDs for 2 months with no improvement.",
+    "expected_overall_status": "CANNOT_DETERMINE"
+  },
+  {
+    "id": "months_nonqualifying",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Low back pain with radiculopathy. Right L5 distribution: strength 4/5. Physical therapy for 2 months with no improvement.",
+    "expected_overall_status": "CANNOT_DETERMINE"
+  },
+  {
+    "id": "months_other_indication",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Low back pain with radiculopathy. Right L5 distribution: strength 4/5. NSAIDs for 2 months for headaches with no improvement.",
+    "expected_overall_status": "CANNOT_DETERMINE"
+  },
+  {
+    "id": "months_other_indication_tail",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Low back pain with radiculopathy. Right L5 distribution: strength 4/5. NSAIDs for 2 months with no improvement; for headaches.",
+    "expected_overall_status": "CANNOT_DETERMINE"
+  },
+  {
+    "id": "months_fraction",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Low back pain with radiculopathy. Right L5 distribution: strength 4/5. 0.2 months of NSAIDs with no improvement.",
+    "expected_overall_status": "CANNOT_DETERMINE"
+  },
+  {
+    "id": "months_comparison",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Low back pain with radiculopathy. Right L5 distribution: strength 4/5. Less than 2 months of NSAIDs with no improvement.",
+    "expected_overall_status": "CANNOT_DETERMINE"
+  }
+]

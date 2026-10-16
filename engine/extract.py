@@ -32,10 +32,10 @@ CPB_COURSE_RESPONSE_SUFFIX = (
     r"\s+(?:improvement|relief|response)\s*$"
 )
 CPB_NEW_DURATION_AFTER_RE = re.compile(
-    rf"^(?:completed\s+)?{CPB_0236_THERAPY_CONTEXT}\s+(?:x|for)\s+(?P<value>\d+)\s+(?P<unit>days?)" + CPB_COURSE_RESPONSE_SUFFIX
+    rf"^(?:completed\s+)?{CPB_0236_THERAPY_CONTEXT}\s+(?:x|for)\s+(?P<value>\d+)\s+(?P<unit>days?|months?)" + CPB_COURSE_RESPONSE_SUFFIX
 )
 CPB_NEW_DURATION_BEFORE_RE = re.compile(
-    rf"^(?:completed\s+)?(?P<value>\d+)\s+(?P<unit>days?)\s+of\s+{CPB_0236_THERAPY_CONTEXT}" + CPB_COURSE_RESPONSE_SUFFIX
+    rf"^(?:completed\s+)?(?P<value>\d+)\s+(?P<unit>days?|months?)\s+of\s+{CPB_0236_THERAPY_CONTEXT}" + CPB_COURSE_RESPONSE_SUFFIX
 )
 CPB_0236_NONRESPONSE_RE = re.compile(
     r"\b(?:no|minimal|little|insufficient)\s+(?:meaningful\s+)?(?:improvement|relief|response)\b"
@@ -444,7 +444,13 @@ def _dedup_matches(matches: List[re.Match[str]]) -> List[re.Match[str]]:
 def _cpb_duration_weeks(match: re.Match[str]) -> int:
     value = int(match.group("value"))
     # Completed whole weeks only; 41 days cannot meet a six-week minimum.
-    return value // 7 if match.groupdict().get("unit", "weeks").startswith("day") else value
+    unit = match.groupdict().get("unit", "weeks")
+    if unit.startswith("day"):
+        return value // 7
+    if unit.startswith("month"):
+        # Four weeks per whole month is a lower bound, not a calendar estimate.
+        return value * 4
+    return value
 
 
 def _collect_cpb_therapy_candidates(text: str) -> List[_TherapyCourseCandidate]:
