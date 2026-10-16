@@ -1,0 +1,39 @@
+{
+  "clock": "2026-09-01T00:00:00+00:00",
+  "bundle_digest": "1e3dea24499fa5619e8862e53c75ed3596d7e94812314c995f7508a44353d0ef",
+  "stop_required": false,
+  "checks": [
+    {
+      "file": "test/golden/governance/drift_status.json",
+      "unchanged": true
+    },
+    {
+      "file": "test/golden/governance/rulebook_status.json",
+      "unchanged": true
+    },
+    {
+      "file": "test/golden/governance/rulebook_diff_reviewed_vs_active.json",
+      "unchanged": true
+    },
+    {
+      "file": "docs/artifacts/drift_status.json",
+      "unchanged": true
+    },
+    {
+      "file": "docs/artifacts/rulebook_status.json",
+      "unchanged": true
+    },
+    {
+      "file": "docs/artifacts/rulebook_diff_reviewed_vs_active.json",
+      "unchanged": true
+    },
+    {
+      "file": "docs/artifacts/drift_report.md",
+      "unchanged": true
+    },
+    {
+      "file": "docs/artifacts/rulebook_diff_reviewed_vs_active.md",
+      "unchanged": true
+    }
+  ]
+}

@@ -7,6 +7,7 @@ import re
 from bisect import bisect_left, bisect_right
 from contextlib import contextmanager
 from contextvars import ContextVar
+from datetime import datetime
 from pathlib import Path
 
 BOUNDARY_RE = re.compile(r"(?<!\d)[.!?]|[.!?](?!\d)|\n")
@@ -115,3 +116,40 @@ DRUG_CLASSES = load_drug_classes()
 # Escaping is for literal token matching only. Membership/class is table data.
 DRUG_NAME_PATTERN = r"(?:" + "|".join(re.escape(name) for name in sorted(DRUG_CLASSES, key=lambda name: (-len(name), name))) + r")"
 DRUG_NAME_RE = re.compile(rf"\b{DRUG_NAME_PATTERN}\b")
+
+
+# Accepted date syntax, validated without consulting or changing any clock.
+ENGLISH_MONTH = (
+    r"(?:jan(?:uary)?|feb(?:ruary)?|mar(?:ch)?|apr(?:il)?|may|jun(?:e)?|"
+    r"jul(?:y)?|aug(?:ust)?|sep(?:t(?:ember)?)?|oct(?:ober)?|nov(?:ember)?|dec(?:ember)?)"
+)
+NEW_STUDY_DATE_RE = re.compile(
+    r"(?<![\w/.-])(?:"
+    r"\d{1,2}[-/]\d{1,2}[-/](?:19|20)\d{2}|"
+    r"(?:19|20)\d{2}\.\d{1,2}\.\d{1,2}|"
+    rf"{ENGLISH_MONTH}\.?\s+\d{{1,2}}(?:st|nd|rd|th)?(?:,?\s+)(?:19|20)\d{{2}}|"
+    rf"\d{{1,2}}(?:st|nd|rd|th)?[ -]+{ENGLISH_MONTH}\.?[ -]+(?:19|20)\d{{2}}"
+    r")(?![\w/.-]\d)\b"
+)
+
+
+def explicit_study_dates(text: str):
+    for match in NEW_STUDY_DATE_RE.finditer(text):
+        token = re.sub(r"(?<=\d)(?:st|nd|rd|th)\b", "", match.group(0))
+        # Separators in named dates are grammatical punctuation, not a date
+        # lookup table. strptime supplies calendar and leap-year validation.
+        named = bool(re.search(r"[a-z]", token))
+        if named:
+            token = re.sub(r"[.,-]", " ", token)
+            token = re.sub(r"\bsept\b", "sep", token)
+            token = " ".join(token.split())
+            formats = ("%B %d %Y", "%b %d %Y", "%d %B %Y", "%d %b %Y")
+        else:
+            formats = ("%m/%d/%Y", "%m-%d-%Y", "%Y.%m.%d")
+        for format_string in formats:
+            try:
+                datetime.strptime(token, format_string)
+            except ValueError:
+                continue
+            yield match
+            break

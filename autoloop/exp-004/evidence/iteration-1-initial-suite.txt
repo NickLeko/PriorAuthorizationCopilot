@@ -1,0 +1,50 @@
+.venv/bin/python -m pytest -q
+........................................................................ [  5%]
+........................................................................ [ 10%]
+........................................................................ [ 16%]
+........................................................................ [ 21%]
+........................................................................ [ 27%]
+........................................................................ [ 32%]
+........................................................................ [ 37%]
+........................................................................ [ 43%]
+........................................................................ [ 48%]
+........................................................................ [ 54%]
+.xxx.................................................................... [ 59%]
+........................................................................ [ 65%]
+........................................................................ [ 70%]
+........................................................................ [ 75%]
+.....................................x..x.xx............................ [ 81%]
+........................................................................ [ 86%]
+.............................................F..........x.........x..... [ 92%]
+........................................................................ [ 97%]
+.x.............................                                          [100%]
+=================================== FAILURES ===================================
+_ test_independent_correct_values_and_states[independent_01_nonpain_response_contrast] _
+
+case = {'expected': {'ahi_documented': None, 'back_pain_with_radiculopathy': True, 'conservative_therapy_weeks': 7, 'cpb_0236...ervative_therapy_weeks': 'NEEDS_REVIEW', 'objective_motor_or_reflex_change_in_root_distribution': 'MET'}, 'id': 1, ...}
+
+    @pytest.mark.parametrize(
+        "case",
+        [
+            pytest.param(case, marks=pytest.mark.xfail(strict=True, reason="cross-sentence temporality")) if case["id"] == 12 else case
+            for case in CASES
+        ],
+        ids=lambda case: f"independent_{case['id']:02}_{case['name']}",
+    )
+    def test_independent_correct_values_and_states(case):
+        expected = dict(case["expected"])
+        # The secondary analgesic refusal has its own correct-value strict xfail.
+        if case["id"] == 2:
+            expected.pop("conservative_therapy_weeks")
+        facts, _ = extract_facts(case["note"])
+        result = evaluate(case)
+        for key, value in expected.items():
+>           assert facts[key] == value, key
+E           AssertionError: cpb_0236_conservative_therapy_weeks
+E           assert 7 == '__REVIEW_REQUIRED__'
+
+test/test_v210_independent.py:36: AssertionError
+=========================== short test summary info ============================
+FAILED test/test_v210_independent.py::test_independent_correct_values_and_states[independent_01_nonpain_response_contrast]
+1 failed, 1316 passed, 10 xfailed in 36.66s
+make: *** [test] Error 1

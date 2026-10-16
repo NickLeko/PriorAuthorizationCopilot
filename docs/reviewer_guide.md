@@ -220,31 +220,35 @@ The repo includes a local review UI, archive, drift monitor, and release convent
 Those are out of scope here. The current repo is meant to demonstrate a narrow, reviewable workflow-readiness core, not a deployed healthcare platform.
 
 
-## v2.5.0 review limits
+## v2.6.0 review limits
 
-Release validation is **1301 passed, 10 xfailed**. Corpus false
-PENDING_VERIFICATION is zero, but the always-abstain canary also scores zero;
-read the proposed facts and full context rather than treating this count as
-extraction accuracy. The `does/do/did not have` denial, borrowed reflex
-qualifiers, intact reflexes, negated numeric strength and cross-sentence
-study-date examples are handled. Neither/nor denial and same-sentence borrowed
-study dates remain unsafe proposals; incorrect attestations can still produce
-false READY. See [v2.5.0](releases/v2.5.0.md) and the
-[executable contract](../EXTRACTION_CONTRACT.md) for exact scope and open xfails.
+Release validation is **1461 passed, 10 xfailed**. Corpus 52/52, visible dev 27/27
+and all 102 own exp-004 cases have zero false PENDING_VERIFICATION; exp-002/003
+scores remain 64/69 and 74/74 with zero false pending. The always-abstain canary
+also has zero false pending. Read facts and full context; these counts do not
+establish extraction accuracy. Neither/nor, same-sentence date borrowing and
+broader attribution/episode failures remain. Incorrect attestations can still
+produce READY. All ten strict xfails remain.
 
-Exp-002 improves authored phrasing coverage for isolated qualifying courses in
-days/months/number words and direct named-root word strength grades. All 54
-authored negatives stay nonpassing. Class-name expansion was rejected after
-unsafe unrelated-therapy passes. Exp-003 adds listed generic/brand drug names and review for unresolved
-drug context alongside another course: 74/74 development cases, zero false
-pending across 63 negatives. Its unsafe first candidate was reverted.
+Supported listed-drug use verbs, doses/frequencies and duration-first courses
+now parse. Typed motor/reflex grades need an explicit named-root distribution,
+not inferred anatomy. Patient/history attribution or an unperformed exam in the
+sentence disqualifies both new and legacy findings: missing if the only source,
+review if objective evidence elsewhere conflicts. Ordinary “on exam” wording
+does not override a disqualifier in that sentence. This safeguard repairs a
+safety defect found by the owner’s held-out evaluation, missed by our own tests.
+Calendar-valid additional date formats require direct completed-study linkage;
+spelled-out AHI/RDI names require explicit measurements. Finite vocabularies,
+legacy association and cross-sentence context remain limited.
 
-[engine/data/cpb0236_drugs_v1.json](../engine/data/cpb0236_drugs_v1.json) is
-owner-approved reviewed data for local use. **ATC codes require human verification
-against WHO ATC before any external claim.** Check the note's course, indication,
-response and patient attribution independently; approval does not certify each
-transcribed code or alias. The file's human-review notice remains. Drug recognition
-is constrained by course-sentence grammar; a leading verb such as 'Took' is missed.
-The owner reports zero false pending on three held-out sets, exact 23→25/41,
-15→15/36 and 14→15/34; those cases were not inspected or rerun here. See the
-[exp-003 report](../autoloop/exp-003/REPORT.md) for its rejection and limitations.
+[engine/data/cpb0236_drugs_v1.json](../engine/data/cpb0236_drugs_v1.json) remains
+owner-approved reviewed data for local use. **ATC codes require human verification against WHO ATC before any external claim.**
+Approval does not certify each transcription, brand alias or clinical indication.
+Check the actual course, duration, response, patient and source independently.
+
+The owner reports a separate never-visible 27-case held-out set with different
+wording: exact 10→24/27, zero false pending. Those cases were not available or
+rerun here; failure-class feedback from a prior held-out set informed the repair.
+The visible dev check (11→27/27) and own cases are development evidence, not that
+independent evaluation. See [v2.6.0](releases/v2.6.0.md), the
+[contract](../EXTRACTION_CONTRACT.md), and [exp-004](../autoloop/exp-004/REPORT.md).

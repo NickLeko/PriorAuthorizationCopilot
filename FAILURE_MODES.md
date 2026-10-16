@@ -6,7 +6,7 @@ v2.0.0 mitigation: typed correction validation rejects SET_VALUE spans over 300 
 
 **Project:** Prior Authorization Readiness Copilot  
 **Owner:** Nicholas Leko  
-**Last Updated:** October 16, 2026 — v2.5.0
+**Last Updated:** October 16, 2026 — v2.6.0
 **Status:** Versioned current behavior. Changes should update tests and docs.
 
 ---
@@ -18,7 +18,7 @@ Current repo status:
 - no LLM implementation
 - bundled case data is synthetic; the official policy snapshot and rule provenance are source material; input is not screened and must not contain real PHI, with screening remaining the operator's responsibility
 
-Automated extraction is a **drafting aid, not a decision gate**. v1.4.0's posture over-trusted extraction. Negated diagnoses returned affirmative facts, contradicting the extraction contract as written. v1.5.0 resolves that contradiction by changing what the engine may assert rather than by making extraction match the contract. v2.5.0 handles the bounded patterns below; the negation, temporality, attribution and other failure classes remain open.
+Automated extraction is a **drafting aid, not a decision gate**. v1.4.0's posture over-trusted extraction. Negated diagnoses returned affirmative facts, contradicting the extraction contract as written. v1.5.0 resolves that contradiction by changing what the engine may assert rather than by making extraction match the contract. v2.6.0 handles the bounded patterns below; the negation, temporality, attribution and other failure classes remain open.
 
 Requirement results describe the captured proposals:
 - proposed scalar passes the operator (`MET`), without asserting source support
@@ -235,7 +235,7 @@ requires:
 ---
 
 
-## Patterns handled through v2.5.0; classes remain open
+## Patterns handled through v2.6.0; classes remain open
 
 These patterns are handled; the class remains open. No row establishes general
 correctness for negation, temporality, therapy response, event completion,
@@ -262,7 +262,7 @@ attribute association, or missingness scope.
 | Visit date and undated sleep study in the same sentence | Remaining unsafe borrowed-date proposal; contract xfail expects missing / CANNOT_DETERMINE. |
 | Isolated NSAIDs for 42 days / two months / six weeks with explicit no improvement | Bounded recall fix: floor completed days to weeks, months to a four-week lower bound, and recognize number words one through twelve. Below-threshold or improved courses correctly fail. Modifiers, comparisons, fractions and episode linkage remain limited. |
 | Direct right L5 distribution: strength 4 of 5 / 3 out of 5 / 4.5 of 5 | Bounded objective exam capture; 5 of 5 is normal. Explicit negation, question, alternative attribution and opposite-side radiculopathy review in this new route. Legacy slash-grade gaps remain. |
-| Spelled-out non-steroidal anti-inflammatory class names | Recall defect remains: exp-002's vocabulary expansion was reverted when unrelated headache therapy became unsafe passes. Listed drug names are now supported only through the owner-approved reviewed table and isolated course grammar; leading verbs such as Took remain missed. |
+| Spelled-out non-steroidal anti-inflammatory class names | Recall defect remains: exp-002's vocabulary expansion was reverted when unrelated headache therapy became unsafe passes. Listed drug names are now supported only through the owner-approved reviewed table and isolated course grammar; supported leading verbs and dose/frequency forms now parse, but unlisted course syntax remains limited. |
 
 ### Reviewed drug vocabulary and incomplete courses
 
@@ -276,7 +276,8 @@ four linkage challenges; it was reverted. The accepted revision requires review
 for unresolved eligible drug context alongside another course. It scores 74/74
 on development cases with zero false pending across 63 negatives. This guard
 may over-trigger, and separate-sentence planning/indication can still escape local
-context. Leading verbs such as 'Took' remain unrecognized.
+context. Exp-004 now recognizes supported reported-use verbs such as “Took”,
+dose/frequency and duration-first ordering, retaining course guards.
 
 ### Copied-forward note text, template checkbox text, and persistence negation
 
@@ -327,9 +328,9 @@ returned separately by `generate_letter`. The obsolete corrected-letter guard
 was removed. All existing correction/letter integrity validation remains.
 
 
-## v2.5.0 safety metric and remaining pathways
+## v2.6.0 safety metric and remaining pathways
 
-Fresh validation: **1301 passed, 10 xfailed**. Four contract xfails comprise
+Fresh validation: **1461 passed, 10 xfailed**. Four contract xfails comprise
 unrelated therapy, neither/nor, same-sentence borrowed dates and the disputed
 negated-strength label; six others cover two cross-sentence temporality tests,
 generic analgesic duration and the three H1(a) open cases described above.
@@ -349,9 +350,9 @@ review results replacing missingness. Three positive misses and two wrong
 negative abstentions from the rejected class-name attempt remain. The unsafe
 intermediate candidate and its later attribution challenges are preserved in
 the [exp-002 report](autoloop/exp-002/REPORT.md); no gain is credited to it.
-The owner reports three held-out sets with zero false pending on all and
-exact 23→25/41, 15→15/36 and 14→15/34; cases were not inspected or rerun here. Narrow authored
-phrasing improvements do not establish clinical-language generalization.
+Historical v2.5.0 owner-reported held-out results remain in that release’s notes.
+Current exp-004 evidence and its held-out-discovered safety defect are below;
+narrow authored phrasing improvements do not establish clinical generalization.
 
 The remaining neither/nor lumbar proposal can become false READY with supplied
 attestations and current verified governance. Same-sentence borrowed CPAP dates
@@ -362,3 +363,32 @@ links, other negation forms, laterality and episode resolution remain limitation
 See the [experiment report](autoloop/REPORT.md) for the owner-approved correction,
 attestation and archive setup rewrites that retain these risks in executable
 coverage rather than silently replacing them with easier positive inputs.
+
+
+## Exp-004: source/performance failure found by held-out evaluation
+
+The owner’s held-out evaluation found a motor grade attributed to the patient
+with an exam deferred still returned PENDING_VERIFICATION. Our iteration-2 tests
+and perfect visible dev check had missed this defect. Iteration 5 applies one
+sentence-wide guard to new typed exams and legacy slash/word strength,
+descriptive reflex and objective-weakness paths. Per patient, patient reports or
+states, self-reported, by history, deferred, not performed, not examined, unable
+to assess and limited by refusal disqualify the finding as objective. Semicolons
+and decimal grades do not escape the guard. Qualified evidence alone gives
+NOT_DOCUMENTED; conflicting normal/abnormal objective findings elsewhere give
+NEEDS_REVIEW, with both sources cited. Agreeing objective evidence remains usable.
+
+Before the repair, 13/24 new negatives falsely passed; after it, 0/24 do. All
+102 own cases (30 positives / 72 negatives), visible dev 27/27 and corpus 52/52
+pass with zero false pending; all 117 exp-002/003 negatives remain nonpassing.
+Supported drug verbs/doses, typed root-linked motor/reflex grades, directly linked
+calendar-valid study dates and spelled-out AHI/RDI indices improve coverage;
+none establishes general objective provenance, root anatomy or event linkage.
+Sentence-wide source exclusion can over-abstain on unrelated qualifiers.
+
+The owner reports a separate never-visible 27-case held-out set, different wording:
+exact 10→24/27, zero false PENDING_VERIFICATION. No held-out cases were read or
+rerun here; earlier failure-class feedback informed the source guard. The three
+remaining exact-status misses were not inspected. This is distinct from visible
+dev’s 11→27/27 and from the safety failure on the prior held-out set. See
+[v2.6.0](docs/releases/v2.6.0.md) and [exp-004](autoloop/exp-004/REPORT.md).

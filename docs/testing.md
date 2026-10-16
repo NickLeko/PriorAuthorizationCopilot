@@ -129,7 +129,7 @@ process, which can leave engine modules from different loads alive together.
    load `MRI-01-complete`. It must return `PENDING_VERIFICATION` without an
    exception. In **Audit and Export**, inspect **Raw evaluation payload** or
    download the JSON artifact. Its `engine_version` must match the release tag
-   without the `v` prefix (for `v2.5.0`, expect `2.5.0`).
+   without the `v` prefix (for `v2.6.0`, expect `2.6.0`).
 4. In a fresh session, load the same lumbar MRI case to establish request scope,
    replace its note with the exact synthetic note below, and run the review.
    Expect `NEEDS_REVIEW`, no exception, and **“but significant improvement in
@@ -231,57 +231,54 @@ clinical-language correctness. All failure classes remain open; see
 `EXTRACTION_CONTRACT.md` and `FAILURE_MODES.md` for the remaining risks.
 
 
-## v2.5.0 release validation and open expectations
+## v2.6.0 release validation and open expectations
 
-Fresh `make test`: **1301 passed, 10 xfailed**. `make lint` must pass as well.
-The record schema remains 2.0.0. See [v2.5.0](releases/v2.5.0.md) for the
-fixed-clock regeneration audit and [exp-001](../autoloop/REPORT.md) for per-test
-(a/b) classifications, label changes and before/after evidence.
+Fresh `make test`: **1461 passed, 10 xfailed**. `make lint` must pass as well.
+The exp-004 suite contributes 1437 passing tests; 24 new executable contract
+examples bring the release to 1461. The 67 existing contract examples, including
+all four known-failure objects, remain unchanged from f1412a6; there are 91 total.
+Only the two hardcoded version assertions change among existing test files.
+Record schema stays 2.0.0. No extraction logic or data changes in release prep.
 
-Four contract JSON examples have `known_failure`: neither/nor negation,
-same-sentence borrowed dates, unrelated headache therapy, and the disputed
-negated-strength False label. The latter now yields NEEDS_REVIEW, not an
-unsafe affirmative proposal. The remaining six xfails cover two cross-sentence
-temporality checks, generic analgesic duration, next-line improvement,
-contralateral attribution, and a cross-sentence copy-forward header. Resolved
-auxiliary-verb negation, borrowed reflex adjectives, cross-sentence dates,
-case-17 citation and intact-reflex cases are not remaining failures.
+Four contract xfails remain: neither/nor, same-sentence borrowed dates, unrelated
+headache therapy and the disputed negated-strength False label. The latter
+returns NEEDS_REVIEW, not a normal observed score. Six others cover two
+cross-sentence temporality checks, generic analgesic duration, next-line
+improvement, contralateral attribution and a copy-forward header in another
+sentence. The generic duration fact differs from the CPB-specific course facts.
+Exp-004’s owner-authorized leading-verb contract correction already existed at
+the release base; release prep changes no existing label or strict marker.
 
-The automated safety metric is false PENDING_VERIFICATION, not false READY:
-all-MET proposals can still be unsupported. Corpus 52/52 and zero false pending
-are unchanged. The fixed 45 authored cases improve to 45/45 with zero false
-pending; the expanded 47 retain two false pending setup counterexamples.
-The canary also has zero false pending, so report exact status, missed passes,
-abstention versus expected and the confusion matrix together. These authored
-regressions are not held-out evaluation.
+Use the unchanged public `autoloop/score.py` on corpus, unchanged owner dev,
+all own cases and all exp-002/003 inputs. Expected final scores: 52/52, 27/27,
+102/102, 64/69 and 74/74; zero false pending and zero automated READY throughout.
+All 72 exp-004 negatives, 117 exp-002/003 negatives and 13 owner dev traps are
+nonpassing. Own pairs include 30 positives, with 34 additional requirement-level
+checks for missing versus review states and source citations. Development dev
+improves 11→27/27; the original 68 own pairs improve retrospectively 33→68/68.
+The final 34 source/performance pairs improve prospectively 19→34/34 with false
+pending 13→0. Do not combine these into an invented common main baseline for
+all 102 own cases. Canary exact is 9/27 dev, 51/102 own and 30/52 corpus; zero
+false pending alone says nothing about positive recall.
 
-Exp-002 adds 55 exact paired regressions (12 positives / 43 negatives) plus
-eleven nonpassing guards for the rejected class-name candidate. Across all 69
-authored cases, including the rejected positives, exact status improves 41/69 →
-64/69; positives 0/15 → 12/15; negative false PENDING_VERIFICATION stays 0/54.
-Abstention falls 100% → 72.46% against 65.22% expected. The canary is 41/69 exact
-and misses all 15 passes. See [exp-002](../autoloop/exp-002/REPORT.md).
-Thirteen contract examples for exp-002 were added in v2.4.0; this release adds
-sixteen for exp-003. No earlier expectation, strict marker or product logic
-changes in release prep. The ten xfails listed above remain. Do not present
-authored-case improvement as generalization.
-The generic analgesic-duration xfail asserts `conservative_therapy_weeks`, a
-separate field from the CPB-specific course fields improved by exp-002.
+The owner reports a separate 27-case never-visible held-out set with different
+wording: 10→24/27 exact, zero false PENDING_VERIFICATION. A safety defect on a
+prior held-out set—patient-reported/deferred exam treated as objective—was fixed
+before release. No held-out cases were read, incorporated or rerun here; only
+failure-class feedback was supplied for that repair. The visible dev file stays
+committed unchanged as the owner dev check, not held-out data. Three held-out
+exact-status misses remain. Earlier expanded exp-001 unsafe counterexamples and
+all historical release measurements remain documented.
 
-Exp-003 contributes 74 exact public-service pairs (11 positives / 63 negatives)
-and nine table-integrity checks; its experiment suite was 1285 passed / 10 xfailed.
-The sixteen release contract additions produce 1301 passed / 10 xfailed.
-The final development score is 49/74 → 74/74; false pending 1 → 0. Its initial
-unsafe candidate was reverted after four incomplete-course linkage false passes.
-The table is [owner-approved reviewed data](../engine/data/cpb0236_drugs_v1.json)
-for local use. **ATC codes require human verification against WHO ATC before any
-external claim.** Approval does not certify transcriptions; retain the human-review notice.
-A leading verb such as 'Took' is missed by the course-sentence grammar.
+[engine/data/cpb0236_drugs_v1.json](../engine/data/cpb0236_drugs_v1.json) remains
+owner-approved reviewed data for local use, with 26 unchanged entries. **ATC codes require human verification against WHO ATC before any external claim.**
+Approval does not independently certify transcriptions or aliases.
 
-The owner supplied held-out results on three sets, none visible during development:
-zero false pending on all; exact 23→25/41, 15→15/36 and 14→15/34. Cases were
-not inspected or rerun here. The release's [generation command](releases/v2.5.0-generation-command.txt)
-captures all actual writes at the shared acceptance clock and restores/stops
-on any governance or other non-version difference. See the
-[generation audit](releases/v2.5.0-generation-audit.md) and
-[documentation drift audit](releases/v2.5.0-doc-audit.md).
+The [generation command](releases/v2.6.0-generation-command.txt) captures all
+actual writes at the shared acceptance instant 2026-09-01T00:00:00Z and restores
+all outputs before stopping on any governance or non-version change. Only
+engine/app version 2.5.0 → 2.6.0 is permitted; runtime clocks and monitor state
+must not change. See [release notes](releases/v2.6.0.md),
+[generation audit](releases/v2.6.0-generation-audit.md),
+[scope audit](releases/v2.6.0-scope-audit.json) and
+[documentation drift audit](releases/v2.6.0-doc-audit.md).

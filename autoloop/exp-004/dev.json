@@ -1,0 +1,513 @@
+{
+  "set_id": "exp-004-dev",
+  "created": "2026-10-16",
+  "base": "89a1500 (v2.5.0)",
+  "cases": [
+    {
+      "id": "D4-01",
+      "family": "therapy",
+      "kind": "recall",
+      "payer": "Aetna",
+      "procedure_code": "MRI_LUMBAR",
+      "dx_codes": [],
+      "site_of_care": "outpatient",
+      "specialty": "eval",
+      "note_text": "Low back pain with left leg radiculopathy. Left L5 distribution: strength 4/5. Took naproxen 500 mg twice daily for 8 weeks with no improvement.",
+      "expected_requirements": {
+        "back_pain_with_radiculopathy": "MET",
+        "objective_motor_or_reflex_change_in_root_distribution": "MET",
+        "cpb_0236_conservative_therapy_weeks": "MET",
+        "cpb_0236_conservative_therapy_no_improvement": "MET"
+      },
+      "expected_overall_status": "PENDING_VERIFICATION",
+      "label_basis": "NSAID, leading verb, dose"
+    },
+    {
+      "id": "D4-02",
+      "family": "therapy",
+      "kind": "recall",
+      "payer": "Aetna",
+      "procedure_code": "MRI_LUMBAR",
+      "dx_codes": [],
+      "site_of_care": "outpatient",
+      "specialty": "eval",
+      "note_text": "Low back pain with left leg radiculopathy. Left L5 distribution: strength 4/5. Has been taking meloxicam daily for 10 weeks without relief.",
+      "expected_requirements": {
+        "back_pain_with_radiculopathy": "MET",
+        "objective_motor_or_reflex_change_in_root_distribution": "MET",
+        "cpb_0236_conservative_therapy_weeks": "MET",
+        "cpb_0236_conservative_therapy_no_improvement": "MET"
+      },
+      "expected_overall_status": "PENDING_VERIFICATION",
+      "label_basis": "NSAID, progressive verb"
+    },
+    {
+      "id": "D4-03",
+      "family": "therapy",
+      "kind": "recall",
+      "payer": "Aetna",
+      "procedure_code": "MRI_LUMBAR",
+      "dx_codes": [],
+      "site_of_care": "outpatient",
+      "specialty": "eval",
+      "note_text": "Low back pain with left leg radiculopathy. Left L5 distribution: strength 4/5. Trialed methocarbamol for 2 months, no meaningful benefit.",
+      "expected_requirements": {
+        "back_pain_with_radiculopathy": "MET",
+        "objective_motor_or_reflex_change_in_root_distribution": "MET",
+        "cpb_0236_conservative_therapy_weeks": "MET",
+        "cpb_0236_conservative_therapy_no_improvement": "MET"
+      },
+      "expected_overall_status": "PENDING_VERIFICATION",
+      "label_basis": "relaxant, months"
+    },
+    {
+      "id": "D4-04",
+      "family": "therapy",
+      "kind": "recall",
+      "payer": "Aetna",
+      "procedure_code": "MRI_LUMBAR",
+      "dx_codes": [],
+      "site_of_care": "outpatient",
+      "specialty": "eval",
+      "note_text": "Low back pain with left leg radiculopathy. Left L5 distribution: strength 4/5. On acetaminophen for 8 weeks with no improvement.",
+      "expected_requirements": {
+        "back_pain_with_radiculopathy": "MET",
+        "objective_motor_or_reflex_change_in_root_distribution": "MET",
+        "cpb_0236_conservative_therapy_weeks": "MET",
+        "cpb_0236_conservative_therapy_no_improvement": "MET"
+      },
+      "expected_overall_status": "PENDING_VERIFICATION",
+      "label_basis": "analgesic, 'On'"
+    },
+    {
+      "id": "D4-05",
+      "family": "therapy",
+      "kind": "recall",
+      "payer": "Aetna",
+      "procedure_code": "MRI_LUMBAR",
+      "dx_codes": [],
+      "site_of_care": "outpatient",
+      "specialty": "eval",
+      "note_text": "Low back pain with left leg radiculopathy. Left L5 distribution: strength 4/5. Took Flexeril at bedtime for 9 weeks with no improvement.",
+      "expected_requirements": {
+        "back_pain_with_radiculopathy": "MET",
+        "objective_motor_or_reflex_change_in_root_distribution": "MET",
+        "cpb_0236_conservative_therapy_weeks": "MET",
+        "cpb_0236_conservative_therapy_no_improvement": "MET"
+      },
+      "expected_overall_status": "PENDING_VERIFICATION",
+      "label_basis": "brand relaxant"
+    },
+    {
+      "id": "D4-06",
+      "family": "therapy",
+      "kind": "recall",
+      "payer": "Aetna",
+      "procedure_code": "MRI_LUMBAR",
+      "dx_codes": [],
+      "site_of_care": "outpatient",
+      "specialty": "eval",
+      "note_text": "Low back pain with left leg radiculopathy. Left L5 distribution: strength 4/5. 8 weeks of naproxen with no improvement.",
+      "expected_requirements": {
+        "back_pain_with_radiculopathy": "MET",
+        "objective_motor_or_reflex_change_in_root_distribution": "MET",
+        "cpb_0236_conservative_therapy_weeks": "MET",
+        "cpb_0236_conservative_therapy_no_improvement": "MET"
+      },
+      "expected_overall_status": "PENDING_VERIFICATION",
+      "label_basis": "duration-first ordering"
+    },
+    {
+      "id": "D4-07",
+      "family": "therapy",
+      "kind": "trap",
+      "payer": "Aetna",
+      "procedure_code": "MRI_LUMBAR",
+      "dx_codes": [],
+      "site_of_care": "outpatient",
+      "specialty": "eval",
+      "note_text": "Low back pain with left leg radiculopathy. Left L5 distribution: strength 4/5. Took naproxen for 3 weeks with no improvement.",
+      "expected_requirements": {
+        "back_pain_with_radiculopathy": "MET",
+        "objective_motor_or_reflex_change_in_root_distribution": "MET",
+        "cpb_0236_conservative_therapy_weeks": "NOT_MET",
+        "cpb_0236_conservative_therapy_no_improvement": "MET"
+      },
+      "expected_overall_status": "NOT_READY",
+      "label_basis": "short"
+    },
+    {
+      "id": "D4-08",
+      "family": "therapy",
+      "kind": "trap",
+      "payer": "Aetna",
+      "procedure_code": "MRI_LUMBAR",
+      "dx_codes": [],
+      "site_of_care": "outpatient",
+      "specialty": "eval",
+      "note_text": "Low back pain with left leg radiculopathy. Left L5 distribution: strength 4/5. Has been taking meloxicam for 10 weeks with significant improvement.",
+      "expected_requirements": {
+        "back_pain_with_radiculopathy": "MET",
+        "objective_motor_or_reflex_change_in_root_distribution": "MET",
+        "cpb_0236_conservative_therapy_weeks": "MET",
+        "cpb_0236_conservative_therapy_no_improvement": "NOT_MET"
+      },
+      "expected_overall_status": "NOT_READY",
+      "label_basis": "improved"
+    },
+    {
+      "id": "D4-09",
+      "family": "therapy",
+      "kind": "trap",
+      "payer": "Aetna",
+      "procedure_code": "MRI_LUMBAR",
+      "dx_codes": [],
+      "site_of_care": "outpatient",
+      "specialty": "eval",
+      "note_text": "Low back pain with left leg radiculopathy. Left L5 distribution: strength 4/5. Took gabapentin for 8 weeks with no improvement.",
+      "expected_requirements": {
+        "back_pain_with_radiculopathy": "MET",
+        "objective_motor_or_reflex_change_in_root_distribution": "MET",
+        "cpb_0236_conservative_therapy_weeks": "NOT_DOCUMENTED",
+        "cpb_0236_conservative_therapy_no_improvement": "NOT_DOCUMENTED"
+      },
+      "expected_overall_status": "CANNOT_DETERMINE",
+      "label_basis": "not a Footnote 1 class"
+    },
+    {
+      "id": "D4-10",
+      "family": "therapy",
+      "kind": "trap",
+      "payer": "Aetna",
+      "procedure_code": "MRI_LUMBAR",
+      "dx_codes": [],
+      "site_of_care": "outpatient",
+      "specialty": "eval",
+      "note_text": "Low back pain with left leg radiculopathy. Left L5 distribution: strength 4/5. Took naproxen for 8 weeks for knee arthritis with no improvement.",
+      "expected_requirements": {
+        "back_pain_with_radiculopathy": "MET",
+        "objective_motor_or_reflex_change_in_root_distribution": "MET",
+        "cpb_0236_conservative_therapy_weeks": "NOT_DOCUMENTED",
+        "cpb_0236_conservative_therapy_no_improvement": "NOT_DOCUMENTED"
+      },
+      "expected_overall_status": "CANNOT_DETERMINE",
+      "label_basis": "unrelated indication"
+    },
+    {
+      "id": "D4-11",
+      "family": "therapy",
+      "kind": "trap",
+      "payer": "Aetna",
+      "procedure_code": "MRI_LUMBAR",
+      "dx_codes": [],
+      "site_of_care": "outpatient",
+      "specialty": "eval",
+      "note_text": "Low back pain with left leg radiculopathy. Left L5 distribution: strength 4/5. Will start naproxen for 8 weeks.",
+      "expected_requirements": {
+        "back_pain_with_radiculopathy": "MET",
+        "objective_motor_or_reflex_change_in_root_distribution": "MET",
+        "cpb_0236_conservative_therapy_weeks": "NOT_DOCUMENTED",
+        "cpb_0236_conservative_therapy_no_improvement": "NOT_DOCUMENTED"
+      },
+      "expected_overall_status": "CANNOT_DETERMINE",
+      "label_basis": "planned"
+    },
+    {
+      "id": "D4-12",
+      "family": "therapy",
+      "kind": "trap",
+      "payer": "Aetna",
+      "procedure_code": "MRI_LUMBAR",
+      "dx_codes": [],
+      "site_of_care": "outpatient",
+      "specialty": "eval",
+      "note_text": "Low back pain with left leg radiculopathy. Left L5 distribution: strength 4/5. Her son took naproxen for 8 weeks with no improvement.",
+      "expected_requirements": {
+        "back_pain_with_radiculopathy": "MET",
+        "objective_motor_or_reflex_change_in_root_distribution": "MET",
+        "cpb_0236_conservative_therapy_weeks": "NOT_DOCUMENTED",
+        "cpb_0236_conservative_therapy_no_improvement": "NOT_DOCUMENTED"
+      },
+      "expected_overall_status": "CANNOT_DETERMINE",
+      "label_basis": "non-patient"
+    },
+    {
+      "id": "D4-13",
+      "family": "exam",
+      "kind": "recall",
+      "payer": "Aetna",
+      "procedure_code": "MRI_LUMBAR",
+      "dx_codes": [],
+      "site_of_care": "outpatient",
+      "specialty": "eval",
+      "note_text": "Low back pain with left leg radiculopathy. Left L5 distribution: dorsiflexion 4/5. Ibuprofen for 8 weeks with no improvement.",
+      "expected_requirements": {
+        "back_pain_with_radiculopathy": "MET",
+        "objective_motor_or_reflex_change_in_root_distribution": "MET",
+        "cpb_0236_conservative_therapy_weeks": "MET",
+        "cpb_0236_conservative_therapy_no_improvement": "MET"
+      },
+      "expected_overall_status": "PENDING_VERIFICATION",
+      "label_basis": "no 'strength' word"
+    },
+    {
+      "id": "D4-14",
+      "family": "exam",
+      "kind": "recall",
+      "payer": "Aetna",
+      "procedure_code": "MRI_LUMBAR",
+      "dx_codes": [],
+      "site_of_care": "outpatient",
+      "specialty": "eval",
+      "note_text": "Low back pain with left leg radiculopathy. Left L4 distribution: quadriceps 4+/5. Ibuprofen for 8 weeks with no improvement.",
+      "expected_requirements": {
+        "back_pain_with_radiculopathy": "MET",
+        "objective_motor_or_reflex_change_in_root_distribution": "MET",
+        "cpb_0236_conservative_therapy_weeks": "MET",
+        "cpb_0236_conservative_therapy_no_improvement": "MET"
+      },
+      "expected_overall_status": "PENDING_VERIFICATION",
+      "label_basis": "4+/5"
+    },
+    {
+      "id": "D4-15",
+      "family": "exam",
+      "kind": "recall",
+      "payer": "Aetna",
+      "procedure_code": "MRI_LUMBAR",
+      "dx_codes": [],
+      "site_of_care": "outpatient",
+      "specialty": "eval",
+      "note_text": "Low back pain with left leg radiculopathy. Left L5 distribution: EHL strength 4-/5. Ibuprofen for 8 weeks with no improvement.",
+      "expected_requirements": {
+        "back_pain_with_radiculopathy": "MET",
+        "objective_motor_or_reflex_change_in_root_distribution": "MET",
+        "cpb_0236_conservative_therapy_weeks": "MET",
+        "cpb_0236_conservative_therapy_no_improvement": "MET"
+      },
+      "expected_overall_status": "PENDING_VERIFICATION",
+      "label_basis": "4-/5, muscle abbreviation"
+    },
+    {
+      "id": "D4-16",
+      "family": "exam",
+      "kind": "recall",
+      "payer": "Aetna",
+      "procedure_code": "MRI_LUMBAR",
+      "dx_codes": [],
+      "site_of_care": "outpatient",
+      "specialty": "eval",
+      "note_text": "Low back pain with left leg radiculopathy. Left L4 distribution: patellar reflex 1+, reduced versus right. Ibuprofen for 8 weeks with no improvement.",
+      "expected_requirements": {
+        "back_pain_with_radiculopathy": "MET",
+        "objective_motor_or_reflex_change_in_root_distribution": "MET",
+        "cpb_0236_conservative_therapy_weeks": "MET",
+        "cpb_0236_conservative_therapy_no_improvement": "MET"
+      },
+      "expected_overall_status": "PENDING_VERIFICATION",
+      "label_basis": "reflex grade reduced"
+    },
+    {
+      "id": "D4-17",
+      "family": "exam",
+      "kind": "trap",
+      "payer": "Aetna",
+      "procedure_code": "MRI_LUMBAR",
+      "dx_codes": [],
+      "site_of_care": "outpatient",
+      "specialty": "eval",
+      "note_text": "Low back pain with left leg radiculopathy. Left L5 distribution: dorsiflexion 5/5. Ibuprofen for 8 weeks with no improvement.",
+      "expected_requirements": {
+        "back_pain_with_radiculopathy": "MET",
+        "objective_motor_or_reflex_change_in_root_distribution": "NOT_MET",
+        "cpb_0236_conservative_therapy_weeks": "MET",
+        "cpb_0236_conservative_therapy_no_improvement": "MET"
+      },
+      "expected_overall_status": "NOT_READY",
+      "label_basis": "normal"
+    },
+    {
+      "id": "D4-18",
+      "family": "exam",
+      "kind": "trap",
+      "payer": "Aetna",
+      "procedure_code": "MRI_LUMBAR",
+      "dx_codes": [],
+      "site_of_care": "outpatient",
+      "specialty": "eval",
+      "note_text": "Low back pain with left leg radiculopathy. Left L4 distribution: patellar reflex 2+ and symmetric. Ibuprofen for 8 weeks with no improvement.",
+      "expected_requirements": {
+        "back_pain_with_radiculopathy": "MET",
+        "objective_motor_or_reflex_change_in_root_distribution": "NOT_MET",
+        "cpb_0236_conservative_therapy_weeks": "MET",
+        "cpb_0236_conservative_therapy_no_improvement": "MET"
+      },
+      "expected_overall_status": "NOT_READY",
+      "label_basis": "normal reflex"
+    },
+    {
+      "id": "D4-19",
+      "family": "exam",
+      "kind": "trap",
+      "payer": "Aetna",
+      "procedure_code": "MRI_LUMBAR",
+      "dx_codes": [],
+      "site_of_care": "outpatient",
+      "specialty": "eval",
+      "note_text": "Low back pain with left leg radiculopathy. Left L5 distribution: pain 4/5 with dorsiflexion. Ibuprofen for 8 weeks with no improvement.",
+      "expected_requirements": {
+        "back_pain_with_radiculopathy": "MET",
+        "objective_motor_or_reflex_change_in_root_distribution": "NOT_DOCUMENTED",
+        "cpb_0236_conservative_therapy_weeks": "MET",
+        "cpb_0236_conservative_therapy_no_improvement": "MET"
+      },
+      "expected_overall_status": "CANNOT_DETERMINE",
+      "label_basis": "pain score"
+    },
+    {
+      "id": "D4-20",
+      "family": "exam",
+      "kind": "trap",
+      "payer": "Aetna",
+      "procedure_code": "MRI_LUMBAR",
+      "dx_codes": [],
+      "site_of_care": "outpatient",
+      "specialty": "eval",
+      "note_text": "Low back pain with left leg radiculopathy. Left biceps strength 4/5. Ibuprofen for 8 weeks with no improvement.",
+      "expected_requirements": {
+        "back_pain_with_radiculopathy": "MET",
+        "objective_motor_or_reflex_change_in_root_distribution": "NOT_DOCUMENTED",
+        "cpb_0236_conservative_therapy_weeks": "MET",
+        "cpb_0236_conservative_therapy_no_improvement": "MET"
+      },
+      "expected_overall_status": "CANNOT_DETERMINE",
+      "label_basis": "not lumbar root"
+    },
+    {
+      "id": "D4-21",
+      "family": "cpap",
+      "kind": "recall",
+      "payer": "Aetna",
+      "procedure_code": "CPAP_DEVICE",
+      "dx_codes": [],
+      "site_of_care": "outpatient",
+      "specialty": "eval",
+      "note_text": "Obstructive sleep apnea. Polysomnography 08/14/2025, AHI 26.",
+      "expected_requirements": {
+        "osa_diagnosis": "MET",
+        "sleep_study_date": "MET",
+        "ahi_documented": "MET"
+      },
+      "expected_overall_status": "PENDING_VERIFICATION",
+      "label_basis": "US date"
+    },
+    {
+      "id": "D4-22",
+      "family": "cpap",
+      "kind": "recall",
+      "payer": "Aetna",
+      "procedure_code": "CPAP_DEVICE",
+      "dx_codes": [],
+      "site_of_care": "outpatient",
+      "specialty": "eval",
+      "note_text": "OSA diagnosed on home sleep apnea test March 3, 2025; AHI 18.",
+      "expected_requirements": {
+        "osa_diagnosis": "MET",
+        "sleep_study_date": "MET",
+        "ahi_documented": "MET"
+      },
+      "expected_overall_status": "PENDING_VERIFICATION",
+      "label_basis": "month-name date"
+    },
+    {
+      "id": "D4-23",
+      "family": "cpap",
+      "kind": "recall",
+      "payer": "Aetna",
+      "procedure_code": "CPAP_DEVICE",
+      "dx_codes": [],
+      "site_of_care": "outpatient",
+      "specialty": "eval",
+      "note_text": "OSA. Sleep study 2025-06-30 showed an apnea-hypopnea index of 22.",
+      "expected_requirements": {
+        "osa_diagnosis": "MET",
+        "sleep_study_date": "MET",
+        "ahi_documented": "MET"
+      },
+      "expected_overall_status": "PENDING_VERIFICATION",
+      "label_basis": "spelled AHI hyphenated"
+    },
+    {
+      "id": "D4-24",
+      "family": "cpap",
+      "kind": "recall",
+      "payer": "Aetna",
+      "procedure_code": "CPAP_DEVICE",
+      "dx_codes": [],
+      "site_of_care": "outpatient",
+      "specialty": "eval",
+      "note_text": "Obstructive sleep apnea; PSG 2025-05-05 with RDI 27.",
+      "expected_requirements": {
+        "osa_diagnosis": "MET",
+        "sleep_study_date": "MET",
+        "ahi_documented": "MET"
+      },
+      "expected_overall_status": "PENDING_VERIFICATION",
+      "label_basis": "RDI"
+    },
+    {
+      "id": "D4-25",
+      "family": "cpap",
+      "kind": "trap",
+      "payer": "Aetna",
+      "procedure_code": "CPAP_DEVICE",
+      "dx_codes": [],
+      "site_of_care": "outpatient",
+      "specialty": "eval",
+      "note_text": "Obstructive sleep apnea. Office visit 08/14/2025. Sleep study date not available. AHI 26.",
+      "expected_requirements": {
+        "osa_diagnosis": "MET",
+        "sleep_study_date": "NOT_DOCUMENTED",
+        "ahi_documented": "MET"
+      },
+      "expected_overall_status": "CANNOT_DETERMINE",
+      "label_basis": "visit date"
+    },
+    {
+      "id": "D4-26",
+      "family": "cpap",
+      "kind": "trap",
+      "payer": "Aetna",
+      "procedure_code": "CPAP_DEVICE",
+      "dx_codes": [],
+      "site_of_care": "outpatient",
+      "specialty": "eval",
+      "note_text": "OSA suspected. Polysomnography scheduled for March 3, 2026.",
+      "expected_requirements": {
+        "osa_diagnosis": "NEEDS_REVIEW",
+        "sleep_study_date": "NOT_DOCUMENTED",
+        "ahi_documented": "NOT_DOCUMENTED"
+      },
+      "expected_overall_status": "CANNOT_DETERMINE",
+      "label_basis": "scheduled"
+    },
+    {
+      "id": "D4-27",
+      "family": "cpap",
+      "kind": "trap",
+      "payer": "Aetna",
+      "procedure_code": "CPAP_DEVICE",
+      "dx_codes": [],
+      "site_of_care": "outpatient",
+      "specialty": "eval",
+      "note_text": "Central sleep apnea. Polysomnography 08/14/2025, AHI 26.",
+      "expected_requirements": {
+        "osa_diagnosis": "NOT_DOCUMENTED",
+        "sleep_study_date": "MET",
+        "ahi_documented": "MET"
+      },
+      "expected_overall_status": "CANNOT_DETERMINE",
+      "label_basis": "central"
+    }
+  ]
+}

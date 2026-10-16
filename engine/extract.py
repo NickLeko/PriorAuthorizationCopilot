@@ -5,9 +5,13 @@ from bisect import bisect_left, bisect_right
 from dataclasses import dataclass
 from typing import Any, Dict, List, Optional, Tuple
 
-from .note_context import DRUG_NAME_PATTERN, DRUG_NAME_RE, EvidenceMap, indexed_note, note_index, validate_note
+from .note_context import DRUG_NAME_PATTERN, DRUG_NAME_RE, EvidenceMap, explicit_study_dates, indexed_note, note_index, validate_note
 from .schemas import REVIEW_REQUIRED_FACT
 
+INDEX_NAME_PATTERN = (
+    r"(?:ahi|rdi|apn(?:o)?ea[- \t–—]+hypopn(?:o)?ea[- \t–—]+index|"
+    r"respiratory[- \t–—]+disturbance[- \t–—]+index)"
+)
 THERAPY_CONTEXT = r"(?:pt|physical therapy|nsaids?|anti-?inflammator(?:y|ies)|activity modification|home exercise|hep|chiropractic|chiro)"
 THERAPY_AFTER_RE = re.compile(rf"\b{THERAPY_CONTEXT}\b(?:\s*(?:x|for|over|about)\s*)\b(?P<value>\d+)\s*(?:week|weeks)\b")
 THERAPY_BEFORE_RE = re.compile(rf"\b(?P<value>\d+)\s*(?:week|weeks)\b\s+of\s+\b{THERAPY_CONTEXT}\b")
@@ -54,23 +58,41 @@ CPB_NEW_DURATION_BEFORE_RE = re.compile(
     rf"^(?:completed\s+)?(?P<value>{CPB_EXPLICIT_DURATION_VALUE})\s+(?P<unit>days?|months?|weeks?)\s+of\s+{CPB_0236_THERAPY_CONTEXT}"
     + CPB_COURSE_RESPONSE_SUFFIX
 )
-# Listed drug names replace only the class token in the existing isolated
-# course grammar. Keep original note offsets and all shared safety guards.
+# Reported-use syntax is independent of the reviewed literal drug vocabulary.
+# A whole course prevents dose, indication and neighboring-course borrowing.
+CPB_DRUG_USE_PREFIX = (
+    r"(?:(?:the\s+)?patient\s+)?"
+    r"(?:(?:(?:has|have|had)\s+(?:been\s+)?(?:taking|using)|"
+    r"(?:has|have|had)\s+(?:taken|used|tried)|"
+    r"took|takes?|taking|used|uses?|using|tried|trialed|received|completed|on|treated\s+with)\s+)?"
+)
+CPB_DRUG_DOSE = (
+    r"(?:\s+\d+(?:\.\d+)?\s*(?:mg|mcg|g))?"
+    r"(?:\s+(?:daily|nightly|bid|tid|qid|qhs|prn|at\s+(?:bedtime|night)|"
+    r"(?:once|twice|three\s+times|four\s+times)\s+(?:a\s+day|daily)))?"
+)
+CPB_DRUG_RESPONSE_SUFFIX = (
+    r"(?:\s+with\s+|,\s*)(?:no|minimal|little|insufficient|substantial|significant|meaningful|good)"
+    r"\s+(?:meaningful\s+)?(?:improvement|relief|response|benefit)\s*$"
+    r"|\s+without\s+(?:meaningful\s+)?(?:improvement|relief|response|benefit)\s*$"
+)
 CPB_DRUG_DURATION_AFTER_RE = re.compile(
-    rf"^(?:completed\s+)?{DRUG_NAME_PATTERN}\s+(?:x|for)\s+(?P<value>{CPB_EXPLICIT_DURATION_VALUE})\s+(?P<unit>days?|months?|weeks?)"
-    + CPB_COURSE_RESPONSE_SUFFIX
+    rf"^{CPB_DRUG_USE_PREFIX}{DRUG_NAME_PATTERN}{CPB_DRUG_DOSE}\s+(?:x|for|over)\s+"
+    rf"(?P<value>{CPB_EXPLICIT_DURATION_VALUE})\s+(?P<unit>days?|months?|weeks?)"
+    rf"(?:{CPB_DRUG_RESPONSE_SUFFIX})"
 )
 CPB_DRUG_DURATION_BEFORE_RE = re.compile(
-    rf"^(?:completed\s+)?(?P<value>{CPB_EXPLICIT_DURATION_VALUE})\s+(?P<unit>days?|months?|weeks?)\s+of\s+{DRUG_NAME_PATTERN}"
-    + CPB_COURSE_RESPONSE_SUFFIX
+    rf"^{CPB_DRUG_USE_PREFIX}(?:(?:a|an)\s+)?(?P<value>{CPB_EXPLICIT_DURATION_VALUE})[ -]+"
+    rf"(?P<unit>days?|months?|weeks?)\s+(?:(?:course|trial)\s+)?of\s+{DRUG_NAME_PATTERN}{CPB_DRUG_DOSE}"
+    rf"(?:{CPB_DRUG_RESPONSE_SUFFIX})"
 )
 CPB_0236_NONRESPONSE_RE = re.compile(
-    r"\b(?:no|minimal|little|insufficient)\s+(?:meaningful\s+)?(?:improvement|relief|response)\b"
-    r"|\bwithout\s+(?:meaningful\s+)?(?:improvement|relief)\b"
+    r"\b(?:no|minimal|little|insufficient)\s+(?:meaningful\s+)?(?:improvement|relief|response|benefit)\b"
+    r"|\bwithout\s+(?:meaningful\s+)?(?:improvement|relief|response|benefit)\b"
     r"|\bfailed to (?:improve|respond)\b"
 )
 CPB_0236_RESPONSE_RE = re.compile(
-    r"\b(?:substantial|significant|meaningful|good)\s+(?:improvement|relief|response)\b"
+    r"\b(?:substantial|significant|meaningful|good)\s+(?:improvement|relief|response|benefit)\b"
     r"|\bsymptoms? resolved\b"
 )
 THERAPY_CLAUSE_BOUNDARY_RE = re.compile(r";\s*|(?:,\s*)?\b(?:whereas|while|however|but|though|although|yet|in contrast)\b\s*[:,]?\s*")
@@ -103,10 +125,34 @@ BACK_PAIN_RE = re.compile(r"\b(?:low\s+)?back pain\b")
 RADICULOPATHY_RE = re.compile(r"\b(?:lumbar\s+)?radiculopathy\b|\bradicular (?:back )?pain\b")
 ROOT_DISTRIBUTION_RE = re.compile(r"\b(?:l[1-5]|s[1-5])(?:\s+(?:nerve\s+)?root)?\s+distribution\b|\bnerve[- ]root distribution\b")
 ROOT_WORD_STRENGTH_RE = re.compile(
-    r"^(?:(?P<side>right|left)\s+)?(?:l[1-5]|s[1-5])(?:\s+(?:nerve\s+)?root)?\s+distribution\s*:?\s+"
+    r"(?:(?P<side>right|left)\s+)?(?:l[1-5]|s[1-5])(?:\s+(?:nerve\s+)?root)?\s+distribution\s*:?\s+"
     r"strength\s+(?:(?:is|was)\s+)?(?P<negated>not\s+)?(?P<score>[0-5](?:\.\d)?)\s+(?:out\s+)?of\s+5"
-    r"(?P<attribution>\s+from\s+[^.!?;\n]+)?$"
+    r"(?P<attribution>\s+from\s+[^.!?;\n]+)?"
 )
+NONOBJECTIVE_EXAM_SOURCE_RE = re.compile(
+    r"\b(?:per\s+(?:the\s+)?patient|patient\s+(?:reports|states)|"
+    r"(?:self|patient)[-\s]+reported|by\s+history|deferred|"
+    r"not\s+(?:performed|examined)|unable\s+to\s+assess|"
+    r"limited\s+by\s+(?:patient\s+)?refusal)\b"
+)
+# Typed motor/reflex scales; anatomy is a literal exam cue, never a root lookup.
+LOWER_LIMB_MOTOR_TERM = (
+    r"(?:iliopsoas|psoas|quadriceps|hamstrings?|gastrocnemius|soleus|peroneals?|"
+    r"tibialis\s+(?:anterior|posterior)|extensor\s+hallucis\s+longus|ehl|"
+    r"(?:ankle\s+)?dorsiflexion|(?:ankle\s+)?plantar\s*flexion|"
+    r"(?:hip|knee|toe|great\s+toe)\s+(?:flexion|extension|abduction|adduction)|"
+    r"strength|motor(?:\s+power)?|power)"
+)
+TYPED_MOTOR_RE = re.compile(
+    rf"\b(?P<term>{LOWER_LIMB_MOTOR_TERM})(?:\s+(?:strength|power))?\s*"
+    r"(?:(?:is|was|measured|graded)\s*|[:=]\s*)?(?P<negated>not\s+)?"
+    r"(?P<score>[0-5](?:\.\d)?)(?P<modifier>[+-])?\s*/\s*5\b"
+)
+TYPED_REFLEX_RE = re.compile(
+    r"\b(?:(?:patellar|achilles|ankle|knee|deep\s+tendon)\s+)?(?:reflex(?:es)?|jerks?)\s*"
+    r"(?:(?:is|was|were|graded)\s*|[:=]\s*)?(?P<grade>[0-4])\s*(?:\+|/\s*4)(?=\s|[,;.!?]|$)"
+)
+NAMED_EXAM_ROOT_RE = re.compile(r"\b(?:(?P<side>right|left)\s+)?(?:l[1-5]|s[1-5])(?:\s+(?:nerve\s+)?root)?\s+distribution\b")
 REFLEX_PREDICATE_LINK_RE = re.compile(
     r"\b(?:deep tendon\s+)?reflex(?:es)?(?:\s*:\s*|\s+)"
     r"(?:(?:is|are|was|were|remains?|remained|initially|later|now|then|on|repeat|but|and|"
@@ -561,12 +607,16 @@ def _collect_cpb_therapy_candidates(text: str) -> List[_TherapyCourseCandidate]:
             group_matches = list(CPB_0236_GROUP_DURATION_RE.finditer(clause))
 
             response_mentions: List[Tuple[bool | str, re.Match[str]]] = []
+            nonresponse_spans = []
             for match in CPB_0236_NONRESPONSE_RE.finditer(clause):
+                nonresponse_spans.append((match.start(), match.end()))
                 value: bool | str = True
                 if _finding_is_uncertain(clause, match, source_text=text, offset=absolute_start):
                     value = REVIEW_REQUIRED_FACT
                 response_mentions.append((value, match))
             for match in CPB_0236_RESPONSE_RE.finditer(clause):
+                if drug_duration_matches and any(start <= match.start() and match.end() <= end for start, end in nonresponse_spans):
+                    continue
                 value = False
                 if _finding_is_uncertain(clause, match, source_text=text, offset=absolute_start):
                     value = REVIEW_REQUIRED_FACT
@@ -724,6 +774,112 @@ def _resolve_boolean_candidates(
         return REVIEW_REQUIRED_FACT
     value = next(iter(values))
     return bool(value)
+
+
+def _objective_candidates_with_source_guards(text: str, candidates: List[Tuple[bool | str, int, int]]) -> List[Tuple[bool | str, int, int]]:
+    """Separate subjective/unperformed exams before resolving objective facts.
+
+    Qualifiers cover the entire real sentence, including semicolons and decimal
+    grades. Apply this once to every extraction route, including legacy paths.
+    """
+    objective = list(candidates)
+    nonobjective: List[Tuple[bool | str, int, int]] = []
+    for start, end in _sentence_spans(text, therapy=True):
+        sentence = text[start:end]
+        if not NONOBJECTIVE_EXAM_SOURCE_RE.search(sentence):
+            continue
+        qualified = [candidate for candidate in candidates if start <= candidate[1] and candidate[2] <= end]
+        objective = [candidate for candidate in objective if not (start <= candidate[1] and candidate[2] <= end)]
+        nonobjective.extend((value, start, end) for value, _, _ in qualified)
+        # The passing word-grade route still requires fullmatch. A surrounding
+        # qualifier may prevent that match, but a conflicting reported grade
+        # must not disappear when a separate objective exam is present.
+        word_grade = ROOT_WORD_STRENGTH_RE.search(sentence)
+        if not qualified and word_grade and not _mention_is_nonpatient_context(sentence, word_grade.start(), word_grade.end()):
+            value = (
+                REVIEW_REQUIRED_FACT
+                if word_grade.group("negated") or word_grade.group("attribution")
+                else float(word_grade.group("score")) < 5
+            )
+            nonobjective.append((value, start, end))
+    if not objective:
+        # Patient/history evidence cannot supply even an objective normal exam.
+        return []
+    objective_values = {value for value, _, _ in objective}
+    conflicts = [
+        (REVIEW_REQUIRED_FACT, start, end)
+        for value, start, end in nonobjective
+        if value == REVIEW_REQUIRED_FACT or value not in objective_values
+    ]
+    return objective + conflicts
+
+
+def _typed_root_exam_candidates(text: str) -> List[Tuple[bool | str, int, int]]:
+    candidates = []
+    for sentence_start, sentence_end in _sentence_spans(text, therapy=True):
+        sentence = text[sentence_start:sentence_end]
+        for clause_start, clause_end in _therapy_clause_spans(sentence):
+            clause = sentence[clause_start:clause_end]
+            roots = list(NAMED_EXAM_ROOT_RE.finditer(clause))
+            if not roots:
+                continue
+            findings = [(match, "motor") for match in TYPED_MOTOR_RE.finditer(clause)]
+            findings += [(match, "reflex") for match in TYPED_REFLEX_RE.finditer(clause)]
+            for match, kind in findings:
+                if kind == "motor" and "strength" in match.group(0) and not match.group("modifier"):
+                    # Existing unmodified strength routes keep their contract.
+                    continue
+                if _mention_is_nonpatient_context(clause, match.start(), match.end()):
+                    continue
+                side = roots[0].group("side")
+                opposite = {"right": "left", "left": "right"}.get(side)
+                side_conflict = opposite and re.search(rf"\b{opposite}(?:[- ]sided)?\s+(?:leg\s+)?radiculopathy\b", text)
+                questionable = (
+                    len(roots) != 1
+                    or side_conflict
+                    or _finding_is_negated(clause, match)
+                    or _finding_is_uncertain(clause, match, source_text=text, offset=sentence_start + clause_start)
+                    or text[sentence_end : sentence_end + 1] == "?"
+                    or re.search(r"\b(?:subjective|pain[- ]limited|effort|due\s+to|secondary\s+to|from|will|would|planned)\b", clause)
+                )
+                if questionable or (kind == "motor" and match.group("negated")):
+                    value = REVIEW_REQUIRED_FACT
+                elif kind == "motor":
+                    score = float(match.group("score"))
+                    # Signed endpoints are not unambiguous ordinary grades.
+                    value = REVIEW_REQUIRED_FACT if score in (0, 5) and match.group("modifier") else score < 5
+                else:
+                    grade = int(match.group("grade"))
+                    normal = re.search(r"\b(?:normal|symmetric|intact|physiologic)\b", clause)
+                    abnormal = re.search(r"\b(?:reduced|diminished|decreased|absent|asymmetric|brisk|clonus|hyperreflexic)\b", clause)
+                    if normal and (abnormal or grade < 2):
+                        value = REVIEW_REQUIRED_FACT
+                    elif normal or grade == 2 and not abnormal:
+                        value = False
+                    elif grade < 2 or grade > 2 and abnormal:
+                        value = True
+                    else:
+                        value = REVIEW_REQUIRED_FACT
+                candidates.append((value, sentence_start + clause_start, sentence_start + clause_end))
+    return candidates
+
+
+def _named_index_is_disqualified(text: str, match: re.Match[str]) -> bool:
+    # Preserve the existing abbreviated route; full names must be actual
+    # patient measurements rather than plans or explicitly denied values.
+    if match.group(1) in ("ahi", "rdi"):
+        return False
+    if _finding_is_negated(text, match) or re.search(r"\bnot\s+$", _bounded_context_before(text, match.start())):
+        return True
+    return bool(
+        _context_trigger(
+            text,
+            match.start(),
+            match.end(),
+            r"\b(?:will|would|may|might|planned|scheduled|expected|anticipated|"
+            r"not\s+(?:measured|recorded|documented)|no\s+(?:result|value))\b",
+        )
+    )
 
 
 def _duration_is_in_therapy_context(text: str, start: int, end: int) -> bool:
@@ -890,7 +1046,7 @@ def _extract_facts(note_text: str) -> Tuple[Dict[str, Any], Dict[str, List[Dict[
         raw=raw,
     )
 
-    objective_candidates: List[Tuple[bool | str, int, int]] = []
+    objective_candidates: List[Tuple[bool | str, int, int]] = _typed_root_exam_candidates(t)
     # New word notation uses real sentences so decimal scores remain intact.
     # Legacy slash notation and its narrower clause scope remain unchanged.
     for sentence_start, sentence_end in _sentence_spans(t, therapy=True):
@@ -982,7 +1138,7 @@ def _extract_facts(note_text: str) -> Tuple[Dict[str, Any], Dict[str, List[Dict[
         objective_candidates.append((objective_value, sentence_start, sentence_end))
 
     objective_motor_or_reflex_change = _resolve_boolean_candidates(
-        objective_candidates,
+        _objective_candidates_with_source_guards(t, objective_candidates),
         key="objective_motor_or_reflex_change_in_root_distribution",
         evidence=evidence,
         raw=raw,
@@ -1239,10 +1395,27 @@ def _extract_facts(note_text: str) -> Tuple[Dict[str, Any], Dict[str, List[Dict[
     # ----------------------------
     sleep_study_date: Optional[bool] | str = None
 
-    date_iter = list(re.finditer(r"\b(20\d{2}|19\d{2})[-/]\d{1,2}[-/]\d{1,2}\b", t))
-    SLEEP_CTX = re.compile(r"\b(sleep study|polysomnography|psg|hst|home sleep test)\b")
+    date_iter = [(match, False) for match in re.finditer(r"\b(20\d{2}|19\d{2})[-/]\d{1,2}[-/]\d{1,2}\b", t)]
+    date_iter += [(match, True) for match in explicit_study_dates(t)]
+    SLEEP_CTX = re.compile(r"\b(?:sleep study|polysomnography|polysomnogram|psg|hst|hsat|home sleep (?:apnea )?test)\b")
+    study_date_before = re.compile(
+        SLEEP_CTX.pattern + r"\s*(?:(?:was|were|is|performed|completed|conducted|dated|on|from|of|for)\s+|:\s*)*$"
+    )
+    study_date_after = re.compile(r"\s+(?:(?:a|the)\s+)?" + SLEEP_CTX.pattern)
 
-    for m_date in date_iter:
+    for m_date, new_format in date_iter:
+        if new_format:
+            left, right = note_index(t).containing(m_date.start(), m_date.end())
+            before = t[left : m_date.start()]
+            after = t[m_date.end() : right]
+            direct_before = study_date_before.search(before)
+            direct_after = re.fullmatch(r"\s*(?:on\s+)?", before) and study_date_after.match(after)
+            if not (direct_before or direct_after):
+                continue
+            # A negated or explicitly undated study cannot acquire a date just
+            # because its formatting is newly recognized.
+            if re.search(r"\b(?:no|never|denied|denies|undated|not\s+(?:performed|done|available|documented))\b", before):
+                continue
         window_start = max(0, m_date.start() - 80)
         window_end = min(len(t), m_date.end() + 80)
         window = t[window_start:window_end]
@@ -1272,13 +1445,13 @@ def _extract_facts(note_text: str) -> Tuple[Dict[str, Any], Dict[str, List[Dict[
     missing_tokens = list(re.finditer(r"\b(not documented|not stated|not available|unknown|n/?a|missing)\b", t))
     missing_starts = [m.start() for m in missing_tokens]
     index = note_index(t)
-    for mention in re.finditer(r"\b(ahi|rdi)\b", t):
+    for mention in re.finditer(rf"\b({INDEX_NAME_PATTERN})\b", t):
         _, right = index.containing(mention.start(), mention.end())
         i = bisect_left(missing_starts, right) - 1
         if i >= 0 and missing_tokens[i].start() >= mention.end():
             # Preserve the original greedy quotation (last missingness token),
             # but search tokens once instead of every possible suffix start.
-            m_ahi_missing = re.compile(r"\b(ahi|rdi)\b" + missing_pattern).match(t, mention.start(), missing_tokens[i].end())
+            m_ahi_missing = re.compile(rf"\b({INDEX_NAME_PATTERN})\b" + missing_pattern).match(t, mention.start(), missing_tokens[i].end())
             break
     if m_ahi_missing is not None and _match_is_nonpatient_context(t, m_ahi_missing):
         m_ahi_missing = None
@@ -1295,8 +1468,12 @@ def _extract_facts(note_text: str) -> Tuple[Dict[str, Any], Dict[str, List[Dict[
         m_ahi_val = next(
             (
                 candidate
-                for candidate in re.finditer(r"\b(ahi|rdi)\b\s*[:=]?\s*(\d+(\.\d+)?)\b", t)
-                if not _match_is_nonpatient_context(t, candidate)
+                for candidate in re.finditer(
+                    rf"\b({INDEX_NAME_PATTERN})\b(?:\s*\((?:ahi|rdi)\))?\s*"
+                    r"(?:(?:of|is|was|measured\s+at)\s+|[:=]\s*)?(\d+(?:\.\d+)?)\b",
+                    t,
+                )
+                if not _match_is_nonpatient_context(t, candidate) and not _named_index_is_disqualified(t, candidate)
             ),
             None,
         )

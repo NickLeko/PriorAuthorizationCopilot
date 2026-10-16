@@ -1,0 +1,7 @@
+Traceback (most recent call last):
+  File "/Users/nicholasleko/projects/PriorAuthorizationCopilot/autoloop/exp-004/capture.py", line 92, in <module>
+    main()
+  File "/Users/nicholasleko/projects/PriorAuthorizationCopilot/autoloop/exp-004/capture.py", line 73, in main
+    assert result["system"]["false_pending_verification"] == 0, f"UNSAFE {name}: revert iteration"
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: UNSAFE own: revert iteration

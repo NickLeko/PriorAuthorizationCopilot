@@ -1,0 +1,53 @@
+{
+  "release_base": "f1412a6605733245e189a452acb9839a366a587e",
+  "branch": "codex/release-v2.6.0",
+  "main_unchanged": true,
+  "exp004_branch_unchanged": true,
+  "product_diff_only_engine_version": [
+    "engine/__init__.py"
+  ],
+  "version_only_test_edits": [
+    "test/test_api.py",
+    "test/test_v210_safety.py"
+  ],
+  "existing_contract_examples_unchanged": 67,
+  "new_contract_examples": 24,
+  "contract_known_failures_unchanged": 4,
+  "protected_inputs_and_governance_unchanged": true,
+  "dev_sha256_unchanged": "4832267bc1ff0ac8f57aac1dd36961ef62ea4d3f15d9286662866a0981685389",
+  "dev_requirements_exact": 27,
+  "drug_table_bytes_unchanged": true,
+  "regenerated_outputs_sha256_verified": 25,
+  "generated_version_only_changes": 12,
+  "all_five_dataset_full_reports_identical": true,
+  "heldout_statement_verbatim": true,
+  "table_owner_approval_and_external_verification_documented": true,
+  "suite_passed": 1461,
+  "strict_xfails": 10,
+  "lint_passed": true,
+  "changed_preexisting_paths_verified": [
+    "EXTRACTION_CONTRACT.md",
+    "FAILURE_MODES.md",
+    "LIMITATIONS.md",
+    "MODEL_CARD.md",
+    "README.md",
+    "docs/api.md",
+    "docs/artifacts/CPAP-02-borderline.json",
+    "docs/artifacts/MRI-01-complete.json",
+    "docs/artifacts/MRI-08-edge-below-threshold.json",
+    "docs/artifacts/MRI-CERV-01-ready.json",
+    "docs/artifacts/MRI-KNEE-01-ready.json",
+    "docs/artifacts/status.json",
+    "docs/reviewer_guide.md",
+    "docs/testing.md",
+    "engine/__init__.py",
+    "test/golden/evaluations/CPAP-02-borderline.json",
+    "test/golden/evaluations/MRI-01-complete.json",
+    "test/golden/evaluations/MRI-01-human-verified.json",
+    "test/golden/evaluations/MRI-08-edge-below-threshold.json",
+    "test/golden/evaluations/MRI-KNEE-01-ready.json",
+    "test/golden/evaluations/reviewer-corrected-full-projection.json",
+    "test/test_api.py",
+    "test/test_v210_safety.py"
+  ]
+}

@@ -1,0 +1,1020 @@
+[
+  {
+    "id": "therapy_used_dosed",
+    "pair_role": "positive",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Persistent lumbar back pain with radiculopathy. Right S1 distribution: strength 3/5. Used etodolac 400 mg BID for seven weeks without meaningful relief.",
+    "expected_overall_status": "PENDING_VERIFICATION"
+  },
+  {
+    "id": "therapy_received_relaxant",
+    "pair_role": "positive",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Persistent lumbar back pain with radiculopathy. Right S1 distribution: strength 3/5. Patient received Dantrium 25 mg nightly for 56 days, no benefit.",
+    "expected_overall_status": "PENDING_VERIFICATION"
+  },
+  {
+    "id": "therapy_has_used_opioid",
+    "pair_role": "positive",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Persistent lumbar back pain with radiculopathy. Right S1 distribution: strength 3/5. Has used Ultram 50 mg TID for nine weeks with little response.",
+    "expected_overall_status": "PENDING_VERIFICATION"
+  },
+  {
+    "id": "therapy_course_first",
+    "pair_role": "positive",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Persistent lumbar back pain with radiculopathy. Right S1 distribution: strength 3/5. A 49-day course of sulindac 150 mg twice a day with minimal benefit.",
+    "expected_overall_status": "PENDING_VERIFICATION"
+  },
+  {
+    "id": "therapy_short_dosed",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Persistent lumbar back pain with radiculopathy. Right S1 distribution: strength 3/5. Used etodolac 400 mg BID for four weeks without meaningful relief.",
+    "expected_overall_status": "NOT_READY"
+  },
+  {
+    "id": "therapy_benefit",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Persistent lumbar back pain with radiculopathy. Right S1 distribution: strength 3/5. Patient received Dantrium 25 mg nightly for 56 days with good benefit.",
+    "expected_overall_status": "NOT_READY"
+  },
+  {
+    "id": "therapy_intended",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Persistent lumbar back pain with radiculopathy. Right S1 distribution: strength 3/5. Intends to use Ultram 50 mg TID for nine weeks without relief.",
+    "expected_overall_status": "CANNOT_DETERMINE"
+  },
+  {
+    "id": "therapy_relative",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Persistent lumbar back pain with radiculopathy. Right S1 distribution: strength 3/5. Her aunt received Dantrium 25 mg nightly for 56 days, no benefit.",
+    "expected_overall_status": "CANNOT_DETERMINE"
+  },
+  {
+    "id": "therapy_indication",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Persistent lumbar back pain with radiculopathy. Right S1 distribution: strength 3/5. Used etodolac 400 mg BID for seven weeks for shoulder bursitis without meaningful relief.",
+    "expected_overall_status": "CANNOT_DETERMINE"
+  },
+  {
+    "id": "therapy_denied",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Persistent lumbar back pain with radiculopathy. Right S1 distribution: strength 3/5. Patient denied using sulindac 150 mg twice a day for nine weeks without relief.",
+    "expected_overall_status": "CANNOT_DETERMINE"
+  },
+  {
+    "id": "therapy_unlisted",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Persistent lumbar back pain with radiculopathy. Right S1 distribution: strength 3/5. Received amitriptyline 25 mg nightly for nine weeks without relief.",
+    "expected_overall_status": "CANNOT_DETERMINE"
+  },
+  {
+    "id": "therapy_ranged",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Persistent lumbar back pain with radiculopathy. Right S1 distribution: strength 3/5. Used etodolac 400 mg BID for four to nine weeks without relief.",
+    "expected_overall_status": "CANNOT_DETERMINE"
+  },
+  {
+    "id": "therapy_no_response",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Persistent lumbar back pain with radiculopathy. Right S1 distribution: strength 3/5. Has used Ultram 50 mg TID for nine weeks.",
+    "expected_overall_status": "CANNOT_DETERMINE"
+  },
+  {
+    "id": "therapy_cross_course",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Persistent lumbar back pain with radiculopathy. Right S1 distribution: strength 3/5. Used etodolac for seven weeks without relief. Dantrium with good benefit.",
+    "expected_overall_status": "NEEDS_REVIEW"
+  },
+  {
+    "id": "therapy_topical",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Persistent lumbar back pain with radiculopathy. Right S1 distribution: strength 3/5. Used diclofenac ointment for seven weeks without relief.",
+    "expected_overall_status": "CANNOT_DETERMINE"
+  },
+  {
+    "id": "therapy_question",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Persistent lumbar back pain with radiculopathy. Right S1 distribution: strength 3/5. Received sulindac for nine weeks without relief?",
+    "expected_overall_status": "NEEDS_REVIEW"
+  },
+  {
+    "id": "exam_plantar",
+    "pair_role": "positive",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Persistent back pain with right-sided radiculopathy. Motor testing, right S1 root distribution: plantar flexion 3+/5. Piroxicam for 7 weeks with minimal relief.",
+    "expected_overall_status": "PENDING_VERIFICATION",
+    "expected_facts": {
+      "objective_motor_or_reflex_change_in_root_distribution": true
+    }
+  },
+  {
+    "id": "exam_iliopsoas",
+    "pair_role": "positive",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Persistent back pain with right-sided radiculopathy. Right L3 nerve root distribution: iliopsoas 4-/5. Piroxicam for 7 weeks with minimal relief.",
+    "expected_overall_status": "PENDING_VERIFICATION",
+    "expected_facts": {
+      "objective_motor_or_reflex_change_in_root_distribution": true
+    }
+  },
+  {
+    "id": "exam_tibialis",
+    "pair_role": "positive",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Persistent back pain with right-sided radiculopathy. Tibialis anterior power 3/5 in the right L5 root distribution. Piroxicam for 7 weeks with minimal relief.",
+    "expected_overall_status": "PENDING_VERIFICATION",
+    "expected_facts": {
+      "objective_motor_or_reflex_change_in_root_distribution": true
+    }
+  },
+  {
+    "id": "exam_gastrocnemius",
+    "pair_role": "positive",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Persistent back pain with right-sided radiculopathy. Right S1 distribution: gastrocnemius power 4+/5. Piroxicam for 7 weeks with minimal relief.",
+    "expected_overall_status": "PENDING_VERIFICATION",
+    "expected_facts": {
+      "objective_motor_or_reflex_change_in_root_distribution": true
+    }
+  },
+  {
+    "id": "exam_achilles_absent",
+    "pair_role": "positive",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Persistent back pain with right-sided radiculopathy. Right S1 distribution: Achilles jerk 0/4, absent. Piroxicam for 7 weeks with minimal relief.",
+    "expected_overall_status": "PENDING_VERIFICATION",
+    "expected_facts": {
+      "objective_motor_or_reflex_change_in_root_distribution": true
+    }
+  },
+  {
+    "id": "exam_ankle_low",
+    "pair_role": "positive",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Persistent back pain with right-sided radiculopathy. Ankle jerk 1+ in the right S1 distribution. Piroxicam for 7 weeks with minimal relief.",
+    "expected_overall_status": "PENDING_VERIFICATION",
+    "expected_facts": {
+      "objective_motor_or_reflex_change_in_root_distribution": true
+    }
+  },
+  {
+    "id": "exam_knee_brisk",
+    "pair_role": "positive",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Persistent back pain with right-sided radiculopathy. Right L3 distribution: knee reflex 3+, brisk. Piroxicam for 7 weeks with minimal relief.",
+    "expected_overall_status": "PENDING_VERIFICATION",
+    "expected_facts": {
+      "objective_motor_or_reflex_change_in_root_distribution": true
+    }
+  },
+  {
+    "id": "exam_achilles_zero",
+    "pair_role": "positive",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Persistent back pain with right-sided radiculopathy. Right S1 distribution: Achilles reflex 0+, absent. Piroxicam for 7 weeks with minimal relief.",
+    "expected_overall_status": "PENDING_VERIFICATION",
+    "expected_facts": {
+      "objective_motor_or_reflex_change_in_root_distribution": true
+    }
+  },
+  {
+    "id": "exam_full_power",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Persistent back pain with right-sided radiculopathy. Right L3 distribution: iliopsoas power 5/5. Piroxicam for 7 weeks with minimal relief.",
+    "expected_overall_status": "NOT_READY",
+    "expected_facts": {
+      "objective_motor_or_reflex_change_in_root_distribution": false
+    }
+  },
+  {
+    "id": "exam_normal_jerk",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Persistent back pain with right-sided radiculopathy. Right S1 distribution: ankle jerk 2+, physiologic. Piroxicam for 7 weeks with minimal relief.",
+    "expected_overall_status": "NOT_READY",
+    "expected_facts": {
+      "objective_motor_or_reflex_change_in_root_distribution": false
+    }
+  },
+  {
+    "id": "exam_brisk_symmetric",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Persistent back pain with right-sided radiculopathy. Right S1 distribution: Achilles jerk 3+, symmetric. Piroxicam for 7 weeks with minimal relief.",
+    "expected_overall_status": "NOT_READY",
+    "expected_facts": {
+      "objective_motor_or_reflex_change_in_root_distribution": false
+    }
+  },
+  {
+    "id": "exam_pain_rating",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Persistent back pain with right-sided radiculopathy. Right S1 distribution: discomfort 3/5 during plantar flexion. Piroxicam for 7 weeks with minimal relief.",
+    "expected_overall_status": "CANNOT_DETERMINE",
+    "expected_facts": {
+      "objective_motor_or_reflex_change_in_root_distribution": null
+    }
+  },
+  {
+    "id": "exam_no_root",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Persistent back pain with right-sided radiculopathy. Gastrocnemius power 3+/5. Piroxicam for 7 weeks with minimal relief.",
+    "expected_overall_status": "CANNOT_DETERMINE",
+    "expected_facts": {
+      "objective_motor_or_reflex_change_in_root_distribution": null
+    }
+  },
+  {
+    "id": "exam_upper_limb",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Persistent back pain with right-sided radiculopathy. Right L3 distribution: deltoid 3+/5. Piroxicam for 7 weeks with minimal relief.",
+    "expected_overall_status": "CANNOT_DETERMINE",
+    "expected_facts": {
+      "objective_motor_or_reflex_change_in_root_distribution": null
+    }
+  },
+  {
+    "id": "exam_family",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Persistent back pain with right-sided radiculopathy. Her uncle had tibialis anterior power 3/5 in the right L5 distribution. Piroxicam for 7 weeks with minimal relief.",
+    "expected_overall_status": "CANNOT_DETERMINE",
+    "expected_facts": {
+      "objective_motor_or_reflex_change_in_root_distribution": null
+    }
+  },
+  {
+    "id": "exam_opposite",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Persistent back pain with right-sided radiculopathy. Left L3 distribution: iliopsoas 4-/5. Piroxicam for 7 weeks with minimal relief.",
+    "expected_overall_status": "NEEDS_REVIEW",
+    "expected_facts": {
+      "objective_motor_or_reflex_change_in_root_distribution": "__REVIEW_REQUIRED__"
+    }
+  },
+  {
+    "id": "exam_planned",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Persistent back pain with right-sided radiculopathy. Will assess plantar flexion 3+/5 in the right S1 distribution. Piroxicam for 7 weeks with minimal relief.",
+    "expected_overall_status": "NEEDS_REVIEW",
+    "expected_facts": {
+      "objective_motor_or_reflex_change_in_root_distribution": "__REVIEW_REQUIRED__"
+    }
+  },
+  {
+    "id": "exam_negated",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Persistent back pain with right-sided radiculopathy. Right L3 distribution: iliopsoas not 4-/5. Piroxicam for 7 weeks with minimal relief.",
+    "expected_overall_status": "NEEDS_REVIEW",
+    "expected_facts": {
+      "objective_motor_or_reflex_change_in_root_distribution": "__REVIEW_REQUIRED__"
+    }
+  },
+  {
+    "id": "exam_attribution",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Persistent back pain with right-sided radiculopathy. Right S1 distribution: gastrocnemius power 4+/5 due to an old tendon injury. Piroxicam for 7 weeks with minimal relief.",
+    "expected_overall_status": "NEEDS_REVIEW",
+    "expected_facts": {
+      "objective_motor_or_reflex_change_in_root_distribution": "__REVIEW_REQUIRED__"
+    }
+  },
+  {
+    "id": "exam_effort",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Persistent back pain with right-sided radiculopathy. Right L3 distribution: pain-limited iliopsoas power 4/5. Piroxicam for 7 weeks with minimal relief.",
+    "expected_overall_status": "NEEDS_REVIEW",
+    "expected_facts": {
+      "objective_motor_or_reflex_change_in_root_distribution": "__REVIEW_REQUIRED__"
+    }
+  },
+  {
+    "id": "exam_invalid_grade",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Persistent back pain with right-sided radiculopathy. Right L3 distribution: iliopsoas 3+/50. Piroxicam for 7 weeks with minimal relief.",
+    "expected_overall_status": "CANNOT_DETERMINE",
+    "expected_facts": {
+      "objective_motor_or_reflex_change_in_root_distribution": null
+    }
+  },
+  {
+    "id": "exam_question",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Persistent back pain with right-sided radiculopathy. Right S1 distribution: ankle jerk 1+? Piroxicam for 7 weeks with minimal relief.",
+    "expected_overall_status": "NEEDS_REVIEW",
+    "expected_facts": {
+      "objective_motor_or_reflex_change_in_root_distribution": "__REVIEW_REQUIRED__"
+    }
+  },
+  {
+    "id": "date_us_hyphen",
+    "pair_role": "positive",
+    "payer": "Aetna",
+    "procedure_code": "CPAP_DEVICE",
+    "note_text": "Confirmed obstructive sleep apnea. HST performed on 11-19-2024; RDI: 13.",
+    "expected_overall_status": "PENDING_VERIFICATION"
+  },
+  {
+    "id": "date_day_month",
+    "pair_role": "positive",
+    "payer": "Aetna",
+    "procedure_code": "CPAP_DEVICE",
+    "note_text": "Established OSA. Overnight polysomnogram conducted 21 February 2025, AHI: 7.",
+    "expected_overall_status": "PENDING_VERIFICATION"
+  },
+  {
+    "id": "date_ordinal",
+    "pair_role": "positive",
+    "payer": "Aetna",
+    "procedure_code": "CPAP_DEVICE",
+    "note_text": "Established OSA. Home sleep test dated September 12th, 2023 with RDI 11.",
+    "expected_overall_status": "PENDING_VERIFICATION"
+  },
+  {
+    "id": "date_dotted",
+    "pair_role": "positive",
+    "payer": "Aetna",
+    "procedure_code": "CPAP_DEVICE",
+    "note_text": "Confirmed obstructive sleep apnea. HST completed 2024.12.02; AHI 17.",
+    "expected_overall_status": "PENDING_VERIFICATION"
+  },
+  {
+    "id": "date_office_same_sentence",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "CPAP_DEVICE",
+    "note_text": "Established OSA. Clinic appointment 11-19-2024, HST date unknown; RDI 13.",
+    "expected_overall_status": "CANNOT_DETERMINE"
+  },
+  {
+    "id": "date_calendar_invalid",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "CPAP_DEVICE",
+    "note_text": "Established OSA. HST completed April 31, 2024; RDI 13.",
+    "expected_overall_status": "CANNOT_DETERMINE"
+  },
+  {
+    "id": "date_leap_invalid",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "CPAP_DEVICE",
+    "note_text": "Established OSA. Home sleep test dated February 29, 2023; RDI 13.",
+    "expected_overall_status": "CANNOT_DETERMINE"
+  },
+  {
+    "id": "date_scheduled",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "CPAP_DEVICE",
+    "note_text": "Established OSA. HST scheduled for November 19, 2024; RDI 13.",
+    "expected_overall_status": "CANNOT_DETERMINE"
+  },
+  {
+    "id": "date_cancelled",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "CPAP_DEVICE",
+    "note_text": "Established OSA. Cancelled polysomnogram on 21 February 2025; AHI 7.",
+    "expected_overall_status": "CANNOT_DETERMINE"
+  },
+  {
+    "id": "date_family",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "CPAP_DEVICE",
+    "note_text": "Established OSA. Her spouse completed HST on November 19, 2024; RDI 13.",
+    "expected_overall_status": "CANNOT_DETERMINE"
+  },
+  {
+    "id": "date_no_study",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "CPAP_DEVICE",
+    "note_text": "Established OSA. Laboratory appointment November 19, 2024; RDI 13.",
+    "expected_overall_status": "CANNOT_DETERMINE"
+  },
+  {
+    "id": "date_partial_date",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "CPAP_DEVICE",
+    "note_text": "Established OSA. HST completed November 2024; RDI 13.",
+    "expected_overall_status": "CANNOT_DETERMINE"
+  },
+  {
+    "id": "date_question",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "CPAP_DEVICE",
+    "note_text": "Established OSA. HST completed November 19, 2024? RDI 13.",
+    "expected_overall_status": "NEEDS_REVIEW"
+  },
+  {
+    "id": "date_no_diagnosis",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "CPAP_DEVICE",
+    "note_text": "Primary snoring. HST completed November 19, 2024; RDI 13.",
+    "expected_overall_status": "CANNOT_DETERMINE"
+  },
+  {
+    "id": "index_rdi_measured",
+    "pair_role": "positive",
+    "payer": "Aetna",
+    "procedure_code": "CPAP_DEVICE",
+    "note_text": "Established OSA. HST completed 2024-04-17. The respiratory disturbance index measured at 14.6 events/hour.",
+    "expected_overall_status": "PENDING_VERIFICATION"
+  },
+  {
+    "id": "index_british",
+    "pair_role": "positive",
+    "payer": "Aetna",
+    "procedure_code": "CPAP_DEVICE",
+    "note_text": "Confirmed obstructive sleep apnea. PSG completed 2024-04-17. Apnoea\u2013hypopnoea index was 9.2/h.",
+    "expected_overall_status": "PENDING_VERIFICATION"
+  },
+  {
+    "id": "index_parenthetical",
+    "pair_role": "positive",
+    "payer": "Aetna",
+    "procedure_code": "CPAP_DEVICE",
+    "note_text": "Established OSA. HST completed 2024-04-17. Apnea hypopnea index (AHI): 31.",
+    "expected_overall_status": "PENDING_VERIFICATION"
+  },
+  {
+    "id": "index_rdi_hyphen",
+    "pair_role": "positive",
+    "payer": "Aetna",
+    "procedure_code": "CPAP_DEVICE",
+    "note_text": "Confirmed obstructive sleep apnea. PSG completed 2024/04/17. Respiratory-disturbance index = 6.",
+    "expected_overall_status": "PENDING_VERIFICATION"
+  },
+  {
+    "id": "index_unstated",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "CPAP_DEVICE",
+    "note_text": "Established OSA. HST completed 2024-04-17. Respiratory disturbance index not stated.",
+    "expected_overall_status": "CANNOT_DETERMINE"
+  },
+  {
+    "id": "index_planned_value",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "CPAP_DEVICE",
+    "note_text": "Established OSA. HST completed 2024-04-17. Will record respiratory disturbance index of 19.",
+    "expected_overall_status": "CANNOT_DETERMINE"
+  },
+  {
+    "id": "index_negated",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "CPAP_DEVICE",
+    "note_text": "Established OSA. HST completed 2024-04-17. No respiratory disturbance index of 19 documented.",
+    "expected_overall_status": "CANNOT_DETERMINE"
+  },
+  {
+    "id": "index_relative",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "CPAP_DEVICE",
+    "note_text": "Established OSA. HST completed 2024-04-17. Her sibling had a respiratory disturbance index of 19.",
+    "expected_overall_status": "CANNOT_DETERMINE"
+  },
+  {
+    "id": "index_unclear_value",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "CPAP_DEVICE",
+    "note_text": "Established OSA. HST completed 2024-04-17. Apnoea hypopnoea index of maybe 19.",
+    "expected_overall_status": "CANNOT_DETERMINE"
+  },
+  {
+    "id": "index_vital_sign",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "CPAP_DEVICE",
+    "note_text": "Established OSA. HST completed 2024-04-17. Resting heart rate 61.",
+    "expected_overall_status": "CANNOT_DETERMINE"
+  },
+  {
+    "id": "index_compared_value",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "CPAP_DEVICE",
+    "note_text": "Established OSA. HST completed 2024-04-17. Respiratory disturbance index under 19.",
+    "expected_overall_status": "CANNOT_DETERMINE"
+  },
+  {
+    "id": "index_negative_value",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "CPAP_DEVICE",
+    "note_text": "Established OSA. HST completed 2024-04-17. Respiratory disturbance index = -19.",
+    "expected_overall_status": "CANNOT_DETERMINE"
+  },
+  {
+    "id": "index_question",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "CPAP_DEVICE",
+    "note_text": "Established OSA. HST completed 2024-04-17. Respiratory disturbance index of 19?",
+    "expected_overall_status": "NEEDS_REVIEW"
+  },
+  {
+    "id": "index_no_diagnosis",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "CPAP_DEVICE",
+    "note_text": "Primary snoring. HST completed 2024-04-17. Respiratory disturbance index of 19.",
+    "expected_overall_status": "CANNOT_DETERMINE"
+  },
+  {
+    "id": "index_other_index",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "CPAP_DEVICE",
+    "note_text": "Established OSA. HST completed 2024-04-17. Respiratory event index of 19.",
+    "expected_overall_status": "CANNOT_DETERMINE"
+  },
+  {
+    "id": "index_explicit_missing",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "CPAP_DEVICE",
+    "note_text": "Established OSA. HST completed 2024-04-17. Respiratory disturbance index of 19, value not available.",
+    "expected_overall_status": "CANNOT_DETERMINE"
+  },
+  {
+    "id": "source_motor_exam",
+    "pair_role": "positive",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Persistent back pain with right-sided radiculopathy. On exam, right S1 distribution: soleus power 3+/5. Piroxicam for 7 weeks with minimal relief.",
+    "expected_overall_status": "PENDING_VERIFICATION",
+    "expected_facts": {
+      "objective_motor_or_reflex_change_in_root_distribution": true
+    },
+    "expected_objective_status": "MET"
+  },
+  {
+    "id": "source_motor_examination",
+    "pair_role": "positive",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Persistent back pain with right-sided radiculopathy. Examination shows right L3 root distribution: hip flexion 4-/5. Piroxicam for 7 weeks with minimal relief.",
+    "expected_overall_status": "PENDING_VERIFICATION",
+    "expected_facts": {
+      "objective_motor_or_reflex_change_in_root_distribution": true
+    },
+    "expected_objective_status": "MET"
+  },
+  {
+    "id": "source_reflex_exam",
+    "pair_role": "positive",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Persistent back pain with right-sided radiculopathy. On exam, right S1 distribution: Achilles jerk 1+. Piroxicam for 7 weeks with minimal relief.",
+    "expected_overall_status": "PENDING_VERIFICATION",
+    "expected_facts": {
+      "objective_motor_or_reflex_change_in_root_distribution": true
+    },
+    "expected_objective_status": "MET"
+  },
+  {
+    "id": "source_reflex_examination",
+    "pair_role": "positive",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Persistent back pain with right-sided radiculopathy. Examination shows right L3 distribution: knee reflex 3+, brisk. Piroxicam for 7 weeks with minimal relief.",
+    "expected_overall_status": "PENDING_VERIFICATION",
+    "expected_facts": {
+      "objective_motor_or_reflex_change_in_root_distribution": true
+    },
+    "expected_objective_status": "MET"
+  },
+  {
+    "id": "source_legacy_strength_exam",
+    "pair_role": "positive",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Persistent back pain with right-sided radiculopathy. On exam, right L4 distribution: strength 3/5. Piroxicam for 7 weeks with minimal relief.",
+    "expected_overall_status": "PENDING_VERIFICATION",
+    "expected_facts": {
+      "objective_motor_or_reflex_change_in_root_distribution": true
+    },
+    "expected_objective_status": "MET"
+  },
+  {
+    "id": "source_legacy_reflex_exam",
+    "pair_role": "positive",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Persistent back pain with right-sided radiculopathy. Examination shows diminished reflexes in the right S1 distribution. Piroxicam for 7 weeks with minimal relief.",
+    "expected_overall_status": "PENDING_VERIFICATION",
+    "expected_facts": {
+      "objective_motor_or_reflex_change_in_root_distribution": true
+    },
+    "expected_objective_status": "MET"
+  },
+  {
+    "id": "source_separate_report",
+    "pair_role": "positive",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Persistent back pain with right-sided radiculopathy. The patient states the leg aches. On exam, right S1 distribution: plantar flexion 3/5. Piroxicam for 7 weeks with minimal relief.",
+    "expected_overall_status": "PENDING_VERIFICATION",
+    "expected_facts": {
+      "objective_motor_or_reflex_change_in_root_distribution": true
+    },
+    "expected_objective_status": "MET"
+  },
+  {
+    "id": "source_separate_deferred",
+    "pair_role": "positive",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Persistent back pain with right-sided radiculopathy. Medication escalation was deferred. On exam, right L4 distribution: strength 4/5. Piroxicam for 7 weeks with minimal relief.",
+    "expected_overall_status": "PENDING_VERIFICATION",
+    "expected_facts": {
+      "objective_motor_or_reflex_change_in_root_distribution": true
+    },
+    "expected_objective_status": "MET"
+  },
+  {
+    "id": "source_agreeing_motor",
+    "pair_role": "positive",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Persistent back pain with right-sided radiculopathy. Per patient report, right S1 distribution: soleus power 3/5. On exam, right S1 distribution: soleus power 4/5. Piroxicam for 7 weeks with minimal relief.",
+    "expected_overall_status": "PENDING_VERIFICATION",
+    "expected_facts": {
+      "objective_motor_or_reflex_change_in_root_distribution": true
+    },
+    "expected_objective_status": "MET"
+  },
+  {
+    "id": "source_agreeing_reflex",
+    "pair_role": "positive",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Persistent back pain with right-sided radiculopathy. By history, diminished reflexes in the right S1 distribution. Examination shows right S1 distribution: ankle jerk 1+. Piroxicam for 7 weeks with minimal relief.",
+    "expected_overall_status": "PENDING_VERIFICATION",
+    "expected_facts": {
+      "objective_motor_or_reflex_change_in_root_distribution": true
+    },
+    "expected_objective_status": "MET"
+  },
+  {
+    "id": "source_per_patient",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Persistent back pain with right-sided radiculopathy. Right S1 distribution: soleus power 3/5 per patient report. Piroxicam for 7 weeks with minimal relief.",
+    "expected_overall_status": "CANNOT_DETERMINE",
+    "expected_facts": {
+      "objective_motor_or_reflex_change_in_root_distribution": null
+    },
+    "expected_objective_status": "NOT_DOCUMENTED"
+  },
+  {
+    "id": "source_patient_reports",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Persistent back pain with right-sided radiculopathy. Patient reports right L3 distribution: hip flexion 4-/5. Piroxicam for 7 weeks with minimal relief.",
+    "expected_overall_status": "CANNOT_DETERMINE",
+    "expected_facts": {
+      "objective_motor_or_reflex_change_in_root_distribution": null
+    },
+    "expected_objective_status": "NOT_DOCUMENTED"
+  },
+  {
+    "id": "source_patient_states",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Persistent back pain with right-sided radiculopathy. The patient states right L4 distribution: strength 3/5. Piroxicam for 7 weeks with minimal relief.",
+    "expected_overall_status": "CANNOT_DETERMINE",
+    "expected_facts": {
+      "objective_motor_or_reflex_change_in_root_distribution": null
+    },
+    "expected_objective_status": "NOT_DOCUMENTED"
+  },
+  {
+    "id": "source_self_reported",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Persistent back pain with right-sided radiculopathy. Self-reported right S1 distribution: ankle jerk 1+. Piroxicam for 7 weeks with minimal relief.",
+    "expected_overall_status": "CANNOT_DETERMINE",
+    "expected_facts": {
+      "objective_motor_or_reflex_change_in_root_distribution": null
+    },
+    "expected_objective_status": "NOT_DOCUMENTED"
+  },
+  {
+    "id": "source_by_history",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Persistent back pain with right-sided radiculopathy. Diminished reflexes in the right S1 distribution by history. Piroxicam for 7 weeks with minimal relief.",
+    "expected_overall_status": "CANNOT_DETERMINE",
+    "expected_facts": {
+      "objective_motor_or_reflex_change_in_root_distribution": null
+    },
+    "expected_objective_status": "NOT_DOCUMENTED"
+  },
+  {
+    "id": "source_exam_deferred",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Persistent back pain with right-sided radiculopathy. Right S1 distribution: plantar flexion 4/5 per patient report; exam deferred. Piroxicam for 7 weeks with minimal relief.",
+    "expected_overall_status": "CANNOT_DETERMINE",
+    "expected_facts": {
+      "objective_motor_or_reflex_change_in_root_distribution": null
+    },
+    "expected_objective_status": "NOT_DOCUMENTED"
+  },
+  {
+    "id": "source_not_performed",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Persistent back pain with right-sided radiculopathy. Exam not performed; right L4 distribution: strength 3/5. Piroxicam for 7 weeks with minimal relief.",
+    "expected_overall_status": "CANNOT_DETERMINE",
+    "expected_facts": {
+      "objective_motor_or_reflex_change_in_root_distribution": null
+    },
+    "expected_objective_status": "NOT_DOCUMENTED"
+  },
+  {
+    "id": "source_not_examined",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Persistent back pain with right-sided radiculopathy. Absent reflexes in the right S1 distribution; not examined. Piroxicam for 7 weeks with minimal relief.",
+    "expected_overall_status": "CANNOT_DETERMINE",
+    "expected_facts": {
+      "objective_motor_or_reflex_change_in_root_distribution": null
+    },
+    "expected_objective_status": "NOT_DOCUMENTED"
+  },
+  {
+    "id": "source_unable_assess",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Persistent back pain with right-sided radiculopathy. Unable to assess right S1 distribution: Achilles jerk 0+. Piroxicam for 7 weeks with minimal relief.",
+    "expected_overall_status": "CANNOT_DETERMINE",
+    "expected_facts": {
+      "objective_motor_or_reflex_change_in_root_distribution": null
+    },
+    "expected_objective_status": "NOT_DOCUMENTED"
+  },
+  {
+    "id": "source_refusal",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Persistent back pain with right-sided radiculopathy. Right L3 distribution: hip flexion 3+/5; examination limited by refusal. Piroxicam for 7 weeks with minimal relief.",
+    "expected_overall_status": "CANNOT_DETERMINE",
+    "expected_facts": {
+      "objective_motor_or_reflex_change_in_root_distribution": null
+    },
+    "expected_objective_status": "NOT_DOCUMENTED"
+  },
+  {
+    "id": "source_legacy_strength_report",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Persistent back pain with right-sided radiculopathy. Right L4 distribution: strength 4/5 per patient. Piroxicam for 7 weeks with minimal relief.",
+    "expected_overall_status": "CANNOT_DETERMINE",
+    "expected_facts": {
+      "objective_motor_or_reflex_change_in_root_distribution": null
+    },
+    "expected_objective_status": "NOT_DOCUMENTED"
+  },
+  {
+    "id": "source_legacy_reflex_reports",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Persistent back pain with right-sided radiculopathy. Patient reports absent reflexes in the right S1 distribution. Piroxicam for 7 weeks with minimal relief.",
+    "expected_overall_status": "CANNOT_DETERMINE",
+    "expected_facts": {
+      "objective_motor_or_reflex_change_in_root_distribution": null
+    },
+    "expected_objective_status": "NOT_DOCUMENTED"
+  },
+  {
+    "id": "source_word_grade_report",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Persistent back pain with right-sided radiculopathy. Right L4 distribution: strength 3 out of 5 per patient report. Piroxicam for 7 weeks with minimal relief.",
+    "expected_overall_status": "CANNOT_DETERMINE",
+    "expected_facts": {
+      "objective_motor_or_reflex_change_in_root_distribution": null
+    },
+    "expected_objective_status": "NOT_DOCUMENTED"
+  },
+  {
+    "id": "source_word_grade_states",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Persistent back pain with right-sided radiculopathy. Patient states right L4 distribution: strength 4 of 5. Piroxicam for 7 weeks with minimal relief.",
+    "expected_overall_status": "CANNOT_DETERMINE",
+    "expected_facts": {
+      "objective_motor_or_reflex_change_in_root_distribution": null
+    },
+    "expected_objective_status": "NOT_DOCUMENTED"
+  },
+  {
+    "id": "source_word_grade_deferred",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Persistent back pain with right-sided radiculopathy. Right L4 distribution: strength 3 of 5; examination was deferred. Piroxicam for 7 weeks with minimal relief.",
+    "expected_overall_status": "CANNOT_DETERMINE",
+    "expected_facts": {
+      "objective_motor_or_reflex_change_in_root_distribution": null
+    },
+    "expected_objective_status": "NOT_DOCUMENTED"
+  },
+  {
+    "id": "source_objective_word_history",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Persistent back pain with right-sided radiculopathy. Self-reported objective weakness in the right S1 distribution. Piroxicam for 7 weeks with minimal relief.",
+    "expected_overall_status": "CANNOT_DETERMINE",
+    "expected_facts": {
+      "objective_motor_or_reflex_change_in_root_distribution": null
+    },
+    "expected_objective_status": "NOT_DOCUMENTED"
+  },
+  {
+    "id": "source_decimal_history",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Persistent back pain with right-sided radiculopathy. By history, right L4 distribution: strength 3.5/5. Piroxicam for 7 weeks with minimal relief.",
+    "expected_overall_status": "CANNOT_DETERMINE",
+    "expected_facts": {
+      "objective_motor_or_reflex_change_in_root_distribution": null
+    },
+    "expected_objective_status": "NOT_DOCUMENTED"
+  },
+  {
+    "id": "source_normal_report",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Persistent back pain with right-sided radiculopathy. Right L4 distribution: strength 5/5 per patient report. Piroxicam for 7 weeks with minimal relief.",
+    "expected_overall_status": "CANNOT_DETERMINE",
+    "expected_facts": {
+      "objective_motor_or_reflex_change_in_root_distribution": null
+    },
+    "expected_objective_status": "NOT_DOCUMENTED"
+  },
+  {
+    "id": "source_conflicting_motor",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Persistent back pain with right-sided radiculopathy. Patient reports right S1 distribution: soleus power 3/5. On exam, right S1 distribution: soleus power 5/5. Piroxicam for 7 weeks with minimal relief.",
+    "expected_overall_status": "NEEDS_REVIEW",
+    "expected_facts": {
+      "objective_motor_or_reflex_change_in_root_distribution": "__REVIEW_REQUIRED__"
+    },
+    "expected_objective_status": "NEEDS_REVIEW"
+  },
+  {
+    "id": "source_conflicting_reflex",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Persistent back pain with right-sided radiculopathy. Right S1 distribution: ankle jerk 1+ by history. On exam, right S1 distribution: ankle jerk 2+, physiologic. Piroxicam for 7 weeks with minimal relief.",
+    "expected_overall_status": "NEEDS_REVIEW",
+    "expected_facts": {
+      "objective_motor_or_reflex_change_in_root_distribution": "__REVIEW_REQUIRED__"
+    },
+    "expected_objective_status": "NEEDS_REVIEW"
+  },
+  {
+    "id": "source_conflicting_legacy",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Persistent back pain with right-sided radiculopathy. On exam, right L4 distribution: strength 3/5. Right L4 distribution: strength 5/5 per patient report. Piroxicam for 7 weeks with minimal relief.",
+    "expected_overall_status": "NEEDS_REVIEW",
+    "expected_facts": {
+      "objective_motor_or_reflex_change_in_root_distribution": "__REVIEW_REQUIRED__"
+    },
+    "expected_objective_status": "NEEDS_REVIEW"
+  },
+  {
+    "id": "source_conflicting_descriptors",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Persistent back pain with right-sided radiculopathy. By history, normal reflexes in the right S1 distribution. On exam, absent reflexes in the right S1 distribution. Piroxicam for 7 weeks with minimal relief.",
+    "expected_overall_status": "NEEDS_REVIEW",
+    "expected_facts": {
+      "objective_motor_or_reflex_change_in_root_distribution": "__REVIEW_REQUIRED__"
+    },
+    "expected_objective_status": "NEEDS_REVIEW"
+  },
+  {
+    "id": "source_conflicting_word_grade",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Persistent back pain with right-sided radiculopathy. Right L4 distribution: strength 3 out of 5 per patient. On exam, right L4 distribution: strength 5/5. Piroxicam for 7 weeks with minimal relief.",
+    "expected_overall_status": "NEEDS_REVIEW",
+    "expected_facts": {
+      "objective_motor_or_reflex_change_in_root_distribution": "__REVIEW_REQUIRED__"
+    },
+    "expected_objective_status": "NEEDS_REVIEW"
+  },
+  {
+    "id": "source_conflicting_refusal",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Persistent back pain with right-sided radiculopathy. Right S1 distribution: plantar flexion 5/5; exam limited by refusal. On exam, right S1 distribution: plantar flexion 3/5. Piroxicam for 7 weeks with minimal relief.",
+    "expected_overall_status": "NEEDS_REVIEW",
+    "expected_facts": {
+      "objective_motor_or_reflex_change_in_root_distribution": "__REVIEW_REQUIRED__"
+    },
+    "expected_objective_status": "NEEDS_REVIEW"
+  }
+]

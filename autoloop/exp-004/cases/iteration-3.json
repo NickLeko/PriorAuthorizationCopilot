@@ -1,0 +1,114 @@
+[
+  {
+    "id": "date_us_hyphen",
+    "pair_role": "positive",
+    "payer": "Aetna",
+    "procedure_code": "CPAP_DEVICE",
+    "note_text": "Confirmed obstructive sleep apnea. HST performed on 11-19-2024; RDI: 13.",
+    "expected_overall_status": "PENDING_VERIFICATION"
+  },
+  {
+    "id": "date_day_month",
+    "pair_role": "positive",
+    "payer": "Aetna",
+    "procedure_code": "CPAP_DEVICE",
+    "note_text": "Established OSA. Overnight polysomnogram conducted 21 February 2025, AHI: 7.",
+    "expected_overall_status": "PENDING_VERIFICATION"
+  },
+  {
+    "id": "date_ordinal",
+    "pair_role": "positive",
+    "payer": "Aetna",
+    "procedure_code": "CPAP_DEVICE",
+    "note_text": "Established OSA. Home sleep test dated September 12th, 2023 with RDI 11.",
+    "expected_overall_status": "PENDING_VERIFICATION"
+  },
+  {
+    "id": "date_dotted",
+    "pair_role": "positive",
+    "payer": "Aetna",
+    "procedure_code": "CPAP_DEVICE",
+    "note_text": "Confirmed obstructive sleep apnea. HST completed 2024.12.02; AHI 17.",
+    "expected_overall_status": "PENDING_VERIFICATION"
+  },
+  {
+    "id": "date_office_same_sentence",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "CPAP_DEVICE",
+    "note_text": "Established OSA. Clinic appointment 11-19-2024, HST date unknown; RDI 13.",
+    "expected_overall_status": "CANNOT_DETERMINE"
+  },
+  {
+    "id": "date_calendar_invalid",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "CPAP_DEVICE",
+    "note_text": "Established OSA. HST completed April 31, 2024; RDI 13.",
+    "expected_overall_status": "CANNOT_DETERMINE"
+  },
+  {
+    "id": "date_leap_invalid",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "CPAP_DEVICE",
+    "note_text": "Established OSA. Home sleep test dated February 29, 2023; RDI 13.",
+    "expected_overall_status": "CANNOT_DETERMINE"
+  },
+  {
+    "id": "date_scheduled",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "CPAP_DEVICE",
+    "note_text": "Established OSA. HST scheduled for November 19, 2024; RDI 13.",
+    "expected_overall_status": "CANNOT_DETERMINE"
+  },
+  {
+    "id": "date_cancelled",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "CPAP_DEVICE",
+    "note_text": "Established OSA. Cancelled polysomnogram on 21 February 2025; AHI 7.",
+    "expected_overall_status": "CANNOT_DETERMINE"
+  },
+  {
+    "id": "date_family",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "CPAP_DEVICE",
+    "note_text": "Established OSA. Her spouse completed HST on November 19, 2024; RDI 13.",
+    "expected_overall_status": "CANNOT_DETERMINE"
+  },
+  {
+    "id": "date_no_study",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "CPAP_DEVICE",
+    "note_text": "Established OSA. Laboratory appointment November 19, 2024; RDI 13.",
+    "expected_overall_status": "CANNOT_DETERMINE"
+  },
+  {
+    "id": "date_partial_date",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "CPAP_DEVICE",
+    "note_text": "Established OSA. HST completed November 2024; RDI 13.",
+    "expected_overall_status": "CANNOT_DETERMINE"
+  },
+  {
+    "id": "date_question",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "CPAP_DEVICE",
+    "note_text": "Established OSA. HST completed November 19, 2024? RDI 13.",
+    "expected_overall_status": "NEEDS_REVIEW"
+  },
+  {
+    "id": "date_no_diagnosis",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "CPAP_DEVICE",
+    "note_text": "Primary snoring. HST completed November 19, 2024; RDI 13.",
+    "expected_overall_status": "CANNOT_DETERMINE"
+  }
+]

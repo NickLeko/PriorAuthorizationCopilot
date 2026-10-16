@@ -1,12 +1,13 @@
 # Model Card
 
 Project: Prior Authorization Readiness Copilot  
-Version: 2.5.0 (record schema 2.0.0)
+Version: 2.6.0 (record schema 2.0.0)
 
-Changelog: 2.5.0 — Releases exp-003's owner-approved reviewed drug table and
-bounded drug-course recognition, including review for unresolved listed-drug
-context alongside another course. Earlier recall fixes, human verification,
-policy trust and record schema remain. See [release notes](docs/releases/v2.5.0.md).
+Changelog: 2.6.0 — Releases exp-004’s reported drug courses, typed motor/reflex
+grades, additional directly linked study dates, named AHI/RDI measurements and
+sentence-wide source/performance safeguards on both new and legacy exams.
+Policy trust, reviewed drug data and record schema remain unchanged. See
+[release notes](docs/releases/v2.6.0.md).
 
 Automated extraction is a drafting aid, not a decision gate. v1.4.0's posture over-trusted extraction: negated diagnoses returned affirmative facts and contradicted the extraction contract as written. v1.5.0 resolves the contradiction by changing what the engine may assert rather than by making extraction match the contract. Known false proposals remain; the executable contract records them explicitly.
 
@@ -65,8 +66,8 @@ Automated extraction is a drafting aid, not a decision gate. v1.4.0's posture ov
 
 The repo includes pytest coverage for extraction, verification, evaluation, drafting, rule loading, policy-monitor helpers, archive immutability, and replay categories. All bundled evaluation cases are synthetic. The checked-in fixture reports 52/52 exact statuses and 0 false `READY` results among 52 expected non-`READY` cases, including seven `PENDING_VERIFICATION` cases. Zero automated READY is enforced structurally; it is not an extraction-accuracy estimate. The executable contract tests cover every numbered guarantee and published exact example, including the resolved auxiliary-verb denial and the remaining neither/nor
 and same-sentence date gaps, thirteen exp-002 recall examples, and sixteen
-exp-003 examples. Fresh suite:
-**1301 passed, 10 xfailed**. The
+exp-003 examples, and 24 exp-004 examples (91 total; four known failures). Fresh suite:
+**1461 passed, 10 xfailed**. The
 negated-strength False expectation remains disputed; implementation requires
 review rather than proposing a normal exam. Corpus false PENDING_VERIFICATION
 is zero; original authored cases score 45/45 with zero false pending, while the
@@ -83,10 +84,21 @@ positive passes and zero final false pending across 63 negatives. Its first
 candidate was reverted after four linkage false passes; the accepted guard
 requires review for unresolved drug context alongside another course.
 
-The owner reports three held-out sets, none visible during development: zero
-false pending on all; exact 23→25/41, 15→15/36 and 14→15/34. Those cases were
-not inspected or rerun in this release preparation. These modest exact-status
-changes do not validate arbitrary clinical prose.
+Exp-004 used an owner-written visible dev set retained unchanged in
+[autoloop/exp-004/dev.json](autoloop/exp-004/dev.json): 11/27 → 27/27 exact.
+All 102 own cases pass (30 positives / 72 negatives), as do all 52 corpus cases;
+exp-002/003 scores remain 64/69 and 74/74 with zero false pending. Iteration 5
+repaired a patient-reported/deferred-exam safety defect found by the owner’s
+held-out evaluation, which our original tests had missed. Before that repair,
+13 of 24 newly authored negatives falsely passed; after it, none do.
+
+The owner reports a separate never-visible 27-case held-out set, with different
+wording: exact 10→24/27 and zero false PENDING_VERIFICATION. Those cases were
+not read, added to tests or rerun here. Feedback from a prior held-out evaluation
+informed the source/performance repair; this does not turn the visible dev check
+or own paraphrases into independent evaluation. Three held-out exact-status
+misses remain, with no case-level explanation available here. Historical
+exp-003 held-out results remain in [v2.5.0](docs/releases/v2.5.0.md).
 
 ## Known Limits
 
@@ -95,13 +107,19 @@ changes do not validate arbitrary clinical prose.
 - New CPB duration forms require an isolated complete course/response sentence;
   days floor to weeks and whole months use a four-week lower bound. Number words
   stop at twelve. Direct named-root word grades cover a narrow exam grammar;
-  legacy slash-notation attribution gaps remain. Full class-name expansion was
+  source/performance guards now cover legacy paths, but broader attribution and
+  laterality gaps remain. Full class-name expansion was
   rejected as unsafe. [engine/data/cpb0236_drugs_v1.json](engine/data/cpb0236_drugs_v1.json)
   is owner-approved reviewed data for local use. **ATC codes require human
   verification against WHO ATC before any external claim.** Owner approval does
   not certify the transcription; the human-review notice remains. Listed names
-  still require isolated course-sentence grammar: leading verbs such as 'Took'
-  are missed, and unresolved drug context may over-trigger review.
+  still require isolated course-sentence grammar. Supported use verbs, doses and
+  frequencies now parse, but unlisted phrasing can be missed and unresolved drug
+  context may over-trigger review. Typed grades require explicit root linkage,
+  not inferred muscle anatomy. Source qualifiers use a finite sentence-wide
+  vocabulary; broader provenance remains unresolved. New date formats require
+  direct study linkage; legacy year-first association and index abbreviations
+  retain narrower safeguards.
 - Source spans now exactly equal original-note slices at Python character offsets, including Unicode. This does not establish semantic support, attribution or complete context.
 - Human-verification identity is self-reported, not authenticated; the local demo cannot establish that a person actually reviewed a fact. Incorrect human attestations can still permit false READY.
 - v2.3.0 rejects the cross-sentence borrowed study date. Same-sentence unrelated

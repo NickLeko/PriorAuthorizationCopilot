@@ -1,0 +1,132 @@
+FFFFFF.......F.F                                                         [100%]
+=================================== FAILURES ===================================
+__________________ test_exp004_paraphrase[therapy_used_dosed] __________________
+
+case = {'expected_overall_status': 'PENDING_VERIFICATION', 'id': 'therapy_used_dosed', 'note_text': 'Persistent lumbar back p...tion: strength 3/5. Used etodolac 400 mg BID for seven weeks without meaningful relief.', 'pair_role': 'positive', ...}
+
+    @pytest.mark.parametrize("case", CASES, ids=lambda case: case["id"])
+    def test_exp004_paraphrase(case):
+        request = PARequest.model_validate({key: case[key] for key in ("payer", "procedure_code", "note_text")})
+        result = ReadinessService().evaluate(request)
+>       assert result.overall_status == case["expected_overall_status"]
+E       AssertionError: assert 'CANNOT_DETERMINE' == 'PENDING_VERIFICATION'
+E         
+E         - PENDING_VERIFICATION
+E         + CANNOT_DETERMINE
+
+test/test_exp004_recall.py:19: AssertionError
+______________ test_exp004_paraphrase[therapy_received_relaxant] _______________
+
+case = {'expected_overall_status': 'PENDING_VERIFICATION', 'id': 'therapy_received_relaxant', 'note_text': 'Persistent lumbar...ibution: strength 3/5. Patient received Dantrium 25 mg nightly for 56 days, no benefit.', 'pair_role': 'positive', ...}
+
+    @pytest.mark.parametrize("case", CASES, ids=lambda case: case["id"])
+    def test_exp004_paraphrase(case):
+        request = PARequest.model_validate({key: case[key] for key in ("payer", "procedure_code", "note_text")})
+        result = ReadinessService().evaluate(request)
+>       assert result.overall_status == case["expected_overall_status"]
+E       AssertionError: assert 'CANNOT_DETERMINE' == 'PENDING_VERIFICATION'
+E         
+E         - PENDING_VERIFICATION
+E         + CANNOT_DETERMINE
+
+test/test_exp004_recall.py:19: AssertionError
+_______________ test_exp004_paraphrase[therapy_has_used_opioid] ________________
+
+case = {'expected_overall_status': 'PENDING_VERIFICATION', 'id': 'therapy_has_used_opioid', 'note_text': 'Persistent lumbar b...tribution: strength 3/5. Has used Ultram 50 mg TID for nine weeks with little response.', 'pair_role': 'positive', ...}
+
+    @pytest.mark.parametrize("case", CASES, ids=lambda case: case["id"])
+    def test_exp004_paraphrase(case):
+        request = PARequest.model_validate({key: case[key] for key in ("payer", "procedure_code", "note_text")})
+        result = ReadinessService().evaluate(request)
+>       assert result.overall_status == case["expected_overall_status"]
+E       AssertionError: assert 'CANNOT_DETERMINE' == 'PENDING_VERIFICATION'
+E         
+E         - PENDING_VERIFICATION
+E         + CANNOT_DETERMINE
+
+test/test_exp004_recall.py:19: AssertionError
+_________________ test_exp004_paraphrase[therapy_course_first] _________________
+
+case = {'expected_overall_status': 'PENDING_VERIFICATION', 'id': 'therapy_course_first', 'note_text': 'Persistent lumbar back...ion: strength 3/5. A 49-day course of sulindac 150 mg twice a day with minimal benefit.', 'pair_role': 'positive', ...}
+
+    @pytest.mark.parametrize("case", CASES, ids=lambda case: case["id"])
+    def test_exp004_paraphrase(case):
+        request = PARequest.model_validate({key: case[key] for key in ("payer", "procedure_code", "note_text")})
+        result = ReadinessService().evaluate(request)
+>       assert result.overall_status == case["expected_overall_status"]
+E       AssertionError: assert 'CANNOT_DETERMINE' == 'PENDING_VERIFICATION'
+E         
+E         - PENDING_VERIFICATION
+E         + CANNOT_DETERMINE
+
+test/test_exp004_recall.py:19: AssertionError
+_________________ test_exp004_paraphrase[therapy_short_dosed] __________________
+
+case = {'expected_overall_status': 'NOT_READY', 'id': 'therapy_short_dosed', 'note_text': 'Persistent lumbar back pain with r...ution: strength 3/5. Used etodolac 400 mg BID for four weeks without meaningful relief.', 'pair_role': 'negative', ...}
+
+    @pytest.mark.parametrize("case", CASES, ids=lambda case: case["id"])
+    def test_exp004_paraphrase(case):
+        request = PARequest.model_validate({key: case[key] for key in ("payer", "procedure_code", "note_text")})
+        result = ReadinessService().evaluate(request)
+>       assert result.overall_status == case["expected_overall_status"]
+E       AssertionError: assert 'CANNOT_DETERMINE' == 'NOT_READY'
+E         
+E         - NOT_READY
+E         + CANNOT_DETERMINE
+
+test/test_exp004_recall.py:19: AssertionError
+___________________ test_exp004_paraphrase[therapy_benefit] ____________________
+
+case = {'expected_overall_status': 'NOT_READY', 'id': 'therapy_benefit', 'note_text': 'Persistent lumbar back pain with radic...n: strength 3/5. Patient received Dantrium 25 mg nightly for 56 days with good benefit.', 'pair_role': 'negative', ...}
+
+    @pytest.mark.parametrize("case", CASES, ids=lambda case: case["id"])
+    def test_exp004_paraphrase(case):
+        request = PARequest.model_validate({key: case[key] for key in ("payer", "procedure_code", "note_text")})
+        result = ReadinessService().evaluate(request)
+>       assert result.overall_status == case["expected_overall_status"]
+E       AssertionError: assert 'CANNOT_DETERMINE' == 'NOT_READY'
+E         
+E         - NOT_READY
+E         + CANNOT_DETERMINE
+
+test/test_exp004_recall.py:19: AssertionError
+_________________ test_exp004_paraphrase[therapy_cross_course] _________________
+
+case = {'expected_overall_status': 'NEEDS_REVIEW', 'id': 'therapy_cross_course', 'note_text': 'Persistent lumbar back pain wi...strength 3/5. Used etodolac for seven weeks without relief. Dantrium with good benefit.', 'pair_role': 'negative', ...}
+
+    @pytest.mark.parametrize("case", CASES, ids=lambda case: case["id"])
+    def test_exp004_paraphrase(case):
+        request = PARequest.model_validate({key: case[key] for key in ("payer", "procedure_code", "note_text")})
+        result = ReadinessService().evaluate(request)
+>       assert result.overall_status == case["expected_overall_status"]
+E       AssertionError: assert 'CANNOT_DETERMINE' == 'NEEDS_REVIEW'
+E         
+E         - NEEDS_REVIEW
+E         + CANNOT_DETERMINE
+
+test/test_exp004_recall.py:19: AssertionError
+___________________ test_exp004_paraphrase[therapy_question] ___________________
+
+case = {'expected_overall_status': 'NEEDS_REVIEW', 'id': 'therapy_question', 'note_text': 'Persistent lumbar back pain with r.... Right S1 distribution: strength 3/5. Received sulindac for nine weeks without relief?', 'pair_role': 'negative', ...}
+
+    @pytest.mark.parametrize("case", CASES, ids=lambda case: case["id"])
+    def test_exp004_paraphrase(case):
+        request = PARequest.model_validate({key: case[key] for key in ("payer", "procedure_code", "note_text")})
+        result = ReadinessService().evaluate(request)
+>       assert result.overall_status == case["expected_overall_status"]
+E       AssertionError: assert 'CANNOT_DETERMINE' == 'NEEDS_REVIEW'
+E         
+E         - NEEDS_REVIEW
+E         + CANNOT_DETERMINE
+
+test/test_exp004_recall.py:19: AssertionError
+=========================== short test summary info ============================
+FAILED test/test_exp004_recall.py::test_exp004_paraphrase[therapy_used_dosed]
+FAILED test/test_exp004_recall.py::test_exp004_paraphrase[therapy_received_relaxant]
+FAILED test/test_exp004_recall.py::test_exp004_paraphrase[therapy_has_used_opioid]
+FAILED test/test_exp004_recall.py::test_exp004_paraphrase[therapy_course_first]
+FAILED test/test_exp004_recall.py::test_exp004_paraphrase[therapy_short_dosed]
+FAILED test/test_exp004_recall.py::test_exp004_paraphrase[therapy_benefit] - ...
+FAILED test/test_exp004_recall.py::test_exp004_paraphrase[therapy_cross_course]
+FAILED test/test_exp004_recall.py::test_exp004_paraphrase[therapy_question]
+8 failed, 8 passed in 0.17s

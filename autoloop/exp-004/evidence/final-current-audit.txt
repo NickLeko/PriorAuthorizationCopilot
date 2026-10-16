@@ -1,0 +1,126 @@
+{
+  "mode": "current",
+  "own": {
+    "cases": 68,
+    "exact_status_correct": 68,
+    "exact_status_accuracy": 1.0,
+    "false_pending_verification": 0,
+    "false_ready": 0,
+    "automated_ready": 0,
+    "missed_passes": 0,
+    "abstention_rate": 0.6323529411764706,
+    "expected_abstention_rate": 0.6323529411764706,
+    "confusion_matrix_expected_rows_actual_columns": {
+      "READY": {
+        "READY": 0,
+        "PENDING_VERIFICATION": 0,
+        "NOT_READY": 0,
+        "CANNOT_DETERMINE": 0,
+        "NEEDS_REVIEW": 0,
+        "UNKNOWN": 0
+      },
+      "PENDING_VERIFICATION": {
+        "READY": 0,
+        "PENDING_VERIFICATION": 20,
+        "NOT_READY": 0,
+        "CANNOT_DETERMINE": 0,
+        "NEEDS_REVIEW": 0,
+        "UNKNOWN": 0
+      },
+      "NOT_READY": {
+        "READY": 0,
+        "PENDING_VERIFICATION": 0,
+        "NOT_READY": 5,
+        "CANNOT_DETERMINE": 0,
+        "NEEDS_REVIEW": 0,
+        "UNKNOWN": 0
+      },
+      "CANNOT_DETERMINE": {
+        "READY": 0,
+        "PENDING_VERIFICATION": 0,
+        "NOT_READY": 0,
+        "CANNOT_DETERMINE": 33,
+        "NEEDS_REVIEW": 0,
+        "UNKNOWN": 0
+      },
+      "NEEDS_REVIEW": {
+        "READY": 0,
+        "PENDING_VERIFICATION": 0,
+        "NOT_READY": 0,
+        "CANNOT_DETERMINE": 0,
+        "NEEDS_REVIEW": 10,
+        "UNKNOWN": 0
+      },
+      "UNKNOWN": {
+        "READY": 0,
+        "PENDING_VERIFICATION": 0,
+        "NOT_READY": 0,
+        "CANNOT_DETERMINE": 0,
+        "NEEDS_REVIEW": 0,
+        "UNKNOWN": 0
+      }
+    }
+  },
+  "dev": {
+    "cases": 27,
+    "exact_status_correct": 27,
+    "exact_status_accuracy": 1.0,
+    "false_pending_verification": 0,
+    "false_ready": 0,
+    "automated_ready": 0,
+    "missed_passes": 0,
+    "abstention_rate": 0.3333333333333333,
+    "expected_abstention_rate": 0.3333333333333333,
+    "confusion_matrix_expected_rows_actual_columns": {
+      "READY": {
+        "READY": 0,
+        "PENDING_VERIFICATION": 0,
+        "NOT_READY": 0,
+        "CANNOT_DETERMINE": 0,
+        "NEEDS_REVIEW": 0,
+        "UNKNOWN": 0
+      },
+      "PENDING_VERIFICATION": {
+        "READY": 0,
+        "PENDING_VERIFICATION": 14,
+        "NOT_READY": 0,
+        "CANNOT_DETERMINE": 0,
+        "NEEDS_REVIEW": 0,
+        "UNKNOWN": 0
+      },
+      "NOT_READY": {
+        "READY": 0,
+        "PENDING_VERIFICATION": 0,
+        "NOT_READY": 4,
+        "CANNOT_DETERMINE": 0,
+        "NEEDS_REVIEW": 0,
+        "UNKNOWN": 0
+      },
+      "CANNOT_DETERMINE": {
+        "READY": 0,
+        "PENDING_VERIFICATION": 0,
+        "NOT_READY": 0,
+        "CANNOT_DETERMINE": 9,
+        "NEEDS_REVIEW": 0,
+        "UNKNOWN": 0
+      },
+      "NEEDS_REVIEW": {
+        "READY": 0,
+        "PENDING_VERIFICATION": 0,
+        "NOT_READY": 0,
+        "CANNOT_DETERMINE": 0,
+        "NEEDS_REVIEW": 0,
+        "UNKNOWN": 0
+      },
+      "UNKNOWN": {
+        "READY": 0,
+        "PENDING_VERIFICATION": 0,
+        "NOT_READY": 0,
+        "CANNOT_DETERMINE": 0,
+        "NEEDS_REVIEW": 0,
+        "UNKNOWN": 0
+      }
+    }
+  },
+  "corpus_proposals_checked": 52
+}

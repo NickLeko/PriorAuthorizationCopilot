@@ -1,0 +1,84 @@
+....................................................FFFF........F...     [100%]
+=================================== FAILURES ===================================
+__________________ test_exp004_paraphrase[index_rdi_measured] __________________
+
+case = {'expected_overall_status': 'PENDING_VERIFICATION', 'id': 'index_rdi_measured', 'note_text': 'Established OSA. HST completed 2024-04-17. The respiratory disturbance index measured at 14.6 events/hour.', 'pair_role': 'positive', ...}
+
+    @pytest.mark.parametrize("case", CASES, ids=lambda case: case["id"])
+    def test_exp004_paraphrase(case):
+        request = PARequest.model_validate({key: case[key] for key in ("payer", "procedure_code", "note_text")})
+        result = ReadinessService().evaluate(request)
+>       assert result.overall_status == case["expected_overall_status"]
+E       AssertionError: assert 'CANNOT_DETERMINE' == 'PENDING_VERIFICATION'
+E         
+E         - PENDING_VERIFICATION
+E         + CANNOT_DETERMINE
+
+test/test_exp004_recall.py:20: AssertionError
+____________________ test_exp004_paraphrase[index_british] _____________________
+
+case = {'expected_overall_status': 'PENDING_VERIFICATION', 'id': 'index_british', 'note_text': 'Confirmed obstructive sleep apnea. PSG completed 2024-04-17. Apnoea–hypopnoea index was 9.2/h.', 'pair_role': 'positive', ...}
+
+    @pytest.mark.parametrize("case", CASES, ids=lambda case: case["id"])
+    def test_exp004_paraphrase(case):
+        request = PARequest.model_validate({key: case[key] for key in ("payer", "procedure_code", "note_text")})
+        result = ReadinessService().evaluate(request)
+>       assert result.overall_status == case["expected_overall_status"]
+E       AssertionError: assert 'CANNOT_DETERMINE' == 'PENDING_VERIFICATION'
+E         
+E         - PENDING_VERIFICATION
+E         + CANNOT_DETERMINE
+
+test/test_exp004_recall.py:20: AssertionError
+_________________ test_exp004_paraphrase[index_parenthetical] __________________
+
+case = {'expected_overall_status': 'PENDING_VERIFICATION', 'id': 'index_parenthetical', 'note_text': 'Established OSA. HST completed 2024-04-17. Apnea hypopnea index (AHI): 31.', 'pair_role': 'positive', ...}
+
+    @pytest.mark.parametrize("case", CASES, ids=lambda case: case["id"])
+    def test_exp004_paraphrase(case):
+        request = PARequest.model_validate({key: case[key] for key in ("payer", "procedure_code", "note_text")})
+        result = ReadinessService().evaluate(request)
+>       assert result.overall_status == case["expected_overall_status"]
+E       AssertionError: assert 'CANNOT_DETERMINE' == 'PENDING_VERIFICATION'
+E         
+E         - PENDING_VERIFICATION
+E         + CANNOT_DETERMINE
+
+test/test_exp004_recall.py:20: AssertionError
+___________________ test_exp004_paraphrase[index_rdi_hyphen] ___________________
+
+case = {'expected_overall_status': 'PENDING_VERIFICATION', 'id': 'index_rdi_hyphen', 'note_text': 'Confirmed obstructive sleep apnea. PSG completed 2024/04/17. Respiratory-disturbance index = 6.', 'pair_role': 'positive', ...}
+
+    @pytest.mark.parametrize("case", CASES, ids=lambda case: case["id"])
+    def test_exp004_paraphrase(case):
+        request = PARequest.model_validate({key: case[key] for key in ("payer", "procedure_code", "note_text")})
+        result = ReadinessService().evaluate(request)
+>       assert result.overall_status == case["expected_overall_status"]
+E       AssertionError: assert 'CANNOT_DETERMINE' == 'PENDING_VERIFICATION'
+E         
+E         - PENDING_VERIFICATION
+E         + CANNOT_DETERMINE
+
+test/test_exp004_recall.py:20: AssertionError
+____________________ test_exp004_paraphrase[index_question] ____________________
+
+case = {'expected_overall_status': 'NEEDS_REVIEW', 'id': 'index_question', 'note_text': 'Established OSA. HST completed 2024-04-17. Respiratory disturbance index of 19?', 'pair_role': 'negative', ...}
+
+    @pytest.mark.parametrize("case", CASES, ids=lambda case: case["id"])
+    def test_exp004_paraphrase(case):
+        request = PARequest.model_validate({key: case[key] for key in ("payer", "procedure_code", "note_text")})
+        result = ReadinessService().evaluate(request)
+>       assert result.overall_status == case["expected_overall_status"]
+E       AssertionError: assert 'CANNOT_DETERMINE' == 'NEEDS_REVIEW'
+E         
+E         - NEEDS_REVIEW
+E         + CANNOT_DETERMINE
+
+test/test_exp004_recall.py:20: AssertionError
+=========================== short test summary info ============================
+FAILED test/test_exp004_recall.py::test_exp004_paraphrase[index_rdi_measured]
+FAILED test/test_exp004_recall.py::test_exp004_paraphrase[index_british] - As...
+FAILED test/test_exp004_recall.py::test_exp004_paraphrase[index_parenthetical]
+FAILED test/test_exp004_recall.py::test_exp004_paraphrase[index_rdi_hyphen]
+FAILED test/test_exp004_recall.py::test_exp004_paraphrase[index_question] - A...
+5 failed, 63 passed in 0.50s

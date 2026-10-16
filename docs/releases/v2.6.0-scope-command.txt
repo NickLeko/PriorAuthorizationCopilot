@@ -1,0 +1,117 @@
+# Run from repository root: .venv/bin/python < docs/releases/v2.6.0-scope-command.txt
+# Read-only implementation/output audit; writes only this release's audit JSON.
+import hashlib
+import json
+import re
+import subprocess
+from pathlib import Path
+
+from engine.acceptance import ACCEPTANCE_GOVERNANCE_NOW
+from engine.schemas import PARequest
+from engine.service import ReadinessService
+
+BASE = 'f1412a6605733245e189a452acb9839a366a587e'
+MAIN = '89a1500e1f3a0888e977ab0dde7cbfd21a26e8c7'
+ROOT = Path.cwd()
+DIRECTORY = ROOT / 'docs/releases'
+
+
+def git(*args):
+    return subprocess.check_output(['git', *args], text=True).strip()
+
+
+def original(path):
+    return subprocess.check_output(['git', 'show', f'{BASE}:{path}'])
+
+
+def examples(raw):
+    return json.loads(re.search(r'```json\n(.*?)\n```', raw, re.S).group(1))
+
+
+product_changes = git('diff', '--name-only', BASE, '--', 'engine', 'scripts', 'app.py', 'api.py', 'cli.py').splitlines()
+assert product_changes == ['engine/__init__.py'], product_changes
+assert Path('engine/__init__.py').read_bytes() == original('engine/__init__.py').replace(b'2.5.0', b'2.6.0')
+version_tests = ['test/test_api.py', 'test/test_v210_safety.py']
+changed_tests = git('diff', '--name-only', BASE, '--', 'test', ':!test/golden').splitlines()
+assert changed_tests == version_tests, changed_tests
+for path in version_tests:
+    assert Path(path).read_bytes() == original(path).replace(b'2.5.0', b'2.6.0')
+old_examples = examples(original('EXTRACTION_CONTRACT.md').decode())
+new_examples = examples(Path('EXTRACTION_CONTRACT.md').read_text())
+assert new_examples[:len(old_examples)] == old_examples
+assert len(old_examples) == 67 and len(new_examples) == 91
+assert len({example['id'] for example in new_examples}) == 91
+old_failures = [example for example in old_examples if 'known_failure' in example]
+assert [example for example in new_examples if 'known_failure' in example] == old_failures
+assert len(old_failures) == 4
+protected = ['rules', 'rulebook', 'policy_snapshots', 'inputs', 'autoloop', '.github', '.streamlit',
+             'Makefile', 'requirements.in', 'requirements.lock', 'requirements.txt', 'pyproject.toml']
+assert not git('diff', '--name-only', BASE, '--', *protected)
+assert Path('engine/data/cpb0236_drugs_v1.json').read_bytes() == original('engine/data/cpb0236_drugs_v1.json')
+dev_path = Path('autoloop/exp-004/dev.json')
+assert dev_path.read_bytes() == original(dev_path.as_posix())
+dev_hash = hashlib.sha256(dev_path.read_bytes()).hexdigest()
+assert dev_hash == '4832267bc1ff0ac8f57aac1dd36961ef62ea4d3f15d9286662866a0981685389'
+assert git('rev-parse', 'main') == MAIN
+assert git('rev-parse', 'autoloop/exp-004') == BASE
+assert git('branch', '--show-current') == 'codex/release-v2.6.0'
+generation = json.loads((DIRECTORY / 'v2.6.0-generation-audit.json').read_text())
+assert generation['regenerated'] == 25 and generation['changed'] == 12
+assert not generation['governance_changes'] and not generation['non_version_changes']
+for row in generation['files']:
+    assert hashlib.sha256(original(row['file'])).hexdigest() == row['before_sha256'], row['file']
+    assert hashlib.sha256(Path(row['file']).read_bytes()).hexdigest() == row['after_sha256'], row['file']
+    for change in row['changes']:
+        assert change['pointer'] in ('/engine_version', '/app_version')
+        assert change['before'] == '2.5.0' and change['after'] == '2.6.0'
+    if 'governance/' in row['file'] or any(key in row['file'] for key in ('drift_', 'rulebook_')):
+        assert not row['changed'], row['file']
+expected = json.loads((ROOT / 'autoloop/exp-004/evidence/iteration-5-after.json').read_text())
+for filename, key in [('corpus', 'corpus'), ('dev', 'dev'), ('exp004', 'own'), ('exp003', 'exp-003'), ('exp002', 'exp-002')]:
+    assert json.loads((DIRECTORY / f'v2.6.0-{filename}-score.json').read_text()) == expected['datasets'][key]
+service = ReadinessService(utc_now_provider=lambda: ACCEPTANCE_GOVERNANCE_NOW)
+preflight = json.loads((DIRECTORY / 'v2.6.0-preflight.json').read_text())
+assert not preflight['stop_required']
+assert service._bundle_digest() == preflight['bundle_digest']
+dev_cases = json.loads(dev_path.read_text())['cases']
+for case in dev_cases:
+    result = service.evaluate(PARequest.model_validate({k: case[k] for k in ('payer', 'procedure_code', 'note_text', 'dx_codes', 'site_of_care', 'specialty')}))
+    assert {item.key: item.status for item in result.results} == case['expected_requirements'], case['id']
+heldout = """Development used an owner-written visible dev set (27 cases); evaluation
+used a separate owner-held-out set (27 cases, different wording, never
+visible): exact 10→24/27, 0 false PENDING_VERIFICATION. One safety defect
+(patient-reported or deferred exam accepted as objective) was found by
+held-out evaluation on a prior set and fixed before release."""
+assert heldout in (DIRECTORY / 'v2.6.0.md').read_text()
+current_docs = ['README.md', 'EXTRACTION_CONTRACT.md', 'MODEL_CARD.md', 'FAILURE_MODES.md', 'LIMITATIONS.md',
+                'docs/testing.md', 'docs/reviewer_guide.md', 'docs/api.md']
+for path in current_docs:
+    text = Path(path).read_text()
+    assert '1461 passed, 10 xfailed' in text if path != 'docs/api.md' else '2.6.0' in text, path
+for path in current_docs[:-1] + ['docs/releases/v2.6.0.md']:
+    text = ' '.join(Path(path).read_text().replace('**', '').split())
+    assert 'owner-approved reviewed data' in text, path
+    assert 'ATC codes require human verification against WHO ATC before any external claim.' in text, path
+all_changes = set(git('diff', '--name-only', BASE).splitlines())
+base_paths = set(git('ls-tree', '-r', '--name-only', BASE).splitlines())
+existing_changes = all_changes & base_paths
+assert all(path.startswith('docs/releases/v2.6.0') for path in all_changes - base_paths)
+allowed_changes = set(current_docs + product_changes + version_tests + [row['file'] for row in generation['files'] if row['changed']])
+assert existing_changes == allowed_changes, existing_changes ^ allowed_changes
+assert '1461 passed, 10 xfailed' in (DIRECTORY / 'v2.6.0-tests.txt').read_text()
+assert 'All checks passed!' in (DIRECTORY / 'v2.6.0-lint.txt').read_text()
+report = {
+    'release_base': BASE, 'branch': git('branch', '--show-current'),
+    'main_unchanged': True, 'exp004_branch_unchanged': True,
+    'product_diff_only_engine_version': product_changes, 'version_only_test_edits': version_tests,
+    'existing_contract_examples_unchanged': len(old_examples), 'new_contract_examples': 24,
+    'contract_known_failures_unchanged': len(old_failures), 'protected_inputs_and_governance_unchanged': True,
+    'dev_sha256_unchanged': dev_hash, 'dev_requirements_exact': len(dev_cases),
+    'drug_table_bytes_unchanged': True, 'regenerated_outputs_sha256_verified': 25,
+    'generated_version_only_changes': 12, 'all_five_dataset_full_reports_identical': True,
+    'heldout_statement_verbatim': True, 'table_owner_approval_and_external_verification_documented': True,
+    'suite_passed': 1461, 'strict_xfails': 10, 'lint_passed': True,
+    'changed_preexisting_paths_verified': sorted(existing_changes),
+}
+(DIRECTORY / 'v2.6.0-scope-audit.json').write_text(json.dumps(report, indent=2) + '\n')
+print(json.dumps(report, indent=2))

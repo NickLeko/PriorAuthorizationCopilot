@@ -1,0 +1,54 @@
+{
+  "all_other_66_contract_examples_unchanged": true,
+  "all_preexisting_test_files_unchanged": true,
+  "base": "89a1500e1f3a0888e977ab0dde7cbfd21a26e8c7",
+  "branch": "autoloop/exp-004",
+  "corpus_proposals_and_fingerprints_identical": true,
+  "dev_sha256": "4832267bc1ff0ac8f57aac1dd36961ef62ea4d3f15d9286662866a0981685389",
+  "drug_table_additions": [],
+  "existing_files_changed": [
+    "EXTRACTION_CONTRACT.md",
+    "engine/extract.py",
+    "engine/note_context.py"
+  ],
+  "first_commit": "25b10cb1ade68b957a0cd8eedfb9b60898e798e4",
+  "first_commit_only_unchanged_dev": true,
+  "iterations": [
+    {
+      "commit": "a8e25af1991648a0d00b1f07ca67490b72a0f966",
+      "number": 1
+    },
+    {
+      "commit": "0b63a79f42edf6fa9371b2f8e3c24342d4aad4a3",
+      "number": 2
+    },
+    {
+      "commit": "911dc174a5b5391cffbb9ee8ec6e912f702b9598",
+      "number": 3
+    },
+    {
+      "commit": "d23ec3a421478db39c963b17e7b25b08a92d37f2",
+      "number": 4
+    }
+  ],
+  "main_unchanged": true,
+  "owner_exception_explicitly_approved": true,
+  "pair_files_unchanged_since_before_fix": {
+    "1": "7ab7cb9adede6490826113f8b80811395923ac3e8ddcb0c42a3ec48f9f6fd3ff",
+    "2": "409542f082cfb1185fe49a5c51ae26e8afe6b0664aa1f6e7bc094bdad506f0f2",
+    "3": "d3a01ef213d888e7618c8655e422f2848a07aa8a6547133a472280f90af1f41d",
+    "4": "372989d2691cae2b1b22b3ddd2e23fd697e2bb91ef9e821fe31d84e2aa78470f"
+  },
+  "product_does_not_read_dev_or_case_ids": true,
+  "scorer_rules_rulebook_inputs_snapshots_goldens_artifacts_deployment_clocks_and_monitor_unchanged": true,
+  "sole_expected_label_exception": {
+    "expected": {
+      "cpb_0236_conservative_therapy_no_improvement": true,
+      "cpb_0236_conservative_therapy_weeks": 6
+    },
+    "id": "exp003_leading_verb_missed",
+    "note": "Low back pain with radiculopathy. Right L5 distribution: strength 4/5. Took ibuprofen for 6 weeks with no improvement.",
+    "procedure": "MRI_LUMBAR",
+    "status": "PENDING_VERIFICATION"
+  }
+}

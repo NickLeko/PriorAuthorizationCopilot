@@ -1,0 +1,276 @@
+................FFFFFFFFFFF....FFFFF.F                                   [100%]
+=================================== FAILURES ===================================
+_____________________ test_exp004_paraphrase[exam_plantar] _____________________
+
+case = {'expected_facts': {'objective_motor_or_reflex_change_in_root_distribution': True}, 'expected_overall_status': 'PENDIN...thy. Motor testing, right S1 root distribution: plantar flexion 3+/5. Piroxicam for 7 weeks with minimal relief.', ...}
+
+    @pytest.mark.parametrize("case", CASES, ids=lambda case: case["id"])
+    def test_exp004_paraphrase(case):
+        request = PARequest.model_validate({key: case[key] for key in ("payer", "procedure_code", "note_text")})
+        result = ReadinessService().evaluate(request)
+>       assert result.overall_status == case["expected_overall_status"]
+E       AssertionError: assert 'CANNOT_DETERMINE' == 'PENDING_VERIFICATION'
+E         
+E         - PENDING_VERIFICATION
+E         + CANNOT_DETERMINE
+
+test/test_exp004_recall.py:19: AssertionError
+____________________ test_exp004_paraphrase[exam_iliopsoas] ____________________
+
+case = {'expected_facts': {'objective_motor_or_reflex_change_in_root_distribution': True}, 'expected_overall_status': 'PENDIN...ided radiculopathy. Right L3 nerve root distribution: iliopsoas 4-/5. Piroxicam for 7 weeks with minimal relief.', ...}
+
+    @pytest.mark.parametrize("case", CASES, ids=lambda case: case["id"])
+    def test_exp004_paraphrase(case):
+        request = PARequest.model_validate({key: case[key] for key in ("payer", "procedure_code", "note_text")})
+        result = ReadinessService().evaluate(request)
+>       assert result.overall_status == case["expected_overall_status"]
+E       AssertionError: assert 'CANNOT_DETERMINE' == 'PENDING_VERIFICATION'
+E         
+E         - PENDING_VERIFICATION
+E         + CANNOT_DETERMINE
+
+test/test_exp004_recall.py:19: AssertionError
+____________________ test_exp004_paraphrase[exam_tibialis] _____________________
+
+case = {'expected_facts': {'objective_motor_or_reflex_change_in_root_distribution': True}, 'expected_overall_status': 'PENDIN...pathy. Tibialis anterior power 3/5 in the right L5 root distribution. Piroxicam for 7 weeks with minimal relief.', ...}
+
+    @pytest.mark.parametrize("case", CASES, ids=lambda case: case["id"])
+    def test_exp004_paraphrase(case):
+        request = PARequest.model_validate({key: case[key] for key in ("payer", "procedure_code", "note_text")})
+        result = ReadinessService().evaluate(request)
+>       assert result.overall_status == case["expected_overall_status"]
+E       AssertionError: assert 'CANNOT_DETERMINE' == 'PENDING_VERIFICATION'
+E         
+E         - PENDING_VERIFICATION
+E         + CANNOT_DETERMINE
+
+test/test_exp004_recall.py:19: AssertionError
+__________________ test_exp004_paraphrase[exam_gastrocnemius] __________________
+
+case = {'expected_facts': {'objective_motor_or_reflex_change_in_root_distribution': True}, 'expected_overall_status': 'PENDIN...sided radiculopathy. Right S1 distribution: gastrocnemius power 4+/5. Piroxicam for 7 weeks with minimal relief.', ...}
+
+    @pytest.mark.parametrize("case", CASES, ids=lambda case: case["id"])
+    def test_exp004_paraphrase(case):
+        request = PARequest.model_validate({key: case[key] for key in ("payer", "procedure_code", "note_text")})
+        result = ReadinessService().evaluate(request)
+>       assert result.overall_status == case["expected_overall_status"]
+E       AssertionError: assert 'CANNOT_DETERMINE' == 'PENDING_VERIFICATION'
+E         
+E         - PENDING_VERIFICATION
+E         + CANNOT_DETERMINE
+
+test/test_exp004_recall.py:19: AssertionError
+_________________ test_exp004_paraphrase[exam_achilles_absent] _________________
+
+case = {'expected_facts': {'objective_motor_or_reflex_change_in_root_distribution': True}, 'expected_overall_status': 'PENDIN...ided radiculopathy. Right S1 distribution: Achilles jerk 0/4, absent. Piroxicam for 7 weeks with minimal relief.', ...}
+
+    @pytest.mark.parametrize("case", CASES, ids=lambda case: case["id"])
+    def test_exp004_paraphrase(case):
+        request = PARequest.model_validate({key: case[key] for key in ("payer", "procedure_code", "note_text")})
+        result = ReadinessService().evaluate(request)
+>       assert result.overall_status == case["expected_overall_status"]
+E       AssertionError: assert 'CANNOT_DETERMINE' == 'PENDING_VERIFICATION'
+E         
+E         - PENDING_VERIFICATION
+E         + CANNOT_DETERMINE
+
+test/test_exp004_recall.py:19: AssertionError
+____________________ test_exp004_paraphrase[exam_ankle_low] ____________________
+
+case = {'expected_facts': {'objective_motor_or_reflex_change_in_root_distribution': True}, 'expected_overall_status': 'PENDIN...ight-sided radiculopathy. Ankle jerk 1+ in the right S1 distribution. Piroxicam for 7 weeks with minimal relief.', ...}
+
+    @pytest.mark.parametrize("case", CASES, ids=lambda case: case["id"])
+    def test_exp004_paraphrase(case):
+        request = PARequest.model_validate({key: case[key] for key in ("payer", "procedure_code", "note_text")})
+        result = ReadinessService().evaluate(request)
+>       assert result.overall_status == case["expected_overall_status"]
+E       AssertionError: assert 'CANNOT_DETERMINE' == 'PENDING_VERIFICATION'
+E         
+E         - PENDING_VERIFICATION
+E         + CANNOT_DETERMINE
+
+test/test_exp004_recall.py:19: AssertionError
+___________________ test_exp004_paraphrase[exam_knee_brisk] ____________________
+
+case = {'expected_facts': {'objective_motor_or_reflex_change_in_root_distribution': True}, 'expected_overall_status': 'PENDIN...ht-sided radiculopathy. Right L3 distribution: knee reflex 3+, brisk. Piroxicam for 7 weeks with minimal relief.', ...}
+
+    @pytest.mark.parametrize("case", CASES, ids=lambda case: case["id"])
+    def test_exp004_paraphrase(case):
+        request = PARequest.model_validate({key: case[key] for key in ("payer", "procedure_code", "note_text")})
+        result = ReadinessService().evaluate(request)
+>       assert result.overall_status == case["expected_overall_status"]
+E       AssertionError: assert 'CANNOT_DETERMINE' == 'PENDING_VERIFICATION'
+E         
+E         - PENDING_VERIFICATION
+E         + CANNOT_DETERMINE
+
+test/test_exp004_recall.py:19: AssertionError
+__________________ test_exp004_paraphrase[exam_achilles_zero] __________________
+
+case = {'expected_facts': {'objective_motor_or_reflex_change_in_root_distribution': True}, 'expected_overall_status': 'PENDIN...ded radiculopathy. Right S1 distribution: Achilles reflex 0+, absent. Piroxicam for 7 weeks with minimal relief.', ...}
+
+    @pytest.mark.parametrize("case", CASES, ids=lambda case: case["id"])
+    def test_exp004_paraphrase(case):
+        request = PARequest.model_validate({key: case[key] for key in ("payer", "procedure_code", "note_text")})
+        result = ReadinessService().evaluate(request)
+>       assert result.overall_status == case["expected_overall_status"]
+E       AssertionError: assert 'CANNOT_DETERMINE' == 'PENDING_VERIFICATION'
+E         
+E         - PENDING_VERIFICATION
+E         + CANNOT_DETERMINE
+
+test/test_exp004_recall.py:19: AssertionError
+___________________ test_exp004_paraphrase[exam_full_power] ____________________
+
+case = {'expected_facts': {'objective_motor_or_reflex_change_in_root_distribution': False}, 'expected_overall_status': 'NOT_R...ight-sided radiculopathy. Right L3 distribution: iliopsoas power 5/5. Piroxicam for 7 weeks with minimal relief.', ...}
+
+    @pytest.mark.parametrize("case", CASES, ids=lambda case: case["id"])
+    def test_exp004_paraphrase(case):
+        request = PARequest.model_validate({key: case[key] for key in ("payer", "procedure_code", "note_text")})
+        result = ReadinessService().evaluate(request)
+>       assert result.overall_status == case["expected_overall_status"]
+E       AssertionError: assert 'CANNOT_DETERMINE' == 'NOT_READY'
+E         
+E         - NOT_READY
+E         + CANNOT_DETERMINE
+
+test/test_exp004_recall.py:19: AssertionError
+___________________ test_exp004_paraphrase[exam_normal_jerk] ___________________
+
+case = {'expected_facts': {'objective_motor_or_reflex_change_in_root_distribution': False}, 'expected_overall_status': 'NOT_R...ded radiculopathy. Right S1 distribution: ankle jerk 2+, physiologic. Piroxicam for 7 weeks with minimal relief.', ...}
+
+    @pytest.mark.parametrize("case", CASES, ids=lambda case: case["id"])
+    def test_exp004_paraphrase(case):
+        request = PARequest.model_validate({key: case[key] for key in ("payer", "procedure_code", "note_text")})
+        result = ReadinessService().evaluate(request)
+>       assert result.overall_status == case["expected_overall_status"]
+E       AssertionError: assert 'CANNOT_DETERMINE' == 'NOT_READY'
+E         
+E         - NOT_READY
+E         + CANNOT_DETERMINE
+
+test/test_exp004_recall.py:19: AssertionError
+_________________ test_exp004_paraphrase[exam_brisk_symmetric] _________________
+
+case = {'expected_facts': {'objective_motor_or_reflex_change_in_root_distribution': False}, 'expected_overall_status': 'NOT_R...ed radiculopathy. Right S1 distribution: Achilles jerk 3+, symmetric. Piroxicam for 7 weeks with minimal relief.', ...}
+
+    @pytest.mark.parametrize("case", CASES, ids=lambda case: case["id"])
+    def test_exp004_paraphrase(case):
+        request = PARequest.model_validate({key: case[key] for key in ("payer", "procedure_code", "note_text")})
+        result = ReadinessService().evaluate(request)
+>       assert result.overall_status == case["expected_overall_status"]
+E       AssertionError: assert 'CANNOT_DETERMINE' == 'NOT_READY'
+E         
+E         - NOT_READY
+E         + CANNOT_DETERMINE
+
+test/test_exp004_recall.py:19: AssertionError
+____________________ test_exp004_paraphrase[exam_opposite] _____________________
+
+case = {'expected_facts': {'objective_motor_or_reflex_change_in_root_distribution': '__REVIEW_REQUIRED__'}, 'expected_overall...with right-sided radiculopathy. Left L3 distribution: iliopsoas 4-/5. Piroxicam for 7 weeks with minimal relief.', ...}
+
+    @pytest.mark.parametrize("case", CASES, ids=lambda case: case["id"])
+    def test_exp004_paraphrase(case):
+        request = PARequest.model_validate({key: case[key] for key in ("payer", "procedure_code", "note_text")})
+        result = ReadinessService().evaluate(request)
+>       assert result.overall_status == case["expected_overall_status"]
+E       AssertionError: assert 'CANNOT_DETERMINE' == 'NEEDS_REVIEW'
+E         
+E         - NEEDS_REVIEW
+E         + CANNOT_DETERMINE
+
+test/test_exp004_recall.py:19: AssertionError
+_____________________ test_exp004_paraphrase[exam_planned] _____________________
+
+case = {'expected_facts': {'objective_motor_or_reflex_change_in_root_distribution': '__REVIEW_REQUIRED__'}, 'expected_overall...pathy. Will assess plantar flexion 3+/5 in the right S1 distribution. Piroxicam for 7 weeks with minimal relief.', ...}
+
+    @pytest.mark.parametrize("case", CASES, ids=lambda case: case["id"])
+    def test_exp004_paraphrase(case):
+        request = PARequest.model_validate({key: case[key] for key in ("payer", "procedure_code", "note_text")})
+        result = ReadinessService().evaluate(request)
+>       assert result.overall_status == case["expected_overall_status"]
+E       AssertionError: assert 'CANNOT_DETERMINE' == 'NEEDS_REVIEW'
+E         
+E         - NEEDS_REVIEW
+E         + CANNOT_DETERMINE
+
+test/test_exp004_recall.py:19: AssertionError
+_____________________ test_exp004_paraphrase[exam_negated] _____________________
+
+case = {'expected_facts': {'objective_motor_or_reflex_change_in_root_distribution': '__REVIEW_REQUIRED__'}, 'expected_overall...right-sided radiculopathy. Right L3 distribution: iliopsoas not 4-/5. Piroxicam for 7 weeks with minimal relief.', ...}
+
+    @pytest.mark.parametrize("case", CASES, ids=lambda case: case["id"])
+    def test_exp004_paraphrase(case):
+        request = PARequest.model_validate({key: case[key] for key in ("payer", "procedure_code", "note_text")})
+        result = ReadinessService().evaluate(request)
+>       assert result.overall_status == case["expected_overall_status"]
+E       AssertionError: assert 'CANNOT_DETERMINE' == 'NEEDS_REVIEW'
+E         
+E         - NEEDS_REVIEW
+E         + CANNOT_DETERMINE
+
+test/test_exp004_recall.py:19: AssertionError
+___________________ test_exp004_paraphrase[exam_attribution] ___________________
+
+case = {'expected_facts': {'objective_motor_or_reflex_change_in_root_distribution': '__REVIEW_REQUIRED__'}, 'expected_overall...1 distribution: gastrocnemius power 4+/5 due to an old tendon injury. Piroxicam for 7 weeks with minimal relief.', ...}
+
+    @pytest.mark.parametrize("case", CASES, ids=lambda case: case["id"])
+    def test_exp004_paraphrase(case):
+        request = PARequest.model_validate({key: case[key] for key in ("payer", "procedure_code", "note_text")})
+        result = ReadinessService().evaluate(request)
+>       assert result.overall_status == case["expected_overall_status"]
+E       AssertionError: assert 'CANNOT_DETERMINE' == 'NEEDS_REVIEW'
+E         
+E         - NEEDS_REVIEW
+E         + CANNOT_DETERMINE
+
+test/test_exp004_recall.py:19: AssertionError
+_____________________ test_exp004_paraphrase[exam_effort] ______________________
+
+case = {'expected_facts': {'objective_motor_or_reflex_change_in_root_distribution': '__REVIEW_REQUIRED__'}, 'expected_overall...diculopathy. Right L3 distribution: pain-limited iliopsoas power 4/5. Piroxicam for 7 weeks with minimal relief.', ...}
+
+    @pytest.mark.parametrize("case", CASES, ids=lambda case: case["id"])
+    def test_exp004_paraphrase(case):
+        request = PARequest.model_validate({key: case[key] for key in ("payer", "procedure_code", "note_text")})
+        result = ReadinessService().evaluate(request)
+>       assert result.overall_status == case["expected_overall_status"]
+E       AssertionError: assert 'CANNOT_DETERMINE' == 'NEEDS_REVIEW'
+E         
+E         - NEEDS_REVIEW
+E         + CANNOT_DETERMINE
+
+test/test_exp004_recall.py:19: AssertionError
+____________________ test_exp004_paraphrase[exam_question] _____________________
+
+case = {'expected_facts': {'objective_motor_or_reflex_change_in_root_distribution': '__REVIEW_REQUIRED__'}, 'expected_overall...with right-sided radiculopathy. Right S1 distribution: ankle jerk 1+? Piroxicam for 7 weeks with minimal relief.', ...}
+
+    @pytest.mark.parametrize("case", CASES, ids=lambda case: case["id"])
+    def test_exp004_paraphrase(case):
+        request = PARequest.model_validate({key: case[key] for key in ("payer", "procedure_code", "note_text")})
+        result = ReadinessService().evaluate(request)
+>       assert result.overall_status == case["expected_overall_status"]
+E       AssertionError: assert 'CANNOT_DETERMINE' == 'NEEDS_REVIEW'
+E         
+E         - NEEDS_REVIEW
+E         + CANNOT_DETERMINE
+
+test/test_exp004_recall.py:19: AssertionError
+=========================== short test summary info ============================
+FAILED test/test_exp004_recall.py::test_exp004_paraphrase[exam_plantar] - Ass...
+FAILED test/test_exp004_recall.py::test_exp004_paraphrase[exam_iliopsoas] - A...
+FAILED test/test_exp004_recall.py::test_exp004_paraphrase[exam_tibialis] - As...
+FAILED test/test_exp004_recall.py::test_exp004_paraphrase[exam_gastrocnemius]
+FAILED test/test_exp004_recall.py::test_exp004_paraphrase[exam_achilles_absent]
+FAILED test/test_exp004_recall.py::test_exp004_paraphrase[exam_ankle_low] - A...
+FAILED test/test_exp004_recall.py::test_exp004_paraphrase[exam_knee_brisk] - ...
+FAILED test/test_exp004_recall.py::test_exp004_paraphrase[exam_achilles_zero]
+FAILED test/test_exp004_recall.py::test_exp004_paraphrase[exam_full_power] - ...
+FAILED test/test_exp004_recall.py::test_exp004_paraphrase[exam_normal_jerk]
+FAILED test/test_exp004_recall.py::test_exp004_paraphrase[exam_brisk_symmetric]
+FAILED test/test_exp004_recall.py::test_exp004_paraphrase[exam_opposite] - As...
+FAILED test/test_exp004_recall.py::test_exp004_paraphrase[exam_planned] - Ass...
+FAILED test/test_exp004_recall.py::test_exp004_paraphrase[exam_negated] - Ass...
+FAILED test/test_exp004_recall.py::test_exp004_paraphrase[exam_attribution]
+FAILED test/test_exp004_recall.py::test_exp004_paraphrase[exam_effort] - Asse...
+FAILED test/test_exp004_recall.py::test_exp004_paraphrase[exam_question] - As...
+17 failed, 21 passed in 0.34s
