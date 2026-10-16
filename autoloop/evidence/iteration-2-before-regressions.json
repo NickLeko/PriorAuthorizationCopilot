@@ -1,0 +1,250 @@
+{
+  "always_cannot_determine_canary": {
+    "abstention_rate": 1.0,
+    "automated_ready": 0,
+    "cases": 14,
+    "confusion_matrix_expected_rows_actual_columns": {
+      "CANNOT_DETERMINE": {
+        "CANNOT_DETERMINE": 6,
+        "NEEDS_REVIEW": 0,
+        "NOT_READY": 0,
+        "PENDING_VERIFICATION": 0,
+        "READY": 0,
+        "UNKNOWN": 0
+      },
+      "NEEDS_REVIEW": {
+        "CANNOT_DETERMINE": 1,
+        "NEEDS_REVIEW": 0,
+        "NOT_READY": 0,
+        "PENDING_VERIFICATION": 0,
+        "READY": 0,
+        "UNKNOWN": 0
+      },
+      "NOT_READY": {
+        "CANNOT_DETERMINE": 2,
+        "NEEDS_REVIEW": 0,
+        "NOT_READY": 0,
+        "PENDING_VERIFICATION": 0,
+        "READY": 0,
+        "UNKNOWN": 0
+      },
+      "PENDING_VERIFICATION": {
+        "CANNOT_DETERMINE": 5,
+        "NEEDS_REVIEW": 0,
+        "NOT_READY": 0,
+        "PENDING_VERIFICATION": 0,
+        "READY": 0,
+        "UNKNOWN": 0
+      },
+      "READY": {
+        "CANNOT_DETERMINE": 0,
+        "NEEDS_REVIEW": 0,
+        "NOT_READY": 0,
+        "PENDING_VERIFICATION": 0,
+        "READY": 0,
+        "UNKNOWN": 0
+      },
+      "UNKNOWN": {
+        "CANNOT_DETERMINE": 0,
+        "NEEDS_REVIEW": 0,
+        "NOT_READY": 0,
+        "PENDING_VERIFICATION": 0,
+        "READY": 0,
+        "UNKNOWN": 0
+      }
+    },
+    "exact_status_accuracy": 0.42857142857142855,
+    "exact_status_correct": 6,
+    "expected_abstention_rate": 0.5,
+    "false_pending_verification": 0,
+    "false_ready": 0,
+    "missed_passes": 5
+  },
+  "case_file": "autoloop/regression_cases.json",
+  "case_file_sha256": "45c56b68ccf8c8cb8013a5dd7e44efff0c7536f860563178e6e6a71d2a8c1033",
+  "case_results": [
+    {
+      "actual": "PENDING_VERIFICATION",
+      "expected": "CANNOT_DETERMINE",
+      "id": "reflex_unrelated_attribute_1",
+      "index": 0
+    },
+    {
+      "actual": "PENDING_VERIFICATION",
+      "expected": "CANNOT_DETERMINE",
+      "id": "reflex_unrelated_attribute_2",
+      "index": 1
+    },
+    {
+      "actual": "PENDING_VERIFICATION",
+      "expected": "CANNOT_DETERMINE",
+      "id": "reflex_unrelated_attribute_3",
+      "index": 2
+    },
+    {
+      "actual": "PENDING_VERIFICATION",
+      "expected": "CANNOT_DETERMINE",
+      "id": "reflex_unrelated_attribute_4",
+      "index": 3
+    },
+    {
+      "actual": "PENDING_VERIFICATION",
+      "expected": "CANNOT_DETERMINE",
+      "id": "reflex_unrelated_attribute_5",
+      "index": 4
+    },
+    {
+      "actual": "NOT_READY",
+      "expected": "CANNOT_DETERMINE",
+      "id": "reflex_unrelated_attribute_6",
+      "index": 5
+    },
+    {
+      "actual": "PENDING_VERIFICATION",
+      "expected": "PENDING_VERIFICATION",
+      "id": "reflex_affirmative_1",
+      "index": 6
+    },
+    {
+      "actual": "PENDING_VERIFICATION",
+      "expected": "PENDING_VERIFICATION",
+      "id": "reflex_affirmative_2",
+      "index": 7
+    },
+    {
+      "actual": "PENDING_VERIFICATION",
+      "expected": "PENDING_VERIFICATION",
+      "id": "reflex_affirmative_3",
+      "index": 8
+    },
+    {
+      "actual": "PENDING_VERIFICATION",
+      "expected": "PENDING_VERIFICATION",
+      "id": "reflex_affirmative_4",
+      "index": 9
+    },
+    {
+      "actual": "PENDING_VERIFICATION",
+      "expected": "PENDING_VERIFICATION",
+      "id": "reflex_affirmative_5",
+      "index": 10
+    },
+    {
+      "actual": "NOT_READY",
+      "expected": "NOT_READY",
+      "id": "reflex_normal_1",
+      "index": 11
+    },
+    {
+      "actual": "NOT_READY",
+      "expected": "NOT_READY",
+      "id": "reflex_normal_2",
+      "index": 12
+    },
+    {
+      "actual": "NEEDS_REVIEW",
+      "expected": "NEEDS_REVIEW",
+      "id": "reflex_contradictory",
+      "index": 13
+    }
+  ],
+  "mismatches": [
+    {
+      "actual": "PENDING_VERIFICATION",
+      "expected": "CANNOT_DETERMINE",
+      "id": "reflex_unrelated_attribute_1",
+      "index": 0
+    },
+    {
+      "actual": "PENDING_VERIFICATION",
+      "expected": "CANNOT_DETERMINE",
+      "id": "reflex_unrelated_attribute_2",
+      "index": 1
+    },
+    {
+      "actual": "PENDING_VERIFICATION",
+      "expected": "CANNOT_DETERMINE",
+      "id": "reflex_unrelated_attribute_3",
+      "index": 2
+    },
+    {
+      "actual": "PENDING_VERIFICATION",
+      "expected": "CANNOT_DETERMINE",
+      "id": "reflex_unrelated_attribute_4",
+      "index": 3
+    },
+    {
+      "actual": "PENDING_VERIFICATION",
+      "expected": "CANNOT_DETERMINE",
+      "id": "reflex_unrelated_attribute_5",
+      "index": 4
+    },
+    {
+      "actual": "NOT_READY",
+      "expected": "CANNOT_DETERMINE",
+      "id": "reflex_unrelated_attribute_6",
+      "index": 5
+    }
+  ],
+  "system": {
+    "abstention_rate": 0.07142857142857142,
+    "automated_ready": 0,
+    "cases": 14,
+    "confusion_matrix_expected_rows_actual_columns": {
+      "CANNOT_DETERMINE": {
+        "CANNOT_DETERMINE": 0,
+        "NEEDS_REVIEW": 0,
+        "NOT_READY": 1,
+        "PENDING_VERIFICATION": 5,
+        "READY": 0,
+        "UNKNOWN": 0
+      },
+      "NEEDS_REVIEW": {
+        "CANNOT_DETERMINE": 0,
+        "NEEDS_REVIEW": 1,
+        "NOT_READY": 0,
+        "PENDING_VERIFICATION": 0,
+        "READY": 0,
+        "UNKNOWN": 0
+      },
+      "NOT_READY": {
+        "CANNOT_DETERMINE": 0,
+        "NEEDS_REVIEW": 0,
+        "NOT_READY": 2,
+        "PENDING_VERIFICATION": 0,
+        "READY": 0,
+        "UNKNOWN": 0
+      },
+      "PENDING_VERIFICATION": {
+        "CANNOT_DETERMINE": 0,
+        "NEEDS_REVIEW": 0,
+        "NOT_READY": 0,
+        "PENDING_VERIFICATION": 5,
+        "READY": 0,
+        "UNKNOWN": 0
+      },
+      "READY": {
+        "CANNOT_DETERMINE": 0,
+        "NEEDS_REVIEW": 0,
+        "NOT_READY": 0,
+        "PENDING_VERIFICATION": 0,
+        "READY": 0,
+        "UNKNOWN": 0
+      },
+      "UNKNOWN": {
+        "CANNOT_DETERMINE": 0,
+        "NEEDS_REVIEW": 0,
+        "NOT_READY": 0,
+        "PENDING_VERIFICATION": 0,
+        "READY": 0,
+        "UNKNOWN": 0
+      }
+    },
+    "exact_status_accuracy": 0.5714285714285714,
+    "exact_status_correct": 8,
+    "expected_abstention_rate": 0.5,
+    "false_pending_verification": 5,
+    "false_ready": 0,
+    "missed_passes": 0
+  }
+}

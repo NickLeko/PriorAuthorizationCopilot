@@ -63,6 +63,11 @@ IMAGING_CONTEXT_RE = re.compile(r"\b(?:(?:prior\s+)?imaging|x-?ray|xray|ct|mri)\
 BACK_PAIN_RE = re.compile(r"\b(?:low\s+)?back pain\b")
 RADICULOPATHY_RE = re.compile(r"\b(?:lumbar\s+)?radiculopathy\b|\bradicular (?:back )?pain\b")
 ROOT_DISTRIBUTION_RE = re.compile(r"\b(?:l[1-5]|s[1-5])(?:\s+(?:nerve\s+)?root)?\s+distribution\b|\bnerve[- ]root distribution\b")
+REFLEX_PREDICATE_LINK_RE = re.compile(
+    r"\b(?:deep tendon\s+)?reflex(?:es)?(?:\s*:\s*|\s+)"
+    r"(?:(?:is|are|was|were|remains?|remained|initially|later|now|then|on|repeat|but|and|"
+    r"normal|symmetric|diminished|decreased|absent|asymmetric|brisk)\s+)*$"
+)
 
 THERAPY_NEGATION_PATTERNS = [
     r"\bdenies\b",
@@ -316,6 +321,16 @@ def _osa_mention_is_negated(text: str, match: re.Match[str], *, source_text: str
             before,
         )
         or re.match(r"^\s+(?:is\s+)?(?:ruled out|absent|negative|not present)\b", after)
+    )
+
+
+def _reflex_descriptor_is_linked(text: str, match: re.Match[str]) -> bool:
+    # Require a reflex noun/predicate link, including an elliptical repeat
+    # finding ("reflexes were normal on repeat but diminished initially").
+    # A new subject such as pain or sensation cannot bridge that link.
+    return bool(
+        REFLEX_PREDICATE_LINK_RE.search(text[max(0, match.start() - 160) : match.start()])
+        or re.match(r"\s+(?:deep tendon\s+)?reflex(?:es)?\b", text[match.end() :])
     )
 
 
@@ -795,9 +810,19 @@ def _extract_facts(note_text: str) -> Tuple[Dict[str, Any], Dict[str, List[Dict[
         strength_matches = list(re.finditer(r"\b(?P<score>[0-5](?:\.\d)?)/5\b", sentence)) if re.search(r"\bstrength\b", sentence) else []
         has_reflex_context = re.search(r"\b(?:deep tendon\s+)?reflex(?:es)?\b", sentence) is not None
         abnormal_reflex_matches = (
-            list(re.finditer(r"\b(?:diminished|decreased|absent|asymmetric|brisk)\b", sentence)) if has_reflex_context else []
+            [
+                match
+                for match in re.finditer(r"\b(?:diminished|decreased|absent|asymmetric|brisk)\b", sentence)
+                if _reflex_descriptor_is_linked(sentence, match)
+            ]
+            if has_reflex_context
+            else []
         )
-        normal_reflex_matches = list(re.finditer(r"\b(?:normal|symmetric)\b", sentence)) if has_reflex_context else []
+        normal_reflex_matches = (
+            [match for match in re.finditer(r"\b(?:normal|symmetric)\b", sentence) if _reflex_descriptor_is_linked(sentence, match)]
+            if has_reflex_context
+            else []
+        )
         objective_weakness_matches = list(re.finditer(r"\bobjective\b[^.!?;\n]{0,50}\b(?:motor deficit|weakness)\b", sentence))
 
         for match in strength_matches:

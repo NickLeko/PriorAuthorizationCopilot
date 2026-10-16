@@ -118,3 +118,45 @@ reverted outputs are in `evidence/iteration-1-*`.
 Metric-gaming audit: the attempt corrected explicit denial rather than broadly
 abstaining; its small abstention increase matched an exact-accuracy gain. No
 improvement is claimed because the existing-test gate rejected the fix.
+
+## Iteration 2 — accepted: reflex descriptors borrowed from unrelated attributes
+
+Hypothesis (stated before testing): any abnormal adjective in a reflex-containing
+clause is treated as a reflex finding, even when it describes pain or sensation.
+Sources: `_finding_is_negated`/objective collection in `engine/extract.py`, the
+`reflex_attribution` contract xfail, FM-1's borrowed reflex qualifiers, and the
+fixed CPB 0236 requirement for objective motor or reflex change (not pain relief
+or sensory change alone).
+
+Minimal repro: `Low back pain with radiculopathy. Right L5 distribution: reflexes
+assessed, pain decreased. NSAIDs for 8 weeks with minimal improvement.` Expected
+CANNOT_DETERMINE because no objective motor/reflex change is documented; before
+was PENDING_VERIFICATION. `autoloop/regression_cases.json` gained 14 fixed-label
+notes, covering both adjective orders, pain/sensation, explicit abnormal and
+normal reflex controls, and a contradictory repeated finding.
+
+Fix: require descriptors to link grammatically to a reflex noun, with copular
+forms and bounded elliptical repeat findings; another subject cannot bridge the
+link. Existing same-clause uncertainty, attribution and contradiction handling
+is retained. This is regex/standard library only. Both normal and abnormal
+adjectives receive the same linkage check.
+
+Evidence (`evidence/iteration-2-*`): new pytest cases **6 failed / 8 passed before**,
+then all 14 pass. Cumulative repro scoreboard **8/14 → 14/14 exact**;
+**5 → 0 false pending**; **0 → 0 missed passes**;
+**7.1429% → 50% abstention**, expected **50%**. The increase corresponds to six
+corrected results, not broader refusal without accuracy gain. One bad normal
+pain attribution previously produced NOT_READY rather than a false pending.
+
+Removed only the strict marker for the existing `reflex_attribution` example
+(`test_G01_exact_examples_and_determinism`): its unchanged expected null fact
+and CANNOT_DETERMINE status now pass. The example/expectations were not edited.
+
+Gate: **1087 passed, 13 xfailed**, no existing failure. Then the frozen corpus
+scoreboard was run: byte-for-byte identical to baseline (**52/52 exact, zero
+false pending, zero missed passes, 42/52 abstention**). Targeted lint passed.
+
+Metric-gaming/limits: a small explicit predicate vocabulary and a 160-character
+lookback bound recognition; unusual legitimate reflex wording can still be
+missed. The rule is not a general syntax parser or a solution to attribution.
+No claim of held-out generalization is made.
