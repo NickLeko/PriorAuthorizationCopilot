@@ -8,6 +8,10 @@ from typing import Any, Dict, List, Optional, Tuple
 from .note_context import DRUG_NAME_PATTERN, DRUG_NAME_RE, EvidenceMap, explicit_study_dates, indexed_note, note_index, validate_note
 from .schemas import REVIEW_REQUIRED_FACT
 
+INDEX_NAME_PATTERN = (
+    r"(?:ahi|rdi|apn(?:o)?ea[- \t–—]+hypopn(?:o)?ea[- \t–—]+index|"
+    r"respiratory[- \t–—]+disturbance[- \t–—]+index)"
+)
 THERAPY_CONTEXT = r"(?:pt|physical therapy|nsaids?|anti-?inflammator(?:y|ies)|activity modification|home exercise|hep|chiropractic|chiro)"
 THERAPY_AFTER_RE = re.compile(rf"\b{THERAPY_CONTEXT}\b(?:\s*(?:x|for|over|about)\s*)\b(?P<value>\d+)\s*(?:week|weeks)\b")
 THERAPY_BEFORE_RE = re.compile(rf"\b(?P<value>\d+)\s*(?:week|weeks)\b\s+of\s+\b{THERAPY_CONTEXT}\b")
@@ -816,6 +820,24 @@ def _typed_root_exam_candidates(text: str) -> List[Tuple[bool | str, int, int]]:
     return candidates
 
 
+def _named_index_is_disqualified(text: str, match: re.Match[str]) -> bool:
+    # Preserve the existing abbreviated route; full names must be actual
+    # patient measurements rather than plans or explicitly denied values.
+    if match.group(1) in ("ahi", "rdi"):
+        return False
+    if _finding_is_negated(text, match) or re.search(r"\bnot\s+$", _bounded_context_before(text, match.start())):
+        return True
+    return bool(
+        _context_trigger(
+            text,
+            match.start(),
+            match.end(),
+            r"\b(?:will|would|may|might|planned|scheduled|expected|anticipated|"
+            r"not\s+(?:measured|recorded|documented)|no\s+(?:result|value))\b",
+        )
+    )
+
+
 def _duration_is_in_therapy_context(text: str, start: int, end: int) -> bool:
     window_start = max(0, start - 80)
     window_end = min(len(text), end + 80)
@@ -1379,13 +1401,13 @@ def _extract_facts(note_text: str) -> Tuple[Dict[str, Any], Dict[str, List[Dict[
     missing_tokens = list(re.finditer(r"\b(not documented|not stated|not available|unknown|n/?a|missing)\b", t))
     missing_starts = [m.start() for m in missing_tokens]
     index = note_index(t)
-    for mention in re.finditer(r"\b(ahi|rdi)\b", t):
+    for mention in re.finditer(rf"\b({INDEX_NAME_PATTERN})\b", t):
         _, right = index.containing(mention.start(), mention.end())
         i = bisect_left(missing_starts, right) - 1
         if i >= 0 and missing_tokens[i].start() >= mention.end():
             # Preserve the original greedy quotation (last missingness token),
             # but search tokens once instead of every possible suffix start.
-            m_ahi_missing = re.compile(r"\b(ahi|rdi)\b" + missing_pattern).match(t, mention.start(), missing_tokens[i].end())
+            m_ahi_missing = re.compile(rf"\b({INDEX_NAME_PATTERN})\b" + missing_pattern).match(t, mention.start(), missing_tokens[i].end())
             break
     if m_ahi_missing is not None and _match_is_nonpatient_context(t, m_ahi_missing):
         m_ahi_missing = None
@@ -1402,8 +1424,12 @@ def _extract_facts(note_text: str) -> Tuple[Dict[str, Any], Dict[str, List[Dict[
         m_ahi_val = next(
             (
                 candidate
-                for candidate in re.finditer(r"\b(ahi|rdi)\b\s*[:=]?\s*(\d+(\.\d+)?)\b", t)
-                if not _match_is_nonpatient_context(t, candidate)
+                for candidate in re.finditer(
+                    rf"\b({INDEX_NAME_PATTERN})\b(?:\s*\((?:ahi|rdi)\))?\s*"
+                    r"(?:(?:of|is|was|measured\s+at)\s+|[:=]\s*)?(\d+(?:\.\d+)?)\b",
+                    t,
+                )
+                if not _match_is_nonpatient_context(t, candidate) and not _named_index_is_disqualified(t, candidate)
             ),
             None,
         )

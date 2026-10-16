@@ -1,0 +1,130 @@
+[
+  {
+    "id": "index_rdi_measured",
+    "pair_role": "positive",
+    "payer": "Aetna",
+    "procedure_code": "CPAP_DEVICE",
+    "note_text": "Established OSA. HST completed 2024-04-17. The respiratory disturbance index measured at 14.6 events/hour.",
+    "expected_overall_status": "PENDING_VERIFICATION"
+  },
+  {
+    "id": "index_british",
+    "pair_role": "positive",
+    "payer": "Aetna",
+    "procedure_code": "CPAP_DEVICE",
+    "note_text": "Confirmed obstructive sleep apnea. PSG completed 2024-04-17. Apnoea–hypopnoea index was 9.2/h.",
+    "expected_overall_status": "PENDING_VERIFICATION"
+  },
+  {
+    "id": "index_parenthetical",
+    "pair_role": "positive",
+    "payer": "Aetna",
+    "procedure_code": "CPAP_DEVICE",
+    "note_text": "Established OSA. HST completed 2024-04-17. Apnea hypopnea index (AHI): 31.",
+    "expected_overall_status": "PENDING_VERIFICATION"
+  },
+  {
+    "id": "index_rdi_hyphen",
+    "pair_role": "positive",
+    "payer": "Aetna",
+    "procedure_code": "CPAP_DEVICE",
+    "note_text": "Confirmed obstructive sleep apnea. PSG completed 2024/04/17. Respiratory-disturbance index = 6.",
+    "expected_overall_status": "PENDING_VERIFICATION"
+  },
+  {
+    "id": "index_unstated",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "CPAP_DEVICE",
+    "note_text": "Established OSA. HST completed 2024-04-17. Respiratory disturbance index not stated.",
+    "expected_overall_status": "CANNOT_DETERMINE"
+  },
+  {
+    "id": "index_planned_value",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "CPAP_DEVICE",
+    "note_text": "Established OSA. HST completed 2024-04-17. Will record respiratory disturbance index of 19.",
+    "expected_overall_status": "CANNOT_DETERMINE"
+  },
+  {
+    "id": "index_negated",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "CPAP_DEVICE",
+    "note_text": "Established OSA. HST completed 2024-04-17. No respiratory disturbance index of 19 documented.",
+    "expected_overall_status": "CANNOT_DETERMINE"
+  },
+  {
+    "id": "index_relative",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "CPAP_DEVICE",
+    "note_text": "Established OSA. HST completed 2024-04-17. Her sibling had a respiratory disturbance index of 19.",
+    "expected_overall_status": "CANNOT_DETERMINE"
+  },
+  {
+    "id": "index_unclear_value",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "CPAP_DEVICE",
+    "note_text": "Established OSA. HST completed 2024-04-17. Apnoea hypopnoea index of maybe 19.",
+    "expected_overall_status": "CANNOT_DETERMINE"
+  },
+  {
+    "id": "index_vital_sign",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "CPAP_DEVICE",
+    "note_text": "Established OSA. HST completed 2024-04-17. Resting heart rate 61.",
+    "expected_overall_status": "CANNOT_DETERMINE"
+  },
+  {
+    "id": "index_compared_value",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "CPAP_DEVICE",
+    "note_text": "Established OSA. HST completed 2024-04-17. Respiratory disturbance index under 19.",
+    "expected_overall_status": "CANNOT_DETERMINE"
+  },
+  {
+    "id": "index_negative_value",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "CPAP_DEVICE",
+    "note_text": "Established OSA. HST completed 2024-04-17. Respiratory disturbance index = -19.",
+    "expected_overall_status": "CANNOT_DETERMINE"
+  },
+  {
+    "id": "index_question",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "CPAP_DEVICE",
+    "note_text": "Established OSA. HST completed 2024-04-17. Respiratory disturbance index of 19?",
+    "expected_overall_status": "NEEDS_REVIEW"
+  },
+  {
+    "id": "index_no_diagnosis",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "CPAP_DEVICE",
+    "note_text": "Primary snoring. HST completed 2024-04-17. Respiratory disturbance index of 19.",
+    "expected_overall_status": "CANNOT_DETERMINE"
+  },
+  {
+    "id": "index_other_index",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "CPAP_DEVICE",
+    "note_text": "Established OSA. HST completed 2024-04-17. Respiratory event index of 19.",
+    "expected_overall_status": "CANNOT_DETERMINE"
+  },
+  {
+    "id": "index_explicit_missing",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "CPAP_DEVICE",
+    "note_text": "Established OSA. HST completed 2024-04-17. Respiratory disturbance index of 19, value not available.",
+    "expected_overall_status": "CANNOT_DETERMINE"
+  }
+]

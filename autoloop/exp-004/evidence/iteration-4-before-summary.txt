@@ -1,0 +1,57 @@
+{
+  "corpus": {
+    "cases": 52,
+    "exact_status_correct": 52,
+    "exact_status_accuracy": 1.0,
+    "false_pending_verification": 0,
+    "false_ready": 0,
+    "automated_ready": 0,
+    "missed_passes": 0,
+    "abstention_rate": 0.8076923076923077,
+    "expected_abstention_rate": 0.8076923076923077
+  },
+  "dev": {
+    "cases": 27,
+    "exact_status_correct": 26,
+    "exact_status_accuracy": 0.9629629629629629,
+    "false_pending_verification": 0,
+    "false_ready": 0,
+    "automated_ready": 0,
+    "missed_passes": 1,
+    "abstention_rate": 0.37037037037037035,
+    "expected_abstention_rate": 0.3333333333333333
+  },
+  "exp-002": {
+    "cases": 69,
+    "exact_status_correct": 64,
+    "exact_status_accuracy": 0.927536231884058,
+    "false_pending_verification": 0,
+    "false_ready": 0,
+    "automated_ready": 0,
+    "missed_passes": 3,
+    "abstention_rate": 0.7246376811594203,
+    "expected_abstention_rate": 0.6521739130434783
+  },
+  "exp-003": {
+    "cases": 74,
+    "exact_status_correct": 74,
+    "exact_status_accuracy": 1.0,
+    "false_pending_verification": 0,
+    "false_ready": 0,
+    "automated_ready": 0,
+    "missed_passes": 0,
+    "abstention_rate": 0.7702702702702703,
+    "expected_abstention_rate": 0.7702702702702703
+  },
+  "own": {
+    "cases": 68,
+    "exact_status_correct": 63,
+    "exact_status_accuracy": 0.9264705882352942,
+    "false_pending_verification": 0,
+    "false_ready": 0,
+    "automated_ready": 0,
+    "missed_passes": 4,
+    "abstention_rate": 0.6911764705882353,
+    "expected_abstention_rate": 0.6323529411764706
+  }
+}

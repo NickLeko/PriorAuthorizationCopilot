@@ -87,3 +87,33 @@ Corpus 52/52; exp-002/003 full reports unchanged. make test **1353 passed,
 10 xfailed**. Calendar validation uses datetime.strptime only, never a clock.
 Legacy year-first date behavior is preserved; newly accepted formats require
 direct study linkage. No data-table addition and no safety failure observed.
+
+## Iteration 4 — named AHI/RDI measurements
+
+General rule before implementation: apnea-hypopnea index and respiratory
+disturbance index are full-name aliases for documented AHI/RDI, including
+space/hyphen variants and British apnoea/hypopnoea spelling. Accept explicit
+numeric values with ordinary value predicates; do not infer a value from a
+bare name, comparison, other vital sign, plan, negation or non-patient report.
+Missingness uses the same sentence scope as abbreviated indices. Keep existing
+uncertainty/review handling. Do not expand to unrelated indices such as REI.
+Own pairs emphasize respiratory-disturbance / British terminology and value
+predicates absent from dev; all use different dates and index values.
+
+Result: dev **27/27 exact**, including all requirement statuses; 0 false
+pending. Own cumulative **68/68** (20 positives / 48 negatives), with the final
+4 full-name positives and 12 negatives correct. Corpus 52/52; exp-002 64/69
+and exp-003 74/74 unchanged. make test **1369 passed, 10 xfailed in 36.96s**;
+make lint green (76 Python files). No table additions or observed safety failures.
+
+## Final common-input replay
+
+final_audit.py baseline/current loads the two changed modules from main into
+an isolated process, or uses current sources, before importing the unchanged
+public scorer. This is a retrospective comparison on all 68 independent pairs,
+not the prospective before-fix evidence above: own 33/68 → 68/68 exact,
+0/20 → 20/20 passing positives, zero false pending both times. Dev is 11/27 →
+27/27, zero false pending both times. All 52 corpus proposals, source spans,
+public states and input/fact-set/verification fingerprints are identical.
+Four iterations used; optional iterations 5–6 not needed for the visible check.
+No held-out input was accessed; a perfect visible check is not held-out evidence.
