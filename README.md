@@ -4,13 +4,20 @@ This self-directed prototype demonstrates deterministic prior-authorization docu
 
 v2.0.0 adds typed, source-located reviewer corrections for wrong or missed facts, with contract meanings and original/effective values shown in Streamlit. Applying a correction clears attestations and letters; passing facts remain `PENDING_VERIFICATION` until reviewed and attested again. Letters disclose reviewer-supplied facts, quotations and self-reported identities, excluding audit comments from reasoning. See the canonical [correction limits](docs/safety_and_scope.md#correction-limits).
 
-v2.1.0 handles specific sentence-scoped exclusion, review, contrast and missingness
-patterns; each failure class remains open. It shows full sentence context with
-⟦citation⟧ markers during fact verification/correction, and caches immutable rule
-bundles by content digest. Engine version is 2.1.0; record schema remains 2.0.0.
-The 20 independent notes now serve as regressions, not a held-out accuracy measure.
-See the [v2.1 release report](docs/releases/v2.1.0.md) for measurements and remaining strict xfails.
+v2.3.0 releases five bounded extraction fixes from exp-001: auxiliary-verb
+negation, reflex descriptor linkage, intact-reflex recognition, negated numeric
+strength review, and sleep-study date association across sentence boundaries.
+Engine/app version is **2.3.0**; record schema remains **2.0.0**. The earlier
+sentence-scoped review cues and citation context remain in place. Failure classes
+remain open, including neither/nor negation and same-sentence borrowed dates.
 
+Release validation: **1123 passed, 10 xfailed**. The unchanged 52-case corpus
+has zero false `PENDING_VERIFICATION`; all 45 original authored experiment cases
+pass. The expanded 47-case set still has two false pending results. Zero false
+pending alone is insufficient evidence: the always-abstain canary also scores
+zero. See the [v2.3.0 release notes](docs/releases/v2.3.0.md),
+[current contract](EXTRACTION_CONTRACT.md), and [experiment report](autoloop/REPORT.md).
+The 20 independent notes are regressions, not a held-out accuracy measure.
 
 The lumbar MRI pathway is the only live-monitored source. After its monthly monitoring window (35 days since the last successful check), a visitor sees a stale warning and must acknowledge it before evaluating that pathway. After all passing facts are human-verified, it can return `READY` with `submission_readiness=false`. This is the governance gate working as designed; acknowledgement does not restore trust.
 
@@ -45,7 +52,7 @@ One `Aetna:MRI_LUMBAR` pathway demonstrates official-policy provenance for a lim
 
 ![Prior Authorization Readiness Copilot showing a CANNOT_DETERMINE result with explicit missing-documentation blockers](assets/readme/prior-auth-readiness-demo.png)
 
-_Current app, captured September 11, 2026: synthetic CPAP case `CPAP-02-borderline`, with the 52-case regression suite and explicit missing-documentation refusal. These fixture checks do not estimate extraction accuracy on clinical notes._
+_Historical screenshot, captured September 11, 2026: synthetic CPAP case `CPAP-02-borderline`, with the 52-case regression suite and explicit missing-documentation refusal. These fixture checks do not estimate extraction accuracy on clinical notes._
 
 ## Read This First
 
@@ -62,14 +69,14 @@ This is a synthetic workflow-readiness demo, not a payer or clinical deployment.
 - No output means payer approval, denial prediction, medical necessity, clinical appropriateness, or medical advice.
 
 `READY` with `submission_readiness=false` is a defined state, retained by archive
-validation. For example, incorrectly attesting every proposal in the known
-borrowed sleep-study-date case produces documentation READY, while CPAP's demo
+validation. For example, incorrectly attesting every proposal in the remaining
+same-sentence borrowed sleep-study-date case produces documentation READY, while CPAP's demo
 policy trust keeps submission readiness false. This demonstrates the independent
 trust gate; it does not validate the borrowed date or the incorrect attestations.
 
 ## Quick Reviewer Path
 
-The record schema version and release version are versioned independently. v2.1.0 writes record `schema_version: "2.0.0"`; v1.5 records retain their existing validation, and legacy records remain explicitly labeled and viewable only.
+The record schema version and release version are versioned independently. v2.3.0 writes record `schema_version: "2.0.0"`; v1.5 records retain their existing validation, and legacy records remain explicitly labeled and viewable only.
 
 From a fresh clone, enter the repo and run:
 
@@ -203,7 +210,6 @@ make test
 make lint
 make acceptance
 make smoke-ui
-make verify
 make run
 ```
 
@@ -216,10 +222,11 @@ python3.12 -m venv .venv
 .venv/bin/python -m pytest -q test/test_acceptance_snapshots.py
 .venv/bin/python -m ruff check .
 .venv/bin/python -m pytest -q test/test_streamlit_app.py
-.venv/bin/python -m scripts.generate_artifacts
-.venv/bin/python -m scripts.generate_golden_outputs
 .venv/bin/python -m streamlit run app.py
 ```
+
+For reviewed artifact regeneration, use the fixed acceptance-clock procedure in
+[docs/testing.md](docs/testing.md); ordinary generator commands use the wall clock.
 
 Security limits, dependency audit exceptions, and validation results are documented in
 [the v2.1.3 security release notes](docs/releases/v2.1.3.md). Streamlit Cloud installs

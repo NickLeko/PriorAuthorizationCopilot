@@ -20,13 +20,17 @@ The main fixture/output regression layers are:
 
 `TestExtractionContractAlignment` is the executable specification for every numbered
 extraction/verification guarantee and every published exact example. Known wrong
-examples assert correct values as strict xfails; v2.1 fixed examples pass normally. It also exercises Unicode citation integrity,
-reviewer metadata, attestation binding, status precedence and governance gates.
+examples use strict xfails driven solely by contract JSON; resolved examples pass
+normally. The negated-strength False expectation remains disputed: the engine
+returns review rather than treating a denied score as an observed normal finding.
+The suite also exercises Unicode citation integrity, reviewer metadata,
+attestation binding, status precedence and governance gates.
 Cross-surface tests compare identical Streamlit, API and CLI requests before and
 after verification. A long-lived API test promotes a changed rule bundle without
-restarting the service. All 287 pre-v1.5 test cases remain, with intentional status
-and snapshot expectation updates. Governance tests explicitly attest facts before
-checking their independent submission gate, so PENDING cannot mask those checks.
+restarting the service. The historical v1.5 migration retained its 287 earlier
+cases with intentional status and snapshot expectation updates. Governance tests
+explicitly attest facts before checking their independent submission gate, so
+PENDING cannot mask those checks.
 
 Current bundled-fixture snapshot: 52 labeled synthetic cases; 52/52 exact overall statuses; 0 false `READY` results among 52 expected non-`READY` cases; 12 `NEEDS_REVIEW` results (23.1%); and 42 combined `NEEDS_REVIEW`/`CANNOT_DETERMINE` abstentions (80.8%).
 
@@ -47,7 +51,8 @@ After setup, prefer the Make targets. They use `.venv/bin/python` when the local
 
 ```bash
 make reviewer-demo
-make verify
+make test
+make lint
 make acceptance
 make smoke-ui
 ```
@@ -124,7 +129,7 @@ process, which can leave engine modules from different loads alive together.
    load `MRI-01-complete`. It must return `PENDING_VERIFICATION` without an
    exception. In **Audit and Export**, inspect **Raw evaluation payload** or
    download the JSON artifact. Its `engine_version` must match the release tag
-   without the `v` prefix (for `v2.1.1`, expect `2.1.1`).
+   without the `v` prefix (for `v2.3.0`, expect `2.3.0`).
 4. In a fresh session, load the same lumbar MRI case to establish request scope,
    replace its note with the exact synthetic note below, and run the review.
    Expect `NEEDS_REVIEW`, no exception, and **“but significant improvement in
@@ -211,8 +216,9 @@ coverage. `test/test_h1_review_triggers.py` checks selected same-sentence
 persistence, copied-forward and template checkbox cues; hard-coded baseline
 facts/spans for three unchanged controls; and three correct-value strict xfails
 for next-line improvement, contralateral attribution and cross-sentence
-copy-forward. The 20 independent inputs and every earlier strict xfail remain
-unchanged. Run:
+copy-forward. The 20 independent note inputs remain unchanged; v2.3 corrects
+only case 17's date labels and citation expectation with owner approval, and
+case 18's intact-reflex assertions now pass. Resolved markers were removed. Run:
 
 ```bash
 python -m pytest -q test/test_h1_review_triggers.py test/test_v210_independent.py test/test_v210_safety.py
@@ -223,3 +229,28 @@ NSAID, and repeated no/denies/without inputs. Python 3.13 medians of three warm
 calls were each below 100 ms. These finite probes do not establish general
 clinical-language correctness. All failure classes remain open; see
 `EXTRACTION_CONTRACT.md` and `FAILURE_MODES.md` for the remaining risks.
+
+
+## v2.3.0 release validation and open expectations
+
+Fresh `make test`: **1123 passed, 10 xfailed**. `make lint` must pass as well.
+The record schema remains 2.0.0. See [v2.3.0](releases/v2.3.0.md) for the
+fixed-clock regeneration audit and [exp-001](../autoloop/REPORT.md) for per-test
+(a/b) classifications, label changes and before/after evidence.
+
+Four contract JSON examples have `known_failure`: neither/nor negation,
+same-sentence borrowed dates, unrelated headache therapy, and the disputed
+negated-strength False label. The latter now yields NEEDS_REVIEW, not an
+unsafe affirmative proposal. The remaining six xfails cover two cross-sentence
+temporality checks, generic analgesic duration, next-line improvement,
+contralateral attribution, and a cross-sentence copy-forward header. Resolved
+auxiliary-verb negation, borrowed reflex adjectives, cross-sentence dates,
+case-17 citation and intact-reflex cases are not remaining failures.
+
+The automated safety metric is false PENDING_VERIFICATION, not false READY:
+all-MET proposals can still be unsupported. Corpus 52/52 and zero false pending
+are unchanged. The fixed 45 authored cases improve to 45/45 with zero false
+pending; the expanded 47 retain two false pending setup counterexamples.
+The canary also has zero false pending, so report exact status, missed passes,
+abstention versus expected and the confusion matrix together. These authored
+regressions are not held-out evaluation.

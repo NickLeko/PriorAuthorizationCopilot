@@ -1,0 +1,130 @@
+FFFFFF........                                                           [100%]
+=================================== FAILURES ===================================
+____________ test_autoloop_regression[reflex_unrelated_attribute_1] ____________
+
+case = {'expected_facts': {'objective_motor_or_reflex_change_in_root_distribution': None}, 'expected_overall_status': 'CANNOT...{'objective_motor_or_reflex_change_in_root_distribution': 'NOT_DOCUMENTED'}, 'id': 'reflex_unrelated_attribute_1', ...}
+
+    @pytest.mark.parametrize("case", CASES, ids=lambda case: case["id"])
+    def test_autoloop_regression(case):
+        result = ReadinessService().evaluate(
+            PARequest(
+                payer=case["payer"],
+                procedure_code=case["procedure_code"],
+                note_text=case["note_text"],
+            )
+        )
+>       assert result.overall_status == case["expected_overall_status"]
+E       AssertionError: assert 'PENDING_VERIFICATION' == 'CANNOT_DETERMINE'
+E         
+E         - CANNOT_DETERMINE
+E         + PENDING_VERIFICATION
+
+test/test_autoloop_regressions.py:23: AssertionError
+____________ test_autoloop_regression[reflex_unrelated_attribute_2] ____________
+
+case = {'expected_facts': {'objective_motor_or_reflex_change_in_root_distribution': None}, 'expected_overall_status': 'CANNOT...{'objective_motor_or_reflex_change_in_root_distribution': 'NOT_DOCUMENTED'}, 'id': 'reflex_unrelated_attribute_2', ...}
+
+    @pytest.mark.parametrize("case", CASES, ids=lambda case: case["id"])
+    def test_autoloop_regression(case):
+        result = ReadinessService().evaluate(
+            PARequest(
+                payer=case["payer"],
+                procedure_code=case["procedure_code"],
+                note_text=case["note_text"],
+            )
+        )
+>       assert result.overall_status == case["expected_overall_status"]
+E       AssertionError: assert 'PENDING_VERIFICATION' == 'CANNOT_DETERMINE'
+E         
+E         - CANNOT_DETERMINE
+E         + PENDING_VERIFICATION
+
+test/test_autoloop_regressions.py:23: AssertionError
+____________ test_autoloop_regression[reflex_unrelated_attribute_3] ____________
+
+case = {'expected_facts': {'objective_motor_or_reflex_change_in_root_distribution': None}, 'expected_overall_status': 'CANNOT...{'objective_motor_or_reflex_change_in_root_distribution': 'NOT_DOCUMENTED'}, 'id': 'reflex_unrelated_attribute_3', ...}
+
+    @pytest.mark.parametrize("case", CASES, ids=lambda case: case["id"])
+    def test_autoloop_regression(case):
+        result = ReadinessService().evaluate(
+            PARequest(
+                payer=case["payer"],
+                procedure_code=case["procedure_code"],
+                note_text=case["note_text"],
+            )
+        )
+>       assert result.overall_status == case["expected_overall_status"]
+E       AssertionError: assert 'PENDING_VERIFICATION' == 'CANNOT_DETERMINE'
+E         
+E         - CANNOT_DETERMINE
+E         + PENDING_VERIFICATION
+
+test/test_autoloop_regressions.py:23: AssertionError
+____________ test_autoloop_regression[reflex_unrelated_attribute_4] ____________
+
+case = {'expected_facts': {'objective_motor_or_reflex_change_in_root_distribution': None}, 'expected_overall_status': 'CANNOT...{'objective_motor_or_reflex_change_in_root_distribution': 'NOT_DOCUMENTED'}, 'id': 'reflex_unrelated_attribute_4', ...}
+
+    @pytest.mark.parametrize("case", CASES, ids=lambda case: case["id"])
+    def test_autoloop_regression(case):
+        result = ReadinessService().evaluate(
+            PARequest(
+                payer=case["payer"],
+                procedure_code=case["procedure_code"],
+                note_text=case["note_text"],
+            )
+        )
+>       assert result.overall_status == case["expected_overall_status"]
+E       AssertionError: assert 'PENDING_VERIFICATION' == 'CANNOT_DETERMINE'
+E         
+E         - CANNOT_DETERMINE
+E         + PENDING_VERIFICATION
+
+test/test_autoloop_regressions.py:23: AssertionError
+____________ test_autoloop_regression[reflex_unrelated_attribute_5] ____________
+
+case = {'expected_facts': {'objective_motor_or_reflex_change_in_root_distribution': None}, 'expected_overall_status': 'CANNOT...{'objective_motor_or_reflex_change_in_root_distribution': 'NOT_DOCUMENTED'}, 'id': 'reflex_unrelated_attribute_5', ...}
+
+    @pytest.mark.parametrize("case", CASES, ids=lambda case: case["id"])
+    def test_autoloop_regression(case):
+        result = ReadinessService().evaluate(
+            PARequest(
+                payer=case["payer"],
+                procedure_code=case["procedure_code"],
+                note_text=case["note_text"],
+            )
+        )
+>       assert result.overall_status == case["expected_overall_status"]
+E       AssertionError: assert 'PENDING_VERIFICATION' == 'CANNOT_DETERMINE'
+E         
+E         - CANNOT_DETERMINE
+E         + PENDING_VERIFICATION
+
+test/test_autoloop_regressions.py:23: AssertionError
+____________ test_autoloop_regression[reflex_unrelated_attribute_6] ____________
+
+case = {'expected_facts': {'objective_motor_or_reflex_change_in_root_distribution': None}, 'expected_overall_status': 'CANNOT...{'objective_motor_or_reflex_change_in_root_distribution': 'NOT_DOCUMENTED'}, 'id': 'reflex_unrelated_attribute_6', ...}
+
+    @pytest.mark.parametrize("case", CASES, ids=lambda case: case["id"])
+    def test_autoloop_regression(case):
+        result = ReadinessService().evaluate(
+            PARequest(
+                payer=case["payer"],
+                procedure_code=case["procedure_code"],
+                note_text=case["note_text"],
+            )
+        )
+>       assert result.overall_status == case["expected_overall_status"]
+E       AssertionError: assert 'NOT_READY' == 'CANNOT_DETERMINE'
+E         
+E         - CANNOT_DETERMINE
+E         + NOT_READY
+
+test/test_autoloop_regressions.py:23: AssertionError
+=========================== short test summary info ============================
+FAILED test/test_autoloop_regressions.py::test_autoloop_regression[reflex_unrelated_attribute_1]
+FAILED test/test_autoloop_regressions.py::test_autoloop_regression[reflex_unrelated_attribute_2]
+FAILED test/test_autoloop_regressions.py::test_autoloop_regression[reflex_unrelated_attribute_3]
+FAILED test/test_autoloop_regressions.py::test_autoloop_regression[reflex_unrelated_attribute_4]
+FAILED test/test_autoloop_regressions.py::test_autoloop_regression[reflex_unrelated_attribute_5]
+FAILED test/test_autoloop_regressions.py::test_autoloop_regression[reflex_unrelated_attribute_6]
+6 failed, 8 passed in 0.16s

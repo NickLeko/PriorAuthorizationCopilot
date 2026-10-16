@@ -209,16 +209,20 @@ def test_missing_review_rejects_valid_quote_that_is_not_the_offending_proposal()
 
 def test_failing_correction_and_original_negation_error():
     note = (
-        "Patient does not have low back pain with radiculopathy. Right L5 distribution: strength 4/5. "
-        "NSAIDs for 8 weeks with no improvement."
+        "Patient has neither low back pain nor radiculopathy. Right L5 distribution: strength 4/5. NSAIDs for 8 weeks with no improvement."
     )
     service = ReadinessService()
     original = service.evaluate(request(note))
-    assert original.facts["back_pain_with_radiculopathy"] is True  # Known drafting error is not rebuilt.
+    # The remaining neither/nor error supplies a wrong proposal for correction.
+    assert original.facts["back_pain_with_radiculopathy"] is True
+    assert original.overall_status == "PENDING_VERIFICATION"
     corrected = service.evaluate(request(note, events=[event(note, "back_pain_with_radiculopathy", False)]))
     assert corrected.original_snapshot == original.original_snapshot
     assert corrected.facts["back_pain_with_radiculopathy"] is False
     assert corrected.overall_status == "NOT_READY"
+    assert corrected.original_snapshot.content["facts"]["back_pain_with_radiculopathy"] is True
+    assert corrected.fact_set_fingerprint != original.fact_set_fingerprint
+    assert next(result for result in corrected.results if result.key == "back_pain_with_radiculopathy").status == "NOT_MET"
     assert service.evaluate(request(events=[event(value=5)])).overall_status == "NOT_READY"
 
 
@@ -246,7 +250,9 @@ def test_osa_false_has_documentary_denial_semantics_and_fails_equals_true():
 
 
 def test_borrowed_date_can_be_withdrawn_without_fixing_extraction():
-    note = "OSA. Visit date 2024-05-18. Sleep study date not recorded. AHI 22."
+    # Same-sentence association remains wrong, supplying an offending citation
+    # to withdraw after the cross-sentence extraction defect is fixed.
+    note = "OSA. Visit date 2024-05-18, sleep study date not recorded. AHI 22."
     service = ReadinessService()
     original = service.evaluate(request(note, "CPAP_DEVICE"))
     assert original.facts["sleep_study_date"] is True
@@ -255,6 +261,9 @@ def test_borrowed_date_can_be_withdrawn_without_fixing_extraction():
     corrected = service.evaluate(request(note, "CPAP_DEVICE", [patch]))
     assert corrected.original_snapshot == original.original_snapshot
     assert corrected.overall_status == "CANNOT_DETERMINE"
+    assert corrected.facts["sleep_study_date"] is None
+    assert corrected.original_snapshot.content["facts"]["sleep_study_date"] is True
+    assert corrected.fact_set_fingerprint != original.fact_set_fingerprint
 
 
 def test_ordered_events_last_wins_and_restored_keys_remain_annotated():

@@ -442,15 +442,15 @@
       "symptom_duration_weeks": null,
       "mechanical_symptoms_documented": null,
       "osa_diagnosis": true,
-      "sleep_study_date": true,
+      "sleep_study_date": null,
       "ahi_documented": true
     },
     "expected_requirements": {
       "osa_diagnosis": "MET",
-      "sleep_study_date": "MET",
+      "sleep_study_date": "NOT_DOCUMENTED",
       "ahi_documented": "MET"
     },
-    "expected_overall": "PENDING_VERIFICATION"
+    "expected_overall": "CANNOT_DETERMINE"
   },
   {
     "id": 18,

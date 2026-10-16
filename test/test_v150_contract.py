@@ -236,7 +236,6 @@ class TestExtractionContractAlignment:
         assert verified.submission_readiness is False
         assert verified.policy_trust_level == "demo"
 
-    @pytest.mark.xfail(strict=True, reason="date association: visit date borrowed for undated study")
     def test_G07_borrowed_date_remains_contained_by_demo_submission_gate(self):
         example = next(example for example in EXAMPLES if example["id"] == "borrowed_date")
         service = ReadinessService()

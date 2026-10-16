@@ -6,7 +6,7 @@ v2.0.0 mitigation: typed correction validation rejects SET_VALUE spans over 300 
 
 **Project:** Prior Authorization Readiness Copilot  
 **Owner:** Nicholas Leko  
-**Last Updated:** October 8, 2026 — v2.1.0
+**Last Updated:** October 15, 2026 — v2.3.0
 **Status:** Versioned current behavior. Changes should update tests and docs.
 
 ---
@@ -18,7 +18,7 @@ Current repo status:
 - no LLM implementation
 - bundled case data is synthetic; the official policy snapshot and rule provenance are source material; input is not screened and must not contain real PHI, with screening remaining the operator's responsibility
 
-Automated extraction is a **drafting aid, not a decision gate**. v1.4.0's posture over-trusted extraction. Negated diagnoses returned affirmative facts, contradicting the extraction contract as written. v1.5.0 resolves that contradiction by changing what the engine may assert rather than by making extraction match the contract. v2.1.0 handles the bounded patterns below; the negation, temporality, attribution and other failure classes remain open.
+Automated extraction is a **drafting aid, not a decision gate**. v1.4.0's posture over-trusted extraction. Negated diagnoses returned affirmative facts, contradicting the extraction contract as written. v1.5.0 resolves that contradiction by changing what the engine may assert rather than by making extraction match the contract. v2.3.0 handles the bounded patterns below; the negation, temporality, attribution and other failure classes remain open.
 
 Requirement results describe the captured proposals:
 - proposed scalar passes the operator (`MET`), without asserting source support
@@ -108,7 +108,9 @@ These were failures in the over-extraction direction, which is the direction the
 
 **Revision note, August 31, 2026:** Candidate resolution now also fails closed for the tested cross-therapy, non-patient attribution, future/hypothetical, uncertainty/question, and contradictory-finding phrase families. The bundled labeled fixture and direct adversarial tests include forward/reversed order and lexical variants. This is bounded deterministic coverage, not a claim of general clinical-language understanding or zero real-world false `READY` risk.
 
-**Revision note, September 4, 2026:** The fourth audit reproduced affirmative proposals from negated diagnoses and strength, reflex qualifiers borrowed from pain, resolved findings, and unrelated therapy. These extraction errors remain. Automated all-MET cases now stop at PENDING_VERIFICATION. The borrowed sleep-study date was one case the existing design contained: v1.4.0 produced READY documentation status but submission_readiness=false under demo policy trust, as the README already allowed. This release also fixes Unicode offset corruption, long-lived service cache staleness after rule promotion, and unknown/misspelled monitoring frequencies disabling freshness enforcement. Exact contract examples and numbered guarantees are executable; finite tests cannot prove arbitrary clinical-language correctness.
+**Revision note, September 4, 2026:** The fourth audit reproduced affirmative proposals from negated diagnoses and strength, reflex qualifiers borrowed from pain, resolved findings, and unrelated therapy. These errors remained at that audit. v2.3.0 fixes the bounded auxiliary-verb,
+reflex-qualifier, negated-score and cross-sentence-date examples below; broader
+classes remain open. Automated all-MET cases stop at PENDING_VERIFICATION. The borrowed sleep-study date was one case the existing design contained: v1.4.0 produced READY documentation status but submission_readiness=false under demo policy trust, as the README already allowed. This release also fixes Unicode offset corruption, long-lived service cache staleness after rule promotion, and unknown/misspelled monitoring frequencies disabling freshness enforcement. Exact contract examples and numbered guarantees are executable; finite tests cannot prove arbitrary clinical-language correctness.
 
 ---
 
@@ -233,13 +235,13 @@ requires:
 ---
 
 
-## v2.1.0 patterns handled; classes remain open (October 8, 2026)
+## Patterns handled through v2.3.0; classes remain open
 
 These patterns are handled; the class remains open. No row establishes general
 correctness for negation, temporality, therapy response, event completion,
 attribute association, or missingness scope.
 
-| Failure class and reproduced input | v2.1 disposition |
+| Failure class and reproduced input | Current disposition |
 | --- | --- |
 | NSAIDs for 8 weeks with no improvement in sleep **but significant improvement in pain** | Pattern handled; class remains open: linked duration/response require review, including however/though/although/yet/whereas and semicolon variants; full context is displayed with the unchanged citation marked. |
 | OSA with ruled out anywhere in its sentence (any passive tense or intervening adverb) | Pattern handled; class remains open: diagnosis is missing, never affirmative. |
@@ -250,8 +252,14 @@ attribute association, or missingness scope.
 | OSA confirmed on PSG 2026-01-05, AHI 32. Allergies: N/A. / Bed partner unknown. | Pattern handled; class remains open: AHI presence is captured; unknown/N/A in its own sentence still refuses. No AHI threshold change. |
 | Low back pain with radiculopathy resolved last year | Pattern handled; class remains open: same-sentence resolved/history of/prior episode/previous episode findings require review, including qualifying strength, mechanical, OSA and imaging findings. |
 | Low back pain with radiculopathy. It resolved last year. | Remaining: cross-sentence historical episode coreference; strict xfail asserts review. |
-| Negated lumbar diagnosis / negated strength / reflex qualifier borrowed from pain | Remaining: strict xfails assert false/missing, never the wrong affirmative proposal. |
-| Lumbar therapy actually for headaches / visit date borrowed for an undated sleep study | Remaining: attribution and date association; strict xfails assert missing. |
+| does/do/did not have low back pain with radiculopathy | Fixed bounded denial: False / NOT_READY; conflicting affirmative/negative proposals require review. Neither/nor remains open. |
+| Root-distribution reflexes assessed, pain decreased | Fixed borrowed descriptor: no motor/reflex evidence; missing rather than affirmative. |
+| Root-distribution reflexes intact | Fixed under-capture: normal finding / NOT_MET; not a missing finding. |
+| Root-distribution strength not 4/5 | Fixed affirmative over-capture: NEEDS_REVIEW; the unchanged contract False / NOT_READY expectation remains disputed and strict-xfailed. |
+| Visit date in another sentence from an undated sleep study | Fixed bounded association: no study-date evidence, CANNOT_DETERMINE. |
+| Lumbar therapy actually for headaches | Remaining attribution failure; contract xfail expects missing. |
+| Patient has neither low back pain nor radiculopathy | Remaining unsafe affirmative proposal; new contract xfail expects False / NOT_READY. |
+| Visit date and undated sleep study in the same sentence | Remaining unsafe borrowed-date proposal; new contract xfail expects missing / CANNOT_DETERMINE. |
 
 ### Copied-forward note text, template checkbox text, and persistence negation
 
@@ -283,11 +291,13 @@ this pass: case 2 (semicolon response contrast), case 9 (ruled-out negation with
 an adverb), case 10 (historical/prior-episode temporality), case 12 (resolved
 historical episode across sentences), and case 13 (ordered/not-started therapy).
 This pass handles cases 2, 9, 10 and 13; case 12 remains a strict xfail asserting
-review. Case 17's unrelated appointment citation, case 18's missed intact-reflex
-normal finding, and case 2's secondary missed generic analgesic duration also
-have strict xfails asserting correct expectations. All 20 notes are frozen named
-regressions and are no longer a held-out measure. See the
-[release report](docs/releases/v2.1.0.md) for the complete validation results.
+review. Case 2's secondary generic analgesic duration remains a strict xfail.
+v2.3.0 handles case 18's intact reflexes and rejects the unrelated date in case
+17. Case 17's input is unchanged, but its owner-approved labels now assert a
+missing date / NOT_DOCUMENTED / CANNOT_DETERMINE, and its citation expectation
+is empty. All 20 notes are named regressions, not a held-out measure. See
+[v2.3.0](docs/releases/v2.3.0.md) for current results and
+[v2.1.0](docs/releases/v2.1.0.md) for historical measurements.
 
 Rule bundles now include runtime rules, provenance, policy sources, manifest and
 referenced release files in their digest. Immutable parsed bundles and rulebook
@@ -298,3 +308,28 @@ snapshots and clock freshness continue to be checked live.
 `ReadinessReport.letter_draft` is always initialized empty; generated letters are
 returned separately by `generate_letter`. The obsolete corrected-letter guard
 was removed. All existing correction/letter integrity validation remains.
+
+
+## v2.3.0 safety metric and remaining pathways
+
+Fresh validation: **1123 passed, 10 xfailed**. Four contract xfails comprise
+unrelated therapy, neither/nor, same-sentence borrowed dates and the disputed
+negated-strength label; six others cover two cross-sentence temporality tests,
+generic analgesic duration and the three H1(a) open cases described above.
+
+No automated READY is possible without attestations. The relevant automated
+safety gate is false PENDING_VERIFICATION: unsupported all-MET proposals. Corpus
+52/52 with zero false pending is unchanged. The original 45 authored cases now
+score 45/45 with zero false pending; expanded 47 retain two false pending results.
+The always-abstain canary also scores zero false pending, so exact status and
+abstention versus expected must accompany that count.
+
+The remaining neither/nor lumbar proposal can become false READY with supplied
+attestations and current verified governance. Same-sentence borrowed CPAP dates
+can also become false documentation READY; demo trust keeps submission readiness
+false. Neither attestation nor exact source offsets establish semantic truth.
+The reflex grammar's bounded vocabulary/lookback, genuine cross-sentence date
+links, other negation forms, laterality and episode resolution remain limitations.
+See the [experiment report](autoloop/REPORT.md) for the owner-approved correction,
+attestation and archive setup rewrites that retain these risks in executable
+coverage rather than silently replacing them with easier positive inputs.

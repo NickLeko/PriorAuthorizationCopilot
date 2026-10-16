@@ -63,6 +63,11 @@ IMAGING_CONTEXT_RE = re.compile(r"\b(?:(?:prior\s+)?imaging|x-?ray|xray|ct|mri)\
 BACK_PAIN_RE = re.compile(r"\b(?:low\s+)?back pain\b")
 RADICULOPATHY_RE = re.compile(r"\b(?:lumbar\s+)?radiculopathy\b|\bradicular (?:back )?pain\b")
 ROOT_DISTRIBUTION_RE = re.compile(r"\b(?:l[1-5]|s[1-5])(?:\s+(?:nerve\s+)?root)?\s+distribution\b|\bnerve[- ]root distribution\b")
+REFLEX_PREDICATE_LINK_RE = re.compile(
+    r"\b(?:deep tendon\s+)?reflex(?:es)?(?:\s*:\s*|\s+)"
+    r"(?:(?:is|are|was|were|remains?|remained|initially|later|now|then|on|repeat|but|and|"
+    r"normal|symmetric|intact|diminished|decreased|absent|asymmetric|brisk)\s+)*$"
+)
 
 THERAPY_NEGATION_PATTERNS = [
     r"\bdenies\b",
@@ -319,12 +324,22 @@ def _osa_mention_is_negated(text: str, match: re.Match[str], *, source_text: str
     )
 
 
+def _reflex_descriptor_is_linked(text: str, match: re.Match[str]) -> bool:
+    # Require a reflex noun/predicate link, including an elliptical repeat
+    # finding ("reflexes were normal on repeat but diminished initially").
+    # A new subject such as pain or sensation cannot bridge that link.
+    return bool(
+        REFLEX_PREDICATE_LINK_RE.search(text[max(0, match.start() - 160) : match.start()])
+        or re.match(r"\s+(?:deep tendon\s+)?reflex(?:es)?\b", text[match.end() :])
+    )
+
+
 def _finding_is_negated(text: str, match: re.Match[str]) -> bool:
     before = text[max(0, match.start() - 40) : match.start()]
     after = text[match.end() : min(len(text), match.end() + 24)]
     return bool(
         re.search(
-            r"\b(?:no|denies?|without|negative\s+for|free\s+of|absence\s+of|rule(?:d)?\s+out)\s+"
+            r"\b(?:no|denies?|without|negative\s+for|free\s+of|absence\s+of|rule(?:d)?\s+out|(?:does|do|did)\s+not\s+have)\s+"
             r"(?:evidence\s+of\s+)?(?:acute\s+)?$",
             before,
         )
@@ -795,15 +810,34 @@ def _extract_facts(note_text: str) -> Tuple[Dict[str, Any], Dict[str, List[Dict[
         strength_matches = list(re.finditer(r"\b(?P<score>[0-5](?:\.\d)?)/5\b", sentence)) if re.search(r"\bstrength\b", sentence) else []
         has_reflex_context = re.search(r"\b(?:deep tendon\s+)?reflex(?:es)?\b", sentence) is not None
         abnormal_reflex_matches = (
-            list(re.finditer(r"\b(?:diminished|decreased|absent|asymmetric|brisk)\b", sentence)) if has_reflex_context else []
+            [
+                match
+                for match in re.finditer(r"\b(?:diminished|decreased|absent|asymmetric|brisk)\b", sentence)
+                if _reflex_descriptor_is_linked(sentence, match)
+            ]
+            if has_reflex_context
+            else []
         )
-        normal_reflex_matches = list(re.finditer(r"\b(?:normal|symmetric)\b", sentence)) if has_reflex_context else []
+        normal_reflex_matches = (
+            [match for match in re.finditer(r"\b(?:normal|symmetric|intact)\b", sentence) if _reflex_descriptor_is_linked(sentence, match)]
+            if has_reflex_context
+            else []
+        )
         objective_weakness_matches = list(re.finditer(r"\bobjective\b[^.!?;\n]{0,50}\b(?:motor deficit|weakness)\b", sentence))
 
         for match in strength_matches:
             if _mention_is_nonpatient_context(sentence, match.start(), match.end()):
                 continue
-            if _finding_is_uncertain(sentence, match, source_text=t, offset=sentence_start) or t[sentence_end : sentence_end + 1] == "?":
+            # A denied numeric score establishes neither a deficit nor normal
+            # strength. Do not compare that number with the motor threshold.
+            score_is_negated = _finding_is_negated(sentence, match) or re.search(
+                r"\bnot\s+$", sentence[max(0, match.start() - 24) : match.start()]
+            )
+            if (
+                score_is_negated
+                or _finding_is_uncertain(sentence, match, source_text=t, offset=sentence_start)
+                or t[sentence_end : sentence_end + 1] == "?"
+            ):
                 finding_values.append(REVIEW_REQUIRED_FACT)
             else:
                 finding_values.append(float(match.group("score")) < 5)
@@ -1098,7 +1132,7 @@ def _extract_facts(note_text: str) -> Tuple[Dict[str, Any], Dict[str, List[Dict[
         window = t[window_start:window_end]
 
         if (
-            SLEEP_CTX.search(window)
+            _context_trigger(t, m_date.start(), m_date.end(), SLEEP_CTX.pattern)
             and not _context_trigger(t, m_date.start(), m_date.end(), THERAPY_EXCLUSION_TRIGGER)
             and not _match_is_nonpatient_context(t, m_date)
             and not _has_pattern(THERAPY_FUTURE_LOOKBACK_PATTERNS + THERAPY_FUTURE_AFTER_PATTERNS, window)

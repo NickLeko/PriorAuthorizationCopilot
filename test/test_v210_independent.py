@@ -20,11 +20,7 @@ def evaluate(case):
 @pytest.mark.parametrize(
     "case",
     [
-        pytest.param(case, marks=pytest.mark.xfail(strict=True, reason="cross-sentence temporality"))
-        if case["id"] == 12
-        else pytest.param(case, marks=pytest.mark.xfail(strict=True, reason="intact reflex recognition"))
-        if case["id"] == 18
-        else case
+        pytest.param(case, marks=pytest.mark.xfail(strict=True, reason="cross-sentence temporality")) if case["id"] == 12 else case
         for case in CASES
     ],
     ids=lambda case: f"independent_{case['id']:02}_{case['name']}",
@@ -59,11 +55,11 @@ def test_independent_02_secondary_analgesic_duration_correct_value():
     assert evaluate(CASES[1]).facts["conservative_therapy_weeks"] == 8
 
 
-@pytest.mark.xfail(strict=True, reason="study citation borrows unrelated appointment date")
 def test_independent_17_study_citation_correct_sentence():
     result = evaluate(CASES[16])
-    assert result.facts["sleep_study_date"] is True
-    assert evaluation_citation_context(result)["sleep_study_date"] == ["⟦Sleep study completed⟧, but the study date cannot be located."]
+    # A completion statement without a date is not a date citation.
+    assert result.facts["sleep_study_date"] is None
+    assert evaluation_citation_context(result)["sleep_study_date"] == []
 
 
 @pytest.mark.parametrize(

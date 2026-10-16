@@ -1,0 +1,96 @@
+[
+  {
+    "id": "date_appointment_before",
+    "payer": "Aetna",
+    "procedure_code": "CPAP_DEVICE",
+    "note_text": "OSA. Visit date 2024-05-18. Sleep study date not recorded. AHI 22.",
+    "expected_overall_status": "CANNOT_DETERMINE",
+    "expected_facts": {
+      "sleep_study_date": null
+    },
+    "expected_requirements": {
+      "sleep_study_date": "NOT_DOCUMENTED"
+    }
+  },
+  {
+    "id": "date_appointment_after",
+    "payer": "Aetna",
+    "procedure_code": "CPAP_DEVICE",
+    "note_text": "OSA. Sleep study completed but date not recorded. Appointment on 2025-06-12. AHI 26.",
+    "expected_overall_status": "CANNOT_DETERMINE",
+    "expected_facts": {
+      "sleep_study_date": null
+    },
+    "expected_requirements": {
+      "sleep_study_date": "NOT_DOCUMENTED"
+    }
+  },
+  {
+    "id": "date_unrelated_multiple",
+    "payer": "Aetna",
+    "procedure_code": "CPAP_DEVICE",
+    "note_text": "OSA. Visit 2024-03-11. Appointment 2024-04-19. Sleep study completed, date missing. AHI 25.",
+    "expected_overall_status": "CANNOT_DETERMINE",
+    "expected_facts": {
+      "sleep_study_date": null
+    },
+    "expected_requirements": {
+      "sleep_study_date": "NOT_DOCUMENTED"
+    }
+  },
+  {
+    "id": "date_real_after_visit",
+    "payer": "Aetna",
+    "procedure_code": "CPAP_DEVICE",
+    "note_text": "OSA. Visit 2024-03-11. Sleep study completed 2024-02-12. AHI 25.",
+    "expected_overall_status": "PENDING_VERIFICATION",
+    "expected_facts": {
+      "sleep_study_date": true
+    },
+    "expected_requirements": {
+      "sleep_study_date": "MET"
+    },
+    "expected_date_evidence": "2024-02-12"
+  },
+  {
+    "id": "date_real_before_study",
+    "payer": "Aetna",
+    "procedure_code": "CPAP_DEVICE",
+    "note_text": "OSA. On 2025-06-12, polysomnography completed. AHI 26.",
+    "expected_overall_status": "PENDING_VERIFICATION",
+    "expected_facts": {
+      "sleep_study_date": true
+    },
+    "expected_requirements": {
+      "sleep_study_date": "MET"
+    },
+    "expected_date_evidence": "2025-06-12"
+  },
+  {
+    "id": "date_real_standard",
+    "payer": "Aetna",
+    "procedure_code": "CPAP_DEVICE",
+    "note_text": "OSA. Sleep study completed 2024-05-18. AHI 22.",
+    "expected_overall_status": "PENDING_VERIFICATION",
+    "expected_facts": {
+      "sleep_study_date": true
+    },
+    "expected_requirements": {
+      "sleep_study_date": "MET"
+    },
+    "expected_date_evidence": "2024-05-18"
+  },
+  {
+    "id": "date_study_cancelled",
+    "payer": "Aetna",
+    "procedure_code": "CPAP_DEVICE",
+    "note_text": "OSA. Sleep study 2024-05-18 was cancelled. AHI 22.",
+    "expected_overall_status": "CANNOT_DETERMINE",
+    "expected_facts": {
+      "sleep_study_date": null
+    },
+    "expected_requirements": {
+      "sleep_study_date": "NOT_DOCUMENTED"
+    }
+  }
+]

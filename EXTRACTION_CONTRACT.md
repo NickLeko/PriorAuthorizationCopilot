@@ -1,4 +1,4 @@
-# Extraction, correction and verification contract v2.1
+# Extraction, correction and verification contract v2.3
 
 v2.0.0 retains the extractor and deterministic operators. Typed, source-located corrections materialize effective facts over an immutable original proposal; every ordered event is retained and the last event wins. SET_VALUE requires exact quotations of at most 300 characters per span and the submitted note hash; multiple spans are allowed and overlength spans are rejected, never truncated. SET_MISSING records document review and any offending proposal spans. SET_NEEDS_REVIEW and RESTORE_ORIGINAL preserve explicit state/history. Types, units and reviewer-enterable values come from fact contracts; there is no scalar coercion or free-text fact value.
 
@@ -11,7 +11,7 @@ Its claim that a diagnosis returned True only without supported negation was
 contradicted by `Patient does not have low back pain with radiculopathy`.
 v1.5.0 resolves that contradiction by changing what the engine may assert,
 not by making extraction match the old contract. Negation, temporality and
-attribution errors remain. v2.1 handles the specific patterns listed below; each failure class remains open.
+attribution errors remain. v2.3 handles the specific patterns listed below; each failure class remains open.
 
 The normative guarantees are G01–G07 below and the exact examples in the JSON
 block. `TestExtractionContractAlignment` executes correct expectations; remaining known failures are strict xfails. These finite examples are not universal language claims;
@@ -64,12 +64,14 @@ with Aetna/outpatient and no human attestations.
 
 ```json
 [
-  {"id":"negation_first","note":"Patient does not have low back pain with radiculopathy. Right L5 distribution: strength 4/5. NSAIDs for 8 weeks with minimal improvement.","expected":{"back_pain_with_radiculopathy":false},"procedure":"MRI_LUMBAR","status":"NOT_READY","known_failure":"negation: unsupported does-not-have scope"},
+  {"id":"negation_first","note":"Patient does not have low back pain with radiculopathy. Right L5 distribution: strength 4/5. NSAIDs for 8 weeks with minimal improvement.","expected":{"back_pain_with_radiculopathy":false},"procedure":"MRI_LUMBAR","status":"NOT_READY"},
   {"id":"negated_strength","note":"Low back pain with radiculopathy. Right L5 distribution: dorsiflexion strength not 4/5. NSAIDs for 8 weeks with minimal improvement.","expected":{"objective_motor_or_reflex_change_in_root_distribution":false},"procedure":"MRI_LUMBAR","status":"NOT_READY","known_failure":"negation: score is explicitly negated"},
-  {"id":"reflex_attribution","note":"Low back pain with radiculopathy. Right L5 distribution: reflexes assessed, pain decreased. NSAIDs for 8 weeks with minimal improvement.","expected":{"objective_motor_or_reflex_change_in_root_distribution":null},"procedure":"MRI_LUMBAR","status":"CANNOT_DETERMINE","known_failure":"attribution: decreased pain borrowed as reflex finding"},
+  {"id":"reflex_attribution","note":"Low back pain with radiculopathy. Right L5 distribution: reflexes assessed, pain decreased. NSAIDs for 8 weeks with minimal improvement.","expected":{"objective_motor_or_reflex_change_in_root_distribution":null},"procedure":"MRI_LUMBAR","status":"CANNOT_DETERMINE"},
   {"id":"resolved_diagnosis","note":"Low back pain with radiculopathy resolved last year. Right L5 distribution: strength 4/5. NSAIDs for 8 weeks with minimal improvement.","expected":{"back_pain_with_radiculopathy":"__REVIEW_REQUIRED__"},"procedure":"MRI_LUMBAR","status":"NEEDS_REVIEW"},
   {"id":"unrelated_therapy","note":"Low back pain with radiculopathy. Right L5 distribution: strength 4/5. NSAIDs for 8 weeks for headaches with minimal improvement.","expected":{"cpb_0236_conservative_therapy_weeks":null,"cpb_0236_conservative_therapy_no_improvement":null},"procedure":"MRI_LUMBAR","status":"CANNOT_DETERMINE","known_failure":"attribution: headache therapy borrowed for lumbar episode"},
-  {"id":"borrowed_date","note":"OSA. Visit date 2024-05-18. Sleep study date not recorded. AHI 22.","expected":{"sleep_study_date":null},"procedure":"CPAP_DEVICE","status":"CANNOT_DETERMINE","known_failure":"date association: visit date borrowed for undated study"},
+  {"id":"borrowed_date","note":"OSA. Visit date 2024-05-18. Sleep study date not recorded. AHI 22.","expected":{"sleep_study_date":null},"procedure":"CPAP_DEVICE","status":"CANNOT_DETERMINE"},
+  {"id":"neither_nor_negation","note":"Patient has neither low back pain nor radiculopathy. Right L5 distribution: strength 4/5. NSAIDs for 8 weeks with no improvement.","expected":{"back_pain_with_radiculopathy":false},"procedure":"MRI_LUMBAR","status":"NOT_READY","known_failure":"negation: neither/nor scope is unsupported"},
+  {"id":"same_sentence_borrowed_date","note":"OSA. Visit date 2024-05-18, sleep study date not recorded. AHI 22.","expected":{"sleep_study_date":null},"procedure":"CPAP_DEVICE","status":"CANNOT_DETERMINE","known_failure":"date association: unrelated visit date in the same sentence"},
   {"id":"unicode","note":"İ. OSA. Sleep study completed 2024-05-18. AHI 22.","expected":{"osa_diagnosis":true,"sleep_study_date":true,"ahi_documented":true},"procedure":"CPAP_DEVICE","status":"PENDING_VERIFICATION"},
   {"id":"therapy_weeks","note":"Completed PT for 8 weeks.","expected":{"conservative_therapy_weeks":8,"symptom_duration_weeks":null}},
   {"id":"therapy_negation_supported","note":"Patient denies completing PT x 8 weeks.","expected":{"conservative_therapy_weeks":null}},
@@ -103,17 +105,18 @@ with Aetna/outpatient and no human attestations.
 ]
 ```
 
-The borrowed sleep-study date already had `submission_readiness=false` in
-v1.4.0 despite `READY` documentation status, as the README allowed for demo
-policies. v1.5.0 returns `PENDING_VERIFICATION` without attestations; the date
-association itself remains incorrect. Human reviewers must decline unsupported
-proposals. This API records attestations; it cannot prove a person read the note.
+Historically, the cross-sentence borrowed sleep-study date already had
+`submission_readiness=false` in v1.4.0 despite `READY` documentation status, as the README allowed for demo
+policies. v1.5.0 returns `PENDING_VERIFICATION` without attestations; v2.3 now
+rejects that cross-sentence association. The executable
+`same_sentence_borrowed_date` example remains incorrect. Human reviewers must
+decline unsupported proposals. This API records attestations; it cannot prove a person read the note.
 Use synthetic notes only. There is no production clinical-language guarantee.
 
 
-## v2.1 patterns handled; failure classes remain open
+## Patterns handled through v2.3; failure classes remain open
 
-The following patterns are handled; the class remains open in every row:
+The following bounded patterns are handled; the class remains open in every row:
 
 | Pattern covered by regressions | Current behavior | Open class |
 | --- | --- | --- |
@@ -125,6 +128,11 @@ The following patterns are handled; the class remains open in every row:
 | Copied-forward note text: previous/prior note, copied from/forward, carried forward, from the prior/previous note/visit/encounter, per the prior/previous note/visit, or note/visit/encounter dated/from a numeric year or date | Matching findings in that sentence use the shared review path; a header in another sentence does not scope later findings. | Copy-forward |
 | Template checkbox text: [ ], [x], [X], ☐, ☑ or ☒ before the finding in its sentence | Any of these checkbox tokens routes the matching finding to review; checked and unchecked states are not interpreted. | Template |
 | Numeric AHI with N/A or unknown in a different sentence | AHI presence remains captured; missingness in its own sentence refuses. | Missingness scope |
+| does/do/did not have immediately before back pain or radiculopathy | Explicit denial produces False; competing affirmative/denied proposals require review. Neither/nor remains open. | Negation |
+| Reflex descriptors versus pain/sensation descriptors | Require a reflex noun/predicate link; unrelated descriptors cannot establish a reflex change. Bounded predicate vocabulary/lookback remains limited. | Attribute association |
+| Intact reflexes in a named root distribution | Explicit normal finding produces False / NOT_MET; uncertainty and conflicting findings still require review. | Under-capture |
+| Explicitly negated numeric strength score | Requires review before numeric threshold evaluation; does not infer normal strength from not 4/5. | Numeric negation |
+| Appointment date in another sentence from an undated sleep study | Does not supply sleep-study date evidence. Same-sentence borrowed dates and genuine cross-sentence links remain open. | Date association |
 
 Safety triggers use real sentence boundaries: period, question mark, exclamation
 mark, or newline; semicolons and decimal points do not end that context. Narrow
@@ -142,15 +150,22 @@ reading, and reviewer identity remains self-reported. This display aid does not
 change extraction, statuses, the readiness gate or the remaining false-READY
 pathways.
 
-Remaining strict xfails assert correct expectations for `negation_first`,
-`negated_strength`, `reflex_attribution`, `unrelated_therapy`, `borrowed_date`,
-and resolved historical episodes across sentences. The 20 frozen independent
-inputs are now named regressions, with additional correct-value strict xfails
-for case 12 (cross-sentence temporality), case 17's study citation, case 18
-(intact reflexes), and case 2's secondary generic analgesic duration. These
-inputs are no longer a held-out measure. The `resolved_diagnosis` example passes;
-that example does not establish correctness for the temporality class. The
-human gate does not establish extractor correctness.
+Current release validation: **1123 passed, 10 xfailed**. Contract JSON alone
+drives known-failure markers; there is no exemption list. Four contract examples
+are marked: `unrelated_therapy`, `neither_nor_negation`,
+`same_sentence_borrowed_date`, and the disputed `negated_strength` expectation.
+For that last example, the unchanged False / NOT_READY label remains disputed:
+the implementation returns review because not 4/5 establishes no observed score.
+It is not a remaining affirmative numeric-strength proposal.
+
+The six other strict xfails cover two cross-sentence temporality tests, generic
+analgesic duration, next-line improvement, contralateral attribution, and a
+copy-forward header in another sentence. Independent case 18 (intact reflexes)
+now passes. Independent case 17's input is unchanged; the owner corrected its
+missing-date labels to null / NOT_DOCUMENTED / CANNOT_DETERMINE and its citation
+expectation to an empty list. The 20 notes are regressions, not held-out data.
+See [v2.3.0 release notes](docs/releases/v2.3.0.md) and the
+[experiment report](autoloop/REPORT.md) for classification and coverage audits.
 
 Negation, temporality, copy-forward, template, attribution and cross-sentence
 linkage **remain open failure classes**. The H1(a) regressions cover selected

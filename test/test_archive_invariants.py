@@ -155,10 +155,13 @@ def test_borrowed_date_verified_ready_without_submission_readiness_roundtrips(tm
         PARequest(
             payer="Aetna",
             procedure_code="CPAP_DEVICE",
-            note_text="OSA. Visit date 2024-05-18. Sleep study date not recorded. AHI 22.",
+            note_text="OSA. Visit date 2024-05-18, sleep study date not recorded. AHI 22.",
         )
     )
-    # Deliberately incorrect test attestations preserve the known extraction error.
+    # Deliberately incorrect attestations retain the remaining same-sentence
+    # date-association error, so the archive still exercises a wrong READY.
+    assert proposal.facts["sleep_study_date"] is True
+    assert proposal.overall_status == "PENDING_VERIFICATION"
     result = service.evaluate(attest(proposal))
     assert result.overall_status == "READY"
     assert result.submission_readiness is False

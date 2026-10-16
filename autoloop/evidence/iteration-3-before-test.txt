@@ -1,0 +1,109 @@
+..............FFFFF..                                                    [100%]
+=================================== FAILURES ===================================
+__________________ test_autoloop_regression[reflex_intact_1] ___________________
+
+case = {'expected_facts': {'objective_motor_or_reflex_change_in_root_distribution': False}, 'expected_overall_status': 'NOT_R...cted_requirements': {'objective_motor_or_reflex_change_in_root_distribution': 'NOT_MET'}, 'id': 'reflex_intact_1', ...}
+
+    @pytest.mark.parametrize("case", CASES, ids=lambda case: case["id"])
+    def test_autoloop_regression(case):
+        result = ReadinessService().evaluate(
+            PARequest(
+                payer=case["payer"],
+                procedure_code=case["procedure_code"],
+                note_text=case["note_text"],
+            )
+        )
+>       assert result.overall_status == case["expected_overall_status"]
+E       AssertionError: assert 'CANNOT_DETERMINE' == 'NOT_READY'
+E         
+E         - NOT_READY
+E         + CANNOT_DETERMINE
+
+test/test_autoloop_regressions.py:23: AssertionError
+__________________ test_autoloop_regression[reflex_intact_2] ___________________
+
+case = {'expected_facts': {'objective_motor_or_reflex_change_in_root_distribution': False}, 'expected_overall_status': 'NOT_R...cted_requirements': {'objective_motor_or_reflex_change_in_root_distribution': 'NOT_MET'}, 'id': 'reflex_intact_2', ...}
+
+    @pytest.mark.parametrize("case", CASES, ids=lambda case: case["id"])
+    def test_autoloop_regression(case):
+        result = ReadinessService().evaluate(
+            PARequest(
+                payer=case["payer"],
+                procedure_code=case["procedure_code"],
+                note_text=case["note_text"],
+            )
+        )
+>       assert result.overall_status == case["expected_overall_status"]
+E       AssertionError: assert 'CANNOT_DETERMINE' == 'NOT_READY'
+E         
+E         - NOT_READY
+E         + CANNOT_DETERMINE
+
+test/test_autoloop_regressions.py:23: AssertionError
+__________________ test_autoloop_regression[reflex_intact_3] ___________________
+
+case = {'expected_facts': {'objective_motor_or_reflex_change_in_root_distribution': False}, 'expected_overall_status': 'NOT_R...cted_requirements': {'objective_motor_or_reflex_change_in_root_distribution': 'NOT_MET'}, 'id': 'reflex_intact_3', ...}
+
+    @pytest.mark.parametrize("case", CASES, ids=lambda case: case["id"])
+    def test_autoloop_regression(case):
+        result = ReadinessService().evaluate(
+            PARequest(
+                payer=case["payer"],
+                procedure_code=case["procedure_code"],
+                note_text=case["note_text"],
+            )
+        )
+>       assert result.overall_status == case["expected_overall_status"]
+E       AssertionError: assert 'CANNOT_DETERMINE' == 'NOT_READY'
+E         
+E         - NOT_READY
+E         + CANNOT_DETERMINE
+
+test/test_autoloop_regressions.py:23: AssertionError
+______________ test_autoloop_regression[reflex_intact_uncertain] _______________
+
+case = {'expected_facts': {'objective_motor_or_reflex_change_in_root_distribution': None}, 'expected_overall_status': 'NEEDS_...ents': {'objective_motor_or_reflex_change_in_root_distribution': 'NEEDS_REVIEW'}, 'id': 'reflex_intact_uncertain', ...}
+
+    @pytest.mark.parametrize("case", CASES, ids=lambda case: case["id"])
+    def test_autoloop_regression(case):
+        result = ReadinessService().evaluate(
+            PARequest(
+                payer=case["payer"],
+                procedure_code=case["procedure_code"],
+                note_text=case["note_text"],
+            )
+        )
+>       assert result.overall_status == case["expected_overall_status"]
+E       AssertionError: assert 'CANNOT_DETERMINE' == 'NEEDS_REVIEW'
+E         
+E         - NEEDS_REVIEW
+E         + CANNOT_DETERMINE
+
+test/test_autoloop_regressions.py:23: AssertionError
+____________ test_autoloop_regression[reflex_intact_contradictory] _____________
+
+case = {'expected_facts': {'objective_motor_or_reflex_change_in_root_distribution': None}, 'expected_overall_status': 'NEEDS_...': {'objective_motor_or_reflex_change_in_root_distribution': 'NEEDS_REVIEW'}, 'id': 'reflex_intact_contradictory', ...}
+
+    @pytest.mark.parametrize("case", CASES, ids=lambda case: case["id"])
+    def test_autoloop_regression(case):
+        result = ReadinessService().evaluate(
+            PARequest(
+                payer=case["payer"],
+                procedure_code=case["procedure_code"],
+                note_text=case["note_text"],
+            )
+        )
+>       assert result.overall_status == case["expected_overall_status"]
+E       AssertionError: assert 'CANNOT_DETERMINE' == 'NEEDS_REVIEW'
+E         
+E         - NEEDS_REVIEW
+E         + CANNOT_DETERMINE
+
+test/test_autoloop_regressions.py:23: AssertionError
+=========================== short test summary info ============================
+FAILED test/test_autoloop_regressions.py::test_autoloop_regression[reflex_intact_1]
+FAILED test/test_autoloop_regressions.py::test_autoloop_regression[reflex_intact_2]
+FAILED test/test_autoloop_regressions.py::test_autoloop_regression[reflex_intact_3]
+FAILED test/test_autoloop_regressions.py::test_autoloop_regression[reflex_intact_uncertain]
+FAILED test/test_autoloop_regressions.py::test_autoloop_regression[reflex_intact_contradictory]
+5 failed, 16 passed in 0.20s

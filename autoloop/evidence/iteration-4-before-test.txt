@@ -1,0 +1,109 @@
+.....................FFFFF...                                            [100%]
+=================================== FAILURES ===================================
+_________________ test_autoloop_regression[strength_negated_1] _________________
+
+case = {'expected_facts': {'objective_motor_or_reflex_change_in_root_distribution': None}, 'expected_overall_status': 'NEEDS_...uirements': {'objective_motor_or_reflex_change_in_root_distribution': 'NEEDS_REVIEW'}, 'id': 'strength_negated_1', ...}
+
+    @pytest.mark.parametrize("case", CASES, ids=lambda case: case["id"])
+    def test_autoloop_regression(case):
+        result = ReadinessService().evaluate(
+            PARequest(
+                payer=case["payer"],
+                procedure_code=case["procedure_code"],
+                note_text=case["note_text"],
+            )
+        )
+>       assert result.overall_status == case["expected_overall_status"]
+E       AssertionError: assert 'PENDING_VERIFICATION' == 'NEEDS_REVIEW'
+E         
+E         - NEEDS_REVIEW
+E         + PENDING_VERIFICATION
+
+test/test_autoloop_regressions.py:23: AssertionError
+_________________ test_autoloop_regression[strength_negated_2] _________________
+
+case = {'expected_facts': {'objective_motor_or_reflex_change_in_root_distribution': None}, 'expected_overall_status': 'NEEDS_...uirements': {'objective_motor_or_reflex_change_in_root_distribution': 'NEEDS_REVIEW'}, 'id': 'strength_negated_2', ...}
+
+    @pytest.mark.parametrize("case", CASES, ids=lambda case: case["id"])
+    def test_autoloop_regression(case):
+        result = ReadinessService().evaluate(
+            PARequest(
+                payer=case["payer"],
+                procedure_code=case["procedure_code"],
+                note_text=case["note_text"],
+            )
+        )
+>       assert result.overall_status == case["expected_overall_status"]
+E       AssertionError: assert 'PENDING_VERIFICATION' == 'NEEDS_REVIEW'
+E         
+E         - NEEDS_REVIEW
+E         + PENDING_VERIFICATION
+
+test/test_autoloop_regressions.py:23: AssertionError
+_________________ test_autoloop_regression[strength_negated_3] _________________
+
+case = {'expected_facts': {'objective_motor_or_reflex_change_in_root_distribution': None}, 'expected_overall_status': 'NEEDS_...uirements': {'objective_motor_or_reflex_change_in_root_distribution': 'NEEDS_REVIEW'}, 'id': 'strength_negated_3', ...}
+
+    @pytest.mark.parametrize("case", CASES, ids=lambda case: case["id"])
+    def test_autoloop_regression(case):
+        result = ReadinessService().evaluate(
+            PARequest(
+                payer=case["payer"],
+                procedure_code=case["procedure_code"],
+                note_text=case["note_text"],
+            )
+        )
+>       assert result.overall_status == case["expected_overall_status"]
+E       AssertionError: assert 'NOT_READY' == 'NEEDS_REVIEW'
+E         
+E         - NEEDS_REVIEW
+E         + NOT_READY
+
+test/test_autoloop_regressions.py:23: AssertionError
+_________________ test_autoloop_regression[strength_negated_4] _________________
+
+case = {'expected_facts': {'objective_motor_or_reflex_change_in_root_distribution': None}, 'expected_overall_status': 'NEEDS_...uirements': {'objective_motor_or_reflex_change_in_root_distribution': 'NEEDS_REVIEW'}, 'id': 'strength_negated_4', ...}
+
+    @pytest.mark.parametrize("case", CASES, ids=lambda case: case["id"])
+    def test_autoloop_regression(case):
+        result = ReadinessService().evaluate(
+            PARequest(
+                payer=case["payer"],
+                procedure_code=case["procedure_code"],
+                note_text=case["note_text"],
+            )
+        )
+>       assert result.overall_status == case["expected_overall_status"]
+E       AssertionError: assert 'PENDING_VERIFICATION' == 'NEEDS_REVIEW'
+E         
+E         - NEEDS_REVIEW
+E         + PENDING_VERIFICATION
+
+test/test_autoloop_regressions.py:23: AssertionError
+_________________ test_autoloop_regression[strength_negated_5] _________________
+
+case = {'expected_facts': {'objective_motor_or_reflex_change_in_root_distribution': None}, 'expected_overall_status': 'NEEDS_...uirements': {'objective_motor_or_reflex_change_in_root_distribution': 'NEEDS_REVIEW'}, 'id': 'strength_negated_5', ...}
+
+    @pytest.mark.parametrize("case", CASES, ids=lambda case: case["id"])
+    def test_autoloop_regression(case):
+        result = ReadinessService().evaluate(
+            PARequest(
+                payer=case["payer"],
+                procedure_code=case["procedure_code"],
+                note_text=case["note_text"],
+            )
+        )
+>       assert result.overall_status == case["expected_overall_status"]
+E       AssertionError: assert 'PENDING_VERIFICATION' == 'NEEDS_REVIEW'
+E         
+E         - NEEDS_REVIEW
+E         + PENDING_VERIFICATION
+
+test/test_autoloop_regressions.py:23: AssertionError
+=========================== short test summary info ============================
+FAILED test/test_autoloop_regressions.py::test_autoloop_regression[strength_negated_1]
+FAILED test/test_autoloop_regressions.py::test_autoloop_regression[strength_negated_2]
+FAILED test/test_autoloop_regressions.py::test_autoloop_regression[strength_negated_3]
+FAILED test/test_autoloop_regressions.py::test_autoloop_regression[strength_negated_4]
+FAILED test/test_autoloop_regressions.py::test_autoloop_regression[strength_negated_5]
+5 failed, 24 passed in 0.25s

@@ -1,0 +1,290 @@
+Documents scanned: 33
+Expression: xfail|expected failures|[0-9,]+ passed|false.?READY|false.?PENDING|Engine version|engine_version.*2\.[012]|Version:|patterns handled|negation_first|borrowed_date|reflex_attribution|intact.reflex|earlier strict
+
+FAILURE_MODES.md:63:- Self-reported identity is not authentication. Rubber-stamping or fabricated attestations can still permit false READY; the CLI archive can retain these records, but is not an authenticated or tamper-resistant production attestation ledger.
+FAILURE_MODES.md:84:### FM-1: False READY (Unsafe Over-Trust)
+FAILURE_MODES.md:238:## Patterns handled through v2.3.0; classes remain open
+FAILURE_MODES.md:254:| Low back pain with radiculopathy. It resolved last year. | Remaining: cross-sentence historical episode coreference; strict xfail asserts review. |
+FAILURE_MODES.md:258:| Root-distribution strength not 4/5 | Fixed affirmative over-capture: NEEDS_REVIEW; the unchanged contract False / NOT_READY expectation remains disputed and strict-xfailed. |
+FAILURE_MODES.md:260:| Lumbar therapy actually for headaches | Remaining attribution failure; contract xfail expects missing. |
+FAILURE_MODES.md:261:| Patient has neither low back pain nor radiculopathy | Remaining unsafe affirmative proposal; new contract xfail expects False / NOT_READY. |
+FAILURE_MODES.md:262:| Visit date and undated sleep study in the same sentence | Remaining unsafe borrowed-date proposal; new contract xfail expects missing / CANNOT_DETERMINE. |
+FAILURE_MODES.md:282:The three corresponding strict xfails assert review as the correct behavior;
+FAILURE_MODES.md:293:This pass handles cases 2, 9, 10 and 13; case 12 remains a strict xfail asserting
+FAILURE_MODES.md:294:review. Case 2's secondary generic analgesic duration remains a strict xfail.
+FAILURE_MODES.md:295:v2.3.0 handles case 18's intact reflexes and rejects the unrelated date in case
+FAILURE_MODES.md:315:Fresh validation: **1123 passed, 10 xfailed**. Four contract xfails comprise
+FAILURE_MODES.md:321:safety gate is false PENDING_VERIFICATION: unsupported all-MET proposals. Corpus
+FAILURE_MODES.md:322:52/52 with zero false pending is unchanged. The original 45 authored cases now
+FAILURE_MODES.md:323:score 45/45 with zero false pending; expanded 47 retain two false pending results.
+FAILURE_MODES.md:324:The always-abstain canary also scores zero false pending, so exact status and
+FAILURE_MODES.md:327:The remaining neither/nor lumbar proposal can become false READY with supplied
+EXTRACTION_CONTRACT.md:17:block. `TestExtractionContractAlignment` executes correct expectations; remaining known failures are strict xfails. These finite examples are not universal language claims;
+EXTRACTION_CONTRACT.md:67:  {"id":"negation_first","note":"Patient does not have low back pain with radiculopathy. Right L5 distribution: strength 4/5. NSAIDs for 8 weeks with minimal improvement.","expected":{"back_pain_with_radiculopathy":false},"procedure":"MRI_LUMBAR","status":"NOT_READY"},
+EXTRACTION_CONTRACT.md:69:  {"id":"reflex_attribution","note":"Low back pain with radiculopathy. Right L5 distribution: reflexes assessed, pain decreased. NSAIDs for 8 weeks with minimal improvement.","expected":{"objective_motor_or_reflex_change_in_root_distribution":null},"procedure":"MRI_LUMBAR","status":"CANNOT_DETERMINE"},
+EXTRACTION_CONTRACT.md:72:  {"id":"borrowed_date","note":"OSA. Visit date 2024-05-18. Sleep study date not recorded. AHI 22.","expected":{"sleep_study_date":null},"procedure":"CPAP_DEVICE","status":"CANNOT_DETERMINE"},
+EXTRACTION_CONTRACT.md:74:  {"id":"same_sentence_borrowed_date","note":"OSA. Visit date 2024-05-18, sleep study date not recorded. AHI 22.","expected":{"sleep_study_date":null},"procedure":"CPAP_DEVICE","status":"CANNOT_DETERMINE","known_failure":"date association: unrelated visit date in the same sentence"},
+EXTRACTION_CONTRACT.md:112:`same_sentence_borrowed_date` example remains incorrect. Human reviewers must
+EXTRACTION_CONTRACT.md:117:## Patterns handled through v2.3; failure classes remain open
+EXTRACTION_CONTRACT.md:133:| Intact reflexes in a named root distribution | Explicit normal finding produces False / NOT_MET; uncertainty and conflicting findings still require review. | Under-capture |
+EXTRACTION_CONTRACT.md:150:change extraction, statuses, the readiness gate or the remaining false-READY
+EXTRACTION_CONTRACT.md:153:Current release validation: **1123 passed, 10 xfailed**. Contract JSON alone
+EXTRACTION_CONTRACT.md:156:`same_sentence_borrowed_date`, and the disputed `negated_strength` expectation.
+EXTRACTION_CONTRACT.md:161:The six other strict xfails cover two cross-sentence temporality tests, generic
+EXTRACTION_CONTRACT.md:163:copy-forward header in another sentence. Independent case 18 (intact reflexes)
+EXTRACTION_CONTRACT.md:176:strict xfails in `test/test_h1_review_triggers.py`. With supplied attestations,
+autoloop/BASELINE.md:11:1072 passed, 14 xfailed in 36.34s
+autoloop/BASELINE.md:29:| False PENDING_VERIFICATION | 0 | 0 |
+autoloop/BASELINE.md:34:| False READY | 0 | 0 |
+autoloop/BASELINE.md:67:  two false pending statuses, one missed pass, 25% exact accuracy, 50% abstention.
+LETTER_DRAFTING_CONTRACT.md:195:- Current version: 2.0
+autoloop/REPORT.md:9:- Final tests: **1123 passed, 8 xfailed**, versus **1103 / 12** at 962fafc.
+autoloop/REPORT.md:10:- Corpus: **52/52 exact, zero false PENDING_VERIFICATION**, byte-for-byte baseline
+autoloop/REPORT.md:12:- Frozen original 45 authored cases: **35/45 → 42/45 → 45/45 exact**, false pending
+autoloop/REPORT.md:15:  42/47 → 45/47 exact**, false pending **12 → 5 → 2**. The two remaining errors
+autoloop/REPORT.md:24:[EXTRACTION_CONTRACT.md](../EXTRACTION_CONTRACT.md) (`negation_first`, `borrowed_date`,
+autoloop/REPORT.md:31:| 7: archive `test_borrowed_date_verified_ready_without_submission_readiness_roundtrips` | **(b)** | Swap to an unrelated visit date in the same sentence as the undated study. Still a wrong all-MET proposal with deliberately incorrect synthetic attestations; retain READY, demo trust, submission_readiness=false and exact SQLite round trip. Add original date-True and PENDING_VERIFICATION preconditions. |
+autoloop/REPORT.md:32:| 7: corrections `test_borrowed_date_can_be_withdrawn_without_fixing_extraction` | **(b)** | Same same-sentence setup. Retain wrong True, actual offending-span review, SET_MISSING, immutable original and CANNOT_DETERMINE. Add effective-null, original-True snapshot and changed fingerprint checks. |
+autoloop/REPORT.md:40:date. Both still produce false pending; that risk is preserved in the feature
+autoloop/REPORT.md:47:collected regression suite without relabeling: **7 failed / 31 passed before**
+autoloop/REPORT.md:49:cases improve **2/9 → 9/9 exact, false pending 7 → 0**.
+autoloop/REPORT.md:55:checks: **4 failed / 41 passed before**, all 45 pass after. Date cases improve
+autoloop/REPORT.md:56:**4/7 → 7/7 exact, false pending 3 → 0**, and the fourth failing test's incorrect
+autoloop/REPORT.md:69:the executable `borrowed_date` contract require missingness, with G04 deriving
+autoloop/REPORT.md:74:## Strict xfails and test counts
+autoloop/REPORT.md:78:- Contract `negation_first`: original False / NOT_READY assertions now pass.
+autoloop/REPORT.md:82:- Contract `borrowed_date`: original null / CANNOT_DETERMINE assertions now pass.
+autoloop/REPORT.md:83:- `test_G07_borrowed_date_remains_contained_by_demo_submission_gate`: unchanged
+autoloop/REPORT.md:89:The unrelated negated-strength expectation dispute and every other xfail remain
+autoloop/REPORT.md:95:| Xfailed | 12 | 11 | 8 |
+autoloop/REPORT.md:98:The +20 passed tests comprise 16 newly collected repros and four removed markers;
+autoloop/REPORT.md:111:| Fixed set | Before 6: exact / false pending | After 6 | After 7 |
+autoloop/REPORT.md:120:confirm no newly false pending result at either accepted transition.
+autoloop/REPORT.md:122:| Final set | System exact | Canary exact | System / canary false pending | System / canary missed passes |
+autoloop/REPORT.md:129:42/52, matching expected. Zero false pending alone remains weak evidence because
+autoloop/REPORT.md:174:The corpus remains **52/52 exact, zero false PENDING_VERIFICATION**, byte-for-byte
+autoloop/REPORT.md:176:regressions, not the already-perfect corpus. Final `make test`: **1103 passed,
+autoloop/REPORT.md:177:12 xfailed**. No push, tag, deployment change or main change occurred.
+autoloop/REPORT.md:190:| 2 | Pain/sensation adjectives were borrowed as reflex findings. Require a grammatical reflex noun/descriptor link. | `reflex_unrelated_attribute_1` (`reflexes assessed, pain decreased`) | 6 | 14 cases pass; 1 old xfail now passes |
+autoloop/REPORT.md:191:| 3 | Explicitly intact reflexes were missing. Add `intact` to normal reflex vocabulary with the same subject linkage. | `reflex_intact_1` | 5 | 7 additional cases pass; 1 old xfail now passes |
+autoloop/REPORT.md:192:| 4 | Negated numeric strength was compared as an observed score. Route denied scores to the existing review state first. | `strength_negated_1` (`strength not 4/5`) | 5 | 8 additional cases pass; existing disputed xfail retained |
+autoloop/REPORT.md:198:strength. Explicit intact reflexes alone do not satisfy a change requirement.
+autoloop/REPORT.md:203:- Contract `reflex_attribution`: null objective fact and CANNOT_DETERMINE.
+autoloop/REPORT.md:204:- `independent_18_intact_reflexes`: false objective fact, NOT_MET and NOT_READY,
+autoloop/REPORT.md:218:conflict. New-case exact status rose 2/9 → 9/9 and false pending fell 7 → 0.
+autoloop/REPORT.md:221:Full suite: 2 failed, 1080 passed, 13 xfailed. The fix and temporary marker
+autoloop/REPORT.md:222:removal were reverted; suite returned to 1072 passed, 14 xfailed.
+autoloop/REPORT.md:227:own sentence corrected three false pending results and one wrong citation.
+autoloop/REPORT.md:228:New-case exact status rose 4/7 → 7/7 and false pending fell 3 → 0. But existing
+autoloop/REPORT.md:231:though the study date is explicitly missing. Full suite: 3 failed, 1109 passed,
+autoloop/REPORT.md:232:10 xfailed. The candidate and both temporary marker removals were reverted.
+autoloop/REPORT.md:237:xfail expects False / NOT_READY for `not 4/5`. That number's negation does not
+autoloop/REPORT.md:239:expected fact/status and strict marker remain untouched, so it remains xfailed.
+autoloop/REPORT.md:255:| False PENDING_VERIFICATION | 0 | 0 | 0 |
+autoloop/REPORT.md:264:| Accepted iteration | Cumulative exact before → after | False pending before → after | Abstention before → after | Expected abstention |
+autoloop/REPORT.md:271:29/29 exact, zero false pending, zero missed passes, 15/29 abstention (matching
+autoloop/REPORT.md:272:expected). Its canary is 7/29 exact, zero false pending, eight missed passes,
+autoloop/REPORT.md:283:| False PENDING_VERIFICATION | **10** | 0 |
+autoloop/REPORT.md:288:The ten remaining false pending results are seven diagnosis and three date
+autoloop/REPORT.md:299:| Xfailed | 14 | 12 | -2 |
+autoloop/REPORT.md:300:| Existing strict xfails newly passing | 0 | 2 | +2 |
+autoloop/REPORT.md:307:spaces; source/test/documentation whitespace checks pass. The +31 passed count is 29 new tests plus two resolved
+autoloop/REPORT.md:308:xfails, not 31 defects fixed. Rejected-candidate tests are preserved as evidence
+autoloop/REPORT.md:322:The always-abstain canary also achieves zero false pending, so safety counts
+autoloop/REPORT.md:324:known false pending results that the existing-test gate prevented fixing.
+autoloop/REPORT.md:329:small lexical extension drawn from a known xfail. Neither is held-out evidence
+autoloop/REPORT.md:374:- Existing strict xfails remain unresolved. No markers or assertions changed.
+autoloop/REPORT.md:376:  A mixed status vector independently checked false-pending, missed-pass,
+autoloop/REPORT.md:382:| Xfailed | 14 | 14 | 0 |
+autoloop/REPORT.md:383:| Newly passing xfails | 0 | 0 | 0 |
+autoloop/REPORT.md:397:| False PENDING_VERIFICATION | 0 | 0 | 0 | 0 | 0 |
+autoloop/REPORT.md:403:Full confusion matrices are retained in both JSON reports. No false pending
+docs/releases/v1.5.0.md:49:- Full suite: **359 passed**, including all **287 existing cases** (with
+docs/releases/v1.5.0.md:50:  intentional v1.5 expectation updates) and **72 new cases**; no skips or xfails.
+autoloop/LOG.md:50:or fixed; no product regression test or xfail marker was changed. The freshness
+autoloop/LOG.md:63:  two false pending results and one missed pass.
+autoloop/LOG.md:66:  passing xfails. No policy, corpus, existing assertions, goldens, deployment
+autoloop/LOG.md:83:`negation_first` strict xfail, the negation limitation in `LIMITATIONS.md` and
+autoloop/LOG.md:93:negation regex. Targeted tests became 76 passed / 5 xfailed; the previously strict
+autoloop/LOG.md:94:`negation_first` assertion passed unchanged. Fresh cases changed from 2/9 exact,
+autoloop/LOG.md:95:7 false pending, 0% abstention to 9/9 exact, 0 false pending, 11.1111% abstention
+autoloop/LOG.md:96:(expected 11.1111%). Corpus results remained 52/52, zero false pending, zero
+autoloop/LOG.md:99:**Rejected and reverted**: full `make test` returned **2 failed, 1080 passed,
+autoloop/LOG.md:100:13 xfailed**, because two existing tests explicitly assert the erroneous True:
+autoloop/LOG.md:106:These assertions conflict with the correct-value contract xfail. This is a
+autoloop/LOG.md:107:**dispute**, not permission to edit them. Product edit and xfail-marker removal
+autoloop/LOG.md:112:After revert: **1072 passed, 14 xfailed**. Then the frozen scoreboard was run:
+autoloop/LOG.md:113:52/52 exact, zero false pending, zero missed passes, 42/52 abstention. Rejected
+autoloop/LOG.md:114:repros return to 2/9 exact and seven false pending, matching their pre-fix state.
+autoloop/LOG.md:127:`reflex_attribution` contract xfail, FM-1's borrowed reflex qualifiers, and the
+autoloop/LOG.md:144:Evidence (`evidence/iteration-2-*`): new pytest cases **6 failed / 8 passed before**,
+autoloop/LOG.md:146:**5 → 0 false pending**; **0 → 0 missed passes**;
+autoloop/LOG.md:149:pain attribution previously produced NOT_READY rather than a false pending.
+autoloop/LOG.md:151:Removed only the strict marker for the existing `reflex_attribution` example
+autoloop/LOG.md:155:Gate: **1087 passed, 13 xfailed**, no existing failure. Then the frozen corpus
+autoloop/LOG.md:157:false pending, zero missed passes, 42/52 abstention**). Targeted lint passed.
+autoloop/LOG.md:164:## Iteration 3 — accepted: intact reflexes incorrectly treated as missing
+autoloop/LOG.md:167:so explicit intact reflexes cannot produce a normal finding. Source: the existing
+autoloop/LOG.md:168:strict `independent_18_intact_reflexes` xfail, normal-reflex extraction code,
+autoloop/LOG.md:170:An intact reflex alone does not satisfy a change requirement, so a complete
+autoloop/LOG.md:184:Evidence (`evidence/iteration-3-*`): **5 failed / 16 passed before**, all 21 pass
+autoloop/LOG.md:185:after. Cumulative repro score **16/21 → 21/21 exact**, false pending **0 → 0**,
+autoloop/LOG.md:193:Gate: **1095 passed, 12 xfailed**. Then the corpus scoreboard remained byte-for-
+autoloop/LOG.md:206:`engine/extract.py`, `negated_strength` in the contract/strict xfails,
+autoloop/LOG.md:221:**Dispute left unchanged:** the existing `negated_strength` xfail asserts a
+autoloop/LOG.md:224:expected value and strict marker remain untouched, and it remains xfailed.
+autoloop/LOG.md:226:Evidence (`evidence/iteration-4-*`): **5 failed / 24 passed before**, all 29 pass
+autoloop/LOG.md:227:after. Cumulative repro score **24/29 → 29/29 exact**, false pending **4 → 0**,
+autoloop/LOG.md:231:Gate: **1103 passed, 12 xfailed**. Then the frozen corpus scoreboard was run:
+autoloop/LOG.md:245:window. Sources: date collection in `engine/extract.py`, the `borrowed_date`
+autoloop/LOG.md:246:contract xfails, FM-1/FM-2 date-association limitations, and the fixed CPAP rule's
+autoloop/LOG.md:262:Evidence (`evidence/iteration-5-*`): **4 failed / 3 passed before**, all seven
+autoloop/LOG.md:263:pass after. Exact status **4/7 → 7/7**, false pending **3 → 0**, missed passes
+autoloop/LOG.md:267:**Rejected and reverted:** `make test` returned **3 failed, 1109 passed,
+autoloop/LOG.md:268:10 xfailed**, with existing assertions retaining the borrowed-date behavior:
+autoloop/LOG.md:270:- `test_archive_invariants.py::test_borrowed_date_verified_ready_without_submission_readiness_roundtrips`
+autoloop/LOG.md:271:- `test_corrections.py::test_borrowed_date_can_be_withdrawn_without_fixing_extraction`
+autoloop/LOG.md:277:contract xfails. Their assertions and fixture remain unchanged. The product
+autoloop/LOG.md:278:candidate and both temporary xfail-marker removals were restored to the
+autoloop/LOG.md:280:than installed as a failing regression test. The citation-only strict xfail
+autoloop/LOG.md:283:After revert: **1103 passed, 12 xfailed**. Then the frozen corpus scoreboard
+autoloop/LOG.md:285:4/7 exact, three false pending; diagnosis repros still match their pre-attempt
+autoloop/LOG.md:286:statuses (2/9 exact, seven false pending). Neither set was silently dropped.
+autoloop/LOG.md:296:Final tests: **1103 passed, 12 xfailed**. Baseline: **1072 passed, 14 xfailed**.
+autoloop/LOG.md:297:The +31 passed tests comprise 29 new parametrized regression cases and two
+autoloop/LOG.md:298:previously strict xfails. The negated-strength xfail remains disputed and failing.
+autoloop/LOG.md:301:score 29/29, zero false pending, zero missed passes, 15/29 abstention (expected
+autoloop/LOG.md:306:Those ten remaining false pending results are the rejected diagnosis/date
+autoloop/LOG.md:327:assertion, expected status or fixture may change except resolved xfail markers.
+autoloop/LOG.md:334:| 6: `test_corrections.py::test_failing_correction_and_original_negation_error` | (b) setup | Tests a failing SET_VALUE correction over an incorrect original proposal, immutable original snapshot, and a separate below-threshold correction. Substitute explicit `neither low back pain nor radiculopathy`, still over-captured by the bounded extractor; keep True → False and strengthen snapshot/fingerprint assertions. The original denied note becomes an executable correct-value regression. Contract G05 preserves original proposals/correction history; `negation_first` establishes the denied diagnosis must be False/NOT_READY. |
+autoloop/LOG.md:336:| 7: `test_archive_invariants.py::test_borrowed_date_verified_ready_without_submission_readiness_roundtrips` | (b) setup | Tests preservation of a human-attested, semantically wrong READY envelope under demo policy trust with submission_readiness=false. Substitute an unrelated visit date in the SAME sentence as the undated study; keep incorrect attestation, READY, demo trust and exact SQLite record/get equality. G07 and archive invariants still apply. |
+autoloop/LOG.md:337:| 7: `test_corrections.py::test_borrowed_date_can_be_withdrawn_without_fixing_extraction` | (b) setup | Tests SET_MISSING withdrawing an offending citation and retaining the immutable original. Substitute the same same-sentence borrowed-date note; retain True original, cited proposal-spans review, and CANNOT_DETERMINE after withdrawal. G05 requires retained proposal/correction evidence. |
+autoloop/LOG.md:338:| 7: `test_v210_independent.py::test_independent_correct_values_and_states` (case 17 only) | (a) product claim | Its explicit missing-study-date note cannot supply dated-study evidence. Change only that case's sleep_study_date label True → null, requirement MET → NOT_DOCUMENTED, overall PENDING_VERIFICATION → CANNOT_DETERMINE. Fixed CPAP rule requires dated sleep-study evidence; the executable `borrowed_date` contract requires null/CANNOT_DETERMINE. Every other fixture entry and case-17 input remains unchanged. |
+autoloop/LOG.md:343:setup inputs already return false PENDING_VERIFICATION before either resumed
+autoloop/LOG.md:347:score 35/45 exact with 10 false pending; expanded 47 score 35/47 exact with 12.
+autoloop/LOG.md:357:31 passed**; after fix all 38 pass. The nine diagnosis labels are unchanged.
+autoloop/LOG.md:366:Removed strict marker: contract `negation_first` /
+autoloop/LOG.md:371:`make test`: **1113 passed, 11 xfailed** (previous **1103 / 12**; +9 new collected
+autoloop/LOG.md:372:cases and +1 newly passing strict xfail). Then the public-service scoreboard:
+autoloop/LOG.md:373:corpus **52/52 exact, zero false pending**, byte-for-byte baseline match.
+autoloop/LOG.md:374:Frozen all-authored 45: **35/45 → 42/45 exact, 10 → 3 false pending**;
+autoloop/LOG.md:377:12 → 5 false pending**; neither setup counterexample changed status. Diagnosis
+autoloop/LOG.md:378:set **2/9 → 9/9 exact, 7 → 0 false pending**. Targeted lint/format checks pass.
+autoloop/LOG.md:386:The repaired denied-diagnosis note remains covered by a now-unxfail contract
+autoloop/LOG.md:405:`borrowed_date` contract asserts null/CANNOT_DETERMINE for this failure class.
+autoloop/LOG.md:414:product fix, this suite has **4 failed, 41 passed** (three wrong statuses and one
+autoloop/LOG.md:437:1. Contract `borrowed_date` exact example (`test_G01_exact_examples_and_determinism`):
+autoloop/LOG.md:439:2. `test_G07_borrowed_date_remains_contained_by_demo_submission_gate`: original
+autoloop/LOG.md:445:   a fixed behavior, NOT an unchanged-label xfail becoming satisfied. Three
+autoloop/LOG.md:448:`make test`: **1123 passed, 8 xfailed** (iteration 6 **1113 / 11**). The +10
+autoloop/LOG.md:450:strict xfails and one owner-rewritten citation strict xfail. Overall since
+autoloop/LOG.md:451:962fafc: **+20 passed, -4 xfailed**, comprising 16 new collected cases and four
+autoloop/LOG.md:459:| Corpus exact / false pending | 52/52 / 0 | 52/52 / 0 | 52/52 / 0 |
+autoloop/LOG.md:460:| Original 45 exact / false pending | 35/45 / 10 | 42/45 / 3 | 45/45 / 0 |
+autoloop/LOG.md:462:| Expanded 47 exact / false pending | 35/47 / 12 | 42/47 / 5 | 45/47 / 2 |
+autoloop/LOG.md:466:**3 → 0 false pending**, abstention **1/7 → 4/7** (expected 4/7).
+autoloop/LOG.md:469:sets; neither accepted transition introduces any new false pending result.
+autoloop/LOG.md:470:The remaining two expanded-set false pending results are the disclosed setup
+autoloop/LOG.md:477:relabeled; its new passing assertion and rewritten citation xfail are not counted
+docs/api.md:242:then discards it. `engine_version` is stamped `2.3.0`; record `schema_version` remains `2.0.0`.
+docs/releases/v2.0.0.md:59:- Full suite on main: **760 passed**, including **29 audit-fix regressions**;
+docs/releases/v2.0.0.md:60:  no failures, skips, or xfails.
+docs/releases/v2.1.1.md:13:The Streamlit service factory now keys its resource cache on engine version
+docs/releases/v2.1.1.md:16:manifest parsing. Engine version is 2.1.1. CI checks Python 3.12.3 and 3.13.
+docs/releases/v2.1.1.md:27:expected failures. The labeled corpus remained 52/52; conformance recorded
+docs/reviewer_guide.md:225:Release validation is **1123 passed, 10 xfailed**. Corpus false
+docs/reviewer_guide.md:229:qualifiers, intact reflexes, negated numeric strength and cross-sentence
+docs/reviewer_guide.md:232:false READY. See [v2.3.0](releases/v2.3.0.md) and the
+docs/reviewer_guide.md:233:[executable contract](../EXTRACTION_CONTRACT.md) for exact scope and open xfails.
+docs/releases/v2.1.0.md:4:This is release preparation only: no merge or tag. Engine version is `2.1.0`;
+docs/releases/v2.1.0.md:32:## First-pass patterns handled; failure classes remain open
+docs/releases/v2.1.0.md:60:| Low back pain with radiculopathy. **It resolved last year.** | true | Still true; correct expectation is NEEDS_REVIEW | Strict xfail `test_resolved_historical_episode_across_sentences_requires_review` |
+docs/releases/v2.1.0.md:72:The first pass added seven strict xfails asserting **correct** values, across six
+docs/releases/v2.1.0.md:75:- `negation_first`: lumbar diagnosis negation scope; expect false.
+docs/releases/v2.1.0.md:77:- `reflex_attribution`: decreased pain borrowed as a reflex finding; expect missing.
+docs/releases/v2.1.0.md:79:- `borrowed_date`: visit date borrowed for an undated sleep study; expect missing.
+docs/releases/v2.1.0.md:80:- `test_G07_borrowed_date_remains_contained_by_demo_submission_gate`: the same date-association failure, expecting missing and CANNOT_DETERMINE even after attestation.
+docs/releases/v2.1.0.md:101:| 12: resolved prior episode across sentences | Radiculopathy true / MET | Still wrong; strict xfail asserts NEEDS_REVIEW. Its containing sentence does not show the subsequent resolution. |
+docs/releases/v2.1.0.md:123:Four additional **strict xfails assert correct expectations**: case 12 review,
+docs/releases/v2.1.0.md:145:| Full suite, original baseline / first pass | 359.36 s; 760 passed | 29.17 s; 798 passed, 7 strict xfails |
+docs/releases/v2.1.0.md:146:| Independent pristine-main suite confirmation | 363.69 s; 760 passed | Same first-pass run above |
+docs/releases/v2.1.0.md:153:Second-pass validation (Python 3.12.3): **861 passed, 11 strict xfails in
+docs/releases/v2.1.0.md:217:| `test/test_v210_safety.py` | Named reproduced cases, cache/mutation/immutability and surface regressions; cross-sentence strict xfail. |
+docs/releases/v2.1.0.md:219:| `test/test_api.py` | Expected engine version 2.1.0. |
+docs/releases/v2.1.0.md:222:| `EXTRACTION_CONTRACT.md`, `FAILURE_MODES.md` | Patterns handled; failure classes remain open; correct expectations; current Last Updated date. |
+docs/releases/v2.1.0.md:224:| `docs/api.md`, `docs/testing.md` | Derived surface context and benchmark/strict-xfail documentation. |
+LIMITATIONS.md:52:qualifiers, intact reflexes, explicitly negated numeric strength and study-date
+LIMITATIONS.md:54:old strict-xfail expectation of False remains disputed and unchanged.
+LIMITATIONS.md:61:Incorrect attestations can still produce false READY from unsupported proposals;
+LIMITATIONS.md:64:Validation: **1123 passed, 10 xfailed**, corpus 52/52 with zero false pending,
+LIMITATIONS.md:65:45/45 original authored cases, and two false pending results in the expanded 47.
+MODEL_CARD.md:4:Version: 2.3.0 (record schema 2.0.0)
+MODEL_CARD.md:7:negation, reflex descriptor linkage, intact reflexes, negated numeric-strength
+MODEL_CARD.md:67:and same-sentence date gaps. Fresh suite: **1123 passed, 10 xfailed**. The
+MODEL_CARD.md:69:review rather than proposing a normal exam. Corpus false PENDING_VERIFICATION
+MODEL_CARD.md:70:is zero; original authored cases score 45/45 with zero false pending, while the
+MODEL_CARD.md:71:expanded 47 still have two false pending results. The always-abstain canary
+MODEL_CARD.md:72:also achieves zero false pending, so that metric alone proves no improvement.
+MODEL_CARD.md:79:- Human-verification identity is self-reported, not authenticated; the local demo cannot establish that a person actually reviewed a fact. Incorrect human attestations can still permit false READY.
+docs/artifacts/rulebook_diff_reviewed_vs_active.md:7:- Rules version: 0.4 -> 1.0
+README.md:8:negation, reflex descriptor linkage, intact-reflex recognition, negated numeric
+README.md:14:Release validation: **1123 passed, 10 xfailed**. The unchanged 52-case corpus
+README.md:16:pass. The expanded 47-case set still has two false pending results. Zero false
+README.md:79:The record schema version and release version are versioned independently. v2.3.0 writes record `schema_version: "2.0.0"`; v1.5 records retain their existing validation, and legacy records remain explicitly labeled and viewable only.
+docs/releases/v2.3.0.md:14:| Auxiliary-verb diagnosis negation | `does/do/did not have` before lumbar pain or radiculopathy produces False; conflicting affirmative/negative proposals require review. | `negation_first` contract example and nine diagnosis cases |
+docs/releases/v2.3.0.md:15:| Reflex descriptor linkage | Pain/sensation adjectives cannot establish a reflex change merely because a reflex noun appears elsewhere in the clause. Require a bounded reflex noun/predicate link. | `reflex_attribution` and 14 reflex/attribute cases |
+docs/releases/v2.3.0.md:16:| Intact reflex recognition | Explicit intact root-distribution reflexes produce a normal finding / NOT_MET rather than missingness. Uncertainty and conflicts still review. | independent case 18 and seven intact-reflex cases |
+docs/releases/v2.3.0.md:18:| Cross-sentence sleep-study date association | An appointment date in another sentence cannot supply missing study-date evidence. | `borrowed_date`, the attested G07 check and seven date/citation cases |
+docs/releases/v2.3.0.md:23:45-case authored set improves from 35/45 to 45/45 with false pending 10 → 0.
+docs/releases/v2.3.0.md:25:45/47, false pending 12 → 2. The 52-case corpus remains 52/52, false pending zero.
+docs/releases/v2.3.0.md:27:canary also has zero false pending, so that count alone demonstrates no gain.
+docs/releases/v2.3.0.md:29:An external held-out set (41 cases, not visible during development) scored before and after: false PENDING_VERIFICATION 1 → 0, no other status changes.
+docs/releases/v2.3.0.md:50:evidence and the executable `borrowed_date` contract specifies missingness.
+docs/releases/v2.3.0.md:66:Removed `known_failure` from `negation_first`, `reflex_attribution` and
+docs/releases/v2.3.0.md:67:`borrowed_date`; their expected facts/statuses are unchanged. Removed the
+docs/releases/v2.3.0.md:76:There are ten strict xfails: four contract examples (including unrelated therapy
+docs/releases/v2.3.0.md:79:checks. False READY remains possible with incorrect human attestations. The
+docs/releases/v2.3.0.md:96:Release checks: **1123 passed, 10 xfailed**; `make lint` passes. The two added
+docs/releases/v2.3.0.md:97:xfails document existing gaps rather than regressions. Record schema stays 2.0.0.
+docs/releases/v2.3.0.md:98:The only product-source change after 3f81277 is the engine version string;
+docs/releases/v2.3.0.md:100:lint. The explicitly pinned API and safety-test engine versions are 2.3.0.
+docs/testing.md:18:- the bundled labeled fixture suite checks exact expected overall statuses for every included case and reports fixture-scoped false-READY, exact-status, and abstention metrics; these are regression metrics, not estimates of real-world clinical-language performance
+docs/testing.md:23:examples use strict xfails driven solely by contract JSON; resolved examples pass
+docs/testing.md:137:   context. Confirm this export's engine version also matches the tag. Record
+docs/testing.md:217:facts/spans for three unchanged controls; and three correct-value strict xfails
+docs/testing.md:221:case 18's intact-reflex assertions now pass. Resolved markers were removed. Run:
+docs/testing.md:236:Fresh `make test`: **1123 passed, 10 xfailed**. `make lint` must pass as well.
+docs/testing.md:244:unsafe affirmative proposal. The remaining six xfails cover two cross-sentence
+docs/testing.md:248:case-17 citation and intact-reflex cases are not remaining failures.
+docs/testing.md:250:The automated safety metric is false PENDING_VERIFICATION, not false READY:
+docs/testing.md:251:all-MET proposals can still be unsupported. Corpus 52/52 and zero false pending
+docs/testing.md:253:pending; the expanded 47 retain two false pending setup counterexamples.
+docs/testing.md:254:The canary also has zero false pending, so report exact status, missed passes,
+docs/releases/v2.1.2.md:13:v2.1.1 keyed the Streamlit resource factory on engine version and bundle digest
+docs/releases/v2.1.2.md:16:or detect an imported engine version that lagged the on-disk release marker.
+docs/releases/v2.1.2.md:37:same-version edits still require that owner step. Engine version is 2.1.2.
+docs/releases/v2.1.2.md:42:expected failures. Both versions retained 52/52 exact corpus statuses and
+docs/releases/v2.1.3.md:7:quotations also made review less reliable. Engine version is **2.1.3**.
+docs/releases/v2.1.3.md:103:Python **3.12.3**: **1,548 passed, 11 expected failures**, 35.85 seconds.
+docs/releases/v2.1.3.md:104:Python **3.13.12**: **1,548 passed, 11 expected failures**, 36.25 seconds.
+docs/releases/v2.1.3.md:106:The 11 pre-existing strict expected failures remain open extraction limitations.
+docs/releases/v2.1.3.md:158:After aggregation, full suites pass on Python 3.12.3 (949 passed, 11 expected
+docs/releases/v2.1.3.md:159:failures, 35.61 seconds) and Python 3.13.12 (949 passed, 11 expected failures,
+docs/releases/v2.1.3.md:194:Final full suites: Python 3.12.3 **952 passed, 11 expected failures** (36.21 s),
+docs/releases/v2.1.3.md:195:Python 3.13.12 **952 passed, 11 expected failures** (27.68 s). Both retain one
+docs/releases/v2.1.3.md:197:zero false READY; conformance remains **163 captured, 446 missing, 15 review**,
+docs/policy_replay.md:43:New evaluation payloads declare `schema_version: "2.0.0"`. Archive writes recompute correction materialization, validate contract values and exact spans (including the 300-character SET_VALUE per-span cap), check input/fact-set fingerprints and derived correction annotations, and reject schema downgrade. The immutable original proposal, ordered corrections and effective facts are retained. READY requires the complete, nonempty
+docs/releases/v2.2.0.md:94:## Remaining false-READY paths
+docs/releases/v2.2.0.md:130:Python 3.12.3 and 3.13.12 each report **1,072 passed, 14 expected failures**.
+docs/releases/v2.3.0-doc-audit.md:3:Fresh checks: `make test` **1123 passed, 10 xfailed**; `make lint` passes
+docs/releases/v2.3.0-doc-audit.md:5:correct-value strict xfails for existing gaps; the preceding experiment's
+docs/releases/v2.3.0-doc-audit.md:9:with `rg -n -i` for test/xfail counts, expected failures, false READY/pending,
+docs/releases/v2.3.0-doc-audit.md:14:2.3.0, record schema 2.0.0, and 52/52 corpus exact with zero false pending.
+docs/releases/v2.3.0-doc-audit.md:20:| `EXTRACTION_CONTRACT.md` | Remove resolved markers for auxiliary-verb negation, reflex attribution and cross-sentence dates; add neither/nor and same-sentence date strict-xfail examples; replace obsolete remaining-failure list, document numeric-score dispute and case-17 label change; extend the handled-pattern table through v2.3. |
+docs/releases/v2.3.0-doc-audit.md:21:| `README.md` | Replace stale current engine/schema prose and v2.1 current-release link; add five fixes, current counts, false-pending/canary limits, and name the remaining same-sentence date path. Label the old screenshot historical. Point regeneration guidance at the fixed-clock procedure. |
+docs/releases/v2.3.0-doc-audit.md:22:| `docs/testing.md` | Correct contract-marker source, current xfail inventory, case-17/18 dispositions and old all-xfails-unchanged claim; add 1123 / 10 and the automated safety metric; use v2.3.0 in owner version check. Preserve the fixed-clock generator procedure. |
+docs/releases/v2.3.0-doc-audit.md:23:| `FAILURE_MODES.md` | Update release metadata and the handled-pattern table; distinguish resolved auxiliary negation/reflex/date/numeric examples from remaining neither/nor, same-sentence dates and unrelated therapy. Correct case-17/18 disposition and explain the still-disputed numeric label. List current xfail groups and false-READY pathways. |
+docs/releases/v2.3.0-doc-audit.md:25:| `MODEL_CARD.md` | Update version/changelog; replace the stale pending-negation and unfixed-date descriptions; add current test counts, false-pending and canary limits. |
+docs/releases/v2.3.0-doc-audit.md:26:| `docs/api.md` | Correct current exported engine version from 2.1.0 to 2.3.0; record schema stays 2.0.0. |
+docs/releases/v2.3.0-doc-audit.md:43:  Current docs now also identify false PENDING_VERIFICATION as the safety gate.
+docs/releases/v2.3.0-doc-audit.md:58:- New contract xfails reproduce the same two gaps used by the owner-approved

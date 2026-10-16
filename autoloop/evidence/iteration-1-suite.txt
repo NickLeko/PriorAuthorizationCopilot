@@ -1,0 +1,57 @@
+.venv/bin/python -m pytest -q
+........................................................................ [  6%]
+........................................................................ [ 13%]
+........F............................................................... [ 19%]
+........................................................................ [ 26%]
+........................................................................ [ 32%]
+........................................................................ [ 39%]
+........................................................................ [ 46%]
+................xxx..................................................... [ 52%]
+........................................................................ [ 59%]
+........................................................................ [ 65%]
+...............F........................................................ [ 72%]
+....................................................xx.xx............... [ 78%]
+.............................................x.......................... [ 85%]
+........................................x.....x...xx.................... [ 92%]
+.........................................................x.............. [ 98%]
+...............                                                          [100%]
+=================================== FAILURES ===================================
+_____________ test_failing_correction_and_original_negation_error ______________
+
+    def test_failing_correction_and_original_negation_error():
+        note = (
+            "Patient does not have low back pain with radiculopathy. Right L5 distribution: strength 4/5. "
+            "NSAIDs for 8 weeks with no improvement."
+        )
+        service = ReadinessService()
+        original = service.evaluate(request(note))
+>       assert original.facts["back_pain_with_radiculopathy"] is True  # Known drafting error is not rebuilt.
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       assert False is True
+
+test/test_corrections.py:217: AssertionError
+_ test_complete_lumbar_proposals_require_every_human_verification[Patient does not have low back pain with radiculopathy.] _
+
+diagnosis = 'Patient does not have low back pain with radiculopathy.'
+
+    @pytest.mark.parametrize(
+        "diagnosis",
+        ["Low back pain with radiculopathy.", "Patient does not have low back pain with radiculopathy."],
+    )
+    def test_complete_lumbar_proposals_require_every_human_verification(diagnosis):
+        service = ReadinessService()
+        request = PARequest(
+            payer="Aetna",
+            procedure_code="MRI_LUMBAR",
+            note_text=f"{diagnosis} Right L5 distribution: strength 4/5. NSAIDs for 8 weeks with minimal improvement.",
+        )
+        proposal = service.evaluate(request)
+>       assert proposal.facts["back_pain_with_radiculopathy"] is True
+E       assert False is True
+
+test/test_service.py:159: AssertionError
+=========================== short test summary info ============================
+FAILED test/test_corrections.py::test_failing_correction_and_original_negation_error
+FAILED test/test_service.py::test_complete_lumbar_proposals_require_every_human_verification[Patient does not have low back pain with radiculopathy.]
+2 failed, 1080 passed, 13 xfailed in 35.64s
+make: *** [test] Error 1

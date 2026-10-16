@@ -1,0 +1,379 @@
+[
+  {
+    "id": "reflex_unrelated_attribute_1",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Low back pain with radiculopathy. Right L5 distribution: reflexes assessed, pain decreased. NSAIDs for 8 weeks with minimal improvement.",
+    "expected_overall_status": "CANNOT_DETERMINE",
+    "expected_facts": {
+      "objective_motor_or_reflex_change_in_root_distribution": null
+    },
+    "expected_requirements": {
+      "objective_motor_or_reflex_change_in_root_distribution": "NOT_DOCUMENTED"
+    }
+  },
+  {
+    "id": "reflex_unrelated_attribute_2",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Low back pain with radiculopathy. Left S1 distribution: decreased pain, reflexes assessed. NSAIDs for 8 weeks with minimal improvement.",
+    "expected_overall_status": "CANNOT_DETERMINE",
+    "expected_facts": {
+      "objective_motor_or_reflex_change_in_root_distribution": null
+    },
+    "expected_requirements": {
+      "objective_motor_or_reflex_change_in_root_distribution": "NOT_DOCUMENTED"
+    }
+  },
+  {
+    "id": "reflex_unrelated_attribute_3",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Low back pain with radiculopathy. Right L4 distribution: reflexes assessed, sensation diminished. NSAIDs for 8 weeks with minimal improvement.",
+    "expected_overall_status": "CANNOT_DETERMINE",
+    "expected_facts": {
+      "objective_motor_or_reflex_change_in_root_distribution": null
+    },
+    "expected_requirements": {
+      "objective_motor_or_reflex_change_in_root_distribution": "NOT_DOCUMENTED"
+    }
+  },
+  {
+    "id": "reflex_unrelated_attribute_4",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Low back pain with radiculopathy. Right L5 distribution: diminished sensation, reflexes assessed. NSAIDs for 8 weeks with minimal improvement.",
+    "expected_overall_status": "CANNOT_DETERMINE",
+    "expected_facts": {
+      "objective_motor_or_reflex_change_in_root_distribution": null
+    },
+    "expected_requirements": {
+      "objective_motor_or_reflex_change_in_root_distribution": "NOT_DOCUMENTED"
+    }
+  },
+  {
+    "id": "reflex_unrelated_attribute_5",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Low back pain with radiculopathy. Right L5 distribution: reflexes assessed, pain absent. NSAIDs for 8 weeks with minimal improvement.",
+    "expected_overall_status": "CANNOT_DETERMINE",
+    "expected_facts": {
+      "objective_motor_or_reflex_change_in_root_distribution": null
+    },
+    "expected_requirements": {
+      "objective_motor_or_reflex_change_in_root_distribution": "NOT_DOCUMENTED"
+    }
+  },
+  {
+    "id": "reflex_unrelated_attribute_6",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Low back pain with radiculopathy. Right L5 distribution: reflexes assessed, pain normal. NSAIDs for 8 weeks with minimal improvement.",
+    "expected_overall_status": "CANNOT_DETERMINE",
+    "expected_facts": {
+      "objective_motor_or_reflex_change_in_root_distribution": null
+    },
+    "expected_requirements": {
+      "objective_motor_or_reflex_change_in_root_distribution": "NOT_DOCUMENTED"
+    }
+  },
+  {
+    "id": "reflex_affirmative_1",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Low back pain with radiculopathy. Right L5 distribution: reflexes decreased. NSAIDs for 8 weeks with minimal improvement.",
+    "expected_overall_status": "PENDING_VERIFICATION",
+    "expected_facts": {
+      "objective_motor_or_reflex_change_in_root_distribution": true
+    },
+    "expected_requirements": {
+      "objective_motor_or_reflex_change_in_root_distribution": "MET"
+    }
+  },
+  {
+    "id": "reflex_affirmative_2",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Low back pain with radiculopathy. Left S1 distribution: diminished deep tendon reflexes. NSAIDs for 8 weeks with minimal improvement.",
+    "expected_overall_status": "PENDING_VERIFICATION",
+    "expected_facts": {
+      "objective_motor_or_reflex_change_in_root_distribution": true
+    },
+    "expected_requirements": {
+      "objective_motor_or_reflex_change_in_root_distribution": "MET"
+    }
+  },
+  {
+    "id": "reflex_affirmative_3",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Low back pain with radiculopathy. Right L4 distribution: reflexes were brisk. NSAIDs for 8 weeks with minimal improvement.",
+    "expected_overall_status": "PENDING_VERIFICATION",
+    "expected_facts": {
+      "objective_motor_or_reflex_change_in_root_distribution": true
+    },
+    "expected_requirements": {
+      "objective_motor_or_reflex_change_in_root_distribution": "MET"
+    }
+  },
+  {
+    "id": "reflex_affirmative_4",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Low back pain with radiculopathy. Right L5 distribution: reflexes were asymmetric. NSAIDs for 8 weeks with minimal improvement.",
+    "expected_overall_status": "PENDING_VERIFICATION",
+    "expected_facts": {
+      "objective_motor_or_reflex_change_in_root_distribution": true
+    },
+    "expected_requirements": {
+      "objective_motor_or_reflex_change_in_root_distribution": "MET"
+    }
+  },
+  {
+    "id": "reflex_affirmative_5",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Low back pain with radiculopathy. Right L5 distribution: reflexes absent. NSAIDs for 8 weeks with minimal improvement.",
+    "expected_overall_status": "PENDING_VERIFICATION",
+    "expected_facts": {
+      "objective_motor_or_reflex_change_in_root_distribution": true
+    },
+    "expected_requirements": {
+      "objective_motor_or_reflex_change_in_root_distribution": "MET"
+    }
+  },
+  {
+    "id": "reflex_normal_1",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Low back pain with radiculopathy. Right L5 distribution: reflexes were normal. NSAIDs for 8 weeks with minimal improvement.",
+    "expected_overall_status": "NOT_READY",
+    "expected_facts": {
+      "objective_motor_or_reflex_change_in_root_distribution": false
+    },
+    "expected_requirements": {
+      "objective_motor_or_reflex_change_in_root_distribution": "NOT_MET"
+    }
+  },
+  {
+    "id": "reflex_normal_2",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Low back pain with radiculopathy. Right L5 distribution: symmetric reflexes. NSAIDs for 8 weeks with minimal improvement.",
+    "expected_overall_status": "NOT_READY",
+    "expected_facts": {
+      "objective_motor_or_reflex_change_in_root_distribution": false
+    },
+    "expected_requirements": {
+      "objective_motor_or_reflex_change_in_root_distribution": "NOT_MET"
+    }
+  },
+  {
+    "id": "reflex_contradictory",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Low back pain with radiculopathy. Right L5 distribution: reflexes were normal on repeat but diminished initially. NSAIDs for 8 weeks with minimal improvement.",
+    "expected_overall_status": "NEEDS_REVIEW",
+    "expected_facts": {
+      "objective_motor_or_reflex_change_in_root_distribution": null
+    },
+    "expected_requirements": {
+      "objective_motor_or_reflex_change_in_root_distribution": "NEEDS_REVIEW"
+    }
+  },
+  {
+    "id": "reflex_intact_1",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Low back pain with radiculopathy. Right L5 distribution: reflexes intact. NSAIDs for 8 weeks with minimal improvement.",
+    "expected_overall_status": "NOT_READY",
+    "expected_facts": {
+      "objective_motor_or_reflex_change_in_root_distribution": false
+    },
+    "expected_requirements": {
+      "objective_motor_or_reflex_change_in_root_distribution": "NOT_MET"
+    }
+  },
+  {
+    "id": "reflex_intact_2",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Low back pain with radiculopathy. Left S1 distribution: intact deep tendon reflexes. NSAIDs for 8 weeks with minimal improvement.",
+    "expected_overall_status": "NOT_READY",
+    "expected_facts": {
+      "objective_motor_or_reflex_change_in_root_distribution": false
+    },
+    "expected_requirements": {
+      "objective_motor_or_reflex_change_in_root_distribution": "NOT_MET"
+    }
+  },
+  {
+    "id": "reflex_intact_3",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Low back pain with radiculopathy. Right L4 distribution: reflexes were intact; decreased sensation over the foot. NSAIDs for 8 weeks with minimal improvement.",
+    "expected_overall_status": "NOT_READY",
+    "expected_facts": {
+      "objective_motor_or_reflex_change_in_root_distribution": false
+    },
+    "expected_requirements": {
+      "objective_motor_or_reflex_change_in_root_distribution": "NOT_MET"
+    }
+  },
+  {
+    "id": "reflex_intact_uncertain",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Low back pain with radiculopathy. Right L5 distribution: reflexes intact? NSAIDs for 8 weeks with minimal improvement.",
+    "expected_overall_status": "NEEDS_REVIEW",
+    "expected_facts": {
+      "objective_motor_or_reflex_change_in_root_distribution": null
+    },
+    "expected_requirements": {
+      "objective_motor_or_reflex_change_in_root_distribution": "NEEDS_REVIEW"
+    }
+  },
+  {
+    "id": "reflex_intact_contradictory",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Low back pain with radiculopathy. Right L5 distribution: reflexes intact on repeat but diminished initially. NSAIDs for 8 weeks with minimal improvement.",
+    "expected_overall_status": "NEEDS_REVIEW",
+    "expected_facts": {
+      "objective_motor_or_reflex_change_in_root_distribution": null
+    },
+    "expected_requirements": {
+      "objective_motor_or_reflex_change_in_root_distribution": "NEEDS_REVIEW"
+    }
+  },
+  {
+    "id": "reflex_intact_unrelated",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Low back pain with radiculopathy. Right L5 distribution: reflexes assessed, sensation intact. NSAIDs for 8 weeks with minimal improvement.",
+    "expected_overall_status": "CANNOT_DETERMINE",
+    "expected_facts": {
+      "objective_motor_or_reflex_change_in_root_distribution": null
+    },
+    "expected_requirements": {
+      "objective_motor_or_reflex_change_in_root_distribution": "NOT_DOCUMENTED"
+    }
+  },
+  {
+    "id": "reflex_intact_unrelated_with_abnormal",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Low back pain with radiculopathy. Right L5 distribution: sensation intact, reflexes diminished. NSAIDs for 8 weeks with minimal improvement.",
+    "expected_overall_status": "PENDING_VERIFICATION",
+    "expected_facts": {
+      "objective_motor_or_reflex_change_in_root_distribution": true
+    },
+    "expected_requirements": {
+      "objective_motor_or_reflex_change_in_root_distribution": "MET"
+    }
+  },
+  {
+    "id": "strength_negated_1",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Low back pain with radiculopathy. Right L5 distribution: dorsiflexion strength not 4/5. NSAIDs for 8 weeks with minimal improvement.",
+    "expected_overall_status": "NEEDS_REVIEW",
+    "expected_facts": {
+      "objective_motor_or_reflex_change_in_root_distribution": null
+    },
+    "expected_requirements": {
+      "objective_motor_or_reflex_change_in_root_distribution": "NEEDS_REVIEW"
+    }
+  },
+  {
+    "id": "strength_negated_2",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Low back pain with radiculopathy. Left S1 distribution: strength is not 3/5. NSAIDs for 8 weeks with minimal improvement.",
+    "expected_overall_status": "NEEDS_REVIEW",
+    "expected_facts": {
+      "objective_motor_or_reflex_change_in_root_distribution": null
+    },
+    "expected_requirements": {
+      "objective_motor_or_reflex_change_in_root_distribution": "NEEDS_REVIEW"
+    }
+  },
+  {
+    "id": "strength_negated_3",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Low back pain with radiculopathy. Right L4 distribution: strength not 5/5. NSAIDs for 8 weeks with minimal improvement.",
+    "expected_overall_status": "NEEDS_REVIEW",
+    "expected_facts": {
+      "objective_motor_or_reflex_change_in_root_distribution": null
+    },
+    "expected_requirements": {
+      "objective_motor_or_reflex_change_in_root_distribution": "NEEDS_REVIEW"
+    }
+  },
+  {
+    "id": "strength_negated_4",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Low back pain with radiculopathy. Right L5 distribution: no 4/5 strength. NSAIDs for 8 weeks with minimal improvement.",
+    "expected_overall_status": "NEEDS_REVIEW",
+    "expected_facts": {
+      "objective_motor_or_reflex_change_in_root_distribution": null
+    },
+    "expected_requirements": {
+      "objective_motor_or_reflex_change_in_root_distribution": "NEEDS_REVIEW"
+    }
+  },
+  {
+    "id": "strength_negated_5",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Low back pain with radiculopathy. Right L5 distribution: strength 4/5 is not present. NSAIDs for 8 weeks with minimal improvement.",
+    "expected_overall_status": "NEEDS_REVIEW",
+    "expected_facts": {
+      "objective_motor_or_reflex_change_in_root_distribution": null
+    },
+    "expected_requirements": {
+      "objective_motor_or_reflex_change_in_root_distribution": "NEEDS_REVIEW"
+    }
+  },
+  {
+    "id": "strength_affirmative_deficit",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Low back pain with radiculopathy. Right L5 distribution: strength 3/5. NSAIDs for 8 weeks with minimal improvement.",
+    "expected_overall_status": "PENDING_VERIFICATION",
+    "expected_facts": {
+      "objective_motor_or_reflex_change_in_root_distribution": true
+    },
+    "expected_requirements": {
+      "objective_motor_or_reflex_change_in_root_distribution": "MET"
+    }
+  },
+  {
+    "id": "strength_affirmative_normal",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Low back pain with radiculopathy. Right L5 distribution: strength 5/5. NSAIDs for 8 weeks with minimal improvement.",
+    "expected_overall_status": "NOT_READY",
+    "expected_facts": {
+      "objective_motor_or_reflex_change_in_root_distribution": false
+    },
+    "expected_requirements": {
+      "objective_motor_or_reflex_change_in_root_distribution": "NOT_MET"
+    }
+  },
+  {
+    "id": "strength_unrelated_negation",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Low back pain with radiculopathy. Right L5 distribution: no sensory loss, strength 4/5. NSAIDs for 8 weeks with minimal improvement.",
+    "expected_overall_status": "PENDING_VERIFICATION",
+    "expected_facts": {
+      "objective_motor_or_reflex_change_in_root_distribution": true
+    },
+    "expected_requirements": {
+      "objective_motor_or_reflex_change_in_root_distribution": "MET"
+    }
+  }
+]

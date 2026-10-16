@@ -218,3 +218,16 @@ The repo includes a local review UI, archive, drift monitor, and release convent
 - plan-specific benefit and coverage handling
 
 Those are out of scope here. The current repo is meant to demonstrate a narrow, reviewable workflow-readiness core, not a deployed healthcare platform.
+
+
+## v2.3.0 review limits
+
+Release validation is **1123 passed, 10 xfailed**. Corpus false
+PENDING_VERIFICATION is zero, but the always-abstain canary also scores zero;
+read the proposed facts and full context rather than treating this count as
+extraction accuracy. The `does/do/did not have` denial, borrowed reflex
+qualifiers, intact reflexes, negated numeric strength and cross-sentence
+study-date examples are handled. Neither/nor denial and same-sentence borrowed
+study dates remain unsafe proposals; incorrect attestations can still produce
+false READY. See [v2.3.0](releases/v2.3.0.md) and the
+[executable contract](../EXTRACTION_CONTRACT.md) for exact scope and open xfails.

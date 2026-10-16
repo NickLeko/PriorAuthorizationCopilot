@@ -1,0 +1,81 @@
+.venv/bin/python -m pytest -q
+.......................F................................................ [  6%]
+........................................................................ [ 12%]
+.......................................F................................ [ 19%]
+........................................................................ [ 25%]
+........................................................................ [ 32%]
+........................................................................ [ 38%]
+........................................................................ [ 44%]
+...........................................xxx.......................... [ 51%]
+........................................................................ [ 57%]
+........................................................................ [ 64%]
+........................................................................ [ 70%]
+........................................................................ [ 77%]
+......xx..x............................................................. [ 83%]
+...................................................................x.... [ 89%]
+F....xx................................................................. [ 96%]
+............x.............................                               [100%]
+=================================== FAILURES ===================================
+__ test_borrowed_date_verified_ready_without_submission_readiness_roundtrips ___
+
+tmp_path = PosixPath('/private/var/folders/7r/2jvcn09d5kn8mv6007ycz0j00000gn/T/pytest-of-nicholasleko/pytest-147/test_borrowed_date_verified_re0')
+
+    def test_borrowed_date_verified_ready_without_submission_readiness_roundtrips(tmp_path):
+        service = ReadinessService()
+        proposal = service.evaluate(
+            PARequest(
+                payer="Aetna",
+                procedure_code="CPAP_DEVICE",
+                note_text="OSA. Visit date 2024-05-18. Sleep study date not recorded. AHI 22.",
+            )
+        )
+        # Deliberately incorrect test attestations preserve the known extraction error.
+        result = service.evaluate(attest(proposal))
+>       assert result.overall_status == "READY"
+E       AssertionError: assert 'CANNOT_DETERMINE' == 'READY'
+E         
+E         - READY
+E         + CANNOT_DETERMINE
+
+test/test_archive_invariants.py:163: AssertionError
+________ test_borrowed_date_can_be_withdrawn_without_fixing_extraction _________
+
+    def test_borrowed_date_can_be_withdrawn_without_fixing_extraction():
+        note = "OSA. Visit date 2024-05-18. Sleep study date not recorded. AHI 22."
+        service = ReadinessService()
+        original = service.evaluate(request(note, "CPAP_DEVICE"))
+>       assert original.facts["sleep_study_date"] is True
+E       assert None is True
+
+test/test_corrections.py:252: AssertionError
+_ test_independent_correct_values_and_states[independent_17_borrowed_citation_date] _
+
+case = {'expected': {'ahi_documented': True, 'back_pain_with_radiculopathy': None, 'conservative_therapy_weeks': None, 'cpb_0..., 'expected_requirements': {'ahi_documented': 'MET', 'osa_diagnosis': 'MET', 'sleep_study_date': 'MET'}, 'id': 17, ...}
+
+    @pytest.mark.parametrize(
+        "case",
+        [
+            pytest.param(case, marks=pytest.mark.xfail(strict=True, reason="cross-sentence temporality")) if case["id"] == 12 else case
+            for case in CASES
+        ],
+        ids=lambda case: f"independent_{case['id']:02}_{case['name']}",
+    )
+    def test_independent_correct_values_and_states(case):
+        expected = dict(case["expected"])
+        # The secondary analgesic refusal has its own correct-value strict xfail.
+        if case["id"] == 2:
+            expected.pop("conservative_therapy_weeks")
+        facts, _ = extract_facts(case["note"])
+        result = evaluate(case)
+        for key, value in expected.items():
+>           assert facts[key] == value, key
+E           AssertionError: sleep_study_date
+E           assert None == True
+
+test/test_v210_independent.py:36: AssertionError
+=========================== short test summary info ============================
+FAILED test/test_archive_invariants.py::test_borrowed_date_verified_ready_without_submission_readiness_roundtrips
+FAILED test/test_corrections.py::test_borrowed_date_can_be_withdrawn_without_fixing_extraction
+FAILED test/test_v210_independent.py::test_independent_correct_values_and_states[independent_17_borrowed_citation_date]
+3 failed, 1109 passed, 10 xfailed in 35.87s
+make: *** [test] Error 1

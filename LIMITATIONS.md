@@ -3,7 +3,10 @@
 Typed corrections do not improve extraction; a SET_VALUE quotation is limited to 300 characters per span, with multiple spans allowed. See the canonical [correction limits](docs/safety_and_scope.md#correction-limits).
 
 Extraction remains a drafting aid. Negation, temporality and attribution errors
-remain, including negated lumbar diagnoses returning true. See
+remain: `has neither low back pain nor radiculopathy` can still return True,
+and an unrelated visit date in the same sentence can supply a false study date.
+The previously documented does/do/did-not-have and cross-sentence date examples
+are fixed in v2.3.0; their broader failure classes are not solved. See
 [extraction guarantees](EXTRACTION_CONTRACT.md).
 
 ## Scope Limits
@@ -41,3 +44,24 @@ remain, including negated lumbar diagnoses returning true. See
 - not validated for real-world clinical or administrative operations
 - not suitable for real PHI workflows as currently packaged
 - not a substitute for payer policy review or human chart review
+
+
+## v2.3.0 bounds and evidence
+
+Five accepted exp-001 fixes handle auxiliary-verb negation, linked reflex
+qualifiers, intact reflexes, explicitly negated numeric strength and study-date
+association across sentences. A denied numeric score now requires review; the
+old strict-xfail expectation of False remains disputed and unchanged.
+
+The reflex grammar has a small predicate vocabulary and a 160-character
+lookback. Unusual legitimate wording may be missed. Requiring date/study context
+in one sentence does not resolve two events within that sentence and can miss
+genuine cross-sentence links. Neither/nor negation, unrelated therapy,
+cross-sentence temporality/response/copy-forward and laterality remain open.
+Incorrect attestations can still produce false READY from unsupported proposals;
+CPAP demo trust independently keeps submission_readiness=false.
+
+Validation: **1123 passed, 10 xfailed**, corpus 52/52 with zero false pending,
+45/45 original authored cases, and two false pending results in the expanded 47.
+These finite regressions are not clinical validation. See the
+[release notes](docs/releases/v2.3.0.md) and [experiment report](autoloop/REPORT.md).
