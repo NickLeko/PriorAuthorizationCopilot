@@ -1,0 +1,500 @@
+........................................................................ [ 52%]
+......FFFFFFFFFFFF...F.F....F...........FFFFFFFFFFFF...F.F....F.         [100%]
+=================================== FAILURES ===================================
+__________________ test_exp004_paraphrase[source_per_patient] __________________
+
+case = {'expected_facts': {'objective_motor_or_reflex_change_in_root_distribution': None}, 'expected_objective_status': 'NOT_DOCUMENTED', 'expected_overall_status': 'CANNOT_DETERMINE', 'id': 'source_per_patient', ...}
+
+    @pytest.mark.parametrize("case", CASES, ids=lambda case: case["id"])
+    def test_exp004_paraphrase(case):
+        request = PARequest.model_validate({key: case[key] for key in ("payer", "procedure_code", "note_text")})
+        result = ReadinessService().evaluate(request)
+>       assert result.overall_status == case["expected_overall_status"]
+E       AssertionError: assert 'PENDING_VERIFICATION' == 'CANNOT_DETERMINE'
+E
+E         - CANNOT_DETERMINE
+E         + PENDING_VERIFICATION
+
+test/test_exp004_recall.py:20: AssertionError
+________________ test_exp004_paraphrase[source_patient_reports] ________________
+
+case = {'expected_facts': {'objective_motor_or_reflex_change_in_root_distribution': None}, 'expected_objective_status': 'NOT_DOCUMENTED', 'expected_overall_status': 'CANNOT_DETERMINE', 'id': 'source_patient_reports', ...}
+
+    @pytest.mark.parametrize("case", CASES, ids=lambda case: case["id"])
+    def test_exp004_paraphrase(case):
+        request = PARequest.model_validate({key: case[key] for key in ("payer", "procedure_code", "note_text")})
+        result = ReadinessService().evaluate(request)
+>       assert result.overall_status == case["expected_overall_status"]
+E       AssertionError: assert 'PENDING_VERIFICATION' == 'CANNOT_DETERMINE'
+E
+E         - CANNOT_DETERMINE
+E         + PENDING_VERIFICATION
+
+test/test_exp004_recall.py:20: AssertionError
+________________ test_exp004_paraphrase[source_patient_states] _________________
+
+case = {'expected_facts': {'objective_motor_or_reflex_change_in_root_distribution': None}, 'expected_objective_status': 'NOT_DOCUMENTED', 'expected_overall_status': 'CANNOT_DETERMINE', 'id': 'source_patient_states', ...}
+
+    @pytest.mark.parametrize("case", CASES, ids=lambda case: case["id"])
+    def test_exp004_paraphrase(case):
+        request = PARequest.model_validate({key: case[key] for key in ("payer", "procedure_code", "note_text")})
+        result = ReadinessService().evaluate(request)
+>       assert result.overall_status == case["expected_overall_status"]
+E       AssertionError: assert 'PENDING_VERIFICATION' == 'CANNOT_DETERMINE'
+E
+E         - CANNOT_DETERMINE
+E         + PENDING_VERIFICATION
+
+test/test_exp004_recall.py:20: AssertionError
+_________________ test_exp004_paraphrase[source_self_reported] _________________
+
+case = {'expected_facts': {'objective_motor_or_reflex_change_in_root_distribution': None}, 'expected_objective_status': 'NOT_DOCUMENTED', 'expected_overall_status': 'CANNOT_DETERMINE', 'id': 'source_self_reported', ...}
+
+    @pytest.mark.parametrize("case", CASES, ids=lambda case: case["id"])
+    def test_exp004_paraphrase(case):
+        request = PARequest.model_validate({key: case[key] for key in ("payer", "procedure_code", "note_text")})
+        result = ReadinessService().evaluate(request)
+>       assert result.overall_status == case["expected_overall_status"]
+E       AssertionError: assert 'PENDING_VERIFICATION' == 'CANNOT_DETERMINE'
+E
+E         - CANNOT_DETERMINE
+E         + PENDING_VERIFICATION
+
+test/test_exp004_recall.py:20: AssertionError
+__________________ test_exp004_paraphrase[source_by_history] ___________________
+
+case = {'expected_facts': {'objective_motor_or_reflex_change_in_root_distribution': None}, 'expected_objective_status': 'NOT_DOCUMENTED', 'expected_overall_status': 'CANNOT_DETERMINE', 'id': 'source_by_history', ...}
+
+    @pytest.mark.parametrize("case", CASES, ids=lambda case: case["id"])
+    def test_exp004_paraphrase(case):
+        request = PARequest.model_validate({key: case[key] for key in ("payer", "procedure_code", "note_text")})
+        result = ReadinessService().evaluate(request)
+>       assert result.overall_status == case["expected_overall_status"]
+E       AssertionError: assert 'PENDING_VERIFICATION' == 'CANNOT_DETERMINE'
+E
+E         - CANNOT_DETERMINE
+E         + PENDING_VERIFICATION
+
+test/test_exp004_recall.py:20: AssertionError
+_________________ test_exp004_paraphrase[source_exam_deferred] _________________
+
+case = {'expected_facts': {'objective_motor_or_reflex_change_in_root_distribution': None}, 'expected_objective_status': 'NOT_DOCUMENTED', 'expected_overall_status': 'CANNOT_DETERMINE', 'id': 'source_exam_deferred', ...}
+
+    @pytest.mark.parametrize("case", CASES, ids=lambda case: case["id"])
+    def test_exp004_paraphrase(case):
+        request = PARequest.model_validate({key: case[key] for key in ("payer", "procedure_code", "note_text")})
+        result = ReadinessService().evaluate(request)
+>       assert result.overall_status == case["expected_overall_status"]
+E       AssertionError: assert 'PENDING_VERIFICATION' == 'CANNOT_DETERMINE'
+E
+E         - CANNOT_DETERMINE
+E         + PENDING_VERIFICATION
+
+test/test_exp004_recall.py:20: AssertionError
+_________________ test_exp004_paraphrase[source_not_performed] _________________
+
+case = {'expected_facts': {'objective_motor_or_reflex_change_in_root_distribution': None}, 'expected_objective_status': 'NOT_DOCUMENTED', 'expected_overall_status': 'CANNOT_DETERMINE', 'id': 'source_not_performed', ...}
+
+    @pytest.mark.parametrize("case", CASES, ids=lambda case: case["id"])
+    def test_exp004_paraphrase(case):
+        request = PARequest.model_validate({key: case[key] for key in ("payer", "procedure_code", "note_text")})
+        result = ReadinessService().evaluate(request)
+>       assert result.overall_status == case["expected_overall_status"]
+E       AssertionError: assert 'PENDING_VERIFICATION' == 'CANNOT_DETERMINE'
+E
+E         - CANNOT_DETERMINE
+E         + PENDING_VERIFICATION
+
+test/test_exp004_recall.py:20: AssertionError
+_________________ test_exp004_paraphrase[source_not_examined] __________________
+
+case = {'expected_facts': {'objective_motor_or_reflex_change_in_root_distribution': None}, 'expected_objective_status': 'NOT_DOCUMENTED', 'expected_overall_status': 'CANNOT_DETERMINE', 'id': 'source_not_examined', ...}
+
+    @pytest.mark.parametrize("case", CASES, ids=lambda case: case["id"])
+    def test_exp004_paraphrase(case):
+        request = PARequest.model_validate({key: case[key] for key in ("payer", "procedure_code", "note_text")})
+        result = ReadinessService().evaluate(request)
+>       assert result.overall_status == case["expected_overall_status"]
+E       AssertionError: assert 'PENDING_VERIFICATION' == 'CANNOT_DETERMINE'
+E
+E         - CANNOT_DETERMINE
+E         + PENDING_VERIFICATION
+
+test/test_exp004_recall.py:20: AssertionError
+_________________ test_exp004_paraphrase[source_unable_assess] _________________
+
+case = {'expected_facts': {'objective_motor_or_reflex_change_in_root_distribution': None}, 'expected_objective_status': 'NOT_DOCUMENTED', 'expected_overall_status': 'CANNOT_DETERMINE', 'id': 'source_unable_assess', ...}
+
+    @pytest.mark.parametrize("case", CASES, ids=lambda case: case["id"])
+    def test_exp004_paraphrase(case):
+        request = PARequest.model_validate({key: case[key] for key in ("payer", "procedure_code", "note_text")})
+        result = ReadinessService().evaluate(request)
+>       assert result.overall_status == case["expected_overall_status"]
+E       AssertionError: assert 'PENDING_VERIFICATION' == 'CANNOT_DETERMINE'
+E
+E         - CANNOT_DETERMINE
+E         + PENDING_VERIFICATION
+
+test/test_exp004_recall.py:20: AssertionError
+____________________ test_exp004_paraphrase[source_refusal] ____________________
+
+case = {'expected_facts': {'objective_motor_or_reflex_change_in_root_distribution': None}, 'expected_objective_status': 'NOT_DOCUMENTED', 'expected_overall_status': 'CANNOT_DETERMINE', 'id': 'source_refusal', ...}
+
+    @pytest.mark.parametrize("case", CASES, ids=lambda case: case["id"])
+    def test_exp004_paraphrase(case):
+        request = PARequest.model_validate({key: case[key] for key in ("payer", "procedure_code", "note_text")})
+        result = ReadinessService().evaluate(request)
+>       assert result.overall_status == case["expected_overall_status"]
+E       AssertionError: assert 'PENDING_VERIFICATION' == 'CANNOT_DETERMINE'
+E
+E         - CANNOT_DETERMINE
+E         + PENDING_VERIFICATION
+
+test/test_exp004_recall.py:20: AssertionError
+____________ test_exp004_paraphrase[source_legacy_strength_report] _____________
+
+case = {'expected_facts': {'objective_motor_or_reflex_change_in_root_distribution': None}, 'expected_objective_status': 'NOT_DOCUMENTED', 'expected_overall_status': 'CANNOT_DETERMINE', 'id': 'source_legacy_strength_report', ...}
+
+    @pytest.mark.parametrize("case", CASES, ids=lambda case: case["id"])
+    def test_exp004_paraphrase(case):
+        request = PARequest.model_validate({key: case[key] for key in ("payer", "procedure_code", "note_text")})
+        result = ReadinessService().evaluate(request)
+>       assert result.overall_status == case["expected_overall_status"]
+E       AssertionError: assert 'PENDING_VERIFICATION' == 'CANNOT_DETERMINE'
+E
+E         - CANNOT_DETERMINE
+E         + PENDING_VERIFICATION
+
+test/test_exp004_recall.py:20: AssertionError
+_____________ test_exp004_paraphrase[source_legacy_reflex_reports] _____________
+
+case = {'expected_facts': {'objective_motor_or_reflex_change_in_root_distribution': None}, 'expected_objective_status': 'NOT_DOCUMENTED', 'expected_overall_status': 'CANNOT_DETERMINE', 'id': 'source_legacy_reflex_reports', ...}
+
+    @pytest.mark.parametrize("case", CASES, ids=lambda case: case["id"])
+    def test_exp004_paraphrase(case):
+        request = PARequest.model_validate({key: case[key] for key in ("payer", "procedure_code", "note_text")})
+        result = ReadinessService().evaluate(request)
+>       assert result.overall_status == case["expected_overall_status"]
+E       AssertionError: assert 'PENDING_VERIFICATION' == 'CANNOT_DETERMINE'
+E
+E         - CANNOT_DETERMINE
+E         + PENDING_VERIFICATION
+
+test/test_exp004_recall.py:20: AssertionError
+____________ test_exp004_paraphrase[source_objective_word_history] _____________
+
+case = {'expected_facts': {'objective_motor_or_reflex_change_in_root_distribution': None}, 'expected_objective_status': 'NOT_DOCUMENTED', 'expected_overall_status': 'CANNOT_DETERMINE', 'id': 'source_objective_word_history', ...}
+
+    @pytest.mark.parametrize("case", CASES, ids=lambda case: case["id"])
+    def test_exp004_paraphrase(case):
+        request = PARequest.model_validate({key: case[key] for key in ("payer", "procedure_code", "note_text")})
+        result = ReadinessService().evaluate(request)
+>       assert result.overall_status == case["expected_overall_status"]
+E       AssertionError: assert 'PENDING_VERIFICATION' == 'CANNOT_DETERMINE'
+E
+E         - CANNOT_DETERMINE
+E         + PENDING_VERIFICATION
+
+test/test_exp004_recall.py:20: AssertionError
+_________________ test_exp004_paraphrase[source_normal_report] _________________
+
+case = {'expected_facts': {'objective_motor_or_reflex_change_in_root_distribution': None}, 'expected_objective_status': 'NOT_DOCUMENTED', 'expected_overall_status': 'CANNOT_DETERMINE', 'id': 'source_normal_report', ...}
+
+    @pytest.mark.parametrize("case", CASES, ids=lambda case: case["id"])
+    def test_exp004_paraphrase(case):
+        request = PARequest.model_validate({key: case[key] for key in ("payer", "procedure_code", "note_text")})
+        result = ReadinessService().evaluate(request)
+>       assert result.overall_status == case["expected_overall_status"]
+E       AssertionError: assert 'NOT_READY' == 'CANNOT_DETERMINE'
+E
+E         - CANNOT_DETERMINE
+E         + NOT_READY
+
+test/test_exp004_recall.py:20: AssertionError
+____________ test_exp004_paraphrase[source_conflicting_word_grade] _____________
+
+case = {'expected_facts': {'objective_motor_or_reflex_change_in_root_distribution': '__REVIEW_REQUIRED__'}, 'expected_objective_status': 'NEEDS_REVIEW', 'expected_overall_status': 'NEEDS_REVIEW', 'id': 'source_conflicting_word_grade', ...}
+
+    @pytest.mark.parametrize("case", CASES, ids=lambda case: case["id"])
+    def test_exp004_paraphrase(case):
+        request = PARequest.model_validate({key: case[key] for key in ("payer", "procedure_code", "note_text")})
+        result = ReadinessService().evaluate(request)
+>       assert result.overall_status == case["expected_overall_status"]
+E       AssertionError: assert 'NOT_READY' == 'NEEDS_REVIEW'
+E
+E         - NEEDS_REVIEW
+E         + NOT_READY
+
+test/test_exp004_recall.py:20: AssertionError
+____________ test_objective_source_requirement[source_per_patient] _____________
+
+case = {'expected_facts': {'objective_motor_or_reflex_change_in_root_distribution': None}, 'expected_objective_status': 'NOT_DOCUMENTED', 'expected_overall_status': 'CANNOT_DETERMINE', 'id': 'source_per_patient', ...}
+
+    @pytest.mark.parametrize("case", CASES, ids=lambda case: case["id"])
+    def test_objective_source_requirement(case):
+        request = PARequest.model_validate({key: case[key] for key in ("payer", "procedure_code", "note_text")})
+        result = ReadinessService().evaluate(request)
+        requirement = next(item for item in result.results if item.key == OBJECTIVE)
+>       assert requirement.status == case["expected_objective_status"]
+E       AssertionError: assert 'MET' == 'NOT_DOCUMENTED'
+E
+E         - NOT_DOCUMENTED
+E         + MET
+
+test/test_exp004_exam_sources.py:20: AssertionError
+__________ test_objective_source_requirement[source_patient_reports] ___________
+
+case = {'expected_facts': {'objective_motor_or_reflex_change_in_root_distribution': None}, 'expected_objective_status': 'NOT_DOCUMENTED', 'expected_overall_status': 'CANNOT_DETERMINE', 'id': 'source_patient_reports', ...}
+
+    @pytest.mark.parametrize("case", CASES, ids=lambda case: case["id"])
+    def test_objective_source_requirement(case):
+        request = PARequest.model_validate({key: case[key] for key in ("payer", "procedure_code", "note_text")})
+        result = ReadinessService().evaluate(request)
+        requirement = next(item for item in result.results if item.key == OBJECTIVE)
+>       assert requirement.status == case["expected_objective_status"]
+E       AssertionError: assert 'MET' == 'NOT_DOCUMENTED'
+E
+E         - NOT_DOCUMENTED
+E         + MET
+
+test/test_exp004_exam_sources.py:20: AssertionError
+___________ test_objective_source_requirement[source_patient_states] ___________
+
+case = {'expected_facts': {'objective_motor_or_reflex_change_in_root_distribution': None}, 'expected_objective_status': 'NOT_DOCUMENTED', 'expected_overall_status': 'CANNOT_DETERMINE', 'id': 'source_patient_states', ...}
+
+    @pytest.mark.parametrize("case", CASES, ids=lambda case: case["id"])
+    def test_objective_source_requirement(case):
+        request = PARequest.model_validate({key: case[key] for key in ("payer", "procedure_code", "note_text")})
+        result = ReadinessService().evaluate(request)
+        requirement = next(item for item in result.results if item.key == OBJECTIVE)
+>       assert requirement.status == case["expected_objective_status"]
+E       AssertionError: assert 'MET' == 'NOT_DOCUMENTED'
+E
+E         - NOT_DOCUMENTED
+E         + MET
+
+test/test_exp004_exam_sources.py:20: AssertionError
+___________ test_objective_source_requirement[source_self_reported] ____________
+
+case = {'expected_facts': {'objective_motor_or_reflex_change_in_root_distribution': None}, 'expected_objective_status': 'NOT_DOCUMENTED', 'expected_overall_status': 'CANNOT_DETERMINE', 'id': 'source_self_reported', ...}
+
+    @pytest.mark.parametrize("case", CASES, ids=lambda case: case["id"])
+    def test_objective_source_requirement(case):
+        request = PARequest.model_validate({key: case[key] for key in ("payer", "procedure_code", "note_text")})
+        result = ReadinessService().evaluate(request)
+        requirement = next(item for item in result.results if item.key == OBJECTIVE)
+>       assert requirement.status == case["expected_objective_status"]
+E       AssertionError: assert 'MET' == 'NOT_DOCUMENTED'
+E
+E         - NOT_DOCUMENTED
+E         + MET
+
+test/test_exp004_exam_sources.py:20: AssertionError
+_____________ test_objective_source_requirement[source_by_history] _____________
+
+case = {'expected_facts': {'objective_motor_or_reflex_change_in_root_distribution': None}, 'expected_objective_status': 'NOT_DOCUMENTED', 'expected_overall_status': 'CANNOT_DETERMINE', 'id': 'source_by_history', ...}
+
+    @pytest.mark.parametrize("case", CASES, ids=lambda case: case["id"])
+    def test_objective_source_requirement(case):
+        request = PARequest.model_validate({key: case[key] for key in ("payer", "procedure_code", "note_text")})
+        result = ReadinessService().evaluate(request)
+        requirement = next(item for item in result.results if item.key == OBJECTIVE)
+>       assert requirement.status == case["expected_objective_status"]
+E       AssertionError: assert 'MET' == 'NOT_DOCUMENTED'
+E
+E         - NOT_DOCUMENTED
+E         + MET
+
+test/test_exp004_exam_sources.py:20: AssertionError
+___________ test_objective_source_requirement[source_exam_deferred] ____________
+
+case = {'expected_facts': {'objective_motor_or_reflex_change_in_root_distribution': None}, 'expected_objective_status': 'NOT_DOCUMENTED', 'expected_overall_status': 'CANNOT_DETERMINE', 'id': 'source_exam_deferred', ...}
+
+    @pytest.mark.parametrize("case", CASES, ids=lambda case: case["id"])
+    def test_objective_source_requirement(case):
+        request = PARequest.model_validate({key: case[key] for key in ("payer", "procedure_code", "note_text")})
+        result = ReadinessService().evaluate(request)
+        requirement = next(item for item in result.results if item.key == OBJECTIVE)
+>       assert requirement.status == case["expected_objective_status"]
+E       AssertionError: assert 'MET' == 'NOT_DOCUMENTED'
+E
+E         - NOT_DOCUMENTED
+E         + MET
+
+test/test_exp004_exam_sources.py:20: AssertionError
+___________ test_objective_source_requirement[source_not_performed] ____________
+
+case = {'expected_facts': {'objective_motor_or_reflex_change_in_root_distribution': None}, 'expected_objective_status': 'NOT_DOCUMENTED', 'expected_overall_status': 'CANNOT_DETERMINE', 'id': 'source_not_performed', ...}
+
+    @pytest.mark.parametrize("case", CASES, ids=lambda case: case["id"])
+    def test_objective_source_requirement(case):
+        request = PARequest.model_validate({key: case[key] for key in ("payer", "procedure_code", "note_text")})
+        result = ReadinessService().evaluate(request)
+        requirement = next(item for item in result.results if item.key == OBJECTIVE)
+>       assert requirement.status == case["expected_objective_status"]
+E       AssertionError: assert 'MET' == 'NOT_DOCUMENTED'
+E
+E         - NOT_DOCUMENTED
+E         + MET
+
+test/test_exp004_exam_sources.py:20: AssertionError
+____________ test_objective_source_requirement[source_not_examined] ____________
+
+case = {'expected_facts': {'objective_motor_or_reflex_change_in_root_distribution': None}, 'expected_objective_status': 'NOT_DOCUMENTED', 'expected_overall_status': 'CANNOT_DETERMINE', 'id': 'source_not_examined', ...}
+
+    @pytest.mark.parametrize("case", CASES, ids=lambda case: case["id"])
+    def test_objective_source_requirement(case):
+        request = PARequest.model_validate({key: case[key] for key in ("payer", "procedure_code", "note_text")})
+        result = ReadinessService().evaluate(request)
+        requirement = next(item for item in result.results if item.key == OBJECTIVE)
+>       assert requirement.status == case["expected_objective_status"]
+E       AssertionError: assert 'MET' == 'NOT_DOCUMENTED'
+E
+E         - NOT_DOCUMENTED
+E         + MET
+
+test/test_exp004_exam_sources.py:20: AssertionError
+___________ test_objective_source_requirement[source_unable_assess] ____________
+
+case = {'expected_facts': {'objective_motor_or_reflex_change_in_root_distribution': None}, 'expected_objective_status': 'NOT_DOCUMENTED', 'expected_overall_status': 'CANNOT_DETERMINE', 'id': 'source_unable_assess', ...}
+
+    @pytest.mark.parametrize("case", CASES, ids=lambda case: case["id"])
+    def test_objective_source_requirement(case):
+        request = PARequest.model_validate({key: case[key] for key in ("payer", "procedure_code", "note_text")})
+        result = ReadinessService().evaluate(request)
+        requirement = next(item for item in result.results if item.key == OBJECTIVE)
+>       assert requirement.status == case["expected_objective_status"]
+E       AssertionError: assert 'MET' == 'NOT_DOCUMENTED'
+E
+E         - NOT_DOCUMENTED
+E         + MET
+
+test/test_exp004_exam_sources.py:20: AssertionError
+______________ test_objective_source_requirement[source_refusal] _______________
+
+case = {'expected_facts': {'objective_motor_or_reflex_change_in_root_distribution': None}, 'expected_objective_status': 'NOT_DOCUMENTED', 'expected_overall_status': 'CANNOT_DETERMINE', 'id': 'source_refusal', ...}
+
+    @pytest.mark.parametrize("case", CASES, ids=lambda case: case["id"])
+    def test_objective_source_requirement(case):
+        request = PARequest.model_validate({key: case[key] for key in ("payer", "procedure_code", "note_text")})
+        result = ReadinessService().evaluate(request)
+        requirement = next(item for item in result.results if item.key == OBJECTIVE)
+>       assert requirement.status == case["expected_objective_status"]
+E       AssertionError: assert 'MET' == 'NOT_DOCUMENTED'
+E
+E         - NOT_DOCUMENTED
+E         + MET
+
+test/test_exp004_exam_sources.py:20: AssertionError
+_______ test_objective_source_requirement[source_legacy_strength_report] _______
+
+case = {'expected_facts': {'objective_motor_or_reflex_change_in_root_distribution': None}, 'expected_objective_status': 'NOT_DOCUMENTED', 'expected_overall_status': 'CANNOT_DETERMINE', 'id': 'source_legacy_strength_report', ...}
+
+    @pytest.mark.parametrize("case", CASES, ids=lambda case: case["id"])
+    def test_objective_source_requirement(case):
+        request = PARequest.model_validate({key: case[key] for key in ("payer", "procedure_code", "note_text")})
+        result = ReadinessService().evaluate(request)
+        requirement = next(item for item in result.results if item.key == OBJECTIVE)
+>       assert requirement.status == case["expected_objective_status"]
+E       AssertionError: assert 'MET' == 'NOT_DOCUMENTED'
+E
+E         - NOT_DOCUMENTED
+E         + MET
+
+test/test_exp004_exam_sources.py:20: AssertionError
+_______ test_objective_source_requirement[source_legacy_reflex_reports] ________
+
+case = {'expected_facts': {'objective_motor_or_reflex_change_in_root_distribution': None}, 'expected_objective_status': 'NOT_DOCUMENTED', 'expected_overall_status': 'CANNOT_DETERMINE', 'id': 'source_legacy_reflex_reports', ...}
+
+    @pytest.mark.parametrize("case", CASES, ids=lambda case: case["id"])
+    def test_objective_source_requirement(case):
+        request = PARequest.model_validate({key: case[key] for key in ("payer", "procedure_code", "note_text")})
+        result = ReadinessService().evaluate(request)
+        requirement = next(item for item in result.results if item.key == OBJECTIVE)
+>       assert requirement.status == case["expected_objective_status"]
+E       AssertionError: assert 'MET' == 'NOT_DOCUMENTED'
+E
+E         - NOT_DOCUMENTED
+E         + MET
+
+test/test_exp004_exam_sources.py:20: AssertionError
+_______ test_objective_source_requirement[source_objective_word_history] _______
+
+case = {'expected_facts': {'objective_motor_or_reflex_change_in_root_distribution': None}, 'expected_objective_status': 'NOT_DOCUMENTED', 'expected_overall_status': 'CANNOT_DETERMINE', 'id': 'source_objective_word_history', ...}
+
+    @pytest.mark.parametrize("case", CASES, ids=lambda case: case["id"])
+    def test_objective_source_requirement(case):
+        request = PARequest.model_validate({key: case[key] for key in ("payer", "procedure_code", "note_text")})
+        result = ReadinessService().evaluate(request)
+        requirement = next(item for item in result.results if item.key == OBJECTIVE)
+>       assert requirement.status == case["expected_objective_status"]
+E       AssertionError: assert 'MET' == 'NOT_DOCUMENTED'
+E
+E         - NOT_DOCUMENTED
+E         + MET
+
+test/test_exp004_exam_sources.py:20: AssertionError
+___________ test_objective_source_requirement[source_normal_report] ____________
+
+case = {'expected_facts': {'objective_motor_or_reflex_change_in_root_distribution': None}, 'expected_objective_status': 'NOT_DOCUMENTED', 'expected_overall_status': 'CANNOT_DETERMINE', 'id': 'source_normal_report', ...}
+
+    @pytest.mark.parametrize("case", CASES, ids=lambda case: case["id"])
+    def test_objective_source_requirement(case):
+        request = PARequest.model_validate({key: case[key] for key in ("payer", "procedure_code", "note_text")})
+        result = ReadinessService().evaluate(request)
+        requirement = next(item for item in result.results if item.key == OBJECTIVE)
+>       assert requirement.status == case["expected_objective_status"]
+E       AssertionError: assert 'NOT_MET' == 'NOT_DOCUMENTED'
+E
+E         - NOT_DOCUMENTED
+E         + NOT_MET
+
+test/test_exp004_exam_sources.py:20: AssertionError
+_______ test_objective_source_requirement[source_conflicting_word_grade] _______
+
+case = {'expected_facts': {'objective_motor_or_reflex_change_in_root_distribution': '__REVIEW_REQUIRED__'}, 'expected_objective_status': 'NEEDS_REVIEW', 'expected_overall_status': 'NEEDS_REVIEW', 'id': 'source_conflicting_word_grade', ...}
+
+    @pytest.mark.parametrize("case", CASES, ids=lambda case: case["id"])
+    def test_objective_source_requirement(case):
+        request = PARequest.model_validate({key: case[key] for key in ("payer", "procedure_code", "note_text")})
+        result = ReadinessService().evaluate(request)
+        requirement = next(item for item in result.results if item.key == OBJECTIVE)
+>       assert requirement.status == case["expected_objective_status"]
+E       AssertionError: assert 'NOT_MET' == 'NEEDS_REVIEW'
+E
+E         - NEEDS_REVIEW
+E         + NOT_MET
+
+test/test_exp004_exam_sources.py:20: AssertionError
+=========================== short test summary info ============================
+FAILED test/test_exp004_recall.py::test_exp004_paraphrase[source_per_patient]
+FAILED test/test_exp004_recall.py::test_exp004_paraphrase[source_patient_reports]
+FAILED test/test_exp004_recall.py::test_exp004_paraphrase[source_patient_states]
+FAILED test/test_exp004_recall.py::test_exp004_paraphrase[source_self_reported]
+FAILED test/test_exp004_recall.py::test_exp004_paraphrase[source_by_history]
+FAILED test/test_exp004_recall.py::test_exp004_paraphrase[source_exam_deferred]
+FAILED test/test_exp004_recall.py::test_exp004_paraphrase[source_not_performed]
+FAILED test/test_exp004_recall.py::test_exp004_paraphrase[source_not_examined]
+FAILED test/test_exp004_recall.py::test_exp004_paraphrase[source_unable_assess]
+FAILED test/test_exp004_recall.py::test_exp004_paraphrase[source_refusal] - A...
+FAILED test/test_exp004_recall.py::test_exp004_paraphrase[source_legacy_strength_report]
+FAILED test/test_exp004_recall.py::test_exp004_paraphrase[source_legacy_reflex_reports]
+FAILED test/test_exp004_recall.py::test_exp004_paraphrase[source_objective_word_history]
+FAILED test/test_exp004_recall.py::test_exp004_paraphrase[source_normal_report]
+FAILED test/test_exp004_recall.py::test_exp004_paraphrase[source_conflicting_word_grade]
+FAILED test/test_exp004_exam_sources.py::test_objective_source_requirement[source_per_patient]
+FAILED test/test_exp004_exam_sources.py::test_objective_source_requirement[source_patient_reports]
+FAILED test/test_exp004_exam_sources.py::test_objective_source_requirement[source_patient_states]
+FAILED test/test_exp004_exam_sources.py::test_objective_source_requirement[source_self_reported]
+FAILED test/test_exp004_exam_sources.py::test_objective_source_requirement[source_by_history]
+FAILED test/test_exp004_exam_sources.py::test_objective_source_requirement[source_exam_deferred]
+FAILED test/test_exp004_exam_sources.py::test_objective_source_requirement[source_not_performed]
+FAILED test/test_exp004_exam_sources.py::test_objective_source_requirement[source_not_examined]
+FAILED test/test_exp004_exam_sources.py::test_objective_source_requirement[source_unable_assess]
+FAILED test/test_exp004_exam_sources.py::test_objective_source_requirement[source_refusal]
+FAILED test/test_exp004_exam_sources.py::test_objective_source_requirement[source_legacy_strength_report]
+FAILED test/test_exp004_exam_sources.py::test_objective_source_requirement[source_legacy_reflex_reports]
+FAILED test/test_exp004_exam_sources.py::test_objective_source_requirement[source_objective_word_history]
+FAILED test/test_exp004_exam_sources.py::test_objective_source_requirement[source_normal_report]
+FAILED test/test_exp004_exam_sources.py::test_objective_source_requirement[source_conflicting_word_grade]
+30 failed, 106 passed in 1.02s

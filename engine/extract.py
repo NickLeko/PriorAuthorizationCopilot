@@ -125,9 +125,15 @@ BACK_PAIN_RE = re.compile(r"\b(?:low\s+)?back pain\b")
 RADICULOPATHY_RE = re.compile(r"\b(?:lumbar\s+)?radiculopathy\b|\bradicular (?:back )?pain\b")
 ROOT_DISTRIBUTION_RE = re.compile(r"\b(?:l[1-5]|s[1-5])(?:\s+(?:nerve\s+)?root)?\s+distribution\b|\bnerve[- ]root distribution\b")
 ROOT_WORD_STRENGTH_RE = re.compile(
-    r"^(?:(?P<side>right|left)\s+)?(?:l[1-5]|s[1-5])(?:\s+(?:nerve\s+)?root)?\s+distribution\s*:?\s+"
+    r"(?:(?P<side>right|left)\s+)?(?:l[1-5]|s[1-5])(?:\s+(?:nerve\s+)?root)?\s+distribution\s*:?\s+"
     r"strength\s+(?:(?:is|was)\s+)?(?P<negated>not\s+)?(?P<score>[0-5](?:\.\d)?)\s+(?:out\s+)?of\s+5"
-    r"(?P<attribution>\s+from\s+[^.!?;\n]+)?$"
+    r"(?P<attribution>\s+from\s+[^.!?;\n]+)?"
+)
+NONOBJECTIVE_EXAM_SOURCE_RE = re.compile(
+    r"\b(?:per\s+(?:the\s+)?patient|patient\s+(?:reports|states)|"
+    r"(?:self|patient)[-\s]+reported|by\s+history|deferred|"
+    r"not\s+(?:performed|examined)|unable\s+to\s+assess|"
+    r"limited\s+by\s+(?:patient\s+)?refusal)\b"
 )
 # Typed motor/reflex scales; anatomy is a literal exam cue, never a root lookup.
 LOWER_LIMB_MOTOR_TERM = (
@@ -770,6 +776,44 @@ def _resolve_boolean_candidates(
     return bool(value)
 
 
+def _objective_candidates_with_source_guards(text: str, candidates: List[Tuple[bool | str, int, int]]) -> List[Tuple[bool | str, int, int]]:
+    """Separate subjective/unperformed exams before resolving objective facts.
+
+    Qualifiers cover the entire real sentence, including semicolons and decimal
+    grades. Apply this once to every extraction route, including legacy paths.
+    """
+    objective = list(candidates)
+    nonobjective: List[Tuple[bool | str, int, int]] = []
+    for start, end in _sentence_spans(text, therapy=True):
+        sentence = text[start:end]
+        if not NONOBJECTIVE_EXAM_SOURCE_RE.search(sentence):
+            continue
+        qualified = [candidate for candidate in candidates if start <= candidate[1] and candidate[2] <= end]
+        objective = [candidate for candidate in objective if not (start <= candidate[1] and candidate[2] <= end)]
+        nonobjective.extend((value, start, end) for value, _, _ in qualified)
+        # The passing word-grade route still requires fullmatch. A surrounding
+        # qualifier may prevent that match, but a conflicting reported grade
+        # must not disappear when a separate objective exam is present.
+        word_grade = ROOT_WORD_STRENGTH_RE.search(sentence)
+        if not qualified and word_grade and not _mention_is_nonpatient_context(sentence, word_grade.start(), word_grade.end()):
+            value = (
+                REVIEW_REQUIRED_FACT
+                if word_grade.group("negated") or word_grade.group("attribution")
+                else float(word_grade.group("score")) < 5
+            )
+            nonobjective.append((value, start, end))
+    if not objective:
+        # Patient/history evidence cannot supply even an objective normal exam.
+        return []
+    objective_values = {value for value, _, _ in objective}
+    conflicts = [
+        (REVIEW_REQUIRED_FACT, start, end)
+        for value, start, end in nonobjective
+        if value == REVIEW_REQUIRED_FACT or value not in objective_values
+    ]
+    return objective + conflicts
+
+
 def _typed_root_exam_candidates(text: str) -> List[Tuple[bool | str, int, int]]:
     candidates = []
     for sentence_start, sentence_end in _sentence_spans(text, therapy=True):
@@ -1094,7 +1138,7 @@ def _extract_facts(note_text: str) -> Tuple[Dict[str, Any], Dict[str, List[Dict[
         objective_candidates.append((objective_value, sentence_start, sentence_end))
 
     objective_motor_or_reflex_change = _resolve_boolean_candidates(
-        objective_candidates,
+        _objective_candidates_with_source_guards(t, objective_candidates),
         key="objective_motor_or_reflex_change_in_root_distribution",
         evidence=evidence,
         raw=raw,

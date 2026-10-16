@@ -115,5 +115,62 @@ not the prospective before-fix evidence above: own 33/68 → 68/68 exact,
 0/20 → 20/20 passing positives, zero false pending both times. Dev is 11/27 →
 27/27, zero false pending both times. All 52 corpus proposals, source spans,
 public states and input/fact-set/verification fingerprints are identical.
-Four iterations used; optional iterations 5–6 not needed for the visible check.
+At that checkpoint four iterations sufficed for the visible check. The owner
+subsequently requested iteration 5 after discovering the safety defect below.
 No held-out input was accessed; a perfect visible check is not held-out evidence.
+
+## Iteration 5 — source attribution and exam performance
+
+Origin: the owner found a false PENDING_VERIFICATION in held-out evaluation
+after iteration 4; our own tests did not find it. The owner supplied the failure
+class, not the held-out dataset. The earlier visible gates missed this defect.
+
+Hypothesis: typed grades and legacy strength/reflex findings bypass source and
+exam-performance qualifiers, particularly across a semicolon. General rule
+(before implementation): a motor/reflex finding attributed in its sentence to
+the patient or history (per patient, patient reports/states, self-reported,
+by history), or accompanied by an unperformed exam (deferred, not performed,
+not examined, unable to assess, limited by refusal), supplies no objective
+evidence. Apply one sentence-wide guard to typed, legacy slash/word strength
+and descriptive reflex/weakness paths. A qualified source alone is
+NOT_DOCUMENTED; a conflicting objective finding in a different sentence is
+NEEDS_REVIEW. An agreeing objective finding remains usable. Ordinary objective
+exams, including on-exam/examination-shows language, retain their behavior.
+
+Before changing extraction, authored iteration-5.json: 10 positives / 24
+negatives. These cover both qualifier positions, semicolons, decimal and word
+grades, numeric/descriptive reflexes, legacy objective-weakness wording,
+conflicting and agreeing sources, and sentence isolation. Target exam vocabulary
+includes soleus, hip/plantar flexion, Achilles/ankle/knee jerks and right-sided
+roots, rather than copying dev sentences. Dev remains unchanged.
+
+Before-fix evidence on 8199ea2: new batch 19/34 exact, **13 false pending**;
+all own 87/102. Corpus 52/52, dev 27/27, exp-002 64/69 and exp-003 74/74
+still had zero false pending. The safety harness intentionally rejects that
+existing baseline once the new cases expose it; this is not a green candidate.
+Paired tests: 30 failed / 106 passed before the repair. Inputs and expected
+facts/statuses remain identical between before and after.
+
+Implementation: one final objective-candidate guard covers all finding routes,
+with whole-sentence scope across semicolons and decimal scores. Qualified-only
+sources are discarded, including purported normal grades. When another objective
+candidate contradicts normal/abnormal status, preserve both sentence citations
+and require review. An agreeing objective source remains valid. A qualified word
+grade is recognized for conflict detection even if surrounding attribution
+prevents the existing passing route’s full-sentence match; this does not broaden
+passing word-grade extraction. No drug-table change or label dispute.
+
+Final iteration-5 gates: new batch **34/34** (10 positives / 24 negatives),
+all own **102/102** (30 positives / 72 negatives), dev **27/27** including every
+requirement status, corpus **52/52**, exp-002 **64/69** and exp-003 **74/74**
+with full frozen reports unchanged. Zero false PENDING_VERIFICATION on every
+set and every authored negative. Always-CANNOT_DETERMINE canary is 18/34 on the
+new batch and 51/102 on all own cases; its zero false pending alone is not recall.
+Paired/requirement tests: **136 passed**; make test: **1437 passed, 10 xfailed
+in 38.47s**. Make lint passes (77 Python files). The additional requirement-level
+checks distinguish NOT_DOCUMENTED/MISSING from NEEDS_REVIEW and verify literal
+citations for conflicting evidence. No candidate safety failure or reversion;
+the known pre-fix owner defect is repaired. Scope and corpus fingerprint audit
+are retained separately from the original four-iteration historical audits.
+The actual held-out dataset was not accessed or rerun here; no held-out passing
+result is claimed. This iteration used the owner’s feedback and is development.
