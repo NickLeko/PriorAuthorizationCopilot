@@ -1,0 +1,15 @@
+Release exp-004 (f1412a6) as v2.6.0. Listed-drug courses now recognize supported leading verbs, doses/frequencies and duration-first ordering; typed motor/reflex exams, directly linked study dates and full AHI/RDI names broaden recall. Sentence-wide patient/history and exam-performance qualifiers prevent subjective or unperformed exams from supplying objective findings across new and legacy paths.
+
+Development used an owner-written visible dev set (27 cases); evaluation
+used a separate owner-held-out set (27 cases, different wording, never
+visible): exact 10→24/27, 0 false PENDING_VERIFICATION. One safety defect
+(patient-reported or deferred exam accepted as objective) was found by
+held-out evaluation on a prior set and fixed before release.
+
+Held-out results are owner-supplied; no held-out cases were accessed or rerun here. The owner dev file remains committed and byte-identical. The drug table is unchanged owner-approved reviewed data; ATC codes require human verification against WHO ATC before any external claim.
+
+Release prep adds 24 executable contract examples, preserves all 67 prior objects and four known-failure markers, updates current docs/counts, and bumps engine/app plus two pinned version assertions to 2.6.0 (record schema remains 2.0.0). Fixed-clock regeneration at 2026-09-01T00:00:00Z wrote 25 outputs: 12 version-only changes and 13 byte-identical files. No governance or other non-version difference occurred; the restore-and-stop guard did not trigger. Extraction logic, data, policies, monitor state and experiment records are unchanged from f1412a6.
+
+Validation: make test 1461 passed / 10 xfailed; make lint green. Corpus 52/52, visible dev 27/27, exp-004 own cases 102/102, exp-002 64/69 and exp-003 74/74; zero false PENDING_VERIFICATION throughout. All five scorer reports match the experiment exactly. Generation, scope and documentation drift audits are recorded under docs/releases/v2.6.0*.
+
+Remaining limits include finite course/exam vocabularies, conservative sentence-wide source exclusion, three owner-held-out exact-status misses, neither/nor, same-sentence borrowed dates and broader attribution/episode gaps. Human verification and independent policy trust still gate readiness. This PR does not merge, tag or verify deployment.

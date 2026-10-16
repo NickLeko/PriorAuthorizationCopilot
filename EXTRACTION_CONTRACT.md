@@ -1,4 +1,4 @@
-# Extraction, correction and verification contract v2.5
+# Extraction, correction and verification contract v2.6
 
 v2.0.0 retains the extractor and deterministic operators. Typed, source-located corrections materialize effective facts over an immutable original proposal; every ordered event is retained and the last event wins. SET_VALUE requires exact quotations of at most 300 characters per span and the submitted note hash; multiple spans are allowed and overlength spans are rejected, never truncated. SET_MISSING records document review and any offending proposal spans. SET_NEEDS_REVIEW and RESTORE_ORIGINAL preserve explicit state/history. Types, units and reviewer-enterable values come from fact contracts; there is no scalar coercion or free-text fact value.
 
@@ -11,7 +11,7 @@ Its claim that a diagnosis returned True only without supported negation was
 contradicted by `Patient does not have low back pain with radiculopathy`.
 v1.5.0 resolves that contradiction by changing what the engine may assert,
 not by making extraction match the old contract. Negation, temporality and
-attribution errors remain. v2.5 handles the specific patterns listed below; each failure class remains open.
+attribution errors remain. v2.6 handles the specific patterns listed below; each failure class remains open.
 
 The normative guarantees are G01–G07 below and the exact examples in the JSON
 block. `TestExtractionContractAlignment` executes correct expectations; remaining known failures are strict xfails. These finite examples are not universal language claims;
@@ -131,7 +131,228 @@ with Aetna/outpatient and no human attestations.
   {"id":"exp003_blocker","note":"Low back pain with radiculopathy. Right L5 distribution: strength 4/5. Rocuronium for 8 weeks with no improvement.","expected":{"cpb_0236_conservative_therapy_weeks":null},"procedure":"MRI_LUMBAR","status":"CANNOT_DETERMINE"},
   {"id":"exp003_challenge_partial_response","note":"Low back pain with radiculopathy. Right L5 distribution: strength 4/5. Ibuprofen for 8 weeks with no improvement. Tylenol with significant improvement.","expected":{"cpb_0236_conservative_therapy_weeks":"__REVIEW_REQUIRED__","cpb_0236_conservative_therapy_no_improvement":"__REVIEW_REQUIRED__"},"procedure":"MRI_LUMBAR","status":"NEEDS_REVIEW"},
   {"id":"exp003_topical","note":"Low back pain with radiculopathy. Right L5 distribution: strength 4/5. Diclofenac gel for 8 weeks with no improvement.","expected":{"cpb_0236_conservative_therapy_weeks":null},"procedure":"MRI_LUMBAR","status":"CANNOT_DETERMINE"},
-  {"id":"exp003_leading_verb_missed","note":"Low back pain with radiculopathy. Right L5 distribution: strength 4/5. Took ibuprofen for 6 weeks with no improvement.","expected":{"cpb_0236_conservative_therapy_weeks":6,"cpb_0236_conservative_therapy_no_improvement":true},"procedure":"MRI_LUMBAR","status":"PENDING_VERIFICATION"}
+  {"id":"exp003_leading_verb_missed","note":"Low back pain with radiculopathy. Right L5 distribution: strength 4/5. Took ibuprofen for 6 weeks with no improvement.","expected":{"cpb_0236_conservative_therapy_weeks":6,"cpb_0236_conservative_therapy_no_improvement":true},"procedure":"MRI_LUMBAR","status":"PENDING_VERIFICATION"},
+  {
+    "id": "exp004_therapy_used_dosed",
+    "note": "Persistent lumbar back pain with radiculopathy. Right S1 distribution: strength 3/5. Used etodolac 400 mg BID for seven weeks without meaningful relief.",
+    "expected": {
+      "cpb_0236_conservative_therapy_weeks": 7,
+      "cpb_0236_conservative_therapy_no_improvement": true
+    },
+    "procedure": "MRI_LUMBAR",
+    "status": "PENDING_VERIFICATION"
+  },
+  {
+    "id": "exp004_therapy_received_relaxant",
+    "note": "Persistent lumbar back pain with radiculopathy. Right S1 distribution: strength 3/5. Patient received Dantrium 25 mg nightly for 56 days, no benefit.",
+    "expected": {
+      "cpb_0236_conservative_therapy_weeks": 8,
+      "cpb_0236_conservative_therapy_no_improvement": true
+    },
+    "procedure": "MRI_LUMBAR",
+    "status": "PENDING_VERIFICATION"
+  },
+  {
+    "id": "exp004_therapy_course_first",
+    "note": "Persistent lumbar back pain with radiculopathy. Right S1 distribution: strength 3/5. A 49-day course of sulindac 150 mg twice a day with minimal benefit.",
+    "expected": {
+      "cpb_0236_conservative_therapy_weeks": 7,
+      "cpb_0236_conservative_therapy_no_improvement": true
+    },
+    "procedure": "MRI_LUMBAR",
+    "status": "PENDING_VERIFICATION"
+  },
+  {
+    "id": "exp004_therapy_short_dosed",
+    "note": "Persistent lumbar back pain with radiculopathy. Right S1 distribution: strength 3/5. Used etodolac 400 mg BID for four weeks without meaningful relief.",
+    "expected": {
+      "cpb_0236_conservative_therapy_weeks": 4,
+      "cpb_0236_conservative_therapy_no_improvement": true
+    },
+    "procedure": "MRI_LUMBAR",
+    "status": "NOT_READY"
+  },
+  {
+    "id": "exp004_therapy_unlisted",
+    "note": "Persistent lumbar back pain with radiculopathy. Right S1 distribution: strength 3/5. Received amitriptyline 25 mg nightly for nine weeks without relief.",
+    "expected": {
+      "cpb_0236_conservative_therapy_weeks": null,
+      "cpb_0236_conservative_therapy_no_improvement": null
+    },
+    "procedure": "MRI_LUMBAR",
+    "status": "CANNOT_DETERMINE"
+  },
+  {
+    "id": "exp004_exam_iliopsoas",
+    "note": "Persistent back pain with right-sided radiculopathy. Right L3 nerve root distribution: iliopsoas 4-/5. Piroxicam for 7 weeks with minimal relief.",
+    "expected": {
+      "objective_motor_or_reflex_change_in_root_distribution": true
+    },
+    "procedure": "MRI_LUMBAR",
+    "status": "PENDING_VERIFICATION"
+  },
+  {
+    "id": "exp004_exam_gastrocnemius",
+    "note": "Persistent back pain with right-sided radiculopathy. Right S1 distribution: gastrocnemius power 4+/5. Piroxicam for 7 weeks with minimal relief.",
+    "expected": {
+      "objective_motor_or_reflex_change_in_root_distribution": true
+    },
+    "procedure": "MRI_LUMBAR",
+    "status": "PENDING_VERIFICATION"
+  },
+  {
+    "id": "exp004_exam_ankle_low",
+    "note": "Persistent back pain with right-sided radiculopathy. Ankle jerk 1+ in the right S1 distribution. Piroxicam for 7 weeks with minimal relief.",
+    "expected": {
+      "objective_motor_or_reflex_change_in_root_distribution": true
+    },
+    "procedure": "MRI_LUMBAR",
+    "status": "PENDING_VERIFICATION"
+  },
+  {
+    "id": "exp004_exam_full_power",
+    "note": "Persistent back pain with right-sided radiculopathy. Right L3 distribution: iliopsoas power 5/5. Piroxicam for 7 weeks with minimal relief.",
+    "expected": {
+      "objective_motor_or_reflex_change_in_root_distribution": false
+    },
+    "procedure": "MRI_LUMBAR",
+    "status": "NOT_READY"
+  },
+  {
+    "id": "exp004_exam_opposite",
+    "note": "Persistent back pain with right-sided radiculopathy. Left L3 distribution: iliopsoas 4-/5. Piroxicam for 7 weeks with minimal relief.",
+    "expected": {
+      "objective_motor_or_reflex_change_in_root_distribution": "__REVIEW_REQUIRED__"
+    },
+    "procedure": "MRI_LUMBAR",
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "id": "exp004_date_day_month",
+    "note": "Established OSA. Overnight polysomnogram conducted 21 February 2025, AHI: 7.",
+    "expected": {
+      "sleep_study_date": true
+    },
+    "procedure": "CPAP_DEVICE",
+    "status": "PENDING_VERIFICATION"
+  },
+  {
+    "id": "exp004_date_dotted",
+    "note": "Confirmed obstructive sleep apnea. HST completed 2024.12.02; AHI 17.",
+    "expected": {
+      "sleep_study_date": true
+    },
+    "procedure": "CPAP_DEVICE",
+    "status": "PENDING_VERIFICATION"
+  },
+  {
+    "id": "exp004_date_calendar_invalid",
+    "note": "Established OSA. HST completed April 31, 2024; RDI 13.",
+    "expected": {
+      "sleep_study_date": null
+    },
+    "procedure": "CPAP_DEVICE",
+    "status": "CANNOT_DETERMINE"
+  },
+  {
+    "id": "exp004_date_office_same_sentence",
+    "note": "Established OSA. Clinic appointment 11-19-2024, HST date unknown; RDI 13.",
+    "expected": {
+      "sleep_study_date": null
+    },
+    "procedure": "CPAP_DEVICE",
+    "status": "CANNOT_DETERMINE"
+  },
+  {
+    "id": "exp004_index_rdi_measured",
+    "note": "Established OSA. HST completed 2024-04-17. The respiratory disturbance index measured at 14.6 events/hour.",
+    "expected": {
+      "ahi_documented": true
+    },
+    "procedure": "CPAP_DEVICE",
+    "status": "PENDING_VERIFICATION"
+  },
+  {
+    "id": "exp004_index_british",
+    "note": "Confirmed obstructive sleep apnea. PSG completed 2024-04-17. Apnoea–hypopnoea index was 9.2/h.",
+    "expected": {
+      "ahi_documented": true
+    },
+    "procedure": "CPAP_DEVICE",
+    "status": "PENDING_VERIFICATION"
+  },
+  {
+    "id": "exp004_index_planned_value",
+    "note": "Established OSA. HST completed 2024-04-17. Will record respiratory disturbance index of 19.",
+    "expected": {
+      "ahi_documented": null
+    },
+    "procedure": "CPAP_DEVICE",
+    "status": "CANNOT_DETERMINE"
+  },
+  {
+    "id": "exp004_index_explicit_missing",
+    "note": "Established OSA. HST completed 2024-04-17. Respiratory disturbance index of 19, value not available.",
+    "expected": {
+      "ahi_documented": null
+    },
+    "procedure": "CPAP_DEVICE",
+    "status": "CANNOT_DETERMINE"
+  },
+  {
+    "id": "exp004_source_legacy_strength_exam",
+    "note": "Persistent back pain with right-sided radiculopathy. On exam, right L4 distribution: strength 3/5. Piroxicam for 7 weeks with minimal relief.",
+    "expected": {
+      "objective_motor_or_reflex_change_in_root_distribution": true
+    },
+    "procedure": "MRI_LUMBAR",
+    "status": "PENDING_VERIFICATION"
+  },
+  {
+    "id": "exp004_source_per_patient",
+    "note": "Persistent back pain with right-sided radiculopathy. Right S1 distribution: soleus power 3/5 per patient report. Piroxicam for 7 weeks with minimal relief.",
+    "expected": {
+      "objective_motor_or_reflex_change_in_root_distribution": null
+    },
+    "procedure": "MRI_LUMBAR",
+    "status": "CANNOT_DETERMINE"
+  },
+  {
+    "id": "exp004_source_exam_deferred",
+    "note": "Persistent back pain with right-sided radiculopathy. Right S1 distribution: plantar flexion 4/5 per patient report; exam deferred. Piroxicam for 7 weeks with minimal relief.",
+    "expected": {
+      "objective_motor_or_reflex_change_in_root_distribution": null
+    },
+    "procedure": "MRI_LUMBAR",
+    "status": "CANNOT_DETERMINE"
+  },
+  {
+    "id": "exp004_source_legacy_reflex_reports",
+    "note": "Persistent back pain with right-sided radiculopathy. Patient reports absent reflexes in the right S1 distribution. Piroxicam for 7 weeks with minimal relief.",
+    "expected": {
+      "objective_motor_or_reflex_change_in_root_distribution": null
+    },
+    "procedure": "MRI_LUMBAR",
+    "status": "CANNOT_DETERMINE"
+  },
+  {
+    "id": "exp004_source_word_grade_deferred",
+    "note": "Persistent back pain with right-sided radiculopathy. Right L4 distribution: strength 3 of 5; examination was deferred. Piroxicam for 7 weeks with minimal relief.",
+    "expected": {
+      "objective_motor_or_reflex_change_in_root_distribution": null
+    },
+    "procedure": "MRI_LUMBAR",
+    "status": "CANNOT_DETERMINE"
+  },
+  {
+    "id": "exp004_source_conflicting_motor",
+    "note": "Persistent back pain with right-sided radiculopathy. Patient reports right S1 distribution: soleus power 3/5. On exam, right S1 distribution: soleus power 5/5. Piroxicam for 7 weeks with minimal relief.",
+    "expected": {
+      "objective_motor_or_reflex_change_in_root_distribution": "__REVIEW_REQUIRED__"
+    },
+    "procedure": "MRI_LUMBAR",
+    "status": "NEEDS_REVIEW"
+  }
 ]
 ```
 
@@ -144,7 +365,7 @@ decline unsupported proposals. This API records attestations; it cannot prove a 
 Use synthetic notes only. There is no production clinical-language guarantee.
 
 
-## Patterns handled through v2.5; failure classes remain open
+## Patterns handled through v2.6; failure classes remain open
 
 The following bounded patterns are handled; the class remains open in every row:
 
@@ -166,6 +387,11 @@ The following bounded patterns are handled; the class remains open in every row:
 | Isolated qualifying CPB course with explicit response, duration in whole days/months or number words one through twelve | Completed days floor to whole weeks; months use a four-week lower bound. Six weeks with no/minimal/little/insufficient improvement can pass; short or improved courses fail. | Duration and episode attribution |
 | Listed generic/brand drug in an isolated complete course/response sentence | Only table membership replaces the qualifying class keyword; existing duration, response and safety guards apply. An unresolved eligible drug mention alongside another course requires review. | Drug vocabulary, course linkage and indication |
 | Direct named-root statement “strength 4 of 5” / “3 out of 5”, including decimals | Observed score below five is an objective change; 5 of 5 is normal. Negation, question, alternative attribution or opposite-side radiculopathy requires review. | Objective finding and attribution |
+| Reported listed-drug course with use verb, dose/frequency or duration-first ordering | Whole-course duration and explicit response are linked; existing patient, indication, plan, negation and unresolved-course guards apply. | Course grammar and episode attribution |
+| Named-root motor/action/muscle grade without “strength”, with +/- modifiers, or numeric tendon-reflex grade | Typed grade can document change; normal grades do not pass, uncertain/conflicting findings review. No muscle-to-root inference. | Objective exam vocabulary and laterality |
+| Motor/reflex sentence attributed to patient/history, or with deferred/unperformed/refused exam | Qualified-only evidence is NOT_DOCUMENTED; conflicting normal/abnormal objective evidence elsewhere is NEEDS_REVIEW. Applies to new and legacy paths. | Source attribution and exam performance |
+| Calendar-valid US numeric/dotted year-first/English month study dates | New formats require directly adjoining completed study context; plans, invalid calendars and unrelated dates do not qualify. Legacy year-first association remains limited. | Date and event association |
+| Full apnea-hypopnea / respiratory disturbance index names with explicit measurements | AHI/RDI aliases include British spelling and space/hyphen forms; planned, missing and non-patient values do not document a measurement. | Measurement vocabulary and linkage |
 
 Safety triggers use real sentence boundaries: period, question mark, exclamation
 mark, or newline; semicolons and decimal points do not end that context. Narrow
@@ -183,7 +409,7 @@ reading, and reviewer identity remains self-reported. This display aid does not
 change extraction, statuses, the readiness gate or the remaining false-READY
 pathways.
 
-Current release validation: **1301 passed, 10 xfailed**. Contract JSON alone
+Current release validation: **1461 passed, 10 xfailed**. Contract JSON alone
 drives known-failure markers; there is no exemption list. Four contract examples
 are marked: `unrelated_therapy`, `neither_nor_negation`,
 `same_sentence_borrowed_date`, and the disputed `negated_strength` expectation.
@@ -226,7 +452,7 @@ expansion was reverted after unrelated headache therapy produced unsafe passes.
 See the historical [v2.4.0 release](docs/releases/v2.4.0.md) and the
 [exp-002 report](autoloop/exp-002/REPORT.md).
 
-## v2.5 reviewed drug data and grammar bounds
+## Reviewed drug data and current course grammar
 
 [engine/data/cpb0236_drugs_v1.json](engine/data/cpb0236_drugs_v1.json) is
 **owner-approved reviewed data**: 26 records with generic name, aliases/common
@@ -242,19 +468,48 @@ duration, response, formulation or clinical appropriateness. Unlisted back-pain
 drugs never qualify by inference. The versioned table is outside the existing
 governance bundle; this does not promote it into payer policy or change hashes.
 
-Drug recognition uses the isolated course-sentence grammar, including the reverse
-duration-first form, an optional “Completed”, whole duration and explicit “with”
-response. A leading verb such as “Took” remains unrecognized. Extra dose,
-formulation, indication, or combination wording can prevent recognition. All
+Drug recognition uses an isolated course-sentence grammar with optional patient
+subject, reported-use verbs (including “Took”), dose/frequency and duration-first
+ordering. Duration and explicit response must belong to that course. Supported
+response forms include “with” and “without” benefit/improvement wording. Other
+verbs, formulation, indication or combination wording may still be missed. All
 existing safety guards apply. If an eligible drug mention cannot be resolved
 while another course candidate exists, both course facts require review;
 incomplete drug mentions alone remain missing. This can over-trigger review
 and does not solve general sentence-to-sentence episode or indication linkage.
 
-Sixteen new executable examples cover all three classes, generic and brand
-names, short/improved courses, future/non-patient/unrelated context, non-listed
-drugs, neuromuscular blockers, topical wording, unresolved course linkage and
-the leading-verb miss. All 51 earlier examples and four known-failure objects
-remain unchanged. The full exp-003 set is 74/74 exact with zero false pending;
+The sixteen examples introduced in v2.5 cover all three classes, generic and
+brand names, short/improved courses, future/non-patient/unrelated context,
+non-listed drugs, neuromuscular blockers, topical wording and unresolved linkage.
+During exp-004 the owner authorized correcting only the leading-verb example’s
+therapy facts/status; its ID and note remain unchanged. Release preparation
+preserves all 67 existing examples and all four known-failure objects. The full exp-003 set is 74/74 exact with zero false pending;
 its unsafe first candidate was reverted before the linkage revision was retained.
 See [v2.5.0](docs/releases/v2.5.0.md) and [exp-003](autoloop/exp-003/REPORT.md).
+
+
+## v2.6 exp-004 grammar and source safeguards
+
+Twenty-four additional executable examples cover reported drug courses, typed
+motor/reflex grades, study dates, named indices, and source/performance guards.
+There are 91 examples total, with four unchanged known-failure objects. Runtime
+code does not load example IDs or the owner dev set. The prior contract correction
+was authorized during development, not performed during release preparation.
+
+A grade is not objective when its sentence says per patient, patient reports or
+states, self-reported, by history, deferred, not performed, not examined, unable
+to assess or limited by refusal. The same guard covers typed exams, legacy slash
+and word strength, descriptive reflexes and objective-weakness candidates. It
+uses real sentences, including semicolons and decimal grades. Qualified evidence
+alone yields NOT_DOCUMENTED; conflicting normal/abnormal objective evidence in
+another sentence yields NEEDS_REVIEW with both sources cited. An agreeing
+objective source remains usable. A statement such as “on exam” or “examination
+shows” does not override a disqualifying qualifier in that same sentence.
+
+New dates are syntax/calendar validated without reading a clock. Full-name index
+safeguards do not generally repair all legacy abbreviation contexts. Root linkage,
+source recognition and drug use still depend on finite regex vocabularies; broad
+negation, laterality, episode attribution and same-sentence date borrowing remain
+open. Sentence-wide exclusion can conservatively abstain on a qualifier about a
+different event. See [v2.6.0](docs/releases/v2.6.0.md) and
+[exp-004](autoloop/exp-004/REPORT.md) for development versus held-out evidence.

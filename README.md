@@ -4,30 +4,37 @@ This self-directed prototype demonstrates deterministic prior-authorization docu
 
 v2.0.0 adds typed, source-located reviewer corrections for wrong or missed facts, with contract meanings and original/effective values shown in Streamlit. Applying a correction clears attestations and letters; passing facts remain `PENDING_VERIFICATION` until reviewed and attested again. Letters disclose reviewer-supplied facts, quotations and self-reported identities, excluding audit comments from reasoning. See the canonical [correction limits](docs/safety_and_scope.md#correction-limits).
 
-v2.5.0 releases exp-003's owner-approved reviewed data and guarded drug-course
-recognition. Engine/app version is **2.5.0**; record schema remains **2.0.0**.
-[engine/data/cpb0236_drugs_v1.json](engine/data/cpb0236_drugs_v1.json) lists 26
-generic drugs, common US brand aliases, WHO ATC codes and Footnote 1 classes.
-**ATC codes require human verification against WHO ATC before any external claim.**
-Owner approval covers local use of the reviewed artifact; it does not certify
-each transcription. Its human-review notice remains in force.
+v2.6.0 releases exp-004’s reported drug-course grammar, typed motor/reflex
+exams, additional sleep-study dates and full AHI/RDI names. Patient-reported,
+historical or unperformed exams cannot supply objective evidence under the
+supported sentence qualifiers. Engine/app version is **2.6.0**; record schema
+remains **2.0.0**. No policy, trust setting or monitor clock changes.
 
-Listed drug names replace only the therapy-class token in an isolated complete
-course/response sentence, with all existing safety guards retained. A leading
-verb such as 'Took' is not recognized. Eligible unresolved drug context alongside
-another course requires review. Earlier exp-001/002 bounded fixes remain; neither/nor,
-same-sentence borrowed dates and episode attribution remain open failure classes.
+[engine/data/cpb0236_drugs_v1.json](engine/data/cpb0236_drugs_v1.json) remains
+owner-approved reviewed data: 26 generic drugs, common US brands, ATC codes and
+Footnote 1 classes. **ATC codes require human verification against WHO ATC before any external claim.**
+Owner approval covers local use, not independent certification of each code or
+alias. Only listed drugs qualify; duration, response, indication, planning,
+negation, patient and linkage guards remain. Leading verbs such as “Took”,
+supported doses/frequencies and duration-first courses are now recognized;
+unusual prose and unresolved courses can still be missed or require review.
 
-Release validation: **1301 passed, 10 xfailed**. Corpus remains 52/52 with zero
-false `PENDING_VERIFICATION`. Exp-003 development cases improve 49/74 → 74/74
-exact with 11 recovered positives and zero final false pending across 63 negatives;
-all 117 exp-002/003 authored negatives are nonpassing. The owner reports zero false
-pending on three held-out sets, with exact 23→25/41, 15→15/36 and 14→15/34.
-Those sets were not inspected or rerun here. Zero false pending alone is insufficient:
-the always-abstain canary also scores zero. See [v2.5.0](docs/releases/v2.5.0.md),
-the [current contract](EXTRACTION_CONTRACT.md), and [exp-003 report](autoloop/exp-003/REPORT.md).
-The earlier exp-001 expanded 47-case set retains two documented false passes.
-The 20 independent notes are regressions, not a held-out accuracy measure.
+Release validation: **1461 passed, 10 xfailed**. Corpus is **52/52**, owner visible
+dev **27/27** (11/27 before development), and own pairs **102/102**, with zero
+false PENDING_VERIFICATION across these sets and all exp-002/003 pairs. The
+owner dev set remains in [dev.json](autoloop/exp-004/dev.json), unchanged.
+The owner reports a separate 27-case held-out set: **10→24/27 exact, zero false
+PENDING_VERIFICATION**. A patient-reported/deferred-exam safety defect found by
+held-out evaluation on a prior set was fixed before release. Held-out cases
+were never available here; only the owner’s failure-class feedback was supplied.
+Three held-out cases still miss exact status; their causes were not inspected.
+The visible dev set and own cases are development evidence. Zero false pending
+alone is insufficient: the always-abstain canary also scores zero. See
+[v2.6.0](docs/releases/v2.6.0.md), the [contract](EXTRACTION_CONTRACT.md), and
+[exp-004 report](autoloop/exp-004/REPORT.md). Neither/nor, same-sentence borrowed
+dates, broader attribution and longitudinal episodes remain open. The older
+expanded exp-001 set retains two documented false passes; the 20 independent
+notes are named regressions, not a held-out accuracy measure.
 
 The lumbar MRI pathway is the only live-monitored source. After its monthly monitoring window (35 days since the last successful check), a visitor sees a stale warning and must acknowledge it before evaluating that pathway. After all passing facts are human-verified, it can return `READY` with `submission_readiness=false`. This is the governance gate working as designed; acknowledgement does not restore trust.
 
@@ -86,7 +93,7 @@ trust gate; it does not validate the borrowed date or the incorrect attestations
 
 ## Quick Reviewer Path
 
-The record schema version and release version are versioned independently. v2.5.0 writes record `schema_version: "2.0.0"`; v1.5 records retain their existing validation, and legacy records remain explicitly labeled and viewable only.
+The record schema version and release version are versioned independently. v2.6.0 writes record `schema_version: "2.0.0"`; v1.5 records retain their existing validation, and legacy records remain explicitly labeled and viewable only.
 
 From a fresh clone, enter the repo and run:
 

@@ -46,46 +46,50 @@ are fixed in v2.3.0; their broader failure classes are not solved. See
 - not a substitute for payer policy review or human chart review
 
 
-## v2.5.0 bounds and evidence
+## v2.6.0 bounds and evidence
 
-Five accepted exp-001 fixes handle auxiliary-verb negation, linked reflex
-qualifiers, intact reflexes, explicitly negated numeric strength and study-date
-association across sentences. A denied numeric score now requires review; the
-old strict-xfail expectation of False remains disputed and unchanged.
+Release validation is **1461 passed, 10 xfailed**. Corpus remains 52/52; owner
+visible dev is 27/27 and own pairs are 102/102, all with zero false pending.
+Exp-002/003 remain 64/69 and 74/74 with zero false pending. Earlier expanded
+exp-001 cases retain two unsafe passes. These finite regressions are not clinical
+validation; all ten strict xfails remain, including the disputed negated-strength
+False expectation (implementation requires review, not a normal observed score).
 
-The reflex grammar has a small predicate vocabulary and a 160-character
-lookback. Unusual legitimate wording may be missed. Requiring date/study context
-in one sentence does not resolve two events within that sentence and can miss
-genuine cross-sentence links. Neither/nor negation, unrelated therapy,
-cross-sentence temporality/response/copy-forward and laterality remain open.
-Incorrect attestations can still produce false READY from unsupported proposals;
-CPAP demo trust independently keeps submission_readiness=false.
+Exp-004 recognizes supported reported-use verbs including “Took”, dose/frequency
+and duration-first ordering within one complete listed-drug course plus explicit
+response. The grammar still enumerates verbs and schedules. Pronouns, combinations,
+formulation, unusual modifiers and longitudinal course attribution can be missed.
+Days floor to weeks, months use a four-week lower bound, and number words stop
+at twelve. Full class-name expansion remains rejected after unsafe unrelated
+therapy passes. Unresolved eligible drug context may over-trigger review.
 
-The four accepted exp-002 fixes cover isolated qualifying courses in whole days,
-whole months and number words one through twelve, plus direct named-root strength
-grades written “of” / “out of”. Days floor to completed weeks; months use a
-four-week lower bound, not calendar inference. Complete course/response grammar
-misses legitimate narrative qualifiers; the new strength route's review handling
-does not repair the legacy slash-route laterality/attribution gap. Full class-name
-expansion was reverted after unsafe headache-therapy passes.
+[engine/data/cpb0236_drugs_v1.json](engine/data/cpb0236_drugs_v1.json) remains
+owner-approved reviewed data for local use, unchanged at 26 entries. **ATC codes require human verification against WHO ATC before any external claim.**
+Approval does not certify transcriptions, aliases, route or formulation.
 
-Exp-003 adds listed drug names through the same narrow course-sentence grammar;
-a leading verb such as 'Took' remains unrecognized. Eligible unresolved listed-drug
-context alongside another course now requires review, which can over-trigger.
-[engine/data/cpb0236_drugs_v1.json](engine/data/cpb0236_drugs_v1.json) is
-owner-approved reviewed data for local use. **ATC codes require human verification
-against WHO ATC before any external claim.** Approval does not certify each
-transcription or alias; route/formulation ambiguity and its human-review notice remain.
+Typed motor/action/muscle grades and tendon-reflex grades require explicit
+named-root linkage. No muscle-to-root mapping is inferred. Patient/history
+attribution or an unperformed/refused exam in the sentence disqualifies both
+new and legacy motor/reflex evidence. Qualified-only evidence is NOT_DOCUMENTED;
+conflicting normal/abnormal objective evidence elsewhere requires review. This
+fix followed an owner-held-out safety failure missed by our original tests.
+The guard has a finite vocabulary and may conservatively exclude an objective
+finding when the same sentence’s qualifier describes another event. General
+provenance, laterality, pain/effort attribution and wider context remain limited.
 
-Validation: **1301 passed, 10 xfailed**, corpus 52/52 with zero false pending,
-45/45 original authored cases, and two false pending results in the expanded 47.
-These finite regressions are not clinical validation. See the
-[exp-001 report](autoloop/REPORT.md). Exp-002's 69 authored cases improve 41/69 →
-64/69 exact with zero false pending across 54 negatives, but retain three missed
-passes and two wrong negative abstentions.
+Calendar-valid new date formats require directly adjoining completed-study
+context; English month names and US numeric conventions do not infer locale or
+recency. Legacy year-first same-sentence borrowing remains unsafe. Full AHI/RDI
+names include British spelling; their safeguards do not generally repair all
+legacy abbreviations or measurement contexts. Neither/nor, unrelated legacy
+therapy and cross-sentence episodes/response/copy-forward remain open. Incorrect
+attestations can still produce READY; CPAP demo trust independently blocks
+submission readiness for borrowed-date proposals.
 
-Exp-003 improves 49/74 → 74/74 development statuses with zero final false
-pending across 63 negatives; its unsafe first candidate was reverted. The owner
-reports zero false pending on three held-out sets, exact 23→25/41, 15→15/36
-and 14→15/34. Those cases were not inspected or rerun during release prep. See
-[v2.5.0](docs/releases/v2.5.0.md) and the [exp-003 report](autoloop/exp-003/REPORT.md).
+The owner reports a separate never-visible 27-case held-out set with different
+wording: exact 10→24/27, zero false PENDING_VERIFICATION. This differs from the
+visible dev result (11→27/27) and leaves three exact-status misses. No held-out
+case was read or rerun here. A prior held-out set supplied the safety-defect
+feedback used for iteration 5; no universal safety or clinical generalization
+claim follows. See [v2.6.0](docs/releases/v2.6.0.md) and
+[exp-004](autoloop/exp-004/REPORT.md).
