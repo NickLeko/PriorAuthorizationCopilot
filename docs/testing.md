@@ -129,7 +129,7 @@ process, which can leave engine modules from different loads alive together.
    load `MRI-01-complete`. It must return `PENDING_VERIFICATION` without an
    exception. In **Audit and Export**, inspect **Raw evaluation payload** or
    download the JSON artifact. Its `engine_version` must match the release tag
-   without the `v` prefix (for `v2.4.0`, expect `2.4.0`).
+   without the `v` prefix (for `v2.5.0`, expect `2.5.0`).
 4. In a fresh session, load the same lumbar MRI case to establish request scope,
    replace its note with the exact synthetic note below, and run the review.
    Expect `NEEDS_REVIEW`, no exception, and **“but significant improvement in
@@ -231,10 +231,10 @@ clinical-language correctness. All failure classes remain open; see
 `EXTRACTION_CONTRACT.md` and `FAILURE_MODES.md` for the remaining risks.
 
 
-## v2.4.0 release validation and open expectations
+## v2.5.0 release validation and open expectations
 
-Fresh `make test`: **1202 passed, 10 xfailed**. `make lint` must pass as well.
-The record schema remains 2.0.0. See [v2.4.0](releases/v2.4.0.md) for the
+Fresh `make test`: **1301 passed, 10 xfailed**. `make lint` must pass as well.
+The record schema remains 2.0.0. See [v2.5.0](releases/v2.5.0.md) for the
 fixed-clock regeneration audit and [exp-001](../autoloop/REPORT.md) for per-test
 (a/b) classifications, label changes and before/after evidence.
 
@@ -261,9 +261,27 @@ authored cases, including the rejected positives, exact status improves 41/69 �
 64/69; positives 0/15 → 12/15; negative false PENDING_VERIFICATION stays 0/54.
 Abstention falls 100% → 72.46% against 65.22% expected. The canary is 41/69 exact
 and misses all 15 passes. See [exp-002](../autoloop/exp-002/REPORT.md).
-The release adds thirteen executable contract examples drawn from those pairs;
-no existing expectation, strict marker or product logic changes in release prep.
-The ten xfails listed above remain. The supplied held-out exp-002 set showed
-no recall gain; do not present authored-case improvement as generalization.
+Thirteen contract examples for exp-002 were added in v2.4.0; this release adds
+sixteen for exp-003. No earlier expectation, strict marker or product logic
+changes in release prep. The ten xfails listed above remain. Do not present
+authored-case improvement as generalization.
 The generic analgesic-duration xfail asserts `conservative_therapy_weeks`, a
 separate field from the CPB-specific course fields improved by exp-002.
+
+Exp-003 contributes 74 exact public-service pairs (11 positives / 63 negatives)
+and nine table-integrity checks; its experiment suite was 1285 passed / 10 xfailed.
+The sixteen release contract additions produce 1301 passed / 10 xfailed.
+The final development score is 49/74 → 74/74; false pending 1 → 0. Its initial
+unsafe candidate was reverted after four incomplete-course linkage false passes.
+The table is [owner-approved reviewed data](../engine/data/cpb0236_drugs_v1.json)
+for local use. **ATC codes require human verification against WHO ATC before any
+external claim.** Approval does not certify transcriptions; retain the human-review notice.
+A leading verb such as 'Took' is missed by the course-sentence grammar.
+
+The owner supplied held-out results on three sets, none visible during development:
+zero false pending on all; exact 23→25/41, 15→15/36 and 14→15/34. Cases were
+not inspected or rerun here. The release's [generation command](releases/v2.5.0-generation-command.txt)
+captures all actual writes at the shared acceptance clock and restores/stops
+on any governance or other non-version difference. See the
+[generation audit](releases/v2.5.0-generation-audit.md) and
+[documentation drift audit](releases/v2.5.0-doc-audit.md).

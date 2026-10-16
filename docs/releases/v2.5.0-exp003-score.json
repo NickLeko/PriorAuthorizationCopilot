@@ -1,0 +1,573 @@
+{
+  "always_cannot_determine_canary": {
+    "abstention_rate": 1.0,
+    "automated_ready": 0,
+    "cases": 74,
+    "confusion_matrix_expected_rows_actual_columns": {
+      "CANNOT_DETERMINE": {
+        "CANNOT_DETERMINE": 49,
+        "NEEDS_REVIEW": 0,
+        "NOT_READY": 0,
+        "PENDING_VERIFICATION": 0,
+        "READY": 0,
+        "UNKNOWN": 0
+      },
+      "NEEDS_REVIEW": {
+        "CANNOT_DETERMINE": 8,
+        "NEEDS_REVIEW": 0,
+        "NOT_READY": 0,
+        "PENDING_VERIFICATION": 0,
+        "READY": 0,
+        "UNKNOWN": 0
+      },
+      "NOT_READY": {
+        "CANNOT_DETERMINE": 6,
+        "NEEDS_REVIEW": 0,
+        "NOT_READY": 0,
+        "PENDING_VERIFICATION": 0,
+        "READY": 0,
+        "UNKNOWN": 0
+      },
+      "PENDING_VERIFICATION": {
+        "CANNOT_DETERMINE": 11,
+        "NEEDS_REVIEW": 0,
+        "NOT_READY": 0,
+        "PENDING_VERIFICATION": 0,
+        "READY": 0,
+        "UNKNOWN": 0
+      },
+      "READY": {
+        "CANNOT_DETERMINE": 0,
+        "NEEDS_REVIEW": 0,
+        "NOT_READY": 0,
+        "PENDING_VERIFICATION": 0,
+        "READY": 0,
+        "UNKNOWN": 0
+      },
+      "UNKNOWN": {
+        "CANNOT_DETERMINE": 0,
+        "NEEDS_REVIEW": 0,
+        "NOT_READY": 0,
+        "PENDING_VERIFICATION": 0,
+        "READY": 0,
+        "UNKNOWN": 0
+      }
+    },
+    "exact_status_accuracy": 0.6621621621621622,
+    "exact_status_correct": 49,
+    "expected_abstention_rate": 0.7702702702702703,
+    "false_pending_verification": 0,
+    "false_ready": 0,
+    "missed_passes": 11
+  },
+  "case_file": "autoloop/exp-003/evidence/all-cases.json",
+  "case_file_sha256": "d5ba31e506a738f9da623e131ef1e40d550799b32e0284aac4cb817535e2447b",
+  "case_results": [
+    {
+      "actual": "PENDING_VERIFICATION",
+      "expected": "PENDING_VERIFICATION",
+      "id": "challenge_different_nsaid",
+      "index": 0
+    },
+    {
+      "actual": "PENDING_VERIFICATION",
+      "expected": "PENDING_VERIFICATION",
+      "id": "challenge_different_relaxant",
+      "index": 1
+    },
+    {
+      "actual": "PENDING_VERIFICATION",
+      "expected": "PENDING_VERIFICATION",
+      "id": "challenge_different_analgesic",
+      "index": 2
+    },
+    {
+      "actual": "NEEDS_REVIEW",
+      "expected": "NEEDS_REVIEW",
+      "id": "challenge_partial_response",
+      "index": 3
+    },
+    {
+      "actual": "NEEDS_REVIEW",
+      "expected": "NEEDS_REVIEW",
+      "id": "challenge_partial_longer",
+      "index": 4
+    },
+    {
+      "actual": "NEEDS_REVIEW",
+      "expected": "NEEDS_REVIEW",
+      "id": "challenge_partial_indication",
+      "index": 5
+    },
+    {
+      "actual": "NEEDS_REVIEW",
+      "expected": "NEEDS_REVIEW",
+      "id": "challenge_mixed_class",
+      "index": 6
+    },
+    {
+      "actual": "PENDING_VERIFICATION",
+      "expected": "PENDING_VERIFICATION",
+      "id": "nsaid_generic",
+      "index": 7
+    },
+    {
+      "actual": "PENDING_VERIFICATION",
+      "expected": "PENDING_VERIFICATION",
+      "id": "nsaid_brand",
+      "index": 8
+    },
+    {
+      "actual": "PENDING_VERIFICATION",
+      "expected": "PENDING_VERIFICATION",
+      "id": "analgesic_generic",
+      "index": 9
+    },
+    {
+      "actual": "PENDING_VERIFICATION",
+      "expected": "PENDING_VERIFICATION",
+      "id": "analgesic_brand",
+      "index": 10
+    },
+    {
+      "actual": "PENDING_VERIFICATION",
+      "expected": "PENDING_VERIFICATION",
+      "id": "relaxant_generic",
+      "index": 11
+    },
+    {
+      "actual": "PENDING_VERIFICATION",
+      "expected": "PENDING_VERIFICATION",
+      "id": "relaxant_brand",
+      "index": 12
+    },
+    {
+      "actual": "PENDING_VERIFICATION",
+      "expected": "PENDING_VERIFICATION",
+      "id": "relaxant_direct",
+      "index": 13
+    },
+    {
+      "actual": "PENDING_VERIFICATION",
+      "expected": "PENDING_VERIFICATION",
+      "id": "analgesic_opioid",
+      "index": 14
+    },
+    {
+      "actual": "CANNOT_DETERMINE",
+      "expected": "CANNOT_DETERMINE",
+      "id": "unlisted_steroid",
+      "index": 15
+    },
+    {
+      "actual": "CANNOT_DETERMINE",
+      "expected": "CANNOT_DETERMINE",
+      "id": "unlisted_snri",
+      "index": 16
+    },
+    {
+      "actual": "CANNOT_DETERMINE",
+      "expected": "CANNOT_DETERMINE",
+      "id": "unlisted_benzo",
+      "index": 17
+    },
+    {
+      "actual": "CANNOT_DETERMINE",
+      "expected": "CANNOT_DETERMINE",
+      "id": "unlisted_lidocaine",
+      "index": 18
+    },
+    {
+      "actual": "CANNOT_DETERMINE",
+      "expected": "CANNOT_DETERMINE",
+      "id": "unlisted_gabapentin",
+      "index": 19
+    },
+    {
+      "actual": "CANNOT_DETERMINE",
+      "expected": "CANNOT_DETERMINE",
+      "id": "blocker",
+      "index": 20
+    },
+    {
+      "actual": "CANNOT_DETERMINE",
+      "expected": "CANNOT_DETERMINE",
+      "id": "botulinum",
+      "index": 21
+    },
+    {
+      "actual": "CANNOT_DETERMINE",
+      "expected": "CANNOT_DETERMINE",
+      "id": "alias_substring",
+      "index": 22
+    },
+    {
+      "actual": "CANNOT_DETERMINE",
+      "expected": "CANNOT_DETERMINE",
+      "id": "topical",
+      "index": 23
+    },
+    {
+      "actual": "CANNOT_DETERMINE",
+      "expected": "CANNOT_DETERMINE",
+      "id": "combination",
+      "index": 24
+    },
+    {
+      "actual": "CANNOT_DETERMINE",
+      "expected": "CANNOT_DETERMINE",
+      "id": "partial_name",
+      "index": 25
+    },
+    {
+      "actual": "CANNOT_DETERMINE",
+      "expected": "CANNOT_DETERMINE",
+      "id": "no_duration",
+      "index": 26
+    },
+    {
+      "actual": "CANNOT_DETERMINE",
+      "expected": "CANNOT_DETERMINE",
+      "id": "no_response",
+      "index": 27
+    },
+    {
+      "actual": "CANNOT_DETERMINE",
+      "expected": "CANNOT_DETERMINE",
+      "id": "split_linkage",
+      "index": 28
+    },
+    {
+      "actual": "CANNOT_DETERMINE",
+      "expected": "CANNOT_DETERMINE",
+      "id": "pt_linkage",
+      "index": 29
+    },
+    {
+      "actual": "NEEDS_REVIEW",
+      "expected": "NEEDS_REVIEW",
+      "id": "course_conflict",
+      "index": 30
+    },
+    {
+      "actual": "CANNOT_DETERMINE",
+      "expected": "CANNOT_DETERMINE",
+      "id": "no_root",
+      "index": 31
+    },
+    {
+      "actual": "NOT_READY",
+      "expected": "NOT_READY",
+      "id": "ibuprofen_short",
+      "index": 32
+    },
+    {
+      "actual": "NOT_READY",
+      "expected": "NOT_READY",
+      "id": "ibuprofen_improved",
+      "index": 33
+    },
+    {
+      "actual": "CANNOT_DETERMINE",
+      "expected": "CANNOT_DETERMINE",
+      "id": "ibuprofen_future",
+      "index": 34
+    },
+    {
+      "actual": "CANNOT_DETERMINE",
+      "expected": "CANNOT_DETERMINE",
+      "id": "ibuprofen_nonpatient",
+      "index": 35
+    },
+    {
+      "actual": "CANNOT_DETERMINE",
+      "expected": "CANNOT_DETERMINE",
+      "id": "ibuprofen_nonpatient_tail",
+      "index": 36
+    },
+    {
+      "actual": "CANNOT_DETERMINE",
+      "expected": "CANNOT_DETERMINE",
+      "id": "ibuprofen_negated",
+      "index": 37
+    },
+    {
+      "actual": "CANNOT_DETERMINE",
+      "expected": "CANNOT_DETERMINE",
+      "id": "ibuprofen_negation_direct",
+      "index": 38
+    },
+    {
+      "actual": "CANNOT_DETERMINE",
+      "expected": "CANNOT_DETERMINE",
+      "id": "ibuprofen_unrelated",
+      "index": 39
+    },
+    {
+      "actual": "CANNOT_DETERMINE",
+      "expected": "CANNOT_DETERMINE",
+      "id": "ibuprofen_unrelated_tail",
+      "index": 40
+    },
+    {
+      "actual": "CANNOT_DETERMINE",
+      "expected": "CANNOT_DETERMINE",
+      "id": "ibuprofen_unrelated_prefix",
+      "index": 41
+    },
+    {
+      "actual": "CANNOT_DETERMINE",
+      "expected": "CANNOT_DETERMINE",
+      "id": "ibuprofen_fraction",
+      "index": 42
+    },
+    {
+      "actual": "CANNOT_DETERMINE",
+      "expected": "CANNOT_DETERMINE",
+      "id": "ibuprofen_comparison",
+      "index": 43
+    },
+    {
+      "actual": "CANNOT_DETERMINE",
+      "expected": "CANNOT_DETERMINE",
+      "id": "ibuprofen_range",
+      "index": 44
+    },
+    {
+      "actual": "NEEDS_REVIEW",
+      "expected": "NEEDS_REVIEW",
+      "id": "ibuprofen_questioned",
+      "index": 45
+    },
+    {
+      "actual": "NOT_READY",
+      "expected": "NOT_READY",
+      "id": "tylenol_short",
+      "index": 46
+    },
+    {
+      "actual": "NOT_READY",
+      "expected": "NOT_READY",
+      "id": "tylenol_improved",
+      "index": 47
+    },
+    {
+      "actual": "CANNOT_DETERMINE",
+      "expected": "CANNOT_DETERMINE",
+      "id": "tylenol_future",
+      "index": 48
+    },
+    {
+      "actual": "CANNOT_DETERMINE",
+      "expected": "CANNOT_DETERMINE",
+      "id": "tylenol_nonpatient",
+      "index": 49
+    },
+    {
+      "actual": "CANNOT_DETERMINE",
+      "expected": "CANNOT_DETERMINE",
+      "id": "tylenol_nonpatient_tail",
+      "index": 50
+    },
+    {
+      "actual": "CANNOT_DETERMINE",
+      "expected": "CANNOT_DETERMINE",
+      "id": "tylenol_negated",
+      "index": 51
+    },
+    {
+      "actual": "CANNOT_DETERMINE",
+      "expected": "CANNOT_DETERMINE",
+      "id": "tylenol_negation_direct",
+      "index": 52
+    },
+    {
+      "actual": "CANNOT_DETERMINE",
+      "expected": "CANNOT_DETERMINE",
+      "id": "tylenol_unrelated",
+      "index": 53
+    },
+    {
+      "actual": "CANNOT_DETERMINE",
+      "expected": "CANNOT_DETERMINE",
+      "id": "tylenol_unrelated_tail",
+      "index": 54
+    },
+    {
+      "actual": "CANNOT_DETERMINE",
+      "expected": "CANNOT_DETERMINE",
+      "id": "tylenol_unrelated_prefix",
+      "index": 55
+    },
+    {
+      "actual": "CANNOT_DETERMINE",
+      "expected": "CANNOT_DETERMINE",
+      "id": "tylenol_fraction",
+      "index": 56
+    },
+    {
+      "actual": "CANNOT_DETERMINE",
+      "expected": "CANNOT_DETERMINE",
+      "id": "tylenol_comparison",
+      "index": 57
+    },
+    {
+      "actual": "CANNOT_DETERMINE",
+      "expected": "CANNOT_DETERMINE",
+      "id": "tylenol_range",
+      "index": 58
+    },
+    {
+      "actual": "NEEDS_REVIEW",
+      "expected": "NEEDS_REVIEW",
+      "id": "tylenol_questioned",
+      "index": 59
+    },
+    {
+      "actual": "NOT_READY",
+      "expected": "NOT_READY",
+      "id": "robaxin_short",
+      "index": 60
+    },
+    {
+      "actual": "NOT_READY",
+      "expected": "NOT_READY",
+      "id": "robaxin_improved",
+      "index": 61
+    },
+    {
+      "actual": "CANNOT_DETERMINE",
+      "expected": "CANNOT_DETERMINE",
+      "id": "robaxin_future",
+      "index": 62
+    },
+    {
+      "actual": "CANNOT_DETERMINE",
+      "expected": "CANNOT_DETERMINE",
+      "id": "robaxin_nonpatient",
+      "index": 63
+    },
+    {
+      "actual": "CANNOT_DETERMINE",
+      "expected": "CANNOT_DETERMINE",
+      "id": "robaxin_nonpatient_tail",
+      "index": 64
+    },
+    {
+      "actual": "CANNOT_DETERMINE",
+      "expected": "CANNOT_DETERMINE",
+      "id": "robaxin_negated",
+      "index": 65
+    },
+    {
+      "actual": "CANNOT_DETERMINE",
+      "expected": "CANNOT_DETERMINE",
+      "id": "robaxin_negation_direct",
+      "index": 66
+    },
+    {
+      "actual": "CANNOT_DETERMINE",
+      "expected": "CANNOT_DETERMINE",
+      "id": "robaxin_unrelated",
+      "index": 67
+    },
+    {
+      "actual": "CANNOT_DETERMINE",
+      "expected": "CANNOT_DETERMINE",
+      "id": "robaxin_unrelated_tail",
+      "index": 68
+    },
+    {
+      "actual": "CANNOT_DETERMINE",
+      "expected": "CANNOT_DETERMINE",
+      "id": "robaxin_unrelated_prefix",
+      "index": 69
+    },
+    {
+      "actual": "CANNOT_DETERMINE",
+      "expected": "CANNOT_DETERMINE",
+      "id": "robaxin_fraction",
+      "index": 70
+    },
+    {
+      "actual": "CANNOT_DETERMINE",
+      "expected": "CANNOT_DETERMINE",
+      "id": "robaxin_comparison",
+      "index": 71
+    },
+    {
+      "actual": "CANNOT_DETERMINE",
+      "expected": "CANNOT_DETERMINE",
+      "id": "robaxin_range",
+      "index": 72
+    },
+    {
+      "actual": "NEEDS_REVIEW",
+      "expected": "NEEDS_REVIEW",
+      "id": "robaxin_questioned",
+      "index": 73
+    }
+  ],
+  "mismatches": [],
+  "system": {
+    "abstention_rate": 0.7702702702702703,
+    "automated_ready": 0,
+    "cases": 74,
+    "confusion_matrix_expected_rows_actual_columns": {
+      "CANNOT_DETERMINE": {
+        "CANNOT_DETERMINE": 49,
+        "NEEDS_REVIEW": 0,
+        "NOT_READY": 0,
+        "PENDING_VERIFICATION": 0,
+        "READY": 0,
+        "UNKNOWN": 0
+      },
+      "NEEDS_REVIEW": {
+        "CANNOT_DETERMINE": 0,
+        "NEEDS_REVIEW": 8,
+        "NOT_READY": 0,
+        "PENDING_VERIFICATION": 0,
+        "READY": 0,
+        "UNKNOWN": 0
+      },
+      "NOT_READY": {
+        "CANNOT_DETERMINE": 0,
+        "NEEDS_REVIEW": 0,
+        "NOT_READY": 6,
+        "PENDING_VERIFICATION": 0,
+        "READY": 0,
+        "UNKNOWN": 0
+      },
+      "PENDING_VERIFICATION": {
+        "CANNOT_DETERMINE": 0,
+        "NEEDS_REVIEW": 0,
+        "NOT_READY": 0,
+        "PENDING_VERIFICATION": 11,
+        "READY": 0,
+        "UNKNOWN": 0
+      },
+      "READY": {
+        "CANNOT_DETERMINE": 0,
+        "NEEDS_REVIEW": 0,
+        "NOT_READY": 0,
+        "PENDING_VERIFICATION": 0,
+        "READY": 0,
+        "UNKNOWN": 0
+      },
+      "UNKNOWN": {
+        "CANNOT_DETERMINE": 0,
+        "NEEDS_REVIEW": 0,
+        "NOT_READY": 0,
+        "PENDING_VERIFICATION": 0,
+        "READY": 0,
+        "UNKNOWN": 0
+      }
+    },
+    "exact_status_accuracy": 1.0,
+    "exact_status_correct": 74,
+    "expected_abstention_rate": 0.7702702702702703,
+    "false_pending_verification": 0,
+    "false_ready": 0,
+    "missed_passes": 0
+  }
+}

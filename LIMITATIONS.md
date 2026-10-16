@@ -46,7 +46,7 @@ are fixed in v2.3.0; their broader failure classes are not solved. See
 - not a substitute for payer policy review or human chart review
 
 
-## v2.4.0 bounds and evidence
+## v2.5.0 bounds and evidence
 
 Five accepted exp-001 fixes handle auxiliary-verb negation, linked reflex
 qualifiers, intact reflexes, explicitly negated numeric strength and study-date
@@ -67,14 +67,25 @@ grades written “of” / “out of”. Days floor to completed weeks; months us
 four-week lower bound, not calendar inference. Complete course/response grammar
 misses legitimate narrative qualifiers; the new strength route's review handling
 does not repair the legacy slash-route laterality/attribution gap. Full class-name
-expansion was reverted after unsafe headache-therapy passes. Individual drug-name
-mapping awaits an owner decision on an auditable drug list.
+expansion was reverted after unsafe headache-therapy passes.
 
-Validation: **1202 passed, 10 xfailed**, corpus 52/52 with zero false pending,
+Exp-003 adds listed drug names through the same narrow course-sentence grammar;
+a leading verb such as 'Took' remains unrecognized. Eligible unresolved listed-drug
+context alongside another course now requires review, which can over-trigger.
+[engine/data/cpb0236_drugs_v1.json](engine/data/cpb0236_drugs_v1.json) is
+owner-approved reviewed data for local use. **ATC codes require human verification
+against WHO ATC before any external claim.** Approval does not certify each
+transcription or alias; route/formulation ambiguity and its human-review notice remain.
+
+Validation: **1301 passed, 10 xfailed**, corpus 52/52 with zero false pending,
 45/45 original authored cases, and two false pending results in the expanded 47.
 These finite regressions are not clinical validation. See the
 [exp-001 report](autoloop/REPORT.md). Exp-002's 69 authored cases improve 41/69 →
 64/69 exact with zero false pending across 54 negatives, but retain three missed
-passes and two wrong negative abstentions. The owner-supplied held-out exp-002
-set showed no recall gain. See [v2.4.0](docs/releases/v2.4.0.md) and the
-[exp-002 report](autoloop/exp-002/REPORT.md).
+passes and two wrong negative abstentions.
+
+Exp-003 improves 49/74 → 74/74 development statuses with zero final false
+pending across 63 negatives; its unsafe first candidate was reverted. The owner
+reports zero false pending on three held-out sets, exact 23→25/41, 15→15/36
+and 14→15/34. Those cases were not inspected or rerun during release prep. See
+[v2.5.0](docs/releases/v2.5.0.md) and the [exp-003 report](autoloop/exp-003/REPORT.md).

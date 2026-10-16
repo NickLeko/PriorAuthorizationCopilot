@@ -1,12 +1,12 @@
 # Model Card
 
 Project: Prior Authorization Readiness Copilot  
-Version: 2.4.0 (record schema 2.0.0)
+Version: 2.5.0 (record schema 2.0.0)
 
-Changelog: 2.4.0 — Releases exp-002 recall fixes for isolated qualifying courses
-in whole days/months and small number words, plus direct named-root strength
-grades written “of” / “out of”. The five exp-001 fixes remain. Human verification,
-policy trust and record schema are unchanged. See [release notes](docs/releases/v2.4.0.md).
+Changelog: 2.5.0 — Releases exp-003's owner-approved reviewed drug table and
+bounded drug-course recognition, including review for unresolved listed-drug
+context alongside another course. Earlier recall fixes, human verification,
+policy trust and record schema remain. See [release notes](docs/releases/v2.5.0.md).
 
 Automated extraction is a drafting aid, not a decision gate. v1.4.0's posture over-trusted extraction: negated diagnoses returned affirmative facts and contradicted the extraction contract as written. v1.5.0 resolves the contradiction by changing what the engine may assert rather than by making extraction match the contract. Known false proposals remain; the executable contract records them explicitly.
 
@@ -64,8 +64,9 @@ Automated extraction is a drafting aid, not a decision gate. v1.4.0's posture ov
 ## Evaluation
 
 The repo includes pytest coverage for extraction, verification, evaluation, drafting, rule loading, policy-monitor helpers, archive immutability, and replay categories. All bundled evaluation cases are synthetic. The checked-in fixture reports 52/52 exact statuses and 0 false `READY` results among 52 expected non-`READY` cases, including seven `PENDING_VERIFICATION` cases. Zero automated READY is enforced structurally; it is not an extraction-accuracy estimate. The executable contract tests cover every numbered guarantee and published exact example, including the resolved auxiliary-verb denial and the remaining neither/nor
-and same-sentence date gaps, plus thirteen exp-002 recall examples. Fresh suite:
-**1202 passed, 10 xfailed**. The
+and same-sentence date gaps, thirteen exp-002 recall examples, and sixteen
+exp-003 examples. Fresh suite:
+**1301 passed, 10 xfailed**. The
 negated-strength False expectation remains disputed; implementation requires
 review rather than proposing a normal exam. Corpus false PENDING_VERIFICATION
 is zero; original authored cases score 45/45 with zero false pending, while the
@@ -75,10 +76,17 @@ also achieves zero false pending, so that metric alone proves no improvement.
 Exp-002's full authored set improves 41/69 → 64/69 exact: twelve recovered passes,
 seven correct NOT_READY and four correct review outcomes; zero false pending
 across 54 negatives. Three positives and two negative exact-status misses remain
-from its rejected class-name expansion. These are development cases. The owner
-reports no recall gain on the separate 36-case held-out exp-002 set; the prior
-exp-001 held-out set improves 20 → 23 exact with zero false pending. Held-out
-cases were not inspected or rerun in this release preparation.
+from its rejected class-name expansion. These are development cases.
+
+Exp-003's development set improves 49/74 → 74/74, including 11 recovered
+positive passes and zero final false pending across 63 negatives. Its first
+candidate was reverted after four linkage false passes; the accepted guard
+requires review for unresolved drug context alongside another course.
+
+The owner reports three held-out sets, none visible during development: zero
+false pending on all; exact 23→25/41, 15→15/36 and 14→15/34. Those cases were
+not inspected or rerun in this release preparation. These modest exact-status
+changes do not validate arbitrary clinical prose.
 
 ## Known Limits
 
@@ -88,7 +96,12 @@ cases were not inspected or rerun in this release preparation.
   days floor to weeks and whole months use a four-week lower bound. Number words
   stop at twelve. Direct named-root word grades cover a narrow exam grammar;
   legacy slash-notation attribution gaps remain. Full class-name expansion was
-  rejected as unsafe; drug-name mapping awaits an auditable owner-approved list.
+  rejected as unsafe. [engine/data/cpb0236_drugs_v1.json](engine/data/cpb0236_drugs_v1.json)
+  is owner-approved reviewed data for local use. **ATC codes require human
+  verification against WHO ATC before any external claim.** Owner approval does
+  not certify the transcription; the human-review notice remains. Listed names
+  still require isolated course-sentence grammar: leading verbs such as 'Took'
+  are missed, and unresolved drug context may over-trigger review.
 - Source spans now exactly equal original-note slices at Python character offsets, including Unicode. This does not establish semantic support, attribution or complete context.
 - Human-verification identity is self-reported, not authenticated; the local demo cannot establish that a person actually reviewed a fact. Incorrect human attestations can still permit false READY.
 - v2.3.0 rejects the cross-sentence borrowed study date. Same-sentence unrelated
