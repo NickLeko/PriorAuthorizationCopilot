@@ -125,6 +125,24 @@ ROOT_WORD_STRENGTH_RE = re.compile(
     r"strength\s+(?:(?:is|was)\s+)?(?P<negated>not\s+)?(?P<score>[0-5](?:\.\d)?)\s+(?:out\s+)?of\s+5"
     r"(?P<attribution>\s+from\s+[^.!?;\n]+)?$"
 )
+# Typed motor/reflex scales; anatomy is a literal exam cue, never a root lookup.
+LOWER_LIMB_MOTOR_TERM = (
+    r"(?:iliopsoas|psoas|quadriceps|hamstrings?|gastrocnemius|soleus|peroneals?|"
+    r"tibialis\s+(?:anterior|posterior)|extensor\s+hallucis\s+longus|ehl|"
+    r"(?:ankle\s+)?dorsiflexion|(?:ankle\s+)?plantar\s*flexion|"
+    r"(?:hip|knee|toe|great\s+toe)\s+(?:flexion|extension|abduction|adduction)|"
+    r"strength|motor(?:\s+power)?|power)"
+)
+TYPED_MOTOR_RE = re.compile(
+    rf"\b(?P<term>{LOWER_LIMB_MOTOR_TERM})(?:\s+(?:strength|power))?\s*"
+    r"(?:(?:is|was|measured|graded)\s*|[:=]\s*)?(?P<negated>not\s+)?"
+    r"(?P<score>[0-5](?:\.\d)?)(?P<modifier>[+-])?\s*/\s*5\b"
+)
+TYPED_REFLEX_RE = re.compile(
+    r"\b(?:(?:patellar|achilles|ankle|knee|deep\s+tendon)\s+)?(?:reflex(?:es)?|jerks?)\s*"
+    r"(?:(?:is|was|were|graded)\s*|[:=]\s*)?(?P<grade>[0-4])\s*(?:\+|/\s*4)(?=\s|[,;.!?]|$)"
+)
+NAMED_EXAM_ROOT_RE = re.compile(r"\b(?:(?P<side>right|left)\s+)?(?:l[1-5]|s[1-5])(?:\s+(?:nerve\s+)?root)?\s+distribution\b")
 REFLEX_PREDICATE_LINK_RE = re.compile(
     r"\b(?:deep tendon\s+)?reflex(?:es)?(?:\s*:\s*|\s+)"
     r"(?:(?:is|are|was|were|remains?|remained|initially|later|now|then|on|repeat|but|and|"
@@ -748,6 +766,56 @@ def _resolve_boolean_candidates(
     return bool(value)
 
 
+def _typed_root_exam_candidates(text: str) -> List[Tuple[bool | str, int, int]]:
+    candidates = []
+    for sentence_start, sentence_end in _sentence_spans(text, therapy=True):
+        sentence = text[sentence_start:sentence_end]
+        for clause_start, clause_end in _therapy_clause_spans(sentence):
+            clause = sentence[clause_start:clause_end]
+            roots = list(NAMED_EXAM_ROOT_RE.finditer(clause))
+            if not roots:
+                continue
+            findings = [(match, "motor") for match in TYPED_MOTOR_RE.finditer(clause)]
+            findings += [(match, "reflex") for match in TYPED_REFLEX_RE.finditer(clause)]
+            for match, kind in findings:
+                if kind == "motor" and "strength" in match.group(0) and not match.group("modifier"):
+                    # Existing unmodified strength routes keep their contract.
+                    continue
+                if _mention_is_nonpatient_context(clause, match.start(), match.end()):
+                    continue
+                side = roots[0].group("side")
+                opposite = {"right": "left", "left": "right"}.get(side)
+                side_conflict = opposite and re.search(rf"\b{opposite}(?:[- ]sided)?\s+(?:leg\s+)?radiculopathy\b", text)
+                questionable = (
+                    len(roots) != 1
+                    or side_conflict
+                    or _finding_is_negated(clause, match)
+                    or _finding_is_uncertain(clause, match, source_text=text, offset=sentence_start + clause_start)
+                    or text[sentence_end : sentence_end + 1] == "?"
+                    or re.search(r"\b(?:subjective|pain[- ]limited|effort|due\s+to|secondary\s+to|from|will|would|planned)\b", clause)
+                )
+                if questionable or (kind == "motor" and match.group("negated")):
+                    value = REVIEW_REQUIRED_FACT
+                elif kind == "motor":
+                    score = float(match.group("score"))
+                    # Signed endpoints are not unambiguous ordinary grades.
+                    value = REVIEW_REQUIRED_FACT if score in (0, 5) and match.group("modifier") else score < 5
+                else:
+                    grade = int(match.group("grade"))
+                    normal = re.search(r"\b(?:normal|symmetric|intact|physiologic)\b", clause)
+                    abnormal = re.search(r"\b(?:reduced|diminished|decreased|absent|asymmetric|brisk|clonus|hyperreflexic)\b", clause)
+                    if normal and (abnormal or grade < 2):
+                        value = REVIEW_REQUIRED_FACT
+                    elif normal or grade == 2 and not abnormal:
+                        value = False
+                    elif grade < 2 or grade > 2 and abnormal:
+                        value = True
+                    else:
+                        value = REVIEW_REQUIRED_FACT
+                candidates.append((value, sentence_start + clause_start, sentence_start + clause_end))
+    return candidates
+
+
 def _duration_is_in_therapy_context(text: str, start: int, end: int) -> bool:
     window_start = max(0, start - 80)
     window_end = min(len(text), end + 80)
@@ -912,7 +980,7 @@ def _extract_facts(note_text: str) -> Tuple[Dict[str, Any], Dict[str, List[Dict[
         raw=raw,
     )
 
-    objective_candidates: List[Tuple[bool | str, int, int]] = []
+    objective_candidates: List[Tuple[bool | str, int, int]] = _typed_root_exam_candidates(t)
     # New word notation uses real sentences so decimal scores remain intact.
     # Legacy slash notation and its narrower clause scope remain unchanged.
     for sentence_start, sentence_end in _sentence_spans(t, therapy=True):

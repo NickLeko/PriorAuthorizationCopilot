@@ -5,6 +5,7 @@ from pathlib import Path
 
 import pytest
 
+from engine.extract import extract_facts
 from engine.schemas import PARequest
 from engine.service import ReadinessService
 
@@ -23,8 +24,14 @@ def test_exp004_paraphrase(case):
     if case["pair_role"] == "negative":
         assert result.overall_status != "PENDING_VERIFICATION"
         assert any(item.status != "MET" for item in result.results)
+    # Expected extraction facts include the review sentinel. Public service
+    # facts intentionally expose None with a separate NEEDS_REVIEW state.
+    raw_facts, _ = extract_facts(case["note_text"])
     for key, expected in case.get("expected_facts", {}).items():
-        assert result.facts[key] == expected
+        assert raw_facts[key] == expected
+        if expected == "__REVIEW_REQUIRED__":
+            assert result.facts[key] is None
+            assert result.captured_fact_states[key] == "NEEDS_REVIEW"
     for spans in result.evidence_map.values():
         for span in spans:
             assert case["note_text"][span.start : span.end] == span.text

@@ -44,3 +44,28 @@ iteration proceeds on a failing suite.
 Iteration 1 final: **1317 passed, 10 xfailed**, lint on changed Python files
 passes. Final scoreboard remains dev 18/27, 0 false pending; own 16/16,
 corpus 52/52, exp-002/003 full reports unchanged. No safety failure observed.
+
+## Iteration 2 — typed objective exam grades
+
+Hypothesis: a literal “strength” prerequisite misses typed motor exams; numeric
+reflex grades are also absent. General rule before implementation: bind an
+explicit motor or tendon-reflex grade directly to a named lumbar/sacral root
+in the same exam clause. Motor labels or lower-limb muscles/actions may identify
+the scale; +/- modifiers do not erase a subnormal base score. For reflexes,
+low grades document change, the ordinary grade with normal/symmetric language
+is normal, and brisk grades need explicit abnormality wording. Uncertain,
+negated, pain-limited, conflicting-side or alternatively attributed findings
+require review. Do not infer root distributions from muscle anatomy alone.
+Own vocabulary adds iliopsoas, tibialis anterior, gastrocnemius, plantar flexion,
+Achilles/ankle/knee jerks, different roots and scores, outside dev's target terms.
+
+Result: dev **24/27 exact**, 0 false pending; own cumulative **38/38**
+(12 positives / 26 negatives), including all 8 motor/reflex positives and
+14 near-miss negatives. Corpus 52/52; exp-002 64/69 and exp-003 74/74 unchanged.
+make test **1339 passed, 10 xfailed**. The new paraphrase harness initially
+compared raw review sentinels with public service scalars (which deliberately
+use None plus captured_fact_states). Corrected only this experiment's new
+harness to check raw facts and the public review state, retaining every authored
+case, fact expectation and status. A wrong state attribute in that harness was
+also corrected; both failed outputs are preserved. No baseline test changed.
+No drug additions, no safety failure, no dev-label dispute in this family.
