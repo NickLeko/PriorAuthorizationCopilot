@@ -1,12 +1,13 @@
 """Fixed automated evaluator. Run from any working directory; inputs stay in repo."""
+
 from __future__ import annotations
 
 import argparse
-from collections import Counter
 import hashlib
 import json
-from pathlib import Path
 import sys
+from collections import Counter
+from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
@@ -37,9 +38,7 @@ def metrics(expected: list[str], actual: list[str]) -> dict:
         "missed_passes": sum(e == "PENDING_VERIFICATION" and a != "PENDING_VERIFICATION" for e, a in zip(expected, actual)),
         "abstention_rate": sum(a in ABSTENTIONS for a in actual) / count,
         "expected_abstention_rate": sum(e in ABSTENTIONS for e in expected) / count,
-        "confusion_matrix_expected_rows_actual_columns": {
-            e: {a: matrix[e, a] for a in STATUSES} for e in STATUSES
-        },
+        "confusion_matrix_expected_rows_actual_columns": {e: {a: matrix[e, a] for a in STATUSES} for e in STATUSES},
     }
 
 
@@ -65,9 +64,9 @@ def score(path: Path) -> dict:
         expected = case["expected_overall_status"]
         if expected not in STATUSES:
             raise ValueError(f"Case {index} has invalid expected status: {expected!r}")
-        request = PARequest.model_validate({
-            key: case[key] for key in ("payer", "procedure_code", "note_text", "dx_codes", "site_of_care", "specialty") if key in case
-        })
+        request = PARequest.model_validate(
+            {key: case[key] for key in ("payer", "procedure_code", "note_text", "dx_codes", "site_of_care", "specialty") if key in case}
+        )
         result = service.evaluate(request)
         rows.append({"index": index, "id": case.get("id"), "expected": expected, "actual": result.overall_status})
     expected = [row["expected"] for row in rows]

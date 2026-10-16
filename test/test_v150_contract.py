@@ -55,12 +55,6 @@ class TestExtractionContractAlignment:
         [
             pytest.param(example, marks=pytest.mark.xfail(strict=True, reason=example["known_failure"]))
             if "known_failure" in example
-            and example["known_failure"]
-            not in {
-                "attribution: decreased pain borrowed as reflex finding",  # Resolved by exp-001; assertions unchanged.
-                "negation: unsupported does-not-have scope",
-                "date association: visit date borrowed for undated study",
-            }
             else example
             for example in EXAMPLES
         ],

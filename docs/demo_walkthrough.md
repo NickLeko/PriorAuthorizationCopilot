@@ -53,7 +53,9 @@ Show the prepared `MRI-01-complete` result in Streamlit. All four operators pass
 
 Open the original synthetic note and inspect each proposed fact and cited source span. Enter the reviewer's name and check only the facts actually verified. Select **Record human verification**. This example becomes `READY` after all four attestations because every operator is `MET` and every requirement fact is `HUMAN_VERIFIED`. Policy trust is not a prerequisite for documentation status `READY`. The separate `submission_readiness=true` gate additionally requires current verified policy provenance, a trusted active rulebook, and no unresolved drift. Documentation can remain `READY` while `submission_readiness=false`.
 
-Explain: “The extractor can produce an affirmative lumbar diagnosis from a negated sentence. Exact offsets only prove where the text came from. A person must check its meaning.” The [executable extraction contract](../EXTRACTION_CONTRACT.md) retains that failure explicitly.
+Explain: “The extractor can produce an affirmative lumbar diagnosis from a negated sentence. Exact offsets only prove where the text came from. A person must check its meaning.” The [executable extraction contract](../EXTRACTION_CONTRACT.md) retains the
+remaining `has neither low back pain nor radiculopathy` failure explicitly;
+the does/do/did-not-have example is fixed in v2.3.0.
 
 Reviewer identity is self-reported, and the app cannot prove review happened. If source freshness has expired, acknowledge the governance warning for inspection; do not claim that acknowledgement restores trust. The [verified golden fixture](../test/golden/evaluations/MRI-01-human-verified.json) shows the fixed historical example with synthetic attestations.
 
