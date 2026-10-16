@@ -69,3 +69,21 @@ harness to check raw facts and the public review state, retaining every authored
 case, fact expectation and status. A wrong state attribute in that harness was
 also corrected; both failed outputs are preserved. No baseline test changed.
 No drug additions, no safety failure, no dev-label dispute in this family.
+
+## Iteration 3 — calendar-valid study dates with direct study linkage
+
+General rule before implementation: accept calendar-valid US numeric, dotted
+year-first, and English full/abbreviated month dates in either written ordering,
+including ordinal days. New date forms require a directly adjoining completed
+sleep-test cue, not merely a date elsewhere in the same sentence. Retain
+non-patient, planned/cancelled, missingness, uncertainty and question guards.
+This is syntax/calendar validation, with no new clock, recency or date inference.
+Own paraphrases use HST/polysomnogram/home-sleep-test vocabulary, November,
+February and September, day-first/ordinal/dotted/hyphen forms not in dev.
+
+Result: dev **26/27 exact**, 0 false pending; own cumulative **52/52**
+(16 positives / 36 negatives). All 4 new date positives and 10 negatives pass.
+Corpus 52/52; exp-002/003 full reports unchanged. make test **1353 passed,
+10 xfailed**. Calendar validation uses datetime.strptime only, never a clock.
+Legacy year-first date behavior is preserved; newly accepted formats require
+direct study linkage. No data-table addition and no safety failure observed.

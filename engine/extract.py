@@ -5,7 +5,7 @@ from bisect import bisect_left, bisect_right
 from dataclasses import dataclass
 from typing import Any, Dict, List, Optional, Tuple
 
-from .note_context import DRUG_NAME_PATTERN, DRUG_NAME_RE, EvidenceMap, indexed_note, note_index, validate_note
+from .note_context import DRUG_NAME_PATTERN, DRUG_NAME_RE, EvidenceMap, explicit_study_dates, indexed_note, note_index, validate_note
 from .schemas import REVIEW_REQUIRED_FACT
 
 THERAPY_CONTEXT = r"(?:pt|physical therapy|nsaids?|anti-?inflammator(?:y|ies)|activity modification|home exercise|hep|chiropractic|chiro)"
@@ -1329,10 +1329,27 @@ def _extract_facts(note_text: str) -> Tuple[Dict[str, Any], Dict[str, List[Dict[
     # ----------------------------
     sleep_study_date: Optional[bool] | str = None
 
-    date_iter = list(re.finditer(r"\b(20\d{2}|19\d{2})[-/]\d{1,2}[-/]\d{1,2}\b", t))
-    SLEEP_CTX = re.compile(r"\b(sleep study|polysomnography|psg|hst|home sleep test)\b")
+    date_iter = [(match, False) for match in re.finditer(r"\b(20\d{2}|19\d{2})[-/]\d{1,2}[-/]\d{1,2}\b", t)]
+    date_iter += [(match, True) for match in explicit_study_dates(t)]
+    SLEEP_CTX = re.compile(r"\b(?:sleep study|polysomnography|polysomnogram|psg|hst|hsat|home sleep (?:apnea )?test)\b")
+    study_date_before = re.compile(
+        SLEEP_CTX.pattern + r"\s*(?:(?:was|were|is|performed|completed|conducted|dated|on|from|of|for)\s+|:\s*)*$"
+    )
+    study_date_after = re.compile(r"\s+(?:(?:a|the)\s+)?" + SLEEP_CTX.pattern)
 
-    for m_date in date_iter:
+    for m_date, new_format in date_iter:
+        if new_format:
+            left, right = note_index(t).containing(m_date.start(), m_date.end())
+            before = t[left : m_date.start()]
+            after = t[m_date.end() : right]
+            direct_before = study_date_before.search(before)
+            direct_after = re.fullmatch(r"\s*(?:on\s+)?", before) and study_date_after.match(after)
+            if not (direct_before or direct_after):
+                continue
+            # A negated or explicitly undated study cannot acquire a date just
+            # because its formatting is newly recognized.
+            if re.search(r"\b(?:no|never|denied|denies|undated|not\s+(?:performed|done|available|documented))\b", before):
+                continue
         window_start = max(0, m_date.start() - 80)
         window_end = min(len(t), m_date.end() + 80)
         window = t[window_start:window_end]
