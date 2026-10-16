@@ -146,7 +146,9 @@ def test_adversarial_notes_cannot_produce_false_ready(procedure_code, note_text,
 
 @pytest.mark.parametrize(
     "diagnosis",
-    ["Low back pain with radiculopathy.", "Patient does not have low back pain with radiculopathy."],
+    # Retain a wrong-but-all-MET proposal to exercise attestation independently
+    # of semantic accuracy; neither/nor remains an unsupported negation form.
+    ["Low back pain with radiculopathy.", "Patient has neither low back pain nor radiculopathy."],
 )
 def test_complete_lumbar_proposals_require_every_human_verification(diagnosis):
     service = ReadinessService()

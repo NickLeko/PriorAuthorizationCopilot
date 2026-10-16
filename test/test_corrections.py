@@ -209,16 +209,20 @@ def test_missing_review_rejects_valid_quote_that_is_not_the_offending_proposal()
 
 def test_failing_correction_and_original_negation_error():
     note = (
-        "Patient does not have low back pain with radiculopathy. Right L5 distribution: strength 4/5. "
-        "NSAIDs for 8 weeks with no improvement."
+        "Patient has neither low back pain nor radiculopathy. Right L5 distribution: strength 4/5. NSAIDs for 8 weeks with no improvement."
     )
     service = ReadinessService()
     original = service.evaluate(request(note))
-    assert original.facts["back_pain_with_radiculopathy"] is True  # Known drafting error is not rebuilt.
+    # The remaining neither/nor error supplies a wrong proposal for correction.
+    assert original.facts["back_pain_with_radiculopathy"] is True
+    assert original.overall_status == "PENDING_VERIFICATION"
     corrected = service.evaluate(request(note, events=[event(note, "back_pain_with_radiculopathy", False)]))
     assert corrected.original_snapshot == original.original_snapshot
     assert corrected.facts["back_pain_with_radiculopathy"] is False
     assert corrected.overall_status == "NOT_READY"
+    assert corrected.original_snapshot.content["facts"]["back_pain_with_radiculopathy"] is True
+    assert corrected.fact_set_fingerprint != original.fact_set_fingerprint
+    assert next(result for result in corrected.results if result.key == "back_pain_with_radiculopathy").status == "NOT_MET"
     assert service.evaluate(request(events=[event(value=5)])).overall_status == "NOT_READY"
 
 

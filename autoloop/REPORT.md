@@ -1,3 +1,35 @@
+# Experiment exp-001 — owner-authorized continuation
+
+Iteration 6 is complete and committed with the prior diagnosis fix re-applied.
+Iteration 7 follows separately. The previous report, including the first-stop
+record and rejected attempts, is preserved verbatim below as history.
+
+- Diagnosis negation: nine unchanged-label regression cases now pass; the original
+  `negation_first` strict xfail now passes.
+- The two disputed diagnosis tests are **(b) setup** tests. Their inputs now use
+  an explicitly denied neither/nor variant that remains incorrectly extracted.
+  The correction test still changes True → False, preserves the original
+  snapshot, and now also checks the changed fingerprint and NOT_MET result.
+  The service test retains every omitted-attestation check and fully attested
+  READY for both a correct and a deliberately incorrect all-MET proposal.
+- The old denied note is retained in executable correct-value regressions, so
+  changing setup does not remove negative-extraction coverage.
+- Tests: **1103 passed / 12 xfailed → 1113 passed / 11 xfailed**.
+- Corpus: **52/52 exact and zero false pending**, unchanged.
+- Original all-authored 45: **35/45 → 42/45 exact; false pending 10 → 3**.
+- Expanded 47, including both replacement setup errors: **35/47 → 42/47 exact;
+  false pending 12 → 5**. Neither/nor and same-sentence date association remain
+  unresolved. These new inputs already failed before the resumed fixes.
+
+Per-test classifications and policy/contract citations were logged before edits
+in [LOG.md](LOG.md). Full verification is in `evidence/iteration-6-*`. The
+scoreboard, baseline, original 45-case labels, policy, clocks and protected
+outputs are unchanged. No push has been performed in this resumed turn yet.
+
+---
+
+# Iterations 1–5 report — historical record preserved verbatim
+
 # Experiment exp-001 — resumed Phase 2 report
 
 Completed the five-iteration bound on `autoloop/exp-001`: **three accepted fixes,

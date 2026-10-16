@@ -58,6 +58,7 @@ class TestExtractionContractAlignment:
             and example["known_failure"]
             not in {
                 "attribution: decreased pain borrowed as reflex finding",  # Resolved by exp-001; assertions unchanged.
+                "negation: unsupported does-not-have scope",
             }
             else example
             for example in EXAMPLES

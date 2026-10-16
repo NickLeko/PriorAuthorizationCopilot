@@ -9,6 +9,7 @@ from engine.schemas import PARequest
 from engine.service import ReadinessService
 
 CASES = json.loads((Path(__file__).resolve().parents[1] / "autoloop/regression_cases.json").read_text())
+CASES += json.loads((Path(__file__).resolve().parents[1] / "autoloop/rejected-diagnosis-cases.json").read_text())
 
 
 @pytest.mark.parametrize("case", CASES, ids=lambda case: case["id"])

@@ -339,7 +339,7 @@ def _finding_is_negated(text: str, match: re.Match[str]) -> bool:
     after = text[match.end() : min(len(text), match.end() + 24)]
     return bool(
         re.search(
-            r"\b(?:no|denies?|without|negative\s+for|free\s+of|absence\s+of|rule(?:d)?\s+out)\s+"
+            r"\b(?:no|denies?|without|negative\s+for|free\s+of|absence\s+of|rule(?:d)?\s+out|(?:does|do|did)\s+not\s+have)\s+"
             r"(?:evidence\s+of\s+)?(?:acute\s+)?$",
             before,
         )

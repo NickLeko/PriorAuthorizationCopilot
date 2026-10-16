@@ -317,3 +317,71 @@ original corpus edit, golden/artifact edit, push, tag or main change occurred.
 Final whitespace audit: raw pytest stdout includes trailing spaces on blank
 assertion-diff lines. These evidence files are preserved as emitted rather than
 edited. Scoped source, test and report/log whitespace checks pass.
+
+# Owner-authorized continuation — iterations 6 and 7
+
+Starting branch/commit: `autoloop/exp-001` / `962fafc`. The owner explicitly
+allows rewriting ONLY the previously disputed diagnosis and borrowed-date tests,
+and independent-case-17 labels, while preserving each setup test's purpose.
+The owner also authorizes a final push of this branch only. No other existing
+assertion, expected status or fixture may change except resolved xfail markers.
+Previous baseline/evidence and the first-stop record remain historical records.
+
+## Classification before editing
+
+| Iteration / existing test | Class | Purpose, planned rewrite and justification |
+| --- | --- | --- |
+| 6: `test_corrections.py::test_failing_correction_and_original_negation_error` | (b) setup | Tests a failing SET_VALUE correction over an incorrect original proposal, immutable original snapshot, and a separate below-threshold correction. Substitute explicit `neither low back pain nor radiculopathy`, still over-captured by the bounded extractor; keep True → False and strengthen snapshot/fingerprint assertions. The original denied note becomes an executable correct-value regression. Contract G05 preserves original proposals/correction history; `negation_first` establishes the denied diagnosis must be False/NOT_READY. |
+| 6: `test_service.py::test_complete_lumbar_proposals_require_every_human_verification` (denied parameter only) | (b) setup | Tests every omitted attestation and then complete attestation on all-MET proposals, including one semantically wrong proposal. Substitute the same unsupported neither/nor denial; keep all MET, every omitted-attestation check and fully attested READY. G03–G05 govern attestations and do not establish semantic truth. |
+| 7: `test_archive_invariants.py::test_borrowed_date_verified_ready_without_submission_readiness_roundtrips` | (b) setup | Tests preservation of a human-attested, semantically wrong READY envelope under demo policy trust with submission_readiness=false. Substitute an unrelated visit date in the SAME sentence as the undated study; keep incorrect attestation, READY, demo trust and exact SQLite record/get equality. G07 and archive invariants still apply. |
+| 7: `test_corrections.py::test_borrowed_date_can_be_withdrawn_without_fixing_extraction` | (b) setup | Tests SET_MISSING withdrawing an offending citation and retaining the immutable original. Substitute the same same-sentence borrowed-date note; retain True original, cited proposal-spans review, and CANNOT_DETERMINE after withdrawal. G05 requires retained proposal/correction evidence. |
+| 7: `test_v210_independent.py::test_independent_correct_values_and_states` (case 17 only) | (a) product claim | Its explicit missing-study-date note cannot supply dated-study evidence. Change only that case's sleep_study_date label True → null, requirement MET → NOT_DOCUMENTED, overall PENDING_VERIFICATION → CANNOT_DETERMINE. Fixed CPAP rule requires dated sleep-study evidence; the executable `borrowed_date` contract requires null/CANNOT_DETERMINE. Every other fixture entry and case-17 input remains unchanged. |
+| 7: `test_v210_independent.py::test_independent_17_study_citation_correct_sentence` | (a) product claim | A missing date has no date citation. Change True and the misleading undated completed-study citation to null and an empty context list. Positive genuine-date citation checks will be active in the new seven-case regressions, preserving useful citation coverage. |
+
+Known setup limitations are disclosed, not counted as fixed: neither/nor diagnosis
+negation and same-sentence date association remain unsupported. Both newly chosen
+setup inputs already return false PENDING_VERIFICATION before either resumed
+fix. They are frozen in `resume-setup-cases.json`; `resume-all-authored-cases.json`
+retains the original 45 unchanged plus these two, so new setup bugs cannot be
+hidden by reporting only the original set. Before iteration 6: original 45
+score 35/45 exact with 10 false pending; expanded 47 score 35/47 exact with 12.
+
+## Iteration 6 — diagnosis negation, authorized test-purpose-preserving rewrite
+
+Hypothesis: same confirmed auxiliary-verb negation defect as iteration 1; the
+owner now permits preserving feature coverage with different setup inputs.
+The previously rejected regex is to be re-applied without broadening its scope.
+
+Iteration 6 outcome: re-applied exactly the previous auxiliary-verb negation
+alternative. Before product fix, the active 38-case repro suite had **7 failed,
+31 passed**; after fix all 38 pass. The nine diagnosis labels are unchanged.
+
+Both category-(b) rewrites retain wrong-original → corrected-False behavior and
+all-MET → partial-attestation → fully-attested behavior, respectively. Correction
+coverage is strengthened with original fact retained as True in the immutable
+snapshot, changed fact-set fingerprint, and explicit NOT_MET after correction.
+No assertion in the service test body was changed; every omitted-attestation
+check still runs, including the deliberately wrong proposal parameter.
+
+Removed strict marker: contract `negation_first` /
+`TestExtractionContractAlignment::test_G01_exact_examples_and_determinism`,
+reason `negation: unsupported does-not-have scope`. Its ORIGINAL False fact and
+NOT_READY expected status now pass; no contract example/label was rewritten.
+
+`make test`: **1113 passed, 11 xfailed** (previous **1103 / 12**; +9 new collected
+cases and +1 newly passing strict xfail). Then the public-service scoreboard:
+corpus **52/52 exact, zero false pending**, byte-for-byte baseline match.
+Frozen all-authored 45: **35/45 → 42/45 exact, 10 → 3 false pending**;
+abstention **16/45 → 17/45**, expected **20/45**, zero missed passes.
+Expanded 47 including both new setup counterexamples: **35/47 → 42/47 exact,
+12 → 5 false pending**; neither setup counterexample changed status. Diagnosis
+set **2/9 → 9/9 exact, 7 → 0 false pending**. Targeted lint/format checks pass.
+Evidence: `evidence/iteration-6-*`.
+
+Self-audit: replacing an obsolete known-bug setup with another known-bug setup
+can hide limits if only the repaired regression set is reported. Both replacement
+inputs are therefore also scored independently of feature-test assertions and
+included in the fixed expanded 47-case set. This retains rather than weakens the
+original demonstration that corrections/attestations do not validate semantics.
+The repaired denied-diagnosis note remains covered by a now-unxfail contract
+example and the newly collected regressions, not erased from the tests.
