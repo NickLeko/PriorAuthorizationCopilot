@@ -239,4 +239,4 @@ original snapshots or fingerprints. Canonical archive records and generated acce
 retain schema `2.0.0` and omit the derived field. Review/report exports carry the
 derived field as a surface projection. The canonical result reader can
 consume a review projection: it verifies the context against note/evidence and
-then discards it. `engine_version` is stamped `2.3.0`; record `schema_version` remains `2.0.0`.
+then discards it. `engine_version` is stamped `2.4.0`; record `schema_version` remains `2.0.0`.

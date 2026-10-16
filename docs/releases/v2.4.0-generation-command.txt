@@ -1,0 +1,73 @@
+# Run from repository root: .venv/bin/python < docs/releases/v2.4.0-generation-command.txt
+# Snapshot every actual write; restore every output on any unexpected change.
+import hashlib
+import json
+from pathlib import Path
+
+from engine.acceptance import ACCEPTANCE_GOVERNANCE_NOW
+from scripts.generate_artifacts import main as artifacts
+from scripts.generate_golden_outputs import main as goldens
+
+root = Path.cwd().resolve()
+original_write = Path.write_text
+before = {}
+
+
+def capture_write(path, data, *args, **kwargs):
+    absolute = path.resolve()
+    assert absolute.is_relative_to(root)
+    relative = absolute.relative_to(root).as_posix()
+    assert relative.startswith(('test/golden/', 'docs/artifacts/')), relative
+    assert absolute.is_file(), relative
+    before.setdefault(absolute, absolute.read_bytes())
+    return original_write(path, data, *args, **kwargs)
+
+
+def differences(old, new, pointer=''):
+    if type(old) is not type(new):
+        return [(pointer, old, new)]
+    if isinstance(old, dict):
+        if old.keys() != new.keys():
+            return [(pointer, old, new)]
+        return [change for key in old for change in differences(old[key], new[key], pointer + '/' + key)]
+    if isinstance(old, list):
+        if len(old) != len(new):
+            return [(pointer, old, new)]
+        return [change for index, (left, right) in enumerate(zip(old, new)) for change in differences(left, right, pointer + '/' + str(index))]
+    return [] if old == new else [(pointer, old, new)]
+
+
+rows = []
+try:
+    Path.write_text = capture_write
+    clock = lambda: ACCEPTANCE_GOVERNANCE_NOW
+    goldens(utc_now_provider=clock)
+    artifacts(utc_now_provider=clock)
+    Path.write_text = original_write
+    assert len(before) == 25, len(before)
+    for path, old in before.items():
+        new = path.read_bytes()
+        changes = []
+        if old != new:
+            assert path.suffix == '.json', str(path)
+            changes = differences(json.loads(old), json.loads(new))
+            assert changes, 'Formatting-only change is not permitted.'
+            for pointer, left, right in changes:
+                assert pointer in ('/engine_version', '/app_version') and left == '2.3.0' and right == '2.4.0', (str(path), pointer, left, right)
+        rows.append({'file': path.relative_to(root).as_posix(), 'changed': old != new,
+                     'before_sha256': hashlib.sha256(old).hexdigest(), 'after_sha256': hashlib.sha256(new).hexdigest(),
+                     'changes': [{'pointer': p, 'before': left, 'after': right} for p, left, right in changes]})
+except BaseException as exc:
+    Path.write_text = original_write
+    for path, old in before.items():
+        path.write_bytes(old)
+    Path('docs/releases/v2.4.0-generation-stop.txt').write_text(f'All generation writes reverted. Stop: {exc!r}\n')
+    raise
+finally:
+    Path.write_text = original_write
+
+report = {'clock': ACCEPTANCE_GOVERNANCE_NOW.isoformat(), 'regenerated': len(rows),
+          'changed': sum(row['changed'] for row in rows), 'non_version_changes': [],
+          'governance_changes': [], 'files': rows}
+Path('docs/releases/v2.4.0-generation-audit.json').write_text(json.dumps(report, indent=2) + '\n')
+print(json.dumps({key: value for key, value in report.items() if key != 'files'}, indent=2))

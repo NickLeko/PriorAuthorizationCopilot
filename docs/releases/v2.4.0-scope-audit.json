@@ -1,0 +1,22 @@
+{
+  "release_base": "3004eb472625e59a6997dd0464707c39b2c7cb83",
+  "branch": "codex/release-v2.4.0",
+  "main_unchanged": true,
+  "exp002_branch_unchanged": true,
+  "product_diff_only_engine_version": [
+    "engine/__init__.py"
+  ],
+  "version_only_test_edits": [
+    "test/test_api.py",
+    "test/test_v210_safety.py"
+  ],
+  "existing_contract_examples_unchanged": 38,
+  "new_contract_examples": 13,
+  "contract_known_failures_unchanged": 4,
+  "protected_inputs_and_governance_unchanged": true,
+  "regenerated_outputs_sha256_verified": 25,
+  "generated_version_only_changes": 12,
+  "corpus_full_report_identical": true,
+  "exp002_full_report_identical": true,
+  "heldout_statement_verbatim": true
+}
