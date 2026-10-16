@@ -5,7 +5,7 @@ from bisect import bisect_left, bisect_right
 from dataclasses import dataclass
 from typing import Any, Dict, List, Optional, Tuple
 
-from .note_context import EvidenceMap, indexed_note, note_index, validate_note
+from .note_context import DRUG_NAME_PATTERN, DRUG_NAME_RE, EvidenceMap, indexed_note, note_index, validate_note
 from .schemas import REVIEW_REQUIRED_FACT
 
 THERAPY_CONTEXT = r"(?:pt|physical therapy|nsaids?|anti-?inflammator(?:y|ies)|activity modification|home exercise|hep|chiropractic|chiro)"
@@ -52,6 +52,16 @@ CPB_NEW_DURATION_AFTER_RE = re.compile(
 )
 CPB_NEW_DURATION_BEFORE_RE = re.compile(
     rf"^(?:completed\s+)?(?P<value>{CPB_EXPLICIT_DURATION_VALUE})\s+(?P<unit>days?|months?|weeks?)\s+of\s+{CPB_0236_THERAPY_CONTEXT}"
+    + CPB_COURSE_RESPONSE_SUFFIX
+)
+# Listed drug names replace only the class token in the existing isolated
+# course grammar. Keep original note offsets and all shared safety guards.
+CPB_DRUG_DURATION_AFTER_RE = re.compile(
+    rf"^(?:completed\s+)?{DRUG_NAME_PATTERN}\s+(?:x|for)\s+(?P<value>{CPB_EXPLICIT_DURATION_VALUE})\s+(?P<unit>days?|months?|weeks?)"
+    + CPB_COURSE_RESPONSE_SUFFIX
+)
+CPB_DRUG_DURATION_BEFORE_RE = re.compile(
+    rf"^(?:completed\s+)?(?P<value>{CPB_EXPLICIT_DURATION_VALUE})\s+(?P<unit>days?|months?|weeks?)\s+of\s+{DRUG_NAME_PATTERN}"
     + CPB_COURSE_RESPONSE_SUFFIX
 )
 CPB_0236_NONRESPONSE_RE = re.compile(
@@ -478,6 +488,7 @@ def _cpb_duration_weeks(match: re.Match[str]) -> int:
 
 def _collect_cpb_therapy_candidates(text: str) -> List[_TherapyCourseCandidate]:
     candidates: List[_TherapyCourseCandidate] = []
+    unresolved_drug_context: List[_TherapyCourseCandidate] = []
 
     for sentence_start, sentence_end in _sentence_spans(text, therapy=True):
         sentence = text[sentence_start:sentence_end]
@@ -488,7 +499,38 @@ def _collect_cpb_therapy_candidates(text: str) -> List[_TherapyCourseCandidate]:
             clause = sentence[clause_start:clause_end]
             absolute_start = sentence_start + clause_start
             absolute_end = sentence_start + clause_end
+            isolated_course = clause_start == 0 and clause_end == len(sentence)
+            drug_duration_matches = (
+                [match for pattern in (CPB_DRUG_DURATION_AFTER_RE, CPB_DRUG_DURATION_BEFORE_RE) for match in pattern.finditer(clause)]
+                if isolated_course
+                else []
+            )
+            drug_mentions = list(DRUG_NAME_RE.finditer(clause))
+            if (
+                drug_mentions
+                and not drug_duration_matches
+                and not _has_pattern(THERAPY_FUTURE_LOOKBACK_PATTERNS + THERAPY_FUTURE_AFTER_PATTERNS, clause)
+                and any(
+                    not _therapy_duration_is_disqualified(clause, match)
+                    and not _mention_is_nonpatient_context(clause, match.start(), match.end())
+                    for match in drug_mentions
+                )
+            ):
+                # A partial drug statement must not disappear when another
+                # course could pass. Do not donate its response or duration.
+                unresolved_drug_context.append(
+                    _TherapyCourseCandidate(
+                        modality_key=drug_mentions[0].group(0),
+                        duration_weeks=None,
+                        no_improvement=None,
+                        start=absolute_start,
+                        end=absolute_end,
+                        ambiguous_linkage=True,
+                    )
+                )
             modality_matches = list(CPB_0236_THERAPY_CONTEXT_RE.finditer(clause))
+            if drug_duration_matches:
+                modality_matches.extend(drug_mentions)
             if not modality_matches:
                 continue
 
@@ -505,13 +547,13 @@ def _collect_cpb_therapy_candidates(text: str) -> List[_TherapyCourseCandidate]:
                 continue
 
             duration_patterns = [CPB_0236_THERAPY_AFTER_RE, CPB_0236_THERAPY_BEFORE_RE]
-            if clause_start == 0 and clause_end == len(sentence):
+            if isolated_course:
                 duration_patterns.extend((CPB_NEW_DURATION_AFTER_RE, CPB_NEW_DURATION_BEFORE_RE))
+            raw_duration_matches = [match for pattern in duration_patterns for match in pattern.finditer(clause)] + drug_duration_matches
             duration_matches = _dedup_matches(
                 [
                     match
-                    for pattern in duration_patterns
-                    for match in pattern.finditer(clause)
+                    for match in raw_duration_matches
                     if not _therapy_duration_is_disqualified(clause, match)
                     and not _mention_is_nonpatient_context(clause, match.start(), match.end())
                 ]
@@ -587,6 +629,9 @@ def _collect_cpb_therapy_candidates(text: str) -> List[_TherapyCourseCandidate]:
                     response_only_review=response_only_review,
                 )
             )
+
+    if candidates:
+        candidates.extend(unresolved_drug_context)
 
     return candidates
 

@@ -1,4 +1,4 @@
-# Extraction, correction and verification contract v2.4
+# Extraction, correction and verification contract v2.5
 
 v2.0.0 retains the extractor and deterministic operators. Typed, source-located corrections materialize effective facts over an immutable original proposal; every ordered event is retained and the last event wins. SET_VALUE requires exact quotations of at most 300 characters per span and the submitted note hash; multiple spans are allowed and overlength spans are rejected, never truncated. SET_MISSING records document review and any offending proposal spans. SET_NEEDS_REVIEW and RESTORE_ORIGINAL preserve explicit state/history. Types, units and reviewer-enterable values come from fact contracts; there is no scalar coercion or free-text fact value.
 
@@ -11,7 +11,7 @@ Its claim that a diagnosis returned True only without supported negation was
 contradicted by `Patient does not have low back pain with radiculopathy`.
 v1.5.0 resolves that contradiction by changing what the engine may assert,
 not by making extraction match the old contract. Negation, temporality and
-attribution errors remain. v2.4 handles the specific patterns listed below; each failure class remains open.
+attribution errors remain. v2.5 handles the specific patterns listed below; each failure class remains open.
 
 The normative guarantees are G01–G07 below and the exact examples in the JSON
 block. `TestExtractionContractAlignment` executes correct expectations; remaining known failures are strict xfails. These finite examples are not universal language claims;
@@ -20,7 +20,8 @@ new contract claims must receive executable coverage in that class.
 ## Guarantees
 
 - **G01**: `extract_facts(note)` is deterministic and uses regex/standard-library
-  code, with no LLM, ontology, RAG or NLP library. It returns `(facts, evidence_map)`.
+  code plus the owner-approved reviewed drug table below, with no LLM,
+  ontology service, RAG or NLP library. It returns `(facts, evidence_map)`.
 - **G02**: Each captured span has zero-based, end-exclusive Python character
   offsets into the original note, with `0 <= start < end <= len(note)` and
   `span.text == note[start:end]`, including Unicode case expansion. This is
@@ -114,7 +115,23 @@ with Aetna/outpatient and no human attestations.
   {"id":"exp002_exam_decimal","note":"Low back pain with radiculopathy. L4 distribution: strength 4.5 of 5. NSAIDs for 8 weeks with minimal improvement.","expected":{"objective_motor_or_reflex_change_in_root_distribution":true},"procedure":"MRI_LUMBAR","status":"PENDING_VERIFICATION"},
   {"id":"exp002_exam_normal","note":"Low back pain with radiculopathy. Right L5 distribution: strength 5 out of 5. NSAIDs for 8 weeks with minimal improvement.","expected":{"objective_motor_or_reflex_change_in_root_distribution":false},"procedure":"MRI_LUMBAR","status":"NOT_READY"},
   {"id":"exp002_exam_negated","note":"Low back pain with radiculopathy. Right L5 distribution: strength not 4 of 5. NSAIDs for 8 weeks with minimal improvement.","expected":{"objective_motor_or_reflex_change_in_root_distribution":"__REVIEW_REQUIRED__"},"procedure":"MRI_LUMBAR","status":"NEEDS_REVIEW"},
-  {"id":"exp002_exam_contralateral","note":"Low back pain with left leg radiculopathy. Right L5 distribution: strength 4 of 5. NSAIDs for 8 weeks with minimal improvement.","expected":{"objective_motor_or_reflex_change_in_root_distribution":"__REVIEW_REQUIRED__"},"procedure":"MRI_LUMBAR","status":"NEEDS_REVIEW"}
+  {"id":"exp002_exam_contralateral","note":"Low back pain with left leg radiculopathy. Right L5 distribution: strength 4 of 5. NSAIDs for 8 weeks with minimal improvement.","expected":{"objective_motor_or_reflex_change_in_root_distribution":"__REVIEW_REQUIRED__"},"procedure":"MRI_LUMBAR","status":"NEEDS_REVIEW"},
+  {"id":"exp003_nsaid_generic","note":"Low back pain with radiculopathy. Right L5 distribution: strength 4/5. Ibuprofen for 6 weeks with no improvement.","expected":{"cpb_0236_conservative_therapy_weeks":6,"cpb_0236_conservative_therapy_no_improvement":true},"procedure":"MRI_LUMBAR","status":"PENDING_VERIFICATION"},
+  {"id":"exp003_nsaid_brand","note":"Low back pain with radiculopathy. Right L5 distribution: strength 4/5. Completed Aleve for 56 days with minimal relief.","expected":{"cpb_0236_conservative_therapy_weeks":8,"cpb_0236_conservative_therapy_no_improvement":true},"procedure":"MRI_LUMBAR","status":"PENDING_VERIFICATION"},
+  {"id":"exp003_analgesic_generic","note":"Low back pain with radiculopathy. Right L5 distribution: strength 4/5. 42 days of acetaminophen with little relief.","expected":{"cpb_0236_conservative_therapy_weeks":6,"cpb_0236_conservative_therapy_no_improvement":true},"procedure":"MRI_LUMBAR","status":"PENDING_VERIFICATION"},
+  {"id":"exp003_analgesic_brand","note":"Low back pain with radiculopathy. Right L5 distribution: strength 4/5. Tylenol for six weeks with no improvement.","expected":{"cpb_0236_conservative_therapy_weeks":6,"cpb_0236_conservative_therapy_no_improvement":true},"procedure":"MRI_LUMBAR","status":"PENDING_VERIFICATION"},
+  {"id":"exp003_relaxant_generic","note":"Low back pain with radiculopathy. Right L5 distribution: strength 4/5. Cyclobenzaprine for 2 months with insufficient response.","expected":{"cpb_0236_conservative_therapy_weeks":8,"cpb_0236_conservative_therapy_no_improvement":true},"procedure":"MRI_LUMBAR","status":"PENDING_VERIFICATION"},
+  {"id":"exp003_relaxant_brand","note":"Low back pain with radiculopathy. Right L5 distribution: strength 4/5. Completed Robaxin for eight weeks with minimal improvement.","expected":{"cpb_0236_conservative_therapy_weeks":8,"cpb_0236_conservative_therapy_no_improvement":true},"procedure":"MRI_LUMBAR","status":"PENDING_VERIFICATION"},
+  {"id":"exp003_ibuprofen_short","note":"Low back pain with radiculopathy. Right L5 distribution: strength 4/5. Ibuprofen for 41 days with no improvement.","expected":{"cpb_0236_conservative_therapy_weeks":5},"procedure":"MRI_LUMBAR","status":"NOT_READY"},
+  {"id":"exp003_tylenol_improved","note":"Low back pain with radiculopathy. Right L5 distribution: strength 4/5. Tylenol for 8 weeks with significant improvement.","expected":{"cpb_0236_conservative_therapy_no_improvement":false},"procedure":"MRI_LUMBAR","status":"NOT_READY"},
+  {"id":"exp003_robaxin_future","note":"Low back pain with radiculopathy. Right L5 distribution: strength 4/5. Will start Robaxin for 8 weeks with no improvement expected.","expected":{"cpb_0236_conservative_therapy_weeks":null,"cpb_0236_conservative_therapy_no_improvement":null},"procedure":"MRI_LUMBAR","status":"CANNOT_DETERMINE"},
+  {"id":"exp003_ibuprofen_nonpatient","note":"Low back pain with radiculopathy. Right L5 distribution: strength 4/5. Mother completed Ibuprofen for 8 weeks with no improvement.","expected":{"cpb_0236_conservative_therapy_weeks":null},"procedure":"MRI_LUMBAR","status":"CANNOT_DETERMINE"},
+  {"id":"exp003_tylenol_unrelated","note":"Low back pain with radiculopathy. Right L5 distribution: strength 4/5. Tylenol for 8 weeks for headaches with no improvement.","expected":{"cpb_0236_conservative_therapy_weeks":null,"cpb_0236_conservative_therapy_no_improvement":null},"procedure":"MRI_LUMBAR","status":"CANNOT_DETERMINE"},
+  {"id":"exp003_unlisted_steroid","note":"Low back pain with radiculopathy. Right L5 distribution: strength 4/5. Prednisone for 8 weeks with no improvement.","expected":{"cpb_0236_conservative_therapy_weeks":null},"procedure":"MRI_LUMBAR","status":"CANNOT_DETERMINE"},
+  {"id":"exp003_blocker","note":"Low back pain with radiculopathy. Right L5 distribution: strength 4/5. Rocuronium for 8 weeks with no improvement.","expected":{"cpb_0236_conservative_therapy_weeks":null},"procedure":"MRI_LUMBAR","status":"CANNOT_DETERMINE"},
+  {"id":"exp003_challenge_partial_response","note":"Low back pain with radiculopathy. Right L5 distribution: strength 4/5. Ibuprofen for 8 weeks with no improvement. Tylenol with significant improvement.","expected":{"cpb_0236_conservative_therapy_weeks":"__REVIEW_REQUIRED__","cpb_0236_conservative_therapy_no_improvement":"__REVIEW_REQUIRED__"},"procedure":"MRI_LUMBAR","status":"NEEDS_REVIEW"},
+  {"id":"exp003_topical","note":"Low back pain with radiculopathy. Right L5 distribution: strength 4/5. Diclofenac gel for 8 weeks with no improvement.","expected":{"cpb_0236_conservative_therapy_weeks":null},"procedure":"MRI_LUMBAR","status":"CANNOT_DETERMINE"},
+  {"id":"exp003_leading_verb_missed","note":"Low back pain with radiculopathy. Right L5 distribution: strength 4/5. Took ibuprofen for 6 weeks with no improvement.","expected":{"cpb_0236_conservative_therapy_weeks":null,"cpb_0236_conservative_therapy_no_improvement":null},"procedure":"MRI_LUMBAR","status":"CANNOT_DETERMINE"}
 ]
 ```
 
@@ -127,7 +144,7 @@ decline unsupported proposals. This API records attestations; it cannot prove a 
 Use synthetic notes only. There is no production clinical-language guarantee.
 
 
-## Patterns handled through v2.4; failure classes remain open
+## Patterns handled through v2.5; failure classes remain open
 
 The following bounded patterns are handled; the class remains open in every row:
 
@@ -147,6 +164,7 @@ The following bounded patterns are handled; the class remains open in every row:
 | Explicitly negated numeric strength score | Requires review before numeric threshold evaluation; does not infer normal strength from not 4/5. | Numeric negation |
 | Appointment date in another sentence from an undated sleep study | Does not supply sleep-study date evidence. Same-sentence borrowed dates and genuine cross-sentence links remain open. | Date association |
 | Isolated qualifying CPB course with explicit response, duration in whole days/months or number words one through twelve | Completed days floor to whole weeks; months use a four-week lower bound. Six weeks with no/minimal/little/insufficient improvement can pass; short or improved courses fail. | Duration and episode attribution |
+| Listed generic/brand drug in an isolated complete course/response sentence | Only table membership replaces the qualifying class keyword; existing duration, response and safety guards apply. An unresolved eligible drug mention alongside another course requires review. | Drug vocabulary, course linkage and indication |
 | Direct named-root statement “strength 4 of 5” / “3 out of 5”, including decimals | Observed score below five is an objective change; 5 of 5 is normal. Negation, question, alternative attribution or opposite-side radiculopathy requires review. | Objective finding and attribution |
 
 Safety triggers use real sentence boundaries: period, question mark, exclamation
@@ -165,7 +183,7 @@ reading, and reviewer identity remains self-reported. This display aid does not
 change extraction, statuses, the readiness gate or the remaining false-READY
 pathways.
 
-Current release validation: **1202 passed, 10 xfailed**. Contract JSON alone
+Current release validation: **1301 passed, 10 xfailed**. Contract JSON alone
 drives known-failure markers; there is no exemption list. Four contract examples
 are marked: `unrelated_therapy`, `neither_nor_negation`,
 `same_sentence_borrowed_date`, and the disputed `negated_strength` expectation.
@@ -193,7 +211,7 @@ these remaining examples can still reach `READY` and
 `submission_readiness=true` on the verified lumbar pathway. Human attestation
 remains a necessary safety gate and does not establish extraction accuracy.
 
-## v2.4 recall bounds
+## Earlier exp-002 recall bounds
 
 Thirteen added executable examples document exp-002 without changing any earlier
 expectation or known-failure marker. New course forms require the entire sentence
@@ -205,6 +223,38 @@ attribution gaps intact; the broad laterality failure class is not solved.
 
 Full non-steroidal anti-inflammatory class names remain missed: the exp-002
 expansion was reverted after unrelated headache therapy produced unsafe passes.
-Drug-name to class mapping is out of scope pending an owner decision on an
-auditable drug list. See [v2.4.0](docs/releases/v2.4.0.md) and the
+See the historical [v2.4.0 release](docs/releases/v2.4.0.md) and the
 [exp-002 report](autoloop/exp-002/REPORT.md).
+
+## v2.5 reviewed drug data and grammar bounds
+
+[engine/data/cpb0236_drugs_v1.json](engine/data/cpb0236_drugs_v1.json) is
+**owner-approved reviewed data**: 26 records with generic name, aliases/common
+US brands, WHO ATC code and Footnote 1 class. The owner approved this artifact
+for the local deterministic experiment. **ATC codes require human verification
+against WHO ATC before any external claim.** Owner approval does not certify
+each transcribed code or brand mapping; the file's human-review notice remains.
+
+Only listed entries in M01A (NSAIDs), M03B/M03C (central/direct muscle relaxants,
+excluding M03A neuromuscular blockers), or N02 (analgesics) may replace a class
+keyword. Class eligibility does not establish indication, course completion,
+duration, response, formulation or clinical appropriateness. Unlisted back-pain
+drugs never qualify by inference. The versioned table is outside the existing
+governance bundle; this does not promote it into payer policy or change hashes.
+
+Drug recognition uses the isolated course-sentence grammar, including the reverse
+duration-first form, an optional “Completed”, whole duration and explicit “with”
+response. A leading verb such as “Took” remains unrecognized. Extra dose,
+formulation, indication, or combination wording can prevent recognition. All
+existing safety guards apply. If an eligible drug mention cannot be resolved
+while another course candidate exists, both course facts require review;
+incomplete drug mentions alone remain missing. This can over-trigger review
+and does not solve general sentence-to-sentence episode or indication linkage.
+
+Sixteen new executable examples cover all three classes, generic and brand
+names, short/improved courses, future/non-patient/unrelated context, non-listed
+drugs, neuromuscular blockers, topical wording, unresolved course linkage and
+the leading-verb miss. All 51 earlier examples and four known-failure objects
+remain unchanged. The full exp-003 set is 74/74 exact with zero false pending;
+its unsafe first candidate was reverted before the linkage revision was retained.
+See [v2.5.0](docs/releases/v2.5.0.md) and [exp-003](autoloop/exp-003/REPORT.md).

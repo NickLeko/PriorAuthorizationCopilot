@@ -1,0 +1,25 @@
+{
+  "release_base": "db492316b84b6c65768760236faf639046aecb60",
+  "branch": "codex/release-v2.5.0",
+  "main_unchanged": true,
+  "exp003_branch_unchanged": true,
+  "product_diff_only_engine_version": [
+    "engine/__init__.py"
+  ],
+  "version_only_test_edits": [
+    "test/test_api.py",
+    "test/test_v210_safety.py"
+  ],
+  "existing_contract_examples_unchanged": 51,
+  "new_contract_examples": 16,
+  "contract_known_failures_unchanged": 4,
+  "protected_inputs_and_governance_unchanged": true,
+  "drug_table_bytes_unchanged": true,
+  "regenerated_outputs_sha256_verified": 25,
+  "generated_version_only_changes": 12,
+  "corpus_full_report_identical": true,
+  "exp003_full_report_identical": true,
+  "exp002_full_report_identical": true,
+  "heldout_statement_verbatim": true,
+  "table_owner_approval_and_external_verification_documented": true
+}

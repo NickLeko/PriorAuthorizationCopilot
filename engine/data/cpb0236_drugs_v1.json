@@ -1,0 +1,234 @@
+{
+  "notice": "ATC codes were transcribed from WHO ATC and need human review. Brand aliases (including familiar historical US brands) and class assignments also need human review. No completed human review is claimed.",
+  "version": 1,
+  "source": "WHO Collaborating Centre ATC/DDD Index 2026 (pages updated 2026-01-20), consulted 2026-10-16. US generic spellings retained; WHO spellings appear as aliases where needed.",
+  "scope": "Single-ingredient systemic names only; combinations and explicit topical formulations are not inferred. M01A NSAIDs; M03B central and M03C direct muscle relaxants; N02 analgesics. M03A neuromuscular blockers excluded. Membership does not establish indication, duration, response, or appropriateness.",
+  "sources": [
+    "https://atcddd.fhi.no/atc_ddd_index/?code=M01AB&showdescription=no",
+    "https://atcddd.fhi.no/atc_ddd_index/?code=M01AE&showdescription=no",
+    "https://atcddd.fhi.no/atc_ddd_index/?code=M01AC&showdescription=no",
+    "https://atcddd.fhi.no/atc_ddd_index/?code=M01AH&showdescription=no",
+    "https://atcddd.fhi.no/atc_ddd_index/?code=M03BX&showdescription=no",
+    "https://atcddd.fhi.no/atc_ddd_index/?code=M03BA&showdescription=no",
+    "https://atcddd.fhi.no/atc_ddd_index/?code=M03BB&showdescription=no",
+    "https://atcddd.fhi.no/atc_ddd_index/?code=M03BC&showdescription=no",
+    "https://atcddd.fhi.no/atc_ddd_index/?code=M03CA&showdescription=no",
+    "https://atcddd.fhi.no/atc_ddd_index/?code=N02BE&showdescription=no",
+    "https://atcddd.fhi.no/atc_ddd_index/?code=N02AX&showdescription=no"
+  ],
+  "drugs": [
+    {
+      "name": "ibuprofen",
+      "aliases": [
+        "Advil",
+        "Motrin"
+      ],
+      "atc_code": "M01AE01",
+      "class": "NSAIDs"
+    },
+    {
+      "name": "naproxen",
+      "aliases": [
+        "Aleve",
+        "Naprosyn"
+      ],
+      "atc_code": "M01AE02",
+      "class": "NSAIDs"
+    },
+    {
+      "name": "ketoprofen",
+      "aliases": [
+        "Orudis"
+      ],
+      "atc_code": "M01AE03",
+      "class": "NSAIDs"
+    },
+    {
+      "name": "fenoprofen",
+      "aliases": [
+        "Nalfon"
+      ],
+      "atc_code": "M01AE04",
+      "class": "NSAIDs"
+    },
+    {
+      "name": "flurbiprofen",
+      "aliases": [
+        "Ansaid"
+      ],
+      "atc_code": "M01AE09",
+      "class": "NSAIDs"
+    },
+    {
+      "name": "oxaprozin",
+      "aliases": [
+        "Daypro"
+      ],
+      "atc_code": "M01AE12",
+      "class": "NSAIDs"
+    },
+    {
+      "name": "indomethacin",
+      "aliases": [
+        "indometacin",
+        "Indocin"
+      ],
+      "atc_code": "M01AB01",
+      "class": "NSAIDs"
+    },
+    {
+      "name": "sulindac",
+      "aliases": [
+        "Clinoril"
+      ],
+      "atc_code": "M01AB02",
+      "class": "NSAIDs"
+    },
+    {
+      "name": "tolmetin",
+      "aliases": [
+        "Tolectin"
+      ],
+      "atc_code": "M01AB03",
+      "class": "NSAIDs"
+    },
+    {
+      "name": "diclofenac",
+      "aliases": [
+        "Cataflam"
+      ],
+      "atc_code": "M01AB05",
+      "class": "NSAIDs"
+    },
+    {
+      "name": "etodolac",
+      "aliases": [
+        "Lodine"
+      ],
+      "atc_code": "M01AB08",
+      "class": "NSAIDs"
+    },
+    {
+      "name": "ketorolac",
+      "aliases": [
+        "Toradol"
+      ],
+      "atc_code": "M01AB15",
+      "class": "NSAIDs"
+    },
+    {
+      "name": "piroxicam",
+      "aliases": [
+        "Feldene"
+      ],
+      "atc_code": "M01AC01",
+      "class": "NSAIDs"
+    },
+    {
+      "name": "meloxicam",
+      "aliases": [
+        "Mobic"
+      ],
+      "atc_code": "M01AC06",
+      "class": "NSAIDs"
+    },
+    {
+      "name": "celecoxib",
+      "aliases": [
+        "Celebrex"
+      ],
+      "atc_code": "M01AH01",
+      "class": "NSAIDs"
+    },
+    {
+      "name": "baclofen",
+      "aliases": [
+        "Lioresal"
+      ],
+      "atc_code": "M03BX01",
+      "class": "muscle relaxants"
+    },
+    {
+      "name": "tizanidine",
+      "aliases": [
+        "Zanaflex"
+      ],
+      "atc_code": "M03BX02",
+      "class": "muscle relaxants"
+    },
+    {
+      "name": "cyclobenzaprine",
+      "aliases": [
+        "Flexeril",
+        "Amrix"
+      ],
+      "atc_code": "M03BX08",
+      "class": "muscle relaxants"
+    },
+    {
+      "name": "carisoprodol",
+      "aliases": [
+        "Soma"
+      ],
+      "atc_code": "M03BA02",
+      "class": "muscle relaxants"
+    },
+    {
+      "name": "methocarbamol",
+      "aliases": [
+        "Robaxin"
+      ],
+      "atc_code": "M03BA03",
+      "class": "muscle relaxants"
+    },
+    {
+      "name": "chlorzoxazone",
+      "aliases": [
+        "Parafon Forte"
+      ],
+      "atc_code": "M03BB03",
+      "class": "muscle relaxants"
+    },
+    {
+      "name": "orphenadrine",
+      "aliases": [
+        "Norflex"
+      ],
+      "atc_code": "M03BC01",
+      "class": "muscle relaxants"
+    },
+    {
+      "name": "dantrolene",
+      "aliases": [
+        "Dantrium"
+      ],
+      "atc_code": "M03CA01",
+      "class": "muscle relaxants"
+    },
+    {
+      "name": "acetaminophen",
+      "aliases": [
+        "paracetamol",
+        "Tylenol"
+      ],
+      "atc_code": "N02BE01",
+      "class": "analgesics"
+    },
+    {
+      "name": "tramadol",
+      "aliases": [
+        "Ultram"
+      ],
+      "atc_code": "N02AX02",
+      "class": "analgesics"
+    },
+    {
+      "name": "tapentadol",
+      "aliases": [
+        "Nucynta"
+      ],
+      "atc_code": "N02AX06",
+      "class": "analgesics"
+    }
+  ]
+}

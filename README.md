@@ -4,21 +4,28 @@ This self-directed prototype demonstrates deterministic prior-authorization docu
 
 v2.0.0 adds typed, source-located reviewer corrections for wrong or missed facts, with contract meanings and original/effective values shown in Streamlit. Applying a correction clears attestations and letters; passing facts remain `PENDING_VERIFICATION` until reviewed and attested again. Letters disclose reviewer-supplied facts, quotations and self-reported identities, excluding audit comments from reasoning. See the canonical [correction limits](docs/safety_and_scope.md#correction-limits).
 
-v2.4.0 releases four bounded recall fixes from exp-002: qualifying isolated
-courses in whole days, whole months or small number words, and direct named-root
-strength grades written “of” or “out of”. Engine/app version is **2.4.0**;
-record schema remains **2.0.0**. Earlier exp-001 fixes, sentence-scoped review cues
-and citation context remain in place. Failure classes remain open, including
-neither/nor negation, same-sentence borrowed dates and episode attribution.
+v2.5.0 releases exp-003's owner-approved reviewed data and guarded drug-course
+recognition. Engine/app version is **2.5.0**; record schema remains **2.0.0**.
+[engine/data/cpb0236_drugs_v1.json](engine/data/cpb0236_drugs_v1.json) lists 26
+generic drugs, common US brand aliases, WHO ATC codes and Footnote 1 classes.
+**ATC codes require human verification against WHO ATC before any external claim.**
+Owner approval covers local use of the reviewed artifact; it does not certify
+each transcription. Its human-review notice remains in force.
 
-Release validation: **1202 passed, 10 xfailed**. Corpus results remain 52/52,
-with zero false `PENDING_VERIFICATION`. All 69 exp-002 authored cases improve
-41/69 → 64/69 exact, including 12 recovered passes and seven correct NOT_READY
-results; all 54 negatives stay nonpassing. The rejected class-name expansion
-remains reverted. The owner-supplied held-out exp-002 evaluation showed no recall
-gain. Zero false pending alone is insufficient evidence: the always-abstain
-canary also scores zero. See the [v2.4.0 release notes](docs/releases/v2.4.0.md),
-[current contract](EXTRACTION_CONTRACT.md), and [exp-002 report](autoloop/exp-002/REPORT.md).
+Listed drug names replace only the therapy-class token in an isolated complete
+course/response sentence, with all existing safety guards retained. A leading
+verb such as 'Took' is not recognized. Eligible unresolved drug context alongside
+another course requires review. Earlier exp-001/002 bounded fixes remain; neither/nor,
+same-sentence borrowed dates and episode attribution remain open failure classes.
+
+Release validation: **1301 passed, 10 xfailed**. Corpus remains 52/52 with zero
+false `PENDING_VERIFICATION`. Exp-003 development cases improve 49/74 → 74/74
+exact with 11 recovered positives and zero final false pending across 63 negatives;
+all 117 exp-002/003 authored negatives are nonpassing. The owner reports zero false
+pending on three held-out sets, with exact 23→25/41, 15→15/36 and 14→15/34.
+Those sets were not inspected or rerun here. Zero false pending alone is insufficient:
+the always-abstain canary also scores zero. See [v2.5.0](docs/releases/v2.5.0.md),
+the [current contract](EXTRACTION_CONTRACT.md), and [exp-003 report](autoloop/exp-003/REPORT.md).
 The earlier exp-001 expanded 47-case set retains two documented false passes.
 The 20 independent notes are regressions, not a held-out accuracy measure.
 
@@ -79,7 +86,7 @@ trust gate; it does not validate the borrowed date or the incorrect attestations
 
 ## Quick Reviewer Path
 
-The record schema version and release version are versioned independently. v2.4.0 writes record `schema_version: "2.0.0"`; v1.5 records retain their existing validation, and legacy records remain explicitly labeled and viewable only.
+The record schema version and release version are versioned independently. v2.5.0 writes record `schema_version: "2.0.0"`; v1.5 records retain their existing validation, and legacy records remain explicitly labeled and viewable only.
 
 From a fresh clone, enter the repo and run:
 

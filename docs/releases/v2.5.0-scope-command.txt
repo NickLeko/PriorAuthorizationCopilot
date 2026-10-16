@@ -1,0 +1,89 @@
+# Run from repository root: .venv/bin/python < docs/releases/v2.5.0-scope-command.txt
+# Read-only implementation/output audit; writes only this release's audit JSON.
+import hashlib
+import json
+import re
+import subprocess
+from pathlib import Path
+
+BASE = 'db492316b84b6c65768760236faf639046aecb60'
+ROOT = Path.cwd()
+DIRECTORY = ROOT / 'docs/releases'
+
+
+def git(*args):
+    return subprocess.check_output(['git', *args], text=True).strip()
+
+
+def original(path):
+    return subprocess.check_output(['git', 'show', f'{BASE}:{path}'])
+
+
+def examples(raw):
+    return json.loads(re.search(r'```json\n(.*?)\n```', raw, re.S).group(1))
+
+
+product_changes = git('diff', '--name-only', BASE, '--', 'engine', 'scripts', 'app.py', 'api.py', 'cli.py').splitlines()
+assert product_changes == ['engine/__init__.py'], product_changes
+assert Path('engine/__init__.py').read_bytes() == original('engine/__init__.py').replace(b'2.4.0', b'2.5.0')
+version_tests = ['test/test_api.py', 'test/test_v210_safety.py']
+changed_tests = git('diff', '--name-only', BASE, '--', 'test', ':!test/golden').splitlines()
+assert changed_tests == version_tests, changed_tests
+for path in version_tests:
+    assert Path(path).read_bytes() == original(path).replace(b'2.4.0', b'2.5.0')
+old_examples = examples(original('EXTRACTION_CONTRACT.md').decode())
+new_examples = examples(Path('EXTRACTION_CONTRACT.md').read_text())
+assert new_examples[:len(old_examples)] == old_examples
+assert len(new_examples) == len(old_examples) + 16
+assert len({example['id'] for example in new_examples}) == len(new_examples)
+old_failures = [example for example in old_examples if 'known_failure' in example]
+assert [example for example in new_examples if 'known_failure' in example] == old_failures
+assert len(old_failures) == 4
+protected = ['rules', 'rulebook', 'policy_snapshots', 'inputs', 'autoloop', '.github', '.streamlit',
+             'Makefile', 'requirements.in', 'requirements.lock', 'requirements.txt', 'pyproject.toml']
+assert not git('diff', '--name-only', BASE, '--', *protected)
+assert Path('engine/data/cpb0236_drugs_v1.json').read_bytes() == original('engine/data/cpb0236_drugs_v1.json')
+assert git('rev-parse', 'main') == '3413381c275a1d5b69ae56a1f0be106c258c4925'
+assert git('rev-parse', 'autoloop/exp-003') == BASE
+assert git('branch', '--show-current') == 'codex/release-v2.5.0'
+generation = json.loads((DIRECTORY / 'v2.5.0-generation-audit.json').read_text())
+assert generation['regenerated'] == 25 and generation['changed'] == 12
+assert not generation['governance_changes'] and not generation['non_version_changes']
+for row in generation['files']:
+    assert hashlib.sha256(original(row['file'])).hexdigest() == row['before_sha256'], row['file']
+    assert hashlib.sha256(Path(row['file']).read_bytes()).hexdigest() == row['after_sha256'], row['file']
+    for change in row['changes']:
+        assert change['pointer'] in ('/engine_version', '/app_version')
+        assert change['before'] == '2.4.0' and change['after'] == '2.5.0'
+    if 'governance/' in row['file'] or any(key in row['file'] for key in ('drift_', 'rulebook_')):
+        assert not row['changed'], row['file']
+expected = json.loads((ROOT / 'autoloop/exp-003/evidence/final-audit.json').read_text())
+for filename, key in [('corpus', 'corpus'), ('exp003', 'paired'), ('exp002', 'exp002')]:
+    assert json.loads((DIRECTORY / f'v2.5.0-{filename}-score.json').read_text()) == expected[key]
+heldout = """Held-out evaluation
+(three sets, none visible during development): 0 false
+PENDING_VERIFICATION on all; exact 23→25/41, 15→15/36, 14→15/34. Drug-name
+recognition is limited by course-sentence grammar (e.g., a leading verb such
+as 'Took' is not yet recognized)."""
+assert heldout in (DIRECTORY / 'v2.5.0.md').read_text()
+current_docs = ['README.md', 'EXTRACTION_CONTRACT.md', 'MODEL_CARD.md', 'FAILURE_MODES.md', 'LIMITATIONS.md',
+                'docs/testing.md', 'docs/reviewer_guide.md', 'docs/api.md']
+for path in current_docs:
+    assert '1301 passed, 10 xfailed' in Path(path).read_text() if path != 'docs/api.md' else '2.5.0' in Path(path).read_text()
+for path in current_docs[:-1] + ['docs/releases/v2.5.0.md']:
+    text = ' '.join(Path(path).read_text().replace('**', '').split())
+    assert 'owner-approved reviewed data' in text, path
+    assert 'ATC codes require human verification against WHO ATC before any external claim.' in text, path
+report = {
+    'release_base': BASE, 'branch': git('branch', '--show-current'),
+    'main_unchanged': True, 'exp003_branch_unchanged': True,
+    'product_diff_only_engine_version': product_changes, 'version_only_test_edits': version_tests,
+    'existing_contract_examples_unchanged': len(old_examples), 'new_contract_examples': 16,
+    'contract_known_failures_unchanged': len(old_failures), 'protected_inputs_and_governance_unchanged': True,
+    'drug_table_bytes_unchanged': True, 'regenerated_outputs_sha256_verified': 25,
+    'generated_version_only_changes': 12, 'corpus_full_report_identical': True,
+    'exp003_full_report_identical': True, 'exp002_full_report_identical': True,
+    'heldout_statement_verbatim': True, 'table_owner_approval_and_external_verification_documented': True,
+}
+(DIRECTORY / 'v2.5.0-scope-audit.json').write_text(json.dumps(report, indent=2) + '\n')
+print(json.dumps(report, indent=2))

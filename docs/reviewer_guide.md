@@ -220,21 +220,31 @@ The repo includes a local review UI, archive, drift monitor, and release convent
 Those are out of scope here. The current repo is meant to demonstrate a narrow, reviewable workflow-readiness core, not a deployed healthcare platform.
 
 
-## v2.4.0 review limits
+## v2.5.0 review limits
 
-Release validation is **1202 passed, 10 xfailed**. Corpus false
+Release validation is **1301 passed, 10 xfailed**. Corpus false
 PENDING_VERIFICATION is zero, but the always-abstain canary also scores zero;
 read the proposed facts and full context rather than treating this count as
 extraction accuracy. The `does/do/did not have` denial, borrowed reflex
 qualifiers, intact reflexes, negated numeric strength and cross-sentence
 study-date examples are handled. Neither/nor denial and same-sentence borrowed
 study dates remain unsafe proposals; incorrect attestations can still produce
-false READY. See [v2.4.0](releases/v2.4.0.md) and the
+false READY. See [v2.5.0](releases/v2.5.0.md) and the
 [executable contract](../EXTRACTION_CONTRACT.md) for exact scope and open xfails.
 
 Exp-002 improves authored phrasing coverage for isolated qualifying courses in
 days/months/number words and direct named-root word strength grades. All 54
-authored negatives stay nonpassing, but the supplied held-out exp-002 set showed
-no recall gain. Class-name expansion was rejected after unsafe unrelated-therapy
-passes; drug-name mapping awaits an auditable list decision. See the
-[exp-002 report](../autoloop/exp-002/REPORT.md).
+authored negatives stay nonpassing. Class-name expansion was rejected after
+unsafe unrelated-therapy passes. Exp-003 adds listed generic/brand drug names and review for unresolved
+drug context alongside another course: 74/74 development cases, zero false
+pending across 63 negatives. Its unsafe first candidate was reverted.
+
+[engine/data/cpb0236_drugs_v1.json](../engine/data/cpb0236_drugs_v1.json) is
+owner-approved reviewed data for local use. **ATC codes require human verification
+against WHO ATC before any external claim.** Check the note's course, indication,
+response and patient attribution independently; approval does not certify each
+transcribed code or alias. The file's human-review notice remains. Drug recognition
+is constrained by course-sentence grammar; a leading verb such as 'Took' is missed.
+The owner reports zero false pending on three held-out sets, exact 23→25/41,
+15→15/36 and 14→15/34; those cases were not inspected or rerun here. See the
+[exp-003 report](../autoloop/exp-003/REPORT.md) for its rejection and limitations.

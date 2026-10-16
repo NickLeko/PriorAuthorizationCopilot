@@ -1,11 +1,13 @@
-"""Per-operation sentence indexes; no notes retained in shared caches."""
+"""Literal note vocabulary and per-operation indexes; no shared note caches."""
 
 from __future__ import annotations
 
+import json
 import re
 from bisect import bisect_left, bisect_right
 from contextlib import contextmanager
 from contextvars import ContextVar
+from pathlib import Path
 
 BOUNDARY_RE = re.compile(r"(?<!\d)[.!?]|[.!?](?!\d)|\n")
 CLAUSE_RE = re.compile(r"[.!?;\n]+")
@@ -73,3 +75,43 @@ def indexed_note(text: str):
         yield
     finally:
         _indexes.reset(token)
+
+
+# Versioned literal vocabulary for Footnote 1 note contexts.
+DRUG_TABLE_PATH = Path(__file__).parent / "data/cpb0236_drugs_v1.json"
+
+
+def load_drug_classes(path: Path = DRUG_TABLE_PATH) -> dict[str, str]:
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    if payload["version"] != 1:
+        raise ValueError("Unsupported CPB 0236 drug table version.")
+    names: dict[str, str] = {}
+    for entry in payload["drugs"]:
+        if set(entry) != {"name", "aliases", "atc_code", "class"}:
+            raise ValueError("Invalid CPB 0236 drug record.")
+        code, therapy_class = entry["atc_code"], entry["class"]
+        # M03A contains peripheral neuromuscular blockers: deliberately excluded.
+        # Validate the reviewed class label; never derive a drug class from prose.
+        allowed = (
+            (therapy_class == "NSAIDs" and re.fullmatch(r"M01A[A-Z]\d{2}", code))
+            or (therapy_class == "muscle relaxants" and re.fullmatch(r"M03[BC][A-Z]\d{2}", code))
+            or (therapy_class == "analgesics" and re.fullmatch(r"N02[A-Z]{2}\d{2}", code))
+        )
+        if not allowed or not isinstance(entry["aliases"], list):
+            raise ValueError("Drug ATC code and Footnote 1 class must agree within allowed groups.")
+        for name in [entry["name"], *entry["aliases"]]:
+            if not isinstance(name, str) or not re.fullmatch(r"[A-Za-z]+(?:[ -][A-Za-z]+)*", name):
+                raise ValueError("Drug names must be literal words.")
+            key = name.lower()
+            if key in names:
+                raise ValueError("Duplicate drug name or alias.")
+            names[key] = therapy_class
+    if not names:
+        raise ValueError("Empty CPB 0236 drug table.")
+    return names
+
+
+DRUG_CLASSES = load_drug_classes()
+# Escaping is for literal token matching only. Membership/class is table data.
+DRUG_NAME_PATTERN = r"(?:" + "|".join(re.escape(name) for name in sorted(DRUG_CLASSES, key=lambda name: (-len(name), name))) + r")"
+DRUG_NAME_RE = re.compile(rf"\b{DRUG_NAME_PATTERN}\b")

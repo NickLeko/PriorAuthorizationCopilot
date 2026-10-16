@@ -6,7 +6,7 @@ v2.0.0 mitigation: typed correction validation rejects SET_VALUE spans over 300 
 
 **Project:** Prior Authorization Readiness Copilot  
 **Owner:** Nicholas Leko  
-**Last Updated:** October 15, 2026 — v2.4.0
+**Last Updated:** October 16, 2026 — v2.5.0
 **Status:** Versioned current behavior. Changes should update tests and docs.
 
 ---
@@ -18,7 +18,7 @@ Current repo status:
 - no LLM implementation
 - bundled case data is synthetic; the official policy snapshot and rule provenance are source material; input is not screened and must not contain real PHI, with screening remaining the operator's responsibility
 
-Automated extraction is a **drafting aid, not a decision gate**. v1.4.0's posture over-trusted extraction. Negated diagnoses returned affirmative facts, contradicting the extraction contract as written. v1.5.0 resolves that contradiction by changing what the engine may assert rather than by making extraction match the contract. v2.4.0 handles the bounded patterns below; the negation, temporality, attribution and other failure classes remain open.
+Automated extraction is a **drafting aid, not a decision gate**. v1.4.0's posture over-trusted extraction. Negated diagnoses returned affirmative facts, contradicting the extraction contract as written. v1.5.0 resolves that contradiction by changing what the engine may assert rather than by making extraction match the contract. v2.5.0 handles the bounded patterns below; the negation, temporality, attribution and other failure classes remain open.
 
 Requirement results describe the captured proposals:
 - proposed scalar passes the operator (`MET`), without asserting source support
@@ -235,7 +235,7 @@ requires:
 ---
 
 
-## Patterns handled through v2.4.0; classes remain open
+## Patterns handled through v2.5.0; classes remain open
 
 These patterns are handled; the class remains open. No row establishes general
 correctness for negation, temporality, therapy response, event completion,
@@ -262,7 +262,21 @@ attribute association, or missingness scope.
 | Visit date and undated sleep study in the same sentence | Remaining unsafe borrowed-date proposal; contract xfail expects missing / CANNOT_DETERMINE. |
 | Isolated NSAIDs for 42 days / two months / six weeks with explicit no improvement | Bounded recall fix: floor completed days to weeks, months to a four-week lower bound, and recognize number words one through twelve. Below-threshold or improved courses correctly fail. Modifiers, comparisons, fractions and episode linkage remain limited. |
 | Direct right L5 distribution: strength 4 of 5 / 3 out of 5 / 4.5 of 5 | Bounded objective exam capture; 5 of 5 is normal. Explicit negation, question, alternative attribution and opposite-side radiculopathy review in this new route. Legacy slash-grade gaps remain. |
-| Spelled-out non-steroidal anti-inflammatory class names | Recall defect remains: exp-002's vocabulary expansion was reverted when unrelated headache therapy became unsafe passes. Drug-name mapping awaits an auditable list decision. |
+| Spelled-out non-steroidal anti-inflammatory class names | Recall defect remains: exp-002's vocabulary expansion was reverted when unrelated headache therapy became unsafe passes. Listed drug names are now supported only through the owner-approved reviewed table and isolated course grammar; leading verbs such as Took remain missed. |
+
+### Reviewed drug vocabulary and incomplete courses
+
+[engine/data/cpb0236_drugs_v1.json](engine/data/cpb0236_drugs_v1.json) is
+owner-approved reviewed data for local use. **ATC codes require human verification
+against WHO ATC before any external claim.** The table's human-review notice
+remains; approval does not independently certify a transcription or brand alias.
+Listed names replace only the class token, retaining existing guards. The first
+exp-003 candidate ignored incomplete secondary drug statements and falsely passed
+four linkage challenges; it was reverted. The accepted revision requires review
+for unresolved eligible drug context alongside another course. It scores 74/74
+on development cases with zero false pending across 63 negatives. This guard
+may over-trigger, and separate-sentence planning/indication can still escape local
+context. Leading verbs such as 'Took' remain unrecognized.
 
 ### Copied-forward note text, template checkbox text, and persistence negation
 
@@ -313,9 +327,9 @@ returned separately by `generate_letter`. The obsolete corrected-letter guard
 was removed. All existing correction/letter integrity validation remains.
 
 
-## v2.4.0 safety metric and remaining pathways
+## v2.5.0 safety metric and remaining pathways
 
-Fresh validation: **1202 passed, 10 xfailed**. Four contract xfails comprise
+Fresh validation: **1301 passed, 10 xfailed**. Four contract xfails comprise
 unrelated therapy, neither/nor, same-sentence borrowed dates and the disputed
 negated-strength label; six others cover two cross-sentence temporality tests,
 generic analgesic duration and the three H1(a) open cases described above.
@@ -335,7 +349,8 @@ review results replacing missingness. Three positive misses and two wrong
 negative abstentions from the rejected class-name attempt remain. The unsafe
 intermediate candidate and its later attribution challenges are preserved in
 the [exp-002 report](autoloop/exp-002/REPORT.md); no gain is credited to it.
-The owner-supplied held-out exp-002 set showed no recall gain. Narrow authored
+The owner reports three held-out sets with zero false pending on all and
+exact 23→25/41, 15→15/36 and 14→15/34; cases were not inspected or rerun here. Narrow authored
 phrasing improvements do not establish clinical-language generalization.
 
 The remaining neither/nor lumbar proposal can become false READY with supplied
