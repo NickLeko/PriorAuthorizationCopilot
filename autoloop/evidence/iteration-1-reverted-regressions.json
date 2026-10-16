@@ -1,0 +1,226 @@
+{
+  "always_cannot_determine_canary": {
+    "abstention_rate": 1.0,
+    "automated_ready": 0,
+    "cases": 9,
+    "confusion_matrix_expected_rows_actual_columns": {
+      "CANNOT_DETERMINE": {
+        "CANNOT_DETERMINE": 0,
+        "NEEDS_REVIEW": 0,
+        "NOT_READY": 0,
+        "PENDING_VERIFICATION": 0,
+        "READY": 0,
+        "UNKNOWN": 0
+      },
+      "NEEDS_REVIEW": {
+        "CANNOT_DETERMINE": 1,
+        "NEEDS_REVIEW": 0,
+        "NOT_READY": 0,
+        "PENDING_VERIFICATION": 0,
+        "READY": 0,
+        "UNKNOWN": 0
+      },
+      "NOT_READY": {
+        "CANNOT_DETERMINE": 6,
+        "NEEDS_REVIEW": 0,
+        "NOT_READY": 0,
+        "PENDING_VERIFICATION": 0,
+        "READY": 0,
+        "UNKNOWN": 0
+      },
+      "PENDING_VERIFICATION": {
+        "CANNOT_DETERMINE": 2,
+        "NEEDS_REVIEW": 0,
+        "NOT_READY": 0,
+        "PENDING_VERIFICATION": 0,
+        "READY": 0,
+        "UNKNOWN": 0
+      },
+      "READY": {
+        "CANNOT_DETERMINE": 0,
+        "NEEDS_REVIEW": 0,
+        "NOT_READY": 0,
+        "PENDING_VERIFICATION": 0,
+        "READY": 0,
+        "UNKNOWN": 0
+      },
+      "UNKNOWN": {
+        "CANNOT_DETERMINE": 0,
+        "NEEDS_REVIEW": 0,
+        "NOT_READY": 0,
+        "PENDING_VERIFICATION": 0,
+        "READY": 0,
+        "UNKNOWN": 0
+      }
+    },
+    "exact_status_accuracy": 0.0,
+    "exact_status_correct": 0,
+    "expected_abstention_rate": 0.1111111111111111,
+    "false_pending_verification": 0,
+    "false_ready": 0,
+    "missed_passes": 2
+  },
+  "case_file": "autoloop/rejected-diagnosis-cases.json",
+  "case_file_sha256": "c3b3bdb8582a35003e9c77623266b5d00a0559f31f98b0b4349e559905c1126d",
+  "case_results": [
+    {
+      "actual": "PENDING_VERIFICATION",
+      "expected": "NOT_READY",
+      "id": "diagnosis_negation_does",
+      "index": 0
+    },
+    {
+      "actual": "PENDING_VERIFICATION",
+      "expected": "NOT_READY",
+      "id": "radiculopathy_negation_does",
+      "index": 1
+    },
+    {
+      "actual": "PENDING_VERIFICATION",
+      "expected": "NOT_READY",
+      "id": "diagnosis_negation_do",
+      "index": 2
+    },
+    {
+      "actual": "PENDING_VERIFICATION",
+      "expected": "NOT_READY",
+      "id": "radiculopathy_negation_do",
+      "index": 3
+    },
+    {
+      "actual": "PENDING_VERIFICATION",
+      "expected": "NOT_READY",
+      "id": "diagnosis_negation_did",
+      "index": 4
+    },
+    {
+      "actual": "PENDING_VERIFICATION",
+      "expected": "NOT_READY",
+      "id": "radiculopathy_negation_did",
+      "index": 5
+    },
+    {
+      "actual": "PENDING_VERIFICATION",
+      "expected": "PENDING_VERIFICATION",
+      "id": "diagnosis_affirmative",
+      "index": 6
+    },
+    {
+      "actual": "PENDING_VERIFICATION",
+      "expected": "PENDING_VERIFICATION",
+      "id": "diagnosis_unrelated_negation",
+      "index": 7
+    },
+    {
+      "actual": "PENDING_VERIFICATION",
+      "expected": "NEEDS_REVIEW",
+      "id": "diagnosis_negative_then_positive",
+      "index": 8
+    }
+  ],
+  "mismatches": [
+    {
+      "actual": "PENDING_VERIFICATION",
+      "expected": "NOT_READY",
+      "id": "diagnosis_negation_does",
+      "index": 0
+    },
+    {
+      "actual": "PENDING_VERIFICATION",
+      "expected": "NOT_READY",
+      "id": "radiculopathy_negation_does",
+      "index": 1
+    },
+    {
+      "actual": "PENDING_VERIFICATION",
+      "expected": "NOT_READY",
+      "id": "diagnosis_negation_do",
+      "index": 2
+    },
+    {
+      "actual": "PENDING_VERIFICATION",
+      "expected": "NOT_READY",
+      "id": "radiculopathy_negation_do",
+      "index": 3
+    },
+    {
+      "actual": "PENDING_VERIFICATION",
+      "expected": "NOT_READY",
+      "id": "diagnosis_negation_did",
+      "index": 4
+    },
+    {
+      "actual": "PENDING_VERIFICATION",
+      "expected": "NOT_READY",
+      "id": "radiculopathy_negation_did",
+      "index": 5
+    },
+    {
+      "actual": "PENDING_VERIFICATION",
+      "expected": "NEEDS_REVIEW",
+      "id": "diagnosis_negative_then_positive",
+      "index": 8
+    }
+  ],
+  "system": {
+    "abstention_rate": 0.0,
+    "automated_ready": 0,
+    "cases": 9,
+    "confusion_matrix_expected_rows_actual_columns": {
+      "CANNOT_DETERMINE": {
+        "CANNOT_DETERMINE": 0,
+        "NEEDS_REVIEW": 0,
+        "NOT_READY": 0,
+        "PENDING_VERIFICATION": 0,
+        "READY": 0,
+        "UNKNOWN": 0
+      },
+      "NEEDS_REVIEW": {
+        "CANNOT_DETERMINE": 0,
+        "NEEDS_REVIEW": 0,
+        "NOT_READY": 0,
+        "PENDING_VERIFICATION": 1,
+        "READY": 0,
+        "UNKNOWN": 0
+      },
+      "NOT_READY": {
+        "CANNOT_DETERMINE": 0,
+        "NEEDS_REVIEW": 0,
+        "NOT_READY": 0,
+        "PENDING_VERIFICATION": 6,
+        "READY": 0,
+        "UNKNOWN": 0
+      },
+      "PENDING_VERIFICATION": {
+        "CANNOT_DETERMINE": 0,
+        "NEEDS_REVIEW": 0,
+        "NOT_READY": 0,
+        "PENDING_VERIFICATION": 2,
+        "READY": 0,
+        "UNKNOWN": 0
+      },
+      "READY": {
+        "CANNOT_DETERMINE": 0,
+        "NEEDS_REVIEW": 0,
+        "NOT_READY": 0,
+        "PENDING_VERIFICATION": 0,
+        "READY": 0,
+        "UNKNOWN": 0
+      },
+      "UNKNOWN": {
+        "CANNOT_DETERMINE": 0,
+        "NEEDS_REVIEW": 0,
+        "NOT_READY": 0,
+        "PENDING_VERIFICATION": 0,
+        "READY": 0,
+        "UNKNOWN": 0
+      }
+    },
+    "exact_status_accuracy": 0.2222222222222222,
+    "exact_status_correct": 2,
+    "expected_abstention_rate": 0.1111111111111111,
+    "false_pending_verification": 7,
+    "false_ready": 0,
+    "missed_passes": 0
+  }
+}

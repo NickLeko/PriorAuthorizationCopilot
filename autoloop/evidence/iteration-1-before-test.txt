@@ -1,0 +1,123 @@
+FFFFFF..F                                                                [100%]
+=================================== FAILURES ===================================
+______________ test_autoloop_regression[diagnosis_negation_does] _______________
+
+case = {'expected_facts': {'back_pain_with_radiculopathy': False}, 'expected_overall_status': 'NOT_READY', 'expected_requirements': {'back_pain_with_radiculopathy': 'NOT_MET'}, 'id': 'diagnosis_negation_does', ...}
+
+    @pytest.mark.parametrize('case', CASES, ids=lambda case: case['id'])
+    def test_autoloop_regression(case):
+        result = ReadinessService().evaluate(PARequest(
+            payer=case['payer'], procedure_code=case['procedure_code'], note_text=case['note_text'],
+        ))
+>       assert result.overall_status == case['expected_overall_status']
+E       AssertionError: assert 'PENDING_VERIFICATION' == 'NOT_READY'
+E         
+E         - NOT_READY
+E         + PENDING_VERIFICATION
+
+test/test_autoloop_regressions.py:18: AssertionError
+____________ test_autoloop_regression[radiculopathy_negation_does] _____________
+
+case = {'expected_facts': {'back_pain_with_radiculopathy': False}, 'expected_overall_status': 'NOT_READY', 'expected_requirements': {'back_pain_with_radiculopathy': 'NOT_MET'}, 'id': 'radiculopathy_negation_does', ...}
+
+    @pytest.mark.parametrize('case', CASES, ids=lambda case: case['id'])
+    def test_autoloop_regression(case):
+        result = ReadinessService().evaluate(PARequest(
+            payer=case['payer'], procedure_code=case['procedure_code'], note_text=case['note_text'],
+        ))
+>       assert result.overall_status == case['expected_overall_status']
+E       AssertionError: assert 'PENDING_VERIFICATION' == 'NOT_READY'
+E         
+E         - NOT_READY
+E         + PENDING_VERIFICATION
+
+test/test_autoloop_regressions.py:18: AssertionError
+_______________ test_autoloop_regression[diagnosis_negation_do] ________________
+
+case = {'expected_facts': {'back_pain_with_radiculopathy': False}, 'expected_overall_status': 'NOT_READY', 'expected_requirements': {'back_pain_with_radiculopathy': 'NOT_MET'}, 'id': 'diagnosis_negation_do', ...}
+
+    @pytest.mark.parametrize('case', CASES, ids=lambda case: case['id'])
+    def test_autoloop_regression(case):
+        result = ReadinessService().evaluate(PARequest(
+            payer=case['payer'], procedure_code=case['procedure_code'], note_text=case['note_text'],
+        ))
+>       assert result.overall_status == case['expected_overall_status']
+E       AssertionError: assert 'PENDING_VERIFICATION' == 'NOT_READY'
+E         
+E         - NOT_READY
+E         + PENDING_VERIFICATION
+
+test/test_autoloop_regressions.py:18: AssertionError
+_____________ test_autoloop_regression[radiculopathy_negation_do] ______________
+
+case = {'expected_facts': {'back_pain_with_radiculopathy': False}, 'expected_overall_status': 'NOT_READY', 'expected_requirements': {'back_pain_with_radiculopathy': 'NOT_MET'}, 'id': 'radiculopathy_negation_do', ...}
+
+    @pytest.mark.parametrize('case', CASES, ids=lambda case: case['id'])
+    def test_autoloop_regression(case):
+        result = ReadinessService().evaluate(PARequest(
+            payer=case['payer'], procedure_code=case['procedure_code'], note_text=case['note_text'],
+        ))
+>       assert result.overall_status == case['expected_overall_status']
+E       AssertionError: assert 'PENDING_VERIFICATION' == 'NOT_READY'
+E         
+E         - NOT_READY
+E         + PENDING_VERIFICATION
+
+test/test_autoloop_regressions.py:18: AssertionError
+_______________ test_autoloop_regression[diagnosis_negation_did] _______________
+
+case = {'expected_facts': {'back_pain_with_radiculopathy': False}, 'expected_overall_status': 'NOT_READY', 'expected_requirements': {'back_pain_with_radiculopathy': 'NOT_MET'}, 'id': 'diagnosis_negation_did', ...}
+
+    @pytest.mark.parametrize('case', CASES, ids=lambda case: case['id'])
+    def test_autoloop_regression(case):
+        result = ReadinessService().evaluate(PARequest(
+            payer=case['payer'], procedure_code=case['procedure_code'], note_text=case['note_text'],
+        ))
+>       assert result.overall_status == case['expected_overall_status']
+E       AssertionError: assert 'PENDING_VERIFICATION' == 'NOT_READY'
+E         
+E         - NOT_READY
+E         + PENDING_VERIFICATION
+
+test/test_autoloop_regressions.py:18: AssertionError
+_____________ test_autoloop_regression[radiculopathy_negation_did] _____________
+
+case = {'expected_facts': {'back_pain_with_radiculopathy': False}, 'expected_overall_status': 'NOT_READY', 'expected_requirements': {'back_pain_with_radiculopathy': 'NOT_MET'}, 'id': 'radiculopathy_negation_did', ...}
+
+    @pytest.mark.parametrize('case', CASES, ids=lambda case: case['id'])
+    def test_autoloop_regression(case):
+        result = ReadinessService().evaluate(PARequest(
+            payer=case['payer'], procedure_code=case['procedure_code'], note_text=case['note_text'],
+        ))
+>       assert result.overall_status == case['expected_overall_status']
+E       AssertionError: assert 'PENDING_VERIFICATION' == 'NOT_READY'
+E         
+E         - NOT_READY
+E         + PENDING_VERIFICATION
+
+test/test_autoloop_regressions.py:18: AssertionError
+__________ test_autoloop_regression[diagnosis_negative_then_positive] __________
+
+case = {'expected_facts': {'back_pain_with_radiculopathy': None}, 'expected_overall_status': 'NEEDS_REVIEW', 'expected_requirements': {'back_pain_with_radiculopathy': 'NEEDS_REVIEW'}, 'id': 'diagnosis_negative_then_positive', ...}
+
+    @pytest.mark.parametrize('case', CASES, ids=lambda case: case['id'])
+    def test_autoloop_regression(case):
+        result = ReadinessService().evaluate(PARequest(
+            payer=case['payer'], procedure_code=case['procedure_code'], note_text=case['note_text'],
+        ))
+>       assert result.overall_status == case['expected_overall_status']
+E       AssertionError: assert 'PENDING_VERIFICATION' == 'NEEDS_REVIEW'
+E         
+E         - NEEDS_REVIEW
+E         + PENDING_VERIFICATION
+
+test/test_autoloop_regressions.py:18: AssertionError
+=========================== short test summary info ============================
+FAILED test/test_autoloop_regressions.py::test_autoloop_regression[diagnosis_negation_does]
+FAILED test/test_autoloop_regressions.py::test_autoloop_regression[radiculopathy_negation_does]
+FAILED test/test_autoloop_regressions.py::test_autoloop_regression[diagnosis_negation_do]
+FAILED test/test_autoloop_regressions.py::test_autoloop_regression[radiculopathy_negation_do]
+FAILED test/test_autoloop_regressions.py::test_autoloop_regression[diagnosis_negation_did]
+FAILED test/test_autoloop_regressions.py::test_autoloop_regression[radiculopathy_negation_did]
+FAILED test/test_autoloop_regressions.py::test_autoloop_regression[diagnosis_negative_then_positive]
+7 failed, 2 passed in 0.13s
