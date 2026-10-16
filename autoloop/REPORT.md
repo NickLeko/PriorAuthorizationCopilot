@@ -137,7 +137,8 @@ matrices and case results are retained in each JSON scoreboard.
 
 [Final full-suite output](evidence/iteration-5-reverted-suite.txt) records the
 post-revert result. Targeted Ruff lint/format checks passed for all modified
-Python source/test files. The +31 passed count is 29 new tests plus two resolved
+Python source/test files. Raw pytest evidence retains pytest-emitted trailing
+spaces; source/test/documentation whitespace checks pass. The +31 passed count is 29 new tests plus two resolved
 xfails, not 31 defects fixed. Rejected-candidate tests are preserved as evidence
 and their cases remain executable through `score.py --cases`; they are not
 installed as permanently failing tests.

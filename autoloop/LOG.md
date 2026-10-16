@@ -313,3 +313,7 @@ only the two resolved marker selections changed. Phase 1 and first-stop JSON,
 scoreboard code, baseline, and original final-test evidence remain byte-for-byte
 unchanged. No generator, clock override, monitoring-state change, policy edit,
 original corpus edit, golden/artifact edit, push, tag or main change occurred.
+
+Final whitespace audit: raw pytest stdout includes trailing spaces on blank
+assertion-diff lines. These evidence files are preserved as emitted rather than
+edited. Scoped source, test and report/log whitespace checks pass.
