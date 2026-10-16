@@ -1,0 +1,45 @@
+.venv/bin/python -m pytest -q
+........................................................................ [  5%]
+........................................................................ [ 11%]
+........................................................................ [ 16%]
+........................................................................ [ 22%]
+........................................................................ [ 28%]
+........................................................................ [ 33%]
+........................................................................ [ 39%]
+........................................................................ [ 45%]
+........................................................................ [ 50%]
+.........................................xxx............................ [ 56%]
+........................................................................ [ 61%]
+........................................................................ [ 67%]
+........................................................................ [ 73%]
+........................................................................ [ 78%]
+.....x..x.xx...........................................F................ [ 84%]
+........................................................................ [ 90%]
+........x.........x..................................................... [ 95%]
+.........................x.............................                  [100%]
+=================================== FAILURES ===================================
+_ TestExtractionContractAlignment.test_G01_no_language_model_or_nlp_dependency _
+
+self = <test_v150_contract.TestExtractionContractAlignment object at 0x10d1ce720>
+
+    def test_G01_no_language_model_or_nlp_dependency(self):
+        tree = ast.parse(Path("engine/extract.py").read_text())
+        imports = {
+            node.module if isinstance(node, ast.ImportFrom) else alias.name
+            for node in ast.walk(tree)
+            if isinstance(node, (ast.Import, ast.ImportFrom))
+            for alias in (node.names if isinstance(node, ast.Import) else [None])
+        }
+        # bisect: stdlib indexed boundary lookup replaces repeated note scans.
+        # note_context: internal per-operation indexes, no NLP or shared note cache.
+>       assert imports <= {"__future__", "re", "dataclasses", "typing", "schemas", "bisect", "note_context"}
+E       AssertionError: assert {'__future__'...t', 're', ...} <= {'__future__'...schemas', ...}
+E         
+E         Extra items in the left set:
+E         'drug_classes'
+
+test/test_v150_contract.py:87: AssertionError
+=========================== short test summary info ============================
+FAILED test/test_v150_contract.py::TestExtractionContractAlignment::test_G01_no_language_model_or_nlp_dependency
+1 failed, 1268 passed, 10 xfailed in 35.92s
+make: *** [test] Error 1

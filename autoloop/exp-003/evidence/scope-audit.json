@@ -1,0 +1,16 @@
+{
+  "base_commit": "3413381c275a1d5b69ae56a1f0be106c258c4925",
+  "corpus_proposals_and_fingerprints_identical": true,
+  "existing_tracked_files_changed": [
+    "engine/extract.py",
+    "engine/note_context.py"
+  ],
+  "exp002_results_identical": true,
+  "governance_identical": true,
+  "main_unchanged": true,
+  "new_case_sha256": "d5ba31e506a738f9da623e131ef1e40d550799b32e0284aac4cb817535e2447b",
+  "protected_content_unchanged": true,
+  "scorer_unchanged": true,
+  "table_sha256": "ae6bc85fc2f923c10a652efe76a1f5316ba2eb8c1807abf4bad73660408b4812",
+  "table_version": 1
+}

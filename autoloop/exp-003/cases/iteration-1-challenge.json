@@ -1,0 +1,58 @@
+[
+  {
+    "id": "challenge_different_nsaid",
+    "pair_role": "positive",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Low back pain with radiculopathy. Right L5 distribution: strength 4/5. Completed celecoxib for seven weeks with little response.",
+    "expected_overall_status": "PENDING_VERIFICATION"
+  },
+  {
+    "id": "challenge_different_relaxant",
+    "pair_role": "positive",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Low back pain with radiculopathy. Right L5 distribution: strength 4/5. Six weeks of Zanaflex with minimal relief.",
+    "expected_overall_status": "PENDING_VERIFICATION"
+  },
+  {
+    "id": "challenge_different_analgesic",
+    "pair_role": "positive",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Low back pain with radiculopathy. Right L5 distribution: strength 4/5. Tapentadol for 56 days with no improvement.",
+    "expected_overall_status": "PENDING_VERIFICATION"
+  },
+  {
+    "id": "challenge_partial_response",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Low back pain with radiculopathy. Right L5 distribution: strength 4/5. Ibuprofen for 8 weeks with no improvement. Tylenol with significant improvement.",
+    "expected_overall_status": "NEEDS_REVIEW"
+  },
+  {
+    "id": "challenge_partial_longer",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Low back pain with radiculopathy. Right L5 distribution: strength 4/5. Ibuprofen for 8 weeks with no improvement. Robaxin for 12 weeks.",
+    "expected_overall_status": "NEEDS_REVIEW"
+  },
+  {
+    "id": "challenge_partial_indication",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Low back pain with radiculopathy. Right L5 distribution: strength 4/5. Ibuprofen for 8 weeks with no improvement. Tylenol for headaches with significant improvement.",
+    "expected_overall_status": "NEEDS_REVIEW"
+  },
+  {
+    "id": "challenge_mixed_class",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Low back pain with radiculopathy. Right L5 distribution: strength 4/5. NSAIDs for 8 weeks with no improvement. Tylenol with significant improvement.",
+    "expected_overall_status": "NEEDS_REVIEW"
+  }
+]

@@ -1,0 +1,4711 @@
+{
+  "by_role": {
+    "negative": {
+      "abstention_rate": 0.9047619047619048,
+      "automated_ready": 0,
+      "cases": 63,
+      "confusion_matrix_expected_rows_actual_columns": {
+        "CANNOT_DETERMINE": {
+          "CANNOT_DETERMINE": 49,
+          "NEEDS_REVIEW": 0,
+          "NOT_READY": 0,
+          "PENDING_VERIFICATION": 0,
+          "READY": 0,
+          "UNKNOWN": 0
+        },
+        "NEEDS_REVIEW": {
+          "CANNOT_DETERMINE": 0,
+          "NEEDS_REVIEW": 8,
+          "NOT_READY": 0,
+          "PENDING_VERIFICATION": 0,
+          "READY": 0,
+          "UNKNOWN": 0
+        },
+        "NOT_READY": {
+          "CANNOT_DETERMINE": 0,
+          "NEEDS_REVIEW": 0,
+          "NOT_READY": 6,
+          "PENDING_VERIFICATION": 0,
+          "READY": 0,
+          "UNKNOWN": 0
+        },
+        "PENDING_VERIFICATION": {
+          "CANNOT_DETERMINE": 0,
+          "NEEDS_REVIEW": 0,
+          "NOT_READY": 0,
+          "PENDING_VERIFICATION": 0,
+          "READY": 0,
+          "UNKNOWN": 0
+        },
+        "READY": {
+          "CANNOT_DETERMINE": 0,
+          "NEEDS_REVIEW": 0,
+          "NOT_READY": 0,
+          "PENDING_VERIFICATION": 0,
+          "READY": 0,
+          "UNKNOWN": 0
+        },
+        "UNKNOWN": {
+          "CANNOT_DETERMINE": 0,
+          "NEEDS_REVIEW": 0,
+          "NOT_READY": 0,
+          "PENDING_VERIFICATION": 0,
+          "READY": 0,
+          "UNKNOWN": 0
+        }
+      },
+      "exact_status_accuracy": 1.0,
+      "exact_status_correct": 63,
+      "expected_abstention_rate": 0.9047619047619048,
+      "false_pending_verification": 0,
+      "false_ready": 0,
+      "missed_passes": 0
+    },
+    "positive": {
+      "abstention_rate": 0.0,
+      "automated_ready": 0,
+      "cases": 11,
+      "confusion_matrix_expected_rows_actual_columns": {
+        "CANNOT_DETERMINE": {
+          "CANNOT_DETERMINE": 0,
+          "NEEDS_REVIEW": 0,
+          "NOT_READY": 0,
+          "PENDING_VERIFICATION": 0,
+          "READY": 0,
+          "UNKNOWN": 0
+        },
+        "NEEDS_REVIEW": {
+          "CANNOT_DETERMINE": 0,
+          "NEEDS_REVIEW": 0,
+          "NOT_READY": 0,
+          "PENDING_VERIFICATION": 0,
+          "READY": 0,
+          "UNKNOWN": 0
+        },
+        "NOT_READY": {
+          "CANNOT_DETERMINE": 0,
+          "NEEDS_REVIEW": 0,
+          "NOT_READY": 0,
+          "PENDING_VERIFICATION": 0,
+          "READY": 0,
+          "UNKNOWN": 0
+        },
+        "PENDING_VERIFICATION": {
+          "CANNOT_DETERMINE": 0,
+          "NEEDS_REVIEW": 0,
+          "NOT_READY": 0,
+          "PENDING_VERIFICATION": 11,
+          "READY": 0,
+          "UNKNOWN": 0
+        },
+        "READY": {
+          "CANNOT_DETERMINE": 0,
+          "NEEDS_REVIEW": 0,
+          "NOT_READY": 0,
+          "PENDING_VERIFICATION": 0,
+          "READY": 0,
+          "UNKNOWN": 0
+        },
+        "UNKNOWN": {
+          "CANNOT_DETERMINE": 0,
+          "NEEDS_REVIEW": 0,
+          "NOT_READY": 0,
+          "PENDING_VERIFICATION": 0,
+          "READY": 0,
+          "UNKNOWN": 0
+        }
+      },
+      "exact_status_accuracy": 1.0,
+      "exact_status_correct": 11,
+      "expected_abstention_rate": 0.0,
+      "false_pending_verification": 0,
+      "false_ready": 0,
+      "missed_passes": 0
+    }
+  },
+  "corpus": {
+    "always_cannot_determine_canary": {
+      "abstention_rate": 1.0,
+      "automated_ready": 0,
+      "cases": 52,
+      "confusion_matrix_expected_rows_actual_columns": {
+        "CANNOT_DETERMINE": {
+          "CANNOT_DETERMINE": 30,
+          "NEEDS_REVIEW": 0,
+          "NOT_READY": 0,
+          "PENDING_VERIFICATION": 0,
+          "READY": 0,
+          "UNKNOWN": 0
+        },
+        "NEEDS_REVIEW": {
+          "CANNOT_DETERMINE": 12,
+          "NEEDS_REVIEW": 0,
+          "NOT_READY": 0,
+          "PENDING_VERIFICATION": 0,
+          "READY": 0,
+          "UNKNOWN": 0
+        },
+        "NOT_READY": {
+          "CANNOT_DETERMINE": 3,
+          "NEEDS_REVIEW": 0,
+          "NOT_READY": 0,
+          "PENDING_VERIFICATION": 0,
+          "READY": 0,
+          "UNKNOWN": 0
+        },
+        "PENDING_VERIFICATION": {
+          "CANNOT_DETERMINE": 7,
+          "NEEDS_REVIEW": 0,
+          "NOT_READY": 0,
+          "PENDING_VERIFICATION": 0,
+          "READY": 0,
+          "UNKNOWN": 0
+        },
+        "READY": {
+          "CANNOT_DETERMINE": 0,
+          "NEEDS_REVIEW": 0,
+          "NOT_READY": 0,
+          "PENDING_VERIFICATION": 0,
+          "READY": 0,
+          "UNKNOWN": 0
+        },
+        "UNKNOWN": {
+          "CANNOT_DETERMINE": 0,
+          "NEEDS_REVIEW": 0,
+          "NOT_READY": 0,
+          "PENDING_VERIFICATION": 0,
+          "READY": 0,
+          "UNKNOWN": 0
+        }
+      },
+      "exact_status_accuracy": 0.5769230769230769,
+      "exact_status_correct": 30,
+      "expected_abstention_rate": 0.8076923076923077,
+      "false_pending_verification": 0,
+      "false_ready": 0,
+      "missed_passes": 7
+    },
+    "case_file": "inputs/synthetic_cases.json",
+    "case_file_sha256": "6064495e3233138fcf78e16bc9471b4ef182679c07de0bcf012b699a53611671",
+    "case_results": [
+      {
+        "actual": "PENDING_VERIFICATION",
+        "expected": "PENDING_VERIFICATION",
+        "id": "MRI-01-complete",
+        "index": 0
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "CANNOT_DETERMINE",
+        "id": "MRI-02-complete",
+        "index": 1
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "CANNOT_DETERMINE",
+        "id": "MRI-03-borderline",
+        "index": 2
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "CANNOT_DETERMINE",
+        "id": "MRI-04-borderline",
+        "index": 3
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "CANNOT_DETERMINE",
+        "id": "MRI-05-incomplete",
+        "index": 4
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "CANNOT_DETERMINE",
+        "id": "MRI-06-incomplete",
+        "index": 5
+      },
+      {
+        "actual": "PENDING_VERIFICATION",
+        "expected": "PENDING_VERIFICATION",
+        "id": "CPAP-01-complete",
+        "index": 6
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "CANNOT_DETERMINE",
+        "id": "CPAP-02-borderline",
+        "index": 7
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "CANNOT_DETERMINE",
+        "id": "CPAP-03-incomplete",
+        "index": 8
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "CANNOT_DETERMINE",
+        "id": "CPAP-04-incomplete",
+        "index": 9
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "CANNOT_DETERMINE",
+        "id": "MRI-07-edge-exact-threshold",
+        "index": 10
+      },
+      {
+        "actual": "NOT_READY",
+        "expected": "NOT_READY",
+        "id": "MRI-08-edge-below-threshold",
+        "index": 11
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "CANNOT_DETERMINE",
+        "id": "MRI-09-negation-variant",
+        "index": 12
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "CANNOT_DETERMINE",
+        "id": "MRI-10-doc-gap-redflags",
+        "index": 13
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "CANNOT_DETERMINE",
+        "id": "MRI-11-conflict-deny-then-report",
+        "index": 14
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "CANNOT_DETERMINE",
+        "id": "MRI-12-imaging-normal",
+        "index": 15
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "CANNOT_DETERMINE",
+        "id": "MRI-13-imaging-unclear",
+        "index": 16
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "CANNOT_DETERMINE",
+        "id": "MRI-14-therapy-context-missing",
+        "index": 17
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "CANNOT_DETERMINE",
+        "id": "CPAP-05-edge-with-date-no-ahi",
+        "index": 18
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "CANNOT_DETERMINE",
+        "id": "CPAP-06-edge-with-ahi-no-date",
+        "index": 19
+      },
+      {
+        "actual": "PENDING_VERIFICATION",
+        "expected": "PENDING_VERIFICATION",
+        "id": "CPAP-07-complete-alt-format-date",
+        "index": 20
+      },
+      {
+        "actual": "PENDING_VERIFICATION",
+        "expected": "PENDING_VERIFICATION",
+        "id": "MRI-CERV-01-ready",
+        "index": 21
+      },
+      {
+        "actual": "NOT_READY",
+        "expected": "NOT_READY",
+        "id": "MRI-CERV-02-not-ready",
+        "index": 22
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "CANNOT_DETERMINE",
+        "id": "MRI-CERV-03-cannot-determine",
+        "index": 23
+      },
+      {
+        "actual": "PENDING_VERIFICATION",
+        "expected": "PENDING_VERIFICATION",
+        "id": "MRI-CERV-04-positive-redflags",
+        "index": 24
+      },
+      {
+        "actual": "PENDING_VERIFICATION",
+        "expected": "PENDING_VERIFICATION",
+        "id": "MRI-KNEE-01-ready",
+        "index": 25
+      },
+      {
+        "actual": "NOT_READY",
+        "expected": "NOT_READY",
+        "id": "MRI-KNEE-02-not-ready-no-imaging",
+        "index": 26
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "CANNOT_DETERMINE",
+        "id": "MRI-KNEE-03-cannot-determine",
+        "index": 27
+      },
+      {
+        "actual": "PENDING_VERIFICATION",
+        "expected": "PENDING_VERIFICATION",
+        "id": "MRI-KNEE-04-ready-denied-mechanical",
+        "index": 28
+      },
+      {
+        "actual": "NEEDS_REVIEW",
+        "expected": "NEEDS_REVIEW",
+        "id": "MRI-KNEE-05-conflict-deny-then-positive",
+        "index": 29
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "CANNOT_DETERMINE",
+        "id": "CPAP-08-doc-gap-osa-not-stated",
+        "index": 30
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "CANNOT_DETERMINE",
+        "id": "CPAP-09-noise-contains-date-unrelated",
+        "index": 31
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "CANNOT_DETERMINE",
+        "id": "MRI-15-noise-unrelated-weeks",
+        "index": 32
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "CANNOT_DETERMINE",
+        "id": "MRI-16-pt-mentioned-no-duration",
+        "index": 33
+      },
+      {
+        "actual": "NEEDS_REVIEW",
+        "expected": "NEEDS_REVIEW",
+        "id": "SAFETY-01-cross-therapy-linkage",
+        "index": 34
+      },
+      {
+        "actual": "NEEDS_REVIEW",
+        "expected": "NEEDS_REVIEW",
+        "id": "SAFETY-02-cross-therapy-reversed",
+        "index": 35
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "CANNOT_DETERMINE",
+        "id": "SAFETY-03-family-therapy-coreference",
+        "index": 36
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "CANNOT_DETERMINE",
+        "id": "SAFETY-04-family-therapy-variant",
+        "index": 37
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "CANNOT_DETERMINE",
+        "id": "SAFETY-05-planned-therapy",
+        "index": 38
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "CANNOT_DETERMINE",
+        "id": "SAFETY-06-hypothetical-therapy-variant",
+        "index": 39
+      },
+      {
+        "actual": "NEEDS_REVIEW",
+        "expected": "NEEDS_REVIEW",
+        "id": "SAFETY-07-uncertain-diagnosis",
+        "index": 40
+      },
+      {
+        "actual": "NEEDS_REVIEW",
+        "expected": "NEEDS_REVIEW",
+        "id": "SAFETY-08-uncertain-diagnosis-variant",
+        "index": 41
+      },
+      {
+        "actual": "NEEDS_REVIEW",
+        "expected": "NEEDS_REVIEW",
+        "id": "SAFETY-09-contradictory-diagnosis",
+        "index": 42
+      },
+      {
+        "actual": "NEEDS_REVIEW",
+        "expected": "NEEDS_REVIEW",
+        "id": "SAFETY-10-objective-conflict-abnormal-first",
+        "index": 43
+      },
+      {
+        "actual": "NEEDS_REVIEW",
+        "expected": "NEEDS_REVIEW",
+        "id": "SAFETY-11-objective-conflict-normal-first",
+        "index": 44
+      },
+      {
+        "actual": "NEEDS_REVIEW",
+        "expected": "NEEDS_REVIEW",
+        "id": "SAFETY-12-objective-reflex-conflict",
+        "index": 45
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "CANNOT_DETERMINE",
+        "id": "SAFETY-13-family-attribution-after-therapy",
+        "index": 46
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "CANNOT_DETERMINE",
+        "id": "SAFETY-14-future-therapy-after-mention",
+        "index": 47
+      },
+      {
+        "actual": "NEEDS_REVIEW",
+        "expected": "NEEDS_REVIEW",
+        "id": "SAFETY-15-diagnosis-differential",
+        "index": 48
+      },
+      {
+        "actual": "NEEDS_REVIEW",
+        "expected": "NEEDS_REVIEW",
+        "id": "SAFETY-16-objective-finding-unconfirmed",
+        "index": 49
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "CANNOT_DETERMINE",
+        "id": "SAFETY-17-nonpatient-osa-attribution",
+        "index": 50
+      },
+      {
+        "actual": "NEEDS_REVIEW",
+        "expected": "NEEDS_REVIEW",
+        "id": "SAFETY-18-questioned-osa-diagnosis",
+        "index": 51
+      }
+    ],
+    "mismatches": [],
+    "system": {
+      "abstention_rate": 0.8076923076923077,
+      "automated_ready": 0,
+      "cases": 52,
+      "confusion_matrix_expected_rows_actual_columns": {
+        "CANNOT_DETERMINE": {
+          "CANNOT_DETERMINE": 30,
+          "NEEDS_REVIEW": 0,
+          "NOT_READY": 0,
+          "PENDING_VERIFICATION": 0,
+          "READY": 0,
+          "UNKNOWN": 0
+        },
+        "NEEDS_REVIEW": {
+          "CANNOT_DETERMINE": 0,
+          "NEEDS_REVIEW": 12,
+          "NOT_READY": 0,
+          "PENDING_VERIFICATION": 0,
+          "READY": 0,
+          "UNKNOWN": 0
+        },
+        "NOT_READY": {
+          "CANNOT_DETERMINE": 0,
+          "NEEDS_REVIEW": 0,
+          "NOT_READY": 3,
+          "PENDING_VERIFICATION": 0,
+          "READY": 0,
+          "UNKNOWN": 0
+        },
+        "PENDING_VERIFICATION": {
+          "CANNOT_DETERMINE": 0,
+          "NEEDS_REVIEW": 0,
+          "NOT_READY": 0,
+          "PENDING_VERIFICATION": 7,
+          "READY": 0,
+          "UNKNOWN": 0
+        },
+        "READY": {
+          "CANNOT_DETERMINE": 0,
+          "NEEDS_REVIEW": 0,
+          "NOT_READY": 0,
+          "PENDING_VERIFICATION": 0,
+          "READY": 0,
+          "UNKNOWN": 0
+        },
+        "UNKNOWN": {
+          "CANNOT_DETERMINE": 0,
+          "NEEDS_REVIEW": 0,
+          "NOT_READY": 0,
+          "PENDING_VERIFICATION": 0,
+          "READY": 0,
+          "UNKNOWN": 0
+        }
+      },
+      "exact_status_accuracy": 1.0,
+      "exact_status_correct": 52,
+      "expected_abstention_rate": 0.8076923076923077,
+      "false_pending_verification": 0,
+      "false_ready": 0,
+      "missed_passes": 0
+    }
+  },
+  "corpus_proposals": [
+    {
+      "evidence": {
+        "back_pain_with_radiculopathy": [
+          {
+            "end": 52,
+            "start": 0,
+            "text": "Low back pain with right leg radiculopathy x 8 weeks"
+          }
+        ],
+        "conservative_therapy_weeks": [
+          {
+            "end": 72,
+            "start": 54,
+            "text": "NSAIDs for 8 weeks"
+          }
+        ],
+        "cpb_0236_conservative_therapy_no_improvement": [
+          {
+            "end": 97,
+            "start": 54,
+            "text": "NSAIDs for 8 weeks with minimal improvement"
+          }
+        ],
+        "cpb_0236_conservative_therapy_weeks": [
+          {
+            "end": 97,
+            "start": 54,
+            "text": "NSAIDs for 8 weeks with minimal improvement"
+          }
+        ],
+        "neuro_red_flags_documented": [
+          {
+            "end": 235,
+            "start": 202,
+            "text": "Denies bowel/bladder incontinence"
+          },
+          {
+            "end": 257,
+            "start": 237,
+            "text": "No saddle anesthesia"
+          }
+        ],
+        "objective_motor_or_reflex_change_in_root_distribution": [
+          {
+            "end": 200,
+            "start": 118,
+            "text": "Objective motor exam in the right L5 distribution: ankle dorsiflexion strength 4/5"
+          }
+        ],
+        "prior_imaging_result": [
+          {
+            "end": 298,
+            "start": 286,
+            "text": "inconclusive"
+          }
+        ],
+        "symptom_duration_weeks": [
+          {
+            "end": 52,
+            "start": 45,
+            "text": "8 weeks"
+          }
+        ]
+      },
+      "fact_set_fingerprint": "93f1650fad10ac6ecabfb0d2b277f265b941748daf6d95e480a63dcace8788eb",
+      "facts": {
+        "ahi_documented": null,
+        "back_pain_with_radiculopathy": true,
+        "conservative_therapy_weeks": 8,
+        "cpb_0236_conservative_therapy_no_improvement": true,
+        "cpb_0236_conservative_therapy_weeks": 8,
+        "mechanical_symptoms_documented": null,
+        "neuro_red_flags_documented": true,
+        "objective_motor_or_reflex_change_in_root_distribution": true,
+        "osa_diagnosis": null,
+        "prior_imaging_result": "inconclusive",
+        "sleep_study_date": null,
+        "symptom_duration_weeks": 8
+      },
+      "id": "MRI-01-complete",
+      "input_fingerprint": "4656dbeeaaa13517531bd67c4a21165c72849f104cd3ee4cbf532c3281c24ab2",
+      "verification_fingerprints": {
+        "back_pain_with_radiculopathy": "fa8362529cda321ace0ccc1a9b198a39f0e8bbcb0c05ada30250208f51b17fa7",
+        "cpb_0236_conservative_therapy_no_improvement": "477943b497ae75706ae492b4033a11bba1831ffc5cc44f61fcd9878f5a4b7cd6",
+        "cpb_0236_conservative_therapy_weeks": "5aaf7b00da2afe2814f28b9dd2a85fa14c003f8602e58955a965ec35bfeb5dc8",
+        "objective_motor_or_reflex_change_in_root_distribution": "0985fbd9d13f92e0e8763258fda318cde5653e02dcd7914e436febd87d2e2ac8"
+      }
+    },
+    {
+      "evidence": {
+        "conservative_therapy_weeks": [
+          {
+            "end": 78,
+            "start": 66,
+            "text": "PT x 6 weeks"
+          }
+        ],
+        "neuro_red_flags_documented": [
+          {
+            "end": 140,
+            "start": 112,
+            "text": "Reports progressive weakness"
+          }
+        ],
+        "prior_imaging_result": [
+          {
+            "end": 172,
+            "start": 164,
+            "text": "abnormal"
+          }
+        ],
+        "symptom_duration_weeks": [
+          {
+            "end": 20,
+            "start": 12,
+            "text": "2 months"
+          }
+        ]
+      },
+      "fact_set_fingerprint": "2ce09cabcf7ace6ec310a549ba0824d3e7eb47d628a29abc863bbc4ee6dd89c7",
+      "facts": {
+        "ahi_documented": null,
+        "back_pain_with_radiculopathy": null,
+        "conservative_therapy_weeks": 6,
+        "cpb_0236_conservative_therapy_no_improvement": null,
+        "cpb_0236_conservative_therapy_weeks": null,
+        "mechanical_symptoms_documented": null,
+        "neuro_red_flags_documented": true,
+        "objective_motor_or_reflex_change_in_root_distribution": null,
+        "osa_diagnosis": null,
+        "prior_imaging_result": "abnormal",
+        "sleep_study_date": null,
+        "symptom_duration_weeks": 8
+      },
+      "id": "MRI-02-complete",
+      "input_fingerprint": "4534e8d31dc5849e980c26223156c2927b6f01da10b29b8adff72dddde1dc467",
+      "verification_fingerprints": {
+        "back_pain_with_radiculopathy": "0a85381a794c2c920f2643b073282bd7366e33ebc7d4fe878686267ee859d7e8",
+        "cpb_0236_conservative_therapy_no_improvement": "2f298aa0fafd9099ecc284b53f5786eaac695860e1a773dd19ca3a13c222be9f",
+        "cpb_0236_conservative_therapy_weeks": "6f5f3f2a83e10dae4fff22d39316ae58f8afaf07b0a44183b8ea09190e78a3e2",
+        "objective_motor_or_reflex_change_in_root_distribution": "89ee367a6411944c90b63b40db2a00bb1ba28cd0050e2da04bb6d0d7531ae4e2"
+      }
+    },
+    {
+      "evidence": {
+        "conservative_therapy_weeks": [
+          {
+            "end": 45,
+            "start": 31,
+            "text": "PT for 6 weeks"
+          }
+        ],
+        "prior_imaging_result": [
+          {
+            "end": 61,
+            "start": 47,
+            "text": "No imaging yet"
+          }
+        ],
+        "symptom_duration_weeks": [
+          {
+            "end": 23,
+            "start": 16,
+            "text": "6 weeks"
+          }
+        ]
+      },
+      "fact_set_fingerprint": "689064a7f72056d02708fec6ca340bc501024462b7a232c387aa534d5994fe5c",
+      "facts": {
+        "ahi_documented": null,
+        "back_pain_with_radiculopathy": null,
+        "conservative_therapy_weeks": 6,
+        "cpb_0236_conservative_therapy_no_improvement": null,
+        "cpb_0236_conservative_therapy_weeks": null,
+        "mechanical_symptoms_documented": null,
+        "neuro_red_flags_documented": null,
+        "objective_motor_or_reflex_change_in_root_distribution": null,
+        "osa_diagnosis": null,
+        "prior_imaging_result": "none",
+        "sleep_study_date": null,
+        "symptom_duration_weeks": 6
+      },
+      "id": "MRI-03-borderline",
+      "input_fingerprint": "898a48fa40d3f7ffd7f3393c424aad0d0dcb97048f6886211366f548779ecb4f",
+      "verification_fingerprints": {
+        "back_pain_with_radiculopathy": "c0defeb6408fae106d272a008e3196e5b94a9a6a1921253d4c8fe1057cca99b7",
+        "cpb_0236_conservative_therapy_no_improvement": "30fe57a82dc5b32ab2f925caec408aaa758ca105b8ee5c775be47a79ad277770",
+        "cpb_0236_conservative_therapy_weeks": "50fc691991de39f2e50c497405a3c575292090273e7464ca22788befe9ac680c",
+        "objective_motor_or_reflex_change_in_root_distribution": "d3b87713073e6771552aefccfa8cdec6da7d35ee5343cfeaaa97b75308a82935"
+      }
+    },
+    {
+      "evidence": {
+        "conservative_therapy_weeks": [
+          {
+            "end": 35,
+            "start": 22,
+            "text": "PT x 10 weeks"
+          }
+        ],
+        "neuro_red_flags_documented": [
+          {
+            "end": 106,
+            "start": 91,
+            "text": "Denies weakness"
+          },
+          {
+            "end": 136,
+            "start": 108,
+            "text": "Denies bowel/bladder changes"
+          }
+        ],
+        "prior_imaging_result": [
+          {
+            "end": 89,
+            "start": 75,
+            "text": "result unclear"
+          }
+        ],
+        "symptom_duration_weeks": [
+          {
+            "end": 20,
+            "start": 12,
+            "text": "3 months"
+          }
+        ]
+      },
+      "fact_set_fingerprint": "65f791f809f671c9ad6e8c12939a3aecdb8aad4ce6a9d9368178488746617345",
+      "facts": {
+        "ahi_documented": null,
+        "back_pain_with_radiculopathy": null,
+        "conservative_therapy_weeks": 10,
+        "cpb_0236_conservative_therapy_no_improvement": null,
+        "cpb_0236_conservative_therapy_weeks": null,
+        "mechanical_symptoms_documented": null,
+        "neuro_red_flags_documented": true,
+        "objective_motor_or_reflex_change_in_root_distribution": null,
+        "osa_diagnosis": null,
+        "prior_imaging_result": "inconclusive",
+        "sleep_study_date": null,
+        "symptom_duration_weeks": 12
+      },
+      "id": "MRI-04-borderline",
+      "input_fingerprint": "b5d1330f7c93af690994c83ceca1b2086e9e58c4f5dffb90e623c4d726247e2b",
+      "verification_fingerprints": {
+        "back_pain_with_radiculopathy": "bc40698778f6ce747b3c2cc17fce2e13bf27fac25ec1de2adc9f69058a90b73e",
+        "cpb_0236_conservative_therapy_no_improvement": "8eec8fbfd56e601a877d4db242206b99a87d9f8c91ab79b90017be7f857f4a38",
+        "cpb_0236_conservative_therapy_weeks": "4c8974ff175b654945039f5e87829c60c479732442e4fc0d40dab5bb49120a9d",
+        "objective_motor_or_reflex_change_in_root_distribution": "cab28e0157e05fdcec75f4b27c70290952bb95fb72ee2aa57b2a889307187447"
+      }
+    },
+    {
+      "evidence": {},
+      "fact_set_fingerprint": "50dfae534c5bb554c5a99a790c50c2c06025251a481aae7cedd5e961fad8b1e9",
+      "facts": {
+        "ahi_documented": null,
+        "back_pain_with_radiculopathy": null,
+        "conservative_therapy_weeks": null,
+        "cpb_0236_conservative_therapy_no_improvement": null,
+        "cpb_0236_conservative_therapy_weeks": null,
+        "mechanical_symptoms_documented": null,
+        "neuro_red_flags_documented": null,
+        "objective_motor_or_reflex_change_in_root_distribution": null,
+        "osa_diagnosis": null,
+        "prior_imaging_result": null,
+        "sleep_study_date": null,
+        "symptom_duration_weeks": null
+      },
+      "id": "MRI-05-incomplete",
+      "input_fingerprint": "bcd572cf88d96f1c96cbfd7626ac9ac903f65ef4cd7c3740898c848ac0bd65f7",
+      "verification_fingerprints": {
+        "back_pain_with_radiculopathy": "0d1086d1ffd934bb85e4b86340649759bf80a05075a379471ed191a8e6ec937c",
+        "cpb_0236_conservative_therapy_no_improvement": "0c4b63d560e17ef590ca6b6dd6a1db85ff4197796407f98295368f01255c276c",
+        "cpb_0236_conservative_therapy_weeks": "27ceaef3cf9477098f0fcf210864ec5d11f16d9b9f6b6ec171d1daa5305b95c0",
+        "objective_motor_or_reflex_change_in_root_distribution": "c146c88a42a4394d693ac276d920cb5a625e05c3420831cc5d8bde90f297f210"
+      }
+    },
+    {
+      "evidence": {
+        "conservative_therapy_weeks": [
+          {
+            "end": 40,
+            "start": 26,
+            "text": "PT for 4 weeks"
+          }
+        ],
+        "prior_imaging_result": [
+          {
+            "end": 63,
+            "start": 42,
+            "text": "No imaging documented"
+          }
+        ],
+        "symptom_duration_weeks": [
+          {
+            "end": 24,
+            "start": 17,
+            "text": "4 weeks"
+          }
+        ]
+      },
+      "fact_set_fingerprint": "073f1016c7fddaf3eddaa498f81e0f6ed5f7abaaaf57c4a92f25cb6c39a2888c",
+      "facts": {
+        "ahi_documented": null,
+        "back_pain_with_radiculopathy": null,
+        "conservative_therapy_weeks": 4,
+        "cpb_0236_conservative_therapy_no_improvement": null,
+        "cpb_0236_conservative_therapy_weeks": null,
+        "mechanical_symptoms_documented": null,
+        "neuro_red_flags_documented": null,
+        "objective_motor_or_reflex_change_in_root_distribution": null,
+        "osa_diagnosis": null,
+        "prior_imaging_result": "none",
+        "sleep_study_date": null,
+        "symptom_duration_weeks": 4
+      },
+      "id": "MRI-06-incomplete",
+      "input_fingerprint": "1f97742bae355b25c1b7cff174c5ceb110e7cace3a97aebe50c913ad18311e22",
+      "verification_fingerprints": {
+        "back_pain_with_radiculopathy": "6e880002afbba9fe4030bfc439e054d64aa149b339baa68e6c88304706e1b283",
+        "cpb_0236_conservative_therapy_no_improvement": "22aa0da0aa1713c185bf9d8c536a07627ad6c52d98be6b63a063e2510ebebcd8",
+        "cpb_0236_conservative_therapy_weeks": "0116911e73c77fc2401df78f683137ebc27ff1069f71cfcbcdfff847be66f3da",
+        "objective_motor_or_reflex_change_in_root_distribution": "73211b2e02e4fcb507e12781399f609e8371e7c2bf71982dd2dfad3cd11c2dab"
+      }
+    },
+    {
+      "evidence": {
+        "ahi_documented": [
+          {
+            "end": 49,
+            "start": 43,
+            "text": "AHI 22"
+          }
+        ],
+        "osa_diagnosis": [
+          {
+            "end": 7,
+            "start": 4,
+            "text": "OSA"
+          }
+        ],
+        "sleep_study_date": [
+          {
+            "end": 41,
+            "start": 31,
+            "text": "2024-05-18"
+          }
+        ]
+      },
+      "fact_set_fingerprint": "a274a875586f0167233638312f68b211af45f6fb51773bd6125417dda935d2a0",
+      "facts": {
+        "ahi_documented": true,
+        "back_pain_with_radiculopathy": null,
+        "conservative_therapy_weeks": null,
+        "cpb_0236_conservative_therapy_no_improvement": null,
+        "cpb_0236_conservative_therapy_weeks": null,
+        "mechanical_symptoms_documented": null,
+        "neuro_red_flags_documented": null,
+        "objective_motor_or_reflex_change_in_root_distribution": null,
+        "osa_diagnosis": true,
+        "prior_imaging_result": null,
+        "sleep_study_date": true,
+        "symptom_duration_weeks": null
+      },
+      "id": "CPAP-01-complete",
+      "input_fingerprint": "d9b6b0b64e0b4ba0ce536040dcbd998783e8d75842ff134dbea74f7c4c557045",
+      "verification_fingerprints": {
+        "ahi_documented": "095b1afe9057a82c37e6a47d08558c1198877f3dcd037452886fa056957c3d0d",
+        "osa_diagnosis": "d7f25336b340388f225663c75894767ff5430ae504c507b0a6d1989c6c8d9296",
+        "sleep_study_date": "666c63eb44065edfbafeae8371c3e7b6362d7bf8119a5094f8db6fc65dad51a4"
+      }
+    },
+    {
+      "evidence": {
+        "ahi_documented": [
+          {
+            "end": 88,
+            "start": 70,
+            "text": "AHI not documented"
+          }
+        ],
+        "osa_diagnosis": [
+          {
+            "end": 3,
+            "start": 0,
+            "text": "OSA"
+          }
+        ]
+      },
+      "fact_set_fingerprint": "16d6aac8854f2711f49819256c647506ac35cea1ffd5906a25e47b2598299c25",
+      "facts": {
+        "ahi_documented": null,
+        "back_pain_with_radiculopathy": null,
+        "conservative_therapy_weeks": null,
+        "cpb_0236_conservative_therapy_no_improvement": null,
+        "cpb_0236_conservative_therapy_weeks": null,
+        "mechanical_symptoms_documented": null,
+        "neuro_red_flags_documented": null,
+        "objective_motor_or_reflex_change_in_root_distribution": null,
+        "osa_diagnosis": true,
+        "prior_imaging_result": null,
+        "sleep_study_date": null,
+        "symptom_duration_weeks": null
+      },
+      "id": "CPAP-02-borderline",
+      "input_fingerprint": "c011858a97bf1f99030bc1a4967c02ca1d090f95a7623ec103174998c4693259",
+      "verification_fingerprints": {
+        "ahi_documented": "07f0c0be73b2058dfe6baf5ad2db5d22d126a647e7be9638f7a177c1bc9c0de0",
+        "osa_diagnosis": "09d08d19fa236ca987274583520f4cf4f708cc4a3e7a5aaf4c5c0a7dd36e83b7",
+        "sleep_study_date": "d44b157ba624bb0d87f372d30f8cbdc2f8aa3f207cd125fcada065a9bc675ba5"
+      }
+    },
+    {
+      "evidence": {},
+      "fact_set_fingerprint": "e99160a4089217e54d6426d8690ecca6e900ef7f7a6e9cbb779df403793f25a7",
+      "facts": {
+        "ahi_documented": null,
+        "back_pain_with_radiculopathy": null,
+        "conservative_therapy_weeks": null,
+        "cpb_0236_conservative_therapy_no_improvement": null,
+        "cpb_0236_conservative_therapy_weeks": null,
+        "mechanical_symptoms_documented": null,
+        "neuro_red_flags_documented": null,
+        "objective_motor_or_reflex_change_in_root_distribution": null,
+        "osa_diagnosis": null,
+        "prior_imaging_result": null,
+        "sleep_study_date": null,
+        "symptom_duration_weeks": null
+      },
+      "id": "CPAP-03-incomplete",
+      "input_fingerprint": "9cd839d9f28011b17b3a22faa69318d9c6e3807c8adb9a5dc79cf63d6d20cf30",
+      "verification_fingerprints": {
+        "ahi_documented": "5975ab1974e9b5478084766c8ec56605a7745dc612a4b477d7743022e64103ce",
+        "osa_diagnosis": "66fc94d12695d182ff20588b3fa42621aa01f5fe028d8df393fe1d469837ce58",
+        "sleep_study_date": "485d7b5f2ccd8b70363dfc75a5749397149ab7fcb1253bacdd5dcfca99ed086c"
+      }
+    },
+    {
+      "evidence": {
+        "osa_diagnosis": [
+          {
+            "end": 3,
+            "start": 0,
+            "text": "OSA"
+          }
+        ]
+      },
+      "fact_set_fingerprint": "f95a2875c1d6db1ba7e7bb57a08d4f24d8134322688ce4e4d93897e2ce729ee5",
+      "facts": {
+        "ahi_documented": null,
+        "back_pain_with_radiculopathy": null,
+        "conservative_therapy_weeks": null,
+        "cpb_0236_conservative_therapy_no_improvement": null,
+        "cpb_0236_conservative_therapy_weeks": null,
+        "mechanical_symptoms_documented": null,
+        "neuro_red_flags_documented": null,
+        "objective_motor_or_reflex_change_in_root_distribution": null,
+        "osa_diagnosis": true,
+        "prior_imaging_result": null,
+        "sleep_study_date": null,
+        "symptom_duration_weeks": null
+      },
+      "id": "CPAP-04-incomplete",
+      "input_fingerprint": "0d322d9360e2b49c439da7a82c007d72aa878a4cee26a1887c59eedfa40d3bef",
+      "verification_fingerprints": {
+        "ahi_documented": "c08bfac8c0ec6723700b5c6275bf8dc55e3eb4ddfed10f8ed6f4463e8a915faa",
+        "osa_diagnosis": "7283e28074260e76da3aa5685040c0a6072f4bb6785fbd610975ba3e819eb03f",
+        "sleep_study_date": "ed4e3eed6421cec022b60b6de45309f071d6870a74c5c3f830659b7836808788"
+      }
+    },
+    {
+      "evidence": {
+        "conservative_therapy_weeks": [
+          {
+            "end": 45,
+            "start": 33,
+            "text": "PT x 6 weeks"
+          }
+        ],
+        "cpb_0236_conservative_therapy_no_improvement": [
+          {
+            "end": 87,
+            "start": 33,
+            "text": "PT x 6 weeks and NSAIDs documented without improvement"
+          }
+        ],
+        "neuro_red_flags_documented": [
+          {
+            "end": 104,
+            "start": 89,
+            "text": "Denies weakness"
+          },
+          {
+            "end": 134,
+            "start": 106,
+            "text": "Denies bowel/bladder changes"
+          },
+          {
+            "end": 156,
+            "start": 136,
+            "text": "No saddle anesthesia"
+          }
+        ],
+        "prior_imaging_result": [
+          {
+            "end": 174,
+            "start": 158,
+            "text": "No prior imaging"
+          }
+        ],
+        "symptom_duration_weeks": [
+          {
+            "end": 23,
+            "start": 16,
+            "text": "6 weeks"
+          }
+        ]
+      },
+      "fact_set_fingerprint": "be728745f91cf84b556da46125c44bdcc0a51f9e7f1a4daf5fdb1da4c3eec5cc",
+      "facts": {
+        "ahi_documented": null,
+        "back_pain_with_radiculopathy": null,
+        "conservative_therapy_weeks": 6,
+        "cpb_0236_conservative_therapy_no_improvement": true,
+        "cpb_0236_conservative_therapy_weeks": null,
+        "mechanical_symptoms_documented": null,
+        "neuro_red_flags_documented": true,
+        "objective_motor_or_reflex_change_in_root_distribution": null,
+        "osa_diagnosis": null,
+        "prior_imaging_result": "none",
+        "sleep_study_date": null,
+        "symptom_duration_weeks": 6
+      },
+      "id": "MRI-07-edge-exact-threshold",
+      "input_fingerprint": "3e98d937e86c4f405068d4c2a0bcb52a721d4005542baa14e43627d29ad708d7",
+      "verification_fingerprints": {
+        "back_pain_with_radiculopathy": "d8213216f95b13b61cdc2d9742a8096bec5bbe6c03af2a6890310b6165b4fb24",
+        "cpb_0236_conservative_therapy_no_improvement": "07a4fa3a961491ba31192337342d1a4c30c24e5503f4402e8a821f307dde8e11",
+        "cpb_0236_conservative_therapy_weeks": "db4d3fc135bda240a557124e45a87c6cae15cf71a7c3f95e4f279a0bbd70e8df",
+        "objective_motor_or_reflex_change_in_root_distribution": "3a0932303db9733faa306b6a3c17ab1c0b309f73f67e89d6661d3644ea76f787"
+      }
+    },
+    {
+      "evidence": {
+        "back_pain_with_radiculopathy": [
+          {
+            "end": 42,
+            "start": 0,
+            "text": "Low back pain with right leg radiculopathy"
+          }
+        ],
+        "conservative_therapy_weeks": [
+          {
+            "end": 62,
+            "start": 44,
+            "text": "NSAIDs for 5 weeks"
+          }
+        ],
+        "cpb_0236_conservative_therapy_no_improvement": [
+          {
+            "end": 82,
+            "start": 44,
+            "text": "NSAIDs for 5 weeks with no improvement"
+          }
+        ],
+        "cpb_0236_conservative_therapy_weeks": [
+          {
+            "end": 82,
+            "start": 44,
+            "text": "NSAIDs for 5 weeks with no improvement"
+          }
+        ],
+        "objective_motor_or_reflex_change_in_root_distribution": [
+          {
+            "end": 166,
+            "start": 84,
+            "text": "Objective motor exam in the right L5 distribution: ankle dorsiflexion strength 4/5"
+          }
+        ]
+      },
+      "fact_set_fingerprint": "4c9c64e2fd585e69231995724a6c402fbc3703dc4449e6dc2352dc841e760484",
+      "facts": {
+        "ahi_documented": null,
+        "back_pain_with_radiculopathy": true,
+        "conservative_therapy_weeks": 5,
+        "cpb_0236_conservative_therapy_no_improvement": true,
+        "cpb_0236_conservative_therapy_weeks": 5,
+        "mechanical_symptoms_documented": null,
+        "neuro_red_flags_documented": null,
+        "objective_motor_or_reflex_change_in_root_distribution": true,
+        "osa_diagnosis": null,
+        "prior_imaging_result": null,
+        "sleep_study_date": null,
+        "symptom_duration_weeks": null
+      },
+      "id": "MRI-08-edge-below-threshold",
+      "input_fingerprint": "0ae787ad2f074d470755bf7ed65679f8d0727a36017b9c6822f674e06050c536",
+      "verification_fingerprints": {
+        "back_pain_with_radiculopathy": "6d7598169d5613396aeec8fd481fcf86fd5b874a6a1650c17f1cfa208931bc37",
+        "cpb_0236_conservative_therapy_no_improvement": "1e9907b7dc6eb921c9e31a57a2233b4eedcdd5f5565d5990d6283f2113eb867f",
+        "cpb_0236_conservative_therapy_weeks": "ebdd9f31eb7fcc18c5bd66d49d84745a0fd7165a548ad5e3df14370c41594270",
+        "objective_motor_or_reflex_change_in_root_distribution": "864b0ea49ed2bd8db45d6b8477c6796aac6648eb35e44610854a34c4df3bb78d"
+      }
+    },
+    {
+      "evidence": {
+        "conservative_therapy_weeks": [
+          {
+            "end": 35,
+            "start": 21,
+            "text": "PT for 8 weeks"
+          }
+        ],
+        "neuro_red_flags_documented": [
+          {
+            "end": 72,
+            "start": 57,
+            "text": "Weakness absent"
+          },
+          {
+            "end": 103,
+            "start": 74,
+            "text": "Bowel/bladder function intact"
+          },
+          {
+            "end": 125,
+            "start": 105,
+            "text": "No saddle anesthesia"
+          }
+        ],
+        "prior_imaging_result": [
+          {
+            "end": 147,
+            "start": 127,
+            "text": "No prior imaging yet"
+          }
+        ],
+        "symptom_duration_weeks": [
+          {
+            "end": 19,
+            "start": 12,
+            "text": "8 weeks"
+          }
+        ]
+      },
+      "fact_set_fingerprint": "a8b4c4898f7f3fa737a254fe0caf4a4ef94329678fd33998f7caaf36abae5197",
+      "facts": {
+        "ahi_documented": null,
+        "back_pain_with_radiculopathy": null,
+        "conservative_therapy_weeks": 8,
+        "cpb_0236_conservative_therapy_no_improvement": null,
+        "cpb_0236_conservative_therapy_weeks": null,
+        "mechanical_symptoms_documented": null,
+        "neuro_red_flags_documented": true,
+        "objective_motor_or_reflex_change_in_root_distribution": null,
+        "osa_diagnosis": null,
+        "prior_imaging_result": "none",
+        "sleep_study_date": null,
+        "symptom_duration_weeks": 8
+      },
+      "id": "MRI-09-negation-variant",
+      "input_fingerprint": "311f7a39dd024313f0fee685001dd816183b5ddd72de99f47d52af72c3c79b64",
+      "verification_fingerprints": {
+        "back_pain_with_radiculopathy": "451215190e788ab4c2d6f9b3e436fd78f8bd4b9e796ff8f36b855c436669358d",
+        "cpb_0236_conservative_therapy_no_improvement": "96ad2393151155c061aed1ee18430661bcc2fe4c2e6b6a1f7fd666b056a7ea41",
+        "cpb_0236_conservative_therapy_weeks": "0dfb7118ee429d7ebee66ceb61d9dd0671d5fcb857d8243f9712c8b764df033b",
+        "objective_motor_or_reflex_change_in_root_distribution": "2eaec09f266ee188b7fcf97394f2a5f9184269f1ed6bea1ba1bcc4d2f106f42e"
+      }
+    },
+    {
+      "evidence": {
+        "conservative_therapy_weeks": [
+          {
+            "end": 37,
+            "start": 25,
+            "text": "PT x 8 weeks"
+          }
+        ],
+        "prior_imaging_result": [
+          {
+            "end": 66,
+            "start": 50,
+            "text": "No prior imaging"
+          }
+        ],
+        "symptom_duration_weeks": [
+          {
+            "end": 23,
+            "start": 16,
+            "text": "8 weeks"
+          }
+        ]
+      },
+      "fact_set_fingerprint": "6edd8effda3cdd5cbfc2fb9fab10cff2b2c862ed55f3e986d84eed29879336c1",
+      "facts": {
+        "ahi_documented": null,
+        "back_pain_with_radiculopathy": null,
+        "conservative_therapy_weeks": 8,
+        "cpb_0236_conservative_therapy_no_improvement": null,
+        "cpb_0236_conservative_therapy_weeks": null,
+        "mechanical_symptoms_documented": null,
+        "neuro_red_flags_documented": null,
+        "objective_motor_or_reflex_change_in_root_distribution": null,
+        "osa_diagnosis": null,
+        "prior_imaging_result": "none",
+        "sleep_study_date": null,
+        "symptom_duration_weeks": 8
+      },
+      "id": "MRI-10-doc-gap-redflags",
+      "input_fingerprint": "c3b80424a3d495dc1cd50d3ed278a31bda48fc0943c3f3d9025014dd17ee73a9",
+      "verification_fingerprints": {
+        "back_pain_with_radiculopathy": "8498f68d059e22cea90fe2233550ebea79ead428f5057fb217b5417dc0a27a90",
+        "cpb_0236_conservative_therapy_no_improvement": "809ad8edf621f9839edb5bd23b20c4b9c0ccb85eb8981c1b5d38e9031ca1d671",
+        "cpb_0236_conservative_therapy_weeks": "225cdcf5bc9f46c9c3db64f6fc19da291c3d2049ade4bdcab66a0b6907dd24fb",
+        "objective_motor_or_reflex_change_in_root_distribution": "924ba874f1c8fda4bb531b7f30742ed87d7091b1acac912cc91cd05b90a4ffab"
+      }
+    },
+    {
+      "evidence": {
+        "conservative_therapy_weeks": [
+          {
+            "end": 33,
+            "start": 21,
+            "text": "PT x 8 weeks"
+          }
+        ],
+        "neuro_red_flags_documented": [
+          {
+            "end": 67,
+            "start": 35,
+            "text": "Denies weakness earlier in visit"
+          },
+          {
+            "end": 131,
+            "start": 69,
+            "text": "Later note: reports progressive weakness and urinary retention"
+          }
+        ],
+        "symptom_duration_weeks": [
+          {
+            "end": 19,
+            "start": 12,
+            "text": "8 weeks"
+          }
+        ]
+      },
+      "fact_set_fingerprint": "6710e1cf8ec63bbaa05a2b885b32c881030df2614a3b77a8a481612b4aebb7ea",
+      "facts": {
+        "ahi_documented": null,
+        "back_pain_with_radiculopathy": null,
+        "conservative_therapy_weeks": 8,
+        "cpb_0236_conservative_therapy_no_improvement": null,
+        "cpb_0236_conservative_therapy_weeks": null,
+        "mechanical_symptoms_documented": null,
+        "neuro_red_flags_documented": null,
+        "objective_motor_or_reflex_change_in_root_distribution": null,
+        "osa_diagnosis": null,
+        "prior_imaging_result": null,
+        "sleep_study_date": null,
+        "symptom_duration_weeks": 8
+      },
+      "id": "MRI-11-conflict-deny-then-report",
+      "input_fingerprint": "7a5449929ab0d86a6b1b93dd42d828228a3157ca8c605fe1a79d822763da4902",
+      "verification_fingerprints": {
+        "back_pain_with_radiculopathy": "63972a4b027d7377d7637dc12797ad127a2ddcc53022fe0910c66da3345cc21d",
+        "cpb_0236_conservative_therapy_no_improvement": "2399e2aba5376a8eabf86605e4b323abcf65dbe6672918f90e72b574785c26b8",
+        "cpb_0236_conservative_therapy_weeks": "73039144ae992bc348159b8efce3ab7c125cfb7a79e693a7e1f40693e93c429c",
+        "objective_motor_or_reflex_change_in_root_distribution": "cdab2494b376b0f9471efad1fec27aeb80782c5011dca2e2d66cac64952e5a33"
+      }
+    },
+    {
+      "evidence": {
+        "conservative_therapy_weeks": [
+          {
+            "end": 35,
+            "start": 22,
+            "text": "PT x 10 weeks"
+          }
+        ],
+        "neuro_red_flags_documented": [
+          {
+            "end": 98,
+            "start": 70,
+            "text": "Denies bowel/bladder changes"
+          },
+          {
+            "end": 115,
+            "start": 100,
+            "text": "Denies weakness"
+          }
+        ],
+        "prior_imaging_result": [
+          {
+            "end": 55,
+            "start": 49,
+            "text": "normal"
+          }
+        ],
+        "symptom_duration_weeks": [
+          {
+            "end": 20,
+            "start": 12,
+            "text": "10 weeks"
+          }
+        ]
+      },
+      "fact_set_fingerprint": "eada20872fb72cae89f9736f23fb4b1bbd8831189f08c3451eec4182ace9ebc8",
+      "facts": {
+        "ahi_documented": null,
+        "back_pain_with_radiculopathy": null,
+        "conservative_therapy_weeks": 10,
+        "cpb_0236_conservative_therapy_no_improvement": null,
+        "cpb_0236_conservative_therapy_weeks": null,
+        "mechanical_symptoms_documented": null,
+        "neuro_red_flags_documented": true,
+        "objective_motor_or_reflex_change_in_root_distribution": null,
+        "osa_diagnosis": null,
+        "prior_imaging_result": "normal",
+        "sleep_study_date": null,
+        "symptom_duration_weeks": 10
+      },
+      "id": "MRI-12-imaging-normal",
+      "input_fingerprint": "51afe684d96f357cb9adb63b595fd6131944bc8bfb700460607556cbffc015d7",
+      "verification_fingerprints": {
+        "back_pain_with_radiculopathy": "b4ade0f68e3418b0d23d5e25de4ef559bc9dfccb3f49e83bc488f062c0a565eb",
+        "cpb_0236_conservative_therapy_no_improvement": "8db1b872829b7f76ff3515adbcf1da8cc2b640dd8cadb4a197b995921ca67beb",
+        "cpb_0236_conservative_therapy_weeks": "9f0e231b85e5f8b82661d4ae686db6c9641f9f404bc0c53100d9dd44eb278d6a",
+        "objective_motor_or_reflex_change_in_root_distribution": "5815a1c30d8d4ac690b2f51dc29217423438accb657c9e5347f69de69f415e55"
+      }
+    },
+    {
+      "evidence": {
+        "conservative_therapy_weeks": [
+          {
+            "end": 35,
+            "start": 22,
+            "text": "PT x 10 weeks"
+          }
+        ],
+        "neuro_red_flags_documented": [
+          {
+            "end": 98,
+            "start": 83,
+            "text": "Denies weakness"
+          },
+          {
+            "end": 128,
+            "start": 100,
+            "text": "Denies bowel/bladder changes"
+          }
+        ],
+        "prior_imaging_result": [
+          {
+            "end": 81,
+            "start": 65,
+            "text": "findings unclear"
+          }
+        ],
+        "symptom_duration_weeks": [
+          {
+            "end": 20,
+            "start": 12,
+            "text": "10 weeks"
+          }
+        ]
+      },
+      "fact_set_fingerprint": "93485c6b8788681191720de4d7d89b495cc24415740f375ccf2001aa589e43c0",
+      "facts": {
+        "ahi_documented": null,
+        "back_pain_with_radiculopathy": null,
+        "conservative_therapy_weeks": 10,
+        "cpb_0236_conservative_therapy_no_improvement": null,
+        "cpb_0236_conservative_therapy_weeks": null,
+        "mechanical_symptoms_documented": null,
+        "neuro_red_flags_documented": true,
+        "objective_motor_or_reflex_change_in_root_distribution": null,
+        "osa_diagnosis": null,
+        "prior_imaging_result": "inconclusive",
+        "sleep_study_date": null,
+        "symptom_duration_weeks": 10
+      },
+      "id": "MRI-13-imaging-unclear",
+      "input_fingerprint": "2538f8aaba83c0b73e002a5a2bdb12ad6be4fdaa970985dbf4d5414382ff737b",
+      "verification_fingerprints": {
+        "back_pain_with_radiculopathy": "a0e395d9ad40eb698472ad7e0d77ad71599750f6a1b9dd335301dd93fdb19f64",
+        "cpb_0236_conservative_therapy_no_improvement": "19ceb80a2b4c235e50b0b534af6026ac71f1a5716f3e944f2868f9650ea318c4",
+        "cpb_0236_conservative_therapy_weeks": "bcd844e0261663e39d717664777274cbe73fd7ccb275c49040b74f336260e09c",
+        "objective_motor_or_reflex_change_in_root_distribution": "d02c901f125dc15e9d9540f62e3791ed38f4a36d43b0fff0fa813980059d0dfc"
+      }
+    },
+    {
+      "evidence": {
+        "neuro_red_flags_documented": [
+          {
+            "end": 54,
+            "start": 39,
+            "text": "Denies weakness"
+          },
+          {
+            "end": 84,
+            "start": 56,
+            "text": "Denies bowel/bladder changes"
+          }
+        ],
+        "prior_imaging_result": [
+          {
+            "end": 37,
+            "start": 21,
+            "text": "No prior imaging"
+          }
+        ],
+        "symptom_duration_weeks": [
+          {
+            "end": 19,
+            "start": 12,
+            "text": "8 weeks"
+          }
+        ]
+      },
+      "fact_set_fingerprint": "271bb8ecb3dca0d2d11010fb0b99c70aaca5ffdfe4fda0520197692a8e7266bc",
+      "facts": {
+        "ahi_documented": null,
+        "back_pain_with_radiculopathy": null,
+        "conservative_therapy_weeks": null,
+        "cpb_0236_conservative_therapy_no_improvement": null,
+        "cpb_0236_conservative_therapy_weeks": null,
+        "mechanical_symptoms_documented": null,
+        "neuro_red_flags_documented": true,
+        "objective_motor_or_reflex_change_in_root_distribution": null,
+        "osa_diagnosis": null,
+        "prior_imaging_result": "none",
+        "sleep_study_date": null,
+        "symptom_duration_weeks": 8
+      },
+      "id": "MRI-14-therapy-context-missing",
+      "input_fingerprint": "178c5797b2c95138cb2323eaba3db69ad830f388ed3f9836924f0a9aff44fa53",
+      "verification_fingerprints": {
+        "back_pain_with_radiculopathy": "71d5f2e4ca9f3a284c58246a20b819728fab970764932640122e0d347d8a29e1",
+        "cpb_0236_conservative_therapy_no_improvement": "45ee71e0b8e27b22c7aec208ad072580b8302d852495f4a79f0ea91558345c76",
+        "cpb_0236_conservative_therapy_weeks": "bb90a20de325bba4eff96327916d6e4624bed85078cfe50e6966822cab4c26ba",
+        "objective_motor_or_reflex_change_in_root_distribution": "e4030fb6c5e17ca04c3a207783ac07cb956c9c258b39d856f10b3d9603b952fc"
+      }
+    },
+    {
+      "evidence": {
+        "ahi_documented": [
+          {
+            "end": 80,
+            "start": 66,
+            "text": "AHI not stated"
+          }
+        ],
+        "osa_diagnosis": [
+          {
+            "end": 3,
+            "start": 0,
+            "text": "OSA"
+          }
+        ],
+        "sleep_study_date": [
+          {
+            "end": 47,
+            "start": 37,
+            "text": "2023-11-10"
+          }
+        ]
+      },
+      "fact_set_fingerprint": "9560757be3e5d4305a5ffe7f759dfaec2f8fb1d6291b3e59bf80240e16bb79a2",
+      "facts": {
+        "ahi_documented": null,
+        "back_pain_with_radiculopathy": null,
+        "conservative_therapy_weeks": null,
+        "cpb_0236_conservative_therapy_no_improvement": null,
+        "cpb_0236_conservative_therapy_weeks": null,
+        "mechanical_symptoms_documented": null,
+        "neuro_red_flags_documented": null,
+        "objective_motor_or_reflex_change_in_root_distribution": null,
+        "osa_diagnosis": true,
+        "prior_imaging_result": null,
+        "sleep_study_date": true,
+        "symptom_duration_weeks": null
+      },
+      "id": "CPAP-05-edge-with-date-no-ahi",
+      "input_fingerprint": "484ef54f58d387d21b8f69d19f3be7b937fc78a419be541b412cea28f77a3d69",
+      "verification_fingerprints": {
+        "ahi_documented": "8814861469b35080ed04912bcec50f190e9bc72eb583f29d1b8afd25d39720d3",
+        "osa_diagnosis": "ee99cf3da9ad3a3f43cba24e05819cfeb5598ebe295049745a94f96843ecc559",
+        "sleep_study_date": "e81987b8977755166c8cdf89e4ba7e5a8fc8fc5e21407f3e496b4a60c519c6b9"
+      }
+    },
+    {
+      "evidence": {
+        "ahi_documented": [
+          {
+            "end": 11,
+            "start": 5,
+            "text": "AHI 18"
+          }
+        ],
+        "osa_diagnosis": [
+          {
+            "end": 3,
+            "start": 0,
+            "text": "OSA"
+          }
+        ]
+      },
+      "fact_set_fingerprint": "d4cb05a67f9dd27f6a6daa3de9c803211e553db9641ff27e61d5ec33cd5c2f5e",
+      "facts": {
+        "ahi_documented": true,
+        "back_pain_with_radiculopathy": null,
+        "conservative_therapy_weeks": null,
+        "cpb_0236_conservative_therapy_no_improvement": null,
+        "cpb_0236_conservative_therapy_weeks": null,
+        "mechanical_symptoms_documented": null,
+        "neuro_red_flags_documented": null,
+        "objective_motor_or_reflex_change_in_root_distribution": null,
+        "osa_diagnosis": true,
+        "prior_imaging_result": null,
+        "sleep_study_date": null,
+        "symptom_duration_weeks": null
+      },
+      "id": "CPAP-06-edge-with-ahi-no-date",
+      "input_fingerprint": "b5ccb3cfed4ddadcd927e6c7f01fafd8a345f841b49cb3c9f637e2f2f3801060",
+      "verification_fingerprints": {
+        "ahi_documented": "9f58b9ba9b3fa38b76a23a7db24940211cc6ae8b14c1ff797ec4c49a5a13638b",
+        "osa_diagnosis": "eb022721cb19e27f28a2c525774df2c16499ade89a24fe3dd6b0b034b86c7d48",
+        "sleep_study_date": "f3b8afa16d07305c30da461ec4cd17d4559de16226dc3d9d947089c1c7d479cd"
+      }
+    },
+    {
+      "evidence": {
+        "ahi_documented": [
+          {
+            "end": 58,
+            "start": 52,
+            "text": "RDI 28"
+          }
+        ],
+        "osa_diagnosis": [
+          {
+            "end": 26,
+            "start": 3,
+            "text": "obstructive sleep apnea"
+          }
+        ],
+        "sleep_study_date": [
+          {
+            "end": 50,
+            "start": 40,
+            "text": "2024/06/01"
+          }
+        ]
+      },
+      "fact_set_fingerprint": "32fbc70cc24dd158c6d2cbcf480d42b46175cfa5a7599af413baf6b0e3c4e8c5",
+      "facts": {
+        "ahi_documented": true,
+        "back_pain_with_radiculopathy": null,
+        "conservative_therapy_weeks": null,
+        "cpb_0236_conservative_therapy_no_improvement": null,
+        "cpb_0236_conservative_therapy_weeks": null,
+        "mechanical_symptoms_documented": null,
+        "neuro_red_flags_documented": null,
+        "objective_motor_or_reflex_change_in_root_distribution": null,
+        "osa_diagnosis": true,
+        "prior_imaging_result": null,
+        "sleep_study_date": true,
+        "symptom_duration_weeks": null
+      },
+      "id": "CPAP-07-complete-alt-format-date",
+      "input_fingerprint": "74c56fa5beee66f7d7517ec475226995fbdbf50988a8047b638bc92341087ec6",
+      "verification_fingerprints": {
+        "ahi_documented": "4bc0dcc1e38cd8696cf113e0a25e2f492e3edd56a4305dbd8f496625165043f4",
+        "osa_diagnosis": "745b0aa77566faedc11baeb341fccdf50c7b354e8e6033da49e429c26b5f4d16",
+        "sleep_study_date": "4b045cd32ef7a60b3f34eb1bde12d53d178834fe6d3dbf276a888873f3146851"
+      }
+    },
+    {
+      "evidence": {
+        "conservative_therapy_weeks": [
+          {
+            "end": 64,
+            "start": 50,
+            "text": "PT for 8 weeks"
+          }
+        ],
+        "cpb_0236_conservative_therapy_no_improvement": [
+          {
+            "end": 111,
+            "start": 50,
+            "text": "PT for 8 weeks and NSAIDs documented with minimal improvement"
+          }
+        ],
+        "neuro_red_flags_documented": [
+          {
+            "end": 128,
+            "start": 113,
+            "text": "Denies weakness"
+          },
+          {
+            "end": 158,
+            "start": 130,
+            "text": "Denies bowel/bladder changes"
+          }
+        ],
+        "prior_imaging_result": [
+          {
+            "end": 192,
+            "start": 180,
+            "text": "inconclusive"
+          }
+        ],
+        "symptom_duration_weeks": [
+          {
+            "end": 48,
+            "start": 41,
+            "text": "8 weeks"
+          }
+        ]
+      },
+      "fact_set_fingerprint": "a2d10e22e1e7cc272854204a11f9e24f143920fbbdbaebde348f9a9e9ab45851",
+      "facts": {
+        "ahi_documented": null,
+        "back_pain_with_radiculopathy": null,
+        "conservative_therapy_weeks": 8,
+        "cpb_0236_conservative_therapy_no_improvement": true,
+        "cpb_0236_conservative_therapy_weeks": null,
+        "mechanical_symptoms_documented": null,
+        "neuro_red_flags_documented": true,
+        "objective_motor_or_reflex_change_in_root_distribution": null,
+        "osa_diagnosis": null,
+        "prior_imaging_result": "inconclusive",
+        "sleep_study_date": null,
+        "symptom_duration_weeks": 8
+      },
+      "id": "MRI-CERV-01-ready",
+      "input_fingerprint": "37917cc857cf926debb12b8284c844f80f60bc6ec1b7ae1a5f2b8f9af9ae1f37",
+      "verification_fingerprints": {
+        "conservative_therapy_weeks": "55883103e07fe90c8dccaa54865dff0e9bc9483d6d03ac94d939ec298320a2f7",
+        "neuro_red_flags_documented": "2f679c2f81c59c80df8895f33d0a52a5efa3b40db11020205f62c170b652dc52",
+        "prior_imaging_result": "7a80a86e6dbf0bad8f0b0fbd16337c01f309428fe18f11dea5b87f34c20f7314",
+        "symptom_duration_weeks": "8223ece3c3c80c73170026c1478a9eb9c3bcffbf7af204163a38b5134bf85d9e"
+      }
+    },
+    {
+      "evidence": {
+        "conservative_therapy_weeks": [
+          {
+            "end": 33,
+            "start": 21,
+            "text": "PT x 4 weeks"
+          }
+        ],
+        "neuro_red_flags_documented": [
+          {
+            "end": 61,
+            "start": 46,
+            "text": "Denies weakness"
+          },
+          {
+            "end": 91,
+            "start": 63,
+            "text": "Denies bowel/bladder changes"
+          }
+        ],
+        "prior_imaging_result": [
+          {
+            "end": 125,
+            "start": 113,
+            "text": "unremarkable"
+          }
+        ],
+        "symptom_duration_weeks": [
+          {
+            "end": 19,
+            "start": 12,
+            "text": "4 weeks"
+          }
+        ]
+      },
+      "fact_set_fingerprint": "359020ff4c687294d44928714928ca35851ececc41b9fc004ab6493c6f5aaa62",
+      "facts": {
+        "ahi_documented": null,
+        "back_pain_with_radiculopathy": null,
+        "conservative_therapy_weeks": 4,
+        "cpb_0236_conservative_therapy_no_improvement": null,
+        "cpb_0236_conservative_therapy_weeks": null,
+        "mechanical_symptoms_documented": null,
+        "neuro_red_flags_documented": true,
+        "objective_motor_or_reflex_change_in_root_distribution": null,
+        "osa_diagnosis": null,
+        "prior_imaging_result": "normal",
+        "sleep_study_date": null,
+        "symptom_duration_weeks": 4
+      },
+      "id": "MRI-CERV-02-not-ready",
+      "input_fingerprint": "763cd1abf1095c8eddfc3fe3f468d6c190f46d54fc717d6bdb2c49b152ec2af5",
+      "verification_fingerprints": {
+        "conservative_therapy_weeks": "e338d18e04ad46841e3ce6ddc682745d9a00f259585b3ad7a01f683b14c023e6",
+        "neuro_red_flags_documented": "227182883e44ea5356b85cf0b26430b33dcc12684bb86d147710ee9e773a8175",
+        "prior_imaging_result": "b0dd7fe1e2ed43f5c4af53e4d79ee6e100c85e4c0761375e73aa807e1a664db6",
+        "symptom_duration_weeks": "b39c0603df2ac77cfc3b43360134ff4809593e0a1ff500d1e0a7fec27f104b21"
+      }
+    },
+    {
+      "evidence": {
+        "conservative_therapy_weeks": [
+          {
+            "end": 33,
+            "start": 21,
+            "text": "PT x 8 weeks"
+          }
+        ],
+        "prior_imaging_result": [
+          {
+            "end": 62,
+            "start": 46,
+            "text": "No prior imaging"
+          }
+        ],
+        "symptom_duration_weeks": [
+          {
+            "end": 19,
+            "start": 12,
+            "text": "8 weeks"
+          }
+        ]
+      },
+      "fact_set_fingerprint": "61c9a24f03e92b269da243398845cb2240cd9ed769f75ce4572748e3c704f6cc",
+      "facts": {
+        "ahi_documented": null,
+        "back_pain_with_radiculopathy": null,
+        "conservative_therapy_weeks": 8,
+        "cpb_0236_conservative_therapy_no_improvement": null,
+        "cpb_0236_conservative_therapy_weeks": null,
+        "mechanical_symptoms_documented": null,
+        "neuro_red_flags_documented": null,
+        "objective_motor_or_reflex_change_in_root_distribution": null,
+        "osa_diagnosis": null,
+        "prior_imaging_result": "none",
+        "sleep_study_date": null,
+        "symptom_duration_weeks": 8
+      },
+      "id": "MRI-CERV-03-cannot-determine",
+      "input_fingerprint": "efee837289fb14c76d36fc422514c565f7051289e5448acb8ac70b78a5c33e60",
+      "verification_fingerprints": {
+        "conservative_therapy_weeks": "2db5924e000241c6c8afd0d63aa06fa4f2059746a1dd042758678a8ba4fdbe1f",
+        "neuro_red_flags_documented": "abee7729f6fa345f66114622e162169b91327274a3bfce7a2d703a7abc3f3ecf",
+        "prior_imaging_result": "a2c7481a8b01d3c06a43caf8e825d60bff06488d69ea22fa03cb7668c0b4bd8b",
+        "symptom_duration_weeks": "6211f8f51302af5aeb7d98a64a1c2965a368c025542c4ebae469bf07d2c4c512"
+      }
+    },
+    {
+      "evidence": {
+        "conservative_therapy_weeks": [
+          {
+            "end": 74,
+            "start": 46,
+            "text": "physical therapy for 6 weeks"
+          }
+        ],
+        "neuro_red_flags_documented": [
+          {
+            "end": 122,
+            "start": 76,
+            "text": "Reports progressive weakness in the right hand"
+          }
+        ],
+        "prior_imaging_result": [
+          {
+            "end": 154,
+            "start": 146,
+            "text": "abnormal"
+          }
+        ],
+        "symptom_duration_weeks": [
+          {
+            "end": 34,
+            "start": 26,
+            "text": "2 months"
+          }
+        ]
+      },
+      "fact_set_fingerprint": "17d8195a0f46ca23153b5128476b050113c69a879cf8c4611faf787a89b31bc2",
+      "facts": {
+        "ahi_documented": null,
+        "back_pain_with_radiculopathy": null,
+        "conservative_therapy_weeks": 6,
+        "cpb_0236_conservative_therapy_no_improvement": null,
+        "cpb_0236_conservative_therapy_weeks": null,
+        "mechanical_symptoms_documented": null,
+        "neuro_red_flags_documented": true,
+        "objective_motor_or_reflex_change_in_root_distribution": null,
+        "osa_diagnosis": null,
+        "prior_imaging_result": "abnormal",
+        "sleep_study_date": null,
+        "symptom_duration_weeks": 8
+      },
+      "id": "MRI-CERV-04-positive-redflags",
+      "input_fingerprint": "edb3f9c10cb4e497937aa8e9289307af256cda798258674ca9881b42e7a1674d",
+      "verification_fingerprints": {
+        "conservative_therapy_weeks": "90693ac08f915bbdd0ca1f8c009196e576f6a728188ff4ddfad2e3c7a1974825",
+        "neuro_red_flags_documented": "41c953a1efb739e462f27fcc44a56cb630761870698f4bfa14bee4254485b724",
+        "prior_imaging_result": "ef068f105470b5a29a09cdaf5440ad5bd8eab92f765b4777955839a3b157df4f",
+        "symptom_duration_weeks": "581419a3c3c792107ab35e0a3a767eae5c797efc1b826847107301e53da5910e"
+      }
+    },
+    {
+      "evidence": {
+        "conservative_therapy_weeks": [
+          {
+            "end": 77,
+            "start": 63,
+            "text": "PT for 8 weeks"
+          }
+        ],
+        "cpb_0236_conservative_therapy_no_improvement": [
+          {
+            "end": 113,
+            "start": 53,
+            "text": "Completed PT for 8 weeks and NSAIDs with minimal improvement"
+          }
+        ],
+        "mechanical_symptoms_documented": [
+          {
+            "end": 51,
+            "start": 0,
+            "text": "Right knee pain with locking and catching x 8 weeks"
+          }
+        ],
+        "prior_imaging_result": [
+          {
+            "end": 137,
+            "start": 131,
+            "text": "normal"
+          }
+        ],
+        "symptom_duration_weeks": [
+          {
+            "end": 51,
+            "start": 44,
+            "text": "8 weeks"
+          }
+        ]
+      },
+      "fact_set_fingerprint": "b144ede322179c8937ce262c8e1ddf0d673a1e22fec7ea535f663b9c80dda34d",
+      "facts": {
+        "ahi_documented": null,
+        "back_pain_with_radiculopathy": null,
+        "conservative_therapy_weeks": 8,
+        "cpb_0236_conservative_therapy_no_improvement": true,
+        "cpb_0236_conservative_therapy_weeks": null,
+        "mechanical_symptoms_documented": true,
+        "neuro_red_flags_documented": null,
+        "objective_motor_or_reflex_change_in_root_distribution": null,
+        "osa_diagnosis": null,
+        "prior_imaging_result": "normal",
+        "sleep_study_date": null,
+        "symptom_duration_weeks": 8
+      },
+      "id": "MRI-KNEE-01-ready",
+      "input_fingerprint": "aed879feb25b2b5d62187e298d4c0221dba22455cf77d3a4882c64abd3a141be",
+      "verification_fingerprints": {
+        "conservative_therapy_weeks": "ce3357edfab819a5ffa259c0cf48edd8c566003fae796200c45fdeef36a3910b",
+        "mechanical_symptoms_documented": "36fdb5bdb9696c9b2fd634800742c64ea0e9b3500e52f4df5d17af1536ee5b58",
+        "prior_imaging_result": "5ffc4ad39f541cdb91f5821ede82aa8d098841160d38ce5d8f1df228043e5f52",
+        "symptom_duration_weeks": "688c7a63a67e505265c7e21630c4015e25f983028550b0f54a1e5ffe5b3f0dde"
+      }
+    },
+    {
+      "evidence": {
+        "conservative_therapy_weeks": [
+          {
+            "end": 52,
+            "start": 40,
+            "text": "PT x 8 weeks"
+          }
+        ],
+        "mechanical_symptoms_documented": [
+          {
+            "end": 38,
+            "start": 0,
+            "text": "Right knee pain with locking x 8 weeks"
+          }
+        ],
+        "prior_imaging_result": [
+          {
+            "end": 111,
+            "start": 91,
+            "text": "No prior imaging yet"
+          }
+        ],
+        "symptom_duration_weeks": [
+          {
+            "end": 38,
+            "start": 31,
+            "text": "8 weeks"
+          }
+        ]
+      },
+      "fact_set_fingerprint": "6d1ecf37678015086eee8cf6bf4a5c2fd2c1021d66445b7c5516f99a266f76da",
+      "facts": {
+        "ahi_documented": null,
+        "back_pain_with_radiculopathy": null,
+        "conservative_therapy_weeks": 8,
+        "cpb_0236_conservative_therapy_no_improvement": null,
+        "cpb_0236_conservative_therapy_weeks": null,
+        "mechanical_symptoms_documented": true,
+        "neuro_red_flags_documented": null,
+        "objective_motor_or_reflex_change_in_root_distribution": null,
+        "osa_diagnosis": null,
+        "prior_imaging_result": "none",
+        "sleep_study_date": null,
+        "symptom_duration_weeks": 8
+      },
+      "id": "MRI-KNEE-02-not-ready-no-imaging",
+      "input_fingerprint": "bba3c37b15fe05bdd0162426c5e127c6da2974980eade817252bf8f739a61ad9",
+      "verification_fingerprints": {
+        "conservative_therapy_weeks": "f5d7f6624fd9edb9998256e230e4bacdd85ba8b51ede6568c5e9902e6a1f5ac8",
+        "mechanical_symptoms_documented": "155a9692ee5e0baf58a4df8a4aefe2e0e868ed12ae2f13d2cc852d9265906330",
+        "prior_imaging_result": "52cdd9079370d6398651d2573dafcbcb62e579471806460720cfa2980d19b1a9",
+        "symptom_duration_weeks": "8ad28a7ee92f80fc981fbe428c397f9ed55bc35c161c0c4c1078d23878b585df"
+      }
+    },
+    {
+      "evidence": {
+        "conservative_therapy_weeks": [
+          {
+            "end": 39,
+            "start": 27,
+            "text": "PT x 8 weeks"
+          }
+        ],
+        "prior_imaging_result": [
+          {
+            "end": 74,
+            "start": 68,
+            "text": "normal"
+          }
+        ],
+        "symptom_duration_weeks": [
+          {
+            "end": 25,
+            "start": 18,
+            "text": "8 weeks"
+          }
+        ]
+      },
+      "fact_set_fingerprint": "c3b866b3ff3894d510771545d1be3350ffd48f45f52b71b6e07c452c2d26e662",
+      "facts": {
+        "ahi_documented": null,
+        "back_pain_with_radiculopathy": null,
+        "conservative_therapy_weeks": 8,
+        "cpb_0236_conservative_therapy_no_improvement": null,
+        "cpb_0236_conservative_therapy_weeks": null,
+        "mechanical_symptoms_documented": null,
+        "neuro_red_flags_documented": null,
+        "objective_motor_or_reflex_change_in_root_distribution": null,
+        "osa_diagnosis": null,
+        "prior_imaging_result": "normal",
+        "sleep_study_date": null,
+        "symptom_duration_weeks": 8
+      },
+      "id": "MRI-KNEE-03-cannot-determine",
+      "input_fingerprint": "ab07789ae6d8e629c2baa3c79397bff74b4088c917e600619894936a8f9aee57",
+      "verification_fingerprints": {
+        "conservative_therapy_weeks": "6c76aef2898e8b173b8d6476bc9dfe1032fd9cd3f188e2a2fa75f6ee99473d3f",
+        "mechanical_symptoms_documented": "e9dcc19244652a34ffca2d37c9c78f53f277914553006ac5b67242a787500141",
+        "prior_imaging_result": "c14f31bfbc7b44f58c5f835650709688ff3e5b2f5e9cd9e80b2b3a7909b13d83",
+        "symptom_duration_weeks": "b67d555a676dd851b34e44df0ff6b68c1b541187aaa445353cc35679d78cb60f"
+      }
+    },
+    {
+      "evidence": {
+        "conservative_therapy_weeks": [
+          {
+            "end": 52,
+            "start": 38,
+            "text": "PT for 6 weeks"
+          }
+        ],
+        "mechanical_symptoms_documented": [
+          {
+            "end": 101,
+            "start": 72,
+            "text": "Denies locking or instability"
+          }
+        ],
+        "prior_imaging_result": [
+          {
+            "end": 135,
+            "start": 119,
+            "text": "findings unclear"
+          }
+        ],
+        "symptom_duration_weeks": [
+          {
+            "end": 26,
+            "start": 18,
+            "text": "10 weeks"
+          }
+        ]
+      },
+      "fact_set_fingerprint": "640315112df4fd96615d0bc35476f9bc974be45de584b784ba7333f7f35da2f0",
+      "facts": {
+        "ahi_documented": null,
+        "back_pain_with_radiculopathy": null,
+        "conservative_therapy_weeks": 6,
+        "cpb_0236_conservative_therapy_no_improvement": null,
+        "cpb_0236_conservative_therapy_weeks": null,
+        "mechanical_symptoms_documented": false,
+        "neuro_red_flags_documented": null,
+        "objective_motor_or_reflex_change_in_root_distribution": null,
+        "osa_diagnosis": null,
+        "prior_imaging_result": "inconclusive",
+        "sleep_study_date": null,
+        "symptom_duration_weeks": 10
+      },
+      "id": "MRI-KNEE-04-ready-denied-mechanical",
+      "input_fingerprint": "513f73d4bab09217da877149bacc183cd98e0385c40432d3ac963cb0aca1ba4c",
+      "verification_fingerprints": {
+        "conservative_therapy_weeks": "0211f97f5ed1f9e31248f8d5b79f9a61472cd674b814e02f8345ed3794b02e37",
+        "mechanical_symptoms_documented": "3552118d721c5897a04045ddb305e32df20e0bd8fa64757e1b2915f51853ce7b",
+        "prior_imaging_result": "cb68c744c7586ab4b56ed808c425d188e4621cbcbdcc1c45c4ad5a7c30478e67",
+        "symptom_duration_weeks": "9946661ae33d543f0d3e5025c4a0dc0d5f4527dfb4d3f15ceca5f8bf51be7658"
+      }
+    },
+    {
+      "evidence": {
+        "conservative_therapy_weeks": [
+          {
+            "end": 39,
+            "start": 27,
+            "text": "PT x 8 weeks"
+          }
+        ],
+        "mechanical_symptoms_documented": [
+          {
+            "end": 83,
+            "start": 52,
+            "text": "Denies locking earlier in visit"
+          },
+          {
+            "end": 125,
+            "start": 85,
+            "text": "Later note: reports buckling with stairs"
+          }
+        ],
+        "prior_imaging_result": [
+          {
+            "end": 149,
+            "start": 143,
+            "text": "normal"
+          }
+        ],
+        "symptom_duration_weeks": [
+          {
+            "end": 25,
+            "start": 18,
+            "text": "8 weeks"
+          }
+        ]
+      },
+      "fact_set_fingerprint": "c2829c8f560d046b280f7a2ae99edfac9a799c0863a1c2893d93b0d8e1b6584c",
+      "facts": {
+        "ahi_documented": null,
+        "back_pain_with_radiculopathy": null,
+        "conservative_therapy_weeks": 8,
+        "cpb_0236_conservative_therapy_no_improvement": null,
+        "cpb_0236_conservative_therapy_weeks": null,
+        "mechanical_symptoms_documented": null,
+        "neuro_red_flags_documented": null,
+        "objective_motor_or_reflex_change_in_root_distribution": null,
+        "osa_diagnosis": null,
+        "prior_imaging_result": "normal",
+        "sleep_study_date": null,
+        "symptom_duration_weeks": 8
+      },
+      "id": "MRI-KNEE-05-conflict-deny-then-positive",
+      "input_fingerprint": "e1a22c1b56883d648f4562facc9804f31ed75dcce2cb0956865245ddc4b5659a",
+      "verification_fingerprints": {
+        "conservative_therapy_weeks": "3eb57951393752e32a4ded74c46d6d5e4fac32985e5e7d6d5c8b8ffcbbe530e6",
+        "mechanical_symptoms_documented": "27916ea446676b75b8a7cee905c380b3808087f162993e6259cdbffd3443ff21",
+        "prior_imaging_result": "a9b2f6d6104ad9bedb618479a2cfda7e2d09af5bfc6034da05a5acbffca70c2d",
+        "symptom_duration_weeks": "49489a26279f10e1bfd95189ff66263893547d4dfb09f53d0d5d11bf55cc872c"
+      }
+    },
+    {
+      "evidence": {
+        "ahi_documented": [
+          {
+            "end": 40,
+            "start": 34,
+            "text": "AHI 22"
+          }
+        ],
+        "sleep_study_date": [
+          {
+            "end": 32,
+            "start": 22,
+            "text": "2024-01-05"
+          }
+        ]
+      },
+      "fact_set_fingerprint": "10f597234d96b0106cbd13bef06cfee25544e1b93cc3303b76850815f2733973",
+      "facts": {
+        "ahi_documented": true,
+        "back_pain_with_radiculopathy": null,
+        "conservative_therapy_weeks": null,
+        "cpb_0236_conservative_therapy_no_improvement": null,
+        "cpb_0236_conservative_therapy_weeks": null,
+        "mechanical_symptoms_documented": null,
+        "neuro_red_flags_documented": null,
+        "objective_motor_or_reflex_change_in_root_distribution": null,
+        "osa_diagnosis": null,
+        "prior_imaging_result": null,
+        "sleep_study_date": true,
+        "symptom_duration_weeks": null
+      },
+      "id": "CPAP-08-doc-gap-osa-not-stated",
+      "input_fingerprint": "11f6862f6b041024aaa3ad38613d206fc08aa0407ca90df3799b83bdd201e576",
+      "verification_fingerprints": {
+        "ahi_documented": "ece586811a61e41433b00377cccf61a985c9ac40da448a2a75e98ba6337fd627",
+        "osa_diagnosis": "40c96b4881eab670442ee7f8d2311eaa27bf208a4e15b27ccada3821666b824a",
+        "sleep_study_date": "56859fb8851d1b0306561eddcdc02a99041b7c4673bac3e10cc71026ebc6d7ed"
+      }
+    },
+    {
+      "evidence": {
+        "ahi_documented": [
+          {
+            "end": 62,
+            "start": 44,
+            "text": "AHI not documented"
+          }
+        ],
+        "osa_diagnosis": [
+          {
+            "end": 3,
+            "start": 0,
+            "text": "OSA"
+          }
+        ]
+      },
+      "fact_set_fingerprint": "499f5bdb034c15dafbbd3fac4b2df982e9bb87721778a3307c4634c6afbc5255",
+      "facts": {
+        "ahi_documented": null,
+        "back_pain_with_radiculopathy": null,
+        "conservative_therapy_weeks": null,
+        "cpb_0236_conservative_therapy_no_improvement": null,
+        "cpb_0236_conservative_therapy_weeks": null,
+        "mechanical_symptoms_documented": null,
+        "neuro_red_flags_documented": null,
+        "objective_motor_or_reflex_change_in_root_distribution": null,
+        "osa_diagnosis": true,
+        "prior_imaging_result": null,
+        "sleep_study_date": null,
+        "symptom_duration_weeks": null
+      },
+      "id": "CPAP-09-noise-contains-date-unrelated",
+      "input_fingerprint": "98106a806bd886d7b575ac3f8fcda811eb52d3d34b3057a2f1345de21f057b4c",
+      "verification_fingerprints": {
+        "ahi_documented": "7d08af23b5d731df7cb173b3f33fa6f7bf1ce5b35299e2b25c709d5b456d707c",
+        "osa_diagnosis": "466cecdc2072a2072f228a4af572b2b27479d5744f7a9bf089fc5c88a5a15a14",
+        "sleep_study_date": "dcf5e7d0b37bc18cf9ecba626cdffe700604fc859f5e0ba9a0ea59151d19f172"
+      }
+    },
+    {
+      "evidence": {
+        "conservative_therapy_weeks": [
+          {
+            "end": 62,
+            "start": 50,
+            "text": "PT x 8 weeks"
+          }
+        ],
+        "neuro_red_flags_documented": [
+          {
+            "end": 103,
+            "start": 75,
+            "text": "Denies bowel/bladder changes"
+          },
+          {
+            "end": 120,
+            "start": 105,
+            "text": "Denies weakness"
+          }
+        ],
+        "prior_imaging_result": [
+          {
+            "end": 136,
+            "start": 122,
+            "text": "No imaging yet"
+          }
+        ],
+        "symptom_duration_weeks": [
+          {
+            "end": 19,
+            "start": 12,
+            "text": "8 weeks"
+          }
+        ]
+      },
+      "fact_set_fingerprint": "e37ad14950c7dc2d99c69de2ab6e547911e49343c64aa679cea28d133bc8f485",
+      "facts": {
+        "ahi_documented": null,
+        "back_pain_with_radiculopathy": null,
+        "conservative_therapy_weeks": 8,
+        "cpb_0236_conservative_therapy_no_improvement": null,
+        "cpb_0236_conservative_therapy_weeks": null,
+        "mechanical_symptoms_documented": null,
+        "neuro_red_flags_documented": true,
+        "objective_motor_or_reflex_change_in_root_distribution": null,
+        "osa_diagnosis": null,
+        "prior_imaging_result": "none",
+        "sleep_study_date": null,
+        "symptom_duration_weeks": 8
+      },
+      "id": "MRI-15-noise-unrelated-weeks",
+      "input_fingerprint": "1f347e00cd8087dd48f5a8349ea693bda894a1516da34b8a067ef6d29732850f",
+      "verification_fingerprints": {
+        "back_pain_with_radiculopathy": "85fa6b34bb0fbe6be99be69106d07ae31cc23cdea626949c2ea59da89cdd817b",
+        "cpb_0236_conservative_therapy_no_improvement": "b1ee8733e1c314f2f57c8ef5dd8b86d430d2abfb15d26c51760fe25e213a718b",
+        "cpb_0236_conservative_therapy_weeks": "3f42c3fc79327ca63b81a5095aad9bd83d19828332624bd776c34c778432f66e",
+        "objective_motor_or_reflex_change_in_root_distribution": "5956cbfbb263723fe079590172ebbe42b07265136a5dced44a3ec909db622803"
+      }
+    },
+    {
+      "evidence": {
+        "neuro_red_flags_documented": [
+          {
+            "end": 85,
+            "start": 70,
+            "text": "Denies weakness"
+          },
+          {
+            "end": 115,
+            "start": 87,
+            "text": "Denies bowel/bladder changes"
+          }
+        ],
+        "prior_imaging_result": [
+          {
+            "end": 133,
+            "start": 117,
+            "text": "No prior imaging"
+          }
+        ],
+        "symptom_duration_weeks": [
+          {
+            "end": 19,
+            "start": 12,
+            "text": "8 weeks"
+          }
+        ]
+      },
+      "fact_set_fingerprint": "460b4237aa033acb81a4a20b10d651af860eb8268c31888705e65efc41967fd9",
+      "facts": {
+        "ahi_documented": null,
+        "back_pain_with_radiculopathy": null,
+        "conservative_therapy_weeks": null,
+        "cpb_0236_conservative_therapy_no_improvement": null,
+        "cpb_0236_conservative_therapy_weeks": null,
+        "mechanical_symptoms_documented": null,
+        "neuro_red_flags_documented": true,
+        "objective_motor_or_reflex_change_in_root_distribution": null,
+        "osa_diagnosis": null,
+        "prior_imaging_result": "none",
+        "sleep_study_date": null,
+        "symptom_duration_weeks": 8
+      },
+      "id": "MRI-16-pt-mentioned-no-duration",
+      "input_fingerprint": "5e30a63b94960d7b409f4b6da1249a6c3378341aff4e82ce368087fbc02e5c69",
+      "verification_fingerprints": {
+        "back_pain_with_radiculopathy": "a82545a848c72cb5b5c718558b2088418c3d656940a88032534d4aefd4a34733",
+        "cpb_0236_conservative_therapy_no_improvement": "7d7c7830d27dd71611ff705c3fbca9cb628c62be8c8c106eb47d4828671ac78c",
+        "cpb_0236_conservative_therapy_weeks": "516ba474d7a96a9a4e508018004f40ed93804c4dc2fd7d9e0c089f2ac05b1401",
+        "objective_motor_or_reflex_change_in_root_distribution": "d49eef0ba6b9aa710859e0e40e50006fad46b77b75f44b9def519562e29e76fb"
+      }
+    },
+    {
+      "evidence": {
+        "back_pain_with_radiculopathy": [
+          {
+            "end": 42,
+            "start": 0,
+            "text": "Low back pain with right leg radiculopathy"
+          }
+        ],
+        "conservative_therapy_weeks": [
+          {
+            "end": 189,
+            "start": 171,
+            "text": "NSAIDs for 8 weeks"
+          }
+        ],
+        "cpb_0236_conservative_therapy_no_improvement": [
+          {
+            "end": 161,
+            "start": 109,
+            "text": "Muscle relaxants for 2 weeks produced no improvement"
+          }
+        ],
+        "cpb_0236_conservative_therapy_weeks": [
+          {
+            "end": 161,
+            "start": 109,
+            "text": "Muscle relaxants for 2 weeks produced no improvement"
+          },
+          {
+            "end": 210,
+            "start": 171,
+            "text": "NSAIDs for 8 weeks were also documented"
+          }
+        ],
+        "objective_motor_or_reflex_change_in_root_distribution": [
+          {
+            "end": 107,
+            "start": 44,
+            "text": "Objective motor exam in the right L5 distribution: strength 4/5"
+          }
+        ]
+      },
+      "fact_set_fingerprint": "c3e20fdef9d1b623744504d5b0e976079b7cb97ba4ac42031aa156c350518972",
+      "facts": {
+        "ahi_documented": null,
+        "back_pain_with_radiculopathy": true,
+        "conservative_therapy_weeks": 8,
+        "cpb_0236_conservative_therapy_no_improvement": null,
+        "cpb_0236_conservative_therapy_weeks": null,
+        "mechanical_symptoms_documented": null,
+        "neuro_red_flags_documented": null,
+        "objective_motor_or_reflex_change_in_root_distribution": true,
+        "osa_diagnosis": null,
+        "prior_imaging_result": null,
+        "sleep_study_date": null,
+        "symptom_duration_weeks": null
+      },
+      "id": "SAFETY-01-cross-therapy-linkage",
+      "input_fingerprint": "8626754b13e2284dbdebb9e72cc40f95344b4199d361306fb6b3202e83ed3541",
+      "verification_fingerprints": {
+        "back_pain_with_radiculopathy": "9c5be03d003436036caff3e70377514eb232d08285afc9c4eeb0cc8a5b8dee0b",
+        "cpb_0236_conservative_therapy_no_improvement": "6d594ec6703707c209b3f193affe99ff322f9ec9e2bcefbb325b5cd9f9e9e9a0",
+        "cpb_0236_conservative_therapy_weeks": "68bb7cc4bc810e831c7a88f4fb616857d59ac5b085101023e494462add4f022c",
+        "objective_motor_or_reflex_change_in_root_distribution": "24f06732095d9853204f083b5171096d49f7355dbea60626b98384432b531540"
+      }
+    },
+    {
+      "evidence": {
+        "back_pain_with_radiculopathy": [
+          {
+            "end": 42,
+            "start": 0,
+            "text": "Low back pain with right leg radiculopathy"
+          }
+        ],
+        "conservative_therapy_weeks": [
+          {
+            "end": 127,
+            "start": 109,
+            "text": "NSAIDs for 8 weeks"
+          }
+        ],
+        "cpb_0236_conservative_therapy_no_improvement": [
+          {
+            "end": 203,
+            "start": 151,
+            "text": "muscle relaxants for 2 weeks produced no improvement"
+          }
+        ],
+        "cpb_0236_conservative_therapy_weeks": [
+          {
+            "end": 143,
+            "start": 109,
+            "text": "NSAIDs for 8 weeks were documented"
+          },
+          {
+            "end": 203,
+            "start": 151,
+            "text": "muscle relaxants for 2 weeks produced no improvement"
+          }
+        ],
+        "objective_motor_or_reflex_change_in_root_distribution": [
+          {
+            "end": 107,
+            "start": 44,
+            "text": "Objective motor exam in the right L5 distribution: strength 4/5"
+          }
+        ]
+      },
+      "fact_set_fingerprint": "3b5e106c918a3a8d286c404db0b101663902c178e077c0c09e931b8d4afb729f",
+      "facts": {
+        "ahi_documented": null,
+        "back_pain_with_radiculopathy": true,
+        "conservative_therapy_weeks": 8,
+        "cpb_0236_conservative_therapy_no_improvement": null,
+        "cpb_0236_conservative_therapy_weeks": null,
+        "mechanical_symptoms_documented": null,
+        "neuro_red_flags_documented": null,
+        "objective_motor_or_reflex_change_in_root_distribution": true,
+        "osa_diagnosis": null,
+        "prior_imaging_result": null,
+        "sleep_study_date": null,
+        "symptom_duration_weeks": null
+      },
+      "id": "SAFETY-02-cross-therapy-reversed",
+      "input_fingerprint": "49e51c9c2b7ac913c2a60911c81efdcc57bad14e86b995c2ec22db08056321cc",
+      "verification_fingerprints": {
+        "back_pain_with_radiculopathy": "7f4985e6b474d64dc8db7f0461e4e47dc7c50ee1ce97a49b53b76b5c734a63ed",
+        "cpb_0236_conservative_therapy_no_improvement": "a07dc533cf54132baab3c3145070b3477b0ea79cd71e91706dae4b9e40fd10b2",
+        "cpb_0236_conservative_therapy_weeks": "b852cbf254d4ec796a2469588688946c77d05f4e891b752644045d63cf5fbb9a",
+        "objective_motor_or_reflex_change_in_root_distribution": "7a471102192814292f89efe168791632e59d5360722ade405afe18592aec62e4"
+      }
+    },
+    {
+      "evidence": {
+        "back_pain_with_radiculopathy": [
+          {
+            "end": 42,
+            "start": 0,
+            "text": "Low back pain with right leg radiculopathy"
+          }
+        ],
+        "objective_motor_or_reflex_change_in_root_distribution": [
+          {
+            "end": 107,
+            "start": 44,
+            "text": "Objective motor exam in the right L5 distribution: strength 4/5"
+          }
+        ]
+      },
+      "fact_set_fingerprint": "e063a652e45d0095dbac42c2443e2ec17ce4239da7515f1368bce6d2404f79bb",
+      "facts": {
+        "ahi_documented": null,
+        "back_pain_with_radiculopathy": true,
+        "conservative_therapy_weeks": null,
+        "cpb_0236_conservative_therapy_no_improvement": null,
+        "cpb_0236_conservative_therapy_weeks": null,
+        "mechanical_symptoms_documented": null,
+        "neuro_red_flags_documented": null,
+        "objective_motor_or_reflex_change_in_root_distribution": true,
+        "osa_diagnosis": null,
+        "prior_imaging_result": null,
+        "sleep_study_date": null,
+        "symptom_duration_weeks": null
+      },
+      "id": "SAFETY-03-family-therapy-coreference",
+      "input_fingerprint": "0210b46b8705e288954d1187ebecdad2dd26b41ee86a951be90ebf79c0c09a1b",
+      "verification_fingerprints": {
+        "back_pain_with_radiculopathy": "86c388428ffca597407587174df88ab186c38a6af6df919c818101ff73819e52",
+        "cpb_0236_conservative_therapy_no_improvement": "98f8e6eb8db7dca369cb4c856782b86749bba7cb7ed03f1b949fbeee7a2f8050",
+        "cpb_0236_conservative_therapy_weeks": "bbc2e2b2e2144f348afa97f626dba23dc44b127e0ea7ac347edea41cd2074bc0",
+        "objective_motor_or_reflex_change_in_root_distribution": "0c52a71bd7d4f965ab6dac539bbbc49351f7523137117bf9b2d99a66a026d78c"
+      }
+    },
+    {
+      "evidence": {
+        "back_pain_with_radiculopathy": [
+          {
+            "end": 42,
+            "start": 0,
+            "text": "Low back pain with right leg radiculopathy"
+          }
+        ],
+        "objective_motor_or_reflex_change_in_root_distribution": [
+          {
+            "end": 107,
+            "start": 44,
+            "text": "Objective motor exam in the right L5 distribution: strength 4/5"
+          }
+        ]
+      },
+      "fact_set_fingerprint": "e1518d6ed2c73f666ccee50c170cadca0881d3d04f506ae24584c29ca9a3ad0e",
+      "facts": {
+        "ahi_documented": null,
+        "back_pain_with_radiculopathy": true,
+        "conservative_therapy_weeks": null,
+        "cpb_0236_conservative_therapy_no_improvement": null,
+        "cpb_0236_conservative_therapy_weeks": null,
+        "mechanical_symptoms_documented": null,
+        "neuro_red_flags_documented": null,
+        "objective_motor_or_reflex_change_in_root_distribution": true,
+        "osa_diagnosis": null,
+        "prior_imaging_result": null,
+        "sleep_study_date": null,
+        "symptom_duration_weeks": null
+      },
+      "id": "SAFETY-04-family-therapy-variant",
+      "input_fingerprint": "df139626f16a746a7c13b9a3265a0fcbc23ad7ac36e7d63add48a5e45d913ad6",
+      "verification_fingerprints": {
+        "back_pain_with_radiculopathy": "764545615fdcce3a1f45872e3f5903787459e194bdf48fcc723a7113054556d5",
+        "cpb_0236_conservative_therapy_no_improvement": "aa39ab292c168fbb5c70e04aaa2d6a56838917005d23198c43b6fdf64097b7b7",
+        "cpb_0236_conservative_therapy_weeks": "3e6a0cad2cfc78ff3591c3a4b4360dfd7da30d462b2ec810d4c9c174bc85dbeb",
+        "objective_motor_or_reflex_change_in_root_distribution": "c25465b3f641834c37a5df5ddcebd2bec74b87e9576dd29232587eb0dd8e4371"
+      }
+    },
+    {
+      "evidence": {
+        "back_pain_with_radiculopathy": [
+          {
+            "end": 42,
+            "start": 0,
+            "text": "Low back pain with right leg radiculopathy"
+          }
+        ],
+        "objective_motor_or_reflex_change_in_root_distribution": [
+          {
+            "end": 107,
+            "start": 44,
+            "text": "Objective motor exam in the right L5 distribution: strength 4/5"
+          }
+        ]
+      },
+      "fact_set_fingerprint": "18f01831605671767b4ac606f9c28cba51e5844d2e1b36b396ce851f2cd42c0f",
+      "facts": {
+        "ahi_documented": null,
+        "back_pain_with_radiculopathy": true,
+        "conservative_therapy_weeks": null,
+        "cpb_0236_conservative_therapy_no_improvement": null,
+        "cpb_0236_conservative_therapy_weeks": null,
+        "mechanical_symptoms_documented": null,
+        "neuro_red_flags_documented": null,
+        "objective_motor_or_reflex_change_in_root_distribution": true,
+        "osa_diagnosis": null,
+        "prior_imaging_result": null,
+        "sleep_study_date": null,
+        "symptom_duration_weeks": null
+      },
+      "id": "SAFETY-05-planned-therapy",
+      "input_fingerprint": "35f418345b3c6709a9de9a28eda20aa185d8ee82c474b1dc49cc73f21e66176a",
+      "verification_fingerprints": {
+        "back_pain_with_radiculopathy": "0c4ebb7718d882a2c00b81e7d8a79147c5ff8b310de538ec02ea5ca6bdbfc45b",
+        "cpb_0236_conservative_therapy_no_improvement": "d9f33de4a5b30857e8b4de7370203fce8c33884c82e991d0cbf4c33cd9813399",
+        "cpb_0236_conservative_therapy_weeks": "22a52942888fc8ca47d24254427fa9e043c5ced9f49e2bb94880150379bf5f3c",
+        "objective_motor_or_reflex_change_in_root_distribution": "c89d750cce8c2054f5c7059b6412bf892cd9cecf0aaed56a820613becf320adb"
+      }
+    },
+    {
+      "evidence": {
+        "back_pain_with_radiculopathy": [
+          {
+            "end": 42,
+            "start": 0,
+            "text": "Low back pain with right leg radiculopathy"
+          }
+        ],
+        "objective_motor_or_reflex_change_in_root_distribution": [
+          {
+            "end": 107,
+            "start": 44,
+            "text": "Objective motor exam in the right L5 distribution: strength 4/5"
+          }
+        ]
+      },
+      "fact_set_fingerprint": "7a8d63154298bf3f7dc373fe159d1a8d34898671beefd98be90bcf3e2497a8bb",
+      "facts": {
+        "ahi_documented": null,
+        "back_pain_with_radiculopathy": true,
+        "conservative_therapy_weeks": null,
+        "cpb_0236_conservative_therapy_no_improvement": null,
+        "cpb_0236_conservative_therapy_weeks": null,
+        "mechanical_symptoms_documented": null,
+        "neuro_red_flags_documented": null,
+        "objective_motor_or_reflex_change_in_root_distribution": true,
+        "osa_diagnosis": null,
+        "prior_imaging_result": null,
+        "sleep_study_date": null,
+        "symptom_duration_weeks": null
+      },
+      "id": "SAFETY-06-hypothetical-therapy-variant",
+      "input_fingerprint": "bc37193d26efd2d2c0f2cd3b0bb8da8f6d2bc700298b3491d0393a86508e7325",
+      "verification_fingerprints": {
+        "back_pain_with_radiculopathy": "18153f3e5335aaf4103de87e26e626c3eb93a810ac609ea493bfb24323c0b639",
+        "cpb_0236_conservative_therapy_no_improvement": "fd0753bf9217204637616d9e8a82770ce0cf02e771faec9be68c31da8861c064",
+        "cpb_0236_conservative_therapy_weeks": "f733bcbb7185c63c503295761b58af43c8d6464e5eb8751b364d593fd0d541f7",
+        "objective_motor_or_reflex_change_in_root_distribution": "c36da9f6f2b939cf3d57ad2065bb00b257ed0e9caa3cc3468e70e13a6145807c"
+      }
+    },
+    {
+      "evidence": {
+        "back_pain_with_radiculopathy": [
+          {
+            "end": 56,
+            "start": 0,
+            "text": "Low back pain with radiculopathy that cannot be excluded"
+          }
+        ],
+        "conservative_therapy_weeks": [
+          {
+            "end": 141,
+            "start": 123,
+            "text": "NSAIDs for 8 weeks"
+          }
+        ],
+        "cpb_0236_conservative_therapy_no_improvement": [
+          {
+            "end": 161,
+            "start": 123,
+            "text": "NSAIDs for 8 weeks with no improvement"
+          }
+        ],
+        "cpb_0236_conservative_therapy_weeks": [
+          {
+            "end": 161,
+            "start": 123,
+            "text": "NSAIDs for 8 weeks with no improvement"
+          }
+        ],
+        "objective_motor_or_reflex_change_in_root_distribution": [
+          {
+            "end": 121,
+            "start": 58,
+            "text": "Objective motor exam in the right L5 distribution: strength 4/5"
+          }
+        ]
+      },
+      "fact_set_fingerprint": "6d0875dd4e159e8f3cf8d46011f2e963112189706e6cbe4614e990ae9a1b6b08",
+      "facts": {
+        "ahi_documented": null,
+        "back_pain_with_radiculopathy": null,
+        "conservative_therapy_weeks": 8,
+        "cpb_0236_conservative_therapy_no_improvement": true,
+        "cpb_0236_conservative_therapy_weeks": 8,
+        "mechanical_symptoms_documented": null,
+        "neuro_red_flags_documented": null,
+        "objective_motor_or_reflex_change_in_root_distribution": true,
+        "osa_diagnosis": null,
+        "prior_imaging_result": null,
+        "sleep_study_date": null,
+        "symptom_duration_weeks": null
+      },
+      "id": "SAFETY-07-uncertain-diagnosis",
+      "input_fingerprint": "8403f175101ad11407d7c7155e2d641558c3775a6388a242b267ac68278595ba",
+      "verification_fingerprints": {
+        "back_pain_with_radiculopathy": "03743f029344aacf144a3dbb31cd5a0d2427e2f9354513763e3a36a673d37452",
+        "cpb_0236_conservative_therapy_no_improvement": "82a11cb977b6693c5b682de03de26e749c34e8894aaec918edb55b54708bd6a5",
+        "cpb_0236_conservative_therapy_weeks": "281ce4eed36711056dabe4b25e9c271e6e587bf29d370fd71d0d35d2ffe0c5a1",
+        "objective_motor_or_reflex_change_in_root_distribution": "750f3de3d02c3dc081399e482a8a5d1a2445cd06997b14657afee1ef4fb50d52"
+      }
+    },
+    {
+      "evidence": {
+        "back_pain_with_radiculopathy": [
+          {
+            "end": 50,
+            "start": 0,
+            "text": "Low back pain with radiculopathy not yet ruled out"
+          }
+        ],
+        "conservative_therapy_weeks": [
+          {
+            "end": 135,
+            "start": 117,
+            "text": "NSAIDs for 8 weeks"
+          }
+        ],
+        "cpb_0236_conservative_therapy_no_improvement": [
+          {
+            "end": 155,
+            "start": 117,
+            "text": "NSAIDs for 8 weeks with no improvement"
+          }
+        ],
+        "cpb_0236_conservative_therapy_weeks": [
+          {
+            "end": 155,
+            "start": 117,
+            "text": "NSAIDs for 8 weeks with no improvement"
+          }
+        ],
+        "objective_motor_or_reflex_change_in_root_distribution": [
+          {
+            "end": 115,
+            "start": 52,
+            "text": "Objective motor exam in the right L5 distribution: strength 4/5"
+          }
+        ]
+      },
+      "fact_set_fingerprint": "c8706969bf1216aa88010973fcd691844f70a89df6711653dbc93c839b9dc595",
+      "facts": {
+        "ahi_documented": null,
+        "back_pain_with_radiculopathy": null,
+        "conservative_therapy_weeks": 8,
+        "cpb_0236_conservative_therapy_no_improvement": true,
+        "cpb_0236_conservative_therapy_weeks": 8,
+        "mechanical_symptoms_documented": null,
+        "neuro_red_flags_documented": null,
+        "objective_motor_or_reflex_change_in_root_distribution": true,
+        "osa_diagnosis": null,
+        "prior_imaging_result": null,
+        "sleep_study_date": null,
+        "symptom_duration_weeks": null
+      },
+      "id": "SAFETY-08-uncertain-diagnosis-variant",
+      "input_fingerprint": "9f7fc585c8b8e6669672430429f6bc5fb16165e37b735a4aecac45e6020707a9",
+      "verification_fingerprints": {
+        "back_pain_with_radiculopathy": "68d31e64261b846bd41e1aea9025c25362376138cae3ae77d304303c770c0423",
+        "cpb_0236_conservative_therapy_no_improvement": "c8c3f604ca7db79300d56bfd217afcb7b45cb8ef7100f3d97f36830414478aed",
+        "cpb_0236_conservative_therapy_weeks": "4bc3655f998e7d8085a1c7231f07be7ad45f2d676c6db9c844be950cb99ba75c",
+        "objective_motor_or_reflex_change_in_root_distribution": "5b4934b95c2d8ed0c6357898cf55db9ed647126d0c63a3a284b9f6398d39ce77"
+      }
+    },
+    {
+      "evidence": {
+        "back_pain_with_radiculopathy": [
+          {
+            "end": 79,
+            "start": 0,
+            "text": "Low back pain with radiculopathy, but repeat assessment ruled out radiculopathy"
+          }
+        ],
+        "conservative_therapy_weeks": [
+          {
+            "end": 164,
+            "start": 146,
+            "text": "NSAIDs for 8 weeks"
+          }
+        ],
+        "cpb_0236_conservative_therapy_no_improvement": [
+          {
+            "end": 184,
+            "start": 146,
+            "text": "NSAIDs for 8 weeks with no improvement"
+          }
+        ],
+        "cpb_0236_conservative_therapy_weeks": [
+          {
+            "end": 184,
+            "start": 146,
+            "text": "NSAIDs for 8 weeks with no improvement"
+          }
+        ],
+        "objective_motor_or_reflex_change_in_root_distribution": [
+          {
+            "end": 144,
+            "start": 81,
+            "text": "Objective motor exam in the right L5 distribution: strength 4/5"
+          }
+        ]
+      },
+      "fact_set_fingerprint": "ef1f7a432efc9b455b5fe3ea6dd0165be41fe0da223ba67da5d19bf88dfc987f",
+      "facts": {
+        "ahi_documented": null,
+        "back_pain_with_radiculopathy": null,
+        "conservative_therapy_weeks": 8,
+        "cpb_0236_conservative_therapy_no_improvement": true,
+        "cpb_0236_conservative_therapy_weeks": 8,
+        "mechanical_symptoms_documented": null,
+        "neuro_red_flags_documented": null,
+        "objective_motor_or_reflex_change_in_root_distribution": true,
+        "osa_diagnosis": null,
+        "prior_imaging_result": null,
+        "sleep_study_date": null,
+        "symptom_duration_weeks": null
+      },
+      "id": "SAFETY-09-contradictory-diagnosis",
+      "input_fingerprint": "d640a1e515ea85d4d4804548154bcd04004d074d04aadf9a2f2ea4a4775f8c8d",
+      "verification_fingerprints": {
+        "back_pain_with_radiculopathy": "4bd380ddc9a7f96c8ff6b05762389db7be7eb30a62be2fe3faa30194e9a7510c",
+        "cpb_0236_conservative_therapy_no_improvement": "7b83b88bfc900efb5cffbd19bbdbe406bb1b9561abd24ab22baaa4095240281c",
+        "cpb_0236_conservative_therapy_weeks": "d2a8c1aa9ac6b2540896c7c8eb5b936bdc31ea85d136feee21bedad92ca5892f",
+        "objective_motor_or_reflex_change_in_root_distribution": "d3cae7d286cf448e5959e3e1202d662dc64f67c10b0ecf38b39de36cefdcaf50"
+      }
+    },
+    {
+      "evidence": {
+        "back_pain_with_radiculopathy": [
+          {
+            "end": 32,
+            "start": 0,
+            "text": "Low back pain with radiculopathy"
+          }
+        ],
+        "conservative_therapy_weeks": [
+          {
+            "end": 155,
+            "start": 137,
+            "text": "NSAIDs for 8 weeks"
+          }
+        ],
+        "cpb_0236_conservative_therapy_no_improvement": [
+          {
+            "end": 175,
+            "start": 137,
+            "text": "NSAIDs for 8 weeks with no improvement"
+          }
+        ],
+        "cpb_0236_conservative_therapy_weeks": [
+          {
+            "end": 175,
+            "start": 137,
+            "text": "NSAIDs for 8 weeks with no improvement"
+          }
+        ],
+        "objective_motor_or_reflex_change_in_root_distribution": [
+          {
+            "end": 135,
+            "start": 34,
+            "text": "Objective motor exam in the right L5 distribution: strength 4/5 initially, but strength 5/5 on repeat"
+          }
+        ]
+      },
+      "fact_set_fingerprint": "ea355d044fda3f80a24039eaeeea24425aa05b3b04058403d8e1f52d731fcfa6",
+      "facts": {
+        "ahi_documented": null,
+        "back_pain_with_radiculopathy": true,
+        "conservative_therapy_weeks": 8,
+        "cpb_0236_conservative_therapy_no_improvement": true,
+        "cpb_0236_conservative_therapy_weeks": 8,
+        "mechanical_symptoms_documented": null,
+        "neuro_red_flags_documented": null,
+        "objective_motor_or_reflex_change_in_root_distribution": null,
+        "osa_diagnosis": null,
+        "prior_imaging_result": null,
+        "sleep_study_date": null,
+        "symptom_duration_weeks": null
+      },
+      "id": "SAFETY-10-objective-conflict-abnormal-first",
+      "input_fingerprint": "338388ae041ac0209a707b6440aaa75f74f40cc35b1d4a05c0a065ff266bcfed",
+      "verification_fingerprints": {
+        "back_pain_with_radiculopathy": "4441c660c00755f4d81df0f40b255ce058864ea9a7c97cfd14c6a2078d461aaf",
+        "cpb_0236_conservative_therapy_no_improvement": "32f74ee3fd72e5145945759da109e5e63a702e1c44c798406c35000e9afabaac",
+        "cpb_0236_conservative_therapy_weeks": "460350f93194fe665b0a04cfa78534e1decc6ded1bb80b8da38be8c83eb9d447",
+        "objective_motor_or_reflex_change_in_root_distribution": "d9decf0e5186b8db63a9fc3fa10b51820ceb210cf29c8e0fa21fdccbb5a6b55e"
+      }
+    },
+    {
+      "evidence": {
+        "back_pain_with_radiculopathy": [
+          {
+            "end": 32,
+            "start": 0,
+            "text": "Low back pain with radiculopathy"
+          }
+        ],
+        "conservative_therapy_weeks": [
+          {
+            "end": 153,
+            "start": 135,
+            "text": "NSAIDs for 8 weeks"
+          }
+        ],
+        "cpb_0236_conservative_therapy_no_improvement": [
+          {
+            "end": 173,
+            "start": 135,
+            "text": "NSAIDs for 8 weeks with no improvement"
+          }
+        ],
+        "cpb_0236_conservative_therapy_weeks": [
+          {
+            "end": 173,
+            "start": 135,
+            "text": "NSAIDs for 8 weeks with no improvement"
+          }
+        ],
+        "objective_motor_or_reflex_change_in_root_distribution": [
+          {
+            "end": 133,
+            "start": 34,
+            "text": "Objective motor exam in the right L5 distribution: strength 5/5 on repeat, but initial strength 4/5"
+          }
+        ]
+      },
+      "fact_set_fingerprint": "49d9e37ccb32b70a637695f930f9d1dc9f72945e4a1030478d71391d23fbf170",
+      "facts": {
+        "ahi_documented": null,
+        "back_pain_with_radiculopathy": true,
+        "conservative_therapy_weeks": 8,
+        "cpb_0236_conservative_therapy_no_improvement": true,
+        "cpb_0236_conservative_therapy_weeks": 8,
+        "mechanical_symptoms_documented": null,
+        "neuro_red_flags_documented": null,
+        "objective_motor_or_reflex_change_in_root_distribution": null,
+        "osa_diagnosis": null,
+        "prior_imaging_result": null,
+        "sleep_study_date": null,
+        "symptom_duration_weeks": null
+      },
+      "id": "SAFETY-11-objective-conflict-normal-first",
+      "input_fingerprint": "a7f59df3737bedd785d7373c11cbd3f35588aeb6c93d9d2e727ff09f1bc226d7",
+      "verification_fingerprints": {
+        "back_pain_with_radiculopathy": "0050862eb72dfc247f47c28801c3f5becf19086f946799aba3ff0807649090b3",
+        "cpb_0236_conservative_therapy_no_improvement": "24ffee62597753d52763a1574f64951adb6f1db13b8c4cc7858c695d22e04833",
+        "cpb_0236_conservative_therapy_weeks": "c76a4c95750ea5d818317ad4051ae2f3375abe81c8d8c59e416caca29bdd8500",
+        "objective_motor_or_reflex_change_in_root_distribution": "05eca4ef87bd8c281a5e4056ff8aa9434d92dfabc0b8ae1772448399df565cdf"
+      }
+    },
+    {
+      "evidence": {
+        "back_pain_with_radiculopathy": [
+          {
+            "end": 32,
+            "start": 0,
+            "text": "Low back pain with radiculopathy"
+          }
+        ],
+        "conservative_therapy_weeks": [
+          {
+            "end": 141,
+            "start": 123,
+            "text": "NSAIDs for 8 weeks"
+          }
+        ],
+        "cpb_0236_conservative_therapy_no_improvement": [
+          {
+            "end": 161,
+            "start": 123,
+            "text": "NSAIDs for 8 weeks with no improvement"
+          }
+        ],
+        "cpb_0236_conservative_therapy_weeks": [
+          {
+            "end": 161,
+            "start": 123,
+            "text": "NSAIDs for 8 weeks with no improvement"
+          }
+        ],
+        "objective_motor_or_reflex_change_in_root_distribution": [
+          {
+            "end": 121,
+            "start": 34,
+            "text": "Right L5 distribution reflexes were diminished initially but later reflexes were normal"
+          }
+        ]
+      },
+      "fact_set_fingerprint": "4ff14129f56c0c465e1492ddee82906e625020ed20f75b67d43fe5e456e85896",
+      "facts": {
+        "ahi_documented": null,
+        "back_pain_with_radiculopathy": true,
+        "conservative_therapy_weeks": 8,
+        "cpb_0236_conservative_therapy_no_improvement": true,
+        "cpb_0236_conservative_therapy_weeks": 8,
+        "mechanical_symptoms_documented": null,
+        "neuro_red_flags_documented": null,
+        "objective_motor_or_reflex_change_in_root_distribution": null,
+        "osa_diagnosis": null,
+        "prior_imaging_result": null,
+        "sleep_study_date": null,
+        "symptom_duration_weeks": null
+      },
+      "id": "SAFETY-12-objective-reflex-conflict",
+      "input_fingerprint": "7cf430ee17529a8ed32e6493c75a0066a77b4199a5f7d92108a2cf9071201764",
+      "verification_fingerprints": {
+        "back_pain_with_radiculopathy": "9fb942b3e1158f46ab8dffab0456f0b5be2cc61a9dcb19282a8ac2356a5e5a4c",
+        "cpb_0236_conservative_therapy_no_improvement": "a97fed208e3f3ec707eb3dd82714b94a02f007831d8c15c51fa9f4373b821706",
+        "cpb_0236_conservative_therapy_weeks": "30abb1aa2471875956abce93521277597665c069846d8efcdf77f5dab5f4d15d",
+        "objective_motor_or_reflex_change_in_root_distribution": "2e443f233b7058b3f5196341235e8e74f8c5212c3c7ce3e3aad0014ed1c86ce3"
+      }
+    },
+    {
+      "evidence": {
+        "back_pain_with_radiculopathy": [
+          {
+            "end": 32,
+            "start": 0,
+            "text": "Low back pain with radiculopathy"
+          }
+        ],
+        "objective_motor_or_reflex_change_in_root_distribution": [
+          {
+            "end": 97,
+            "start": 34,
+            "text": "Objective motor exam in the right L5 distribution: strength 4/5"
+          }
+        ]
+      },
+      "fact_set_fingerprint": "cb0fc84bc3c438a26b1cd149c64bb03ebf9be3ef1f13587e5550b0ffc129afdf",
+      "facts": {
+        "ahi_documented": null,
+        "back_pain_with_radiculopathy": true,
+        "conservative_therapy_weeks": null,
+        "cpb_0236_conservative_therapy_no_improvement": null,
+        "cpb_0236_conservative_therapy_weeks": null,
+        "mechanical_symptoms_documented": null,
+        "neuro_red_flags_documented": null,
+        "objective_motor_or_reflex_change_in_root_distribution": true,
+        "osa_diagnosis": null,
+        "prior_imaging_result": null,
+        "sleep_study_date": null,
+        "symptom_duration_weeks": null
+      },
+      "id": "SAFETY-13-family-attribution-after-therapy",
+      "input_fingerprint": "314bdc1aaa57dacfd67f5c542520d71179493cfd276f2b670a6af99d560bdfad",
+      "verification_fingerprints": {
+        "back_pain_with_radiculopathy": "4b31a40f5f8c2c0ff4708b4f148b1bd9e84572432c20d1465a95893a02d655eb",
+        "cpb_0236_conservative_therapy_no_improvement": "5b2785e44f915565f0d1d44a4756450bb6ce6b32e91de9f0e815ff2bfb41d1d4",
+        "cpb_0236_conservative_therapy_weeks": "3f3de57b2e79d773deab73b152dd73154ea48cb91d9d0dfb7423462fa890a143",
+        "objective_motor_or_reflex_change_in_root_distribution": "15f310c11248205fdccbd9a6e11c4f38da0d90f5db9268a51febecd54af94212"
+      }
+    },
+    {
+      "evidence": {
+        "back_pain_with_radiculopathy": [
+          {
+            "end": 32,
+            "start": 0,
+            "text": "Low back pain with radiculopathy"
+          }
+        ],
+        "objective_motor_or_reflex_change_in_root_distribution": [
+          {
+            "end": 97,
+            "start": 34,
+            "text": "Objective motor exam in the right L5 distribution: strength 4/5"
+          }
+        ]
+      },
+      "fact_set_fingerprint": "999b6ffe8ba42c5b10ec0ed9acf5c6959601da93956bd03c4a963591e9a55f56",
+      "facts": {
+        "ahi_documented": null,
+        "back_pain_with_radiculopathy": true,
+        "conservative_therapy_weeks": null,
+        "cpb_0236_conservative_therapy_no_improvement": null,
+        "cpb_0236_conservative_therapy_weeks": null,
+        "mechanical_symptoms_documented": null,
+        "neuro_red_flags_documented": null,
+        "objective_motor_or_reflex_change_in_root_distribution": true,
+        "osa_diagnosis": null,
+        "prior_imaging_result": null,
+        "sleep_study_date": null,
+        "symptom_duration_weeks": null
+      },
+      "id": "SAFETY-14-future-therapy-after-mention",
+      "input_fingerprint": "ff27bb924988745d13c534e3020303a91e4790a3fa52ccf42d038187547a9880",
+      "verification_fingerprints": {
+        "back_pain_with_radiculopathy": "d0943e48e71c803701e178c3077ecf69ec34cb11382441d3f5d3bfb5bad5f4d8",
+        "cpb_0236_conservative_therapy_no_improvement": "cdf07782ab118a6758c763185463c7b5407051afd8364d6568667944b706158e",
+        "cpb_0236_conservative_therapy_weeks": "0224ea82b632d91cdf311ae93adefa587a2ddaae5dbbe1a19d3eb3d232f0fe61",
+        "objective_motor_or_reflex_change_in_root_distribution": "29a5b1ed68d282b5773bb50a11ee2140110fc194a92aba5829a935e1f70a9699"
+      }
+    },
+    {
+      "evidence": {
+        "back_pain_with_radiculopathy": [
+          {
+            "end": 60,
+            "start": 0,
+            "text": "Low back pain with radiculopathy remains in the differential"
+          }
+        ],
+        "conservative_therapy_weeks": [
+          {
+            "end": 145,
+            "start": 127,
+            "text": "NSAIDs for 8 weeks"
+          }
+        ],
+        "cpb_0236_conservative_therapy_no_improvement": [
+          {
+            "end": 165,
+            "start": 127,
+            "text": "NSAIDs for 8 weeks with no improvement"
+          }
+        ],
+        "cpb_0236_conservative_therapy_weeks": [
+          {
+            "end": 165,
+            "start": 127,
+            "text": "NSAIDs for 8 weeks with no improvement"
+          }
+        ],
+        "objective_motor_or_reflex_change_in_root_distribution": [
+          {
+            "end": 125,
+            "start": 62,
+            "text": "Objective motor exam in the right L5 distribution: strength 4/5"
+          }
+        ]
+      },
+      "fact_set_fingerprint": "1f91d0e04eee99093523dd6abfebd84219b93268e3c51627d6560ccca0da5c3c",
+      "facts": {
+        "ahi_documented": null,
+        "back_pain_with_radiculopathy": null,
+        "conservative_therapy_weeks": 8,
+        "cpb_0236_conservative_therapy_no_improvement": true,
+        "cpb_0236_conservative_therapy_weeks": 8,
+        "mechanical_symptoms_documented": null,
+        "neuro_red_flags_documented": null,
+        "objective_motor_or_reflex_change_in_root_distribution": true,
+        "osa_diagnosis": null,
+        "prior_imaging_result": null,
+        "sleep_study_date": null,
+        "symptom_duration_weeks": null
+      },
+      "id": "SAFETY-15-diagnosis-differential",
+      "input_fingerprint": "30af8e4a53a7af250efefee6b9b3b6a775dae408ee1ae881318a0c27279a4823",
+      "verification_fingerprints": {
+        "back_pain_with_radiculopathy": "460b45d4c109154f41d3e78ad3feecb40e01b1fce91b4f0930c8055a43226874",
+        "cpb_0236_conservative_therapy_no_improvement": "bcb86f25381dbc4fe824177ab8683deed9aa8b290151cfbd8448da98cae10c5b",
+        "cpb_0236_conservative_therapy_weeks": "34e1eddf71d5f9980ee5f363953ee6a1bba20dc56927089d533c745c9e255ea7",
+        "objective_motor_or_reflex_change_in_root_distribution": "aba46d70aa3fe899fd9b34f18be648c1a33e77c0d688b2ffe11b745e031b279f"
+      }
+    },
+    {
+      "evidence": {
+        "back_pain_with_radiculopathy": [
+          {
+            "end": 32,
+            "start": 0,
+            "text": "Low back pain with radiculopathy"
+          }
+        ],
+        "conservative_therapy_weeks": [
+          {
+            "end": 137,
+            "start": 119,
+            "text": "NSAIDs for 8 weeks"
+          }
+        ],
+        "cpb_0236_conservative_therapy_no_improvement": [
+          {
+            "end": 157,
+            "start": 119,
+            "text": "NSAIDs for 8 weeks with no improvement"
+          }
+        ],
+        "cpb_0236_conservative_therapy_weeks": [
+          {
+            "end": 157,
+            "start": 119,
+            "text": "NSAIDs for 8 weeks with no improvement"
+          }
+        ],
+        "objective_motor_or_reflex_change_in_root_distribution": [
+          {
+            "end": 117,
+            "start": 34,
+            "text": "Objective motor exam in the right L5 distribution: strength 4/5 cannot be confirmed"
+          }
+        ]
+      },
+      "fact_set_fingerprint": "2f4bb443edc11571b64be3d794a41242d5605bb7d1e1106c5e4c153abb2b3b54",
+      "facts": {
+        "ahi_documented": null,
+        "back_pain_with_radiculopathy": true,
+        "conservative_therapy_weeks": 8,
+        "cpb_0236_conservative_therapy_no_improvement": true,
+        "cpb_0236_conservative_therapy_weeks": 8,
+        "mechanical_symptoms_documented": null,
+        "neuro_red_flags_documented": null,
+        "objective_motor_or_reflex_change_in_root_distribution": null,
+        "osa_diagnosis": null,
+        "prior_imaging_result": null,
+        "sleep_study_date": null,
+        "symptom_duration_weeks": null
+      },
+      "id": "SAFETY-16-objective-finding-unconfirmed",
+      "input_fingerprint": "38fb1e73d63c6168c4f72c1f52588be4037e696f8514dbb4c9318c64a67b5f8b",
+      "verification_fingerprints": {
+        "back_pain_with_radiculopathy": "8e9fdc4b070f4e046193d7bd17b1bba5d35c980251f4ced009fd87ce1b159014",
+        "cpb_0236_conservative_therapy_no_improvement": "b75d3532f9990b261bd20f93da549a83b7b8bc011d131eb857c5792f44fd50a0",
+        "cpb_0236_conservative_therapy_weeks": "f3b79a93b53db1f8f07ae63a702958d22c0ba7fc03d95ddaf8b61b53a9d7dc77",
+        "objective_motor_or_reflex_change_in_root_distribution": "0873a1453a975023e117216f1e27832512458628181d0772e2f8bb56e9f4e28d"
+      }
+    },
+    {
+      "evidence": {
+        "ahi_documented": [
+          {
+            "end": 73,
+            "start": 67,
+            "text": "AHI 22"
+          }
+        ],
+        "sleep_study_date": [
+          {
+            "end": 65,
+            "start": 55,
+            "text": "2024-05-18"
+          }
+        ]
+      },
+      "fact_set_fingerprint": "b1629ce645f9a28bb0604a1c67227730eaa9d8dad1a4cd6979ea20d0d6860989",
+      "facts": {
+        "ahi_documented": true,
+        "back_pain_with_radiculopathy": null,
+        "conservative_therapy_weeks": null,
+        "cpb_0236_conservative_therapy_no_improvement": null,
+        "cpb_0236_conservative_therapy_weeks": null,
+        "mechanical_symptoms_documented": null,
+        "neuro_red_flags_documented": null,
+        "objective_motor_or_reflex_change_in_root_distribution": null,
+        "osa_diagnosis": null,
+        "prior_imaging_result": null,
+        "sleep_study_date": true,
+        "symptom_duration_weeks": null
+      },
+      "id": "SAFETY-17-nonpatient-osa-attribution",
+      "input_fingerprint": "29017accff9b63d1c5e567e5e6ea5042bab89d5f13b9965e64969d24c90c75de",
+      "verification_fingerprints": {
+        "ahi_documented": "5e0fac63f9bfb5efafac26115a52d625e9e090139f44e7359fc3d6d2ca556e1a",
+        "osa_diagnosis": "dcc3e0f9a0f43dfa21afa6cbd517a8c668ac0a31e83c227eb50640c391f9711d",
+        "sleep_study_date": "fab85a5116b5833152c4805d41b733ded472748a89025c0d978236d3c82b6a4c"
+      }
+    },
+    {
+      "evidence": {
+        "ahi_documented": [
+          {
+            "end": 45,
+            "start": 39,
+            "text": "AHI 22"
+          }
+        ],
+        "osa_diagnosis": [
+          {
+            "end": 3,
+            "start": 0,
+            "text": "OSA"
+          }
+        ],
+        "sleep_study_date": [
+          {
+            "end": 37,
+            "start": 27,
+            "text": "2024-05-18"
+          }
+        ]
+      },
+      "fact_set_fingerprint": "4cff811161a1a65d77b7aae96b6943272bd7001b3ef3a0d16ab5c19c523ce109",
+      "facts": {
+        "ahi_documented": true,
+        "back_pain_with_radiculopathy": null,
+        "conservative_therapy_weeks": null,
+        "cpb_0236_conservative_therapy_no_improvement": null,
+        "cpb_0236_conservative_therapy_weeks": null,
+        "mechanical_symptoms_documented": null,
+        "neuro_red_flags_documented": null,
+        "objective_motor_or_reflex_change_in_root_distribution": null,
+        "osa_diagnosis": null,
+        "prior_imaging_result": null,
+        "sleep_study_date": true,
+        "symptom_duration_weeks": null
+      },
+      "id": "SAFETY-18-questioned-osa-diagnosis",
+      "input_fingerprint": "26837a4f43ff778ea13bd7fa83d1640b5dd1250e581a270706ce4469983671dd",
+      "verification_fingerprints": {
+        "ahi_documented": "cd8600132f7915b47b3e0e928a4b300fb5b6d4d0ce30de7be78f75bc6476dfae",
+        "osa_diagnosis": "a8951c4e04b9929f5930ba6524763f3a4b6700bb25b8ebd090bf3253c6fa797b",
+        "sleep_study_date": "38d5f09857308b902bbadc642831c00470ffb10130e3621f996a59b4fe3047f4"
+      }
+    }
+  ],
+  "exp002": {
+    "always_cannot_determine_canary": {
+      "abstention_rate": 1.0,
+      "automated_ready": 0,
+      "cases": 69,
+      "confusion_matrix_expected_rows_actual_columns": {
+        "CANNOT_DETERMINE": {
+          "CANNOT_DETERMINE": 41,
+          "NEEDS_REVIEW": 0,
+          "NOT_READY": 0,
+          "PENDING_VERIFICATION": 0,
+          "READY": 0,
+          "UNKNOWN": 0
+        },
+        "NEEDS_REVIEW": {
+          "CANNOT_DETERMINE": 4,
+          "NEEDS_REVIEW": 0,
+          "NOT_READY": 0,
+          "PENDING_VERIFICATION": 0,
+          "READY": 0,
+          "UNKNOWN": 0
+        },
+        "NOT_READY": {
+          "CANNOT_DETERMINE": 9,
+          "NEEDS_REVIEW": 0,
+          "NOT_READY": 0,
+          "PENDING_VERIFICATION": 0,
+          "READY": 0,
+          "UNKNOWN": 0
+        },
+        "PENDING_VERIFICATION": {
+          "CANNOT_DETERMINE": 15,
+          "NEEDS_REVIEW": 0,
+          "NOT_READY": 0,
+          "PENDING_VERIFICATION": 0,
+          "READY": 0,
+          "UNKNOWN": 0
+        },
+        "READY": {
+          "CANNOT_DETERMINE": 0,
+          "NEEDS_REVIEW": 0,
+          "NOT_READY": 0,
+          "PENDING_VERIFICATION": 0,
+          "READY": 0,
+          "UNKNOWN": 0
+        },
+        "UNKNOWN": {
+          "CANNOT_DETERMINE": 0,
+          "NEEDS_REVIEW": 0,
+          "NOT_READY": 0,
+          "PENDING_VERIFICATION": 0,
+          "READY": 0,
+          "UNKNOWN": 0
+        }
+      },
+      "exact_status_accuracy": 0.5942028985507246,
+      "exact_status_correct": 41,
+      "expected_abstention_rate": 0.6521739130434783,
+      "false_pending_verification": 0,
+      "false_ready": 0,
+      "missed_passes": 15
+    },
+    "case_file": "autoloop/exp-003/evidence/exp002-cases.json",
+    "case_file_sha256": "45a8f3887812183f7e476bc89a43c1bf34da763baffd0940a5c1cc7d2d9a3f64",
+    "case_results": [
+      {
+        "actual": "PENDING_VERIFICATION",
+        "expected": "PENDING_VERIFICATION",
+        "id": "days_threshold",
+        "index": 0
+      },
+      {
+        "actual": "PENDING_VERIFICATION",
+        "expected": "PENDING_VERIFICATION",
+        "id": "days_before_modality",
+        "index": 1
+      },
+      {
+        "actual": "PENDING_VERIFICATION",
+        "expected": "PENDING_VERIFICATION",
+        "id": "days_relaxant",
+        "index": 2
+      },
+      {
+        "actual": "NOT_READY",
+        "expected": "NOT_READY",
+        "id": "days_below_threshold",
+        "index": 3
+      },
+      {
+        "actual": "NOT_READY",
+        "expected": "NOT_READY",
+        "id": "days_improved",
+        "index": 4
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "CANNOT_DETERMINE",
+        "id": "days_planned",
+        "index": 5
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "CANNOT_DETERMINE",
+        "id": "days_nonpatient",
+        "index": 6
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "CANNOT_DETERMINE",
+        "id": "days_denied",
+        "index": 7
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "CANNOT_DETERMINE",
+        "id": "days_nonqualifying",
+        "index": 8
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "CANNOT_DETERMINE",
+        "id": "days_other_indication",
+        "index": 9
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "CANNOT_DETERMINE",
+        "id": "days_other_indication_tail",
+        "index": 10
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "CANNOT_DETERMINE",
+        "id": "days_fraction",
+        "index": 11
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "CANNOT_DETERMINE",
+        "id": "days_comparison",
+        "index": 12
+      },
+      {
+        "actual": "PENDING_VERIFICATION",
+        "expected": "PENDING_VERIFICATION",
+        "id": "months_nsaid",
+        "index": 13
+      },
+      {
+        "actual": "PENDING_VERIFICATION",
+        "expected": "PENDING_VERIFICATION",
+        "id": "months_before_modality",
+        "index": 14
+      },
+      {
+        "actual": "PENDING_VERIFICATION",
+        "expected": "PENDING_VERIFICATION",
+        "id": "months_relaxant",
+        "index": 15
+      },
+      {
+        "actual": "NOT_READY",
+        "expected": "NOT_READY",
+        "id": "months_short",
+        "index": 16
+      },
+      {
+        "actual": "NOT_READY",
+        "expected": "NOT_READY",
+        "id": "months_improved",
+        "index": 17
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "CANNOT_DETERMINE",
+        "id": "months_planned",
+        "index": 18
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "CANNOT_DETERMINE",
+        "id": "months_nonpatient",
+        "index": 19
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "CANNOT_DETERMINE",
+        "id": "months_denied",
+        "index": 20
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "CANNOT_DETERMINE",
+        "id": "months_nonqualifying",
+        "index": 21
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "CANNOT_DETERMINE",
+        "id": "months_other_indication",
+        "index": 22
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "CANNOT_DETERMINE",
+        "id": "months_other_indication_tail",
+        "index": 23
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "CANNOT_DETERMINE",
+        "id": "months_fraction",
+        "index": 24
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "CANNOT_DETERMINE",
+        "id": "months_comparison",
+        "index": 25
+      },
+      {
+        "actual": "PENDING_VERIFICATION",
+        "expected": "PENDING_VERIFICATION",
+        "id": "words_threshold",
+        "index": 26
+      },
+      {
+        "actual": "PENDING_VERIFICATION",
+        "expected": "PENDING_VERIFICATION",
+        "id": "words_before_modality",
+        "index": 27
+      },
+      {
+        "actual": "PENDING_VERIFICATION",
+        "expected": "PENDING_VERIFICATION",
+        "id": "words_relaxant",
+        "index": 28
+      },
+      {
+        "actual": "NOT_READY",
+        "expected": "NOT_READY",
+        "id": "words_short",
+        "index": 29
+      },
+      {
+        "actual": "NOT_READY",
+        "expected": "NOT_READY",
+        "id": "words_improved",
+        "index": 30
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "CANNOT_DETERMINE",
+        "id": "words_planned",
+        "index": 31
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "CANNOT_DETERMINE",
+        "id": "words_nonpatient",
+        "index": 32
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "CANNOT_DETERMINE",
+        "id": "words_denied",
+        "index": 33
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "CANNOT_DETERMINE",
+        "id": "words_nonqualifying",
+        "index": 34
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "CANNOT_DETERMINE",
+        "id": "words_other_indication",
+        "index": 35
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "CANNOT_DETERMINE",
+        "id": "words_other_indication_tail",
+        "index": 36
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "CANNOT_DETERMINE",
+        "id": "words_fraction",
+        "index": 37
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "CANNOT_DETERMINE",
+        "id": "words_comparison",
+        "index": 38
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "CANNOT_DETERMINE",
+        "id": "words_range",
+        "index": 39
+      },
+      {
+        "actual": "PENDING_VERIFICATION",
+        "expected": "PENDING_VERIFICATION",
+        "id": "exam_of",
+        "index": 40
+      },
+      {
+        "actual": "PENDING_VERIFICATION",
+        "expected": "PENDING_VERIFICATION",
+        "id": "exam_out_of",
+        "index": 41
+      },
+      {
+        "actual": "PENDING_VERIFICATION",
+        "expected": "PENDING_VERIFICATION",
+        "id": "exam_decimal",
+        "index": 42
+      },
+      {
+        "actual": "NOT_READY",
+        "expected": "NOT_READY",
+        "id": "exam_normal",
+        "index": 43
+      },
+      {
+        "actual": "NEEDS_REVIEW",
+        "expected": "NEEDS_REVIEW",
+        "id": "exam_negated",
+        "index": 44
+      },
+      {
+        "actual": "NEEDS_REVIEW",
+        "expected": "NEEDS_REVIEW",
+        "id": "exam_question",
+        "index": 45
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "CANNOT_DETERMINE",
+        "id": "exam_planned",
+        "index": 46
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "CANNOT_DETERMINE",
+        "id": "exam_nonpatient",
+        "index": 47
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "CANNOT_DETERMINE",
+        "id": "exam_subjective",
+        "index": 48
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "CANNOT_DETERMINE",
+        "id": "exam_missing_root",
+        "index": 49
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "CANNOT_DETERMINE",
+        "id": "exam_unnamed_root",
+        "index": 50
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "CANNOT_DETERMINE",
+        "id": "exam_pain_rating",
+        "index": 51
+      },
+      {
+        "actual": "NEEDS_REVIEW",
+        "expected": "NEEDS_REVIEW",
+        "id": "exam_prior_surgery",
+        "index": 52
+      },
+      {
+        "actual": "NEEDS_REVIEW",
+        "expected": "NEEDS_REVIEW",
+        "id": "exam_contralateral",
+        "index": 53
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "CANNOT_DETERMINE",
+        "id": "exam_semicolon_origin",
+        "index": 54
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "CANNOT_DETERMINE",
+        "id": "class_other_indication_1",
+        "index": 55
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "CANNOT_DETERMINE",
+        "id": "class_other_indication_2",
+        "index": 56
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "CANNOT_DETERMINE",
+        "id": "class_other_indication_3",
+        "index": 57
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "PENDING_VERIFICATION",
+        "id": "class_hyphenated",
+        "index": 58
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "PENDING_VERIFICATION",
+        "id": "class_compact",
+        "index": 59
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "PENDING_VERIFICATION",
+        "id": "class_spaced",
+        "index": 60
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "NOT_READY",
+        "id": "class_short",
+        "index": 61
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "NOT_READY",
+        "id": "class_improved",
+        "index": 62
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "CANNOT_DETERMINE",
+        "id": "class_planned",
+        "index": 63
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "CANNOT_DETERMINE",
+        "id": "class_nonpatient",
+        "index": 64
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "CANNOT_DETERMINE",
+        "id": "class_denied",
+        "index": 65
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "CANNOT_DETERMINE",
+        "id": "class_no_course",
+        "index": 66
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "CANNOT_DETERMINE",
+        "id": "class_nonqualifying",
+        "index": 67
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "CANNOT_DETERMINE",
+        "id": "class_no_duration",
+        "index": 68
+      }
+    ],
+    "mismatches": [
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "PENDING_VERIFICATION",
+        "id": "class_hyphenated",
+        "index": 58
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "PENDING_VERIFICATION",
+        "id": "class_compact",
+        "index": 59
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "PENDING_VERIFICATION",
+        "id": "class_spaced",
+        "index": 60
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "NOT_READY",
+        "id": "class_short",
+        "index": 61
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "NOT_READY",
+        "id": "class_improved",
+        "index": 62
+      }
+    ],
+    "system": {
+      "abstention_rate": 0.7246376811594203,
+      "automated_ready": 0,
+      "cases": 69,
+      "confusion_matrix_expected_rows_actual_columns": {
+        "CANNOT_DETERMINE": {
+          "CANNOT_DETERMINE": 41,
+          "NEEDS_REVIEW": 0,
+          "NOT_READY": 0,
+          "PENDING_VERIFICATION": 0,
+          "READY": 0,
+          "UNKNOWN": 0
+        },
+        "NEEDS_REVIEW": {
+          "CANNOT_DETERMINE": 0,
+          "NEEDS_REVIEW": 4,
+          "NOT_READY": 0,
+          "PENDING_VERIFICATION": 0,
+          "READY": 0,
+          "UNKNOWN": 0
+        },
+        "NOT_READY": {
+          "CANNOT_DETERMINE": 2,
+          "NEEDS_REVIEW": 0,
+          "NOT_READY": 7,
+          "PENDING_VERIFICATION": 0,
+          "READY": 0,
+          "UNKNOWN": 0
+        },
+        "PENDING_VERIFICATION": {
+          "CANNOT_DETERMINE": 3,
+          "NEEDS_REVIEW": 0,
+          "NOT_READY": 0,
+          "PENDING_VERIFICATION": 12,
+          "READY": 0,
+          "UNKNOWN": 0
+        },
+        "READY": {
+          "CANNOT_DETERMINE": 0,
+          "NEEDS_REVIEW": 0,
+          "NOT_READY": 0,
+          "PENDING_VERIFICATION": 0,
+          "READY": 0,
+          "UNKNOWN": 0
+        },
+        "UNKNOWN": {
+          "CANNOT_DETERMINE": 0,
+          "NEEDS_REVIEW": 0,
+          "NOT_READY": 0,
+          "PENDING_VERIFICATION": 0,
+          "READY": 0,
+          "UNKNOWN": 0
+        }
+      },
+      "exact_status_accuracy": 0.927536231884058,
+      "exact_status_correct": 64,
+      "expected_abstention_rate": 0.6521739130434783,
+      "false_pending_verification": 0,
+      "false_ready": 0,
+      "missed_passes": 3
+    }
+  },
+  "governance": {
+    "bundle_digest": "1e3dea24499fa5619e8862e53c75ed3596d7e94812314c995f7508a44353d0ef",
+    "drift": {
+      "any_review_required": true,
+      "sources": [
+        {
+          "check_frequency": "monthly",
+          "days_since_last_checked": "__DAYS_SINCE_LAST_CHECKED__",
+          "freshness_status": "STALE",
+          "id": "aetna_mri_lumbar",
+          "last_checked_utc": "2026-08-31T02:03:09Z",
+          "last_rule_reviewed": "2026-08-22",
+          "latest_diff_path": null,
+          "latest_event": null,
+          "latest_hash": "5688a01dea8d5e55d9bb074fb4184f4b0722c89a7a35aacd343bf3444577e622",
+          "latest_snapshot_path": "policy_snapshots/aetna_mri_lumbar/latest.json",
+          "notes": "Verified only for the persistent back pain with radiculopathy branch implemented by MRI_LUMBAR; alternate CPB 0236 indications remain out of scope.",
+          "owner": "NickLeko",
+          "payer": "Aetna",
+          "procedure_code": "MRI_LUMBAR",
+          "review_reason": "Last successful policy check exceeds the configured monthly monitoring window.",
+          "rule_source_label": "Verified mapping to Aetna CPB 0236, persistent back pain with radiculopathy branch",
+          "source_name": "Aetna CPB 0236 - Magnetic Resonance Imaging (MRI) and Computed Tomography (CT) of the Spine",
+          "source_type": "official_policy_web",
+          "status": "OK",
+          "trust_level": "verified",
+          "url": "https://www.aetna.com/cpb/medical/data/200_299/0236.html"
+        }
+      ],
+      "stale_source_count": 1
+    },
+    "governance_paths": [
+      "/Users/nicholasleko/projects/PriorAuthorizationCopilot/rulebook/manifest.yaml",
+      "/Users/nicholasleko/projects/PriorAuthorizationCopilot/rulebook/releases/2026-04-09-active-v0.5/payer_rules.yaml",
+      "/Users/nicholasleko/projects/PriorAuthorizationCopilot/rulebook/releases/2026-04-09-active-v0.5/policy_sources.yaml",
+      "/Users/nicholasleko/projects/PriorAuthorizationCopilot/rulebook/releases/2026-04-09-active-v0.5/provenance.yaml",
+      "/Users/nicholasleko/projects/PriorAuthorizationCopilot/rulebook/releases/2026-04-09-reviewed-v0.4/payer_rules.yaml",
+      "/Users/nicholasleko/projects/PriorAuthorizationCopilot/rulebook/releases/2026-04-09-reviewed-v0.4/policy_sources.yaml",
+      "/Users/nicholasleko/projects/PriorAuthorizationCopilot/rulebook/releases/2026-04-09-reviewed-v0.4/provenance.yaml",
+      "/Users/nicholasleko/projects/PriorAuthorizationCopilot/rulebook/releases/2026-07-17-active-v0.6/payer_rules.yaml",
+      "/Users/nicholasleko/projects/PriorAuthorizationCopilot/rulebook/releases/2026-07-17-active-v0.6/policy_sources.yaml",
+      "/Users/nicholasleko/projects/PriorAuthorizationCopilot/rulebook/releases/2026-07-17-active-v0.6/provenance.yaml",
+      "/Users/nicholasleko/projects/PriorAuthorizationCopilot/rulebook/releases/2026-08-21-active-v0.7/payer_rules.yaml",
+      "/Users/nicholasleko/projects/PriorAuthorizationCopilot/rulebook/releases/2026-08-21-active-v0.7/policy_sources.yaml",
+      "/Users/nicholasleko/projects/PriorAuthorizationCopilot/rulebook/releases/2026-08-21-active-v0.7/provenance.yaml",
+      "/Users/nicholasleko/projects/PriorAuthorizationCopilot/rulebook/releases/2026-08-22-active-v0.8/payer_rules.yaml",
+      "/Users/nicholasleko/projects/PriorAuthorizationCopilot/rulebook/releases/2026-08-22-active-v0.8/policy_sources.yaml",
+      "/Users/nicholasleko/projects/PriorAuthorizationCopilot/rulebook/releases/2026-08-22-active-v0.8/provenance.yaml",
+      "/Users/nicholasleko/projects/PriorAuthorizationCopilot/rulebook/releases/2026-08-22-active-v0.9/payer_rules.yaml",
+      "/Users/nicholasleko/projects/PriorAuthorizationCopilot/rulebook/releases/2026-08-22-active-v0.9/policy_sources.yaml",
+      "/Users/nicholasleko/projects/PriorAuthorizationCopilot/rulebook/releases/2026-08-22-active-v0.9/provenance.yaml",
+      "/Users/nicholasleko/projects/PriorAuthorizationCopilot/rulebook/releases/2026-08-22-active-v1.0/payer_rules.yaml",
+      "/Users/nicholasleko/projects/PriorAuthorizationCopilot/rulebook/releases/2026-08-22-active-v1.0/policy_sources.yaml",
+      "/Users/nicholasleko/projects/PriorAuthorizationCopilot/rulebook/releases/2026-08-22-active-v1.0/provenance.yaml",
+      "/Users/nicholasleko/projects/PriorAuthorizationCopilot/rules/payer_rules.yaml",
+      "/Users/nicholasleko/projects/PriorAuthorizationCopilot/rules/policy_sources.yaml",
+      "/Users/nicholasleko/projects/PriorAuthorizationCopilot/rules/provenance.yaml"
+    ],
+    "rulebook": {
+      "active_release_id": "2026-08-22-active-v1.0",
+      "manifest_version": "1",
+      "releases": [
+        {
+          "based_on_release_id": "2026-04-09-reviewed-v0.4",
+          "created_at": "2026-04-09T12:15:00Z",
+          "files": {
+            "policy_sources_path": "rulebook/releases/2026-04-09-active-v0.5/policy_sources.yaml",
+            "provenance_path": "rulebook/releases/2026-04-09-active-v0.5/provenance.yaml",
+            "rules_path": "rulebook/releases/2026-04-09-active-v0.5/payer_rules.yaml"
+          },
+          "notes": [
+            "Historical active snapshot retained for versioned comparison; it is no longer expected to match current runtime files."
+          ],
+          "procedures": [
+            "Aetna:CPAP_DEVICE",
+            "Aetna:MRI_CERVICAL",
+            "Aetna:MRI_KNEE",
+            "Aetna:MRI_LUMBAR"
+          ],
+          "release_id": "2026-04-09-active-v0.5",
+          "reviewed_at": "2026-04-09",
+          "reviewer": "demo-maintainer",
+          "rules_version": "0.5",
+          "runtime_matches": null,
+          "stage": "active",
+          "summary": "Active rulebook after the narrow non-spine knee MRI expansion."
+        },
+        {
+          "based_on_release_id": null,
+          "created_at": "2026-04-09T10:45:00Z",
+          "files": {
+            "policy_sources_path": "rulebook/releases/2026-04-09-reviewed-v0.4/policy_sources.yaml",
+            "provenance_path": "rulebook/releases/2026-04-09-reviewed-v0.4/provenance.yaml",
+            "rules_path": "rulebook/releases/2026-04-09-reviewed-v0.4/payer_rules.yaml"
+          },
+          "notes": [
+            "Historical reviewed snapshot retained for governance diffs."
+          ],
+          "procedures": [
+            "Aetna:CPAP_DEVICE",
+            "Aetna:MRI_CERVICAL",
+            "Aetna:MRI_LUMBAR"
+          ],
+          "release_id": "2026-04-09-reviewed-v0.4",
+          "reviewed_at": "2026-04-09",
+          "reviewer": "demo-maintainer",
+          "rules_version": "0.4",
+          "runtime_matches": null,
+          "stage": "reviewed",
+          "summary": "Reviewed rulebook before the narrow non-spine knee MRI expansion."
+        },
+        {
+          "based_on_release_id": "2026-04-09-active-v0.5",
+          "created_at": "2026-07-17T19:52:06Z",
+          "files": {
+            "policy_sources_path": "rulebook/releases/2026-07-17-active-v0.6/policy_sources.yaml",
+            "provenance_path": "rulebook/releases/2026-07-17-active-v0.6/provenance.yaml",
+            "rules_path": "rulebook/releases/2026-07-17-active-v0.6/payer_rules.yaml"
+          },
+          "notes": [
+            "Records NEEDS_REVIEW semantics, drafting-boundary and dosing checks, artifact contract/redaction changes, corrected MRI_LUMBAR provenance, and prior OSA/imaging extraction fixes."
+          ],
+          "procedures": [
+            "Aetna:CPAP_DEVICE",
+            "Aetna:MRI_CERVICAL",
+            "Aetna:MRI_KNEE",
+            "Aetna:MRI_LUMBAR"
+          ],
+          "release_id": "2026-07-17-active-v0.6",
+          "reviewed_at": "2026-07-17",
+          "reviewer": "demo-maintainer",
+          "rules_version": "0.6",
+          "runtime_matches": null,
+          "stage": "active",
+          "summary": "Claims-integrity remediation with distinct human-review semantics and corrected lumbar-MRI provenance."
+        },
+        {
+          "based_on_release_id": "2026-07-17-active-v0.6",
+          "created_at": "2026-08-21T00:00:00Z",
+          "files": {
+            "policy_sources_path": "rulebook/releases/2026-08-21-active-v0.7/policy_sources.yaml",
+            "provenance_path": "rulebook/releases/2026-08-21-active-v0.7/provenance.yaml",
+            "rules_path": "rulebook/releases/2026-08-21-active-v0.7/payer_rules.yaml"
+          },
+          "notes": [
+            "Adds explicit requirement operators while preserving the existing synthetic rule criteria.",
+            "Pairs the rule snapshot with conservative extraction, fail-closed empty-set behavior, qualified payer/procedure identity, and strengthened trust semantics in app version 1.3.0."
+          ],
+          "procedures": [
+            "Aetna:CPAP_DEVICE",
+            "Aetna:MRI_CERVICAL",
+            "Aetna:MRI_KNEE",
+            "Aetna:MRI_LUMBAR"
+          ],
+          "release_id": "2026-08-21-active-v0.7",
+          "reviewed_at": "2026-08-21",
+          "reviewer": "demo-maintainer",
+          "rules_version": "0.7",
+          "runtime_matches": null,
+          "stage": "active",
+          "summary": "Conservative extraction and explicit rule-semantics remediation."
+        },
+        {
+          "based_on_release_id": "2026-08-21-active-v0.7",
+          "created_at": "2026-08-22T12:21:19-07:00",
+          "files": {
+            "policy_sources_path": "rulebook/releases/2026-08-22-active-v0.8/policy_sources.yaml",
+            "provenance_path": "rulebook/releases/2026-08-22-active-v0.8/provenance.yaml",
+            "rules_path": "rulebook/releases/2026-08-22-active-v0.8/payer_rules.yaml"
+          },
+          "notes": [
+            "Separates explicit normal imaging from specific negative findings; normal remains accepted in existing imaging-documentation pathways while negative findings fail closed.",
+            "Keeps explicit operators on every active requirement and makes implicit legacy booleans fail conservatively."
+          ],
+          "procedures": [
+            "Aetna:CPAP_DEVICE",
+            "Aetna:MRI_CERVICAL",
+            "Aetna:MRI_KNEE",
+            "Aetna:MRI_LUMBAR"
+          ],
+          "release_id": "2026-08-22-active-v0.8",
+          "reviewed_at": "2026-08-22",
+          "reviewer": "demo-maintainer",
+          "rules_version": "0.8",
+          "runtime_matches": null,
+          "stage": "active",
+          "summary": "Recognized normal/negative imaging semantics and conservative legacy operator fallback."
+        },
+        {
+          "based_on_release_id": "2026-08-22-active-v0.8",
+          "created_at": "2026-08-22T12:33:50-07:00",
+          "files": {
+            "policy_sources_path": "rulebook/releases/2026-08-22-active-v0.9/policy_sources.yaml",
+            "provenance_path": "rulebook/releases/2026-08-22-active-v0.9/provenance.yaml",
+            "rules_path": "rulebook/releases/2026-08-22-active-v0.9/payer_rules.yaml"
+          },
+          "notes": [
+            "Adds the existing negative extraction category to MRI imaging allowed sets because the demo criterion requires documented imaging context, not a qualifying abnormal finding.",
+            "Leaves extraction categories and inconclusive/unrecognized evaluation behavior unchanged."
+          ],
+          "procedures": [
+            "Aetna:CPAP_DEVICE",
+            "Aetna:MRI_CERVICAL",
+            "Aetna:MRI_KNEE",
+            "Aetna:MRI_LUMBAR"
+          ],
+          "release_id": "2026-08-22-active-v0.9",
+          "reviewed_at": "2026-08-22",
+          "reviewer": "demo-maintainer",
+          "rules_version": "0.9",
+          "runtime_matches": null,
+          "stage": "active",
+          "summary": "Align recognized negative imaging with the documented imaging-context criterion."
+        },
+        {
+          "based_on_release_id": "2026-08-22-active-v0.9",
+          "created_at": "2026-08-22T19:46:51Z",
+          "files": {
+            "policy_sources_path": "rulebook/releases/2026-08-22-active-v1.0/policy_sources.yaml",
+            "provenance_path": "rulebook/releases/2026-08-22-active-v1.0/provenance.yaml",
+            "rules_path": "rulebook/releases/2026-08-22-active-v1.0/payer_rules.yaml"
+          },
+          "notes": [
+            "Replaces only the MRI_LUMBAR demo pathway with the persistent back pain with radiculopathy alternative from Aetna CPB 0236.",
+            "Maps every MRI_LUMBAR requirement to the official clause and records the source URL, policy dates, access date, and normalized-content hash.",
+            "All other payer/procedure pathways remain synthetic demo rules."
+          ],
+          "procedures": [
+            "Aetna:CPAP_DEVICE",
+            "Aetna:MRI_CERVICAL",
+            "Aetna:MRI_KNEE",
+            "Aetna:MRI_LUMBAR"
+          ],
+          "release_id": "2026-08-22-active-v1.0",
+          "reviewed_at": "2026-08-22",
+          "reviewer": "demo-maintainer",
+          "rules_version": "1.0",
+          "runtime_matches": true,
+          "stage": "active",
+          "summary": "Verified Aetna lumbar-MRI radiculopathy pathway grounded in CPB 0236."
+        }
+      ],
+      "runtime_rules_version": "1.0",
+      "stage_assignments": {
+        "active": "2026-08-22-active-v1.0",
+        "draft": null,
+        "reviewed": "2026-04-09-reviewed-v0.4"
+      },
+      "validation_errors": []
+    }
+  },
+  "paired": {
+    "always_cannot_determine_canary": {
+      "abstention_rate": 1.0,
+      "automated_ready": 0,
+      "cases": 74,
+      "confusion_matrix_expected_rows_actual_columns": {
+        "CANNOT_DETERMINE": {
+          "CANNOT_DETERMINE": 49,
+          "NEEDS_REVIEW": 0,
+          "NOT_READY": 0,
+          "PENDING_VERIFICATION": 0,
+          "READY": 0,
+          "UNKNOWN": 0
+        },
+        "NEEDS_REVIEW": {
+          "CANNOT_DETERMINE": 8,
+          "NEEDS_REVIEW": 0,
+          "NOT_READY": 0,
+          "PENDING_VERIFICATION": 0,
+          "READY": 0,
+          "UNKNOWN": 0
+        },
+        "NOT_READY": {
+          "CANNOT_DETERMINE": 6,
+          "NEEDS_REVIEW": 0,
+          "NOT_READY": 0,
+          "PENDING_VERIFICATION": 0,
+          "READY": 0,
+          "UNKNOWN": 0
+        },
+        "PENDING_VERIFICATION": {
+          "CANNOT_DETERMINE": 11,
+          "NEEDS_REVIEW": 0,
+          "NOT_READY": 0,
+          "PENDING_VERIFICATION": 0,
+          "READY": 0,
+          "UNKNOWN": 0
+        },
+        "READY": {
+          "CANNOT_DETERMINE": 0,
+          "NEEDS_REVIEW": 0,
+          "NOT_READY": 0,
+          "PENDING_VERIFICATION": 0,
+          "READY": 0,
+          "UNKNOWN": 0
+        },
+        "UNKNOWN": {
+          "CANNOT_DETERMINE": 0,
+          "NEEDS_REVIEW": 0,
+          "NOT_READY": 0,
+          "PENDING_VERIFICATION": 0,
+          "READY": 0,
+          "UNKNOWN": 0
+        }
+      },
+      "exact_status_accuracy": 0.6621621621621622,
+      "exact_status_correct": 49,
+      "expected_abstention_rate": 0.7702702702702703,
+      "false_pending_verification": 0,
+      "false_ready": 0,
+      "missed_passes": 11
+    },
+    "case_file": "autoloop/exp-003/evidence/all-cases.json",
+    "case_file_sha256": "d5ba31e506a738f9da623e131ef1e40d550799b32e0284aac4cb817535e2447b",
+    "case_results": [
+      {
+        "actual": "PENDING_VERIFICATION",
+        "expected": "PENDING_VERIFICATION",
+        "id": "challenge_different_nsaid",
+        "index": 0
+      },
+      {
+        "actual": "PENDING_VERIFICATION",
+        "expected": "PENDING_VERIFICATION",
+        "id": "challenge_different_relaxant",
+        "index": 1
+      },
+      {
+        "actual": "PENDING_VERIFICATION",
+        "expected": "PENDING_VERIFICATION",
+        "id": "challenge_different_analgesic",
+        "index": 2
+      },
+      {
+        "actual": "NEEDS_REVIEW",
+        "expected": "NEEDS_REVIEW",
+        "id": "challenge_partial_response",
+        "index": 3
+      },
+      {
+        "actual": "NEEDS_REVIEW",
+        "expected": "NEEDS_REVIEW",
+        "id": "challenge_partial_longer",
+        "index": 4
+      },
+      {
+        "actual": "NEEDS_REVIEW",
+        "expected": "NEEDS_REVIEW",
+        "id": "challenge_partial_indication",
+        "index": 5
+      },
+      {
+        "actual": "NEEDS_REVIEW",
+        "expected": "NEEDS_REVIEW",
+        "id": "challenge_mixed_class",
+        "index": 6
+      },
+      {
+        "actual": "PENDING_VERIFICATION",
+        "expected": "PENDING_VERIFICATION",
+        "id": "nsaid_generic",
+        "index": 7
+      },
+      {
+        "actual": "PENDING_VERIFICATION",
+        "expected": "PENDING_VERIFICATION",
+        "id": "nsaid_brand",
+        "index": 8
+      },
+      {
+        "actual": "PENDING_VERIFICATION",
+        "expected": "PENDING_VERIFICATION",
+        "id": "analgesic_generic",
+        "index": 9
+      },
+      {
+        "actual": "PENDING_VERIFICATION",
+        "expected": "PENDING_VERIFICATION",
+        "id": "analgesic_brand",
+        "index": 10
+      },
+      {
+        "actual": "PENDING_VERIFICATION",
+        "expected": "PENDING_VERIFICATION",
+        "id": "relaxant_generic",
+        "index": 11
+      },
+      {
+        "actual": "PENDING_VERIFICATION",
+        "expected": "PENDING_VERIFICATION",
+        "id": "relaxant_brand",
+        "index": 12
+      },
+      {
+        "actual": "PENDING_VERIFICATION",
+        "expected": "PENDING_VERIFICATION",
+        "id": "relaxant_direct",
+        "index": 13
+      },
+      {
+        "actual": "PENDING_VERIFICATION",
+        "expected": "PENDING_VERIFICATION",
+        "id": "analgesic_opioid",
+        "index": 14
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "CANNOT_DETERMINE",
+        "id": "unlisted_steroid",
+        "index": 15
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "CANNOT_DETERMINE",
+        "id": "unlisted_snri",
+        "index": 16
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "CANNOT_DETERMINE",
+        "id": "unlisted_benzo",
+        "index": 17
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "CANNOT_DETERMINE",
+        "id": "unlisted_lidocaine",
+        "index": 18
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "CANNOT_DETERMINE",
+        "id": "unlisted_gabapentin",
+        "index": 19
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "CANNOT_DETERMINE",
+        "id": "blocker",
+        "index": 20
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "CANNOT_DETERMINE",
+        "id": "botulinum",
+        "index": 21
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "CANNOT_DETERMINE",
+        "id": "alias_substring",
+        "index": 22
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "CANNOT_DETERMINE",
+        "id": "topical",
+        "index": 23
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "CANNOT_DETERMINE",
+        "id": "combination",
+        "index": 24
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "CANNOT_DETERMINE",
+        "id": "partial_name",
+        "index": 25
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "CANNOT_DETERMINE",
+        "id": "no_duration",
+        "index": 26
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "CANNOT_DETERMINE",
+        "id": "no_response",
+        "index": 27
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "CANNOT_DETERMINE",
+        "id": "split_linkage",
+        "index": 28
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "CANNOT_DETERMINE",
+        "id": "pt_linkage",
+        "index": 29
+      },
+      {
+        "actual": "NEEDS_REVIEW",
+        "expected": "NEEDS_REVIEW",
+        "id": "course_conflict",
+        "index": 30
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "CANNOT_DETERMINE",
+        "id": "no_root",
+        "index": 31
+      },
+      {
+        "actual": "NOT_READY",
+        "expected": "NOT_READY",
+        "id": "ibuprofen_short",
+        "index": 32
+      },
+      {
+        "actual": "NOT_READY",
+        "expected": "NOT_READY",
+        "id": "ibuprofen_improved",
+        "index": 33
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "CANNOT_DETERMINE",
+        "id": "ibuprofen_future",
+        "index": 34
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "CANNOT_DETERMINE",
+        "id": "ibuprofen_nonpatient",
+        "index": 35
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "CANNOT_DETERMINE",
+        "id": "ibuprofen_nonpatient_tail",
+        "index": 36
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "CANNOT_DETERMINE",
+        "id": "ibuprofen_negated",
+        "index": 37
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "CANNOT_DETERMINE",
+        "id": "ibuprofen_negation_direct",
+        "index": 38
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "CANNOT_DETERMINE",
+        "id": "ibuprofen_unrelated",
+        "index": 39
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "CANNOT_DETERMINE",
+        "id": "ibuprofen_unrelated_tail",
+        "index": 40
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "CANNOT_DETERMINE",
+        "id": "ibuprofen_unrelated_prefix",
+        "index": 41
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "CANNOT_DETERMINE",
+        "id": "ibuprofen_fraction",
+        "index": 42
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "CANNOT_DETERMINE",
+        "id": "ibuprofen_comparison",
+        "index": 43
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "CANNOT_DETERMINE",
+        "id": "ibuprofen_range",
+        "index": 44
+      },
+      {
+        "actual": "NEEDS_REVIEW",
+        "expected": "NEEDS_REVIEW",
+        "id": "ibuprofen_questioned",
+        "index": 45
+      },
+      {
+        "actual": "NOT_READY",
+        "expected": "NOT_READY",
+        "id": "tylenol_short",
+        "index": 46
+      },
+      {
+        "actual": "NOT_READY",
+        "expected": "NOT_READY",
+        "id": "tylenol_improved",
+        "index": 47
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "CANNOT_DETERMINE",
+        "id": "tylenol_future",
+        "index": 48
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "CANNOT_DETERMINE",
+        "id": "tylenol_nonpatient",
+        "index": 49
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "CANNOT_DETERMINE",
+        "id": "tylenol_nonpatient_tail",
+        "index": 50
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "CANNOT_DETERMINE",
+        "id": "tylenol_negated",
+        "index": 51
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "CANNOT_DETERMINE",
+        "id": "tylenol_negation_direct",
+        "index": 52
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "CANNOT_DETERMINE",
+        "id": "tylenol_unrelated",
+        "index": 53
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "CANNOT_DETERMINE",
+        "id": "tylenol_unrelated_tail",
+        "index": 54
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "CANNOT_DETERMINE",
+        "id": "tylenol_unrelated_prefix",
+        "index": 55
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "CANNOT_DETERMINE",
+        "id": "tylenol_fraction",
+        "index": 56
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "CANNOT_DETERMINE",
+        "id": "tylenol_comparison",
+        "index": 57
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "CANNOT_DETERMINE",
+        "id": "tylenol_range",
+        "index": 58
+      },
+      {
+        "actual": "NEEDS_REVIEW",
+        "expected": "NEEDS_REVIEW",
+        "id": "tylenol_questioned",
+        "index": 59
+      },
+      {
+        "actual": "NOT_READY",
+        "expected": "NOT_READY",
+        "id": "robaxin_short",
+        "index": 60
+      },
+      {
+        "actual": "NOT_READY",
+        "expected": "NOT_READY",
+        "id": "robaxin_improved",
+        "index": 61
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "CANNOT_DETERMINE",
+        "id": "robaxin_future",
+        "index": 62
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "CANNOT_DETERMINE",
+        "id": "robaxin_nonpatient",
+        "index": 63
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "CANNOT_DETERMINE",
+        "id": "robaxin_nonpatient_tail",
+        "index": 64
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "CANNOT_DETERMINE",
+        "id": "robaxin_negated",
+        "index": 65
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "CANNOT_DETERMINE",
+        "id": "robaxin_negation_direct",
+        "index": 66
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "CANNOT_DETERMINE",
+        "id": "robaxin_unrelated",
+        "index": 67
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "CANNOT_DETERMINE",
+        "id": "robaxin_unrelated_tail",
+        "index": 68
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "CANNOT_DETERMINE",
+        "id": "robaxin_unrelated_prefix",
+        "index": 69
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "CANNOT_DETERMINE",
+        "id": "robaxin_fraction",
+        "index": 70
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "CANNOT_DETERMINE",
+        "id": "robaxin_comparison",
+        "index": 71
+      },
+      {
+        "actual": "CANNOT_DETERMINE",
+        "expected": "CANNOT_DETERMINE",
+        "id": "robaxin_range",
+        "index": 72
+      },
+      {
+        "actual": "NEEDS_REVIEW",
+        "expected": "NEEDS_REVIEW",
+        "id": "robaxin_questioned",
+        "index": 73
+      }
+    ],
+    "mismatches": [],
+    "system": {
+      "abstention_rate": 0.7702702702702703,
+      "automated_ready": 0,
+      "cases": 74,
+      "confusion_matrix_expected_rows_actual_columns": {
+        "CANNOT_DETERMINE": {
+          "CANNOT_DETERMINE": 49,
+          "NEEDS_REVIEW": 0,
+          "NOT_READY": 0,
+          "PENDING_VERIFICATION": 0,
+          "READY": 0,
+          "UNKNOWN": 0
+        },
+        "NEEDS_REVIEW": {
+          "CANNOT_DETERMINE": 0,
+          "NEEDS_REVIEW": 8,
+          "NOT_READY": 0,
+          "PENDING_VERIFICATION": 0,
+          "READY": 0,
+          "UNKNOWN": 0
+        },
+        "NOT_READY": {
+          "CANNOT_DETERMINE": 0,
+          "NEEDS_REVIEW": 0,
+          "NOT_READY": 6,
+          "PENDING_VERIFICATION": 0,
+          "READY": 0,
+          "UNKNOWN": 0
+        },
+        "PENDING_VERIFICATION": {
+          "CANNOT_DETERMINE": 0,
+          "NEEDS_REVIEW": 0,
+          "NOT_READY": 0,
+          "PENDING_VERIFICATION": 11,
+          "READY": 0,
+          "UNKNOWN": 0
+        },
+        "READY": {
+          "CANNOT_DETERMINE": 0,
+          "NEEDS_REVIEW": 0,
+          "NOT_READY": 0,
+          "PENDING_VERIFICATION": 0,
+          "READY": 0,
+          "UNKNOWN": 0
+        },
+        "UNKNOWN": {
+          "CANNOT_DETERMINE": 0,
+          "NEEDS_REVIEW": 0,
+          "NOT_READY": 0,
+          "PENDING_VERIFICATION": 0,
+          "READY": 0,
+          "UNKNOWN": 0
+        }
+      },
+      "exact_status_accuracy": 1.0,
+      "exact_status_correct": 74,
+      "expected_abstention_rate": 0.7702702702702703,
+      "false_pending_verification": 0,
+      "false_ready": 0,
+      "missed_passes": 0
+    }
+  },
+  "phase": "final"
+}
