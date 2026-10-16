@@ -828,7 +828,16 @@ def _extract_facts(note_text: str) -> Tuple[Dict[str, Any], Dict[str, List[Dict[
         for match in strength_matches:
             if _mention_is_nonpatient_context(sentence, match.start(), match.end()):
                 continue
-            if _finding_is_uncertain(sentence, match, source_text=t, offset=sentence_start) or t[sentence_end : sentence_end + 1] == "?":
+            # A denied numeric score establishes neither a deficit nor normal
+            # strength. Do not compare that number with the motor threshold.
+            score_is_negated = _finding_is_negated(sentence, match) or re.search(
+                r"\bnot\s+$", sentence[max(0, match.start() - 24) : match.start()]
+            )
+            if (
+                score_is_negated
+                or _finding_is_uncertain(sentence, match, source_text=t, offset=sentence_start)
+                or t[sentence_end : sentence_end + 1] == "?"
+            ):
                 finding_values.append(REVIEW_REQUIRED_FACT)
             else:
                 finding_values.append(float(match.group("score")) < 5)

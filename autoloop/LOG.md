@@ -198,3 +198,42 @@ Metric-gaming/limits: this is a lexical extension justified by the existing
 correct-value test; it does not infer intact strength or reflexes from unrelated
 sensation, and does not claim general normal-exam recognition. Its test source
 is known rather than held out.
+
+## Iteration 4 — accepted: negated numeric strength treated as observed score
+
+Hypothesis (stated before testing): numeric strength candidates are compared
+with 5 even when explicitly negated. Sources: the strength loop in
+`engine/extract.py`, `negated_strength` in the contract/strict xfails,
+FM-1 negated-strength limitation, and the policy's requirement for objective
+motor/reflex evidence. A denied score is not an observed score.
+
+Minimal repro: `Low back pain with radiculopathy. Right L5 distribution:
+dorsiflexion strength not 4/5. NSAIDs for 8 weeks with minimal improvement.`
+Expected NEEDS_REVIEW; before PENDING_VERIFICATION. Eight fixed-label cases
+were appended, including negated normal strength, prefix/suffix negation,
+affirmative deficit/normal controls, and unrelated sensory-loss negation.
+
+Fix: use the existing bounded negation helper plus an immediate `not` prefix
+for strength-score candidates, and route them to the existing review state
+before numeric threshold evaluation. This avoids inferring either normal or
+abnormal strength from a denied number.
+
+**Dispute left unchanged:** the existing `negated_strength` xfail asserts a
+False fact / NOT_READY for `not 4/5`. A negated 4/5 does not establish normal
+strength (it could be 3/5 or 5/5); review is the justified bounded result. Its
+expected value and strict marker remain untouched, and it remains xfailed.
+
+Evidence (`evidence/iteration-4-*`): **5 failed / 24 passed before**, all 29 pass
+after. Cumulative repro score **24/29 → 29/29 exact**, false pending **4 → 0**,
+missed passes **0 → 0**, abstention **10/29 → 15/29**, expected **15/29**. The
+increase addresses five exact-status errors and preserves passing controls.
+
+Gate: **1103 passed, 12 xfailed**. Then the frozen corpus scoreboard was run:
+byte-for-byte identical to baseline. Targeted lint and format checks passed.
+No additional existing marker was removed by this fix.
+
+Metric-gaming/limits: narrowly refusing to interpret a negated number is policy-
+justified, but it is still an abstention increase on these repros and must not be
+advertised alone as improvement. Exact expected status improves for every new
+negated-score case. This does not handle every negation form, replacement score,
+or attribution of a numeric score to a different examination.
