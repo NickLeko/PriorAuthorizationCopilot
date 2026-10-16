@@ -1,0 +1,105 @@
+[
+  {
+    "id": "class_hyphenated",
+    "pair_role": "positive",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Low back pain with radiculopathy. Right L5 distribution: strength 4/5. Completed non-steroidal anti-inflammatory drugs for 6 weeks with no improvement.",
+    "expected_overall_status": "PENDING_VERIFICATION",
+    "expected_facts": {
+      "cpb_0236_conservative_therapy_weeks": 6
+    }
+  },
+  {
+    "id": "class_compact",
+    "pair_role": "positive",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Low back pain with radiculopathy. Right L5 distribution: strength 4/5. Nonsteroidal anti-inflammatory medications x 8 weeks with minimal improvement.",
+    "expected_overall_status": "PENDING_VERIFICATION",
+    "expected_facts": {
+      "cpb_0236_conservative_therapy_weeks": 8
+    }
+  },
+  {
+    "id": "class_spaced",
+    "pair_role": "positive",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Low back pain with radiculopathy. Right L5 distribution: strength 4/5. Non steroidal anti inflammatory drugs for 10 weeks with little relief.",
+    "expected_overall_status": "PENDING_VERIFICATION",
+    "expected_facts": {
+      "cpb_0236_conservative_therapy_weeks": 10
+    }
+  },
+  {
+    "id": "class_short",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Low back pain with radiculopathy. Right L5 distribution: strength 4/5. Non-steroidal anti-inflammatory drugs for 5 weeks with no improvement.",
+    "expected_overall_status": "NOT_READY",
+    "expected_facts": {
+      "cpb_0236_conservative_therapy_weeks": 5
+    }
+  },
+  {
+    "id": "class_improved",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Low back pain with radiculopathy. Right L5 distribution: strength 4/5. Nonsteroidal anti-inflammatory medications for 8 weeks with significant improvement.",
+    "expected_overall_status": "NOT_READY",
+    "expected_facts": {
+      "cpb_0236_conservative_therapy_weeks": 8
+    }
+  },
+  {
+    "id": "class_planned",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Low back pain with radiculopathy. Right L5 distribution: strength 4/5. Will start non steroidal anti inflammatory drugs for 8 weeks with no improvement expected.",
+    "expected_overall_status": "CANNOT_DETERMINE"
+  },
+  {
+    "id": "class_nonpatient",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Low back pain with radiculopathy. Right L5 distribution: strength 4/5. Mother completed non-steroidal anti-inflammatory drugs for 8 weeks with no improvement.",
+    "expected_overall_status": "CANNOT_DETERMINE"
+  },
+  {
+    "id": "class_denied",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Low back pain with radiculopathy. Right L5 distribution: strength 4/5. Patient denies completing nonsteroidal anti-inflammatory medications for 8 weeks with no improvement.",
+    "expected_overall_status": "CANNOT_DETERMINE"
+  },
+  {
+    "id": "class_no_course",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Low back pain with radiculopathy. Right L5 distribution: strength 4/5. No non-steroidal anti-inflammatory drugs for 8 weeks with no improvement.",
+    "expected_overall_status": "CANNOT_DETERMINE"
+  },
+  {
+    "id": "class_nonqualifying",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Low back pain with radiculopathy. Right L5 distribution: strength 4/5. Physical therapy for 8 weeks with no improvement.",
+    "expected_overall_status": "CANNOT_DETERMINE"
+  },
+  {
+    "id": "class_no_duration",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Low back pain with radiculopathy. Right L5 distribution: strength 4/5. Non-steroidal anti-inflammatory drugs with no improvement; duration not documented.",
+    "expected_overall_status": "CANNOT_DETERMINE"
+  }
+]

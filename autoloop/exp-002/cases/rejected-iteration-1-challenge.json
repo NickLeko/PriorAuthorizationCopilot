@@ -1,0 +1,26 @@
+[
+  {
+    "id": "class_other_indication_1",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Low back pain with radiculopathy. Right L5 distribution: strength 4/5. Non-steroidal anti-inflammatory drugs for 8 weeks for headaches with no improvement.",
+    "expected_overall_status": "CANNOT_DETERMINE"
+  },
+  {
+    "id": "class_other_indication_2",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Low back pain with radiculopathy. Right L5 distribution: strength 4/5. Nonsteroidal anti-inflammatory medications for 10 weeks for headaches with minimal improvement.",
+    "expected_overall_status": "CANNOT_DETERMINE"
+  },
+  {
+    "id": "class_other_indication_3",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Low back pain with radiculopathy. Right L5 distribution: strength 4/5. Non steroidal anti inflammatory drugs for 6 weeks for headaches with little relief.",
+    "expected_overall_status": "CANNOT_DETERMINE"
+  }
+]

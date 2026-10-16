@@ -1,0 +1,166 @@
+{
+  "always_cannot_determine_canary": {
+    "abstention_rate": 1.0,
+    "automated_ready": 0,
+    "cases": 3,
+    "confusion_matrix_expected_rows_actual_columns": {
+      "CANNOT_DETERMINE": {
+        "CANNOT_DETERMINE": 3,
+        "NEEDS_REVIEW": 0,
+        "NOT_READY": 0,
+        "PENDING_VERIFICATION": 0,
+        "READY": 0,
+        "UNKNOWN": 0
+      },
+      "NEEDS_REVIEW": {
+        "CANNOT_DETERMINE": 0,
+        "NEEDS_REVIEW": 0,
+        "NOT_READY": 0,
+        "PENDING_VERIFICATION": 0,
+        "READY": 0,
+        "UNKNOWN": 0
+      },
+      "NOT_READY": {
+        "CANNOT_DETERMINE": 0,
+        "NEEDS_REVIEW": 0,
+        "NOT_READY": 0,
+        "PENDING_VERIFICATION": 0,
+        "READY": 0,
+        "UNKNOWN": 0
+      },
+      "PENDING_VERIFICATION": {
+        "CANNOT_DETERMINE": 0,
+        "NEEDS_REVIEW": 0,
+        "NOT_READY": 0,
+        "PENDING_VERIFICATION": 0,
+        "READY": 0,
+        "UNKNOWN": 0
+      },
+      "READY": {
+        "CANNOT_DETERMINE": 0,
+        "NEEDS_REVIEW": 0,
+        "NOT_READY": 0,
+        "PENDING_VERIFICATION": 0,
+        "READY": 0,
+        "UNKNOWN": 0
+      },
+      "UNKNOWN": {
+        "CANNOT_DETERMINE": 0,
+        "NEEDS_REVIEW": 0,
+        "NOT_READY": 0,
+        "PENDING_VERIFICATION": 0,
+        "READY": 0,
+        "UNKNOWN": 0
+      }
+    },
+    "exact_status_accuracy": 1.0,
+    "exact_status_correct": 3,
+    "expected_abstention_rate": 1.0,
+    "false_pending_verification": 0,
+    "false_ready": 0,
+    "missed_passes": 0
+  },
+  "case_file": "autoloop/exp-002/cases/iteration-1-challenge.json",
+  "case_file_sha256": "c1f3d8f6fc2a06e26358fa4bb189454c49e056e1f39cdbfb0ac2e9ccc4b6eb74",
+  "case_results": [
+    {
+      "actual": "PENDING_VERIFICATION",
+      "expected": "CANNOT_DETERMINE",
+      "id": "class_other_indication_1",
+      "index": 0
+    },
+    {
+      "actual": "PENDING_VERIFICATION",
+      "expected": "CANNOT_DETERMINE",
+      "id": "class_other_indication_2",
+      "index": 1
+    },
+    {
+      "actual": "PENDING_VERIFICATION",
+      "expected": "CANNOT_DETERMINE",
+      "id": "class_other_indication_3",
+      "index": 2
+    }
+  ],
+  "mismatches": [
+    {
+      "actual": "PENDING_VERIFICATION",
+      "expected": "CANNOT_DETERMINE",
+      "id": "class_other_indication_1",
+      "index": 0
+    },
+    {
+      "actual": "PENDING_VERIFICATION",
+      "expected": "CANNOT_DETERMINE",
+      "id": "class_other_indication_2",
+      "index": 1
+    },
+    {
+      "actual": "PENDING_VERIFICATION",
+      "expected": "CANNOT_DETERMINE",
+      "id": "class_other_indication_3",
+      "index": 2
+    }
+  ],
+  "system": {
+    "abstention_rate": 0.0,
+    "automated_ready": 0,
+    "cases": 3,
+    "confusion_matrix_expected_rows_actual_columns": {
+      "CANNOT_DETERMINE": {
+        "CANNOT_DETERMINE": 0,
+        "NEEDS_REVIEW": 0,
+        "NOT_READY": 0,
+        "PENDING_VERIFICATION": 3,
+        "READY": 0,
+        "UNKNOWN": 0
+      },
+      "NEEDS_REVIEW": {
+        "CANNOT_DETERMINE": 0,
+        "NEEDS_REVIEW": 0,
+        "NOT_READY": 0,
+        "PENDING_VERIFICATION": 0,
+        "READY": 0,
+        "UNKNOWN": 0
+      },
+      "NOT_READY": {
+        "CANNOT_DETERMINE": 0,
+        "NEEDS_REVIEW": 0,
+        "NOT_READY": 0,
+        "PENDING_VERIFICATION": 0,
+        "READY": 0,
+        "UNKNOWN": 0
+      },
+      "PENDING_VERIFICATION": {
+        "CANNOT_DETERMINE": 0,
+        "NEEDS_REVIEW": 0,
+        "NOT_READY": 0,
+        "PENDING_VERIFICATION": 0,
+        "READY": 0,
+        "UNKNOWN": 0
+      },
+      "READY": {
+        "CANNOT_DETERMINE": 0,
+        "NEEDS_REVIEW": 0,
+        "NOT_READY": 0,
+        "PENDING_VERIFICATION": 0,
+        "READY": 0,
+        "UNKNOWN": 0
+      },
+      "UNKNOWN": {
+        "CANNOT_DETERMINE": 0,
+        "NEEDS_REVIEW": 0,
+        "NOT_READY": 0,
+        "PENDING_VERIFICATION": 0,
+        "READY": 0,
+        "UNKNOWN": 0
+      }
+    },
+    "exact_status_accuracy": 0.0,
+    "exact_status_correct": 0,
+    "expected_abstention_rate": 1.0,
+    "false_pending_verification": 3,
+    "false_ready": 0,
+    "missed_passes": 0
+  }
+}
