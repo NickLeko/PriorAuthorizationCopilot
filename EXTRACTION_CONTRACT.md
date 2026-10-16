@@ -1,4 +1,4 @@
-# Extraction, correction and verification contract v2.3
+# Extraction, correction and verification contract v2.4
 
 v2.0.0 retains the extractor and deterministic operators. Typed, source-located corrections materialize effective facts over an immutable original proposal; every ordered event is retained and the last event wins. SET_VALUE requires exact quotations of at most 300 characters per span and the submitted note hash; multiple spans are allowed and overlength spans are rejected, never truncated. SET_MISSING records document review and any offending proposal spans. SET_NEEDS_REVIEW and RESTORE_ORIGINAL preserve explicit state/history. Types, units and reviewer-enterable values come from fact contracts; there is no scalar coercion or free-text fact value.
 
@@ -11,7 +11,7 @@ Its claim that a diagnosis returned True only without supported negation was
 contradicted by `Patient does not have low back pain with radiculopathy`.
 v1.5.0 resolves that contradiction by changing what the engine may assert,
 not by making extraction match the old contract. Negation, temporality and
-attribution errors remain. v2.3 handles the specific patterns listed below; each failure class remains open.
+attribution errors remain. v2.4 handles the specific patterns listed below; each failure class remains open.
 
 The normative guarantees are G01–G07 below and the exact examples in the JSON
 block. `TestExtractionContractAlignment` executes correct expectations; remaining known failures are strict xfails. These finite examples are not universal language claims;
@@ -101,7 +101,20 @@ with Aetna/outpatient and no human attestations.
   {"id":"osa_positive","note":"OSA.","expected":{"osa_diagnosis":true}},
   {"id":"sleep_date","note":"Sleep study completed 2024-05-18.","expected":{"sleep_study_date":true}},
   {"id":"ahi_value","note":"AHI 22 documented.","expected":{"ahi_documented":true}},
-  {"id":"ahi_missing","note":"AHI not stated.","expected":{"ahi_documented":null}}
+  {"id":"ahi_missing","note":"AHI not stated.","expected":{"ahi_documented":null}},
+  {"id":"exp002_days_threshold","note":"Low back pain with radiculopathy. Right L5 distribution: strength 4/5. NSAIDs for 42 days with no improvement.","expected":{"cpb_0236_conservative_therapy_weeks":6},"procedure":"MRI_LUMBAR","status":"PENDING_VERIFICATION"},
+  {"id":"exp002_days_below_threshold","note":"Low back pain with radiculopathy. Right L5 distribution: strength 4/5. NSAIDs for 41 days with no improvement.","expected":{"cpb_0236_conservative_therapy_weeks":5},"procedure":"MRI_LUMBAR","status":"NOT_READY"},
+  {"id":"exp002_days_improved","note":"Low back pain with radiculopathy. Right L5 distribution: strength 4/5. Analgesics for 56 days with significant improvement.","expected":{"cpb_0236_conservative_therapy_weeks":8},"procedure":"MRI_LUMBAR","status":"NOT_READY"},
+  {"id":"exp002_months_nsaid","note":"Low back pain with radiculopathy. Right L5 distribution: strength 4/5. NSAIDs for 2 months with no improvement.","expected":{"cpb_0236_conservative_therapy_weeks":8},"procedure":"MRI_LUMBAR","status":"PENDING_VERIFICATION"},
+  {"id":"exp002_months_short","note":"Low back pain with radiculopathy. Right L5 distribution: strength 4/5. NSAIDs for 1 month with no improvement.","expected":{"cpb_0236_conservative_therapy_weeks":4},"procedure":"MRI_LUMBAR","status":"NOT_READY"},
+  {"id":"exp002_words_threshold","note":"Low back pain with radiculopathy. Right L5 distribution: strength 4/5. NSAIDs for six weeks with no improvement.","expected":{"cpb_0236_conservative_therapy_weeks":6},"procedure":"MRI_LUMBAR","status":"PENDING_VERIFICATION"},
+  {"id":"exp002_words_short","note":"Low back pain with radiculopathy. Right L5 distribution: strength 4/5. NSAIDs for five weeks with no improvement.","expected":{"cpb_0236_conservative_therapy_weeks":5},"procedure":"MRI_LUMBAR","status":"NOT_READY"},
+  {"id":"exp002_exam_of","note":"Low back pain with radiculopathy. Right L5 distribution: strength 4 of 5. NSAIDs for 8 weeks with minimal improvement.","expected":{"objective_motor_or_reflex_change_in_root_distribution":true},"procedure":"MRI_LUMBAR","status":"PENDING_VERIFICATION"},
+  {"id":"exp002_exam_out_of","note":"Low back pain with radiculopathy. Left S1 distribution: strength 3 out of 5. NSAIDs for 8 weeks with minimal improvement.","expected":{"objective_motor_or_reflex_change_in_root_distribution":true},"procedure":"MRI_LUMBAR","status":"PENDING_VERIFICATION"},
+  {"id":"exp002_exam_decimal","note":"Low back pain with radiculopathy. L4 distribution: strength 4.5 of 5. NSAIDs for 8 weeks with minimal improvement.","expected":{"objective_motor_or_reflex_change_in_root_distribution":true},"procedure":"MRI_LUMBAR","status":"PENDING_VERIFICATION"},
+  {"id":"exp002_exam_normal","note":"Low back pain with radiculopathy. Right L5 distribution: strength 5 out of 5. NSAIDs for 8 weeks with minimal improvement.","expected":{"objective_motor_or_reflex_change_in_root_distribution":false},"procedure":"MRI_LUMBAR","status":"NOT_READY"},
+  {"id":"exp002_exam_negated","note":"Low back pain with radiculopathy. Right L5 distribution: strength not 4 of 5. NSAIDs for 8 weeks with minimal improvement.","expected":{"objective_motor_or_reflex_change_in_root_distribution":"__REVIEW_REQUIRED__"},"procedure":"MRI_LUMBAR","status":"NEEDS_REVIEW"},
+  {"id":"exp002_exam_contralateral","note":"Low back pain with left leg radiculopathy. Right L5 distribution: strength 4 of 5. NSAIDs for 8 weeks with minimal improvement.","expected":{"objective_motor_or_reflex_change_in_root_distribution":"__REVIEW_REQUIRED__"},"procedure":"MRI_LUMBAR","status":"NEEDS_REVIEW"}
 ]
 ```
 
@@ -114,7 +127,7 @@ decline unsupported proposals. This API records attestations; it cannot prove a 
 Use synthetic notes only. There is no production clinical-language guarantee.
 
 
-## Patterns handled through v2.3; failure classes remain open
+## Patterns handled through v2.4; failure classes remain open
 
 The following bounded patterns are handled; the class remains open in every row:
 
@@ -133,6 +146,8 @@ The following bounded patterns are handled; the class remains open in every row:
 | Intact reflexes in a named root distribution | Explicit normal finding produces False / NOT_MET; uncertainty and conflicting findings still require review. | Under-capture |
 | Explicitly negated numeric strength score | Requires review before numeric threshold evaluation; does not infer normal strength from not 4/5. | Numeric negation |
 | Appointment date in another sentence from an undated sleep study | Does not supply sleep-study date evidence. Same-sentence borrowed dates and genuine cross-sentence links remain open. | Date association |
+| Isolated qualifying CPB course with explicit response, duration in whole days/months or number words one through twelve | Completed days floor to whole weeks; months use a four-week lower bound. Six weeks with no/minimal/little/insufficient improvement can pass; short or improved courses fail. | Duration and episode attribution |
+| Direct named-root statement “strength 4 of 5” / “3 out of 5”, including decimals | Observed score below five is an objective change; 5 of 5 is normal. Negation, question, alternative attribution or opposite-side radiculopathy requires review. | Objective finding and attribution |
 
 Safety triggers use real sentence boundaries: period, question mark, exclamation
 mark, or newline; semicolons and decimal points do not end that context. Narrow
@@ -150,7 +165,7 @@ reading, and reviewer identity remains self-reported. This display aid does not
 change extraction, statuses, the readiness gate or the remaining false-READY
 pathways.
 
-Current release validation: **1123 passed, 10 xfailed**. Contract JSON alone
+Current release validation: **1202 passed, 10 xfailed**. Contract JSON alone
 drives known-failure markers; there is no exemption list. Four contract examples
 are marked: `unrelated_therapy`, `neither_nor_negation`,
 `same_sentence_borrowed_date`, and the disputed `negated_strength` expectation.
@@ -177,3 +192,19 @@ strict xfails in `test/test_h1_review_triggers.py`. With supplied attestations,
 these remaining examples can still reach `READY` and
 `submission_readiness=true` on the verified lumbar pathway. Human attestation
 remains a necessary safety gate and does not establish extraction accuracy.
+
+## v2.4 recall bounds
+
+Thirteen added executable examples document exp-002 without changing any earlier
+expectation or known-failure marker. New course forms require the entire sentence
+to be an isolated course plus explicit response, without indication modifiers,
+comparisons, ranges or fractional durations. New word strength grades require a
+direct named-root exam statement and use real sentence boundaries to preserve
+decimal scores. These additions leave legacy numeric-week and slash-grade
+attribution gaps intact; the broad laterality failure class is not solved.
+
+Full non-steroidal anti-inflammatory class names remain missed: the exp-002
+expansion was reverted after unrelated headache therapy produced unsafe passes.
+Drug-name to class mapping is out of scope pending an owner decision on an
+auditable drug list. See [v2.4.0](docs/releases/v2.4.0.md) and the
+[exp-002 report](autoloop/exp-002/REPORT.md).

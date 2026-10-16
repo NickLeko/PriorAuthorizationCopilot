@@ -25,6 +25,35 @@ CPB_0236_GROUP_DURATION_RE = re.compile(
     rf"(?:\s*(?:,|and|plus|\+)\s*\b{CPB_0236_THERAPY_CONTEXT}\b)+"
     r"(?:\s*(?:x|for|over|about)\s*)\b(?P<value>\d+)\s*(?:week|weeks)\b"
 )
+# New unit forms require an entire isolated course/response statement. Do not
+# borrow a duration across indication modifiers, comparisons or other clauses.
+CPB_COURSE_RESPONSE_SUFFIX = (
+    r"\s+with\s+(?:no|minimal|little|insufficient|substantial|significant|meaningful|good)"
+    r"\s+(?:improvement|relief|response)\s*$"
+)
+CPB_DURATION_NUMBER_WORDS = {
+    "one": 1,
+    "two": 2,
+    "three": 3,
+    "four": 4,
+    "five": 5,
+    "six": 6,
+    "seven": 7,
+    "eight": 8,
+    "nine": 9,
+    "ten": 10,
+    "eleven": 11,
+    "twelve": 12,
+}
+CPB_EXPLICIT_DURATION_VALUE = r"(?:\d+|" + "|".join(CPB_DURATION_NUMBER_WORDS) + ")"
+CPB_NEW_DURATION_AFTER_RE = re.compile(
+    rf"^(?:completed\s+)?{CPB_0236_THERAPY_CONTEXT}\s+(?:x|for)\s+(?P<value>{CPB_EXPLICIT_DURATION_VALUE})\s+(?P<unit>days?|months?|weeks?)"
+    + CPB_COURSE_RESPONSE_SUFFIX
+)
+CPB_NEW_DURATION_BEFORE_RE = re.compile(
+    rf"^(?:completed\s+)?(?P<value>{CPB_EXPLICIT_DURATION_VALUE})\s+(?P<unit>days?|months?|weeks?)\s+of\s+{CPB_0236_THERAPY_CONTEXT}"
+    + CPB_COURSE_RESPONSE_SUFFIX
+)
 CPB_0236_NONRESPONSE_RE = re.compile(
     r"\b(?:no|minimal|little|insufficient)\s+(?:meaningful\s+)?(?:improvement|relief|response)\b"
     r"|\bwithout\s+(?:meaningful\s+)?(?:improvement|relief)\b"
@@ -63,6 +92,11 @@ IMAGING_CONTEXT_RE = re.compile(r"\b(?:(?:prior\s+)?imaging|x-?ray|xray|ct|mri)\
 BACK_PAIN_RE = re.compile(r"\b(?:low\s+)?back pain\b")
 RADICULOPATHY_RE = re.compile(r"\b(?:lumbar\s+)?radiculopathy\b|\bradicular (?:back )?pain\b")
 ROOT_DISTRIBUTION_RE = re.compile(r"\b(?:l[1-5]|s[1-5])(?:\s+(?:nerve\s+)?root)?\s+distribution\b|\bnerve[- ]root distribution\b")
+ROOT_WORD_STRENGTH_RE = re.compile(
+    r"^(?:(?P<side>right|left)\s+)?(?:l[1-5]|s[1-5])(?:\s+(?:nerve\s+)?root)?\s+distribution\s*:?\s+"
+    r"strength\s+(?:(?:is|was)\s+)?(?P<negated>not\s+)?(?P<score>[0-5](?:\.\d)?)\s+(?:out\s+)?of\s+5"
+    r"(?P<attribution>\s+from\s+[^.!?;\n]+)?$"
+)
 REFLEX_PREDICATE_LINK_RE = re.compile(
     r"\b(?:deep tendon\s+)?reflex(?:es)?(?:\s*:\s*|\s+)"
     r"(?:(?:is|are|was|were|remains?|remained|initially|later|now|then|on|repeat|but|and|"
@@ -429,6 +463,19 @@ def _dedup_matches(matches: List[re.Match[str]]) -> List[re.Match[str]]:
     return deduped
 
 
+def _cpb_duration_weeks(match: re.Match[str]) -> int:
+    raw_value = match.group("value")
+    value = int(raw_value) if raw_value.isdigit() else CPB_DURATION_NUMBER_WORDS[raw_value]
+    # Completed whole weeks only; 41 days cannot meet a six-week minimum.
+    unit = match.groupdict().get("unit", "weeks")
+    if unit.startswith("day"):
+        return value // 7
+    if unit.startswith("month"):
+        # Four weeks per whole month is a lower bound, not a calendar estimate.
+        return value * 4
+    return value
+
+
 def _collect_cpb_therapy_candidates(text: str) -> List[_TherapyCourseCandidate]:
     candidates: List[_TherapyCourseCandidate] = []
 
@@ -457,10 +504,13 @@ def _collect_cpb_therapy_candidates(text: str) -> List[_TherapyCourseCandidate]:
             if _has_pattern(THERAPY_FUTURE_LOOKBACK_PATTERNS + THERAPY_FUTURE_AFTER_PATTERNS, clause):
                 continue
 
+            duration_patterns = [CPB_0236_THERAPY_AFTER_RE, CPB_0236_THERAPY_BEFORE_RE]
+            if clause_start == 0 and clause_end == len(sentence):
+                duration_patterns.extend((CPB_NEW_DURATION_AFTER_RE, CPB_NEW_DURATION_BEFORE_RE))
             duration_matches = _dedup_matches(
                 [
                     match
-                    for pattern in (CPB_0236_THERAPY_AFTER_RE, CPB_0236_THERAPY_BEFORE_RE)
+                    for pattern in duration_patterns
                     for match in pattern.finditer(clause)
                     if not _therapy_duration_is_disqualified(clause, match)
                     and not _mention_is_nonpatient_context(clause, match.start(), match.end())
@@ -494,7 +544,7 @@ def _collect_cpb_therapy_candidates(text: str) -> List[_TherapyCourseCandidate]:
             if contrast_ambiguous and response_value is not None:
                 response_value = REVIEW_REQUIRED_FACT
 
-            duration_values = {int(match.group("value")) for match in duration_matches}
+            duration_values = {_cpb_duration_weeks(match) for match in duration_matches}
             duration_value = next(iter(duration_values)) if len(duration_values) == 1 else None
 
             modality_keys = tuple(match.group(0).strip() for match in patient_modalities)
@@ -796,6 +846,27 @@ def _extract_facts(note_text: str) -> Tuple[Dict[str, Any], Dict[str, List[Dict[
     )
 
     objective_candidates: List[Tuple[bool | str, int, int]] = []
+    # New word notation uses real sentences so decimal scores remain intact.
+    # Legacy slash notation and its narrower clause scope remain unchanged.
+    for sentence_start, sentence_end in _sentence_spans(t, therapy=True):
+        sentence = t[sentence_start:sentence_end]
+        match = ROOT_WORD_STRENGTH_RE.fullmatch(sentence)
+        if match is None or _mention_is_nonpatient_context(sentence, match.start(), match.end()):
+            continue
+        side = match.group("side")
+        opposite_side = {"right": "left", "left": "right"}.get(side)
+        side_conflict = opposite_side and re.search(rf"\b{opposite_side}(?:[- ]sided)?\s+(?:leg\s+)?radiculopathy\b", t)
+        if (
+            match.group("negated")
+            or match.group("attribution")
+            or side_conflict
+            or _finding_is_uncertain(sentence, match, source_text=t, offset=sentence_start)
+            or t[sentence_end : sentence_end + 1] == "?"
+        ):
+            value = REVIEW_REQUIRED_FACT
+        else:
+            value = float(match.group("score")) < 5
+        objective_candidates.append((value, sentence_start, sentence_end))
     for sentence_start, sentence_end in _sentence_spans(t):
         sentence = t[sentence_start:sentence_end]
         root_matches = [

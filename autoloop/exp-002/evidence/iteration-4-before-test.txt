@@ -1,0 +1,79 @@
+..........................FFFFF.........                                 [100%]
+=================================== FAILURES ===================================
+______________________ test_exp002_pair[words_threshold] _______________________
+
+case = {'expected_facts': {'cpb_0236_conservative_therapy_weeks': 6}, 'expected_overall_status': 'PENDING_VERIFICATION', 'id'...Low back pain with radiculopathy. Right L5 distribution: strength 4/5. NSAIDs for six weeks with no improvement.', ...}
+
+    @pytest.mark.parametrize("case", CASES, ids=lambda case: case["id"])
+    def test_exp002_pair(case):
+        result = ReadinessService().evaluate(PARequest(payer=case["payer"], procedure_code=case["procedure_code"], note_text=case["note_text"]))
+>       assert result.overall_status == case["expected_overall_status"]
+E       AssertionError: assert 'CANNOT_DETERMINE' == 'PENDING_VERIFICATION'
+E         
+E         - PENDING_VERIFICATION
+E         + CANNOT_DETERMINE
+
+test/test_exp002_recall.py:18: AssertionError
+___________________ test_exp002_pair[words_before_modality] ____________________
+
+case = {'expected_facts': {'cpb_0236_conservative_therapy_weeks': 8}, 'expected_overall_status': 'PENDING_VERIFICATION', 'id'...ain with radiculopathy. Right L5 distribution: strength 4/5. Eight weeks of analgesics with minimal improvement.', ...}
+
+    @pytest.mark.parametrize("case", CASES, ids=lambda case: case["id"])
+    def test_exp002_pair(case):
+        result = ReadinessService().evaluate(PARequest(payer=case["payer"], procedure_code=case["procedure_code"], note_text=case["note_text"]))
+>       assert result.overall_status == case["expected_overall_status"]
+E       AssertionError: assert 'CANNOT_DETERMINE' == 'PENDING_VERIFICATION'
+E         
+E         - PENDING_VERIFICATION
+E         + CANNOT_DETERMINE
+
+test/test_exp002_recall.py:18: AssertionError
+_______________________ test_exp002_pair[words_relaxant] _______________________
+
+case = {'expected_facts': {'cpb_0236_conservative_therapy_weeks': 12}, 'expected_overall_status': 'PENDING_VERIFICATION', 'id...iculopathy. Right L5 distribution: strength 4/5. Completed muscle relaxants for twelve weeks with little relief.', ...}
+
+    @pytest.mark.parametrize("case", CASES, ids=lambda case: case["id"])
+    def test_exp002_pair(case):
+        result = ReadinessService().evaluate(PARequest(payer=case["payer"], procedure_code=case["procedure_code"], note_text=case["note_text"]))
+>       assert result.overall_status == case["expected_overall_status"]
+E       AssertionError: assert 'CANNOT_DETERMINE' == 'PENDING_VERIFICATION'
+E         
+E         - PENDING_VERIFICATION
+E         + CANNOT_DETERMINE
+
+test/test_exp002_recall.py:18: AssertionError
+________________________ test_exp002_pair[words_short] _________________________
+
+case = {'expected_facts': {'cpb_0236_conservative_therapy_weeks': 5}, 'expected_overall_status': 'NOT_READY', 'id': 'words_sh...ow back pain with radiculopathy. Right L5 distribution: strength 4/5. NSAIDs for five weeks with no improvement.', ...}
+
+    @pytest.mark.parametrize("case", CASES, ids=lambda case: case["id"])
+    def test_exp002_pair(case):
+        result = ReadinessService().evaluate(PARequest(payer=case["payer"], procedure_code=case["procedure_code"], note_text=case["note_text"]))
+>       assert result.overall_status == case["expected_overall_status"]
+E       AssertionError: assert 'CANNOT_DETERMINE' == 'NOT_READY'
+E         
+E         - NOT_READY
+E         + CANNOT_DETERMINE
+
+test/test_exp002_recall.py:18: AssertionError
+_______________________ test_exp002_pair[words_improved] _______________________
+
+case = {'expected_facts': {'cpb_0236_conservative_therapy_weeks': 8}, 'expected_overall_status': 'NOT_READY', 'id': 'words_im...ith radiculopathy. Right L5 distribution: strength 4/5. Analgesics for eight weeks with significant improvement.', ...}
+
+    @pytest.mark.parametrize("case", CASES, ids=lambda case: case["id"])
+    def test_exp002_pair(case):
+        result = ReadinessService().evaluate(PARequest(payer=case["payer"], procedure_code=case["procedure_code"], note_text=case["note_text"]))
+>       assert result.overall_status == case["expected_overall_status"]
+E       AssertionError: assert 'CANNOT_DETERMINE' == 'NOT_READY'
+E         
+E         - NOT_READY
+E         + CANNOT_DETERMINE
+
+test/test_exp002_recall.py:18: AssertionError
+=========================== short test summary info ============================
+FAILED test/test_exp002_recall.py::test_exp002_pair[words_threshold] - Assert...
+FAILED test/test_exp002_recall.py::test_exp002_pair[words_before_modality] - ...
+FAILED test/test_exp002_recall.py::test_exp002_pair[words_relaxant] - Asserti...
+FAILED test/test_exp002_recall.py::test_exp002_pair[words_short] - AssertionE...
+FAILED test/test_exp002_recall.py::test_exp002_pair[words_improved] - Asserti...
+5 failed, 35 passed in 0.32s

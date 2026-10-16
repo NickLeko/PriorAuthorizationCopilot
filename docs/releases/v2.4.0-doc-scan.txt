@@ -1,0 +1,452 @@
+MODEL_CARD.md:4:Version: 2.4.0 (record schema 2.0.0)
+MODEL_CARD.md:6:Changelog: 2.4.0 — Releases exp-002 recall fixes for isolated qualifying courses
+MODEL_CARD.md:9:policy trust and record schema are unchanged. See [release notes](docs/releases/v2.4.0.md).
+MODEL_CARD.md:67:and same-sentence date gaps, plus thirteen exp-002 recall examples. Fresh suite:
+MODEL_CARD.md:68:**1202 passed, 10 xfailed**. The
+MODEL_CARD.md:70:review rather than proposing a normal exam. Corpus false PENDING_VERIFICATION
+MODEL_CARD.md:71:is zero; original authored cases score 45/45 with zero false pending, while the
+MODEL_CARD.md:72:expanded 47 still have two false pending results. The always-abstain canary
+MODEL_CARD.md:73:also achieves zero false pending, so that metric alone proves no improvement.
+MODEL_CARD.md:76:seven correct NOT_READY and four correct review outcomes; zero false pending
+MODEL_CARD.md:79:reports no recall gain on the separate 36-case held-out exp-002 set; the prior
+MODEL_CARD.md:80:exp-001 held-out set improves 20 → 23 exact with zero false pending. Held-out
+MODEL_CARD.md:91:  rejected as unsafe; drug-name mapping awaits an auditable owner-approved list.
+MODEL_CARD.md:93:- Human-verification identity is self-reported, not authenticated; the local demo cannot establish that a person actually reviewed a fact. Incorrect human attestations can still permit false READY.
+MODEL_CARD.md:94:- v2.3.0 rejects the cross-sentence borrowed study date. Same-sentence unrelated
+LIMITATIONS.md:9:are fixed in v2.3.0; their broader failure classes are not solved. See
+LIMITATIONS.md:49:## v2.4.0 bounds and evidence
+LIMITATIONS.md:54:old strict-xfail expectation of False remains disputed and unchanged.
+LIMITATIONS.md:61:Incorrect attestations can still produce false READY from unsupported proposals;
+LIMITATIONS.md:70:expansion was reverted after unsafe headache-therapy passes. Individual drug-name
+LIMITATIONS.md:73:Validation: **1202 passed, 10 xfailed**, corpus 52/52 with zero false pending,
+LIMITATIONS.md:74:45/45 original authored cases, and two false pending results in the expanded 47.
+LIMITATIONS.md:77:64/69 exact with zero false pending across 54 negatives, but retain three missed
+LIMITATIONS.md:79:set showed no recall gain. See [v2.4.0](docs/releases/v2.4.0.md) and the
+autoloop/BASELINE.md:3:Starting commit: `5ac2cd8c110aec8c904a5e2577d5661fc970d1b1` (v2.2.0).
+autoloop/BASELINE.md:11:1072 passed, 14 xfailed in 36.34s
+autoloop/BASELINE.md:29:| False PENDING_VERIFICATION | 0 | 0 |
+autoloop/BASELINE.md:34:| False READY | 0 | 0 |
+autoloop/BASELINE.md:67:  two false pending statuses, one missed pass, 25% exact accuracy, 50% abstention.
+docs/releases/v2.1.2.md:18:on v2.1.1; subsequent fresh exports still reported engine 2.1.0.
+docs/releases/v2.1.2.md:42:expected failures. Both versions retained 52/52 exact corpus statuses and
+docs/releases/v2.2.0.md:1:# v2.2.0 — consistency and reviewer context
+docs/releases/v2.2.0.md:3:Engine/app version is **2.2.0**. Record `schema_version` remains **2.0.0**.
+docs/releases/v2.2.0.md:94:## Remaining false-READY paths
+docs/releases/v2.2.0.md:127:`2.1.3` to `2.2.0`; all other generated fields are unchanged. Monitored policy
+docs/releases/v2.2.0.md:130:Python 3.12.3 and 3.13.12 each report **1,072 passed, 14 expected failures**.
+docs/releases/v2.3.0-doc-audit.md:1:# v2.3.0 documentation and implementation drift audit
+docs/releases/v2.3.0-doc-audit.md:3:Fresh checks: `make test` **1123 passed, 10 xfailed**; `make lint` passes
+docs/releases/v2.3.0-doc-audit.md:5:correct-value strict xfails for existing gaps; the preceding experiment's
+docs/releases/v2.3.0-doc-audit.md:9:with `rg -n -i` for test/xfail counts, expected failures, false READY/pending,
+docs/releases/v2.3.0-doc-audit.md:11:are retained in `autoloop/evidence/release-v2.3.0-doc-scan.txt`. Each match was
+docs/releases/v2.3.0-doc-audit.md:14:2.3.0, record schema 2.0.0, and 52/52 corpus exact with zero false pending.
+docs/releases/v2.3.0-doc-audit.md:20:| `EXTRACTION_CONTRACT.md` | Remove resolved markers for auxiliary-verb negation, reflex attribution and cross-sentence dates; add neither/nor and same-sentence date strict-xfail examples; replace obsolete remaining-failure list, document numeric-score dispute and case-17 label change; extend the handled-pattern table through v2.3. |
+docs/releases/v2.3.0-doc-audit.md:21:| `README.md` | Replace stale current engine/schema prose and v2.1 current-release link; add five fixes, current counts, false-pending/canary limits, and name the remaining same-sentence date path. Label the old screenshot historical. Point regeneration guidance at the fixed-clock procedure. |
+docs/releases/v2.3.0-doc-audit.md:22:| `docs/testing.md` | Correct contract-marker source, current xfail inventory, case-17/18 dispositions and old all-xfails-unchanged claim; add 1123 / 10 and the automated safety metric; use v2.3.0 in owner version check. Preserve the fixed-clock generator procedure. |
+docs/releases/v2.3.0-doc-audit.md:23:| `FAILURE_MODES.md` | Update release metadata and the handled-pattern table; distinguish resolved auxiliary negation/reflex/date/numeric examples from remaining neither/nor, same-sentence dates and unrelated therapy. Correct case-17/18 disposition and explain the still-disputed numeric label. List current xfail groups and false-READY pathways. |
+docs/releases/v2.3.0-doc-audit.md:25:| `MODEL_CARD.md` | Update version/changelog; replace the stale pending-negation and unfixed-date descriptions; add current test counts, false-pending and canary limits. |
+docs/releases/v2.3.0-doc-audit.md:26:| `docs/api.md` | Correct current exported engine version from 2.1.0 to 2.3.0; record schema stays 2.0.0. |
+docs/releases/v2.3.0-doc-audit.md:29:| `docs/releases/v2.3.0.md` | Add five accepted fixes, owner-approved (a/b) rewrites, case-17 label changes/rationale, required external result verbatim with owner attribution, open gaps and current validation. |
+docs/releases/v2.3.0-doc-audit.md:30:| `docs/releases/v2.3.0-generation-audit.md` | List every regenerated file and exact version-field diff; governance is unchanged and no extraction-related generated field changed. |
+docs/releases/v2.3.0-doc-audit.md:34:- `docs/releases/v1.5.0.md`, `v2.0.0.md`, `v2.1.0.md`, `v2.1.3.md`, `v2.2.0.md`:
+docs/releases/v2.3.0-doc-audit.md:43:  Current docs now also identify false PENDING_VERIFICATION as the safety gate.
+docs/releases/v2.3.0-doc-audit.md:53:- `engine/__init__.py` is 2.3.0; no other product-source file changed after
+docs/releases/v2.3.0-doc-audit.md:55:- API and v2.1 safety tests pin 2.3.0 as requested.
+docs/releases/v2.3.0-doc-audit.md:56:- Contract-test markers now depend only on JSON `known_failure`; the three
+docs/releases/v2.3.0-doc-audit.md:58:- New contract xfails reproduce the same two gaps used by the owner-approved
+autoloop/exp-002/REPORT.md:1:# exp-002 — bounded recall experiment
+autoloop/exp-002/REPORT.md:3:Base: main v2.3.0, `67f1f3ccaf1ccdbd74b8c4b3a58620ae3c08209a`.
+autoloop/exp-002/REPORT.md:6:produced. The final engine improves recall on the authored pairs without adding
+autoloop/exp-002/REPORT.md:7:false PENDING_VERIFICATION on the corpus or any authored negative.
+autoloop/exp-002/REPORT.md:13:test, `test/test_exp002_recall.py::test_exp002_pair`, executes both sides,
+autoloop/exp-002/REPORT.md:20:| 2 | Complete qualifying courses in whole days; floor completed days / 7 | `days_threshold`, `days_before_modality`, `days_relaxant` | 10: short, improved, planned, non-patient, denied, PT-only, unrelated indication inline/semicolon, fraction, comparison | 1136 passed / 10 xfailed |
+autoloop/exp-002/REPORT.md:21:| 3 | Complete qualifying courses in whole months; four-week lower bound per month | `months_nsaid`, `months_before_modality`, `months_relaxant` | 10, including one month below six weeks and substantial improvement | 1149 passed / 10 xfailed |
+autoloop/exp-002/REPORT.md:22:| 4 | Number words one through twelve in that isolated course grammar | `words_threshold`, `words_before_modality`, `words_relaxant` | 11, including five weeks, improvement, fractional/comparative/ranged language and unrelated therapy | 1163 passed / 10 xfailed |
+autoloop/exp-002/REPORT.md:23:| 5 | Direct named-root objective strength written “4 of 5” / “3 out of 5”, including decimal scores | `exam_of`, `exam_out_of`, `exam_decimal` | 12: normal, negated, questioned, planned, non-patient, subjective, missing/unnamed root, pain rating, alternative attribution inline/semicolon, opposite side | 1178 passed / 10 xfailed |
+autoloop/exp-002/REPORT.md:43:listed in Footnote 1. Its three positives reproduced the recall defect. The
+autoloop/exp-002/REPORT.md:46:failure class then produced **three false PENDING_VERIFICATION** for courses
+autoloop/exp-002/REPORT.md:55:for failure to reproduce. Individual drug-name mapping was not attempted because
+autoloop/exp-002/REPORT.md:69:and negatives **52/54 exact**, with **0/54 false PENDING_VERIFICATION**.
+autoloop/exp-002/REPORT.md:74:| Corpus false PENDING_VERIFICATION | 0 | 0 | 0 |
+autoloop/exp-002/REPORT.md:78:| All authored false PENDING_VERIFICATION | 0 | 0 | 0 |
+autoloop/exp-002/REPORT.md:88:The unchanged corpus cannot establish recall improvement either.
+autoloop/exp-002/REPORT.md:100:engines: **45/47 exact, two pre-existing false PENDING_VERIFICATION**. These are
+autoloop/exp-002/REPORT.md:106:Baseline: **1123 passed, 10 xfailed**. Final: **1189 passed, 10 xfailed**.
+autoloop/exp-002/REPORT.md:108:for rejected-candidate negatives. Newly passing strict xfails: **0**; markers
+autoloop/exp-002/REPORT.md:132:twelve, and month values are lower bounds. These restrictions trade recall for
+docs/api.md:242:then discards it. `engine_version` is stamped `2.4.0`; record `schema_version` remains `2.0.0`.
+autoloop/exp-002/BASELINE.md:3:Start: v2.3.0, `67f1f3ccaf1ccdbd74b8c4b3a58620ae3c08209a`.
+autoloop/exp-002/BASELINE.md:13:1123 passed, 10 xfailed in 35.81s
+autoloop/exp-002/BASELINE.md:22:| False PENDING_VERIFICATION | 0 | 0 |
+autoloop/exp-002/BASELINE.md:29:The saturated corpus cannot demonstrate recall improvement. New paired positive
+autoloop/exp-002/BASELINE.md:31:because the canary also scores zero. Existing known failures in exp-001 remain
+docs/releases/v2.1.0.md:1:# v2.1.0 — extraction safety, citation context and performance
+docs/releases/v2.1.0.md:4:This is release preparation only: no merge or tag. Engine version is `2.1.0`;
+docs/releases/v2.1.0.md:32:## First-pass patterns handled; failure classes remain open
+docs/releases/v2.1.0.md:40:[validation report](v2.1.0-validation.json).
+docs/releases/v2.1.0.md:60:| Low back pain with radiculopathy. **It resolved last year.** | true | Still true; correct expectation is NEEDS_REVIEW | Strict xfail `test_resolved_historical_episode_across_sentences_requires_review` |
+docs/releases/v2.1.0.md:70:## Known failures and test honesty
+docs/releases/v2.1.0.md:72:The first pass added seven strict xfails asserting **correct** values, across six
+docs/releases/v2.1.0.md:75:- `negation_first`: lumbar diagnosis negation scope; expect false.
+docs/releases/v2.1.0.md:77:- `reflex_attribution`: decreased pain borrowed as a reflex finding; expect missing.
+docs/releases/v2.1.0.md:79:- `borrowed_date`: visit date borrowed for an undated sleep study; expect missing.
+docs/releases/v2.1.0.md:80:- `test_G07_borrowed_date_remains_contained_by_demo_submission_gate`: the same date-association failure, expecting missing and CANNOT_DETERMINE even after attestation.
+docs/releases/v2.1.0.md:101:| 12: resolved prior episode across sentences | Radiculopathy true / MET | Still wrong; strict xfail asserts NEEDS_REVIEW. Its containing sentence does not show the subsequent resolution. |
+docs/releases/v2.1.0.md:123:Four additional **strict xfails assert correct expectations**: case 12 review,
+docs/releases/v2.1.0.md:139:| Measurement | v2.0.0 before | v2.1.0 after |
+docs/releases/v2.1.0.md:145:| Full suite, original baseline / first pass | 359.36 s; 760 passed | 29.17 s; 798 passed, 7 strict xfails |
+docs/releases/v2.1.0.md:146:| Independent pristine-main suite confirmation | 363.69 s; 760 passed | Same first-pass run above |
+docs/releases/v2.1.0.md:153:Second-pass validation (Python 3.12.3): **861 passed, 11 strict xfails in
+docs/releases/v2.1.0.md:180:[v2.1.0-validation.json](v2.1.0-validation.json). The six changed evaluation goldens
+docs/releases/v2.1.0.md:197:`app_version` to 2.1.0. Governance goldens, the corrected transition/letter golden,
+docs/releases/v2.1.0.md:215:| `engine/__init__.py` | Engine 2.1.0. |
+docs/releases/v2.1.0.md:216:| `test/test_v210_independent.py`, `test/fixtures/v210_independent.json` | Frozen 20 independent inputs with correct reviewer expectations and four strict known failures; sentence-scoped trigger and semicolon regressions. |
+docs/releases/v2.1.0.md:217:| `test/test_v210_safety.py` | Named reproduced cases, cache/mutation/immutability and surface regressions; cross-sentence strict xfail. |
+docs/releases/v2.1.0.md:218:| `test/test_v150_contract.py` | Correct published expectations and strict known-failure markers. |
+docs/releases/v2.1.0.md:219:| `test/test_api.py` | Expected engine version 2.1.0. |
+docs/releases/v2.1.0.md:222:| `EXTRACTION_CONTRACT.md`, `FAILURE_MODES.md` | Patterns handled; failure classes remain open; correct expectations; current Last Updated date. |
+docs/releases/v2.1.0.md:224:| `docs/api.md`, `docs/testing.md` | Derived surface context and benchmark/strict-xfail documentation. |
+docs/releases/v2.1.0.md:227:| `docs/releases/v2.1.0.md`, `docs/releases/v2.1.0-validation.json` | Release narrative and complete measured validation/diff report. |
+docs/releases/v2.1.0.md:234:status precedence changes; new recognition phrases (4+/5, drug names, therapy
+docs/testing.md:18:- the bundled labeled fixture suite checks exact expected overall statuses for every included case and reports fixture-scoped false-READY, exact-status, and abstention metrics; these are regression metrics, not estimates of real-world clinical-language performance
+docs/testing.md:23:examples use strict xfails driven solely by contract JSON; resolved examples pass
+docs/testing.md:132:   without the `v` prefix (for `v2.4.0`, expect `2.4.0`).
+docs/testing.md:201:threshold. The [release report](releases/v2.1.0.md) includes before/after results.
+docs/testing.md:217:facts/spans for three unchanged controls; and three correct-value strict xfails
+docs/testing.md:234:## v2.4.0 release validation and open expectations
+docs/testing.md:236:Fresh `make test`: **1202 passed, 10 xfailed**. `make lint` must pass as well.
+docs/testing.md:237:The record schema remains 2.0.0. See [v2.4.0](releases/v2.4.0.md) for the
+docs/testing.md:241:Four contract JSON examples have `known_failure`: neither/nor negation,
+docs/testing.md:244:unsafe affirmative proposal. The remaining six xfails cover two cross-sentence
+docs/testing.md:250:The automated safety metric is false PENDING_VERIFICATION, not false READY:
+docs/testing.md:251:all-MET proposals can still be unsupported. Corpus 52/52 and zero false pending
+docs/testing.md:253:pending; the expanded 47 retain two false pending setup counterexamples.
+docs/testing.md:254:The canary also has zero false pending, so report exact status, missed passes,
+docs/testing.md:261:64/69; positives 0/15 → 12/15; negative false PENDING_VERIFICATION stays 0/54.
+docs/testing.md:266:The ten xfails listed above remain. The supplied held-out exp-002 set showed
+docs/testing.md:267:no recall gain; do not present authored-case improvement as generalization.
+docs/testing.md:268:The generic analgesic-duration xfail asserts `conservative_therapy_weeks`, a
+docs/releases/v2.4.0-generation-audit.md:1:# v2.4.0 generation audit
+docs/releases/v2.4.0-generation-audit.md:6:The [exact command](v2.4.0-generation-command.txt) records every actual file
+docs/releases/v2.4.0-generation-audit.md:11:JSON path is listed below; all changes are `2.3.0` → `2.4.0`. The complete
+docs/releases/v2.4.0-generation-audit.md:12:per-file SHA-256 comparison is in [the machine audit](v2.4.0-generation-audit.json).
+docs/releases/v2.4.0-generation-audit.md:45:Their recall evidence remains the separate authored pairs and contract examples.
+docs/releases/v1.5.0.md:49:- Full suite: **359 passed**, including all **287 existing cases** (with
+docs/releases/v1.5.0.md:50:  intentional v1.5 expectation updates) and **72 new cases**; no skips or xfails.
+docs/releases/v2.4.0-doc-audit.md:1:# v2.4.0 documentation and implementation drift audit
+docs/releases/v2.4.0-doc-audit.md:3:Fresh `make test`: **1202 passed, 10 xfailed**. `make lint` passes (Ruff check
+docs/releases/v2.4.0-doc-audit.md:5:passing executable contract examples to exp-002's **1189 passed / 10 xfailed**.
+docs/releases/v2.4.0-doc-audit.md:7:known-failure examples. Record schema stays **2.0.0**; engine/app is **2.4.0**.
+docs/releases/v2.4.0-doc-audit.md:10:Markdown, was searched using `rg -n -i` for versions, test/xfail counts,
+docs/releases/v2.4.0-doc-audit.md:11:known-failure markers, false READY/pending, handled-pattern headings, resolved
+docs/releases/v2.4.0-doc-audit.md:12:example IDs, recall and drug-name claims. The complete inventory and regex are
+docs/releases/v2.4.0-doc-audit.md:13:in [v2.4.0-doc-inventory.json](v2.4.0-doc-inventory.json); all matching lines are
+docs/releases/v2.4.0-doc-audit.md:14:in [v2.4.0-doc-scan.txt](v2.4.0-doc-scan.txt). Historical experiment and release
+docs/releases/v2.4.0-doc-audit.md:23:| `docs/testing.md` | Current suite/version and fixed-clock audit link; 55 exact pairs plus eleven rejection guards, thirteen contract additions, unchanged ten-xfail inventory and held-out limitation; distinguish generic duration from CPB fields. |
+docs/releases/v2.4.0-doc-audit.md:24:| `FAILURE_MODES.md` | Current release metadata/count and handled-pattern table; add bounded duration/word-strength rows and explicit rejected full-class row; retain legacy slash, episode, neither/nor and same-sentence date false-READY paths. |
+docs/releases/v2.4.0-doc-audit.md:25:| `LIMITATIONS.md` | Current bounds/evidence and count; lower-bound conversions, narrow grammar, legacy-route asymmetry, drug-list decision, remaining misses and no held-out exp-002 recall gain. |
+docs/releases/v2.4.0-doc-audit.md:27:| `docs/reviewer_guide.md` | Current count and release link; bounded improvements, rejected unsafe class expansion and no held-out exp-002 recall gain. |
+docs/releases/v2.4.0-doc-audit.md:28:| `docs/api.md` | Current stamped engine version 2.4.0; record schema remains 2.0.0. |
+docs/releases/v2.4.0-doc-audit.md:37:- `docs/releases/v2.3.0*.md`, prior release notes and their evidence retain their
+docs/releases/v2.4.0-doc-audit.md:50:  xfails remain because the new paths do not rewrite legacy extraction behavior.
+docs/releases/v2.4.0-doc-audit.md:51:- Corpus 52/52, zero false pending, exp-002 all-authored 64/69, zero false pending,
+docs/releases/v2.4.0-doc-audit.md:52:  and exp-001 expanded 45/47 with two inherited false pending are unchanged by
+docs/releases/v2.4.0-doc-audit.md:60:[v2.4.0-scope-audit.json](v2.4.0-scope-audit.json) records source checks against
+docs/releases/v2.4.0-doc-audit.md:62:2.3.0 → 2.4.0. `engine/extract.py`, all other runtime code and both generators are
+docs/releases/v2.4.0-doc-audit.md:64:replacements; all 38 old contract examples and all four known-failure objects
+autoloop/exp-002/LOG.md:3:Baseline `4e0c06f`: 52/52 corpus, zero false pending; canary 30/52, seven missed
+autoloop/exp-002/LOG.md:4:passes. Tests 1123 passed / 10 xfailed. Scorer, clocks, policies and original
+autoloop/exp-002/LOG.md:20:**8/8** negatives exact with zero false pending; full suite **1134 passed,
+autoloop/exp-002/LOG.md:21:10 xfailed**; corpus byte-for-byte baseline match.
+autoloop/exp-002/LOG.md:26:became false PENDING_VERIFICATION. The candidate was immediately reverted to
+autoloop/exp-002/LOG.md:31:Post-revert score: **0/3** positives pass, **0/11 false pending** across original
+autoloop/exp-002/LOG.md:34:iteration. No scorer, expected label, existing assertion or xfail was changed.
+autoloop/exp-002/LOG.md:40:authored evaluation, rather than being dropped from recall totals.
+autoloop/exp-002/LOG.md:45:is claimed from this candidate. Unrestricted drug-name lists were not attempted;
+autoloop/exp-002/LOG.md:47:mapping of individual drug names to classes.
+autoloop/exp-002/LOG.md:54:accept numeric weeks. No drug-name mapping or clinical inference is involved.
+autoloop/exp-002/LOG.md:60:Before: **0/3 positives pass**, negatives **8/10 exact and 0 false pending**;
+autoloop/exp-002/LOG.md:71:After: **3/3 positives pass**, **10/10 negatives exact, zero false pending**;
+autoloop/exp-002/LOG.md:75:`make test`: **1136 passed, 10 xfailed**. No existing xfail marker/assertion
+autoloop/exp-002/LOG.md:77:public service in `test/test_exp002_recall.py`.
+autoloop/exp-002/LOG.md:105:zero false pending throughout; total **21/26 → 26/26 exact**. Abstention falls
+autoloop/exp-002/LOG.md:107:notes now return NOT_READY. `make test`: **1149 passed, 10 xfailed**. Then the
+autoloop/exp-002/LOG.md:128:positives fail before implementation; negatives have zero false pending, with
+autoloop/exp-002/LOG.md:138:zero false pending throughout. Total **35/40 → 40/40 exact**; abstention
+autoloop/exp-002/LOG.md:140:notes now correctly return NOT_READY. `make test`: **1163 passed, 10 xfailed**;
+autoloop/exp-002/LOG.md:148:recall. Neither rejected cases nor negative labels were removed to raise scores.
+autoloop/exp-002/LOG.md:176:exact**, zero false pending. Total **47/55 → 55/55 exact**; abstention **40/55 →
+autoloop/exp-002/LOG.md:178:NOT_READY and four ambiguous statements NEEDS_REVIEW. `make test`: **1178 passed,
+autoloop/exp-002/LOG.md:179:10 xfailed**; then corpus equals baseline byte-for-byte. No existing assertion
+autoloop/exp-002/LOG.md:180:or xfail marker changed. Evidence: `evidence/iteration-5-*`.
+autoloop/exp-002/LOG.md:208:| False PENDING_VERIFICATION | 0 | 0 | 0 |
+autoloop/exp-002/LOG.md:218:variants. The canary's zero false pending and 41/69 exact are insufficient
+autoloop/exp-002/LOG.md:221:Corpus: complete report equals frozen baseline, **52/52, zero false pending**;
+autoloop/exp-002/LOG.md:223:also equals its original report: **45/47 exact, two pre-existing false pending**.
+autoloop/exp-002/LOG.md:234:Final gates: **1189 passed, 10 xfailed** (`evidence/final-tests.txt`),
+autoloop/exp-002/LOG.md:235:`make lint` passes (`evidence/final-lint.txt`). Baseline **1123 passed / 10
+autoloop/exp-002/LOG.md:236:xfailed**. Newly passing strict xfails **0**; removed markers **0**. After those
+autoloop/exp-002/LOG.md:242:new `test/test_exp002_recall.py` adds tests. All pre-existing tests/expectations,
+autoloop/exp-002/LOG.md:248:this is evidence on bounded phrasing families rather than broad clinical recall.
+docs/releases/v2.0.0.md:59:- Full suite on main: **760 passed**, including **29 audit-fix regressions**;
+docs/releases/v2.0.0.md:60:  no failures, skips, or xfails.
+docs/releases/v2.4.0.md:1:# v2.4.0 — bounded recall improvements
+docs/releases/v2.4.0.md:3:Engine/app version is **2.4.0**; record `schema_version` remains **2.0.0**.
+docs/releases/v2.4.0.md:14:inferred from drug names.
+docs/releases/v2.4.0.md:33:attribution challenges produced three false PENDING_VERIFICATION. No improvement
+docs/releases/v2.4.0.md:40:NEEDS_REVIEW; no previously correct authored status regresses. False pending
+docs/releases/v2.4.0.md:45:The canary always returns CANNOT_DETERMINE: **41/69 exact**, zero false pending,
+docs/releases/v2.4.0.md:46:15 missed passes and 100% abstention. Its zero false pending demonstrates why
+docs/releases/v2.4.0.md:48:**52/52 exact**, zero false pending; its canary is 30/52 exact with seven missed
+docs/releases/v2.4.0.md:50:pre-existing false pending results. These development regressions are not held-out
+docs/releases/v2.4.0.md:53:Held-out evaluation: exp-002 set (36 cases, not visible during development) unchanged at 0 false PENDING_VERIFICATION with no recall gain; prior exp-001 held-out set improved 20 → 23 exact with 0 false PENDING_VERIFICATION. Drug-name → class mapping is out of scope pending an owner decision on an auditable drug list.
+docs/releases/v2.4.0.md:56:rerun during release preparation. In particular, authored recall improvements
+docs/releases/v2.4.0.md:57:are not evidence of recall gains on the exp-002 held-out set.
+docs/releases/v2.4.0.md:67:exp-001's approved rewrites remain documented in [v2.3.0](v2.3.0.md).
+docs/releases/v2.4.0.md:69:Fresh validation: **1202 passed, 10 xfailed**; `make lint` passes. Compared with
+docs/releases/v2.4.0.md:71:strict xfails remain: four contract examples (unrelated therapy, neither/nor,
+docs/releases/v2.4.0.md:79:remain false-READY pathways under current verified lumbar governance. CPAP demo
+docs/releases/v2.4.0.md:86:instant `2026-09-01T00:00:00Z`**, matching v2.2.0/v2.3.0. All 25 actual writes
+docs/releases/v2.4.0.md:90:[generation audit](v2.4.0-generation-audit.md) for every file and JSON path.
+docs/releases/v2.4.0.md:92:The [documentation drift audit](v2.4.0-doc-audit.md) lists corrected documents,
+docs/releases/v2.4.0.md:94:Raw [test](v2.4.0-tests.txt), [lint](v2.4.0-lint.txt) and
+docs/releases/v2.4.0.md:95:[corpus-score](v2.4.0-corpus-score.json) evidence accompanies it.
+EXTRACTION_CONTRACT.md:17:block. `TestExtractionContractAlignment` executes correct expectations; remaining known failures are strict xfails. These finite examples are not universal language claims;
+EXTRACTION_CONTRACT.md:61:correct expectations, with known failures explicitly marked, rather than promising semantic accuracy
+EXTRACTION_CONTRACT.md:67:  {"id":"negation_first","note":"Patient does not have low back pain with radiculopathy. Right L5 distribution: strength 4/5. NSAIDs for 8 weeks with minimal improvement.","expected":{"back_pain_with_radiculopathy":false},"procedure":"MRI_LUMBAR","status":"NOT_READY"},
+EXTRACTION_CONTRACT.md:68:  {"id":"negated_strength","note":"Low back pain with radiculopathy. Right L5 distribution: dorsiflexion strength not 4/5. NSAIDs for 8 weeks with minimal improvement.","expected":{"objective_motor_or_reflex_change_in_root_distribution":false},"procedure":"MRI_LUMBAR","status":"NOT_READY","known_failure":"negation: score is explicitly negated"},
+EXTRACTION_CONTRACT.md:69:  {"id":"reflex_attribution","note":"Low back pain with radiculopathy. Right L5 distribution: reflexes assessed, pain decreased. NSAIDs for 8 weeks with minimal improvement.","expected":{"objective_motor_or_reflex_change_in_root_distribution":null},"procedure":"MRI_LUMBAR","status":"CANNOT_DETERMINE"},
+EXTRACTION_CONTRACT.md:71:  {"id":"unrelated_therapy","note":"Low back pain with radiculopathy. Right L5 distribution: strength 4/5. NSAIDs for 8 weeks for headaches with minimal improvement.","expected":{"cpb_0236_conservative_therapy_weeks":null,"cpb_0236_conservative_therapy_no_improvement":null},"procedure":"MRI_LUMBAR","status":"CANNOT_DETERMINE","known_failure":"attribution: headache therapy borrowed for lumbar episode"},
+EXTRACTION_CONTRACT.md:72:  {"id":"borrowed_date","note":"OSA. Visit date 2024-05-18. Sleep study date not recorded. AHI 22.","expected":{"sleep_study_date":null},"procedure":"CPAP_DEVICE","status":"CANNOT_DETERMINE"},
+EXTRACTION_CONTRACT.md:73:  {"id":"neither_nor_negation","note":"Patient has neither low back pain nor radiculopathy. Right L5 distribution: strength 4/5. NSAIDs for 8 weeks with no improvement.","expected":{"back_pain_with_radiculopathy":false},"procedure":"MRI_LUMBAR","status":"NOT_READY","known_failure":"negation: neither/nor scope is unsupported"},
+EXTRACTION_CONTRACT.md:74:  {"id":"same_sentence_borrowed_date","note":"OSA. Visit date 2024-05-18, sleep study date not recorded. AHI 22.","expected":{"sleep_study_date":null},"procedure":"CPAP_DEVICE","status":"CANNOT_DETERMINE","known_failure":"date association: unrelated visit date in the same sentence"},
+EXTRACTION_CONTRACT.md:125:`same_sentence_borrowed_date` example remains incorrect. Human reviewers must
+EXTRACTION_CONTRACT.md:130:## Patterns handled through v2.4; failure classes remain open
+EXTRACTION_CONTRACT.md:165:change extraction, statuses, the readiness gate or the remaining false-READY
+EXTRACTION_CONTRACT.md:168:Current release validation: **1202 passed, 10 xfailed**. Contract JSON alone
+EXTRACTION_CONTRACT.md:169:drives known-failure markers; there is no exemption list. Four contract examples
+EXTRACTION_CONTRACT.md:171:`same_sentence_borrowed_date`, and the disputed `negated_strength` expectation.
+EXTRACTION_CONTRACT.md:176:The six other strict xfails cover two cross-sentence temporality tests, generic
+EXTRACTION_CONTRACT.md:182:See [v2.3.0 release notes](docs/releases/v2.3.0.md) and the
+EXTRACTION_CONTRACT.md:191:strict xfails in `test/test_h1_review_triggers.py`. With supplied attestations,
+EXTRACTION_CONTRACT.md:196:## v2.4 recall bounds
+EXTRACTION_CONTRACT.md:199:expectation or known-failure marker. New course forms require the entire sentence
+EXTRACTION_CONTRACT.md:208:Drug-name to class mapping is out of scope pending an owner decision on an
+EXTRACTION_CONTRACT.md:209:auditable drug list. See [v2.4.0](docs/releases/v2.4.0.md) and the
+docs/releases/v2.3.0.md:1:# v2.3.0 — bounded extraction fixes and explicit open gaps
+docs/releases/v2.3.0.md:3:Engine/app version is **2.3.0**; record `schema_version` remains **2.0.0**.
+docs/releases/v2.3.0.md:14:| Auxiliary-verb diagnosis negation | `does/do/did not have` before lumbar pain or radiculopathy produces False; conflicting affirmative/negative proposals require review. | `negation_first` contract example and nine diagnosis cases |
+docs/releases/v2.3.0.md:15:| Reflex descriptor linkage | Pain/sensation adjectives cannot establish a reflex change merely because a reflex noun appears elsewhere in the clause. Require a bounded reflex noun/predicate link. | `reflex_attribution` and 14 reflex/attribute cases |
+docs/releases/v2.3.0.md:18:| Cross-sentence sleep-study date association | An appointment date in another sentence cannot supply missing study-date evidence. | `borrowed_date`, the attested G07 check and seven date/citation cases |
+docs/releases/v2.3.0.md:23:45-case authored set improves from 35/45 to 45/45 with false pending 10 → 0.
+docs/releases/v2.3.0.md:25:45/47, false pending 12 → 2. The 52-case corpus remains 52/52, false pending zero.
+docs/releases/v2.3.0.md:27:canary also has zero false pending, so that count alone demonstrates no gain.
+docs/releases/v2.3.0.md:29:An external held-out set (41 cases, not visible during development) scored before and after: false PENDING_VERIFICATION 1 → 0, no other status changes.
+docs/releases/v2.3.0.md:50:evidence and the executable `borrowed_date` contract specifies missingness.
+docs/releases/v2.3.0.md:66:Removed `known_failure` from `negation_first`, `reflex_attribution` and
+docs/releases/v2.3.0.md:67:`borrowed_date`; their expected facts/statuses are unchanged. Removed the
+docs/releases/v2.3.0.md:69:strict markers. Added correct-value `known_failure` examples for:
+docs/releases/v2.3.0.md:76:There are ten strict xfails: four contract examples (including unrelated therapy
+docs/releases/v2.3.0.md:79:checks. False READY remains possible with incorrect human attestations. The
+docs/releases/v2.3.0.md:90:Generators are invoked with the same **shared acceptance instant** as v2.2.0:
+docs/releases/v2.3.0.md:93:See [generation audit](v2.3.0-generation-audit.md) for the complete file/field list.
+docs/releases/v2.3.0.md:96:Release checks: **1123 passed, 10 xfailed**; `make lint` passes. The two added
+docs/releases/v2.3.0.md:97:xfails document existing gaps rather than regressions. Record schema stays 2.0.0.
+docs/releases/v2.3.0.md:100:lint. The explicitly pinned API and safety-test engine versions are 2.3.0.
+docs/releases/v2.3.0.md:102:The [documentation drift audit](v2.3.0-doc-audit.md) lists updated documents and
+docs/releases/v2.1.1.md:27:expected failures. The labeled corpus remained 52/52; conformance recorded
+docs/releases/v2.1.1.md:30:their engine/app version fields from 2.1.0 to 2.1.1; decisions, evidence,
+FAILURE_MODES.md:9:**Last Updated:** October 15, 2026 — v2.4.0
+FAILURE_MODES.md:21:Automated extraction is a **drafting aid, not a decision gate**. v1.4.0's posture over-trusted extraction. Negated diagnoses returned affirmative facts, contradicting the extraction contract as written. v1.5.0 resolves that contradiction by changing what the engine may assert rather than by making extraction match the contract. v2.4.0 handles the bounded patterns below; the negation, temporality, attribution and other failure classes remain open.
+FAILURE_MODES.md:63:- Self-reported identity is not authentication. Rubber-stamping or fabricated attestations can still permit false READY; the CLI archive can retain these records, but is not an authenticated or tamper-resistant production attestation ledger.
+FAILURE_MODES.md:84:### FM-1: False READY (Unsafe Over-Trust)
+FAILURE_MODES.md:111:**Revision note, September 4, 2026:** The fourth audit reproduced affirmative proposals from negated diagnoses and strength, reflex qualifiers borrowed from pain, resolved findings, and unrelated therapy. These errors remained at that audit. v2.3.0 fixes the bounded auxiliary-verb,
+FAILURE_MODES.md:238:## Patterns handled through v2.4.0; classes remain open
+FAILURE_MODES.md:254:| Low back pain with radiculopathy. It resolved last year. | Remaining: cross-sentence historical episode coreference; strict xfail asserts review. |
+FAILURE_MODES.md:258:| Root-distribution strength not 4/5 | Fixed affirmative over-capture: NEEDS_REVIEW; the unchanged contract False / NOT_READY expectation remains disputed and strict-xfailed. |
+FAILURE_MODES.md:260:| Lumbar therapy actually for headaches | Remaining attribution failure; contract xfail expects missing. |
+FAILURE_MODES.md:261:| Patient has neither low back pain nor radiculopathy | Remaining unsafe affirmative proposal; contract xfail expects False / NOT_READY. |
+FAILURE_MODES.md:262:| Visit date and undated sleep study in the same sentence | Remaining unsafe borrowed-date proposal; contract xfail expects missing / CANNOT_DETERMINE. |
+FAILURE_MODES.md:263:| Isolated NSAIDs for 42 days / two months / six weeks with explicit no improvement | Bounded recall fix: floor completed days to weeks, months to a four-week lower bound, and recognize number words one through twelve. Below-threshold or improved courses correctly fail. Modifiers, comparisons, fractions and episode linkage remain limited. |
+FAILURE_MODES.md:265:| Spelled-out non-steroidal anti-inflammatory class names | Recall defect remains: exp-002's vocabulary expansion was reverted when unrelated headache therapy became unsafe passes. Drug-name mapping awaits an auditable list decision. |
+FAILURE_MODES.md:285:The three corresponding strict xfails assert review as the correct behavior;
+FAILURE_MODES.md:296:This pass handles cases 2, 9, 10 and 13; case 12 remains a strict xfail asserting
+FAILURE_MODES.md:297:review. Case 2's secondary generic analgesic duration remains a strict xfail.
+FAILURE_MODES.md:298:v2.3.0 handles case 18's intact reflexes and rejects the unrelated date in case
+FAILURE_MODES.md:302:[v2.3.0](docs/releases/v2.3.0.md) for that release's results and
+FAILURE_MODES.md:303:[v2.1.0](docs/releases/v2.1.0.md) for historical measurements.
+FAILURE_MODES.md:316:## v2.4.0 safety metric and remaining pathways
+FAILURE_MODES.md:318:Fresh validation: **1202 passed, 10 xfailed**. Four contract xfails comprise
+FAILURE_MODES.md:324:safety gate is false PENDING_VERIFICATION: unsupported all-MET proposals. Corpus
+FAILURE_MODES.md:325:52/52 with zero false pending is unchanged. The original 45 authored cases now
+FAILURE_MODES.md:326:score 45/45 with zero false pending; expanded 47 retain two false pending results.
+FAILURE_MODES.md:327:The always-abstain canary also scores zero false pending, so exact status and
+FAILURE_MODES.md:330:Exp-002 accepted four narrow recall fixes, with all 55 accepted paired cases
+FAILURE_MODES.md:332:improve 41/69 → 64/69 exact with no false pending across 54 negatives. This
+FAILURE_MODES.md:338:The owner-supplied held-out exp-002 set showed no recall gain. Narrow authored
+FAILURE_MODES.md:341:The remaining neither/nor lumbar proposal can become false READY with supplied
+docs/releases/v2.3.0-generation-audit.md:1:# v2.3.0 generation audit
+docs/releases/v2.3.0-generation-audit.md:11:| Regenerated file | Exact changed JSON paths (2.2.0 → 2.3.0), or unchanged |
+docs/releases/v2.3.0-generation-audit.md:44:in [v2.3.0](v2.3.0.md).
+docs/releases/v2.1.3.md:103:Python **3.12.3**: **1,548 passed, 11 expected failures**, 35.85 seconds.
+docs/releases/v2.1.3.md:104:Python **3.13.12**: **1,548 passed, 11 expected failures**, 36.25 seconds.
+docs/releases/v2.1.3.md:106:The 11 pre-existing strict expected failures remain open extraction limitations.
+docs/releases/v2.1.3.md:158:After aggregation, full suites pass on Python 3.12.3 (949 passed, 11 expected
+docs/releases/v2.1.3.md:159:failures, 35.61 seconds) and Python 3.13.12 (949 passed, 11 expected failures,
+docs/releases/v2.1.3.md:194:Final full suites: Python 3.12.3 **952 passed, 11 expected failures** (36.21 s),
+docs/releases/v2.1.3.md:195:Python 3.13.12 **952 passed, 11 expected failures** (27.68 s). Both retain one
+docs/releases/v2.1.3.md:197:zero false READY; conformance remains **163 captured, 446 missing, 15 review**,
+autoloop/REPORT.md:9:- Final tests: **1123 passed, 8 xfailed**, versus **1103 / 12** at 962fafc.
+autoloop/REPORT.md:10:- Corpus: **52/52 exact, zero false PENDING_VERIFICATION**, byte-for-byte baseline
+autoloop/REPORT.md:12:- Frozen original 45 authored cases: **35/45 → 42/45 → 45/45 exact**, false pending
+autoloop/REPORT.md:15:  42/47 → 45/47 exact**, false pending **12 → 5 → 2**. The two remaining errors
+autoloop/REPORT.md:24:[EXTRACTION_CONTRACT.md](../EXTRACTION_CONTRACT.md) (`negation_first`, `borrowed_date`,
+autoloop/REPORT.md:31:| 7: archive `test_borrowed_date_verified_ready_without_submission_readiness_roundtrips` | **(b)** | Swap to an unrelated visit date in the same sentence as the undated study. Still a wrong all-MET proposal with deliberately incorrect synthetic attestations; retain READY, demo trust, submission_readiness=false and exact SQLite round trip. Add original date-True and PENDING_VERIFICATION preconditions. |
+autoloop/REPORT.md:32:| 7: corrections `test_borrowed_date_can_be_withdrawn_without_fixing_extraction` | **(b)** | Same same-sentence setup. Retain wrong True, actual offending-span review, SET_MISSING, immutable original and CANNOT_DETERMINE. Add effective-null, original-True snapshot and changed fingerprint checks. |
+autoloop/REPORT.md:40:date. Both still produce false pending; that risk is preserved in the feature
+autoloop/REPORT.md:47:collected regression suite without relabeling: **7 failed / 31 passed before**
+autoloop/REPORT.md:49:cases improve **2/9 → 9/9 exact, false pending 7 → 0**.
+autoloop/REPORT.md:55:checks: **4 failed / 41 passed before**, all 45 pass after. Date cases improve
+autoloop/REPORT.md:56:**4/7 → 7/7 exact, false pending 3 → 0**, and the fourth failing test's incorrect
+autoloop/REPORT.md:69:the executable `borrowed_date` contract require missingness, with G04 deriving
+autoloop/REPORT.md:74:## Strict xfails and test counts
+autoloop/REPORT.md:78:- Contract `negation_first`: original False / NOT_READY assertions now pass.
+autoloop/REPORT.md:82:- Contract `borrowed_date`: original null / CANNOT_DETERMINE assertions now pass.
+autoloop/REPORT.md:83:- `test_G07_borrowed_date_remains_contained_by_demo_submission_gate`: unchanged
+autoloop/REPORT.md:89:The unrelated negated-strength expectation dispute and every other xfail remain
+autoloop/REPORT.md:95:| Xfailed | 12 | 11 | 8 |
+autoloop/REPORT.md:98:The +20 passed tests comprise 16 newly collected repros and four removed markers;
+autoloop/REPORT.md:111:| Fixed set | Before 6: exact / false pending | After 6 | After 7 |
+autoloop/REPORT.md:120:confirm no newly false pending result at either accepted transition.
+autoloop/REPORT.md:122:| Final set | System exact | Canary exact | System / canary false pending | System / canary missed passes |
+autoloop/REPORT.md:129:42/52, matching expected. Zero false pending alone remains weak evidence because
+autoloop/REPORT.md:174:The corpus remains **52/52 exact, zero false PENDING_VERIFICATION**, byte-for-byte
+autoloop/REPORT.md:176:regressions, not the already-perfect corpus. Final `make test`: **1103 passed,
+autoloop/REPORT.md:177:12 xfailed**. No push, tag, deployment change or main change occurred.
+autoloop/REPORT.md:190:| 2 | Pain/sensation adjectives were borrowed as reflex findings. Require a grammatical reflex noun/descriptor link. | `reflex_unrelated_attribute_1` (`reflexes assessed, pain decreased`) | 6 | 14 cases pass; 1 old xfail now passes |
+autoloop/REPORT.md:191:| 3 | Explicitly intact reflexes were missing. Add `intact` to normal reflex vocabulary with the same subject linkage. | `reflex_intact_1` | 5 | 7 additional cases pass; 1 old xfail now passes |
+autoloop/REPORT.md:192:| 4 | Negated numeric strength was compared as an observed score. Route denied scores to the existing review state first. | `strength_negated_1` (`strength not 4/5`) | 5 | 8 additional cases pass; existing disputed xfail retained |
+autoloop/REPORT.md:203:- Contract `reflex_attribution`: null objective fact and CANNOT_DETERMINE.
+autoloop/REPORT.md:218:conflict. New-case exact status rose 2/9 → 9/9 and false pending fell 7 → 0.
+autoloop/REPORT.md:221:Full suite: 2 failed, 1080 passed, 13 xfailed. The fix and temporary marker
+autoloop/REPORT.md:222:removal were reverted; suite returned to 1072 passed, 14 xfailed.
+autoloop/REPORT.md:227:own sentence corrected three false pending results and one wrong citation.
+autoloop/REPORT.md:228:New-case exact status rose 4/7 → 7/7 and false pending fell 3 → 0. But existing
+autoloop/REPORT.md:231:though the study date is explicitly missing. Full suite: 3 failed, 1109 passed,
+autoloop/REPORT.md:232:10 xfailed. The candidate and both temporary marker removals were reverted.
+autoloop/REPORT.md:237:xfail expects False / NOT_READY for `not 4/5`. That number's negation does not
+autoloop/REPORT.md:239:expected fact/status and strict marker remain untouched, so it remains xfailed.
+autoloop/REPORT.md:255:| False PENDING_VERIFICATION | 0 | 0 | 0 |
+autoloop/REPORT.md:264:| Accepted iteration | Cumulative exact before → after | False pending before → after | Abstention before → after | Expected abstention |
+autoloop/REPORT.md:271:29/29 exact, zero false pending, zero missed passes, 15/29 abstention (matching
+autoloop/REPORT.md:272:expected). Its canary is 7/29 exact, zero false pending, eight missed passes,
+autoloop/REPORT.md:283:| False PENDING_VERIFICATION | **10** | 0 |
+autoloop/REPORT.md:288:The ten remaining false pending results are seven diagnosis and three date
+autoloop/REPORT.md:299:| Xfailed | 14 | 12 | -2 |
+autoloop/REPORT.md:300:| Existing strict xfails newly passing | 0 | 2 | +2 |
+autoloop/REPORT.md:307:spaces; source/test/documentation whitespace checks pass. The +31 passed count is 29 new tests plus two resolved
+autoloop/REPORT.md:308:xfails, not 31 defects fixed. Rejected-candidate tests are preserved as evidence
+autoloop/REPORT.md:322:The always-abstain canary also achieves zero false pending, so safety counts
+autoloop/REPORT.md:324:known false pending results that the existing-test gate prevented fixing.
+autoloop/REPORT.md:329:small lexical extension drawn from a known xfail. Neither is held-out evidence
+autoloop/REPORT.md:374:- Existing strict xfails remain unresolved. No markers or assertions changed.
+autoloop/REPORT.md:376:  A mixed status vector independently checked false-pending, missed-pass,
+autoloop/REPORT.md:382:| Xfailed | 14 | 14 | 0 |
+autoloop/REPORT.md:383:| Newly passing xfails | 0 | 0 | 0 |
+autoloop/REPORT.md:397:| False PENDING_VERIFICATION | 0 | 0 | 0 | 0 | 0 |
+autoloop/REPORT.md:403:Full confusion matrices are retained in both JSON reports. No false pending
+docs/demo_walkthrough.md:58:the does/do/did-not-have example is fixed in v2.3.0.
+README.md:7:v2.4.0 releases four bounded recall fixes from exp-002: qualifying isolated
+README.md:9:strength grades written “of” or “out of”. Engine/app version is **2.4.0**;
+README.md:14:Release validation: **1202 passed, 10 xfailed**. Corpus results remain 52/52,
+README.md:18:remains reverted. The owner-supplied held-out exp-002 evaluation showed no recall
+README.md:19:gain. Zero false pending alone is insufficient evidence: the always-abstain
+README.md:20:canary also scores zero. See the [v2.4.0 release notes](docs/releases/v2.4.0.md),
+README.md:82:The record schema version and release version are versioned independently. v2.4.0 writes record `schema_version: "2.0.0"`; v1.5 records retain their existing validation, and legacy records remain explicitly labeled and viewable only.
+autoloop/LOG.md:50:or fixed; no product regression test or xfail marker was changed. The freshness
+autoloop/LOG.md:63:  two false pending results and one missed pass.
+autoloop/LOG.md:66:  passing xfails. No policy, corpus, existing assertions, goldens, deployment
+autoloop/LOG.md:83:`negation_first` strict xfail, the negation limitation in `LIMITATIONS.md` and
+autoloop/LOG.md:93:negation regex. Targeted tests became 76 passed / 5 xfailed; the previously strict
+autoloop/LOG.md:94:`negation_first` assertion passed unchanged. Fresh cases changed from 2/9 exact,
+autoloop/LOG.md:95:7 false pending, 0% abstention to 9/9 exact, 0 false pending, 11.1111% abstention
+autoloop/LOG.md:96:(expected 11.1111%). Corpus results remained 52/52, zero false pending, zero
+autoloop/LOG.md:99:**Rejected and reverted**: full `make test` returned **2 failed, 1080 passed,
+autoloop/LOG.md:100:13 xfailed**, because two existing tests explicitly assert the erroneous True:
+autoloop/LOG.md:106:These assertions conflict with the correct-value contract xfail. This is a
+autoloop/LOG.md:107:**dispute**, not permission to edit them. Product edit and xfail-marker removal
+autoloop/LOG.md:112:After revert: **1072 passed, 14 xfailed**. Then the frozen scoreboard was run:
+autoloop/LOG.md:113:52/52 exact, zero false pending, zero missed passes, 42/52 abstention. Rejected
+autoloop/LOG.md:114:repros return to 2/9 exact and seven false pending, matching their pre-fix state.
+autoloop/LOG.md:127:`reflex_attribution` contract xfail, FM-1's borrowed reflex qualifiers, and the
+autoloop/LOG.md:144:Evidence (`evidence/iteration-2-*`): new pytest cases **6 failed / 8 passed before**,
+autoloop/LOG.md:146:**5 → 0 false pending**; **0 → 0 missed passes**;
+autoloop/LOG.md:149:pain attribution previously produced NOT_READY rather than a false pending.
+autoloop/LOG.md:151:Removed only the strict marker for the existing `reflex_attribution` example
+autoloop/LOG.md:155:Gate: **1087 passed, 13 xfailed**, no existing failure. Then the frozen corpus
+autoloop/LOG.md:157:false pending, zero missed passes, 42/52 abstention**). Targeted lint passed.
+autoloop/LOG.md:168:strict `independent_18_intact_reflexes` xfail, normal-reflex extraction code,
+autoloop/LOG.md:184:Evidence (`evidence/iteration-3-*`): **5 failed / 16 passed before**, all 21 pass
+autoloop/LOG.md:185:after. Cumulative repro score **16/21 → 21/21 exact**, false pending **0 → 0**,
+autoloop/LOG.md:193:Gate: **1095 passed, 12 xfailed**. Then the corpus scoreboard remained byte-for-
+autoloop/LOG.md:206:`engine/extract.py`, `negated_strength` in the contract/strict xfails,
+autoloop/LOG.md:221:**Dispute left unchanged:** the existing `negated_strength` xfail asserts a
+autoloop/LOG.md:224:expected value and strict marker remain untouched, and it remains xfailed.
+autoloop/LOG.md:226:Evidence (`evidence/iteration-4-*`): **5 failed / 24 passed before**, all 29 pass
+autoloop/LOG.md:227:after. Cumulative repro score **24/29 → 29/29 exact**, false pending **4 → 0**,
+autoloop/LOG.md:231:Gate: **1103 passed, 12 xfailed**. Then the frozen corpus scoreboard was run:
+autoloop/LOG.md:245:window. Sources: date collection in `engine/extract.py`, the `borrowed_date`
+autoloop/LOG.md:246:contract xfails, FM-1/FM-2 date-association limitations, and the fixed CPAP rule's
+autoloop/LOG.md:262:Evidence (`evidence/iteration-5-*`): **4 failed / 3 passed before**, all seven
+autoloop/LOG.md:263:pass after. Exact status **4/7 → 7/7**, false pending **3 → 0**, missed passes
+autoloop/LOG.md:267:**Rejected and reverted:** `make test` returned **3 failed, 1109 passed,
+autoloop/LOG.md:268:10 xfailed**, with existing assertions retaining the borrowed-date behavior:
+autoloop/LOG.md:270:- `test_archive_invariants.py::test_borrowed_date_verified_ready_without_submission_readiness_roundtrips`
+autoloop/LOG.md:271:- `test_corrections.py::test_borrowed_date_can_be_withdrawn_without_fixing_extraction`
+autoloop/LOG.md:277:contract xfails. Their assertions and fixture remain unchanged. The product
+autoloop/LOG.md:278:candidate and both temporary xfail-marker removals were restored to the
+autoloop/LOG.md:280:than installed as a failing regression test. The citation-only strict xfail
+autoloop/LOG.md:283:After revert: **1103 passed, 12 xfailed**. Then the frozen corpus scoreboard
+autoloop/LOG.md:285:4/7 exact, three false pending; diagnosis repros still match their pre-attempt
+autoloop/LOG.md:286:statuses (2/9 exact, seven false pending). Neither set was silently dropped.
+autoloop/LOG.md:296:Final tests: **1103 passed, 12 xfailed**. Baseline: **1072 passed, 14 xfailed**.
+autoloop/LOG.md:297:The +31 passed tests comprise 29 new parametrized regression cases and two
+autoloop/LOG.md:298:previously strict xfails. The negated-strength xfail remains disputed and failing.
+autoloop/LOG.md:301:score 29/29, zero false pending, zero missed passes, 15/29 abstention (expected
+autoloop/LOG.md:306:Those ten remaining false pending results are the rejected diagnosis/date
+autoloop/LOG.md:327:assertion, expected status or fixture may change except resolved xfail markers.
+autoloop/LOG.md:334:| 6: `test_corrections.py::test_failing_correction_and_original_negation_error` | (b) setup | Tests a failing SET_VALUE correction over an incorrect original proposal, immutable original snapshot, and a separate below-threshold correction. Substitute explicit `neither low back pain nor radiculopathy`, still over-captured by the bounded extractor; keep True → False and strengthen snapshot/fingerprint assertions. The original denied note becomes an executable correct-value regression. Contract G05 preserves original proposals/correction history; `negation_first` establishes the denied diagnosis must be False/NOT_READY. |
+autoloop/LOG.md:336:| 7: `test_archive_invariants.py::test_borrowed_date_verified_ready_without_submission_readiness_roundtrips` | (b) setup | Tests preservation of a human-attested, semantically wrong READY envelope under demo policy trust with submission_readiness=false. Substitute an unrelated visit date in the SAME sentence as the undated study; keep incorrect attestation, READY, demo trust and exact SQLite record/get equality. G07 and archive invariants still apply. |
+autoloop/LOG.md:337:| 7: `test_corrections.py::test_borrowed_date_can_be_withdrawn_without_fixing_extraction` | (b) setup | Tests SET_MISSING withdrawing an offending citation and retaining the immutable original. Substitute the same same-sentence borrowed-date note; retain True original, cited proposal-spans review, and CANNOT_DETERMINE after withdrawal. G05 requires retained proposal/correction evidence. |
+autoloop/LOG.md:338:| 7: `test_v210_independent.py::test_independent_correct_values_and_states` (case 17 only) | (a) product claim | Its explicit missing-study-date note cannot supply dated-study evidence. Change only that case's sleep_study_date label True → null, requirement MET → NOT_DOCUMENTED, overall PENDING_VERIFICATION → CANNOT_DETERMINE. Fixed CPAP rule requires dated sleep-study evidence; the executable `borrowed_date` contract requires null/CANNOT_DETERMINE. Every other fixture entry and case-17 input remains unchanged. |
+autoloop/LOG.md:343:setup inputs already return false PENDING_VERIFICATION before either resumed
+autoloop/LOG.md:347:score 35/45 exact with 10 false pending; expanded 47 score 35/47 exact with 12.
+autoloop/LOG.md:357:31 passed**; after fix all 38 pass. The nine diagnosis labels are unchanged.
+autoloop/LOG.md:366:Removed strict marker: contract `negation_first` /
+autoloop/LOG.md:371:`make test`: **1113 passed, 11 xfailed** (previous **1103 / 12**; +9 new collected
+autoloop/LOG.md:372:cases and +1 newly passing strict xfail). Then the public-service scoreboard:
+autoloop/LOG.md:373:corpus **52/52 exact, zero false pending**, byte-for-byte baseline match.
+autoloop/LOG.md:374:Frozen all-authored 45: **35/45 → 42/45 exact, 10 → 3 false pending**;
+autoloop/LOG.md:377:12 → 5 false pending**; neither setup counterexample changed status. Diagnosis
+autoloop/LOG.md:378:set **2/9 → 9/9 exact, 7 → 0 false pending**. Targeted lint/format checks pass.
+autoloop/LOG.md:405:`borrowed_date` contract asserts null/CANNOT_DETERMINE for this failure class.
+autoloop/LOG.md:414:product fix, this suite has **4 failed, 41 passed** (three wrong statuses and one
+autoloop/LOG.md:437:1. Contract `borrowed_date` exact example (`test_G01_exact_examples_and_determinism`):
+autoloop/LOG.md:439:2. `test_G07_borrowed_date_remains_contained_by_demo_submission_gate`: original
+autoloop/LOG.md:445:   a fixed behavior, NOT an unchanged-label xfail becoming satisfied. Three
+autoloop/LOG.md:448:`make test`: **1123 passed, 8 xfailed** (iteration 6 **1113 / 11**). The +10
+autoloop/LOG.md:450:strict xfails and one owner-rewritten citation strict xfail. Overall since
+autoloop/LOG.md:451:962fafc: **+20 passed, -4 xfailed**, comprising 16 new collected cases and four
+autoloop/LOG.md:459:| Corpus exact / false pending | 52/52 / 0 | 52/52 / 0 | 52/52 / 0 |
+autoloop/LOG.md:460:| Original 45 exact / false pending | 35/45 / 10 | 42/45 / 3 | 45/45 / 0 |
+autoloop/LOG.md:462:| Expanded 47 exact / false pending | 35/47 / 12 | 42/47 / 5 | 45/47 / 2 |
+autoloop/LOG.md:466:**3 → 0 false pending**, abstention **1/7 → 4/7** (expected 4/7).
+autoloop/LOG.md:469:sets; neither accepted transition introduces any new false pending result.
+autoloop/LOG.md:470:The remaining two expanded-set false pending results are the disclosed setup
+autoloop/LOG.md:477:relabeled; its new passing assertion and rewritten citation xfail are not counted
+docs/reviewer_guide.md:223:## v2.4.0 review limits
+docs/reviewer_guide.md:225:Release validation is **1202 passed, 10 xfailed**. Corpus false
+docs/reviewer_guide.md:232:false READY. See [v2.4.0](releases/v2.4.0.md) and the
+docs/reviewer_guide.md:233:[executable contract](../EXTRACTION_CONTRACT.md) for exact scope and open xfails.
+docs/reviewer_guide.md:238:no recall gain. Class-name expansion was rejected after unsafe unrelated-therapy
+docs/reviewer_guide.md:239:passes; drug-name mapping awaits an auditable list decision. See the

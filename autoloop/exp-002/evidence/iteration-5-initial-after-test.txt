@@ -1,0 +1,19 @@
+..........................................F............                  [100%]
+=================================== FAILURES ===================================
+________________________ test_exp002_pair[exam_decimal] ________________________
+
+case = {'expected_facts': {'objective_motor_or_reflex_change_in_root_distribution': True}, 'expected_overall_status': 'PENDIN...w back pain with radiculopathy. L4 distribution: strength 4.5 of 5. NSAIDs for 8 weeks with minimal improvement.', ...}
+
+    @pytest.mark.parametrize("case", CASES, ids=lambda case: case["id"])
+    def test_exp002_pair(case):
+        result = ReadinessService().evaluate(PARequest(payer=case["payer"], procedure_code=case["procedure_code"], note_text=case["note_text"]))
+>       assert result.overall_status == case["expected_overall_status"]
+E       AssertionError: assert 'CANNOT_DETERMINE' == 'PENDING_VERIFICATION'
+E         
+E         - PENDING_VERIFICATION
+E         + CANNOT_DETERMINE
+
+test/test_exp002_recall.py:18: AssertionError
+=========================== short test summary info ============================
+FAILED test/test_exp002_recall.py::test_exp002_pair[exam_decimal] - Assertion...
+1 failed, 54 passed in 0.42s

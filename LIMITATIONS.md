@@ -46,7 +46,7 @@ are fixed in v2.3.0; their broader failure classes are not solved. See
 - not a substitute for payer policy review or human chart review
 
 
-## v2.3.0 bounds and evidence
+## v2.4.0 bounds and evidence
 
 Five accepted exp-001 fixes handle auxiliary-verb negation, linked reflex
 qualifiers, intact reflexes, explicitly negated numeric strength and study-date
@@ -61,7 +61,20 @@ cross-sentence temporality/response/copy-forward and laterality remain open.
 Incorrect attestations can still produce false READY from unsupported proposals;
 CPAP demo trust independently keeps submission_readiness=false.
 
-Validation: **1123 passed, 10 xfailed**, corpus 52/52 with zero false pending,
+The four accepted exp-002 fixes cover isolated qualifying courses in whole days,
+whole months and number words one through twelve, plus direct named-root strength
+grades written “of” / “out of”. Days floor to completed weeks; months use a
+four-week lower bound, not calendar inference. Complete course/response grammar
+misses legitimate narrative qualifiers; the new strength route's review handling
+does not repair the legacy slash-route laterality/attribution gap. Full class-name
+expansion was reverted after unsafe headache-therapy passes. Individual drug-name
+mapping awaits an owner decision on an auditable drug list.
+
+Validation: **1202 passed, 10 xfailed**, corpus 52/52 with zero false pending,
 45/45 original authored cases, and two false pending results in the expanded 47.
 These finite regressions are not clinical validation. See the
-[release notes](docs/releases/v2.3.0.md) and [experiment report](autoloop/REPORT.md).
+[exp-001 report](autoloop/REPORT.md). Exp-002's 69 authored cases improve 41/69 →
+64/69 exact with zero false pending across 54 negatives, but retain three missed
+passes and two wrong negative abstentions. The owner-supplied held-out exp-002
+set showed no recall gain. See [v2.4.0](docs/releases/v2.4.0.md) and the
+[exp-002 report](autoloop/exp-002/REPORT.md).

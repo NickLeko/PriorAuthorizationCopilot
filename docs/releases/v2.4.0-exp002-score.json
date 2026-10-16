@@ -1,0 +1,574 @@
+{
+  "always_cannot_determine_canary": {
+    "abstention_rate": 1.0,
+    "automated_ready": 0,
+    "cases": 69,
+    "confusion_matrix_expected_rows_actual_columns": {
+      "CANNOT_DETERMINE": {
+        "CANNOT_DETERMINE": 41,
+        "NEEDS_REVIEW": 0,
+        "NOT_READY": 0,
+        "PENDING_VERIFICATION": 0,
+        "READY": 0,
+        "UNKNOWN": 0
+      },
+      "NEEDS_REVIEW": {
+        "CANNOT_DETERMINE": 4,
+        "NEEDS_REVIEW": 0,
+        "NOT_READY": 0,
+        "PENDING_VERIFICATION": 0,
+        "READY": 0,
+        "UNKNOWN": 0
+      },
+      "NOT_READY": {
+        "CANNOT_DETERMINE": 9,
+        "NEEDS_REVIEW": 0,
+        "NOT_READY": 0,
+        "PENDING_VERIFICATION": 0,
+        "READY": 0,
+        "UNKNOWN": 0
+      },
+      "PENDING_VERIFICATION": {
+        "CANNOT_DETERMINE": 15,
+        "NEEDS_REVIEW": 0,
+        "NOT_READY": 0,
+        "PENDING_VERIFICATION": 0,
+        "READY": 0,
+        "UNKNOWN": 0
+      },
+      "READY": {
+        "CANNOT_DETERMINE": 0,
+        "NEEDS_REVIEW": 0,
+        "NOT_READY": 0,
+        "PENDING_VERIFICATION": 0,
+        "READY": 0,
+        "UNKNOWN": 0
+      },
+      "UNKNOWN": {
+        "CANNOT_DETERMINE": 0,
+        "NEEDS_REVIEW": 0,
+        "NOT_READY": 0,
+        "PENDING_VERIFICATION": 0,
+        "READY": 0,
+        "UNKNOWN": 0
+      }
+    },
+    "exact_status_accuracy": 0.5942028985507246,
+    "exact_status_correct": 41,
+    "expected_abstention_rate": 0.6521739130434783,
+    "false_pending_verification": 0,
+    "false_ready": 0,
+    "missed_passes": 15
+  },
+  "case_file": "autoloop/exp-002/evidence/final-all-cases.json",
+  "case_file_sha256": "45a8f3887812183f7e476bc89a43c1bf34da763baffd0940a5c1cc7d2d9a3f64",
+  "case_results": [
+    {
+      "actual": "PENDING_VERIFICATION",
+      "expected": "PENDING_VERIFICATION",
+      "id": "days_threshold",
+      "index": 0
+    },
+    {
+      "actual": "PENDING_VERIFICATION",
+      "expected": "PENDING_VERIFICATION",
+      "id": "days_before_modality",
+      "index": 1
+    },
+    {
+      "actual": "PENDING_VERIFICATION",
+      "expected": "PENDING_VERIFICATION",
+      "id": "days_relaxant",
+      "index": 2
+    },
+    {
+      "actual": "NOT_READY",
+      "expected": "NOT_READY",
+      "id": "days_below_threshold",
+      "index": 3
+    },
+    {
+      "actual": "NOT_READY",
+      "expected": "NOT_READY",
+      "id": "days_improved",
+      "index": 4
+    },
+    {
+      "actual": "CANNOT_DETERMINE",
+      "expected": "CANNOT_DETERMINE",
+      "id": "days_planned",
+      "index": 5
+    },
+    {
+      "actual": "CANNOT_DETERMINE",
+      "expected": "CANNOT_DETERMINE",
+      "id": "days_nonpatient",
+      "index": 6
+    },
+    {
+      "actual": "CANNOT_DETERMINE",
+      "expected": "CANNOT_DETERMINE",
+      "id": "days_denied",
+      "index": 7
+    },
+    {
+      "actual": "CANNOT_DETERMINE",
+      "expected": "CANNOT_DETERMINE",
+      "id": "days_nonqualifying",
+      "index": 8
+    },
+    {
+      "actual": "CANNOT_DETERMINE",
+      "expected": "CANNOT_DETERMINE",
+      "id": "days_other_indication",
+      "index": 9
+    },
+    {
+      "actual": "CANNOT_DETERMINE",
+      "expected": "CANNOT_DETERMINE",
+      "id": "days_other_indication_tail",
+      "index": 10
+    },
+    {
+      "actual": "CANNOT_DETERMINE",
+      "expected": "CANNOT_DETERMINE",
+      "id": "days_fraction",
+      "index": 11
+    },
+    {
+      "actual": "CANNOT_DETERMINE",
+      "expected": "CANNOT_DETERMINE",
+      "id": "days_comparison",
+      "index": 12
+    },
+    {
+      "actual": "PENDING_VERIFICATION",
+      "expected": "PENDING_VERIFICATION",
+      "id": "months_nsaid",
+      "index": 13
+    },
+    {
+      "actual": "PENDING_VERIFICATION",
+      "expected": "PENDING_VERIFICATION",
+      "id": "months_before_modality",
+      "index": 14
+    },
+    {
+      "actual": "PENDING_VERIFICATION",
+      "expected": "PENDING_VERIFICATION",
+      "id": "months_relaxant",
+      "index": 15
+    },
+    {
+      "actual": "NOT_READY",
+      "expected": "NOT_READY",
+      "id": "months_short",
+      "index": 16
+    },
+    {
+      "actual": "NOT_READY",
+      "expected": "NOT_READY",
+      "id": "months_improved",
+      "index": 17
+    },
+    {
+      "actual": "CANNOT_DETERMINE",
+      "expected": "CANNOT_DETERMINE",
+      "id": "months_planned",
+      "index": 18
+    },
+    {
+      "actual": "CANNOT_DETERMINE",
+      "expected": "CANNOT_DETERMINE",
+      "id": "months_nonpatient",
+      "index": 19
+    },
+    {
+      "actual": "CANNOT_DETERMINE",
+      "expected": "CANNOT_DETERMINE",
+      "id": "months_denied",
+      "index": 20
+    },
+    {
+      "actual": "CANNOT_DETERMINE",
+      "expected": "CANNOT_DETERMINE",
+      "id": "months_nonqualifying",
+      "index": 21
+    },
+    {
+      "actual": "CANNOT_DETERMINE",
+      "expected": "CANNOT_DETERMINE",
+      "id": "months_other_indication",
+      "index": 22
+    },
+    {
+      "actual": "CANNOT_DETERMINE",
+      "expected": "CANNOT_DETERMINE",
+      "id": "months_other_indication_tail",
+      "index": 23
+    },
+    {
+      "actual": "CANNOT_DETERMINE",
+      "expected": "CANNOT_DETERMINE",
+      "id": "months_fraction",
+      "index": 24
+    },
+    {
+      "actual": "CANNOT_DETERMINE",
+      "expected": "CANNOT_DETERMINE",
+      "id": "months_comparison",
+      "index": 25
+    },
+    {
+      "actual": "PENDING_VERIFICATION",
+      "expected": "PENDING_VERIFICATION",
+      "id": "words_threshold",
+      "index": 26
+    },
+    {
+      "actual": "PENDING_VERIFICATION",
+      "expected": "PENDING_VERIFICATION",
+      "id": "words_before_modality",
+      "index": 27
+    },
+    {
+      "actual": "PENDING_VERIFICATION",
+      "expected": "PENDING_VERIFICATION",
+      "id": "words_relaxant",
+      "index": 28
+    },
+    {
+      "actual": "NOT_READY",
+      "expected": "NOT_READY",
+      "id": "words_short",
+      "index": 29
+    },
+    {
+      "actual": "NOT_READY",
+      "expected": "NOT_READY",
+      "id": "words_improved",
+      "index": 30
+    },
+    {
+      "actual": "CANNOT_DETERMINE",
+      "expected": "CANNOT_DETERMINE",
+      "id": "words_planned",
+      "index": 31
+    },
+    {
+      "actual": "CANNOT_DETERMINE",
+      "expected": "CANNOT_DETERMINE",
+      "id": "words_nonpatient",
+      "index": 32
+    },
+    {
+      "actual": "CANNOT_DETERMINE",
+      "expected": "CANNOT_DETERMINE",
+      "id": "words_denied",
+      "index": 33
+    },
+    {
+      "actual": "CANNOT_DETERMINE",
+      "expected": "CANNOT_DETERMINE",
+      "id": "words_nonqualifying",
+      "index": 34
+    },
+    {
+      "actual": "CANNOT_DETERMINE",
+      "expected": "CANNOT_DETERMINE",
+      "id": "words_other_indication",
+      "index": 35
+    },
+    {
+      "actual": "CANNOT_DETERMINE",
+      "expected": "CANNOT_DETERMINE",
+      "id": "words_other_indication_tail",
+      "index": 36
+    },
+    {
+      "actual": "CANNOT_DETERMINE",
+      "expected": "CANNOT_DETERMINE",
+      "id": "words_fraction",
+      "index": 37
+    },
+    {
+      "actual": "CANNOT_DETERMINE",
+      "expected": "CANNOT_DETERMINE",
+      "id": "words_comparison",
+      "index": 38
+    },
+    {
+      "actual": "CANNOT_DETERMINE",
+      "expected": "CANNOT_DETERMINE",
+      "id": "words_range",
+      "index": 39
+    },
+    {
+      "actual": "PENDING_VERIFICATION",
+      "expected": "PENDING_VERIFICATION",
+      "id": "exam_of",
+      "index": 40
+    },
+    {
+      "actual": "PENDING_VERIFICATION",
+      "expected": "PENDING_VERIFICATION",
+      "id": "exam_out_of",
+      "index": 41
+    },
+    {
+      "actual": "PENDING_VERIFICATION",
+      "expected": "PENDING_VERIFICATION",
+      "id": "exam_decimal",
+      "index": 42
+    },
+    {
+      "actual": "NOT_READY",
+      "expected": "NOT_READY",
+      "id": "exam_normal",
+      "index": 43
+    },
+    {
+      "actual": "NEEDS_REVIEW",
+      "expected": "NEEDS_REVIEW",
+      "id": "exam_negated",
+      "index": 44
+    },
+    {
+      "actual": "NEEDS_REVIEW",
+      "expected": "NEEDS_REVIEW",
+      "id": "exam_question",
+      "index": 45
+    },
+    {
+      "actual": "CANNOT_DETERMINE",
+      "expected": "CANNOT_DETERMINE",
+      "id": "exam_planned",
+      "index": 46
+    },
+    {
+      "actual": "CANNOT_DETERMINE",
+      "expected": "CANNOT_DETERMINE",
+      "id": "exam_nonpatient",
+      "index": 47
+    },
+    {
+      "actual": "CANNOT_DETERMINE",
+      "expected": "CANNOT_DETERMINE",
+      "id": "exam_subjective",
+      "index": 48
+    },
+    {
+      "actual": "CANNOT_DETERMINE",
+      "expected": "CANNOT_DETERMINE",
+      "id": "exam_missing_root",
+      "index": 49
+    },
+    {
+      "actual": "CANNOT_DETERMINE",
+      "expected": "CANNOT_DETERMINE",
+      "id": "exam_unnamed_root",
+      "index": 50
+    },
+    {
+      "actual": "CANNOT_DETERMINE",
+      "expected": "CANNOT_DETERMINE",
+      "id": "exam_pain_rating",
+      "index": 51
+    },
+    {
+      "actual": "NEEDS_REVIEW",
+      "expected": "NEEDS_REVIEW",
+      "id": "exam_prior_surgery",
+      "index": 52
+    },
+    {
+      "actual": "NEEDS_REVIEW",
+      "expected": "NEEDS_REVIEW",
+      "id": "exam_contralateral",
+      "index": 53
+    },
+    {
+      "actual": "CANNOT_DETERMINE",
+      "expected": "CANNOT_DETERMINE",
+      "id": "exam_semicolon_origin",
+      "index": 54
+    },
+    {
+      "actual": "CANNOT_DETERMINE",
+      "expected": "CANNOT_DETERMINE",
+      "id": "class_other_indication_1",
+      "index": 55
+    },
+    {
+      "actual": "CANNOT_DETERMINE",
+      "expected": "CANNOT_DETERMINE",
+      "id": "class_other_indication_2",
+      "index": 56
+    },
+    {
+      "actual": "CANNOT_DETERMINE",
+      "expected": "CANNOT_DETERMINE",
+      "id": "class_other_indication_3",
+      "index": 57
+    },
+    {
+      "actual": "CANNOT_DETERMINE",
+      "expected": "PENDING_VERIFICATION",
+      "id": "class_hyphenated",
+      "index": 58
+    },
+    {
+      "actual": "CANNOT_DETERMINE",
+      "expected": "PENDING_VERIFICATION",
+      "id": "class_compact",
+      "index": 59
+    },
+    {
+      "actual": "CANNOT_DETERMINE",
+      "expected": "PENDING_VERIFICATION",
+      "id": "class_spaced",
+      "index": 60
+    },
+    {
+      "actual": "CANNOT_DETERMINE",
+      "expected": "NOT_READY",
+      "id": "class_short",
+      "index": 61
+    },
+    {
+      "actual": "CANNOT_DETERMINE",
+      "expected": "NOT_READY",
+      "id": "class_improved",
+      "index": 62
+    },
+    {
+      "actual": "CANNOT_DETERMINE",
+      "expected": "CANNOT_DETERMINE",
+      "id": "class_planned",
+      "index": 63
+    },
+    {
+      "actual": "CANNOT_DETERMINE",
+      "expected": "CANNOT_DETERMINE",
+      "id": "class_nonpatient",
+      "index": 64
+    },
+    {
+      "actual": "CANNOT_DETERMINE",
+      "expected": "CANNOT_DETERMINE",
+      "id": "class_denied",
+      "index": 65
+    },
+    {
+      "actual": "CANNOT_DETERMINE",
+      "expected": "CANNOT_DETERMINE",
+      "id": "class_no_course",
+      "index": 66
+    },
+    {
+      "actual": "CANNOT_DETERMINE",
+      "expected": "CANNOT_DETERMINE",
+      "id": "class_nonqualifying",
+      "index": 67
+    },
+    {
+      "actual": "CANNOT_DETERMINE",
+      "expected": "CANNOT_DETERMINE",
+      "id": "class_no_duration",
+      "index": 68
+    }
+  ],
+  "mismatches": [
+    {
+      "actual": "CANNOT_DETERMINE",
+      "expected": "PENDING_VERIFICATION",
+      "id": "class_hyphenated",
+      "index": 58
+    },
+    {
+      "actual": "CANNOT_DETERMINE",
+      "expected": "PENDING_VERIFICATION",
+      "id": "class_compact",
+      "index": 59
+    },
+    {
+      "actual": "CANNOT_DETERMINE",
+      "expected": "PENDING_VERIFICATION",
+      "id": "class_spaced",
+      "index": 60
+    },
+    {
+      "actual": "CANNOT_DETERMINE",
+      "expected": "NOT_READY",
+      "id": "class_short",
+      "index": 61
+    },
+    {
+      "actual": "CANNOT_DETERMINE",
+      "expected": "NOT_READY",
+      "id": "class_improved",
+      "index": 62
+    }
+  ],
+  "system": {
+    "abstention_rate": 0.7246376811594203,
+    "automated_ready": 0,
+    "cases": 69,
+    "confusion_matrix_expected_rows_actual_columns": {
+      "CANNOT_DETERMINE": {
+        "CANNOT_DETERMINE": 41,
+        "NEEDS_REVIEW": 0,
+        "NOT_READY": 0,
+        "PENDING_VERIFICATION": 0,
+        "READY": 0,
+        "UNKNOWN": 0
+      },
+      "NEEDS_REVIEW": {
+        "CANNOT_DETERMINE": 0,
+        "NEEDS_REVIEW": 4,
+        "NOT_READY": 0,
+        "PENDING_VERIFICATION": 0,
+        "READY": 0,
+        "UNKNOWN": 0
+      },
+      "NOT_READY": {
+        "CANNOT_DETERMINE": 2,
+        "NEEDS_REVIEW": 0,
+        "NOT_READY": 7,
+        "PENDING_VERIFICATION": 0,
+        "READY": 0,
+        "UNKNOWN": 0
+      },
+      "PENDING_VERIFICATION": {
+        "CANNOT_DETERMINE": 3,
+        "NEEDS_REVIEW": 0,
+        "NOT_READY": 0,
+        "PENDING_VERIFICATION": 12,
+        "READY": 0,
+        "UNKNOWN": 0
+      },
+      "READY": {
+        "CANNOT_DETERMINE": 0,
+        "NEEDS_REVIEW": 0,
+        "NOT_READY": 0,
+        "PENDING_VERIFICATION": 0,
+        "READY": 0,
+        "UNKNOWN": 0
+      },
+      "UNKNOWN": {
+        "CANNOT_DETERMINE": 0,
+        "NEEDS_REVIEW": 0,
+        "NOT_READY": 0,
+        "PENDING_VERIFICATION": 0,
+        "READY": 0,
+        "UNKNOWN": 0
+      }
+    },
+    "exact_status_accuracy": 0.927536231884058,
+    "exact_status_correct": 64,
+    "expected_abstention_rate": 0.6521739130434783,
+    "false_pending_verification": 0,
+    "false_ready": 0,
+    "missed_passes": 3
+  }
+}

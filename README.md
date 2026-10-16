@@ -4,19 +4,22 @@ This self-directed prototype demonstrates deterministic prior-authorization docu
 
 v2.0.0 adds typed, source-located reviewer corrections for wrong or missed facts, with contract meanings and original/effective values shown in Streamlit. Applying a correction clears attestations and letters; passing facts remain `PENDING_VERIFICATION` until reviewed and attested again. Letters disclose reviewer-supplied facts, quotations and self-reported identities, excluding audit comments from reasoning. See the canonical [correction limits](docs/safety_and_scope.md#correction-limits).
 
-v2.3.0 releases five bounded extraction fixes from exp-001: auxiliary-verb
-negation, reflex descriptor linkage, intact-reflex recognition, negated numeric
-strength review, and sleep-study date association across sentence boundaries.
-Engine/app version is **2.3.0**; record schema remains **2.0.0**. The earlier
-sentence-scoped review cues and citation context remain in place. Failure classes
-remain open, including neither/nor negation and same-sentence borrowed dates.
+v2.4.0 releases four bounded recall fixes from exp-002: qualifying isolated
+courses in whole days, whole months or small number words, and direct named-root
+strength grades written “of” or “out of”. Engine/app version is **2.4.0**;
+record schema remains **2.0.0**. Earlier exp-001 fixes, sentence-scoped review cues
+and citation context remain in place. Failure classes remain open, including
+neither/nor negation, same-sentence borrowed dates and episode attribution.
 
-Release validation: **1123 passed, 10 xfailed**. The unchanged 52-case corpus
-has zero false `PENDING_VERIFICATION`; all 45 original authored experiment cases
-pass. The expanded 47-case set still has two false pending results. Zero false
-pending alone is insufficient evidence: the always-abstain canary also scores
-zero. See the [v2.3.0 release notes](docs/releases/v2.3.0.md),
-[current contract](EXTRACTION_CONTRACT.md), and [experiment report](autoloop/REPORT.md).
+Release validation: **1202 passed, 10 xfailed**. Corpus results remain 52/52,
+with zero false `PENDING_VERIFICATION`. All 69 exp-002 authored cases improve
+41/69 → 64/69 exact, including 12 recovered passes and seven correct NOT_READY
+results; all 54 negatives stay nonpassing. The rejected class-name expansion
+remains reverted. The owner-supplied held-out exp-002 evaluation showed no recall
+gain. Zero false pending alone is insufficient evidence: the always-abstain
+canary also scores zero. See the [v2.4.0 release notes](docs/releases/v2.4.0.md),
+[current contract](EXTRACTION_CONTRACT.md), and [exp-002 report](autoloop/exp-002/REPORT.md).
+The earlier exp-001 expanded 47-case set retains two documented false passes.
 The 20 independent notes are regressions, not a held-out accuracy measure.
 
 The lumbar MRI pathway is the only live-monitored source. After its monthly monitoring window (35 days since the last successful check), a visitor sees a stale warning and must acknowledge it before evaluating that pathway. After all passing facts are human-verified, it can return `READY` with `submission_readiness=false`. This is the governance gate working as designed; acknowledgement does not restore trust.
@@ -76,7 +79,7 @@ trust gate; it does not validate the borrowed date or the incorrect attestations
 
 ## Quick Reviewer Path
 
-The record schema version and release version are versioned independently. v2.3.0 writes record `schema_version: "2.0.0"`; v1.5 records retain their existing validation, and legacy records remain explicitly labeled and viewable only.
+The record schema version and release version are versioned independently. v2.4.0 writes record `schema_version: "2.0.0"`; v1.5 records retain their existing validation, and legacy records remain explicitly labeled and viewable only.
 
 From a fresh clone, enter the repo and run:
 
