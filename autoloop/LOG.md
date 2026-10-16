@@ -385,3 +385,110 @@ included in the fixed expanded 47-case set. This retains rather than weakens the
 original demonstration that corrections/attestations do not validate semantics.
 The repaired denied-diagnosis note remains covered by a now-unxfail contract
 example and the newly collected regressions, not erased from the tests.
+
+## Iteration 7 — borrowed date, authorized setup and product-label rewrites
+
+Hypothesis: the same cross-sentence date-association defect confirmed in
+iteration 5. Re-apply only the previously rejected same-sentence context check;
+leave future/exclusion logic untouched. Per-test classifications (a/b) and their
+justifications were recorded before editing in the table above.
+
+Authorized independent-case-17 label change (input text stays unchanged):
+
+- `expected.sleep_study_date`: **true → null**.
+- `expected_requirements.sleep_study_date`: **MET → NOT_DOCUMENTED**.
+- `expected_overall`: **PENDING_VERIFICATION → CANNOT_DETERMINE**.
+
+Rationale: the note explicitly says the study date cannot be located. The other
+numeric date belongs to a follow-up appointment in a different sentence. The
+fixed CPAP rule requires dated-study evidence, and the normative executable
+`borrowed_date` contract asserts null/CANNOT_DETERMINE for this failure class.
+This is an owner-approved **label change**, not evidence that an unchanged label
+improved. Every other independent-case fixture label and input remains fixed.
+The separate case-17 citation assertion will likewise require no date citation,
+not a quotation of an undated completion statement. Genuine-date citation
+checks in the new regressions retain positive citation coverage.
+
+Seven unchanged-label date repros were added to the active regression test;
+three also check the exact date evidence and marked citation context. Before
+product fix, this suite has **4 failed, 41 passed** (three wrong statuses and one
+borrowed citation). Their expected statuses and inputs were not relabeled.
+
+Iteration 7 outcome: re-applied exactly the previous `_context_trigger` study
+context requirement in the date's own sentence. Future/exclusion/clock checks
+were not edited. All 45 authored regression instances now pass, including the
+three positive exact-date citation checks.
+
+Category-(b) coverage preserved:
+
+- Correction test still starts with a wrong True date proposal and uses its
+  actual offending proposal spans in SET_MISSING document review. It still
+  verifies the immutable original and CANNOT_DETERMINE; now additionally checks
+  null effective date, original True retained and changed fact-set fingerprint.
+- Archive test still begins with a semantically wrong all-MET CPAP proposal,
+  then supplies deliberately incorrect synthetic attestations to yield READY
+  with demo trust and submission_readiness=false, and checks exact SQLite
+  record/get equality. The replacement note's comma instead of sentence boundary
+  retains the remaining same-sentence association error; the original envelope
+  and archive assertions were not weakened.
+
+Strict markers removed in iteration 7:
+
+1. Contract `borrowed_date` exact example (`test_G01_exact_examples_and_determinism`):
+   original null fact / CANNOT_DETERMINE assertions now pass unchanged.
+2. `test_G07_borrowed_date_remains_contained_by_demo_submission_gate`: original
+   missing-date / CANNOT_DETERMINE / false-submission assertions pass unchanged,
+   including after supplied attestations.
+3. `test_independent_17_study_citation_correct_sentence`: marker removed AFTER
+   the owner-authorized category-(a) assertion rewrite to null / empty context.
+   Unlike the first two, this is an approved expectation correction as well as
+   a fixed behavior, NOT an unchanged-label xfail becoming satisfied. Three
+   positive dated-study citation regressions retain marked-citation coverage.
+
+`make test`: **1123 passed, 8 xfailed** (iteration 6 **1113 / 11**). The +10
+passed comprises seven newly collected date cases, two unchanged-assertion
+strict xfails and one owner-rewritten citation strict xfail. Overall since
+962fafc: **+20 passed, -4 xfailed**, comprising 16 new collected cases and four
+removed markers (three unchanged-assertion resolutions, one rewritten citation).
+No failed test or strict XPASS remains.
+
+Then the frozen public-service scoreboard:
+
+| Fixed dataset | Before iteration 6 | After iteration 6 | After iteration 7 |
+| --- | --- | --- | --- |
+| Corpus exact / false pending | 52/52 / 0 | 52/52 / 0 | 52/52 / 0 |
+| Original 45 exact / false pending | 35/45 / 10 | 42/45 / 3 | 45/45 / 0 |
+| Original 45 abstention (expected 20/45) | 16/45 | 17/45 | 20/45 |
+| Expanded 47 exact / false pending | 35/47 / 12 | 42/47 / 5 | 45/47 / 2 |
+| Expanded 47 abstention (expected 21/47) | 16/47 | 17/47 | 20/47 |
+
+All missed-pass counts stay zero. The seven date cases are **7/7 exact**,
+**3 → 0 false pending**, abstention **1/7 → 4/7** (expected 4/7).
+Corpus output remains byte-for-byte equal to the original baseline. SHA-256 and
+per-case expected labels match across before/after scores for both fixed new
+sets; neither accepted transition introduces any new false pending result.
+The remaining two expanded-set false pending results are the disclosed setup
+counterexamples, unchanged at both steps. Evidence: `evidence/iteration-7-*`.
+
+Final self-audit: both setup rewrites preserve a *wrong* captured proposal, so
+corrections, attestation and archive coverage did not become easier correct-note
+smoke tests. Original snapshot, fingerprints, partial-attestation checks and
+archive equality remain covered or strengthened. Case 17 is transparently
+relabeled; its new passing assertion and rewritten citation xfail are not counted
+as independent unchanged-label evidence. The frozen 45 authored inputs/labels
+prove both improvements without depending on that relabel. New counterexamples
+introduced as setup were counted before and after in a separate frozen expanded
+set, exposing the regex fixes' limits rather than implying the failure classes
+are solved. Same-sentence event linkage, neither/nor, other negation and genuine
+cross-sentence study dates remain open.
+
+Scope verification: AST comparisons against 962fafc show every function outside
+the authorized rewrites unchanged in the five existing test files. Both altered
+contract test methods retain identical bodies/expectations; only markers changed.
+Structural JSON comparison allows ONLY the three logged case-17 label fields.
+The previous scoreboard, baseline, original 45 cases, prior JSON evidence,
+rules/rulebook/policy_snapshots/inputs/goldens/artifacts, deployment config and
+clock state are unchanged. Targeted Ruff checks passed on all seven modified
+Python files. No generators were invoked. Iteration 6 commit: `0b1674b`;
+iteration 7 is committed separately with the final report and then only
+`refs/heads/autoloop/exp-001` is to be pushed to origin, without tags or PR.

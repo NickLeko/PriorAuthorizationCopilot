@@ -55,11 +55,11 @@ def test_independent_02_secondary_analgesic_duration_correct_value():
     assert evaluate(CASES[1]).facts["conservative_therapy_weeks"] == 8
 
 
-@pytest.mark.xfail(strict=True, reason="study citation borrows unrelated appointment date")
 def test_independent_17_study_citation_correct_sentence():
     result = evaluate(CASES[16])
-    assert result.facts["sleep_study_date"] is True
-    assert evaluation_citation_context(result)["sleep_study_date"] == ["⟦Sleep study completed⟧, but the study date cannot be located."]
+    # A completion statement without a date is not a date citation.
+    assert result.facts["sleep_study_date"] is None
+    assert evaluation_citation_context(result)["sleep_study_date"] == []
 
 
 @pytest.mark.parametrize(

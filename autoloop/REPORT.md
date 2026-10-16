@@ -1,30 +1,164 @@
-# Experiment exp-001 — owner-authorized continuation
+# Experiment exp-001 — iterations 6 and 7 completed
 
-Iteration 6 is complete and committed with the prior diagnosis fix re-applied.
-Iteration 7 follows separately. The previous report, including the first-stop
-record and rejected attempts, is preserved verbatim below as history.
+Both previously rejected fixes are now accepted under the owner's narrow test-
+rewrite authorization. Each iteration passed `make test` and the frozen public-
+service scoreboard and is committed separately. Iteration 6: `0b1674b`; iteration
+7 includes this final report. The prior report and original first-stop record
+are preserved verbatim below as history.
 
-- Diagnosis negation: nine unchanged-label regression cases now pass; the original
-  `negation_first` strict xfail now passes.
-- The two disputed diagnosis tests are **(b) setup** tests. Their inputs now use
-  an explicitly denied neither/nor variant that remains incorrectly extracted.
-  The correction test still changes True → False, preserves the original
-  snapshot, and now also checks the changed fingerprint and NOT_MET result.
-  The service test retains every omitted-attestation check and fully attested
-  READY for both a correct and a deliberately incorrect all-MET proposal.
-- The old denied note is retained in executable correct-value regressions, so
-  changing setup does not remove negative-extraction coverage.
-- Tests: **1103 passed / 12 xfailed → 1113 passed / 11 xfailed**.
-- Corpus: **52/52 exact and zero false pending**, unchanged.
-- Original all-authored 45: **35/45 → 42/45 exact; false pending 10 → 3**.
-- Expanded 47, including both replacement setup errors: **35/47 → 42/47 exact;
-  false pending 12 → 5**. Neither/nor and same-sentence date association remain
-  unresolved. These new inputs already failed before the resumed fixes.
+- Final tests: **1123 passed, 8 xfailed**, versus **1103 / 12** at 962fafc.
+- Corpus: **52/52 exact, zero false PENDING_VERIFICATION**, byte-for-byte baseline
+  match; no corpus improvement is claimed from its saturated score.
+- Frozen original 45 authored cases: **35/45 → 42/45 → 45/45 exact**, false pending
+  **10 → 3 → 0** across the two resumed iterations.
+- Expanded 47 cases, also counting the replacement setup errors: **35/47 →
+  42/47 → 45/47 exact**, false pending **12 → 5 → 2**. The two remaining errors
+  are disclosed limitations, not fixed cases hidden from evaluation.
 
-Per-test classifications and policy/contract citations were logged before edits
-in [LOG.md](LOG.md). Full verification is in `evidence/iteration-6-*`. The
-scoreboard, baseline, original 45-case labels, policy, clocks and protected
-outputs are unchanged. No push has been performed in this resumed turn yet.
+## Per-test classification and coverage
+
+Classifications were written in [LOG.md](LOG.md) before editing. Class **(a)**
+asserts product behavior; class **(b)** uses a proposal to exercise another feature.
+The fixed policy/contract sources are [payer_rules.yaml](../rules/payer_rules.yaml)
+(`equals_true` lumbar diagnosis and dated-study CPAP requirements) and
+[EXTRACTION_CONTRACT.md](../EXTRACTION_CONTRACT.md) (`negation_first`, `borrowed_date`,
+G03–G05 on attestations/corrections and G07 on demo-policy readiness).
+
+| Iteration / disputed test | Class | Rewrite and preserved purpose |
+| --- | --- | --- |
+| 6: corrections `test_failing_correction_and_original_negation_error` | **(b)** | Swap in explicit neither/nor denial, still wrongly captured True. Preserve True → False SET_VALUE, immutable original and NOT_READY. Add original-True snapshot, changed fingerprint and NOT_MET checks. Separate below-threshold correction assertion is unchanged. |
+| 6: service `test_complete_lumbar_proposals_require_every_human_verification` (denied parameter) | **(b)** | Swap only the wrong-proposal input to the same neither/nor denial. Retain a correct parameter and a semantically wrong all-MET parameter, every omitted-attestation check, and fully attested READY. No body assertion changed. |
+| 7: archive `test_borrowed_date_verified_ready_without_submission_readiness_roundtrips` | **(b)** | Swap to an unrelated visit date in the same sentence as the undated study. Still a wrong all-MET proposal with deliberately incorrect synthetic attestations; retain READY, demo trust, submission_readiness=false and exact SQLite round trip. Add original date-True and PENDING_VERIFICATION preconditions. |
+| 7: corrections `test_borrowed_date_can_be_withdrawn_without_fixing_extraction` | **(b)** | Same same-sentence setup. Retain wrong True, actual offending-span review, SET_MISSING, immutable original and CANNOT_DETERMINE. Add effective-null, original-True snapshot and changed fingerprint checks. |
+| 7: independent case 17 in `test_independent_correct_values_and_states` | **(a)** | Correct only its three labels as listed below. All generic state/fact/status assertions remain intact, and its note is unchanged. |
+| 7: `test_independent_17_study_citation_correct_sentence` | **(a)** | A missing date yields null and an empty date-citation list; an undated completion statement cannot act as a date quotation. Three newly active genuine-date controls assert the exact date span and marked citation context. |
+
+The category-(b) tests retain wrong-proposal setups rather than becoming easier
+correct-note smoke tests. The two replacement inputs were scored before either
+fix and remain visible in [resume-setup-cases.json](resume-setup-cases.json):
+`neither low back pain nor radiculopathy` and a same-sentence unrelated visit
+date. Both still produce false pending; that risk is preserved in the feature
+tests and counted in the expanded set.
+
+## Fixes and independent-case-17 label change
+
+**Iteration 6:** re-applied exactly the rejected bounded `does/do/did not have`
+negation regex alternative. Nine original diagnosis repros were added to the
+collected regression suite without relabeling: **7 failed / 31 passed before**
+product fix on the cumulative suite; all 38 pass after. The nine diagnosis
+cases improve **2/9 → 9/9 exact, false pending 7 → 0**.
+
+**Iteration 7:** re-applied exactly the rejected requirement that a candidate
+date and study context share a sentence, using the existing indexed context
+helper. Other future/exclusion logic is unchanged. Seven unchanged-label date
+repros became collected regressions, including positive exact-date/context
+checks: **4 failed / 41 passed before**, all 45 pass after. Date cases improve
+**4/7 → 7/7 exact, false pending 3 → 0**, and the fourth failing test's incorrect
+citation is corrected.
+
+The owner-approved case-17 change is explicitly a **label change**:
+
+| Case-17 field | Old | New |
+| --- | --- | --- |
+| `expected.sleep_study_date` | true | null |
+| `expected_requirements.sleep_study_date` | MET | NOT_DOCUMENTED |
+| `expected_overall` | PENDING_VERIFICATION | CANNOT_DETERMINE |
+
+Rationale: the note says the study date cannot be located; its numeric date is
+an appointment in another sentence. The fixed CPAP dated-study requirement and
+the executable `borrowed_date` contract require missingness, with G04 deriving
+CANNOT_DETERMINE. The case input and every other fixture entry/field are unchanged.
+This relabel is not used as independent evidence of improvement; the frozen
+45-case authored set was not relabeled and independently demonstrates both gains.
+
+## Strict xfails and test counts
+
+Removed in iteration 6:
+
+- Contract `negation_first`: original False / NOT_READY assertions now pass.
+
+Removed in iteration 7:
+
+- Contract `borrowed_date`: original null / CANNOT_DETERMINE assertions now pass.
+- `test_G07_borrowed_date_remains_contained_by_demo_submission_gate`: unchanged
+  missing-date and false-submission assertions pass, including with attestations.
+- `test_independent_17_study_citation_correct_sentence`: owner-rewritten assertion
+  now passes. This is an expectation correction as well as a removed marker,
+  unlike the three unchanged-assertion resolutions above.
+
+The unrelated negated-strength expectation dispute and every other xfail remain
+unchanged. No failed test or strict XPASS remains.
+
+| Result | At 962fafc | After 6 | After 7 |
+| --- | ---: | ---: | ---: |
+| Passed | 1103 | 1113 | 1123 |
+| Xfailed | 12 | 11 | 8 |
+| Collected authored regression cases | 29 | 38 | 45 |
+
+The +20 passed tests comprise 16 newly collected repros and four removed markers;
+three of those markers retain their original assertions and one is owner-rewritten.
+[Iteration 6 suite](evidence/iteration-6-suite.txt),
+[iteration 7 suite](evidence/iteration-7-suite.txt) and targeted outputs retain
+full evidence. Targeted Ruff lint/format checks pass on all modified Python files.
+Raw pytest stdout retains its emitted whitespace.
+
+## Metrics and canary
+
+The scoreboard and all measured case inputs/labels below are unchanged across
+these measurements. All missed-pass counts remain zero. Full confusion matrices,
+hashes and individual cases are in the linked reports.
+
+| Fixed set | Before 6: exact / false pending | After 6 | After 7 |
+| --- | --- | --- | --- |
+| Corpus (52) | 52/52 / 0 | 52/52 / 0 | 52/52 / 0 |
+| Original authored (45) | 35/45 / 10 | 42/45 / 3 | 45/45 / 0 |
+| Expanded authored (47) | 35/47 / 12 | 42/47 / 5 | 45/47 / 2 |
+
+Original-45 abstention rises **16/45 → 17/45 → 20/45**, matching its expected
+20/45 at completion. Expanded-47 abstention is **16/47 → 17/47 → 20/47**, with
+21/47 expected. Every rise accompanies an exact-status gain. Case-by-case checks
+confirm no newly false pending result at either accepted transition.
+
+| Final set | System exact | Canary exact | System / canary false pending | System / canary missed passes |
+| --- | --- | --- | --- | --- |
+| Corpus 52 | 52/52 | 30/52 | 0 / 0 | 0 / 7 |
+| Original 45 | 45/45 | 11/45 | 0 / 0 | 0 / 13 |
+| Expanded 47 | 45/47 | 12/47 | 2 / 0 | 0 / 13 |
+
+The canary abstains on 100% of every set. The system's corpus abstention remains
+42/52, matching expected. Zero false pending alone remains weak evidence because
+the canary also scores zero; exact-status gains on frozen new cases, preserved
+passing controls and complete mismatch reporting support the changes.
+
+Final reports: [corpus](evidence/iteration-7-corpus.json),
+[original authored 45](evidence/iteration-7-all-authored.json),
+[expanded 47](evidence/iteration-7-expanded.json),
+[remaining setup errors](evidence/iteration-7-setups.json).
+Before/after reports for each iteration are under `evidence/iteration-6-*` and
+`evidence/iteration-7-*`; original baseline and prior reports are not overwritten.
+
+## Self-audit and scope
+
+No feature coverage was weakened by merely flipping a known-bug setup assertion:
+correction, immutable-snapshot, fingerprint, every omitted-attestation check and
+wrong-READY archive coverage remain or are strengthened. The empty citation
+assertion is less demanding about positive source rendering by itself, so the
+three newly active genuine-date regressions explicitly check that rendering.
+Case 17's relabel and citation rewrite are transparently distinguished from
+unchanged-label improvements. The narrower regex/sentence fixes still miss other
+negations and event associations, including the two deliberately retained setup
+errors. These authored cases are not held-out validation or proof of general
+clinical-language correctness.
+
+Scope audit against 962fafc verified every other function in the five existing
+test files is unchanged; contract-test bodies/expectations are unchanged; the
+fixture differs only at the three authorized case-17 labels. The baseline,
+scoreboard, original 45-case input/labels and old JSON evidence are unchanged.
+Rules, rulebook, policy snapshots, inputs, goldens, committed artifacts, deployment
+config, clocks and monitoring state are unchanged. Neither generator was run.
+Work/commits and the authorized final push are restricted to `autoloop/exp-001`;
+main remains at 5ac2cd8, with no tags or PR. Pre-existing untracked
+`soccer-practice-arena/` remains untouched.
 
 ---
 

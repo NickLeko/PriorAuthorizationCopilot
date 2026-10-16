@@ -250,7 +250,9 @@ def test_osa_false_has_documentary_denial_semantics_and_fails_equals_true():
 
 
 def test_borrowed_date_can_be_withdrawn_without_fixing_extraction():
-    note = "OSA. Visit date 2024-05-18. Sleep study date not recorded. AHI 22."
+    # Same-sentence association remains wrong, supplying an offending citation
+    # to withdraw after the cross-sentence extraction defect is fixed.
+    note = "OSA. Visit date 2024-05-18, sleep study date not recorded. AHI 22."
     service = ReadinessService()
     original = service.evaluate(request(note, "CPAP_DEVICE"))
     assert original.facts["sleep_study_date"] is True
@@ -259,6 +261,9 @@ def test_borrowed_date_can_be_withdrawn_without_fixing_extraction():
     corrected = service.evaluate(request(note, "CPAP_DEVICE", [patch]))
     assert corrected.original_snapshot == original.original_snapshot
     assert corrected.overall_status == "CANNOT_DETERMINE"
+    assert corrected.facts["sleep_study_date"] is None
+    assert corrected.original_snapshot.content["facts"]["sleep_study_date"] is True
+    assert corrected.fact_set_fingerprint != original.fact_set_fingerprint
 
 
 def test_ordered_events_last_wins_and_restored_keys_remain_annotated():

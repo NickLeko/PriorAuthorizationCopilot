@@ -1132,7 +1132,7 @@ def _extract_facts(note_text: str) -> Tuple[Dict[str, Any], Dict[str, List[Dict[
         window = t[window_start:window_end]
 
         if (
-            SLEEP_CTX.search(window)
+            _context_trigger(t, m_date.start(), m_date.end(), SLEEP_CTX.pattern)
             and not _context_trigger(t, m_date.start(), m_date.end(), THERAPY_EXCLUSION_TRIGGER)
             and not _match_is_nonpatient_context(t, m_date)
             and not _has_pattern(THERAPY_FUTURE_LOOKBACK_PATTERNS + THERAPY_FUTURE_AFTER_PATTERNS, window)

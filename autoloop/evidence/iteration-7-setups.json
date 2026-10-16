@@ -1,0 +1,154 @@
+{
+  "always_cannot_determine_canary": {
+    "abstention_rate": 1.0,
+    "automated_ready": 0,
+    "cases": 2,
+    "confusion_matrix_expected_rows_actual_columns": {
+      "CANNOT_DETERMINE": {
+        "CANNOT_DETERMINE": 1,
+        "NEEDS_REVIEW": 0,
+        "NOT_READY": 0,
+        "PENDING_VERIFICATION": 0,
+        "READY": 0,
+        "UNKNOWN": 0
+      },
+      "NEEDS_REVIEW": {
+        "CANNOT_DETERMINE": 0,
+        "NEEDS_REVIEW": 0,
+        "NOT_READY": 0,
+        "PENDING_VERIFICATION": 0,
+        "READY": 0,
+        "UNKNOWN": 0
+      },
+      "NOT_READY": {
+        "CANNOT_DETERMINE": 1,
+        "NEEDS_REVIEW": 0,
+        "NOT_READY": 0,
+        "PENDING_VERIFICATION": 0,
+        "READY": 0,
+        "UNKNOWN": 0
+      },
+      "PENDING_VERIFICATION": {
+        "CANNOT_DETERMINE": 0,
+        "NEEDS_REVIEW": 0,
+        "NOT_READY": 0,
+        "PENDING_VERIFICATION": 0,
+        "READY": 0,
+        "UNKNOWN": 0
+      },
+      "READY": {
+        "CANNOT_DETERMINE": 0,
+        "NEEDS_REVIEW": 0,
+        "NOT_READY": 0,
+        "PENDING_VERIFICATION": 0,
+        "READY": 0,
+        "UNKNOWN": 0
+      },
+      "UNKNOWN": {
+        "CANNOT_DETERMINE": 0,
+        "NEEDS_REVIEW": 0,
+        "NOT_READY": 0,
+        "PENDING_VERIFICATION": 0,
+        "READY": 0,
+        "UNKNOWN": 0
+      }
+    },
+    "exact_status_accuracy": 0.5,
+    "exact_status_correct": 1,
+    "expected_abstention_rate": 0.5,
+    "false_pending_verification": 0,
+    "false_ready": 0,
+    "missed_passes": 0
+  },
+  "case_file": "autoloop/resume-setup-cases.json",
+  "case_file_sha256": "2933722e550bda9b29ff849ee6bacfe4d959377383c78e1f86dab1951d472d38",
+  "case_results": [
+    {
+      "actual": "PENDING_VERIFICATION",
+      "expected": "NOT_READY",
+      "id": "resume_setup_neither_nor",
+      "index": 0
+    },
+    {
+      "actual": "PENDING_VERIFICATION",
+      "expected": "CANNOT_DETERMINE",
+      "id": "resume_setup_same_sentence_date",
+      "index": 1
+    }
+  ],
+  "mismatches": [
+    {
+      "actual": "PENDING_VERIFICATION",
+      "expected": "NOT_READY",
+      "id": "resume_setup_neither_nor",
+      "index": 0
+    },
+    {
+      "actual": "PENDING_VERIFICATION",
+      "expected": "CANNOT_DETERMINE",
+      "id": "resume_setup_same_sentence_date",
+      "index": 1
+    }
+  ],
+  "system": {
+    "abstention_rate": 0.0,
+    "automated_ready": 0,
+    "cases": 2,
+    "confusion_matrix_expected_rows_actual_columns": {
+      "CANNOT_DETERMINE": {
+        "CANNOT_DETERMINE": 0,
+        "NEEDS_REVIEW": 0,
+        "NOT_READY": 0,
+        "PENDING_VERIFICATION": 1,
+        "READY": 0,
+        "UNKNOWN": 0
+      },
+      "NEEDS_REVIEW": {
+        "CANNOT_DETERMINE": 0,
+        "NEEDS_REVIEW": 0,
+        "NOT_READY": 0,
+        "PENDING_VERIFICATION": 0,
+        "READY": 0,
+        "UNKNOWN": 0
+      },
+      "NOT_READY": {
+        "CANNOT_DETERMINE": 0,
+        "NEEDS_REVIEW": 0,
+        "NOT_READY": 0,
+        "PENDING_VERIFICATION": 1,
+        "READY": 0,
+        "UNKNOWN": 0
+      },
+      "PENDING_VERIFICATION": {
+        "CANNOT_DETERMINE": 0,
+        "NEEDS_REVIEW": 0,
+        "NOT_READY": 0,
+        "PENDING_VERIFICATION": 0,
+        "READY": 0,
+        "UNKNOWN": 0
+      },
+      "READY": {
+        "CANNOT_DETERMINE": 0,
+        "NEEDS_REVIEW": 0,
+        "NOT_READY": 0,
+        "PENDING_VERIFICATION": 0,
+        "READY": 0,
+        "UNKNOWN": 0
+      },
+      "UNKNOWN": {
+        "CANNOT_DETERMINE": 0,
+        "NEEDS_REVIEW": 0,
+        "NOT_READY": 0,
+        "PENDING_VERIFICATION": 0,
+        "READY": 0,
+        "UNKNOWN": 0
+      }
+    },
+    "exact_status_accuracy": 0.0,
+    "exact_status_correct": 0,
+    "expected_abstention_rate": 0.5,
+    "false_pending_verification": 2,
+    "false_ready": 0,
+    "missed_passes": 0
+  }
+}
