@@ -25,6 +25,18 @@ CPB_0236_GROUP_DURATION_RE = re.compile(
     rf"(?:\s*(?:,|and|plus|\+)\s*\b{CPB_0236_THERAPY_CONTEXT}\b)+"
     r"(?:\s*(?:x|for|over|about)\s*)\b(?P<value>\d+)\s*(?:week|weeks)\b"
 )
+# New unit forms require an entire isolated course/response statement. Do not
+# borrow a duration across indication modifiers, comparisons or other clauses.
+CPB_COURSE_RESPONSE_SUFFIX = (
+    r"\s+with\s+(?:no|minimal|little|insufficient|substantial|significant|meaningful|good)"
+    r"\s+(?:improvement|relief|response)\s*$"
+)
+CPB_NEW_DURATION_AFTER_RE = re.compile(
+    rf"^(?:completed\s+)?{CPB_0236_THERAPY_CONTEXT}\s+(?:x|for)\s+(?P<value>\d+)\s+(?P<unit>days?)" + CPB_COURSE_RESPONSE_SUFFIX
+)
+CPB_NEW_DURATION_BEFORE_RE = re.compile(
+    rf"^(?:completed\s+)?(?P<value>\d+)\s+(?P<unit>days?)\s+of\s+{CPB_0236_THERAPY_CONTEXT}" + CPB_COURSE_RESPONSE_SUFFIX
+)
 CPB_0236_NONRESPONSE_RE = re.compile(
     r"\b(?:no|minimal|little|insufficient)\s+(?:meaningful\s+)?(?:improvement|relief|response)\b"
     r"|\bwithout\s+(?:meaningful\s+)?(?:improvement|relief)\b"
@@ -429,6 +441,12 @@ def _dedup_matches(matches: List[re.Match[str]]) -> List[re.Match[str]]:
     return deduped
 
 
+def _cpb_duration_weeks(match: re.Match[str]) -> int:
+    value = int(match.group("value"))
+    # Completed whole weeks only; 41 days cannot meet a six-week minimum.
+    return value // 7 if match.groupdict().get("unit", "weeks").startswith("day") else value
+
+
 def _collect_cpb_therapy_candidates(text: str) -> List[_TherapyCourseCandidate]:
     candidates: List[_TherapyCourseCandidate] = []
 
@@ -457,10 +475,13 @@ def _collect_cpb_therapy_candidates(text: str) -> List[_TherapyCourseCandidate]:
             if _has_pattern(THERAPY_FUTURE_LOOKBACK_PATTERNS + THERAPY_FUTURE_AFTER_PATTERNS, clause):
                 continue
 
+            duration_patterns = [CPB_0236_THERAPY_AFTER_RE, CPB_0236_THERAPY_BEFORE_RE]
+            if clause_start == 0 and clause_end == len(sentence):
+                duration_patterns.extend((CPB_NEW_DURATION_AFTER_RE, CPB_NEW_DURATION_BEFORE_RE))
             duration_matches = _dedup_matches(
                 [
                     match
-                    for pattern in (CPB_0236_THERAPY_AFTER_RE, CPB_0236_THERAPY_BEFORE_RE)
+                    for pattern in duration_patterns
                     for match in pattern.finditer(clause)
                     if not _therapy_duration_is_disqualified(clause, match)
                     and not _mention_is_nonpatient_context(clause, match.start(), match.end())
@@ -494,7 +515,7 @@ def _collect_cpb_therapy_candidates(text: str) -> List[_TherapyCourseCandidate]:
             if contrast_ambiguous and response_value is not None:
                 response_value = REVIEW_REQUIRED_FACT
 
-            duration_values = {int(match.group("value")) for match in duration_matches}
+            duration_values = {_cpb_duration_weeks(match) for match in duration_matches}
             duration_value = next(iter(duration_values)) if len(duration_values) == 1 else None
 
             modality_keys = tuple(match.group(0).strip() for match in patient_modalities)

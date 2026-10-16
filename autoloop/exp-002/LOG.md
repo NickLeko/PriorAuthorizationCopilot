@@ -45,3 +45,39 @@ sufficient: the treatment must belong to the lumbar episode. No improvement
 is claimed from this candidate. Unrestricted drug-name lists were not attempted;
 the fixed source defines classes and this experiment has no repo-grounded
 mapping of individual drug names to classes.
+
+## Iteration 2 — accepted: whole-day CPB courses
+
+Hypothesis (stated before cases/fix): a complete qualifying course recorded in
+whole days can satisfy the same six-week minimum. Source: CPB Footnote 1 and
+its no-improvement-after-six-weeks clause; existing CPB duration patterns only
+accept numeric weeks. No drug-name mapping or clinical inference is involved.
+
+Pairs fixed before implementation in `cases/iteration-2.json`: three positives
+(42 days NSAIDs, 56 days analgesics before modality, 84 days muscle relaxants).
+Ten negatives: 41 days, documented improvement, planned, non-patient, denied,
+PT-only, unrelated headaches inline/semicolon, fractional and comparison forms.
+Before: **0/3 positives pass**, negatives **8/10 exact and 0 false pending**;
+short/improved courses abstain instead of NOT_READY.
+
+Fix: add an anchored complete-course-and-response grammar for integer days,
+only when its clause is the whole therapy sentence. It shares the existing
+modality, exclusion, uncertainty, attribution and response resolver. Convert
+integer days to completed weeks with floor division by seven; **41 → 5** cannot
+cross the six-week boundary. Original week forms are unchanged. The isolated
+statement restriction prevents the known indication/contrast borrowing exposed
+by iteration 1; unsupported comparison/fraction/modified statements abstain.
+
+After: **3/3 positives pass**, **10/10 negatives exact, zero false pending**;
+41-day and improved courses now correctly return NOT_READY. Exact **8/13 →
+13/13**, abstention **13/13 → 8/13**, matching expected **8/13**. No broader
+abstention was introduced. Corpus remains byte-for-byte equal to baseline.
+`make test`: **1136 passed, 10 xfailed**. No existing xfail marker/assertion
+changed. Evidence: `evidence/iteration-2-*`; paired tests execute through the
+public service in `test/test_exp002_recall.py`.
+
+Gaming/limits: the whole-statement grammar is deliberately narrow and will miss
+legitimate narrative qualifiers. It does not solve attribution or references in
+other sentences, and does not repair the existing unrelated-week-course gap.
+It is a general course grammar, not case-ID or exact-sentence matching. The
+rejected iteration 1 cases remain in final totals, rather than being relabeled.
