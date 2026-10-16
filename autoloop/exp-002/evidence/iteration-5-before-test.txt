@@ -1,0 +1,124 @@
+........................................FFFFFF......FF.                  [100%]
+=================================== FAILURES ===================================
+__________________________ test_exp002_pair[exam_of] ___________________________
+
+case = {'expected_facts': {'objective_motor_or_reflex_change_in_root_distribution': True}, 'expected_overall_status': 'PENDIN...ck pain with radiculopathy. Right L5 distribution: strength 4 of 5. NSAIDs for 8 weeks with minimal improvement.', ...}
+
+    @pytest.mark.parametrize("case", CASES, ids=lambda case: case["id"])
+    def test_exp002_pair(case):
+        result = ReadinessService().evaluate(PARequest(payer=case["payer"], procedure_code=case["procedure_code"], note_text=case["note_text"]))
+>       assert result.overall_status == case["expected_overall_status"]
+E       AssertionError: assert 'CANNOT_DETERMINE' == 'PENDING_VERIFICATION'
+E         
+E         - PENDING_VERIFICATION
+E         + CANNOT_DETERMINE
+
+test/test_exp002_recall.py:18: AssertionError
+________________________ test_exp002_pair[exam_out_of] _________________________
+
+case = {'expected_facts': {'objective_motor_or_reflex_change_in_root_distribution': True}, 'expected_overall_status': 'PENDIN...pain with radiculopathy. Left S1 distribution: strength 3 out of 5. NSAIDs for 8 weeks with minimal improvement.', ...}
+
+    @pytest.mark.parametrize("case", CASES, ids=lambda case: case["id"])
+    def test_exp002_pair(case):
+        result = ReadinessService().evaluate(PARequest(payer=case["payer"], procedure_code=case["procedure_code"], note_text=case["note_text"]))
+>       assert result.overall_status == case["expected_overall_status"]
+E       AssertionError: assert 'CANNOT_DETERMINE' == 'PENDING_VERIFICATION'
+E         
+E         - PENDING_VERIFICATION
+E         + CANNOT_DETERMINE
+
+test/test_exp002_recall.py:18: AssertionError
+________________________ test_exp002_pair[exam_decimal] ________________________
+
+case = {'expected_facts': {'objective_motor_or_reflex_change_in_root_distribution': True}, 'expected_overall_status': 'PENDIN...w back pain with radiculopathy. L4 distribution: strength 4.5 of 5. NSAIDs for 8 weeks with minimal improvement.', ...}
+
+    @pytest.mark.parametrize("case", CASES, ids=lambda case: case["id"])
+    def test_exp002_pair(case):
+        result = ReadinessService().evaluate(PARequest(payer=case["payer"], procedure_code=case["procedure_code"], note_text=case["note_text"]))
+>       assert result.overall_status == case["expected_overall_status"]
+E       AssertionError: assert 'CANNOT_DETERMINE' == 'PENDING_VERIFICATION'
+E         
+E         - PENDING_VERIFICATION
+E         + CANNOT_DETERMINE
+
+test/test_exp002_recall.py:18: AssertionError
+________________________ test_exp002_pair[exam_normal] _________________________
+
+case = {'expected_facts': {'objective_motor_or_reflex_change_in_root_distribution': False}, 'expected_overall_status': 'NOT_R...ain with radiculopathy. Right L5 distribution: strength 5 out of 5. NSAIDs for 8 weeks with minimal improvement.', ...}
+
+    @pytest.mark.parametrize("case", CASES, ids=lambda case: case["id"])
+    def test_exp002_pair(case):
+        result = ReadinessService().evaluate(PARequest(payer=case["payer"], procedure_code=case["procedure_code"], note_text=case["note_text"]))
+>       assert result.overall_status == case["expected_overall_status"]
+E       AssertionError: assert 'CANNOT_DETERMINE' == 'NOT_READY'
+E         
+E         - NOT_READY
+E         + CANNOT_DETERMINE
+
+test/test_exp002_recall.py:18: AssertionError
+________________________ test_exp002_pair[exam_negated] ________________________
+
+case = {'expected_facts': {'objective_motor_or_reflex_change_in_root_distribution': None}, 'expected_overall_status': 'NEEDS_...ain with radiculopathy. Right L5 distribution: strength not 4 of 5. NSAIDs for 8 weeks with minimal improvement.', ...}
+
+    @pytest.mark.parametrize("case", CASES, ids=lambda case: case["id"])
+    def test_exp002_pair(case):
+        result = ReadinessService().evaluate(PARequest(payer=case["payer"], procedure_code=case["procedure_code"], note_text=case["note_text"]))
+>       assert result.overall_status == case["expected_overall_status"]
+E       AssertionError: assert 'CANNOT_DETERMINE' == 'NEEDS_REVIEW'
+E         
+E         - NEEDS_REVIEW
+E         + CANNOT_DETERMINE
+
+test/test_exp002_recall.py:18: AssertionError
+_______________________ test_exp002_pair[exam_question] ________________________
+
+case = {'expected_facts': {'objective_motor_or_reflex_change_in_root_distribution': None}, 'expected_overall_status': 'NEEDS_...ck pain with radiculopathy. Right L5 distribution: strength 4 of 5? NSAIDs for 8 weeks with minimal improvement.', ...}
+
+    @pytest.mark.parametrize("case", CASES, ids=lambda case: case["id"])
+    def test_exp002_pair(case):
+        result = ReadinessService().evaluate(PARequest(payer=case["payer"], procedure_code=case["procedure_code"], note_text=case["note_text"]))
+>       assert result.overall_status == case["expected_overall_status"]
+E       AssertionError: assert 'CANNOT_DETERMINE' == 'NEEDS_REVIEW'
+E         
+E         - NEEDS_REVIEW
+E         + CANNOT_DETERMINE
+
+test/test_exp002_recall.py:18: AssertionError
+_____________________ test_exp002_pair[exam_prior_surgery] _____________________
+
+case = {'expected_facts': {'objective_motor_or_reflex_change_in_root_distribution': None}, 'expected_overall_status': 'NEEDS_...thy. Right L5 distribution: strength 4 of 5 from prior hip surgery. NSAIDs for 8 weeks with minimal improvement.', ...}
+
+    @pytest.mark.parametrize("case", CASES, ids=lambda case: case["id"])
+    def test_exp002_pair(case):
+        result = ReadinessService().evaluate(PARequest(payer=case["payer"], procedure_code=case["procedure_code"], note_text=case["note_text"]))
+>       assert result.overall_status == case["expected_overall_status"]
+E       AssertionError: assert 'CANNOT_DETERMINE' == 'NEEDS_REVIEW'
+E         
+E         - NEEDS_REVIEW
+E         + CANNOT_DETERMINE
+
+test/test_exp002_recall.py:18: AssertionError
+_____________________ test_exp002_pair[exam_contralateral] _____________________
+
+case = {'expected_facts': {'objective_motor_or_reflex_change_in_root_distribution': None}, 'expected_overall_status': 'NEEDS_...ith left leg radiculopathy. Right L5 distribution: strength 4 of 5. NSAIDs for 8 weeks with minimal improvement.', ...}
+
+    @pytest.mark.parametrize("case", CASES, ids=lambda case: case["id"])
+    def test_exp002_pair(case):
+        result = ReadinessService().evaluate(PARequest(payer=case["payer"], procedure_code=case["procedure_code"], note_text=case["note_text"]))
+>       assert result.overall_status == case["expected_overall_status"]
+E       AssertionError: assert 'CANNOT_DETERMINE' == 'NEEDS_REVIEW'
+E         
+E         - NEEDS_REVIEW
+E         + CANNOT_DETERMINE
+
+test/test_exp002_recall.py:18: AssertionError
+=========================== short test summary info ============================
+FAILED test/test_exp002_recall.py::test_exp002_pair[exam_of] - AssertionError...
+FAILED test/test_exp002_recall.py::test_exp002_pair[exam_out_of] - AssertionE...
+FAILED test/test_exp002_recall.py::test_exp002_pair[exam_decimal] - Assertion...
+FAILED test/test_exp002_recall.py::test_exp002_pair[exam_normal] - AssertionE...
+FAILED test/test_exp002_recall.py::test_exp002_pair[exam_negated] - Assertion...
+FAILED test/test_exp002_recall.py::test_exp002_pair[exam_question] - Assertio...
+FAILED test/test_exp002_recall.py::test_exp002_pair[exam_prior_surgery] - Ass...
+FAILED test/test_exp002_recall.py::test_exp002_pair[exam_contralateral] - Ass...
+8 failed, 47 passed in 0.43s

@@ -1,0 +1,167 @@
+[
+  {
+    "id": "exam_of",
+    "pair_role": "positive",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Low back pain with radiculopathy. Right L5 distribution: strength 4 of 5. NSAIDs for 8 weeks with minimal improvement.",
+    "expected_overall_status": "PENDING_VERIFICATION",
+    "expected_facts": {
+      "objective_motor_or_reflex_change_in_root_distribution": true
+    }
+  },
+  {
+    "id": "exam_out_of",
+    "pair_role": "positive",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Low back pain with radiculopathy. Left S1 distribution: strength 3 out of 5. NSAIDs for 8 weeks with minimal improvement.",
+    "expected_overall_status": "PENDING_VERIFICATION",
+    "expected_facts": {
+      "objective_motor_or_reflex_change_in_root_distribution": true
+    }
+  },
+  {
+    "id": "exam_decimal",
+    "pair_role": "positive",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Low back pain with radiculopathy. L4 distribution: strength 4.5 of 5. NSAIDs for 8 weeks with minimal improvement.",
+    "expected_overall_status": "PENDING_VERIFICATION",
+    "expected_facts": {
+      "objective_motor_or_reflex_change_in_root_distribution": true
+    }
+  },
+  {
+    "id": "exam_normal",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Low back pain with radiculopathy. Right L5 distribution: strength 5 out of 5. NSAIDs for 8 weeks with minimal improvement.",
+    "expected_overall_status": "NOT_READY",
+    "expected_facts": {
+      "objective_motor_or_reflex_change_in_root_distribution": false
+    }
+  },
+  {
+    "id": "exam_negated",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Low back pain with radiculopathy. Right L5 distribution: strength not 4 of 5. NSAIDs for 8 weeks with minimal improvement.",
+    "expected_overall_status": "NEEDS_REVIEW",
+    "expected_facts": {
+      "objective_motor_or_reflex_change_in_root_distribution": null
+    }
+  },
+  {
+    "id": "exam_question",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Low back pain with radiculopathy. Right L5 distribution: strength 4 of 5? NSAIDs for 8 weeks with minimal improvement.",
+    "expected_overall_status": "NEEDS_REVIEW",
+    "expected_facts": {
+      "objective_motor_or_reflex_change_in_root_distribution": null
+    }
+  },
+  {
+    "id": "exam_planned",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Low back pain with radiculopathy. Will assess right L5 distribution strength 4 of 5 next week. NSAIDs for 8 weeks with minimal improvement.",
+    "expected_overall_status": "CANNOT_DETERMINE",
+    "expected_facts": {
+      "objective_motor_or_reflex_change_in_root_distribution": null
+    }
+  },
+  {
+    "id": "exam_nonpatient",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Low back pain with radiculopathy. Mother has right L5 distribution strength 4 of 5. NSAIDs for 8 weeks with minimal improvement.",
+    "expected_overall_status": "CANNOT_DETERMINE",
+    "expected_facts": {
+      "objective_motor_or_reflex_change_in_root_distribution": null
+    }
+  },
+  {
+    "id": "exam_subjective",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Low back pain with radiculopathy. Patient reports strength 4 of 5 in the right L5 distribution. NSAIDs for 8 weeks with minimal improvement.",
+    "expected_overall_status": "CANNOT_DETERMINE",
+    "expected_facts": {
+      "objective_motor_or_reflex_change_in_root_distribution": null
+    }
+  },
+  {
+    "id": "exam_missing_root",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Low back pain with radiculopathy. Strength 4 out of 5. NSAIDs for 8 weeks with minimal improvement.",
+    "expected_overall_status": "CANNOT_DETERMINE",
+    "expected_facts": {
+      "objective_motor_or_reflex_change_in_root_distribution": null
+    }
+  },
+  {
+    "id": "exam_unnamed_root",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Low back pain with radiculopathy. Nerve-root distribution: strength 4 of 5. NSAIDs for 8 weeks with minimal improvement.",
+    "expected_overall_status": "CANNOT_DETERMINE",
+    "expected_facts": {
+      "objective_motor_or_reflex_change_in_root_distribution": null
+    }
+  },
+  {
+    "id": "exam_pain_rating",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Low back pain with radiculopathy. Right L5 distribution: pain 4 of 5, strength not tested. NSAIDs for 8 weeks with minimal improvement.",
+    "expected_overall_status": "CANNOT_DETERMINE",
+    "expected_facts": {
+      "objective_motor_or_reflex_change_in_root_distribution": null
+    }
+  },
+  {
+    "id": "exam_prior_surgery",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Low back pain with radiculopathy. Right L5 distribution: strength 4 of 5 from prior hip surgery. NSAIDs for 8 weeks with minimal improvement.",
+    "expected_overall_status": "NEEDS_REVIEW",
+    "expected_facts": {
+      "objective_motor_or_reflex_change_in_root_distribution": null
+    }
+  },
+  {
+    "id": "exam_contralateral",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Low back pain with left leg radiculopathy. Right L5 distribution: strength 4 of 5. NSAIDs for 8 weeks with minimal improvement.",
+    "expected_overall_status": "NEEDS_REVIEW",
+    "expected_facts": {
+      "objective_motor_or_reflex_change_in_root_distribution": null
+    }
+  },
+  {
+    "id": "exam_semicolon_origin",
+    "pair_role": "negative",
+    "payer": "Aetna",
+    "procedure_code": "MRI_LUMBAR",
+    "note_text": "Low back pain with radiculopathy. Right L5 distribution: strength 4 of 5; from prior hip surgery. NSAIDs for 8 weeks with minimal improvement.",
+    "expected_overall_status": "CANNOT_DETERMINE",
+    "expected_facts": {
+      "objective_motor_or_reflex_change_in_root_distribution": null
+    }
+  }
+]

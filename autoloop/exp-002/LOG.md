@@ -146,3 +146,41 @@ bounded. Longer/compound numbers, comparative/ranged durations and narrative
 course qualifiers remain unsupported. Mapping basic numbers is general, but
 this is still a curated phrasing slice, not evidence of free-text clinical
 recall. Neither rejected cases nor negative labels were removed to raise scores.
+
+## Iteration 5 — accepted: direct named-root strength grades written with “of”
+
+Hypothesis (stated before cases/fix): a direct objective exam in a named lumbar/
+sacral root distribution, “strength 4 of 5” or “3 out of 5”, documents the same
+motor deficit as existing slash notation. Source: CPB 0236's objective motor or
+reflex changes in the specific root distribution; the existing strength parser
+only recognizes slash grades. No subjective pain rating can substitute.
+
+Prewritten `cases/iteration-5.json`: three positives (4 of 5, 3 out of 5,
+4.5 of 5) and twelve negatives: normal strength, negated grade, question,
+planned exam, non-patient, subjective report, missing/unnamed root, pain rating,
+prior surgery inline/semicolon and contralateral radiculopathy. All three new
+positives fail before implementation; all twelve negatives are nonpassing.
+Five negatives initially have the wrong abstention status (normal strength and
+four explicit ambiguity cases). All labels remain unchanged.
+
+Fix: an anchored named-root objective-strength statement grammar. Explicit
+negation, question, alternative attribution and opposite-side radiculopathy
+route to review; normal 5 of 5 returns false. Other unsupported statements remain
+unextracted. The first targeted run missed the decimal positive because the
+legacy clause index splits decimals. The new route instead uses the existing
+real-sentence index, preserving the legacy slash-notation path unchanged. The
+initial failed test output is retained, not hidden. No unsafe pass occurred in
+this iteration's paired tests.
+
+After: cumulative positives **9/12 → 12/12 pass**, negatives **38/43 → 43/43
+exact**, zero false pending. Total **47/55 → 55/55 exact**; abstention **40/55 →
+36/55**, matching expected **36/55**. Normal strength now correctly gives
+NOT_READY and four ambiguous statements NEEDS_REVIEW. `make test`: **1178 passed,
+10 xfailed**; then corpus equals baseline byte-for-byte. No existing assertion
+or xfail marker changed. Evidence: `evidence/iteration-5-*`.
+
+Gaming/limits: the complete statement grammar is narrow and its special handling
+of ambiguous word grades is asymmetric with legacy slash parsing. Named root,
+strength and response wording form a curated slice, not general clinical
+attribution. Opposite-side matching does not establish complete episode or
+laterality understanding. These limitations and rejected cases remain visible.

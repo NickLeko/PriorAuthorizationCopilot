@@ -92,6 +92,11 @@ IMAGING_CONTEXT_RE = re.compile(r"\b(?:(?:prior\s+)?imaging|x-?ray|xray|ct|mri)\
 BACK_PAIN_RE = re.compile(r"\b(?:low\s+)?back pain\b")
 RADICULOPATHY_RE = re.compile(r"\b(?:lumbar\s+)?radiculopathy\b|\bradicular (?:back )?pain\b")
 ROOT_DISTRIBUTION_RE = re.compile(r"\b(?:l[1-5]|s[1-5])(?:\s+(?:nerve\s+)?root)?\s+distribution\b|\bnerve[- ]root distribution\b")
+ROOT_WORD_STRENGTH_RE = re.compile(
+    r"^(?:(?P<side>right|left)\s+)?(?:l[1-5]|s[1-5])(?:\s+(?:nerve\s+)?root)?\s+distribution\s*:?\s+"
+    r"strength\s+(?:(?:is|was)\s+)?(?P<negated>not\s+)?(?P<score>[0-5](?:\.\d)?)\s+(?:out\s+)?of\s+5"
+    r"(?P<attribution>\s+from\s+[^.!?;\n]+)?$"
+)
 REFLEX_PREDICATE_LINK_RE = re.compile(
     r"\b(?:deep tendon\s+)?reflex(?:es)?(?:\s*:\s*|\s+)"
     r"(?:(?:is|are|was|were|remains?|remained|initially|later|now|then|on|repeat|but|and|"
@@ -841,6 +846,27 @@ def _extract_facts(note_text: str) -> Tuple[Dict[str, Any], Dict[str, List[Dict[
     )
 
     objective_candidates: List[Tuple[bool | str, int, int]] = []
+    # New word notation uses real sentences so decimal scores remain intact.
+    # Legacy slash notation and its narrower clause scope remain unchanged.
+    for sentence_start, sentence_end in _sentence_spans(t, therapy=True):
+        sentence = t[sentence_start:sentence_end]
+        match = ROOT_WORD_STRENGTH_RE.fullmatch(sentence)
+        if match is None or _mention_is_nonpatient_context(sentence, match.start(), match.end()):
+            continue
+        side = match.group("side")
+        opposite_side = {"right": "left", "left": "right"}.get(side)
+        side_conflict = opposite_side and re.search(rf"\b{opposite_side}(?:[- ]sided)?\s+(?:leg\s+)?radiculopathy\b", t)
+        if (
+            match.group("negated")
+            or match.group("attribution")
+            or side_conflict
+            or _finding_is_uncertain(sentence, match, source_text=t, offset=sentence_start)
+            or t[sentence_end : sentence_end + 1] == "?"
+        ):
+            value = REVIEW_REQUIRED_FACT
+        else:
+            value = float(match.group("score")) < 5
+        objective_candidates.append((value, sentence_start, sentence_end))
     for sentence_start, sentence_end in _sentence_spans(t):
         sentence = t[sentence_start:sentence_end]
         root_matches = [
