@@ -1,0 +1,57 @@
+{
+  "checked_at_utc": "2026-10-16T03:51:57.957485+00:00",
+  "checks": [
+    {
+      "differences": [
+        {
+          "committed": false,
+          "path": "/any_review_required",
+          "would_generate": true
+        },
+        {
+          "committed": "CURRENT",
+          "path": "/sources/0/freshness_status",
+          "would_generate": "STALE"
+        },
+        {
+          "committed": null,
+          "path": "/sources/0/review_reason",
+          "would_generate": "Last successful policy check exceeds the configured monthly monitoring window."
+        },
+        {
+          "committed": 0,
+          "path": "/stale_source_count",
+          "would_generate": 1
+        }
+      ],
+      "file": "test/golden/governance/drift_status.json"
+    },
+    {
+      "differences": [
+        {
+          "committed": false,
+          "path": "/any_review_required",
+          "would_generate": true
+        },
+        {
+          "committed": "CURRENT",
+          "path": "/sources/0/freshness_status",
+          "would_generate": "STALE"
+        },
+        {
+          "committed": null,
+          "path": "/sources/0/review_reason",
+          "would_generate": "Last successful policy check exceeds the configured monthly monitoring window."
+        },
+        {
+          "committed": 0,
+          "path": "/stale_source_count",
+          "would_generate": 1
+        }
+      ],
+      "file": "docs/artifacts/drift_status.json"
+    }
+  ],
+  "mode": "public drift projection, real default clock; no generation or committed-file writes",
+  "stop_required": true
+}
