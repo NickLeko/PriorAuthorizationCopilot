@@ -184,3 +184,65 @@ of ambiguous word grades is asymmetric with legacy slash parsing. Named root,
 strength and response wording form a curated slice, not general clinical
 attribution. Opposite-side matching does not establish complete episode or
 laterality understanding. These limitations and rejected cases remain visible.
+
+## Final aggregate audit — no sixth iteration
+
+The five-iteration budget is exhausted. No further product changes were made.
+Retain all **69 authored cases**, including all fourteen from the rejected
+iteration: **15 positives / 54 negatives**. The final 55 accepted pairs are
+exact; rejected cases remain in the aggregate with their original labels.
+
+For an additional retrospective comparison, `final_audit.py baseline` loads
+only `67f1f3c:engine/extract.py` into an isolated Python process, then evaluates
+through the unchanged public-service scorer. All other engine files are checked
+against that commit. This does not checkout main, replace any source file, or
+call extraction internals as the evaluator. Both baseline and current modes
+score the identical case file. This is separate from the prospective before-fix
+captures retained for each iteration.
+
+| Metric, all 69 authored cases | Original engine | Final engine | Canary |
+|---|---:|---:|---:|
+| Exact | 41/69 | 64/69 | 41/69 |
+| Positives passing | 0/15 | 12/15 | 0/15 |
+| Negatives exact | 41/54 | 52/54 | 41/54 |
+| False PENDING_VERIFICATION | 0 | 0 | 0 |
+| Missed passes | 15 | 3 | 15 |
+| Abstention | 100% | 72.46% | 100% |
+| Expected abstention | 65.22% | 65.22% | 65.22% |
+
+All 23 changed statuses move to their original expected value: twelve correct
+PENDING_VERIFICATION, seven correct NOT_READY, four correct NEEDS_REVIEW.
+No original correct status regresses; no wider abstention is used to achieve
+the safety result. The remaining five exact-status misses are iteration 1's
+three positive class-name variants and short/improved negative class-name
+variants. The canary's zero false pending and 41/69 exact are insufficient
+improvement evidence on their own.
+
+Corpus: complete report equals frozen baseline, **52/52, zero false pending**;
+canary remains **30/52**, seven missed passes. Exp-001's expanded 47-case report
+also equals its original report: **45/47 exact, two pre-existing false pending**.
+Those inherited gaps are unchanged, not omitted or presented as newly fixed.
+The new authored negatives all remain nonpassing. No global safety guarantee
+is claimed beyond the tested inputs.
+
+Added eleven nonpassing regression checks for the rejected candidate's
+negatives, preserving its original expected labels in the scorer. These guard
+against reintroducing its unsafe expansion. The two unresolved exact negative
+labels are not asserted as fixed or changed to CANNOT_DETERMINE. Together with
+55 exact paired tests this yields **66 new regression tests**.
+
+Final gates: **1189 passed, 10 xfailed** (`evidence/final-tests.txt`),
+`make lint` passes (`evidence/final-lint.txt`). Baseline **1123 passed / 10
+xfailed**. Newly passing strict xfails **0**; removed markers **0**. After those
+gates, reran the complete current public-service audit. Evidence:
+`final-all-cases.json`, `final-baseline-audit.json`, `final-current-audit.json`
+and `final-scope-audit.json` in `evidence/`; `REPORT.md` contains the self-audit.
+
+Scope audit: only `engine/extract.py` changes existing product files; only the
+new `test/test_exp002_recall.py` adds tests. All pre-existing tests/expectations,
+scorer, rules, rulebook, snapshots, inputs, goldens, artifacts, deployment/version
+configuration, clocks and monitor state are unchanged. No generators, main
+mutation, tags or PR were used. Existing untracked unrelated work was untouched.
+No new disputes. The strength grammar is the most overfit-prone accepted fix;
+all examples are authored, and the rejected unsafe candidate demonstrates why
+this is evidence on bounded phrasing families rather than broad clinical recall.

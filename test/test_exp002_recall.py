@@ -10,6 +10,12 @@ from engine.service import ReadinessService
 
 ROOT = Path(__file__).resolve().parents[1]
 CASES = [case for path in sorted((ROOT / "autoloop/exp-002/cases").glob("iteration-*.json")) for case in json.loads(path.read_text())]
+REJECTED_NEGATIVES = [
+    case
+    for path in sorted((ROOT / "autoloop/exp-002/cases").glob("rejected-*.json"))
+    for case in json.loads(path.read_text())
+    if case["pair_role"] == "negative"
+]
 
 
 @pytest.mark.parametrize("case", CASES, ids=lambda case: case["id"])
@@ -27,3 +33,13 @@ def test_exp002_pair(case):
     for spans in result.evidence_map.values():
         for span in spans:
             assert case["note_text"][span.start : span.end] == span.text
+
+
+@pytest.mark.parametrize("case", REJECTED_NEGATIVES, ids=lambda case: case["id"])
+def test_exp002_rejected_candidate_stays_nonpassing(case):
+    # Keep the unsafe candidate's challenges executable. Two unresolved negative
+    # exact-status misses remain in the scoreboard with their original labels.
+    result = ReadinessService().evaluate(PARequest(payer=case["payer"], procedure_code=case["procedure_code"], note_text=case["note_text"]))
+    assert result.overall_status not in {"READY", "PENDING_VERIFICATION"}
+    assert result.submission_readiness is False
+    assert any(item.status != "MET" for item in result.results)

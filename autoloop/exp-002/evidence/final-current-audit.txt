@@ -1,0 +1,249 @@
+{
+  "mode": "current",
+  "system": {
+    "cases": 69,
+    "exact_status_correct": 64,
+    "exact_status_accuracy": 0.927536231884058,
+    "false_pending_verification": 0,
+    "false_ready": 0,
+    "automated_ready": 0,
+    "missed_passes": 3,
+    "abstention_rate": 0.7246376811594203,
+    "expected_abstention_rate": 0.6521739130434783,
+    "confusion_matrix_expected_rows_actual_columns": {
+      "READY": {
+        "READY": 0,
+        "PENDING_VERIFICATION": 0,
+        "NOT_READY": 0,
+        "CANNOT_DETERMINE": 0,
+        "NEEDS_REVIEW": 0,
+        "UNKNOWN": 0
+      },
+      "PENDING_VERIFICATION": {
+        "READY": 0,
+        "PENDING_VERIFICATION": 12,
+        "NOT_READY": 0,
+        "CANNOT_DETERMINE": 3,
+        "NEEDS_REVIEW": 0,
+        "UNKNOWN": 0
+      },
+      "NOT_READY": {
+        "READY": 0,
+        "PENDING_VERIFICATION": 0,
+        "NOT_READY": 7,
+        "CANNOT_DETERMINE": 2,
+        "NEEDS_REVIEW": 0,
+        "UNKNOWN": 0
+      },
+      "CANNOT_DETERMINE": {
+        "READY": 0,
+        "PENDING_VERIFICATION": 0,
+        "NOT_READY": 0,
+        "CANNOT_DETERMINE": 41,
+        "NEEDS_REVIEW": 0,
+        "UNKNOWN": 0
+      },
+      "NEEDS_REVIEW": {
+        "READY": 0,
+        "PENDING_VERIFICATION": 0,
+        "NOT_READY": 0,
+        "CANNOT_DETERMINE": 0,
+        "NEEDS_REVIEW": 4,
+        "UNKNOWN": 0
+      },
+      "UNKNOWN": {
+        "READY": 0,
+        "PENDING_VERIFICATION": 0,
+        "NOT_READY": 0,
+        "CANNOT_DETERMINE": 0,
+        "NEEDS_REVIEW": 0,
+        "UNKNOWN": 0
+      }
+    }
+  },
+  "canary": {
+    "cases": 69,
+    "exact_status_correct": 41,
+    "exact_status_accuracy": 0.5942028985507246,
+    "false_pending_verification": 0,
+    "false_ready": 0,
+    "automated_ready": 0,
+    "missed_passes": 15,
+    "abstention_rate": 1.0,
+    "expected_abstention_rate": 0.6521739130434783,
+    "confusion_matrix_expected_rows_actual_columns": {
+      "READY": {
+        "READY": 0,
+        "PENDING_VERIFICATION": 0,
+        "NOT_READY": 0,
+        "CANNOT_DETERMINE": 0,
+        "NEEDS_REVIEW": 0,
+        "UNKNOWN": 0
+      },
+      "PENDING_VERIFICATION": {
+        "READY": 0,
+        "PENDING_VERIFICATION": 0,
+        "NOT_READY": 0,
+        "CANNOT_DETERMINE": 15,
+        "NEEDS_REVIEW": 0,
+        "UNKNOWN": 0
+      },
+      "NOT_READY": {
+        "READY": 0,
+        "PENDING_VERIFICATION": 0,
+        "NOT_READY": 0,
+        "CANNOT_DETERMINE": 9,
+        "NEEDS_REVIEW": 0,
+        "UNKNOWN": 0
+      },
+      "CANNOT_DETERMINE": {
+        "READY": 0,
+        "PENDING_VERIFICATION": 0,
+        "NOT_READY": 0,
+        "CANNOT_DETERMINE": 41,
+        "NEEDS_REVIEW": 0,
+        "UNKNOWN": 0
+      },
+      "NEEDS_REVIEW": {
+        "READY": 0,
+        "PENDING_VERIFICATION": 0,
+        "NOT_READY": 0,
+        "CANNOT_DETERMINE": 4,
+        "NEEDS_REVIEW": 0,
+        "UNKNOWN": 0
+      },
+      "UNKNOWN": {
+        "READY": 0,
+        "PENDING_VERIFICATION": 0,
+        "NOT_READY": 0,
+        "CANNOT_DETERMINE": 0,
+        "NEEDS_REVIEW": 0,
+        "UNKNOWN": 0
+      }
+    }
+  },
+  "by_role": {
+    "positive": {
+      "cases": 15,
+      "exact_status_correct": 12,
+      "exact_status_accuracy": 0.8,
+      "false_pending_verification": 0,
+      "false_ready": 0,
+      "automated_ready": 0,
+      "missed_passes": 3,
+      "abstention_rate": 0.2,
+      "expected_abstention_rate": 0.0,
+      "confusion_matrix_expected_rows_actual_columns": {
+        "READY": {
+          "READY": 0,
+          "PENDING_VERIFICATION": 0,
+          "NOT_READY": 0,
+          "CANNOT_DETERMINE": 0,
+          "NEEDS_REVIEW": 0,
+          "UNKNOWN": 0
+        },
+        "PENDING_VERIFICATION": {
+          "READY": 0,
+          "PENDING_VERIFICATION": 12,
+          "NOT_READY": 0,
+          "CANNOT_DETERMINE": 3,
+          "NEEDS_REVIEW": 0,
+          "UNKNOWN": 0
+        },
+        "NOT_READY": {
+          "READY": 0,
+          "PENDING_VERIFICATION": 0,
+          "NOT_READY": 0,
+          "CANNOT_DETERMINE": 0,
+          "NEEDS_REVIEW": 0,
+          "UNKNOWN": 0
+        },
+        "CANNOT_DETERMINE": {
+          "READY": 0,
+          "PENDING_VERIFICATION": 0,
+          "NOT_READY": 0,
+          "CANNOT_DETERMINE": 0,
+          "NEEDS_REVIEW": 0,
+          "UNKNOWN": 0
+        },
+        "NEEDS_REVIEW": {
+          "READY": 0,
+          "PENDING_VERIFICATION": 0,
+          "NOT_READY": 0,
+          "CANNOT_DETERMINE": 0,
+          "NEEDS_REVIEW": 0,
+          "UNKNOWN": 0
+        },
+        "UNKNOWN": {
+          "READY": 0,
+          "PENDING_VERIFICATION": 0,
+          "NOT_READY": 0,
+          "CANNOT_DETERMINE": 0,
+          "NEEDS_REVIEW": 0,
+          "UNKNOWN": 0
+        }
+      }
+    },
+    "negative": {
+      "cases": 54,
+      "exact_status_correct": 52,
+      "exact_status_accuracy": 0.9629629629629629,
+      "false_pending_verification": 0,
+      "false_ready": 0,
+      "automated_ready": 0,
+      "missed_passes": 0,
+      "abstention_rate": 0.8703703703703703,
+      "expected_abstention_rate": 0.8333333333333334,
+      "confusion_matrix_expected_rows_actual_columns": {
+        "READY": {
+          "READY": 0,
+          "PENDING_VERIFICATION": 0,
+          "NOT_READY": 0,
+          "CANNOT_DETERMINE": 0,
+          "NEEDS_REVIEW": 0,
+          "UNKNOWN": 0
+        },
+        "PENDING_VERIFICATION": {
+          "READY": 0,
+          "PENDING_VERIFICATION": 0,
+          "NOT_READY": 0,
+          "CANNOT_DETERMINE": 0,
+          "NEEDS_REVIEW": 0,
+          "UNKNOWN": 0
+        },
+        "NOT_READY": {
+          "READY": 0,
+          "PENDING_VERIFICATION": 0,
+          "NOT_READY": 7,
+          "CANNOT_DETERMINE": 2,
+          "NEEDS_REVIEW": 0,
+          "UNKNOWN": 0
+        },
+        "CANNOT_DETERMINE": {
+          "READY": 0,
+          "PENDING_VERIFICATION": 0,
+          "NOT_READY": 0,
+          "CANNOT_DETERMINE": 41,
+          "NEEDS_REVIEW": 0,
+          "UNKNOWN": 0
+        },
+        "NEEDS_REVIEW": {
+          "READY": 0,
+          "PENDING_VERIFICATION": 0,
+          "NOT_READY": 0,
+          "CANNOT_DETERMINE": 0,
+          "NEEDS_REVIEW": 4,
+          "UNKNOWN": 0
+        },
+        "UNKNOWN": {
+          "READY": 0,
+          "PENDING_VERIFICATION": 0,
+          "NOT_READY": 0,
+          "CANNOT_DETERMINE": 0,
+          "NEEDS_REVIEW": 0,
+          "UNKNOWN": 0
+        }
+      }
+    }
+  }
+}
