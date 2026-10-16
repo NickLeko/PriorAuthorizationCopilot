@@ -131,7 +131,7 @@ with Aetna/outpatient and no human attestations.
   {"id":"exp003_blocker","note":"Low back pain with radiculopathy. Right L5 distribution: strength 4/5. Rocuronium for 8 weeks with no improvement.","expected":{"cpb_0236_conservative_therapy_weeks":null},"procedure":"MRI_LUMBAR","status":"CANNOT_DETERMINE"},
   {"id":"exp003_challenge_partial_response","note":"Low back pain with radiculopathy. Right L5 distribution: strength 4/5. Ibuprofen for 8 weeks with no improvement. Tylenol with significant improvement.","expected":{"cpb_0236_conservative_therapy_weeks":"__REVIEW_REQUIRED__","cpb_0236_conservative_therapy_no_improvement":"__REVIEW_REQUIRED__"},"procedure":"MRI_LUMBAR","status":"NEEDS_REVIEW"},
   {"id":"exp003_topical","note":"Low back pain with radiculopathy. Right L5 distribution: strength 4/5. Diclofenac gel for 8 weeks with no improvement.","expected":{"cpb_0236_conservative_therapy_weeks":null},"procedure":"MRI_LUMBAR","status":"CANNOT_DETERMINE"},
-  {"id":"exp003_leading_verb_missed","note":"Low back pain with radiculopathy. Right L5 distribution: strength 4/5. Took ibuprofen for 6 weeks with no improvement.","expected":{"cpb_0236_conservative_therapy_weeks":null,"cpb_0236_conservative_therapy_no_improvement":null},"procedure":"MRI_LUMBAR","status":"CANNOT_DETERMINE"}
+  {"id":"exp003_leading_verb_missed","note":"Low back pain with radiculopathy. Right L5 distribution: strength 4/5. Took ibuprofen for 6 weeks with no improvement.","expected":{"cpb_0236_conservative_therapy_weeks":6,"cpb_0236_conservative_therapy_no_improvement":true},"procedure":"MRI_LUMBAR","status":"PENDING_VERIFICATION"}
 ]
 ```
 

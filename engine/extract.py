@@ -54,23 +54,41 @@ CPB_NEW_DURATION_BEFORE_RE = re.compile(
     rf"^(?:completed\s+)?(?P<value>{CPB_EXPLICIT_DURATION_VALUE})\s+(?P<unit>days?|months?|weeks?)\s+of\s+{CPB_0236_THERAPY_CONTEXT}"
     + CPB_COURSE_RESPONSE_SUFFIX
 )
-# Listed drug names replace only the class token in the existing isolated
-# course grammar. Keep original note offsets and all shared safety guards.
+# Reported-use syntax is independent of the reviewed literal drug vocabulary.
+# A whole course prevents dose, indication and neighboring-course borrowing.
+CPB_DRUG_USE_PREFIX = (
+    r"(?:(?:the\s+)?patient\s+)?"
+    r"(?:(?:(?:has|have|had)\s+(?:been\s+)?(?:taking|using)|"
+    r"(?:has|have|had)\s+(?:taken|used|tried)|"
+    r"took|takes?|taking|used|uses?|using|tried|trialed|received|completed|on|treated\s+with)\s+)?"
+)
+CPB_DRUG_DOSE = (
+    r"(?:\s+\d+(?:\.\d+)?\s*(?:mg|mcg|g))?"
+    r"(?:\s+(?:daily|nightly|bid|tid|qid|qhs|prn|at\s+(?:bedtime|night)|"
+    r"(?:once|twice|three\s+times|four\s+times)\s+(?:a\s+day|daily)))?"
+)
+CPB_DRUG_RESPONSE_SUFFIX = (
+    r"(?:\s+with\s+|,\s*)(?:no|minimal|little|insufficient|substantial|significant|meaningful|good)"
+    r"\s+(?:meaningful\s+)?(?:improvement|relief|response|benefit)\s*$"
+    r"|\s+without\s+(?:meaningful\s+)?(?:improvement|relief|response|benefit)\s*$"
+)
 CPB_DRUG_DURATION_AFTER_RE = re.compile(
-    rf"^(?:completed\s+)?{DRUG_NAME_PATTERN}\s+(?:x|for)\s+(?P<value>{CPB_EXPLICIT_DURATION_VALUE})\s+(?P<unit>days?|months?|weeks?)"
-    + CPB_COURSE_RESPONSE_SUFFIX
+    rf"^{CPB_DRUG_USE_PREFIX}{DRUG_NAME_PATTERN}{CPB_DRUG_DOSE}\s+(?:x|for|over)\s+"
+    rf"(?P<value>{CPB_EXPLICIT_DURATION_VALUE})\s+(?P<unit>days?|months?|weeks?)"
+    rf"(?:{CPB_DRUG_RESPONSE_SUFFIX})"
 )
 CPB_DRUG_DURATION_BEFORE_RE = re.compile(
-    rf"^(?:completed\s+)?(?P<value>{CPB_EXPLICIT_DURATION_VALUE})\s+(?P<unit>days?|months?|weeks?)\s+of\s+{DRUG_NAME_PATTERN}"
-    + CPB_COURSE_RESPONSE_SUFFIX
+    rf"^{CPB_DRUG_USE_PREFIX}(?:(?:a|an)\s+)?(?P<value>{CPB_EXPLICIT_DURATION_VALUE})[ -]+"
+    rf"(?P<unit>days?|months?|weeks?)\s+(?:(?:course|trial)\s+)?of\s+{DRUG_NAME_PATTERN}{CPB_DRUG_DOSE}"
+    rf"(?:{CPB_DRUG_RESPONSE_SUFFIX})"
 )
 CPB_0236_NONRESPONSE_RE = re.compile(
-    r"\b(?:no|minimal|little|insufficient)\s+(?:meaningful\s+)?(?:improvement|relief|response)\b"
-    r"|\bwithout\s+(?:meaningful\s+)?(?:improvement|relief)\b"
+    r"\b(?:no|minimal|little|insufficient)\s+(?:meaningful\s+)?(?:improvement|relief|response|benefit)\b"
+    r"|\bwithout\s+(?:meaningful\s+)?(?:improvement|relief|response|benefit)\b"
     r"|\bfailed to (?:improve|respond)\b"
 )
 CPB_0236_RESPONSE_RE = re.compile(
-    r"\b(?:substantial|significant|meaningful|good)\s+(?:improvement|relief|response)\b"
+    r"\b(?:substantial|significant|meaningful|good)\s+(?:improvement|relief|response|benefit)\b"
     r"|\bsymptoms? resolved\b"
 )
 THERAPY_CLAUSE_BOUNDARY_RE = re.compile(r";\s*|(?:,\s*)?\b(?:whereas|while|however|but|though|although|yet|in contrast)\b\s*[:,]?\s*")
@@ -561,12 +579,16 @@ def _collect_cpb_therapy_candidates(text: str) -> List[_TherapyCourseCandidate]:
             group_matches = list(CPB_0236_GROUP_DURATION_RE.finditer(clause))
 
             response_mentions: List[Tuple[bool | str, re.Match[str]]] = []
+            nonresponse_spans = []
             for match in CPB_0236_NONRESPONSE_RE.finditer(clause):
+                nonresponse_spans.append((match.start(), match.end()))
                 value: bool | str = True
                 if _finding_is_uncertain(clause, match, source_text=text, offset=absolute_start):
                     value = REVIEW_REQUIRED_FACT
                 response_mentions.append((value, match))
             for match in CPB_0236_RESPONSE_RE.finditer(clause):
+                if drug_duration_matches and any(start <= match.start() and match.end() <= end for start, end in nonresponse_spans):
+                    continue
                 value = False
                 if _finding_is_uncertain(clause, match, source_text=text, offset=absolute_start):
                     value = REVIEW_REQUIRED_FACT
