@@ -1,0 +1,94 @@
+FFFF...                                                                  [100%]
+=================================== FAILURES ===================================
+______________ test_autoloop_regression[date_appointment_before] _______________
+
+case = {'expected_facts': {'sleep_study_date': None}, 'expected_overall_status': 'CANNOT_DETERMINE', 'expected_requirements': {'sleep_study_date': 'NOT_DOCUMENTED'}, 'id': 'date_appointment_before', ...}
+
+    @pytest.mark.parametrize("case", CASES, ids=lambda case: case["id"])
+    def test_autoloop_regression(case):
+        result = ReadinessService().evaluate(
+            PARequest(
+                payer=case["payer"],
+                procedure_code=case["procedure_code"],
+                note_text=case["note_text"],
+            )
+        )
+>       assert result.overall_status == case["expected_overall_status"]
+E       AssertionError: assert 'PENDING_VERIFICATION' == 'CANNOT_DETERMINE'
+E         
+E         - CANNOT_DETERMINE
+E         + PENDING_VERIFICATION
+
+test/test_autoloop_date_candidate.py:23: AssertionError
+_______________ test_autoloop_regression[date_appointment_after] _______________
+
+case = {'expected_facts': {'sleep_study_date': None}, 'expected_overall_status': 'CANNOT_DETERMINE', 'expected_requirements': {'sleep_study_date': 'NOT_DOCUMENTED'}, 'id': 'date_appointment_after', ...}
+
+    @pytest.mark.parametrize("case", CASES, ids=lambda case: case["id"])
+    def test_autoloop_regression(case):
+        result = ReadinessService().evaluate(
+            PARequest(
+                payer=case["payer"],
+                procedure_code=case["procedure_code"],
+                note_text=case["note_text"],
+            )
+        )
+>       assert result.overall_status == case["expected_overall_status"]
+E       AssertionError: assert 'PENDING_VERIFICATION' == 'CANNOT_DETERMINE'
+E         
+E         - CANNOT_DETERMINE
+E         + PENDING_VERIFICATION
+
+test/test_autoloop_date_candidate.py:23: AssertionError
+______________ test_autoloop_regression[date_unrelated_multiple] _______________
+
+case = {'expected_facts': {'sleep_study_date': None}, 'expected_overall_status': 'CANNOT_DETERMINE', 'expected_requirements': {'sleep_study_date': 'NOT_DOCUMENTED'}, 'id': 'date_unrelated_multiple', ...}
+
+    @pytest.mark.parametrize("case", CASES, ids=lambda case: case["id"])
+    def test_autoloop_regression(case):
+        result = ReadinessService().evaluate(
+            PARequest(
+                payer=case["payer"],
+                procedure_code=case["procedure_code"],
+                note_text=case["note_text"],
+            )
+        )
+>       assert result.overall_status == case["expected_overall_status"]
+E       AssertionError: assert 'PENDING_VERIFICATION' == 'CANNOT_DETERMINE'
+E         
+E         - CANNOT_DETERMINE
+E         + PENDING_VERIFICATION
+
+test/test_autoloop_date_candidate.py:23: AssertionError
+_______________ test_autoloop_regression[date_real_after_visit] ________________
+
+case = {'expected_date_evidence': '2024-02-12', 'expected_facts': {'sleep_study_date': True}, 'expected_overall_status': 'PENDING_VERIFICATION', 'expected_requirements': {'sleep_study_date': 'MET'}, ...}
+
+    @pytest.mark.parametrize("case", CASES, ids=lambda case: case["id"])
+    def test_autoloop_regression(case):
+        result = ReadinessService().evaluate(
+            PARequest(
+                payer=case["payer"],
+                procedure_code=case["procedure_code"],
+                note_text=case["note_text"],
+            )
+        )
+        assert result.overall_status == case["expected_overall_status"]
+        assert result.submission_readiness is False
+        assert result.overall_status != "READY"
+        for key, value in case.get("expected_facts", {}).items():
+            assert result.facts[key] == value, key
+        if "expected_date_evidence" in case:
+>           assert [span.text for span in result.evidence_map["sleep_study_date"]] == [case["expected_date_evidence"]]
+E           AssertionError: assert ['2024-03-11'] == ['2024-02-12']
+E             
+E             At index 0 diff: '2024-03-11' != '2024-02-12'
+E             Use -v to get more diff
+
+test/test_autoloop_date_candidate.py:29: AssertionError
+=========================== short test summary info ============================
+FAILED test/test_autoloop_date_candidate.py::test_autoloop_regression[date_appointment_before]
+FAILED test/test_autoloop_date_candidate.py::test_autoloop_regression[date_appointment_after]
+FAILED test/test_autoloop_date_candidate.py::test_autoloop_regression[date_unrelated_multiple]
+FAILED test/test_autoloop_date_candidate.py::test_autoloop_regression[date_real_after_visit]
+4 failed, 3 passed in 0.11s

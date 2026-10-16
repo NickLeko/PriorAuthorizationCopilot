@@ -237,3 +237,79 @@ justified, but it is still an abstention increase on these repros and must not b
 advertised alone as improvement. Exact expected status improves for every new
 negated-score case. This does not handle every negation form, replacement score,
 or attribution of a numeric score to a different examination.
+
+## Iteration 5 — confirmed date-association defect; fix rejected by regression gate
+
+Hypothesis (stated before testing): the sleep-study date extractor borrows an
+unrelated appointment date across sentence boundaries within its 80-character
+window. Sources: date collection in `engine/extract.py`, the `borrowed_date`
+contract xfails, FM-1/FM-2 date-association limitations, and the fixed CPAP rule's
+requirement for dated sleep-study evidence.
+
+Repro: [rejected-date-cases.json](rejected-date-cases.json), seven fixed-label
+notes. Minimal negative: `OSA. Visit date 2024-05-18. Sleep study date not
+recorded. AHI 22.` Expected CANNOT_DETERMINE, before PENDING_VERIFICATION.
+Controls include genuine study dates in both orders and a cancelled study.
+A genuinely dated study after a separate appointment also exposes a wrong
+citation even when the status already passes. The temporary pytest repro is
+retained in `evidence/iteration-5-repro-test.py.txt`.
+
+Attempted fix: require the sleep-study context in the date's own sentence via
+the existing indexed context helper; preserve existing exclusion/future checks.
+The two correct-value borrowed-date strict markers were temporarily removed
+when their unchanged assertions passed.
+
+Evidence (`evidence/iteration-5-*`): **4 failed / 3 passed before**, all seven
+pass after. Exact status **4/7 → 7/7**, false pending **3 → 0**, missed passes
+**0 → 0**, abstention **1/7 → 4/7**, expected **4/7**. The fourth corrected test
+checks the date citation. Corpus results stayed unchanged.
+
+**Rejected and reverted:** `make test` returned **3 failed, 1109 passed,
+10 xfailed**, with existing assertions retaining the borrowed-date behavior:
+
+- `test_archive_invariants.py::test_borrowed_date_verified_ready_without_submission_readiness_roundtrips`
+- `test_corrections.py::test_borrowed_date_can_be_withdrawn_without_fixing_extraction`
+- `test_v210_independent.py::test_independent_correct_values_and_states`
+  (independent case 17, whose frozen expected sleep_study_date is True and
+  expected overall is PENDING_VERIFICATION despite its explicitly missing date)
+
+This is a second **dispute** between known-error fixtures and correct-value
+contract xfails. Their assertions and fixture remain unchanged. The product
+candidate and both temporary xfail-marker removals were restored to the
+iteration 4 commit. The unaccepted repro test is retained as evidence rather
+than installed as a failing regression test. The citation-only strict xfail
+also remains unchanged.
+
+After revert: **1103 passed, 12 xfailed**. Then the frozen corpus scoreboard
+was run: byte-for-byte equal to baseline. Date repro status score returns to
+4/7 exact, three false pending; diagnosis repros still match their pre-attempt
+statuses (2/9 exact, seven false pending). Neither set was silently dropped.
+All five allowed improvement iterations have now been consumed.
+
+Metric-gaming/limits: sentence association is a bounded heuristic; it would
+still miss genuine cross-sentence dates and does not solve attribution of
+multiple events within one sentence. It was not accepted, and no improvement
+is claimed for it.
+
+## Phase 2 closure
+
+Final tests: **1103 passed, 12 xfailed**. Baseline: **1072 passed, 14 xfailed**.
+The +31 passed tests comprise 29 new parametrized regression cases and two
+previously strict xfails. The negated-strength xfail remains disputed and failing.
+
+The corpus results and canary remain exactly frozen. Accepted regression cases
+score 29/29, zero false pending, zero missed passes, 15/29 abstention (expected
+15/29). To avoid selecting only successful fixes, all **45** authored cases
+(including both rejected candidates) are retained and scored in
+`all-authored-cases.json` / `all-authored-score.json`: **35/45 exact**, **10 false
+pending**, **zero missed passes**, **16/45 abstention** (expected **20/45**).
+Those ten remaining false pending results are the rejected diagnosis/date
+cases; their statuses did not worsen from their respective pre-attempt states.
+These are authored regressions, not held-out validation.
+
+Protected-path diff audit passed. All assertions in the two modified existing
+test files were compared by AST with the starting commit and are identical;
+only the two resolved marker selections changed. Phase 1 and first-stop JSON,
+scoreboard code, baseline, and original final-test evidence remain byte-for-byte
+unchanged. No generator, clock override, monitoring-state change, policy edit,
+original corpus edit, golden/artifact edit, push, tag or main change occurred.

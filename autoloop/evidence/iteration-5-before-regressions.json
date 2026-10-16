@@ -1,0 +1,190 @@
+{
+  "always_cannot_determine_canary": {
+    "abstention_rate": 1.0,
+    "automated_ready": 0,
+    "cases": 7,
+    "confusion_matrix_expected_rows_actual_columns": {
+      "CANNOT_DETERMINE": {
+        "CANNOT_DETERMINE": 4,
+        "NEEDS_REVIEW": 0,
+        "NOT_READY": 0,
+        "PENDING_VERIFICATION": 0,
+        "READY": 0,
+        "UNKNOWN": 0
+      },
+      "NEEDS_REVIEW": {
+        "CANNOT_DETERMINE": 0,
+        "NEEDS_REVIEW": 0,
+        "NOT_READY": 0,
+        "PENDING_VERIFICATION": 0,
+        "READY": 0,
+        "UNKNOWN": 0
+      },
+      "NOT_READY": {
+        "CANNOT_DETERMINE": 0,
+        "NEEDS_REVIEW": 0,
+        "NOT_READY": 0,
+        "PENDING_VERIFICATION": 0,
+        "READY": 0,
+        "UNKNOWN": 0
+      },
+      "PENDING_VERIFICATION": {
+        "CANNOT_DETERMINE": 3,
+        "NEEDS_REVIEW": 0,
+        "NOT_READY": 0,
+        "PENDING_VERIFICATION": 0,
+        "READY": 0,
+        "UNKNOWN": 0
+      },
+      "READY": {
+        "CANNOT_DETERMINE": 0,
+        "NEEDS_REVIEW": 0,
+        "NOT_READY": 0,
+        "PENDING_VERIFICATION": 0,
+        "READY": 0,
+        "UNKNOWN": 0
+      },
+      "UNKNOWN": {
+        "CANNOT_DETERMINE": 0,
+        "NEEDS_REVIEW": 0,
+        "NOT_READY": 0,
+        "PENDING_VERIFICATION": 0,
+        "READY": 0,
+        "UNKNOWN": 0
+      }
+    },
+    "exact_status_accuracy": 0.5714285714285714,
+    "exact_status_correct": 4,
+    "expected_abstention_rate": 0.5714285714285714,
+    "false_pending_verification": 0,
+    "false_ready": 0,
+    "missed_passes": 3
+  },
+  "case_file": "autoloop/rejected-date-cases.json",
+  "case_file_sha256": "4a861343781d6735459582ad71908d6e7a52efabc04559878d3f2ac0382147cc",
+  "case_results": [
+    {
+      "actual": "PENDING_VERIFICATION",
+      "expected": "CANNOT_DETERMINE",
+      "id": "date_appointment_before",
+      "index": 0
+    },
+    {
+      "actual": "PENDING_VERIFICATION",
+      "expected": "CANNOT_DETERMINE",
+      "id": "date_appointment_after",
+      "index": 1
+    },
+    {
+      "actual": "PENDING_VERIFICATION",
+      "expected": "CANNOT_DETERMINE",
+      "id": "date_unrelated_multiple",
+      "index": 2
+    },
+    {
+      "actual": "PENDING_VERIFICATION",
+      "expected": "PENDING_VERIFICATION",
+      "id": "date_real_after_visit",
+      "index": 3
+    },
+    {
+      "actual": "PENDING_VERIFICATION",
+      "expected": "PENDING_VERIFICATION",
+      "id": "date_real_before_study",
+      "index": 4
+    },
+    {
+      "actual": "PENDING_VERIFICATION",
+      "expected": "PENDING_VERIFICATION",
+      "id": "date_real_standard",
+      "index": 5
+    },
+    {
+      "actual": "CANNOT_DETERMINE",
+      "expected": "CANNOT_DETERMINE",
+      "id": "date_study_cancelled",
+      "index": 6
+    }
+  ],
+  "mismatches": [
+    {
+      "actual": "PENDING_VERIFICATION",
+      "expected": "CANNOT_DETERMINE",
+      "id": "date_appointment_before",
+      "index": 0
+    },
+    {
+      "actual": "PENDING_VERIFICATION",
+      "expected": "CANNOT_DETERMINE",
+      "id": "date_appointment_after",
+      "index": 1
+    },
+    {
+      "actual": "PENDING_VERIFICATION",
+      "expected": "CANNOT_DETERMINE",
+      "id": "date_unrelated_multiple",
+      "index": 2
+    }
+  ],
+  "system": {
+    "abstention_rate": 0.14285714285714285,
+    "automated_ready": 0,
+    "cases": 7,
+    "confusion_matrix_expected_rows_actual_columns": {
+      "CANNOT_DETERMINE": {
+        "CANNOT_DETERMINE": 1,
+        "NEEDS_REVIEW": 0,
+        "NOT_READY": 0,
+        "PENDING_VERIFICATION": 3,
+        "READY": 0,
+        "UNKNOWN": 0
+      },
+      "NEEDS_REVIEW": {
+        "CANNOT_DETERMINE": 0,
+        "NEEDS_REVIEW": 0,
+        "NOT_READY": 0,
+        "PENDING_VERIFICATION": 0,
+        "READY": 0,
+        "UNKNOWN": 0
+      },
+      "NOT_READY": {
+        "CANNOT_DETERMINE": 0,
+        "NEEDS_REVIEW": 0,
+        "NOT_READY": 0,
+        "PENDING_VERIFICATION": 0,
+        "READY": 0,
+        "UNKNOWN": 0
+      },
+      "PENDING_VERIFICATION": {
+        "CANNOT_DETERMINE": 0,
+        "NEEDS_REVIEW": 0,
+        "NOT_READY": 0,
+        "PENDING_VERIFICATION": 3,
+        "READY": 0,
+        "UNKNOWN": 0
+      },
+      "READY": {
+        "CANNOT_DETERMINE": 0,
+        "NEEDS_REVIEW": 0,
+        "NOT_READY": 0,
+        "PENDING_VERIFICATION": 0,
+        "READY": 0,
+        "UNKNOWN": 0
+      },
+      "UNKNOWN": {
+        "CANNOT_DETERMINE": 0,
+        "NEEDS_REVIEW": 0,
+        "NOT_READY": 0,
+        "PENDING_VERIFICATION": 0,
+        "READY": 0,
+        "UNKNOWN": 0
+      }
+    },
+    "exact_status_accuracy": 0.5714285714285714,
+    "exact_status_correct": 4,
+    "expected_abstention_rate": 0.5714285714285714,
+    "false_pending_verification": 3,
+    "false_ready": 0,
+    "missed_passes": 0
+  }
+}
