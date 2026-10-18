@@ -1,0 +1,36 @@
+/Users/nicholasleko/projects/PriorAuthorizationCopilot/.venv/bin/python -m pytest -q
+........................................................................ [  4%]
+........................................................................ [  8%]
+........................................................................ [ 12%]
+........................................................................ [ 17%]
+........................................................................ [ 21%]
+........................................................................ [ 25%]
+........................................................................ [ 29%]
+........................................................................ [ 34%]
+........................................................................ [ 38%]
+........................................................................ [ 42%]
+........................................................................ [ 46%]
+.................................................x.x.................... [ 51%]
+........................................................................ [ 55%]
+........................................................................ [ 59%]
+........................................................................ [ 63%]
+........................................................................ [ 68%]
+........................................................................ [ 72%]
+........................................................................ [ 76%]
+........................................................................ [ 80%]
+................x..x.xx................................................. [ 85%]
+........................................................................ [ 89%]
+...........................................................x.........x.. [ 93%]
+........................................................................ [ 97%]
+....x.............................                                       [100%]
+=========================== short test summary info ============================
+XFAIL test/test_h1_review_triggers.py::test_improved_newline_response_should_require_review - cross-sentence therapy response: improvement on the next line is not linked
+XFAIL test/test_h1_review_triggers.py::test_cross_sentence_copy_forward_should_require_review - cross-sentence copy-forward: header does not scope later sentences
+XFAIL test/test_v150_contract.py::TestExtractionContractAlignment::test_G01_exact_examples_and_determinism[negated_strength] - negation: score is explicitly negated
+XFAIL test/test_v150_contract.py::TestExtractionContractAlignment::test_G01_exact_examples_and_determinism[unrelated_therapy] - attribution: headache therapy borrowed for lumbar episode
+XFAIL test/test_v150_contract.py::TestExtractionContractAlignment::test_G01_exact_examples_and_determinism[neither_nor_negation] - negation: neither/nor scope is unsupported
+XFAIL test/test_v150_contract.py::TestExtractionContractAlignment::test_G01_exact_examples_and_determinism[same_sentence_borrowed_date] - date association: unrelated visit date in the same sentence
+XFAIL test/test_v210_independent.py::test_independent_correct_values_and_states[independent_12_cross_sentence_resolved] - cross-sentence temporality
+XFAIL test/test_v210_independent.py::test_independent_02_secondary_analgesic_duration_correct_value - generic therapy vocabulary does not recognize analgesics
+XFAIL test/test_v210_safety.py::test_resolved_historical_episode_across_sentences_requires_review - temporality: resolved historical episode across sentences requires coreference
+1681 passed, 9 xfailed in 46.07s

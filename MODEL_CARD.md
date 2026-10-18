@@ -1,13 +1,16 @@
 # Model Card
 
 Project: Prior Authorization Readiness Copilot  
-Version: 2.6.0 (record schema 2.0.0)
+Version: 2.7.0 release candidate (record schema 2.0.0)
 
-Changelog: 2.6.0 — Releases exp-004’s reported drug courses, typed motor/reflex
-grades, additional directly linked study dates, named AHI/RDI measurements and
-sentence-wide source/performance safeguards on both new and legacy exams.
-Policy trust, reviewed drug data and record schema remain unchanged. See
-[release notes](docs/releases/v2.6.0.md).
+Changelog: 2.7.0 — Shared literal objective-exam laterality qualification follows
+source qualification across recognized notations. Explicitly mismatched normal
+and abnormal findings require review. Negated or historical opposite-side
+mentions can conservatively trigger review; broader attribution and anatomical
+understanding remain limited. Human verification, policy trust, reviewed drug
+data and record schema are unchanged. Current validation: **1681 passed, 9 xfailed**.
+See [release notes](docs/releases/v2.7.0.md); prior grammar development and its
+historical measurements remain documented in [v2.6.0](docs/releases/v2.6.0.md).
 
 Automated extraction is a drafting aid, not a decision gate. v1.4.0's posture over-trusted extraction: negated diagnoses returned affirmative facts and contradicted the extraction contract as written. v1.5.0 resolves the contradiction by changing what the engine may assert rather than by making extraction match the contract. Known false proposals remain; the executable contract records them explicitly.
 
@@ -66,7 +69,7 @@ Automated extraction is a drafting aid, not a decision gate. v1.4.0's posture ov
 
 The repo includes pytest coverage for extraction, verification, evaluation, drafting, rule loading, policy-monitor helpers, archive immutability, and replay categories. All bundled evaluation cases are synthetic. The checked-in fixture reports 52/52 exact statuses and 0 false `READY` results among 52 expected non-`READY` cases, including seven `PENDING_VERIFICATION` cases. Zero automated READY is enforced structurally; it is not an extraction-accuracy estimate. The executable contract tests cover every numbered guarantee and published exact example, including the resolved auxiliary-verb denial and the remaining neither/nor
 and same-sentence date gaps, thirteen exp-002 recall examples, and sixteen
-exp-003 examples, and 24 exp-004 examples (91 total; four known failures). Fresh suite:
+exp-003 examples, and 24 exp-004 examples (91 total; four known failures). Historical v2.6.0 suite:
 **1461 passed, 10 xfailed**. The
 negated-strength False expectation remains disputed; implementation requires
 review rather than proposing a normal exam. Corpus false PENDING_VERIFICATION

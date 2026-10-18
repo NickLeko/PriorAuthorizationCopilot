@@ -1,0 +1,639 @@
+........................................................................ [ 32%]
+..............................................FF......FFFFFF......FFFFFF [ 65%]
+......FFFFFF......FFFF................................................FF [ 98%]
+.F.                                                                      [100%]
+=================================== FAILURES ===================================
+_ test_mixed_diagnosis_mentions_require_notation_parity[opposite-current-abnormal-slash-historical-contralateral] _
+
+diagnoses = 'History of left leg radiculopathy. Low back pain with current right leg radiculopathy.'
+template = '{side} L5 distribution: strength {score}/5.', normal = False
+exam_side = 'left'
+
+    @pytest.mark.parametrize("diagnoses", MIXED_DIAGNOSES)
+    @pytest.mark.parametrize("template", ROUTES)
+    @pytest.mark.parametrize("normal", [False, True], ids=["abnormal", "normal"])
+    @pytest.mark.parametrize("exam_side", ["left", "right"], ids=["opposite-current", "matching-current"])
+    def test_mixed_diagnosis_mentions_require_notation_parity(diagnoses, template, normal, exam_side):
+        # Existing inline semantics are literal: either exam side has an opposite
+        # mention here. This does not resolve historical or negated diagnoses.
+        text = f"{diagnoses} {exam(template, exam_side, normal)} NSAIDs for 8 weeks with no improvement."
+        result = ReadinessService().evaluate(request(text))
+        requirement = next(item for item in result.results if item.key == OBJECTIVE)
+>       assert result.overall_status == requirement.status == "NEEDS_REVIEW"
+E       AssertionError: assert 'PENDING_VERIFICATION' == 'MET'
+E
+E         - MET
+E         + PENDING_VERIFICATION
+
+test/test_objective_laterality.py:234: AssertionError
+_ test_mixed_diagnosis_mentions_require_notation_parity[opposite-current-abnormal-slash-negated-contralateral] _
+
+diagnoses = 'No left leg radiculopathy. Low back pain with right leg radiculopathy.'
+template = '{side} L5 distribution: strength {score}/5.', normal = False
+exam_side = 'left'
+
+    @pytest.mark.parametrize("diagnoses", MIXED_DIAGNOSES)
+    @pytest.mark.parametrize("template", ROUTES)
+    @pytest.mark.parametrize("normal", [False, True], ids=["abnormal", "normal"])
+    @pytest.mark.parametrize("exam_side", ["left", "right"], ids=["opposite-current", "matching-current"])
+    def test_mixed_diagnosis_mentions_require_notation_parity(diagnoses, template, normal, exam_side):
+        # Existing inline semantics are literal: either exam side has an opposite
+        # mention here. This does not resolve historical or negated diagnoses.
+        text = f"{diagnoses} {exam(template, exam_side, normal)} NSAIDs for 8 weeks with no improvement."
+        result = ReadinessService().evaluate(request(text))
+        requirement = next(item for item in result.results if item.key == OBJECTIVE)
+>       assert result.overall_status == requirement.status == "NEEDS_REVIEW"
+E       AssertionError: assert 'PENDING_VERIFICATION' == 'MET'
+E
+E         - MET
+E         + PENDING_VERIFICATION
+
+test/test_objective_laterality.py:234: AssertionError
+_ test_mixed_diagnosis_mentions_require_notation_parity[opposite-current-abnormal-descriptive-weakness-historical-contralateral] _
+
+diagnoses = 'History of left leg radiculopathy. Low back pain with current right leg radiculopathy.'
+template = '{side} L5 distribution: {denial}objective weakness.', normal = False
+exam_side = 'left'
+
+    @pytest.mark.parametrize("diagnoses", MIXED_DIAGNOSES)
+    @pytest.mark.parametrize("template", ROUTES)
+    @pytest.mark.parametrize("normal", [False, True], ids=["abnormal", "normal"])
+    @pytest.mark.parametrize("exam_side", ["left", "right"], ids=["opposite-current", "matching-current"])
+    def test_mixed_diagnosis_mentions_require_notation_parity(diagnoses, template, normal, exam_side):
+        # Existing inline semantics are literal: either exam side has an opposite
+        # mention here. This does not resolve historical or negated diagnoses.
+        text = f"{diagnoses} {exam(template, exam_side, normal)} NSAIDs for 8 weeks with no improvement."
+        result = ReadinessService().evaluate(request(text))
+        requirement = next(item for item in result.results if item.key == OBJECTIVE)
+>       assert result.overall_status == requirement.status == "NEEDS_REVIEW"
+E       AssertionError: assert 'PENDING_VERIFICATION' == 'MET'
+E
+E         - MET
+E         + PENDING_VERIFICATION
+
+test/test_objective_laterality.py:234: AssertionError
+_ test_mixed_diagnosis_mentions_require_notation_parity[opposite-current-abnormal-descriptive-weakness-negated-contralateral] _
+
+diagnoses = 'No left leg radiculopathy. Low back pain with right leg radiculopathy.'
+template = '{side} L5 distribution: {denial}objective weakness.', normal = False
+exam_side = 'left'
+
+    @pytest.mark.parametrize("diagnoses", MIXED_DIAGNOSES)
+    @pytest.mark.parametrize("template", ROUTES)
+    @pytest.mark.parametrize("normal", [False, True], ids=["abnormal", "normal"])
+    @pytest.mark.parametrize("exam_side", ["left", "right"], ids=["opposite-current", "matching-current"])
+    def test_mixed_diagnosis_mentions_require_notation_parity(diagnoses, template, normal, exam_side):
+        # Existing inline semantics are literal: either exam side has an opposite
+        # mention here. This does not resolve historical or negated diagnoses.
+        text = f"{diagnoses} {exam(template, exam_side, normal)} NSAIDs for 8 weeks with no improvement."
+        result = ReadinessService().evaluate(request(text))
+        requirement = next(item for item in result.results if item.key == OBJECTIVE)
+>       assert result.overall_status == requirement.status == "NEEDS_REVIEW"
+E       AssertionError: assert 'PENDING_VERIFICATION' == 'MET'
+E
+E         - MET
+E         + PENDING_VERIFICATION
+
+test/test_objective_laterality.py:234: AssertionError
+_ test_mixed_diagnosis_mentions_require_notation_parity[opposite-current-abnormal-descriptive-reflex-historical-contralateral] _
+
+diagnoses = 'History of left leg radiculopathy. Low back pain with current right leg radiculopathy.'
+template = '{side} L5 distribution: reflexes {descriptor}.', normal = False
+exam_side = 'left'
+
+    @pytest.mark.parametrize("diagnoses", MIXED_DIAGNOSES)
+    @pytest.mark.parametrize("template", ROUTES)
+    @pytest.mark.parametrize("normal", [False, True], ids=["abnormal", "normal"])
+    @pytest.mark.parametrize("exam_side", ["left", "right"], ids=["opposite-current", "matching-current"])
+    def test_mixed_diagnosis_mentions_require_notation_parity(diagnoses, template, normal, exam_side):
+        # Existing inline semantics are literal: either exam side has an opposite
+        # mention here. This does not resolve historical or negated diagnoses.
+        text = f"{diagnoses} {exam(template, exam_side, normal)} NSAIDs for 8 weeks with no improvement."
+        result = ReadinessService().evaluate(request(text))
+        requirement = next(item for item in result.results if item.key == OBJECTIVE)
+>       assert result.overall_status == requirement.status == "NEEDS_REVIEW"
+E       AssertionError: assert 'PENDING_VERIFICATION' == 'MET'
+E
+E         - MET
+E         + PENDING_VERIFICATION
+
+test/test_objective_laterality.py:234: AssertionError
+_ test_mixed_diagnosis_mentions_require_notation_parity[opposite-current-abnormal-descriptive-reflex-negated-contralateral] _
+
+diagnoses = 'No left leg radiculopathy. Low back pain with right leg radiculopathy.'
+template = '{side} L5 distribution: reflexes {descriptor}.', normal = False
+exam_side = 'left'
+
+    @pytest.mark.parametrize("diagnoses", MIXED_DIAGNOSES)
+    @pytest.mark.parametrize("template", ROUTES)
+    @pytest.mark.parametrize("normal", [False, True], ids=["abnormal", "normal"])
+    @pytest.mark.parametrize("exam_side", ["left", "right"], ids=["opposite-current", "matching-current"])
+    def test_mixed_diagnosis_mentions_require_notation_parity(diagnoses, template, normal, exam_side):
+        # Existing inline semantics are literal: either exam side has an opposite
+        # mention here. This does not resolve historical or negated diagnoses.
+        text = f"{diagnoses} {exam(template, exam_side, normal)} NSAIDs for 8 weeks with no improvement."
+        result = ReadinessService().evaluate(request(text))
+        requirement = next(item for item in result.results if item.key == OBJECTIVE)
+>       assert result.overall_status == requirement.status == "NEEDS_REVIEW"
+E       AssertionError: assert 'PENDING_VERIFICATION' == 'MET'
+E
+E         - MET
+E         + PENDING_VERIFICATION
+
+test/test_objective_laterality.py:234: AssertionError
+_ test_mixed_diagnosis_mentions_require_notation_parity[opposite-current-normal-slash-historical-contralateral] _
+
+diagnoses = 'History of left leg radiculopathy. Low back pain with current right leg radiculopathy.'
+template = '{side} L5 distribution: strength {score}/5.', normal = True
+exam_side = 'left'
+
+    @pytest.mark.parametrize("diagnoses", MIXED_DIAGNOSES)
+    @pytest.mark.parametrize("template", ROUTES)
+    @pytest.mark.parametrize("normal", [False, True], ids=["abnormal", "normal"])
+    @pytest.mark.parametrize("exam_side", ["left", "right"], ids=["opposite-current", "matching-current"])
+    def test_mixed_diagnosis_mentions_require_notation_parity(diagnoses, template, normal, exam_side):
+        # Existing inline semantics are literal: either exam side has an opposite
+        # mention here. This does not resolve historical or negated diagnoses.
+        text = f"{diagnoses} {exam(template, exam_side, normal)} NSAIDs for 8 weeks with no improvement."
+        result = ReadinessService().evaluate(request(text))
+        requirement = next(item for item in result.results if item.key == OBJECTIVE)
+>       assert result.overall_status == requirement.status == "NEEDS_REVIEW"
+E       AssertionError: assert 'NOT_READY' == 'NOT_MET'
+E
+E         - NOT_MET
+E         + NOT_READY
+
+test/test_objective_laterality.py:234: AssertionError
+_ test_mixed_diagnosis_mentions_require_notation_parity[opposite-current-normal-slash-negated-contralateral] _
+
+diagnoses = 'No left leg radiculopathy. Low back pain with right leg radiculopathy.'
+template = '{side} L5 distribution: strength {score}/5.', normal = True
+exam_side = 'left'
+
+    @pytest.mark.parametrize("diagnoses", MIXED_DIAGNOSES)
+    @pytest.mark.parametrize("template", ROUTES)
+    @pytest.mark.parametrize("normal", [False, True], ids=["abnormal", "normal"])
+    @pytest.mark.parametrize("exam_side", ["left", "right"], ids=["opposite-current", "matching-current"])
+    def test_mixed_diagnosis_mentions_require_notation_parity(diagnoses, template, normal, exam_side):
+        # Existing inline semantics are literal: either exam side has an opposite
+        # mention here. This does not resolve historical or negated diagnoses.
+        text = f"{diagnoses} {exam(template, exam_side, normal)} NSAIDs for 8 weeks with no improvement."
+        result = ReadinessService().evaluate(request(text))
+        requirement = next(item for item in result.results if item.key == OBJECTIVE)
+>       assert result.overall_status == requirement.status == "NEEDS_REVIEW"
+E       AssertionError: assert 'NOT_READY' == 'NOT_MET'
+E
+E         - NOT_MET
+E         + NOT_READY
+
+test/test_objective_laterality.py:234: AssertionError
+_ test_mixed_diagnosis_mentions_require_notation_parity[opposite-current-normal-descriptive-weakness-historical-contralateral] _
+
+diagnoses = 'History of left leg radiculopathy. Low back pain with current right leg radiculopathy.'
+template = '{side} L5 distribution: {denial}objective weakness.', normal = True
+exam_side = 'left'
+
+    @pytest.mark.parametrize("diagnoses", MIXED_DIAGNOSES)
+    @pytest.mark.parametrize("template", ROUTES)
+    @pytest.mark.parametrize("normal", [False, True], ids=["abnormal", "normal"])
+    @pytest.mark.parametrize("exam_side", ["left", "right"], ids=["opposite-current", "matching-current"])
+    def test_mixed_diagnosis_mentions_require_notation_parity(diagnoses, template, normal, exam_side):
+        # Existing inline semantics are literal: either exam side has an opposite
+        # mention here. This does not resolve historical or negated diagnoses.
+        text = f"{diagnoses} {exam(template, exam_side, normal)} NSAIDs for 8 weeks with no improvement."
+        result = ReadinessService().evaluate(request(text))
+        requirement = next(item for item in result.results if item.key == OBJECTIVE)
+>       assert result.overall_status == requirement.status == "NEEDS_REVIEW"
+E       AssertionError: assert 'NOT_READY' == 'NOT_MET'
+E
+E         - NOT_MET
+E         + NOT_READY
+
+test/test_objective_laterality.py:234: AssertionError
+_ test_mixed_diagnosis_mentions_require_notation_parity[opposite-current-normal-descriptive-weakness-negated-contralateral] _
+
+diagnoses = 'No left leg radiculopathy. Low back pain with right leg radiculopathy.'
+template = '{side} L5 distribution: {denial}objective weakness.', normal = True
+exam_side = 'left'
+
+    @pytest.mark.parametrize("diagnoses", MIXED_DIAGNOSES)
+    @pytest.mark.parametrize("template", ROUTES)
+    @pytest.mark.parametrize("normal", [False, True], ids=["abnormal", "normal"])
+    @pytest.mark.parametrize("exam_side", ["left", "right"], ids=["opposite-current", "matching-current"])
+    def test_mixed_diagnosis_mentions_require_notation_parity(diagnoses, template, normal, exam_side):
+        # Existing inline semantics are literal: either exam side has an opposite
+        # mention here. This does not resolve historical or negated diagnoses.
+        text = f"{diagnoses} {exam(template, exam_side, normal)} NSAIDs for 8 weeks with no improvement."
+        result = ReadinessService().evaluate(request(text))
+        requirement = next(item for item in result.results if item.key == OBJECTIVE)
+>       assert result.overall_status == requirement.status == "NEEDS_REVIEW"
+E       AssertionError: assert 'NOT_READY' == 'NOT_MET'
+E
+E         - NOT_MET
+E         + NOT_READY
+
+test/test_objective_laterality.py:234: AssertionError
+_ test_mixed_diagnosis_mentions_require_notation_parity[opposite-current-normal-descriptive-reflex-historical-contralateral] _
+
+diagnoses = 'History of left leg radiculopathy. Low back pain with current right leg radiculopathy.'
+template = '{side} L5 distribution: reflexes {descriptor}.', normal = True
+exam_side = 'left'
+
+    @pytest.mark.parametrize("diagnoses", MIXED_DIAGNOSES)
+    @pytest.mark.parametrize("template", ROUTES)
+    @pytest.mark.parametrize("normal", [False, True], ids=["abnormal", "normal"])
+    @pytest.mark.parametrize("exam_side", ["left", "right"], ids=["opposite-current", "matching-current"])
+    def test_mixed_diagnosis_mentions_require_notation_parity(diagnoses, template, normal, exam_side):
+        # Existing inline semantics are literal: either exam side has an opposite
+        # mention here. This does not resolve historical or negated diagnoses.
+        text = f"{diagnoses} {exam(template, exam_side, normal)} NSAIDs for 8 weeks with no improvement."
+        result = ReadinessService().evaluate(request(text))
+        requirement = next(item for item in result.results if item.key == OBJECTIVE)
+>       assert result.overall_status == requirement.status == "NEEDS_REVIEW"
+E       AssertionError: assert 'NOT_READY' == 'NOT_MET'
+E
+E         - NOT_MET
+E         + NOT_READY
+
+test/test_objective_laterality.py:234: AssertionError
+_ test_mixed_diagnosis_mentions_require_notation_parity[opposite-current-normal-descriptive-reflex-negated-contralateral] _
+
+diagnoses = 'No left leg radiculopathy. Low back pain with right leg radiculopathy.'
+template = '{side} L5 distribution: reflexes {descriptor}.', normal = True
+exam_side = 'left'
+
+    @pytest.mark.parametrize("diagnoses", MIXED_DIAGNOSES)
+    @pytest.mark.parametrize("template", ROUTES)
+    @pytest.mark.parametrize("normal", [False, True], ids=["abnormal", "normal"])
+    @pytest.mark.parametrize("exam_side", ["left", "right"], ids=["opposite-current", "matching-current"])
+    def test_mixed_diagnosis_mentions_require_notation_parity(diagnoses, template, normal, exam_side):
+        # Existing inline semantics are literal: either exam side has an opposite
+        # mention here. This does not resolve historical or negated diagnoses.
+        text = f"{diagnoses} {exam(template, exam_side, normal)} NSAIDs for 8 weeks with no improvement."
+        result = ReadinessService().evaluate(request(text))
+        requirement = next(item for item in result.results if item.key == OBJECTIVE)
+>       assert result.overall_status == requirement.status == "NEEDS_REVIEW"
+E       AssertionError: assert 'NOT_READY' == 'NOT_MET'
+E
+E         - NOT_MET
+E         + NOT_READY
+
+test/test_objective_laterality.py:234: AssertionError
+_ test_mixed_diagnosis_mentions_require_notation_parity[matching-current-abnormal-slash-historical-contralateral] _
+
+diagnoses = 'History of left leg radiculopathy. Low back pain with current right leg radiculopathy.'
+template = '{side} L5 distribution: strength {score}/5.', normal = False
+exam_side = 'right'
+
+    @pytest.mark.parametrize("diagnoses", MIXED_DIAGNOSES)
+    @pytest.mark.parametrize("template", ROUTES)
+    @pytest.mark.parametrize("normal", [False, True], ids=["abnormal", "normal"])
+    @pytest.mark.parametrize("exam_side", ["left", "right"], ids=["opposite-current", "matching-current"])
+    def test_mixed_diagnosis_mentions_require_notation_parity(diagnoses, template, normal, exam_side):
+        # Existing inline semantics are literal: either exam side has an opposite
+        # mention here. This does not resolve historical or negated diagnoses.
+        text = f"{diagnoses} {exam(template, exam_side, normal)} NSAIDs for 8 weeks with no improvement."
+        result = ReadinessService().evaluate(request(text))
+        requirement = next(item for item in result.results if item.key == OBJECTIVE)
+>       assert result.overall_status == requirement.status == "NEEDS_REVIEW"
+E       AssertionError: assert 'PENDING_VERIFICATION' == 'MET'
+E
+E         - MET
+E         + PENDING_VERIFICATION
+
+test/test_objective_laterality.py:234: AssertionError
+_ test_mixed_diagnosis_mentions_require_notation_parity[matching-current-abnormal-slash-negated-contralateral] _
+
+diagnoses = 'No left leg radiculopathy. Low back pain with right leg radiculopathy.'
+template = '{side} L5 distribution: strength {score}/5.', normal = False
+exam_side = 'right'
+
+    @pytest.mark.parametrize("diagnoses", MIXED_DIAGNOSES)
+    @pytest.mark.parametrize("template", ROUTES)
+    @pytest.mark.parametrize("normal", [False, True], ids=["abnormal", "normal"])
+    @pytest.mark.parametrize("exam_side", ["left", "right"], ids=["opposite-current", "matching-current"])
+    def test_mixed_diagnosis_mentions_require_notation_parity(diagnoses, template, normal, exam_side):
+        # Existing inline semantics are literal: either exam side has an opposite
+        # mention here. This does not resolve historical or negated diagnoses.
+        text = f"{diagnoses} {exam(template, exam_side, normal)} NSAIDs for 8 weeks with no improvement."
+        result = ReadinessService().evaluate(request(text))
+        requirement = next(item for item in result.results if item.key == OBJECTIVE)
+>       assert result.overall_status == requirement.status == "NEEDS_REVIEW"
+E       AssertionError: assert 'PENDING_VERIFICATION' == 'MET'
+E
+E         - MET
+E         + PENDING_VERIFICATION
+
+test/test_objective_laterality.py:234: AssertionError
+_ test_mixed_diagnosis_mentions_require_notation_parity[matching-current-abnormal-descriptive-weakness-historical-contralateral] _
+
+diagnoses = 'History of left leg radiculopathy. Low back pain with current right leg radiculopathy.'
+template = '{side} L5 distribution: {denial}objective weakness.', normal = False
+exam_side = 'right'
+
+    @pytest.mark.parametrize("diagnoses", MIXED_DIAGNOSES)
+    @pytest.mark.parametrize("template", ROUTES)
+    @pytest.mark.parametrize("normal", [False, True], ids=["abnormal", "normal"])
+    @pytest.mark.parametrize("exam_side", ["left", "right"], ids=["opposite-current", "matching-current"])
+    def test_mixed_diagnosis_mentions_require_notation_parity(diagnoses, template, normal, exam_side):
+        # Existing inline semantics are literal: either exam side has an opposite
+        # mention here. This does not resolve historical or negated diagnoses.
+        text = f"{diagnoses} {exam(template, exam_side, normal)} NSAIDs for 8 weeks with no improvement."
+        result = ReadinessService().evaluate(request(text))
+        requirement = next(item for item in result.results if item.key == OBJECTIVE)
+>       assert result.overall_status == requirement.status == "NEEDS_REVIEW"
+E       AssertionError: assert 'PENDING_VERIFICATION' == 'MET'
+E
+E         - MET
+E         + PENDING_VERIFICATION
+
+test/test_objective_laterality.py:234: AssertionError
+_ test_mixed_diagnosis_mentions_require_notation_parity[matching-current-abnormal-descriptive-weakness-negated-contralateral] _
+
+diagnoses = 'No left leg radiculopathy. Low back pain with right leg radiculopathy.'
+template = '{side} L5 distribution: {denial}objective weakness.', normal = False
+exam_side = 'right'
+
+    @pytest.mark.parametrize("diagnoses", MIXED_DIAGNOSES)
+    @pytest.mark.parametrize("template", ROUTES)
+    @pytest.mark.parametrize("normal", [False, True], ids=["abnormal", "normal"])
+    @pytest.mark.parametrize("exam_side", ["left", "right"], ids=["opposite-current", "matching-current"])
+    def test_mixed_diagnosis_mentions_require_notation_parity(diagnoses, template, normal, exam_side):
+        # Existing inline semantics are literal: either exam side has an opposite
+        # mention here. This does not resolve historical or negated diagnoses.
+        text = f"{diagnoses} {exam(template, exam_side, normal)} NSAIDs for 8 weeks with no improvement."
+        result = ReadinessService().evaluate(request(text))
+        requirement = next(item for item in result.results if item.key == OBJECTIVE)
+>       assert result.overall_status == requirement.status == "NEEDS_REVIEW"
+E       AssertionError: assert 'PENDING_VERIFICATION' == 'MET'
+E
+E         - MET
+E         + PENDING_VERIFICATION
+
+test/test_objective_laterality.py:234: AssertionError
+_ test_mixed_diagnosis_mentions_require_notation_parity[matching-current-abnormal-descriptive-reflex-historical-contralateral] _
+
+diagnoses = 'History of left leg radiculopathy. Low back pain with current right leg radiculopathy.'
+template = '{side} L5 distribution: reflexes {descriptor}.', normal = False
+exam_side = 'right'
+
+    @pytest.mark.parametrize("diagnoses", MIXED_DIAGNOSES)
+    @pytest.mark.parametrize("template", ROUTES)
+    @pytest.mark.parametrize("normal", [False, True], ids=["abnormal", "normal"])
+    @pytest.mark.parametrize("exam_side", ["left", "right"], ids=["opposite-current", "matching-current"])
+    def test_mixed_diagnosis_mentions_require_notation_parity(diagnoses, template, normal, exam_side):
+        # Existing inline semantics are literal: either exam side has an opposite
+        # mention here. This does not resolve historical or negated diagnoses.
+        text = f"{diagnoses} {exam(template, exam_side, normal)} NSAIDs for 8 weeks with no improvement."
+        result = ReadinessService().evaluate(request(text))
+        requirement = next(item for item in result.results if item.key == OBJECTIVE)
+>       assert result.overall_status == requirement.status == "NEEDS_REVIEW"
+E       AssertionError: assert 'PENDING_VERIFICATION' == 'MET'
+E
+E         - MET
+E         + PENDING_VERIFICATION
+
+test/test_objective_laterality.py:234: AssertionError
+_ test_mixed_diagnosis_mentions_require_notation_parity[matching-current-abnormal-descriptive-reflex-negated-contralateral] _
+
+diagnoses = 'No left leg radiculopathy. Low back pain with right leg radiculopathy.'
+template = '{side} L5 distribution: reflexes {descriptor}.', normal = False
+exam_side = 'right'
+
+    @pytest.mark.parametrize("diagnoses", MIXED_DIAGNOSES)
+    @pytest.mark.parametrize("template", ROUTES)
+    @pytest.mark.parametrize("normal", [False, True], ids=["abnormal", "normal"])
+    @pytest.mark.parametrize("exam_side", ["left", "right"], ids=["opposite-current", "matching-current"])
+    def test_mixed_diagnosis_mentions_require_notation_parity(diagnoses, template, normal, exam_side):
+        # Existing inline semantics are literal: either exam side has an opposite
+        # mention here. This does not resolve historical or negated diagnoses.
+        text = f"{diagnoses} {exam(template, exam_side, normal)} NSAIDs for 8 weeks with no improvement."
+        result = ReadinessService().evaluate(request(text))
+        requirement = next(item for item in result.results if item.key == OBJECTIVE)
+>       assert result.overall_status == requirement.status == "NEEDS_REVIEW"
+E       AssertionError: assert 'PENDING_VERIFICATION' == 'MET'
+E
+E         - MET
+E         + PENDING_VERIFICATION
+
+test/test_objective_laterality.py:234: AssertionError
+_ test_mixed_diagnosis_mentions_require_notation_parity[matching-current-normal-slash-historical-contralateral] _
+
+diagnoses = 'History of left leg radiculopathy. Low back pain with current right leg radiculopathy.'
+template = '{side} L5 distribution: strength {score}/5.', normal = True
+exam_side = 'right'
+
+    @pytest.mark.parametrize("diagnoses", MIXED_DIAGNOSES)
+    @pytest.mark.parametrize("template", ROUTES)
+    @pytest.mark.parametrize("normal", [False, True], ids=["abnormal", "normal"])
+    @pytest.mark.parametrize("exam_side", ["left", "right"], ids=["opposite-current", "matching-current"])
+    def test_mixed_diagnosis_mentions_require_notation_parity(diagnoses, template, normal, exam_side):
+        # Existing inline semantics are literal: either exam side has an opposite
+        # mention here. This does not resolve historical or negated diagnoses.
+        text = f"{diagnoses} {exam(template, exam_side, normal)} NSAIDs for 8 weeks with no improvement."
+        result = ReadinessService().evaluate(request(text))
+        requirement = next(item for item in result.results if item.key == OBJECTIVE)
+>       assert result.overall_status == requirement.status == "NEEDS_REVIEW"
+E       AssertionError: assert 'NOT_READY' == 'NOT_MET'
+E
+E         - NOT_MET
+E         + NOT_READY
+
+test/test_objective_laterality.py:234: AssertionError
+_ test_mixed_diagnosis_mentions_require_notation_parity[matching-current-normal-slash-negated-contralateral] _
+
+diagnoses = 'No left leg radiculopathy. Low back pain with right leg radiculopathy.'
+template = '{side} L5 distribution: strength {score}/5.', normal = True
+exam_side = 'right'
+
+    @pytest.mark.parametrize("diagnoses", MIXED_DIAGNOSES)
+    @pytest.mark.parametrize("template", ROUTES)
+    @pytest.mark.parametrize("normal", [False, True], ids=["abnormal", "normal"])
+    @pytest.mark.parametrize("exam_side", ["left", "right"], ids=["opposite-current", "matching-current"])
+    def test_mixed_diagnosis_mentions_require_notation_parity(diagnoses, template, normal, exam_side):
+        # Existing inline semantics are literal: either exam side has an opposite
+        # mention here. This does not resolve historical or negated diagnoses.
+        text = f"{diagnoses} {exam(template, exam_side, normal)} NSAIDs for 8 weeks with no improvement."
+        result = ReadinessService().evaluate(request(text))
+        requirement = next(item for item in result.results if item.key == OBJECTIVE)
+>       assert result.overall_status == requirement.status == "NEEDS_REVIEW"
+E       AssertionError: assert 'NOT_READY' == 'NOT_MET'
+E
+E         - NOT_MET
+E         + NOT_READY
+
+test/test_objective_laterality.py:234: AssertionError
+_ test_mixed_diagnosis_mentions_require_notation_parity[matching-current-normal-descriptive-weakness-historical-contralateral] _
+
+diagnoses = 'History of left leg radiculopathy. Low back pain with current right leg radiculopathy.'
+template = '{side} L5 distribution: {denial}objective weakness.', normal = True
+exam_side = 'right'
+
+    @pytest.mark.parametrize("diagnoses", MIXED_DIAGNOSES)
+    @pytest.mark.parametrize("template", ROUTES)
+    @pytest.mark.parametrize("normal", [False, True], ids=["abnormal", "normal"])
+    @pytest.mark.parametrize("exam_side", ["left", "right"], ids=["opposite-current", "matching-current"])
+    def test_mixed_diagnosis_mentions_require_notation_parity(diagnoses, template, normal, exam_side):
+        # Existing inline semantics are literal: either exam side has an opposite
+        # mention here. This does not resolve historical or negated diagnoses.
+        text = f"{diagnoses} {exam(template, exam_side, normal)} NSAIDs for 8 weeks with no improvement."
+        result = ReadinessService().evaluate(request(text))
+        requirement = next(item for item in result.results if item.key == OBJECTIVE)
+>       assert result.overall_status == requirement.status == "NEEDS_REVIEW"
+E       AssertionError: assert 'NOT_READY' == 'NOT_MET'
+E
+E         - NOT_MET
+E         + NOT_READY
+
+test/test_objective_laterality.py:234: AssertionError
+_ test_mixed_diagnosis_mentions_require_notation_parity[matching-current-normal-descriptive-weakness-negated-contralateral] _
+
+diagnoses = 'No left leg radiculopathy. Low back pain with right leg radiculopathy.'
+template = '{side} L5 distribution: {denial}objective weakness.', normal = True
+exam_side = 'right'
+
+    @pytest.mark.parametrize("diagnoses", MIXED_DIAGNOSES)
+    @pytest.mark.parametrize("template", ROUTES)
+    @pytest.mark.parametrize("normal", [False, True], ids=["abnormal", "normal"])
+    @pytest.mark.parametrize("exam_side", ["left", "right"], ids=["opposite-current", "matching-current"])
+    def test_mixed_diagnosis_mentions_require_notation_parity(diagnoses, template, normal, exam_side):
+        # Existing inline semantics are literal: either exam side has an opposite
+        # mention here. This does not resolve historical or negated diagnoses.
+        text = f"{diagnoses} {exam(template, exam_side, normal)} NSAIDs for 8 weeks with no improvement."
+        result = ReadinessService().evaluate(request(text))
+        requirement = next(item for item in result.results if item.key == OBJECTIVE)
+>       assert result.overall_status == requirement.status == "NEEDS_REVIEW"
+E       AssertionError: assert 'NOT_READY' == 'NOT_MET'
+E
+E         - NOT_MET
+E         + NOT_READY
+
+test/test_objective_laterality.py:234: AssertionError
+_ test_mixed_diagnosis_mentions_require_notation_parity[matching-current-normal-descriptive-reflex-historical-contralateral] _
+
+diagnoses = 'History of left leg radiculopathy. Low back pain with current right leg radiculopathy.'
+template = '{side} L5 distribution: reflexes {descriptor}.', normal = True
+exam_side = 'right'
+
+    @pytest.mark.parametrize("diagnoses", MIXED_DIAGNOSES)
+    @pytest.mark.parametrize("template", ROUTES)
+    @pytest.mark.parametrize("normal", [False, True], ids=["abnormal", "normal"])
+    @pytest.mark.parametrize("exam_side", ["left", "right"], ids=["opposite-current", "matching-current"])
+    def test_mixed_diagnosis_mentions_require_notation_parity(diagnoses, template, normal, exam_side):
+        # Existing inline semantics are literal: either exam side has an opposite
+        # mention here. This does not resolve historical or negated diagnoses.
+        text = f"{diagnoses} {exam(template, exam_side, normal)} NSAIDs for 8 weeks with no improvement."
+        result = ReadinessService().evaluate(request(text))
+        requirement = next(item for item in result.results if item.key == OBJECTIVE)
+>       assert result.overall_status == requirement.status == "NEEDS_REVIEW"
+E       AssertionError: assert 'NOT_READY' == 'NOT_MET'
+E
+E         - NOT_MET
+E         + NOT_READY
+
+test/test_objective_laterality.py:234: AssertionError
+_ test_mixed_diagnosis_mentions_require_notation_parity[matching-current-normal-descriptive-reflex-negated-contralateral] _
+
+diagnoses = 'No left leg radiculopathy. Low back pain with right leg radiculopathy.'
+template = '{side} L5 distribution: reflexes {descriptor}.', normal = True
+exam_side = 'right'
+
+    @pytest.mark.parametrize("diagnoses", MIXED_DIAGNOSES)
+    @pytest.mark.parametrize("template", ROUTES)
+    @pytest.mark.parametrize("normal", [False, True], ids=["abnormal", "normal"])
+    @pytest.mark.parametrize("exam_side", ["left", "right"], ids=["opposite-current", "matching-current"])
+    def test_mixed_diagnosis_mentions_require_notation_parity(diagnoses, template, normal, exam_side):
+        # Existing inline semantics are literal: either exam side has an opposite
+        # mention here. This does not resolve historical or negated diagnoses.
+        text = f"{diagnoses} {exam(template, exam_side, normal)} NSAIDs for 8 weeks with no improvement."
+        result = ReadinessService().evaluate(request(text))
+        requirement = next(item for item in result.results if item.key == OBJECTIVE)
+>       assert result.overall_status == requirement.status == "NEEDS_REVIEW"
+E       AssertionError: assert 'NOT_READY' == 'NOT_MET'
+E
+E         - NOT_MET
+E         + NOT_READY
+
+test/test_objective_laterality.py:234: AssertionError
+___ test_shared_stage_uses_existing_literal_opposite_mention_semantics[True] ___
+
+value = True
+
+    @pytest.mark.parametrize("value", [True, False, REVIEW_REQUIRED_FACT])
+    def test_shared_stage_uses_existing_literal_opposite_mention_semantics(value):
+        clause = "left l5 distribution: strength 4/5"
+        text = note(clause, "left and right").lower()
+        start = text.index(clause)
+>       assert extraction._objective_candidates_with_laterality_guards(text, [(value, start, start + len(clause))]) == [
+            (REVIEW_REQUIRED_FACT, start, start + len(clause))
+        ]
+E       AssertionError: assert [(True, 53, 87)] == [('__REVIEW_R...D__', 53, 87)]
+E
+E         At index 0 diff: (True, 53, 87) != ('__REVIEW_REQUIRED__', 53, 87)
+E         Use -v to get more diff
+
+test/test_objective_laterality.py:262: AssertionError
+__ test_shared_stage_uses_existing_literal_opposite_mention_semantics[False] ___
+
+value = False
+
+    @pytest.mark.parametrize("value", [True, False, REVIEW_REQUIRED_FACT])
+    def test_shared_stage_uses_existing_literal_opposite_mention_semantics(value):
+        clause = "left l5 distribution: strength 4/5"
+        text = note(clause, "left and right").lower()
+        start = text.index(clause)
+>       assert extraction._objective_candidates_with_laterality_guards(text, [(value, start, start + len(clause))]) == [
+            (REVIEW_REQUIRED_FACT, start, start + len(clause))
+        ]
+E       AssertionError: assert [(False, 53, 87)] == [('__REVIEW_R...D__', 53, 87)]
+E
+E         At index 0 diff: (False, 53, 87) != ('__REVIEW_REQUIRED__', 53, 87)
+E         Use -v to get more diff
+
+test/test_objective_laterality.py:262: AssertionError
+______ test_mixed_side_correction_invalidates_reviewed_branch_attestation ______
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x109853bf0>
+
+    def test_mixed_side_correction_invalidates_reviewed_branch_attestation(monkeypatch):
+        text = "No left leg radiculopathy. Low back pain with right leg radiculopathy. Right L5 distribution: strength 4/5."
+        text += " NSAIDs for 8 weeks with no improvement."
+        service = ReadinessService()
+        corrected = service.evaluate(request(text))
+>       assert corrected.overall_status == "NEEDS_REVIEW"
+E       AssertionError: assert 'PENDING_VERIFICATION' == 'NEEDS_REVIEW'
+E
+E         - NEEDS_REVIEW
+E         + PENDING_VERIFICATION
+
+test/test_objective_laterality.py:272: AssertionError
+=========================== short test summary info ============================
+FAILED test/test_objective_laterality.py::test_mixed_diagnosis_mentions_require_notation_parity[opposite-current-abnormal-slash-historical-contralateral]
+FAILED test/test_objective_laterality.py::test_mixed_diagnosis_mentions_require_notation_parity[opposite-current-abnormal-slash-negated-contralateral]
+FAILED test/test_objective_laterality.py::test_mixed_diagnosis_mentions_require_notation_parity[opposite-current-abnormal-descriptive-weakness-historical-contralateral]
+FAILED test/test_objective_laterality.py::test_mixed_diagnosis_mentions_require_notation_parity[opposite-current-abnormal-descriptive-weakness-negated-contralateral]
+FAILED test/test_objective_laterality.py::test_mixed_diagnosis_mentions_require_notation_parity[opposite-current-abnormal-descriptive-reflex-historical-contralateral]
+FAILED test/test_objective_laterality.py::test_mixed_diagnosis_mentions_require_notation_parity[opposite-current-abnormal-descriptive-reflex-negated-contralateral]
+FAILED test/test_objective_laterality.py::test_mixed_diagnosis_mentions_require_notation_parity[opposite-current-normal-slash-historical-contralateral]
+FAILED test/test_objective_laterality.py::test_mixed_diagnosis_mentions_require_notation_parity[opposite-current-normal-slash-negated-contralateral]
+FAILED test/test_objective_laterality.py::test_mixed_diagnosis_mentions_require_notation_parity[opposite-current-normal-descriptive-weakness-historical-contralateral]
+FAILED test/test_objective_laterality.py::test_mixed_diagnosis_mentions_require_notation_parity[opposite-current-normal-descriptive-weakness-negated-contralateral]
+FAILED test/test_objective_laterality.py::test_mixed_diagnosis_mentions_require_notation_parity[opposite-current-normal-descriptive-reflex-historical-contralateral]
+FAILED test/test_objective_laterality.py::test_mixed_diagnosis_mentions_require_notation_parity[opposite-current-normal-descriptive-reflex-negated-contralateral]
+FAILED test/test_objective_laterality.py::test_mixed_diagnosis_mentions_require_notation_parity[matching-current-abnormal-slash-historical-contralateral]
+FAILED test/test_objective_laterality.py::test_mixed_diagnosis_mentions_require_notation_parity[matching-current-abnormal-slash-negated-contralateral]
+FAILED test/test_objective_laterality.py::test_mixed_diagnosis_mentions_require_notation_parity[matching-current-abnormal-descriptive-weakness-historical-contralateral]
+FAILED test/test_objective_laterality.py::test_mixed_diagnosis_mentions_require_notation_parity[matching-current-abnormal-descriptive-weakness-negated-contralateral]
+FAILED test/test_objective_laterality.py::test_mixed_diagnosis_mentions_require_notation_parity[matching-current-abnormal-descriptive-reflex-historical-contralateral]
+FAILED test/test_objective_laterality.py::test_mixed_diagnosis_mentions_require_notation_parity[matching-current-abnormal-descriptive-reflex-negated-contralateral]
+FAILED test/test_objective_laterality.py::test_mixed_diagnosis_mentions_require_notation_parity[matching-current-normal-slash-historical-contralateral]
+FAILED test/test_objective_laterality.py::test_mixed_diagnosis_mentions_require_notation_parity[matching-current-normal-slash-negated-contralateral]
+FAILED test/test_objective_laterality.py::test_mixed_diagnosis_mentions_require_notation_parity[matching-current-normal-descriptive-weakness-historical-contralateral]
+FAILED test/test_objective_laterality.py::test_mixed_diagnosis_mentions_require_notation_parity[matching-current-normal-descriptive-weakness-negated-contralateral]
+FAILED test/test_objective_laterality.py::test_mixed_diagnosis_mentions_require_notation_parity[matching-current-normal-descriptive-reflex-historical-contralateral]
+FAILED test/test_objective_laterality.py::test_mixed_diagnosis_mentions_require_notation_parity[matching-current-normal-descriptive-reflex-negated-contralateral]
+FAILED test/test_objective_laterality.py::test_shared_stage_uses_existing_literal_opposite_mention_semantics[True]
+FAILED test/test_objective_laterality.py::test_shared_stage_uses_existing_literal_opposite_mention_semantics[False]
+FAILED test/test_objective_laterality.py::test_mixed_side_correction_invalidates_reviewed_branch_attestation
+27 failed, 192 passed in 0.74s
+MUTANT DETECTED: reviewed-opt-out

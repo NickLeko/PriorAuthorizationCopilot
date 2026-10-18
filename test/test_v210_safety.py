@@ -206,7 +206,7 @@ def test_api_and_cli_result_context_matches(tmp_path, capsys):
     payload = json.loads(capsys.readouterr().out)
     assert payload["citation_context"] == response.json()["citation_context"]
     canonical = EvaluationResult.model_validate(payload)
-    assert canonical.engine_version == "2.6.0"
+    assert canonical.engine_version == "2.7.0"
     assert "citation_context" not in canonical.model_dump()
     with pytest.raises(ValidationError, match="Derived citation context"):
         EvaluationResult.model_validate(payload | {"citation_context": {}})

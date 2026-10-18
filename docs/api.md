@@ -239,4 +239,12 @@ original snapshots or fingerprints. Canonical archive records and generated acce
 retain schema `2.0.0` and omit the derived field. Review/report exports carry the
 derived field as a surface projection. The canonical result reader can
 consume a review projection: it verifies the context against note/evidence and
-then discards it. `engine_version` is stamped `2.6.0`; record `schema_version` remains `2.0.0`.
+then discards it. `engine_version` is stamped `2.7.0`; record `schema_version` remains `2.0.0`.
+
+
+For the v2.7.0 release candidate, shared objective laterality qualification runs
+after source qualification. Explicit opposite-side normal or abnormal findings
+require NEEDS_REVIEW; human attestation cannot change that operator outcome.
+Request/response shapes and record schema 2.0.0 are unchanged. Literal opposite-side
+mentions may require review even when historical or negated; this is bounded
+matching, not clinical or episode-aware interpretation.

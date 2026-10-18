@@ -1,0 +1,257 @@
+{
+  "stage": "release",
+  "clock": "2026-09-01T00:00:00+00:00",
+  "outputs": 25,
+  "changed": 12,
+  "non_version_changes": [],
+  "governance_changes": [],
+  "files": [
+    {
+      "file": "test/golden/evaluations/MRI-01-complete.json",
+      "changed": true,
+      "before_sha256": "b9bd2da4befcc56a2429845a710c0d626d5493533b01e5ba1f2bd11ea5195ab4",
+      "after_sha256": "021c6f8a7e7feb371db7d905e081c2e7efa65dd1fcc9c83991ecbfb59b8362d3",
+      "changes": [
+        {
+          "pointer": "/engine_version",
+          "before": "2.6.0",
+          "after": "2.7.0"
+        }
+      ]
+    },
+    {
+      "file": "test/golden/evaluations/MRI-01-human-verified.json",
+      "changed": true,
+      "before_sha256": "796904e7fe9d4f8777823f0964d719b5535a488cbac45b332df63159c9383203",
+      "after_sha256": "894a8f24c41bf65396dd92e14a95139693592906dfd5cd20377768d97786c9af",
+      "changes": [
+        {
+          "pointer": "/engine_version",
+          "before": "2.6.0",
+          "after": "2.7.0"
+        }
+      ]
+    },
+    {
+      "file": "test/golden/evaluations/MRI-08-edge-below-threshold.json",
+      "changed": true,
+      "before_sha256": "a1427fc541cfecb758631d4fc35f8d1e6eff7dd68375b4fe9243a9c07aabb630",
+      "after_sha256": "8a60e7d92b725cec98f53c917acafeb704024569549952fbf78cb9d4b1217652",
+      "changes": [
+        {
+          "pointer": "/engine_version",
+          "before": "2.6.0",
+          "after": "2.7.0"
+        }
+      ]
+    },
+    {
+      "file": "test/golden/evaluations/CPAP-02-borderline.json",
+      "changed": true,
+      "before_sha256": "0b70662456a47705a634a6b435e12ea1de619b921e13f5e07d9ac5066507591e",
+      "after_sha256": "cfb781a1323c89f0f09930bd92d49cbb4cc8cf05d90eaa8e860b247a0fceb297",
+      "changes": [
+        {
+          "pointer": "/engine_version",
+          "before": "2.6.0",
+          "after": "2.7.0"
+        }
+      ]
+    },
+    {
+      "file": "test/golden/evaluations/MRI-KNEE-01-ready.json",
+      "changed": true,
+      "before_sha256": "95ccd6e63d007212856f9b29c9d942ce0176935e505d04389ebea33fb6448c52",
+      "after_sha256": "def7ec5cc8e1f2110401c26f040f74122408f9fa3aa8068b7128b43af60316ab",
+      "changes": [
+        {
+          "pointer": "/engine_version",
+          "before": "2.6.0",
+          "after": "2.7.0"
+        }
+      ]
+    },
+    {
+      "file": "test/golden/governance/drift_status.json",
+      "changed": false,
+      "before_sha256": "e37bb494406b73741bdd0f9828c0aac0706520fdd8ebfc4cadbba8b2943e8fc6",
+      "after_sha256": "e37bb494406b73741bdd0f9828c0aac0706520fdd8ebfc4cadbba8b2943e8fc6",
+      "changes": []
+    },
+    {
+      "file": "test/golden/governance/rulebook_status.json",
+      "changed": false,
+      "before_sha256": "e971c156c4e7e4b8ce42056e95ae1f5c32201d76ae2f14208a4c2e8a47a9f0fc",
+      "after_sha256": "e971c156c4e7e4b8ce42056e95ae1f5c32201d76ae2f14208a4c2e8a47a9f0fc",
+      "changes": []
+    },
+    {
+      "file": "test/golden/governance/rulebook_diff_reviewed_vs_active.json",
+      "changed": false,
+      "before_sha256": "9f143bf6ee8a5e4c1c8c91e43a716532bdd01a8da1dd6b66cbc8c456d177d3d8",
+      "after_sha256": "9f143bf6ee8a5e4c1c8c91e43a716532bdd01a8da1dd6b66cbc8c456d177d3d8",
+      "changes": []
+    },
+    {
+      "file": "test/golden/evaluations/reviewer-corrected-e2e.json",
+      "changed": false,
+      "before_sha256": "f154385e8e416fff23142b164f02eb625b824e3216d1fefef61b26d96704a30f",
+      "after_sha256": "f154385e8e416fff23142b164f02eb625b824e3216d1fefef61b26d96704a30f",
+      "changes": []
+    },
+    {
+      "file": "test/golden/evaluations/reviewer-corrected-full-projection.json",
+      "changed": true,
+      "before_sha256": "c86bc3b9538934f84b85ec6f41be6014cf73018dffa4cad00eabaf0c6d97b59a",
+      "after_sha256": "387d61e52b8b5e570f8e265d1665599acf20e99a52518259d8aca997b40196f7",
+      "changes": [
+        {
+          "pointer": "/engine_version",
+          "before": "2.6.0",
+          "after": "2.7.0"
+        }
+      ]
+    },
+    {
+      "file": "docs/artifacts/MRI-01-complete.json",
+      "changed": true,
+      "before_sha256": "ad8a53d31a8db5f48ce8fec3b9c99b141bc13a38fbe83a6d2f4194dad7b0ddff",
+      "after_sha256": "265b9dbd5cfda2740103822622efeec834d4ac95a406f394d8db93f44f8022a9",
+      "changes": [
+        {
+          "pointer": "/engine_version",
+          "before": "2.6.0",
+          "after": "2.7.0"
+        }
+      ]
+    },
+    {
+      "file": "docs/artifacts/MRI-08-edge-below-threshold.json",
+      "changed": true,
+      "before_sha256": "5ff0e6b8c99854e01bdef010361aee7f31eed4b4e4704437e0234d53c6b67e25",
+      "after_sha256": "143ef89e5d26710fa4e48b0ae1303c77bea3c9ef2bf1f741d2a3a0c3fed3b467",
+      "changes": [
+        {
+          "pointer": "/engine_version",
+          "before": "2.6.0",
+          "after": "2.7.0"
+        }
+      ]
+    },
+    {
+      "file": "docs/artifacts/MRI-CERV-01-ready.json",
+      "changed": true,
+      "before_sha256": "b374e2b5751f971b913eb7a6c87e04d5064ed047247a2cf8b2f5523619ac3c27",
+      "after_sha256": "f9ba4a7997697c066f255873652105ad6b5f5936e580e4d58079d643ba9d14d7",
+      "changes": [
+        {
+          "pointer": "/engine_version",
+          "before": "2.6.0",
+          "after": "2.7.0"
+        }
+      ]
+    },
+    {
+      "file": "docs/artifacts/MRI-KNEE-01-ready.json",
+      "changed": true,
+      "before_sha256": "b929d27a6674611c5c89c91b89b39a8a3aa92504302e4c3fb49b455283c5fc0a",
+      "after_sha256": "5bd6ce2f24db03ea9207a8249a77751421e3a9e9b9edf4e59e5c07347b20b018",
+      "changes": [
+        {
+          "pointer": "/engine_version",
+          "before": "2.6.0",
+          "after": "2.7.0"
+        }
+      ]
+    },
+    {
+      "file": "docs/artifacts/CPAP-02-borderline.json",
+      "changed": true,
+      "before_sha256": "3bb1136a84aafe07af4b10e784cffdf1d5d062831da83e0e6801e83425af2c50",
+      "after_sha256": "b3a01648f62b4a892fd9fdf57165488b0e91ce9c1d143e524713ff2b6563a4de",
+      "changes": [
+        {
+          "pointer": "/engine_version",
+          "before": "2.6.0",
+          "after": "2.7.0"
+        }
+      ]
+    },
+    {
+      "file": "docs/artifacts/drift_status.json",
+      "changed": false,
+      "before_sha256": "e37bb494406b73741bdd0f9828c0aac0706520fdd8ebfc4cadbba8b2943e8fc6",
+      "after_sha256": "e37bb494406b73741bdd0f9828c0aac0706520fdd8ebfc4cadbba8b2943e8fc6",
+      "changes": []
+    },
+    {
+      "file": "docs/artifacts/drift_report.md",
+      "changed": false,
+      "before_sha256": "9f5606371c206c4494b16916a614739d17d020f083def7b3a8812a39eb7b63b3",
+      "after_sha256": "9f5606371c206c4494b16916a614739d17d020f083def7b3a8812a39eb7b63b3",
+      "changes": []
+    },
+    {
+      "file": "docs/artifacts/supported_procedures.json",
+      "changed": false,
+      "before_sha256": "f5d030978286d7a1685af3361a895ef2657a3d303985ad7dc34097482d251103",
+      "after_sha256": "f5d030978286d7a1685af3361a895ef2657a3d303985ad7dc34097482d251103",
+      "changes": []
+    },
+    {
+      "file": "docs/artifacts/demo_cases.json",
+      "changed": false,
+      "before_sha256": "8526f491a5148f92d8773adf203a0916b4f4dff908160a63fcadae81c35bc003",
+      "after_sha256": "8526f491a5148f92d8773adf203a0916b4f4dff908160a63fcadae81c35bc003",
+      "changes": []
+    },
+    {
+      "file": "docs/artifacts/featured_demo_cases.json",
+      "changed": false,
+      "before_sha256": "1971d370900c6b550cdd3fd0e12e1c1c672891efdea730e9fad6be04a825cac2",
+      "after_sha256": "1971d370900c6b550cdd3fd0e12e1c1c672891efdea730e9fad6be04a825cac2",
+      "changes": []
+    },
+    {
+      "file": "docs/artifacts/status.json",
+      "changed": true,
+      "before_sha256": "21dce72e1111b199bafa689bfd2447ffb3c9a684368e1eb93c1d84cf0c971f3d",
+      "after_sha256": "619e6855a10b29e07f11eb6f5afc2c33961245a0464984ea972de86df09e2804",
+      "changes": [
+        {
+          "pointer": "/app_version",
+          "before": "2.6.0",
+          "after": "2.7.0"
+        }
+      ]
+    },
+    {
+      "file": "docs/artifacts/safety_metrics.json",
+      "changed": false,
+      "before_sha256": "754a40327fbbb8635f3471c9c96a7165e7c95760f4bfe8e27051d4dd56c2c5f6",
+      "after_sha256": "754a40327fbbb8635f3471c9c96a7165e7c95760f4bfe8e27051d4dd56c2c5f6",
+      "changes": []
+    },
+    {
+      "file": "docs/artifacts/rulebook_status.json",
+      "changed": false,
+      "before_sha256": "e971c156c4e7e4b8ce42056e95ae1f5c32201d76ae2f14208a4c2e8a47a9f0fc",
+      "after_sha256": "e971c156c4e7e4b8ce42056e95ae1f5c32201d76ae2f14208a4c2e8a47a9f0fc",
+      "changes": []
+    },
+    {
+      "file": "docs/artifacts/rulebook_diff_reviewed_vs_active.json",
+      "changed": false,
+      "before_sha256": "9f143bf6ee8a5e4c1c8c91e43a716532bdd01a8da1dd6b66cbc8c456d177d3d8",
+      "after_sha256": "9f143bf6ee8a5e4c1c8c91e43a716532bdd01a8da1dd6b66cbc8c456d177d3d8",
+      "changes": []
+    },
+    {
+      "file": "docs/artifacts/rulebook_diff_reviewed_vs_active.md",
+      "changed": false,
+      "before_sha256": "f4fe04bb18558223a628ed2dbb4d8ac3189cc12c78419b5917a563b9b28a5487",
+      "after_sha256": "f4fe04bb18558223a628ed2dbb4d8ac3189cc12c78419b5917a563b9b28a5487",
+      "changes": []
+    }
+  ]
+}

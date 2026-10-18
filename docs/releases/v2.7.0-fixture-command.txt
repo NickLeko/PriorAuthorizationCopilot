@@ -1,0 +1,91 @@
+"""Capture all tracked JSON note fixtures and contract examples without regenerating repository artifacts."""
+import ast
+import json
+import re
+import subprocess
+import sys
+from datetime import datetime, timezone
+from pathlib import Path
+
+root=Path.cwd()
+sys.path.insert(0,str(root))
+from engine.extract import extract_facts
+from engine.schemas import PARequest
+from engine.service import ReadinessService
+
+service=ReadinessService(utc_now_provider=lambda:datetime(2026,9,1,tzinfo=timezone.utc))
+occurrences=[]
+skipped_json=[]
+
+def collect(value,origin):
+    if isinstance(value,dict):
+        for field in ('note_text','note'):
+            if isinstance(value.get(field),str) and value[field].strip():
+                request={k:value[k] for k in ('payer','procedure_code','dx_codes','site_of_care','specialty','corrections','fact_verifications') if k in value}
+                request['note_text']=value[field]
+                occurrences.append({'origin':origin+'/'+field,'request':request})
+        for key,item in value.items():
+            collect(item,origin+'/'+key)
+    elif isinstance(value,list):
+        for index,item in enumerate(value):
+            collect(item,origin+'/'+str(index))
+
+files=subprocess.check_output(['git','ls-tree','-r','--name-only','-z','eac669e629b8f1ea7da5cbb8365b47d50d834f9e']).decode().split('\0')
+for name in files:
+    path=root/name
+    if name.endswith('.json'):
+        try:
+            collect(json.loads(path.read_text()),name)
+        except json.JSONDecodeError:
+            skipped_json.append(name)
+    elif name.endswith('.md'):
+        for index,match in enumerate(re.finditer(r'```json\s*\n(.*?)\n```',path.read_text(),re.S)):
+            try:
+                collect(json.loads(match.group(1)),name+f'/json-block-{index}')
+            except json.JSONDecodeError:
+                pass
+    elif name.startswith('test/') and name.endswith('.py'):
+        # Recover literal full notes and constant concatenations, never execute tests.
+        tree=ast.parse(path.read_text())
+        for node in ast.walk(tree):
+            if isinstance(node,ast.Constant) and isinstance(node.value,str):
+                text=node.value
+                if re.search(r'\b(?:radiculopathy|strength|reflex|NSAIDs|PT|OSA|AHI|sleep study|x-ray)\b',text,re.I) and len(text)>35:
+                    occurrences.append({'origin':name+f'/literal-{node.lineno}','request':{'note_text':text}})
+
+unique={}
+for entry in occurrences:
+    key=json.dumps(entry['request'],sort_keys=True)
+    unique.setdefault(key,{'request':entry['request'],'origins':[]})['origins'].append(entry['origin'])
+
+if len(sys.argv)>2:
+    baseline=json.loads(Path(sys.argv[2]).read_text())
+    unique={json.dumps(row['request'],sort_keys=True):{'request':row['request'],'origins':row['origins']} for row in baseline['rows']}
+    occurrences=[None]*baseline['occurrences']
+
+def normalize(value):
+    if isinstance(value,dict):
+        return {k:('__VOLATILE__' if k in {'run_id','timestamp_utc'} else normalize(v)) for k,v in value.items()}
+    if isinstance(value,list):
+        return [normalize(v) for v in value]
+    return value
+
+rows=[]
+for key,entry in sorted(unique.items()):
+    note=entry['request']['note_text']
+    row=dict(entry)
+    try:
+        facts,evidence=extract_facts(note)
+        row['extraction']={'facts':facts,'evidence':dict(evidence),'evidence_counts':evidence.total_counts}
+    except Exception as exc:
+        row['extraction_error']={'type':type(exc).__name__,'message':str(exc)}
+    if {'payer','procedure_code'} <= entry['request'].keys():
+        try:
+            result=service.evaluate(PARequest.model_validate(entry['request']))
+            row['evaluation']=normalize(result.model_dump(mode='json'))
+        except Exception as exc:
+            row['evaluation_error']={'type':type(exc).__name__,'message':str(exc)}
+    rows.append(row)
+output={'occurrences':len(occurrences),'unique_inputs':len(rows),'skipped_json':skipped_json,'rows':rows}
+Path(sys.argv[1]).write_text(json.dumps(output,sort_keys=True,indent=2)+'\n')
+print(json.dumps({'occurrences':len(occurrences),'unique_inputs':len(rows),'service_inputs':sum('evaluation' in row or 'evaluation_error' in row for row in rows),'output':sys.argv[1]}))

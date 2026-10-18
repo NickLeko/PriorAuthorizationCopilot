@@ -1,0 +1,19 @@
+"""Swap the real processing statements in memory, without changing repository source."""
+import inspect
+import sys
+from pathlib import Path
+sys.path.insert(0,str(Path.cwd()))
+import engine.extract as extraction
+import pytest
+source=inspect.getsource(extraction._extract_facts)
+original='''    objective_candidates = _objective_candidates_with_source_guards(t, objective_candidates)
+    objective_candidates = _objective_candidates_with_laterality_guards(t, objective_candidates)
+'''
+reversed_order='''    objective_candidates = _objective_candidates_with_laterality_guards(t, objective_candidates)
+    objective_candidates = _objective_candidates_with_source_guards(t, objective_candidates)
+'''
+assert source.count(original)==1
+exec(compile(source.replace(original,reversed_order),'<reversed-objective-validation-order>','exec'),extraction.__dict__)
+code=pytest.main(['-q','-p','no:cacheprovider','--basetemp=/private/tmp/pa-copilot-premerge-evidence/mutation-temp','test/test_objective_laterality.py::test_service_source_qualification_precedes_laterality'])
+assert code==pytest.ExitCode.TESTS_FAILED,f'Expected regression failure, got {code}'
+print('MUTANT DETECTED: reversing actual source/laterality processing statements fails the new service test.')

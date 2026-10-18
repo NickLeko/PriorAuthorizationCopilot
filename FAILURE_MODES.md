@@ -6,7 +6,7 @@ v2.0.0 mitigation: typed correction validation rejects SET_VALUE spans over 300 
 
 **Project:** Prior Authorization Readiness Copilot  
 **Owner:** Nicholas Leko  
-**Last Updated:** October 16, 2026 — v2.6.0
+**Last Updated:** October 18, 2026 — v2.7.0 release candidate
 **Status:** Versioned current behavior. Changes should update tests and docs.
 
 ---
@@ -18,7 +18,7 @@ Current repo status:
 - no LLM implementation
 - bundled case data is synthetic; the official policy snapshot and rule provenance are source material; input is not screened and must not contain real PHI, with screening remaining the operator's responsibility
 
-Automated extraction is a **drafting aid, not a decision gate**. v1.4.0's posture over-trusted extraction. Negated diagnoses returned affirmative facts, contradicting the extraction contract as written. v1.5.0 resolves that contradiction by changing what the engine may assert rather than by making extraction match the contract. v2.6.0 handles the bounded patterns below; the negation, temporality, attribution and other failure classes remain open.
+Automated extraction is a **drafting aid, not a decision gate**. v1.4.0's posture over-trusted extraction. Negated diagnoses returned affirmative facts, contradicting the extraction contract as written. v1.5.0 resolves that contradiction by changing what the engine may assert rather than by making extraction match the contract. v2.7.0 handles the bounded patterns below; the negation, temporality, attribution and other failure classes remain open.
 
 Requirement results describe the captured proposals:
 - proposed scalar passes the operator (`MET`), without asserting source support
@@ -235,7 +235,7 @@ requires:
 ---
 
 
-## Patterns handled through v2.6.0; classes remain open
+## Patterns handled through v2.7.0; classes remain open
 
 These patterns are handled; the class remains open. No row establishes general
 correctness for negation, temporality, therapy response, event completion,
@@ -261,8 +261,15 @@ attribute association, or missingness scope.
 | Patient has neither low back pain nor radiculopathy | Remaining unsafe affirmative proposal; contract xfail expects False / NOT_READY. |
 | Visit date and undated sleep study in the same sentence | Remaining unsafe borrowed-date proposal; contract xfail expects missing / CANNOT_DETERMINE. |
 | Isolated NSAIDs for 42 days / two months / six weeks with explicit no improvement | Bounded recall fix: floor completed days to weeks, months to a four-week lower bound, and recognize number words one through twelve. Below-threshold or improved courses correctly fail. Modifiers, comparisons, fractions and episode linkage remain limited. |
-| Direct right L5 distribution: strength 4 of 5 / 3 out of 5 / 4.5 of 5 | Bounded objective exam capture; 5 of 5 is normal. Explicit negation, question, alternative attribution and opposite-side radiculopathy review in this new route. Legacy slash-grade gaps remain. |
+| Direct right L5 distribution: strength 4 of 5 / 3 out of 5 / 4.5 of 5 | Bounded objective exam capture; 5 of 5 is normal. Explicit negation, question and alternative attribution review in this word-grade route. Opposite-side radiculopathy qualification is shared with legacy slash-grade and other retained objective-exam routes. |
 | Spelled-out non-steroidal anti-inflammatory class names | Recall defect remains: exp-002's vocabulary expansion was reverted when unrelated headache therapy became unsafe passes. Listed drug names are now supported only through the owner-approved reviewed table and isolated course grammar; supported leading verbs and dose/frequency forms now parse, but unlisted course syntax remains limited. |
+
+Objective-exam source qualification runs before shared literal laterality
+qualification. Retained explicit opposite-side root findings, normal or abnormal,
+require `NEEDS_REVIEW`. Matching, unsided and bilateral examination handling is
+unchanged. The check can conservatively review historical or negated opposite-side
+radiculopathy mentions; it does not resolve episodes, general negation,
+non-patient attribution, omitted laterality or wider anatomical vocabulary.
 
 ### Reviewed drug vocabulary and incomplete courses
 
@@ -296,8 +303,10 @@ Negation, temporality, copy-forward, template, attribution and cross-sentence
 linkage **remain open**. A cue about one finding can over-trigger review of
 another finding in the same sentence. A copy-forward header in another sentence
 does not carry forward its scope. Improvement on the following line and
-contralateral strength from prior hip surgery remain outside this change.
-The three corresponding strict xfails assert review as the correct behavior;
+cross-sentence copy-forward remain unresolved. Their two strict xfails assert
+review as the correct behavior. The explicit contralateral prior-hip-surgery
+example now requires review under the shared literal laterality check; that does
+not establish its episode or causal attribution. For the remaining unsafe cases,
 the current proposals can still reach `READY` and `submission_readiness=true`
 with supplied attestations and current verified governance. The new cues reduce
 some wrong captured proposals; they do not establish general extraction
@@ -392,3 +401,19 @@ rerun here; earlier failure-class feedback informed the source guard. The three
 remaining exact-status misses were not inspected. This is distinct from visible
 dev’s 11→27/27 and from the safety failure on the prior held-out set. See
 [v2.6.0](docs/releases/v2.6.0.md) and [exp-004](autoloop/exp-004/REPORT.md).
+
+
+## v2.7.0 current verification and laterality bounds
+
+Validation: **1681 passed, 9 xfailed**. The historical v2.6.0 counts above describe
+that release. The explicit contralateral H1(a) test now passes; the other nine
+strict expected failures remain. Source qualification must precede laterality:
+agreeing patient-reported evidence is excluded before it can become a spurious
+opposite-side review conflict with a legitimate objective examination.
+
+A shared literal predicate handles recognized slash, word, typed motor/reflex,
+descriptive reflex and objective-weakness routes. Normal and abnormal unilateral
+mismatches require NEEDS_REVIEW. Historical, negated, relative-attributed and
+mixed-side mentions can over-trigger review. Current episodes, general negation,
+non-patient attribution and anatomical vocabulary remain bounded, not solved.
+See [v2.7.0](docs/releases/v2.7.0.md) for release-candidate verification.

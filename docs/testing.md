@@ -129,7 +129,7 @@ process, which can leave engine modules from different loads alive together.
    load `MRI-01-complete`. It must return `PENDING_VERIFICATION` without an
    exception. In **Audit and Export**, inspect **Raw evaluation payload** or
    download the JSON artifact. Its `engine_version` must match the release tag
-   without the `v` prefix (for `v2.6.0`, expect `2.6.0`).
+   without the `v` prefix (for `v2.7.0`, expect `2.7.0`).
 4. In a fresh session, load the same lumbar MRI case to establish request scope,
    replace its note with the exact synthetic note below, and run the review.
    Expect `NEEDS_REVIEW`, no exception, and **“but significant improvement in
@@ -282,3 +282,26 @@ must not change. See [release notes](releases/v2.6.0.md),
 [generation audit](releases/v2.6.0-generation-audit.md),
 [scope audit](releases/v2.6.0-scope-audit.json) and
 [documentation drift audit](releases/v2.6.0-doc-audit.md).
+
+
+## v2.7.0 release-candidate validation
+
+Fresh `make test`: **1681 passed, 9 xfailed**. `make lint` includes Ruff lint and
+format checks. All 91 contract examples and their four known-failure objects
+remain unchanged. The laterality module contains 219 passing cases, including
+normal/abnormal notation parity, source-order, mirroring, exact citation and
+stale-attestation regressions. The formerly xfailed explicit contralateral H1(a)
+case is an ordinary passing test. No other expectation is relabeled.
+
+The v2.6.0 section above records historical results. Current remaining xfails
+cover four contract examples, two cross-sentence temporality cases, generic
+analgesic duration, next-line response and cross-sentence copy-forward.
+
+Use the [v2.7.0 generation command](releases/v2.7.0-generation-command.txt) with
+`utc_now_provider=lambda: ACCEPTANCE_GOVERNANCE_NOW` at 2026-09-01T00:00:00Z.
+The guard permits only engine/app metadata 2.6.0 → 2.7.0, restoring prior writes
+and stopping on any other difference. `PA_RELEASE_STAGE=verify` requires every
+regenerated output to be identical. Live source requests are prohibited by this
+command. This is local snapshot/provenance consistency, not a current remote
+policy check or deployment verification. No monitoring timestamp is refreshed.
+See the [release notes](releases/v2.7.0.md) and audit evidence linked there.

@@ -1,0 +1,22 @@
+"""Mutate qualification in memory; leave repository files unchanged."""
+import ast
+import subprocess
+import sys
+from pathlib import Path
+sys.path.insert(0,str(Path.cwd()))
+import engine.extract as extraction
+import pytest
+mode=sys.argv[1]
+if mode=='reviewed-opt-out':
+    source=subprocess.check_output(['git','show','2c762a8:engine/extract.py']).decode()
+    node=next(n for n in ast.parse(source).body if isinstance(n,ast.FunctionDef) and n.name=='_objective_candidates_with_laterality_guards')
+    namespace=dict(extraction.__dict__)
+    exec(compile(ast.Module(body=[node],type_ignores=[]),'<reviewed-opt-out>','exec'),namespace)
+    extraction._objective_candidates_with_laterality_guards=namespace[node.name]
+elif mode=='remove-shared-step':
+    extraction._objective_candidates_with_laterality_guards=lambda text,candidates:list(candidates)
+else:
+    raise SystemExit('Unknown mutation')
+code=pytest.main(['-q','-p','no:cacheprovider',f'--basetemp=/private/tmp/pa-copilot-phase6-evidence/mutant-{mode}-temp','test/test_objective_laterality.py'])
+assert code==pytest.ExitCode.TESTS_FAILED, f'Mutant escaped or errored: {code}'
+print(f'MUTANT DETECTED: {mode}')

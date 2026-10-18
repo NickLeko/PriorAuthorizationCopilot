@@ -1,0 +1,46 @@
+import json
+from pathlib import Path
+out=Path('/private/tmp/pa-copilot-v270')
+
+def diff(a,b,path=''):
+    if type(a) is not type(b):
+        return [(path,a,b)]
+    if isinstance(a,dict):
+        if a.keys()!=b.keys():
+            return [(path,a,b)]
+        return [d for k in a for d in diff(a[k],b[k],path+'/'+k)]
+    if isinstance(a,list):
+        if len(a)!=len(b):
+            return [(path,a,b)]
+        return [d for i,(x,y) in enumerate(zip(a,b)) for d in diff(x,y,path+'/'+str(i))]
+    return [] if a==b else [(path,a,b)]
+
+before=json.loads((out/'before-fixtures.json').read_text())
+after=json.loads((out/'after-fixtures.json').read_text())
+assert before['unique_inputs']==after['unique_inputs']
+changes=[]
+unexpected=[]
+for a,b in zip(before['rows'],after['rows'],strict=True):
+    assert a['request']==b['request'] and a['origins']==b['origins']
+    for path,left,right in diff(a,b):
+        row={'origins':a['origins'],'pointer':path,'before':left,'after':right}
+        changes.append(row)
+        if not(path=='/evaluation/engine_version' and left=='2.6.0' and right=='2.7.0'):
+            unexpected.append(row)
+safeguard_changes=diff(json.loads((out/'before-safeguards.json').read_text()),json.loads((out/'after-safeguards.json').read_text()))
+for path,left,right in safeguard_changes:
+    if not(path.endswith('/engine_version') and path.startswith('/cases/') and left=='2.6.0' and right=='2.7.0'):
+        unexpected.append({'safeguard_pointer':path,'before':left,'after':right})
+report={'approved_baseline':'eac669e629b8f1ea7da5cbb8365b47d50d834f9e',
+        'unique_inputs':before['unique_inputs'],'occurrences':before['occurrences'],
+        'scoped_service_inputs':sum('evaluation' in r or 'evaluation_error' in r for r in before['rows']),
+        'successful_full_service_outputs':sum('evaluation' in r for r in before['rows']),
+        'service_errors_unchanged':sum('evaluation_error' in r for r in before['rows']),
+        'metadata_only_changes':len(changes),'safeguard_metadata_only_changes':len(safeguard_changes),
+        'unexpected_changes':unexpected,'permitted_metadata_pointers':['/evaluation/engine_version'],
+        'volatile_fields_normalized':['run_id','timestamp_utc'],
+        'facts_states_citations_offsets_requirements_readiness_verifications_audits_fingerprints_preserved':not unexpected,
+        'changes':changes}
+(out/'behavior-comparison.json').write_text(json.dumps(report,indent=2)+'\n')
+print(json.dumps({k:v for k,v in report.items() if k!='changes'},indent=2))
+assert not unexpected,'STOP: release preparation changed behavior beyond version metadata.'

@@ -1,0 +1,305 @@
+{
+  "release_preparation": [
+    {
+      "file": "EXTRACTION_CONTRACT.md",
+      "reason": "Current v2.7 documentation and resolved laterality-xfail wording; executable examples unchanged."
+    },
+    {
+      "file": "FAILURE_MODES.md",
+      "reason": "Current documentation version and verification; retain historical failure-class records."
+    },
+    {
+      "file": "LIMITATIONS.md",
+      "reason": "Current candidate evidence and bounded literal laterality limitations."
+    },
+    {
+      "file": "MODEL_CARD.md",
+      "reason": "Current identity and bounded laterality summary; label earlier measurements historical."
+    },
+    {
+      "file": "README.md",
+      "reason": "Current candidate identity, laterality behavior, validation, and release link; historical v2.6.0 evidence retained."
+    },
+    {
+      "file": "docs/api.md",
+      "reason": "Expected engine_version metadata 2.7.0 and unchanged interface/safeguards."
+    },
+    {
+      "file": "docs/architecture.md",
+      "reason": "Document approved explicit qualification composition; no architectural changes in release prep."
+    },
+    {
+      "file": "docs/artifacts/CPAP-02-borderline.json",
+      "reason": "Guarded deterministic regeneration; only /engine_version changes 2.6.0 -> 2.7.0."
+    },
+    {
+      "file": "docs/artifacts/MRI-01-complete.json",
+      "reason": "Guarded deterministic regeneration; only /engine_version changes 2.6.0 -> 2.7.0."
+    },
+    {
+      "file": "docs/artifacts/MRI-08-edge-below-threshold.json",
+      "reason": "Guarded deterministic regeneration; only /engine_version changes 2.6.0 -> 2.7.0."
+    },
+    {
+      "file": "docs/artifacts/MRI-CERV-01-ready.json",
+      "reason": "Guarded deterministic regeneration; only /engine_version changes 2.6.0 -> 2.7.0."
+    },
+    {
+      "file": "docs/artifacts/MRI-KNEE-01-ready.json",
+      "reason": "Guarded deterministic regeneration; only /engine_version changes 2.6.0 -> 2.7.0."
+    },
+    {
+      "file": "docs/artifacts/status.json",
+      "reason": "Guarded deterministic regeneration; only /app_version changes 2.6.0 -> 2.7.0."
+    },
+    {
+      "file": "docs/releases/v2.7.0-baseline-generation.json",
+      "reason": "New v2.7.0 machine-readable release identity, inventory or verification evidence."
+    },
+    {
+      "file": "docs/releases/v2.7.0-baseline-tests.txt",
+      "reason": "New v2.7.0 reproducible audit command or exact verification/mutation output."
+    },
+    {
+      "file": "docs/releases/v2.7.0-behavior-comparison.json",
+      "reason": "New v2.7.0 machine-readable release identity, inventory or verification evidence."
+    },
+    {
+      "file": "docs/releases/v2.7.0-change-inventory.json",
+      "reason": "New v2.7.0 machine-readable release identity, inventory or verification evidence."
+    },
+    {
+      "file": "docs/releases/v2.7.0-compare-command.txt",
+      "reason": "New v2.7.0 reproducible audit command or exact verification/mutation output."
+    },
+    {
+      "file": "docs/releases/v2.7.0-contract-tests.txt",
+      "reason": "New v2.7.0 reproducible audit command or exact verification/mutation output."
+    },
+    {
+      "file": "docs/releases/v2.7.0-doc-audit.md",
+      "reason": "New v2.7.0 release notes or human-readable verification/documentation audit."
+    },
+    {
+      "file": "docs/releases/v2.7.0-fixture-command.txt",
+      "reason": "New v2.7.0 reproducible audit command or exact verification/mutation output."
+    },
+    {
+      "file": "docs/releases/v2.7.0-generation-audit.json",
+      "reason": "New v2.7.0 machine-readable release identity, inventory or verification evidence."
+    },
+    {
+      "file": "docs/releases/v2.7.0-generation-audit.md",
+      "reason": "New v2.7.0 release notes or human-readable verification/documentation audit."
+    },
+    {
+      "file": "docs/releases/v2.7.0-generation-command.txt",
+      "reason": "New v2.7.0 reproducible audit command or exact verification/mutation output."
+    },
+    {
+      "file": "docs/releases/v2.7.0-laterality-mutation-command.txt",
+      "reason": "New v2.7.0 reproducible audit command or exact verification/mutation output."
+    },
+    {
+      "file": "docs/releases/v2.7.0-lint.txt",
+      "reason": "New v2.7.0 reproducible audit command or exact verification/mutation output."
+    },
+    {
+      "file": "docs/releases/v2.7.0-mutation-laterality.txt",
+      "reason": "New v2.7.0 reproducible audit command or exact verification/mutation output."
+    },
+    {
+      "file": "docs/releases/v2.7.0-mutation-order.txt",
+      "reason": "New v2.7.0 reproducible audit command or exact verification/mutation output."
+    },
+    {
+      "file": "docs/releases/v2.7.0-order-mutation-command.txt",
+      "reason": "New v2.7.0 reproducible audit command or exact verification/mutation output."
+    },
+    {
+      "file": "docs/releases/v2.7.0-preflight-command.txt",
+      "reason": "New v2.7.0 reproducible audit command or exact verification/mutation output."
+    },
+    {
+      "file": "docs/releases/v2.7.0-preflight.json",
+      "reason": "New v2.7.0 machine-readable release identity, inventory or verification evidence."
+    },
+    {
+      "file": "docs/releases/v2.7.0-regeneration-verify.json",
+      "reason": "New v2.7.0 machine-readable release identity, inventory or verification evidence."
+    },
+    {
+      "file": "docs/releases/v2.7.0-safeguards-command.txt",
+      "reason": "New v2.7.0 reproducible audit command or exact verification/mutation output."
+    },
+    {
+      "file": "docs/releases/v2.7.0-scope-audit.json",
+      "reason": "New v2.7.0 machine-readable release identity, inventory or verification evidence."
+    },
+    {
+      "file": "docs/releases/v2.7.0-scope-command.txt",
+      "reason": "New v2.7.0 reproducible audit command or exact verification/mutation output."
+    },
+    {
+      "file": "docs/releases/v2.7.0-tests.txt",
+      "reason": "New v2.7.0 reproducible audit command or exact verification/mutation output."
+    },
+    {
+      "file": "docs/releases/v2.7.0-verification.json",
+      "reason": "New v2.7.0 machine-readable release identity, inventory or verification evidence."
+    },
+    {
+      "file": "docs/releases/v2.7.0.md",
+      "reason": "New v2.7.0 release notes or human-readable verification/documentation audit."
+    },
+    {
+      "file": "docs/reviewer_guide.md",
+      "reason": "Current reviewer limits and validation, distinguished from historical v2.6.0 results."
+    },
+    {
+      "file": "docs/testing.md",
+      "reason": "Current release/deployment version example, validation and fixed-clock commands; preserve historical release section."
+    },
+    {
+      "file": "engine/__init__.py",
+      "reason": "Central engine/app version only: 2.6.0 -> 2.7.0."
+    },
+    {
+      "file": "test/golden/evaluations/CPAP-02-borderline.json",
+      "reason": "Guarded deterministic regeneration; only /engine_version changes 2.6.0 -> 2.7.0."
+    },
+    {
+      "file": "test/golden/evaluations/MRI-01-complete.json",
+      "reason": "Guarded deterministic regeneration; only /engine_version changes 2.6.0 -> 2.7.0."
+    },
+    {
+      "file": "test/golden/evaluations/MRI-01-human-verified.json",
+      "reason": "Guarded deterministic regeneration; only /engine_version changes 2.6.0 -> 2.7.0."
+    },
+    {
+      "file": "test/golden/evaluations/MRI-08-edge-below-threshold.json",
+      "reason": "Guarded deterministic regeneration; only /engine_version changes 2.6.0 -> 2.7.0."
+    },
+    {
+      "file": "test/golden/evaluations/MRI-KNEE-01-ready.json",
+      "reason": "Guarded deterministic regeneration; only /engine_version changes 2.6.0 -> 2.7.0."
+    },
+    {
+      "file": "test/golden/evaluations/reviewer-corrected-full-projection.json",
+      "reason": "Guarded deterministic regeneration; only /engine_version changes 2.6.0 -> 2.7.0."
+    },
+    {
+      "file": "test/test_api.py",
+      "reason": "Update the existing explicit release-version assertion only."
+    },
+    {
+      "file": "test/test_v210_safety.py",
+      "reason": "Update the existing explicit release-version assertion only."
+    }
+  ],
+  "approved_feature_files_relative_to_main": [
+    "FAILURE_MODES.md",
+    "LIMITATIONS.md",
+    "engine/extract.py",
+    "test/test_h1_review_triggers.py",
+    "test/test_objective_laterality.py"
+  ],
+  "version_inventory": {
+    "central_declaration": "engine/__init__.py: __version__ = 2.7.0",
+    "derived_api_version": "api.py FastAPI(version=__version__) and service status app_version",
+    "derived_cli_version": "cli.py status uses ReadinessService.get_status()",
+    "derived_streamlit_version": "app.py imports engine.__version__ for labels/cache identity",
+    "explicit_assertions": [
+      "test/test_api.py",
+      "test/test_v210_safety.py"
+    ],
+    "current_documentation": [
+      "EXTRACTION_CONTRACT.md",
+      "FAILURE_MODES.md",
+      "LIMITATIONS.md",
+      "MODEL_CARD.md",
+      "README.md",
+      "docs/api.md",
+      "docs/architecture.md",
+      "docs/reviewer_guide.md",
+      "docs/testing.md"
+    ],
+    "generated_version_locations": [
+      {
+        "file": "test/golden/evaluations/MRI-01-complete.json",
+        "pointers": [
+          "/engine_version"
+        ]
+      },
+      {
+        "file": "test/golden/evaluations/MRI-01-human-verified.json",
+        "pointers": [
+          "/engine_version"
+        ]
+      },
+      {
+        "file": "test/golden/evaluations/MRI-08-edge-below-threshold.json",
+        "pointers": [
+          "/engine_version"
+        ]
+      },
+      {
+        "file": "test/golden/evaluations/CPAP-02-borderline.json",
+        "pointers": [
+          "/engine_version"
+        ]
+      },
+      {
+        "file": "test/golden/evaluations/MRI-KNEE-01-ready.json",
+        "pointers": [
+          "/engine_version"
+        ]
+      },
+      {
+        "file": "test/golden/evaluations/reviewer-corrected-full-projection.json",
+        "pointers": [
+          "/engine_version"
+        ]
+      },
+      {
+        "file": "docs/artifacts/MRI-01-complete.json",
+        "pointers": [
+          "/engine_version"
+        ]
+      },
+      {
+        "file": "docs/artifacts/MRI-08-edge-below-threshold.json",
+        "pointers": [
+          "/engine_version"
+        ]
+      },
+      {
+        "file": "docs/artifacts/MRI-CERV-01-ready.json",
+        "pointers": [
+          "/engine_version"
+        ]
+      },
+      {
+        "file": "docs/artifacts/MRI-KNEE-01-ready.json",
+        "pointers": [
+          "/engine_version"
+        ]
+      },
+      {
+        "file": "docs/artifacts/CPAP-02-borderline.json",
+        "pointers": [
+          "/engine_version"
+        ]
+      },
+      {
+        "file": "docs/artifacts/status.json",
+        "pointers": [
+          "/app_version"
+        ]
+      }
+    ],
+    "no_separate_package_or_deployment_version_declaration": true,
+    "historical_v260_release_files_unchanged": true,
+    "record_schema_unchanged": "2.0.0"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "approved_baseline": "eac669e629b8f1ea7da5cbb8365b47d50d834f9e",
+  "unique_inputs": 757,
+  "occurrences": 1672,
+  "scoped_service_inputs": 449,
+  "successful_full_service_outputs": 441,
+  "service_errors_unchanged": 8,
+  "metadata_only_changes": 441,
+  "safeguard_metadata_only_changes": 8,
+  "unexpected_changes": [],
+  "permitted_metadata_pointers": [
+    "/evaluation/engine_version"
+  ],
+  "volatile_fields_normalized": [
+    "run_id",
+    "timestamp_utc"
+  ],
+  "facts_states_citations_offsets_requirements_readiness_verifications_audits_fingerprints_preserved": true
+}

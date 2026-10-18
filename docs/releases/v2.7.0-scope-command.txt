@@ -1,0 +1,123 @@
+# From release repository root: .venv/bin/python < docs/releases/v2.7.0-scope-command.txt
+import hashlib
+import json
+import re
+import subprocess
+from pathlib import Path
+
+BASE = 'eac669e629b8f1ea7da5cbb8365b47d50d834f9e'
+MAIN_BASE = '0add206388a41deaac0c75318e3c9d11d8d64f8a'
+root = Path.cwd()
+release = root / 'docs/releases'
+
+
+def git(*args):
+    return subprocess.check_output(['git', *args], text=True).strip()
+
+
+def original(path):
+    return subprocess.check_output(['git', 'show', f'{BASE}:{path}'])
+
+
+assert git('branch', '--show-current') == 'codex/release-v2.7.0'
+assert git('rev-parse', 'origin/codex/objective-exam-laterality') == BASE
+assert git('merge-base', MAIN_BASE, BASE) == MAIN_BASE
+assert git('merge-base', 'origin/main', 'HEAD') == MAIN_BASE
+product = git('diff', '--name-only', BASE, '--', 'engine', 'scripts', 'app.py', 'api.py', 'cli.py').splitlines()
+assert product == ['engine/__init__.py'], product
+assert Path(product[0]).read_bytes() == original(product[0]).replace(b'2.6.0', b'2.7.0')
+version_tests = ['test/test_api.py', 'test/test_v210_safety.py']
+assert git('diff', '--name-only', BASE, '--', 'test', ':!test/golden').splitlines() == version_tests
+for name in version_tests:
+    assert Path(name).read_bytes() == original(name).replace(b'2.6.0', b'2.7.0')
+protected = ['rules', 'rulebook', 'policy_snapshots', 'inputs', 'autoloop', '.github', '.streamlit', '.devcontainer',
+             'Makefile', 'requirements.in', 'requirements.lock', 'requirements.txt', 'pyproject.toml']
+assert not git('diff', '--name-only', BASE, '--', *protected)
+extract_json = lambda raw: json.loads(re.search(r'```json\n(.*?)\n```', raw, re.S).group(1))
+old_examples = extract_json(original('EXTRACTION_CONTRACT.md').decode())
+new_examples = extract_json(Path('EXTRACTION_CONTRACT.md').read_text())
+assert old_examples == new_examples and len(new_examples) == 91
+assert sum('known_failure' in item for item in new_examples) == 4
+paragraph = 'Objective-exam laterality: all recognized notations (slash, word, typed, descriptive reflex, objective weakness) now share one opposite-side check, applied after source qualification. Mismatched-side findings, normal or abnormal, require NEEDS_REVIEW. Trade-off: notes that mention the opposite side in any way (negated, historical, bilateral wording, or a relative) also require review. Diagnosis-side vocabulary is unchanged.'
+assert paragraph in (release / 'v2.7.0.md').read_text()
+generation = json.loads((release / 'v2.7.0-generation-audit.json').read_text())
+assert generation['outputs'] == 25 and generation['changed'] == 12
+assert not generation['governance_changes'] and not generation['non_version_changes']
+for row in generation['files']:
+    assert hashlib.sha256(original(row['file'])).hexdigest() == row['before_sha256'], row['file']
+    assert hashlib.sha256(Path(row['file']).read_bytes()).hexdigest() == row['after_sha256'], row['file']
+    assert all(c['pointer'] in ('/engine_version', '/app_version') and c['before'] == '2.6.0' and c['after'] == '2.7.0' for c in row['changes'])
+repeat = json.loads((release / 'v2.7.0-regeneration-verify.json').read_text())
+assert repeat['outputs'] == 25 and repeat['changed'] == 0
+preflight = json.loads((release / 'v2.7.0-preflight.json').read_text())
+assert len(preflight['checks']) == 8 and not preflight['stop_required']
+verification = json.loads((release / 'v2.7.0-verification.json').read_text())
+assert not verification['unexpected_behavior_changes']
+assert verification['safeguards']['bundle_digest'] == preflight['bundle_digest']
+assert '1681 passed, 9 xfailed' in (release / 'v2.7.0-tests.txt').read_text()
+assert '145 passed, 4 xfailed' in (release / 'v2.7.0-contract-tests.txt').read_text()
+assert 'All checks passed!' in (release / 'v2.7.0-lint.txt').read_text()
+assert '78 files already formatted' in (release / 'v2.7.0-lint.txt').read_text()
+
+doc_reasons = {
+    'README.md': 'Current candidate identity, laterality behavior, validation, and release link; historical v2.6.0 evidence retained.',
+    'MODEL_CARD.md': 'Current identity and bounded laterality summary; label earlier measurements historical.',
+    'EXTRACTION_CONTRACT.md': 'Current v2.7 documentation and resolved laterality-xfail wording; executable examples unchanged.',
+    'FAILURE_MODES.md': 'Current documentation version and verification; retain historical failure-class records.',
+    'LIMITATIONS.md': 'Current candidate evidence and bounded literal laterality limitations.',
+    'docs/api.md': 'Expected engine_version metadata 2.7.0 and unchanged interface/safeguards.',
+    'docs/architecture.md': 'Document approved explicit qualification composition; no architectural changes in release prep.',
+    'docs/testing.md': 'Current release/deployment version example, validation and fixed-clock commands; preserve historical release section.',
+    'docs/reviewer_guide.md': 'Current reviewer limits and validation, distinguished from historical v2.6.0 results.',
+}
+changes = set(git('diff', '--name-only', BASE).splitlines()) | set(git('ls-files', '--others', '--exclude-standard').splitlines())
+changes |= {'docs/releases/v2.7.0-change-inventory.json', 'docs/releases/v2.7.0-scope-audit.json'}
+existing = changes & set(git('ls-tree', '-r', '--name-only', BASE).splitlines())
+expected = set(doc_reasons) | set(product) | set(version_tests) | {r['file'] for r in generation['files'] if r['changed']}
+assert existing == expected, (existing - expected, expected - existing)
+assert all(p.startswith('docs/releases/v2.7.0') for p in changes - existing), changes - existing
+inventory = []
+for name in sorted(changes):
+    if name in doc_reasons:
+        reason = doc_reasons[name]
+    elif name in product:
+        reason = 'Central engine/app version only: 2.6.0 -> 2.7.0.'
+    elif name in version_tests:
+        reason = 'Update the existing explicit release-version assertion only.'
+    elif any(r['file'] == name and r['changed'] for r in generation['files']):
+        row = next(r for r in generation['files'] if r['file'] == name)
+        reason = 'Guarded deterministic regeneration; only ' + ', '.join(c['pointer'] for c in row['changes']) + ' changes 2.6.0 -> 2.7.0.'
+    elif name.endswith('.md'):
+        reason = 'New v2.7.0 release notes or human-readable verification/documentation audit.'
+    elif name.endswith('.txt'):
+        reason = 'New v2.7.0 reproducible audit command or exact verification/mutation output.'
+    else:
+        reason = 'New v2.7.0 machine-readable release identity, inventory or verification evidence.'
+    inventory.append({'file': name, 'reason': reason})
+feature_files = git('diff', '--name-only', MAIN_BASE, BASE).splitlines()
+version_inventory = {
+    'central_declaration': 'engine/__init__.py: __version__ = 2.7.0',
+    'derived_api_version': 'api.py FastAPI(version=__version__) and service status app_version',
+    'derived_cli_version': 'cli.py status uses ReadinessService.get_status()',
+    'derived_streamlit_version': 'app.py imports engine.__version__ for labels/cache identity',
+    'explicit_assertions': version_tests,
+    'current_documentation': sorted(doc_reasons),
+    'generated_version_locations': [{'file': r['file'], 'pointers': [c['pointer'] for c in r['changes']]} for r in generation['files'] if r['changed']],
+    'no_separate_package_or_deployment_version_declaration': True,
+    'historical_v260_release_files_unchanged': True,
+    'record_schema_unchanged': '2.0.0',
+}
+(release / 'v2.7.0-change-inventory.json').write_text(json.dumps({'release_preparation': inventory, 'approved_feature_files_relative_to_main': feature_files, 'version_inventory': version_inventory}, indent=2) + '\n')
+report = {'release_base': BASE, 'main_merge_base': MAIN_BASE, 'branch': git('branch', '--show-current'),
+          'production_diff_only_engine_version': True, 'version_only_test_edits': version_tests,
+          'protected_inputs_governance_dependencies_unchanged': True,
+          'contract_examples_unchanged': 91, 'contract_known_failures_unchanged': 4,
+          'owner_paragraph_verbatim': True, 'generated_outputs_verified': 25,
+          'generated_version_only_changes': 12, 'repeat_generation_changes': 0,
+          'fixed_clock_governance_checks_unchanged': 8,
+          'changed_files': inventory, 'version_inventory': version_inventory,
+          'source_laterality_order_unchanged': True, 'engine_schema_fingerprint_algorithms_unchanged': True,
+          'historical_main_and_feature_commits_not_rewritten': True,
+          'unexpected_changes': []}
+(release / 'v2.7.0-scope-audit.json').write_text(json.dumps(report, indent=2) + '\n')
+print(json.dumps({k:v for k,v in report.items() if k not in {'changed_files','version_inventory'}}, indent=2))
