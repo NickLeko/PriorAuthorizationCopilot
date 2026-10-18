@@ -191,6 +191,13 @@ def test_outbound_adapter_revalidates_bypassed_model_copies():
         proposals.proposal_to_legacy(invalid)
 
 
+def test_nested_snapshot_model_copy_cannot_bypass_proposal_validation():
+    proposal = proposals.extract_regex_proposal("OSA")
+    invalid = proposal.snapshot.model_copy(update={"content_hash": "0" * 64})
+    with pytest.raises(ValueError, match="content hash"):
+        proposals.ExtractionProposal(note_text="OSA", source="test", snapshot=invalid)
+
+
 def test_regex_adapter_calls_existing_extraction_once(monkeypatch):
     calls = []
 

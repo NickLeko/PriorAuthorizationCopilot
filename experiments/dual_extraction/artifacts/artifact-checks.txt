@@ -1,0 +1,2 @@
+Fixed-clock generation succeeded; all 27 tracked artifacts/goldens are unchanged from v2.7.0.
+Protected clinical, policy, governance, verification, archive/replay, dependency and application entry-point files are unchanged.

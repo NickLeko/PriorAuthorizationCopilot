@@ -1,0 +1,80 @@
+{
+  "accuracy_claim": false,
+  "baseline": {
+    "cases": 177,
+    "exact_release_engine_comparison": "byte-for-byte identical",
+    "facts_per_case": 12,
+    "normalizations": [
+      "audit_trail.run_id",
+      "audit_trail.timestamp_utc",
+      "report.audit_trail.run_id",
+      "report.audit_trail.timestamp_utc"
+    ],
+    "scoped_evaluations": 148,
+    "sha256": "af9a1805c42df33e2985542a7b85307262dfa0fe8ab33cfcbf7f69d2ece46728",
+    "source_counts": {
+      "EXTRACTION_CONTRACT.md": 91,
+      "inputs/replay/cases.json": 14,
+      "inputs/synthetic_cases.json": 52,
+      "test/fixtures/v210_independent.json": 20
+    },
+    "unscoped_extraction_examples": 29
+  },
+  "baseline_commit": "b860832",
+  "branch": "codex/dual-extraction-phase1",
+  "checks": {
+    "experimental_baseline_check": "passed",
+    "fixed_clock_artifact_generation": "passed",
+    "git_diff_check": "passed",
+    "protected_file_release_comparison": "passed",
+    "ruff_check": "passed",
+    "ruff_format": "85 files already formatted",
+    "unchanged_tracked_artifacts_and_goldens": 27
+  },
+  "evidence_sha256": {
+    "artifact-checks.txt": "e9f5c31374f908d7882c9818fd4aa0cb5a0b2f3ba3288c7b5c89dad19d59c27f",
+    "focused-tests.txt": "80b90cbd9bba2325971c3677bd47d26d3451cc9c6a829c5994a6b461ccb6fe9f",
+    "quality.txt": "6a61b68a4c5e7aabf5fb5d1b94ddcccde58fb5979448aad4eaa11d11bb8d0443",
+    "regression-tests.txt": "f0b8642aefc1ee3c0e82cedfc708bd8e8fd7c641057bb4f82c3c9f80db426668",
+    "release-tests.txt": "e852c180d15d5c67efa3311bca27696b872c2cdb8eada8ceb1357de2dfc4c7eb"
+  },
+  "excluded": [
+    "LLM calls and parsing",
+    "credentials",
+    "reconciliation",
+    "three-mode runner",
+    "application mode switching",
+    "policy/governance/verification changes",
+    "merge",
+    "release tag",
+    "deployment"
+  ],
+  "governance_clock": "2026-09-01T00:00:00Z",
+  "implementation_commit": "ad1b06c0d27b91965eb0f841db75c269c41760dd",
+  "phase": 1,
+  "production_changes": [
+    "engine/service.py: optional callable dependency only"
+  ],
+  "python": "3.12.3",
+  "ruff": "0.12.0",
+  "starting_release_commit": "5d7a03f646eccd70e69bfc32f3281057b3bf6b54",
+  "tests": {
+    "final_full_suite": {
+      "passed": 1973,
+      "seconds": 42.85,
+      "xfailed": 9
+    },
+    "new_focused_suite": {
+      "baseline_tests": 5,
+      "injection_tests": 59,
+      "passed": 292,
+      "proposal_adapter_tests": 228,
+      "seconds": 5.92
+    },
+    "released_full_suite": {
+      "passed": 1681,
+      "seconds": 38.02,
+      "xfailed": 9
+    }
+  }
+}
