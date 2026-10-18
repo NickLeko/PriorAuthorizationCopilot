@@ -5,6 +5,10 @@
       "analysis_flags": [],
       "citation_comparison_complete": true,
       "disposition": "MISSING",
+      "dual_citation_sources": [],
+      "dual_complete_citation_count": 0,
+      "dual_evidence_capped": false,
+      "dual_observed_unique_citation_count": 0,
       "evidence_source": "none",
       "key": "back_pain_with_radiculopathy",
       "reason": "BOTH_MISSING",
@@ -18,6 +22,10 @@
       "analysis_flags": [],
       "citation_comparison_complete": true,
       "disposition": "MISSING",
+      "dual_citation_sources": [],
+      "dual_complete_citation_count": 0,
+      "dual_evidence_capped": false,
+      "dual_observed_unique_citation_count": 0,
       "evidence_source": "none",
       "key": "objective_motor_or_reflex_change_in_root_distribution",
       "reason": "BOTH_MISSING",
@@ -31,6 +39,10 @@
       "analysis_flags": [],
       "citation_comparison_complete": true,
       "disposition": "MISSING",
+      "dual_citation_sources": [],
+      "dual_complete_citation_count": 0,
+      "dual_evidence_capped": false,
+      "dual_observed_unique_citation_count": 0,
       "evidence_source": "none",
       "key": "cpb_0236_conservative_therapy_weeks",
       "reason": "BOTH_MISSING",
@@ -44,6 +56,10 @@
       "analysis_flags": [],
       "citation_comparison_complete": true,
       "disposition": "MISSING",
+      "dual_citation_sources": [],
+      "dual_complete_citation_count": 0,
+      "dual_evidence_capped": false,
+      "dual_observed_unique_citation_count": 0,
       "evidence_source": "none",
       "key": "cpb_0236_conservative_therapy_no_improvement",
       "reason": "BOTH_MISSING",
@@ -59,7 +75,16 @@
       ],
       "citation_comparison_complete": true,
       "disposition": "NEEDS_REVIEW",
-      "evidence_source": "regex",
+      "dual_citation_sources": [
+        [
+          "regex",
+          "llm"
+        ]
+      ],
+      "dual_complete_citation_count": 1,
+      "dual_evidence_capped": false,
+      "dual_observed_unique_citation_count": 1,
+      "evidence_source": "both",
       "key": "conservative_therapy_weeks",
       "reason": "VALUE_DISAGREEMENT",
       "retained_citation_order_equal": true,
@@ -72,6 +97,14 @@
       "analysis_flags": [],
       "citation_comparison_complete": true,
       "disposition": "CAPTURED",
+      "dual_citation_sources": [
+        [
+          "regex"
+        ]
+      ],
+      "dual_complete_citation_count": 1,
+      "dual_evidence_capped": false,
+      "dual_observed_unique_citation_count": 1,
       "evidence_source": "regex",
       "key": "symptom_duration_weeks",
       "reason": "AGREED_CAPTURE",
@@ -85,6 +118,14 @@
       "analysis_flags": [],
       "citation_comparison_complete": true,
       "disposition": "CAPTURED",
+      "dual_citation_sources": [
+        [
+          "regex"
+        ]
+      ],
+      "dual_complete_citation_count": 1,
+      "dual_evidence_capped": false,
+      "dual_observed_unique_citation_count": 1,
       "evidence_source": "regex",
       "key": "neuro_red_flags_documented",
       "reason": "AGREED_CAPTURE",
@@ -98,6 +139,14 @@
       "analysis_flags": [],
       "citation_comparison_complete": true,
       "disposition": "CAPTURED",
+      "dual_citation_sources": [
+        [
+          "regex"
+        ]
+      ],
+      "dual_complete_citation_count": 1,
+      "dual_evidence_capped": false,
+      "dual_observed_unique_citation_count": 1,
       "evidence_source": "regex",
       "key": "prior_imaging_result",
       "reason": "AGREED_CAPTURE",
@@ -111,6 +160,10 @@
       "analysis_flags": [],
       "citation_comparison_complete": true,
       "disposition": "MISSING",
+      "dual_citation_sources": [],
+      "dual_complete_citation_count": 0,
+      "dual_evidence_capped": false,
+      "dual_observed_unique_citation_count": 0,
       "evidence_source": "none",
       "key": "mechanical_symptoms_documented",
       "reason": "BOTH_MISSING",
@@ -124,6 +177,10 @@
       "analysis_flags": [],
       "citation_comparison_complete": true,
       "disposition": "MISSING",
+      "dual_citation_sources": [],
+      "dual_complete_citation_count": 0,
+      "dual_evidence_capped": false,
+      "dual_observed_unique_citation_count": 0,
       "evidence_source": "none",
       "key": "osa_diagnosis",
       "reason": "BOTH_MISSING",
@@ -137,6 +194,10 @@
       "analysis_flags": [],
       "citation_comparison_complete": true,
       "disposition": "MISSING",
+      "dual_citation_sources": [],
+      "dual_complete_citation_count": 0,
+      "dual_evidence_capped": false,
+      "dual_observed_unique_citation_count": 0,
       "evidence_source": "none",
       "key": "sleep_study_date",
       "reason": "BOTH_MISSING",
@@ -150,6 +211,10 @@
       "analysis_flags": [],
       "citation_comparison_complete": true,
       "disposition": "MISSING",
+      "dual_citation_sources": [],
+      "dual_complete_citation_count": 0,
+      "dual_evidence_capped": false,
+      "dual_observed_unique_citation_count": 0,
       "evidence_source": "none",
       "key": "ahi_documented",
       "reason": "BOTH_MISSING",
@@ -162,7 +227,8 @@
   ],
   "dual": {
     "diagnostics": [
-      "STRUCTURAL_COMPARISON_ONLY"
+      "STRUCTURAL_COMPARISON_ONLY",
+      "COMPETING_CITATIONS_NOT_A_SHARED_INTERPRETATION"
     ],
     "note_text": "Neck pain for 8 weeks. PT for 8 weeks. Denies weakness. X-ray normal.",
     "snapshot": {
@@ -225,11 +291,11 @@
         "symptom_duration_weeks": "CAPTURED"
       }
     },
-    "source": "dual:structural-v1"
+    "source": "dual:structural-v2"
   },
   "jointly_captured_therapy_citation_source": null,
   "notice": "Hand-authored synthetic recorded response; no model was called. Structural comparison only, not clinical verification.",
-  "reconciliation_version": "structural-v1",
+  "reconciliation_version": "structural-v2",
   "recorded_llm": {
     "notice": "Hand-authored synthetic recorded response; no model was called. Structural comparison only, not clinical verification.",
     "proposal": {

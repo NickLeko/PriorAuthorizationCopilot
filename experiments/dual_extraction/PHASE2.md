@@ -97,12 +97,14 @@ total-count comparisons. `values_agree=null` means values were not compared beca
 both states were not captured. Equal retained sets are not a complete citation
 comparison if either source was truncated; the record explicitly says so.
 
-Canonical dual evidence retains the regex role's citations when available,
-otherwise the recorded LLM role's citations, otherwise none. This is a fixed
-presentation rule, not a confidence/accuracy preference. No source lists are
-unioned and no truncated totals are summed. Both full original proposals and
-their evidence remain in the record, even when one representative source supplies
-the dual proposal's evidence. Citation differences do not override scalar agreement.
+Phase 3's review follow-up uses an interleaved, exact-span-deduplicated combination
+for state/value disagreements, retaining passages from both sources before the
+existing ten-span cap. Per-span provenance and both originals remain in the
+record. If either combined source is truncated, the complete combined total is
+unknown; the canonical proposal contains retained spans without a fabricated
+total, and experimental diagnostics explain the limitation. For agreed captures,
+regex citations remain unchanged. No truncated source totals are summed.
+Citation differences do not override scalar agreement.
 
 For the lumbar therapy pair, dual values can both be captured only when both
 inputs captured both matching values. Both retained citation lists then come from

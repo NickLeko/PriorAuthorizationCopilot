@@ -8,7 +8,7 @@ from typing import Literal
 from pydantic import BaseModel, ConfigDict
 
 from engine.fact_contracts import FACT_CONTRACTS, FactState
-from engine.note_context import EvidenceMap
+from engine.note_context import MAX_EVIDENCE_SPANS, EvidenceMap
 from engine.schemas import REVIEW_REQUIRED_FACT
 
 from .errors import ExperimentFailure
@@ -32,14 +32,18 @@ class FactComparison(BaseModel):
     retained_citation_order_equal: bool
     total_citation_counts_equal: bool
     citation_comparison_complete: bool
-    evidence_source: Literal["regex", "llm", "none"]
+    evidence_source: Literal["regex", "llm", "both", "none"]
+    dual_citation_sources: tuple[tuple[Literal["regex", "llm"], ...], ...]
+    dual_complete_citation_count: int | None
+    dual_observed_unique_citation_count: int
+    dual_evidence_capped: bool
     analysis_flags: tuple[AnalysisFlag, ...]
 
 
 class ReconciliationRecord(BaseModel):
     model_config = ConfigDict(extra="forbid", frozen=True, strict=True)
 
-    reconciliation_version: Literal["structural-v1"] = "structural-v1"
+    reconciliation_version: Literal["structural-v2"] = "structural-v2"
     regex: ExtractionProposal
     recorded_llm: RecordedLLMProposal
     dual: ExtractionProposal
@@ -71,9 +75,38 @@ def _numeric_flags(left, right, key) -> tuple[AnalysisFlag, ...]:
     return tuple(flags)
 
 
+def _dual_evidence(left, right, key, combine):
+    le, revidence = left["evidence"].get(key, []), right["evidence"].get(key, [])
+    lc = left.get("evidence_counts", {}).get(key, len(le))
+    rc = right.get("evidence_counts", {}).get(key, len(revidence))
+    if combine and le and revidence:
+        # Interleave before capping so a long regex list cannot hide all LLM
+        # passages. Deduplicate by exact span identity, preserving source order.
+        spans, seen = [], set()
+        for index in range(max(len(le), len(revidence))):
+            for source in (le, revidence):
+                if index < len(source):
+                    span = source[index]
+                    identity = (span["start"], span["end"], span["text"])
+                    if identity not in seen:
+                        seen.add(identity)
+                        spans.append(span)
+        retained = spans[:MAX_EVIDENCE_SPANS]
+        ls, rs = _citation_set(le), _citation_set(revidence)
+        origins = tuple(
+            tuple(role for role, identities in (("regex", ls), ("llm", rs)) if (s["start"], s["end"], s["text"]) in identities)
+            for s in retained
+        )
+        total = len(spans) if lc == len(le) and rc == len(revidence) else None
+        return retained, origins, total, len(spans)
+    source, role, total = (le, "regex", lc) if le else (revidence, "llm", rc)
+    return source, tuple((role,) for _ in source), total, len(_citation_set(source))
+
+
 def _reconcile_validated(regex: ExtractionProposal, recorded: RecordedLLMProposal) -> ReconciliationRecord:
     left, right = regex.snapshot.content, recorded.proposal.snapshot.content
     facts, evidence, counts, comparisons = {}, {}, {}, []
+    diagnostics = ["STRUCTURAL_COMPARISON_ONLY"]
     for key in FACT_CONTRACTS:
         ls, rs = left["states"][key], right["states"][key]
         lv, rv = left["facts"][key], right["facts"][key]
@@ -92,14 +125,19 @@ def _reconcile_validated(regex: ExtractionProposal, recorded: RecordedLLMProposa
         le, revidence = left["evidence"].get(key, []), right["evidence"].get(key, [])
         lc = left.get("evidence_counts", {}).get(key, len(le))
         rc = right.get("evidence_counts", {}).get(key, len(revidence))
-        # Never union or sum truncated sources. For agreed captures the citation
-        # gate guarantees regex evidence exists, including both linked fields.
-        source = "regex" if le else "llm" if revidence else "none"
-        if source != "none":
-            selected = left if source == "regex" else right
-            evidence[key] = selected["evidence"][key]
-            if key in selected.get("evidence_counts", {}):
-                counts[key] = selected["evidence_counts"][key]
+        combine = reason in {"STATE_DISAGREEMENT", "VALUE_DISAGREEMENT"}
+        retained, origins, complete_count, observed_count = _dual_evidence(left, right, key, combine)
+        roles = {role for group in origins for role in group}
+        source = "both" if len(roles) == 2 else next(iter(roles)) if roles else "none"
+        if retained:
+            evidence[key] = retained
+            if complete_count is not None and complete_count > MAX_EVIDENCE_SPANS:
+                counts[key] = complete_count
+        if combine and le and revidence:
+            if "COMPETING_CITATIONS_NOT_A_SHARED_INTERPRETATION" not in diagnostics:
+                diagnostics.append("COMPETING_CITATIONS_NOT_A_SHARED_INTERPRETATION")
+            if complete_count is None and "COMBINED_CITATION_TOTAL_UNKNOWN" not in diagnostics:
+                diagnostics.append("COMBINED_CITATION_TOTAL_UNKNOWN")
         comparisons.append(
             FactComparison(
                 key=key,
@@ -112,6 +150,10 @@ def _reconcile_validated(regex: ExtractionProposal, recorded: RecordedLLMProposa
                 total_citation_counts_equal=lc == rc,
                 citation_comparison_complete=lc == len(le) and rc == len(revidence),
                 evidence_source=source,
+                dual_citation_sources=origins,
+                dual_complete_citation_count=complete_count,
+                dual_observed_unique_citation_count=observed_count,
+                dual_evidence_capped=complete_count is None or complete_count > len(retained),
                 analysis_flags=_numeric_flags(left, right, key),
             )
         )
@@ -120,8 +162,8 @@ def _reconcile_validated(regex: ExtractionProposal, recorded: RecordedLLMProposa
     dual = proposal_from_legacy(
         regex.note_text,
         (facts, bounded_evidence),
-        source="dual:structural-v1",
-        diagnostics=("STRUCTURAL_COMPARISON_ONLY",),
+        source="dual:structural-v2",
+        diagnostics=tuple(diagnostics),
     )
     jointly_captured = all(dual.snapshot.content["states"][key] == "CAPTURED" for key in THERAPY_KEYS)
     return ReconciliationRecord(
