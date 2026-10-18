@@ -261,8 +261,15 @@ attribute association, or missingness scope.
 | Patient has neither low back pain nor radiculopathy | Remaining unsafe affirmative proposal; contract xfail expects False / NOT_READY. |
 | Visit date and undated sleep study in the same sentence | Remaining unsafe borrowed-date proposal; contract xfail expects missing / CANNOT_DETERMINE. |
 | Isolated NSAIDs for 42 days / two months / six weeks with explicit no improvement | Bounded recall fix: floor completed days to weeks, months to a four-week lower bound, and recognize number words one through twelve. Below-threshold or improved courses correctly fail. Modifiers, comparisons, fractions and episode linkage remain limited. |
-| Direct right L5 distribution: strength 4 of 5 / 3 out of 5 / 4.5 of 5 | Bounded objective exam capture; 5 of 5 is normal. Explicit negation, question, alternative attribution and opposite-side radiculopathy review in this new route. Legacy slash-grade gaps remain. |
+| Direct right L5 distribution: strength 4 of 5 / 3 out of 5 / 4.5 of 5 | Bounded objective exam capture; 5 of 5 is normal. Explicit negation, question and alternative attribution review in this word-grade route. Opposite-side radiculopathy qualification is shared with legacy slash-grade and other retained objective-exam routes. |
 | Spelled-out non-steroidal anti-inflammatory class names | Recall defect remains: exp-002's vocabulary expansion was reverted when unrelated headache therapy became unsafe passes. Listed drug names are now supported only through the owner-approved reviewed table and isolated course grammar; supported leading verbs and dose/frequency forms now parse, but unlisted course syntax remains limited. |
+
+Objective-exam source qualification runs before shared literal laterality
+qualification. Retained explicit opposite-side root findings, normal or abnormal,
+require `NEEDS_REVIEW`. Matching, unsided and bilateral examination handling is
+unchanged. The check can conservatively review historical or negated opposite-side
+radiculopathy mentions; it does not resolve episodes, general negation,
+non-patient attribution, omitted laterality or wider anatomical vocabulary.
 
 ### Reviewed drug vocabulary and incomplete courses
 
@@ -296,8 +303,10 @@ Negation, temporality, copy-forward, template, attribution and cross-sentence
 linkage **remain open**. A cue about one finding can over-trigger review of
 another finding in the same sentence. A copy-forward header in another sentence
 does not carry forward its scope. Improvement on the following line and
-contralateral strength from prior hip surgery remain outside this change.
-The three corresponding strict xfails assert review as the correct behavior;
+cross-sentence copy-forward remain unresolved. Their two strict xfails assert
+review as the correct behavior. The explicit contralateral prior-hip-surgery
+example now requires review under the shared literal laterality check; that does
+not establish its episode or causal attribution. For the remaining unsafe cases,
 the current proposals can still reach `READY` and `submission_readiness=true`
 with supplied attestations and current verified governance. The new cues reduce
 some wrong captured proposals; they do not establish general extraction

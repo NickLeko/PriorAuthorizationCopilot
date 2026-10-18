@@ -285,3 +285,26 @@ def test_mixed_side_correction_invalidates_reviewed_branch_attestation(monkeypat
     assert {k: v for k, v in corrected.facts.items() if k != OBJECTIVE} == {k: v for k, v in reviewed.facts.items() if k != OBJECTIVE}
     with pytest.raises(InvalidRequestError, match="Stale or mismatched verification"):
         service.evaluate(attest(reviewed))
+
+
+def test_service_source_qualification_precedes_laterality():
+    objective_quote = "On exam left L5 distribution: strength 4/5"
+    text = (
+        f"Low back pain with left leg radiculopathy. {objective_quote}. "
+        "Patient reports right L5 distribution: strength 4/5. NSAIDs for 8 weeks with no improvement."
+    )
+    result = ReadinessService().evaluate(request(text))
+    requirement = next(item for item in result.results if item.key == OBJECTIVE)
+    assert result.facts[OBJECTIVE] is True
+    assert result.captured_fact_states[OBJECTIVE] == "CAPTURED"
+    assert requirement.status == "MET"
+    assert result.overall_status == "PENDING_VERIFICATION"
+    assert all(item.status == "MET" and item.verification.state == "UNVERIFIED" for item in result.results)
+    assert result.submission_readiness is False
+    assert not result.blockers.needs_review
+    start = text.index(objective_quote)
+    expected = [{"start": start, "end": start + len(objective_quote), "text": objective_quote}]
+    assert [span.model_dump() for span in result.evidence_map[OBJECTIVE]] == expected
+    assert [span.model_dump() for span in requirement.evidence_spans] == expected
+    assert [span.model_dump() for span in result.audit_trail.evidence_map[OBJECTIVE]] == expected
+    assert_spans(text, result.evidence_map)
