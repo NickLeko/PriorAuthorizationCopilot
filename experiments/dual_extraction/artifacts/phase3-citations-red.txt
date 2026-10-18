@@ -13,7 +13,7 @@ ________ test_exact_nsaid_gabapentin_disagreement_retains_both_passages ________
         assert item(record).disposition == "NEEDS_REVIEW"
 >       assert record.dual.snapshot.content["evidence"][KEY] == left["facts"][KEY]["evidence"] + right["facts"][KEY]["evidence"]
 E       AssertionError: assert [{'end': 38, ...improvement'}] == [{'end': 38, ...improvement'}]
-E         
+E
 E         Right contains one more item: {'end': 82, 'start': 40, 'text': 'Gabapentin for 3 weeks with no improvement'}
 E         Use -v to get more diff
 
@@ -28,7 +28,7 @@ _______ test_state_disagreement_combines_existing_missing_state_evidence _______
         assert item(record).reason == "STATE_DISAGREEMENT"
 >       assert item(record).evidence_source == "both"
 E       AssertionError: assert 'regex' == 'both'
-E         
+E
 E         - both
 E         + regex
 
@@ -45,8 +45,8 @@ _______ test_disagreement_order_deduplication_and_shared_span_provenance _______
 >       assert item(record).dual_citation_sources == (("regex", "llm"), ("regex", "llm"))
                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-test/test_disagreement_citations.py:57: 
-_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+test/test_disagreement_citations.py:57:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
 
 self = FactComparison(key='cpb_0236_conservative_therapy_weeks', disposition='NEEDS_REVIEW', reason='VALUE_DISAGREEMENT', sta...False, total_citation_counts_equal=True, citation_comparison_complete=True, evidence_source='regex', analysis_flags=())
 item = 'dual_citation_sources'
@@ -57,7 +57,7 @@ item = 'dual_citation_sources'
             attribute = private_attributes[item]
             if hasattr(attribute, '__get__'):
                 return attribute.__get__(self, type(self))  # type: ignore
-    
+
             try:
                 # Note: self.__pydantic_private__ cannot be None if self.__private_attributes__ has items
                 return self.__pydantic_private__[item]  # type: ignore
@@ -70,7 +70,7 @@ item = 'dual_citation_sources'
                 pydantic_extra = object.__getattribute__(self, '__pydantic_extra__')
             except AttributeError:
                 pydantic_extra = None
-    
+
             if pydantic_extra and item in pydantic_extra:
                 return pydantic_extra[item]
             else:
@@ -106,8 +106,8 @@ source_truncated = False
 >           assert item(record).dual_complete_citation_count == 20
                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-test/test_disagreement_citations.py:78: 
-_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+test/test_disagreement_citations.py:78:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
 
 self = FactComparison(key='cpb_0236_conservative_therapy_weeks', disposition='NEEDS_REVIEW', reason='VALUE_DISAGREEMENT', sta...n_comparison_complete=True, evidence_source='regex', analysis_flags=('LLM_NUMERIC_NOT_LITERAL_IN_RETAINED_CITATIONS',))
 item = 'dual_complete_citation_count'
@@ -118,7 +118,7 @@ item = 'dual_complete_citation_count'
             attribute = private_attributes[item]
             if hasattr(attribute, '__get__'):
                 return attribute.__get__(self, type(self))  # type: ignore
-    
+
             try:
                 # Note: self.__pydantic_private__ cannot be None if self.__private_attributes__ has items
                 return self.__pydantic_private__[item]  # type: ignore
@@ -131,7 +131,7 @@ item = 'dual_complete_citation_count'
                 pydantic_extra = object.__getattribute__(self, '__pydantic_extra__')
             except AttributeError:
                 pydantic_extra = None
-    
+
             if pydantic_extra and item in pydantic_extra:
                 return pydantic_extra[item]
             else:
@@ -163,8 +163,8 @@ source_truncated = True
 >           assert item(record).dual_complete_citation_count is None
                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-test/test_disagreement_citations.py:74: 
-_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+test/test_disagreement_citations.py:74:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
 
 self = FactComparison(key='cpb_0236_conservative_therapy_weeks', disposition='NEEDS_REVIEW', reason='VALUE_DISAGREEMENT', sta..._comparison_complete=False, evidence_source='regex', analysis_flags=('LLM_NUMERIC_NOT_LITERAL_IN_RETAINED_CITATIONS',))
 item = 'dual_complete_citation_count'
@@ -175,7 +175,7 @@ item = 'dual_complete_citation_count'
             attribute = private_attributes[item]
             if hasattr(attribute, '__get__'):
                 return attribute.__get__(self, type(self))  # type: ignore
-    
+
             try:
                 # Note: self.__pydantic_private__ cannot be None if self.__private_attributes__ has items
                 return self.__pydantic_private__[item]  # type: ignore
@@ -188,7 +188,7 @@ item = 'dual_complete_citation_count'
                 pydantic_extra = object.__getattribute__(self, '__pydantic_extra__')
             except AttributeError:
                 pydantic_extra = None
-    
+
             if pydantic_extra and item in pydantic_extra:
                 return pydantic_extra[item]
             else:

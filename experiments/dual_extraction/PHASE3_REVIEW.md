@@ -154,6 +154,8 @@ protected file was compared byte-for-byte with its approved Git version.
 [Verification JSON](artifacts/phase3-verification.json) records all 27 hashes,
 implementation identities, baseline hash, tests, coverage and metrics. The complete
 changed-file inventory below includes the preserved test and check logs.
+Trailing line whitespace emitted by pytest is trimmed in packaged logs; test
+content and outcomes are unchanged.
 
 ## Complete changed-file inventory
 
