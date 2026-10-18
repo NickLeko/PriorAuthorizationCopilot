@@ -7,6 +7,8 @@ recordings and pure structural reconciliation. [Phase 3](PHASE3.md) adds verifie
 recording reload and the explicitly invoked offline three-mode comparison runner.
 [The Phase 3 corrective patch](PHASE3_FIXES.md) adds raw-attempt accounting,
 complete review evidence and historical example preservation.
+[The final adapter boundary](ACTUAL_MODEL_BOUNDARY.md) separates bare model
+content from trusted capture metadata and includes the proposed 15-note pilot.
 There are no model calls, credentials, or application mode switch.
 
 ## Frozen release behavior

@@ -1,0 +1,15 @@
+$ /Users/nicholasleko/projects/PriorAuthorizationCopilot/.venv/bin/python -m experiments.dual_extraction.baseline --check
+Experimental baseline matches: /private/tmp/pa-copilot-dual-extraction-actual-model-boundary/experiments/dual_extraction/artifacts/regex-v2.7.0.jsonl
+$ /Users/nicholasleko/projects/PriorAuthorizationCopilot/.venv/bin/python -m experiments.dual_extraction.examples --check
+Historical Phase 2 examples match. Phase 3 example matches.
+$ /Users/nicholasleko/projects/PriorAuthorizationCopilot/.venv/bin/python -m experiments.dual_extraction.runner --check
+Offline experiment artifacts match.
+$ /Users/nicholasleko/projects/PriorAuthorizationCopilot/.venv/bin/python -m experiments.dual_extraction.runner --manifest experiments/dual_extraction/fixtures/phase3-fixes/manifest.json --output-dir experiments/dual_extraction/artifacts/phase3-fixes/raw-attempts --check
+Offline experiment artifacts match.
+$ /Users/nicholasleko/projects/PriorAuthorizationCopilot/.venv/bin/python -m experiments.dual_extraction.runner --manifest experiments/dual_extraction/fixtures/actual-model-boundary/manifest.json --output-dir /private/tmp/pa-boundary-simulation-output --write
+Offline experiment artifacts written.
+$ /Users/nicholasleko/projects/PriorAuthorizationCopilot/.venv/bin/python -m experiments.dual_extraction.runner --manifest experiments/dual_extraction/fixtures/actual-model-boundary/manifest.json --output-dir /private/tmp/pa-boundary-simulation-output --check
+Offline experiment artifacts match.
+All 27 protected production artifacts/goldens byte-identical before/after fixed-clock regeneration and versus approved Phase 2.
+All 22 protected historical fixture/baseline/example files byte-identical to reviewed starting commit.
+Both original reports retain all 177 exact case results, structural rates, coverage and response-rate numerators/denominators.

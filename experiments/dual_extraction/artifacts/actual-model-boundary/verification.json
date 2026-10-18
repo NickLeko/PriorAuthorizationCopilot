@@ -1,0 +1,402 @@
+{
+  "branch": "codex/dual-extraction-actual-model-boundary",
+  "ci": "Exact final pushed-SHA CI results and link supplied separately in the delivery handoff.",
+  "historical_sha256": {
+    "experiments/dual_extraction/artifacts/phase2-reconciliation-example.json": "e96f873a00b5d2316a63d1171977be51e32da13f220818b63fffe40c48dd4479",
+    "experiments/dual_extraction/artifacts/phase2-recorded-proposal-example.json": "83ca3cdba476f99759a597c51ac29006170f7478f89dbaa0c118865c5ced47c0",
+    "experiments/dual_extraction/artifacts/phase3/review-required-llm-example.json": "9a875aad28ac4e4030dc948afb2735bb80aa4fb612619e48655282c7f17488bb",
+    "experiments/dual_extraction/artifacts/phase3/review-required-regex-example.json": "f21edad7b4ed051712636ecff907c5b253d2d5a59d74fdc9f5ff9c989e42634c",
+    "experiments/dual_extraction/artifacts/phase3/structural-v2-reconciliation-example.json": "5b64a577c5c3e728fd6ac78c3baf01f68c182289795c4b8b2d33f12ff9efc367",
+    "experiments/dual_extraction/artifacts/regex-v2.7.0.jsonl": "af9a1805c42df33e2985542a7b85307262dfa0fe8ab33cfcbf7f69d2ece46728",
+    "experiments/dual_extraction/fixtures/phase3-fixes/changed-bytes.json": "89488aba16d84c449e04458f90d3202978e70688d7cea76ebffa1e07ac44b77a",
+    "experiments/dual_extraction/fixtures/phase3-fixes/invalid-type.json": "f93ee15f145bea6c26aef876ef0ae341e17954681a6c1bb2475de93bc8df2308",
+    "experiments/dual_extraction/fixtures/phase3-fixes/invalid-unicode-offset.json": "faa005e40263258985da52f1d3aa0570ea964f758e731f55deb3159eb67ac94e",
+    "experiments/dual_extraction/fixtures/phase3-fixes/malformed-response.json": "19998bbef6519b71353cf6f91c5556fa3d27b08aca96778615e1e61aec68d020",
+    "experiments/dual_extraction/fixtures/phase3-fixes/manifest.json": "cb39be9ce88ba178afb2ca47ffd4ece1f6ee280457303d639a78a77d25049c22",
+    "experiments/dual_extraction/fixtures/phase3-fixes/provider-failure.json": "7f6f22e0c073ed1d5d0f07a14baf403c484d3efac57019e1211de7c965541af4",
+    "experiments/dual_extraction/fixtures/phase3-fixes/uncited-capture.json": "0f9f20cd0c3f1a74ff1924469e6ab152dc2a1d2255b63f8e1e5ca778935ef500",
+    "experiments/dual_extraction/fixtures/phase3-fixes/valid-response.json": "9310f83ace595115c7c0e49b10eb3f17d70821d7c63d624fd387476670fdcb40",
+    "experiments/dual_extraction/fixtures/phase3/manifest.json": "fe04fb799775b4b4b8799852f6e157206c7d3f114f2952c6516a90ccddb33bb3",
+    "experiments/dual_extraction/fixtures/phase3/recordings/cpap-unicode.json": "f9fe876a69c8f9fb373c5f4c76c1d0b2ff0b36fad737899d36b0c524a15b36e0",
+    "experiments/dual_extraction/fixtures/phase3/recordings/lumbar-duration-conflict.json": "a45efadc130b910179a62c1007d381a03e3b9e48562040c104cd1f0906e6659a",
+    "experiments/dual_extraction/fixtures/phase3/recordings/shared-error-neither-nor.json": "b0d878ace766e8daac1cd0da0d8da841d384cd625ff841695d03a864cf1ccedb",
+    "experiments/dual_extraction/fixtures/phase3/recordings/therapy-extraction-only.json": "f3072ccacae9f11dcbb0141831949dc9f1cd87ceae30b299e4cedb4e9e0ee611",
+    "experiments/dual_extraction/fixtures/recorded/duration-disagreement.json": "3835288fabfd9b9b0465cfd4a09c43365f4fa82f82014ecbf8090d2447bcbb0e",
+    "experiments/dual_extraction/fixtures/recorded/lumbar-agreement.json": "f923172b01478830cfa4d4da5aadde732160aff7c4cfa9ebcf6a42061135bf46",
+    "experiments/dual_extraction/fixtures/recorded/unicode-cpap.json": "b3439552c50dca07b26f0fdc4ffda45c063ca97deab0e124d73c39a9c4f17ab7"
+  },
+  "implementation_commit": "f1d6841372d87d234e22407bf97ef280245dc1b4",
+  "local_tests": {
+    "expected_failures": 9,
+    "focused_passed": 549,
+    "full_passed": 2230,
+    "red_failed": 16,
+    "targeted_passed": 99
+  },
+  "new_report_schema_version": 3,
+  "notice": "All newly stored responses are hand-authored simulated captures. No real model was called.",
+  "pilot": {
+    "capture_started": false,
+    "fact_keys": 12,
+    "pathways": 4,
+    "selected_cases": 15
+  },
+  "protected_production_sha256": {
+    "docs/artifacts/CPAP-02-borderline.json": "b3a01648f62b4a892fd9fdf57165488b0e91ce9c1d143e524713ff2b6563a4de",
+    "docs/artifacts/MRI-01-complete.json": "265b9dbd5cfda2740103822622efeec834d4ac95a406f394d8db93f44f8022a9",
+    "docs/artifacts/MRI-08-edge-below-threshold.json": "143ef89e5d26710fa4e48b0ae1303c77bea3c9ef2bf1f741d2a3a0c3fed3b467",
+    "docs/artifacts/MRI-CERV-01-ready.json": "f9ba4a7997697c066f255873652105ad6b5f5936e580e4d58079d643ba9d14d7",
+    "docs/artifacts/MRI-KNEE-01-ready.json": "5bd6ce2f24db03ea9207a8249a77751421e3a9e9b9edf4e59e5c07347b20b018",
+    "docs/artifacts/README.md": "4d8757e9dcdd7134b4e40b041392cb490f0476638e5721dc851672674f7ca016",
+    "docs/artifacts/demo_cases.json": "8526f491a5148f92d8773adf203a0916b4f4dff908160a63fcadae81c35bc003",
+    "docs/artifacts/drift_report.md": "9f5606371c206c4494b16916a614739d17d020f083def7b3a8812a39eb7b63b3",
+    "docs/artifacts/drift_status.json": "e37bb494406b73741bdd0f9828c0aac0706520fdd8ebfc4cadbba8b2943e8fc6",
+    "docs/artifacts/featured_demo_cases.json": "1971d370900c6b550cdd3fd0e12e1c1c672891efdea730e9fad6be04a825cac2",
+    "docs/artifacts/policy_replay_summary.json": "c98f7bbf55bfe1e5daf421644a0f956306c889cde3f3eed9c6d659b4c7a17171",
+    "docs/artifacts/rulebook_diff_reviewed_vs_active.json": "9f143bf6ee8a5e4c1c8c91e43a716532bdd01a8da1dd6b66cbc8c456d177d3d8",
+    "docs/artifacts/rulebook_diff_reviewed_vs_active.md": "f4fe04bb18558223a628ed2dbb4d8ac3189cc12c78419b5917a563b9b28a5487",
+    "docs/artifacts/rulebook_status.json": "e971c156c4e7e4b8ce42056e95ae1f5c32201d76ae2f14208a4c2e8a47a9f0fc",
+    "docs/artifacts/safety_metrics.json": "754a40327fbbb8635f3471c9c96a7165e7c95760f4bfe8e27051d4dd56c2c5f6",
+    "docs/artifacts/status.json": "619e6855a10b29e07f11eb6f5afc2c33961245a0464984ea972de86df09e2804",
+    "docs/artifacts/supported_procedures.json": "f5d030978286d7a1685af3361a895ef2657a3d303985ad7dc34097482d251103",
+    "test/golden/evaluations/CPAP-02-borderline.json": "cfb781a1323c89f0f09930bd92d49cbb4cc8cf05d90eaa8e860b247a0fceb297",
+    "test/golden/evaluations/MRI-01-complete.json": "021c6f8a7e7feb371db7d905e081c2e7efa65dd1fcc9c83991ecbfb59b8362d3",
+    "test/golden/evaluations/MRI-01-human-verified.json": "894a8f24c41bf65396dd92e14a95139693592906dfd5cd20377768d97786c9af",
+    "test/golden/evaluations/MRI-08-edge-below-threshold.json": "8a60e7d92b725cec98f53c917acafeb704024569549952fbf78cb9d4b1217652",
+    "test/golden/evaluations/MRI-KNEE-01-ready.json": "def7ec5cc8e1f2110401c26f040f74122408f9fa3aa8068b7128b43af60316ab",
+    "test/golden/evaluations/reviewer-corrected-e2e.json": "f154385e8e416fff23142b164f02eb625b824e3216d1fefef61b26d96704a30f",
+    "test/golden/evaluations/reviewer-corrected-full-projection.json": "387d61e52b8b5e570f8e265d1665599acf20e99a52518259d8aca997b40196f7",
+    "test/golden/governance/drift_status.json": "e37bb494406b73741bdd0f9828c0aac0706520fdd8ebfc4cadbba8b2943e8fc6",
+    "test/golden/governance/rulebook_diff_reviewed_vs_active.json": "9f143bf6ee8a5e4c1c8c91e43a716532bdd01a8da1dd6b66cbc8c456d177d3d8",
+    "test/golden/governance/rulebook_status.json": "e971c156c4e7e4b8ce42056e95ae1f5c32201d76ae2f14208a4c2e8a47a9f0fc"
+  },
+  "provider_outcomes_authenticated": false,
+  "quality": {
+    "branch_whitespace": "passed",
+    "format_files": 101,
+    "ruff": "passed"
+  },
+  "reviewed_starting_commit": "ee4c3488e74d2aafd24f10644717d0ae95e36c27",
+  "simulated_bare_cases": [
+    {
+      "attempt": {
+        "attempt_id": "simulated-bare-valid",
+        "case_id": "inputs/synthetic_cases.json#CPAP-01-complete",
+        "note_sha256": "a6ba49740239357153c74a1398bfcf4f1ea07ca6ca76500f77da99692fbfb2b2",
+        "outcome": "response",
+        "path": "valid.json",
+        "provider_id": "synthetic-no-provider",
+        "recording": {
+          "model_id": "synthetic-no-model",
+          "origin": "actual_model_response",
+          "prompt_version": "simulated-bare-v1",
+          "response_id": "simulated-response-valid",
+          "source": "simulated-capture"
+        },
+        "stored_sha256": "08d88834b1cc7eb94ae61e206c52e140a6ce419a67de78fcef6883acd22ef881"
+      },
+      "case_id": "inputs/synthetic_cases.json#CPAP-01-complete",
+      "error_code": null,
+      "note_sha256": "a6ba49740239357153c74a1398bfcf4f1ea07ca6ca76500f77da99692fbfb2b2",
+      "status": "VALID_RESPONSE"
+    },
+    {
+      "attempt": {
+        "attempt_id": "simulated-bare-invalid-offset",
+        "case_id": "EXTRACTION_CONTRACT.md#unicode",
+        "note_sha256": "e3ab633fff1fc935412ba1498daa7bfe0097f8faad538b80319a7111f153e2f2",
+        "outcome": "response",
+        "path": "invalid-offset.json",
+        "provider_id": "synthetic-no-provider",
+        "recording": {
+          "model_id": "synthetic-no-model",
+          "origin": "actual_model_response",
+          "prompt_version": "simulated-bare-v1",
+          "response_id": "simulated-response-invalid-offset",
+          "source": "simulated-capture"
+        },
+        "stored_sha256": "08d88834b1cc7eb94ae61e206c52e140a6ce419a67de78fcef6883acd22ef881"
+      },
+      "case_id": "EXTRACTION_CONTRACT.md#unicode",
+      "error_code": "INVALID_RECORDED_RESPONSE",
+      "note_sha256": "e3ab633fff1fc935412ba1498daa7bfe0097f8faad538b80319a7111f153e2f2",
+      "status": "INVALID_RESPONSE"
+    }
+  ],
+  "simulated_bare_response_accounting": {
+    "actual_model": {
+      "attempted_cases": 0,
+      "capture_identity_failures": 0,
+      "declared_responses_received": 0,
+      "end_to_end_usable_response_rate": {
+        "denominator": 0,
+        "numerator": 0,
+        "percent": null,
+        "population": "valid adapted responses / all selected model attempts, including all failures"
+      },
+      "extraction_failures": 0,
+      "file_integrity_failures": 0,
+      "invalid_recorded_response_rate": {
+        "denominator": 0,
+        "numerator": 0,
+        "percent": null,
+        "population": "adapter-rejected / validity-assessed raw responses; excludes provider, missing-file, storage and capture-identity failures"
+      },
+      "invalid_responses": 0,
+      "malformed_storage_failures": 0,
+      "missing_stored_responses": 0,
+      "not_attempted_cases": 177,
+      "note_identity_failures": 0,
+      "responses_received": 0,
+      "successful_three_mode_evaluations": 0,
+      "valid_adapted_responses": 0
+    },
+    "hand_authored_adapted": {
+      "integrity_failures": 0,
+      "malformed_recordings": 0,
+      "measured_llm_performance": false,
+      "missing_recordings": 0,
+      "selected_recordings": 0,
+      "valid_recordings": 0
+    },
+    "synthetic_raw_demonstration": {
+      "attempted_cases": 2,
+      "capture_identity_failures": 0,
+      "declared_responses_received": 2,
+      "end_to_end_usable_response_rate": {
+        "denominator": 2,
+        "numerator": 1,
+        "percent": 50.0,
+        "population": "valid adapted responses / all selected model attempts, including all failures"
+      },
+      "extraction_failures": 0,
+      "file_integrity_failures": 0,
+      "invalid_recorded_response_rate": {
+        "denominator": 2,
+        "numerator": 1,
+        "percent": 50.0,
+        "population": "adapter-rejected / validity-assessed raw responses; excludes provider, missing-file, storage and capture-identity failures"
+      },
+      "invalid_responses": 1,
+      "malformed_storage_failures": 0,
+      "missing_stored_responses": 0,
+      "not_attempted_cases": 175,
+      "note_identity_failures": 0,
+      "responses_received": 2,
+      "successful_three_mode_evaluations": 1,
+      "valid_adapted_responses": 1
+    }
+  },
+  "unchanged_reports": {
+    "experiments/dual_extraction/artifacts/phase3-fixes/raw-attempts/comparisons.json": {
+      "cases_unchanged": 177,
+      "response_accounting": {
+        "actual_model": {
+          "attempted_cases": 0,
+          "capture_identity_failures": 0,
+          "declared_responses_received": 0,
+          "end_to_end_usable_response_rate": {
+            "denominator": 0,
+            "numerator": 0,
+            "percent": null,
+            "population": "valid adapted responses / all selected model attempts, including all failures"
+          },
+          "extraction_failures": 0,
+          "file_integrity_failures": 0,
+          "invalid_recorded_response_rate": {
+            "denominator": 0,
+            "numerator": 0,
+            "percent": null,
+            "population": "adapter-rejected / validity-assessed raw responses; excludes provider, missing-file, storage and capture-identity failures"
+          },
+          "invalid_responses": 0,
+          "malformed_storage_failures": 0,
+          "missing_stored_responses": 0,
+          "not_attempted_cases": 177,
+          "note_identity_failures": 0,
+          "responses_received": 0,
+          "successful_three_mode_evaluations": 0,
+          "valid_adapted_responses": 0
+        },
+        "hand_authored_adapted": {
+          "integrity_failures": 0,
+          "malformed_recordings": 0,
+          "measured_llm_performance": false,
+          "missing_recordings": 0,
+          "selected_recordings": 0,
+          "valid_recordings": 0
+        },
+        "synthetic_raw_demonstration": {
+          "attempted_cases": 8,
+          "capture_identity_failures": 0,
+          "declared_responses_received": 7,
+          "end_to_end_usable_response_rate": {
+            "denominator": 8,
+            "numerator": 1,
+            "percent": 12.5,
+            "population": "valid adapted responses / all selected model attempts, including all failures"
+          },
+          "extraction_failures": 1,
+          "file_integrity_failures": 1,
+          "invalid_recorded_response_rate": {
+            "denominator": 5,
+            "numerator": 4,
+            "percent": 80.0,
+            "population": "adapter-rejected / validity-assessed raw responses; excludes provider, missing-file, storage and capture-identity failures"
+          },
+          "invalid_responses": 4,
+          "malformed_storage_failures": 0,
+          "missing_stored_responses": 1,
+          "not_attempted_cases": 169,
+          "note_identity_failures": 0,
+          "responses_received": 5,
+          "successful_three_mode_evaluations": 1,
+          "valid_adapted_responses": 1
+        }
+      },
+      "structural_metrics": {
+        "citation_disagreement_rate": {
+          "denominator": 12,
+          "numerator": 2,
+          "percent": 16.6667,
+          "population": "valid fact pairs; retained citation sets, including empty sets"
+        },
+        "citation_order_disagreement_rate": {
+          "denominator": 12,
+          "numerator": 2,
+          "percent": 16.6667,
+          "population": "valid fact pairs; retained citation lists"
+        },
+        "downstream_requirement_status_difference_rate": {
+          "denominator": 3,
+          "numerator": 2,
+          "percent": 66.6667,
+          "population": "requirements in successful three-mode cases; any mode differs"
+        },
+        "dual_needs_review_rate": {
+          "denominator": 12,
+          "numerator": 2,
+          "percent": 16.6667,
+          "population": "valid compared facts"
+        },
+        "state_disagreement_rate": {
+          "denominator": 12,
+          "numerator": 2,
+          "percent": 16.6667,
+          "population": "valid compared fact pairs"
+        },
+        "value_agreement_rate": {
+          "denominator": 1,
+          "numerator": 1,
+          "percent": 100.0,
+          "population": "both-CAPTURED fact pairs"
+        }
+      }
+    },
+    "experiments/dual_extraction/artifacts/phase3/comparisons.json": {
+      "cases_unchanged": 177,
+      "response_accounting": {
+        "actual_model": {
+          "attempted_cases": 0,
+          "capture_identity_failures": 0,
+          "declared_responses_received": 0,
+          "end_to_end_usable_response_rate": {
+            "denominator": 0,
+            "numerator": 0,
+            "percent": null,
+            "population": "valid adapted responses / all selected model attempts, including all failures"
+          },
+          "extraction_failures": 0,
+          "file_integrity_failures": 0,
+          "invalid_recorded_response_rate": {
+            "denominator": 0,
+            "numerator": 0,
+            "percent": null,
+            "population": "adapter-rejected / validity-assessed raw responses; excludes provider, missing-file, storage and capture-identity failures"
+          },
+          "invalid_responses": 0,
+          "malformed_storage_failures": 0,
+          "missing_stored_responses": 0,
+          "not_attempted_cases": 177,
+          "note_identity_failures": 0,
+          "responses_received": 0,
+          "successful_three_mode_evaluations": 0,
+          "valid_adapted_responses": 0
+        },
+        "hand_authored_adapted": {
+          "integrity_failures": 0,
+          "malformed_recordings": 0,
+          "measured_llm_performance": false,
+          "missing_recordings": 0,
+          "selected_recordings": 4,
+          "valid_recordings": 4
+        },
+        "synthetic_raw_demonstration": {
+          "attempted_cases": 0,
+          "capture_identity_failures": 0,
+          "declared_responses_received": 0,
+          "end_to_end_usable_response_rate": {
+            "denominator": 0,
+            "numerator": 0,
+            "percent": null,
+            "population": "valid adapted responses / all selected model attempts, including all failures"
+          },
+          "extraction_failures": 0,
+          "file_integrity_failures": 0,
+          "invalid_recorded_response_rate": {
+            "denominator": 0,
+            "numerator": 0,
+            "percent": null,
+            "population": "adapter-rejected / validity-assessed raw responses; excludes provider, missing-file, storage and capture-identity failures"
+          },
+          "invalid_responses": 0,
+          "malformed_storage_failures": 0,
+          "missing_stored_responses": 0,
+          "not_attempted_cases": 177,
+          "note_identity_failures": 0,
+          "responses_received": 0,
+          "successful_three_mode_evaluations": 0,
+          "valid_adapted_responses": 0
+        }
+      },
+      "structural_metrics": {
+        "citation_disagreement_rate": {
+          "denominator": 48,
+          "numerator": 3,
+          "percent": 6.25,
+          "population": "valid fact pairs; retained citation sets, including empty sets"
+        },
+        "citation_order_disagreement_rate": {
+          "denominator": 48,
+          "numerator": 3,
+          "percent": 6.25,
+          "population": "valid fact pairs; retained citation lists"
+        },
+        "downstream_requirement_status_difference_rate": {
+          "denominator": 11,
+          "numerator": 1,
+          "percent": 9.0909,
+          "population": "requirements in successful three-mode cases; any mode differs"
+        },
+        "dual_needs_review_rate": {
+          "denominator": 48,
+          "numerator": 2,
+          "percent": 4.1667,
+          "population": "valid compared facts"
+        },
+        "state_disagreement_rate": {
+          "denominator": 48,
+          "numerator": 0,
+          "percent": 0.0,
+          "population": "valid compared fact pairs"
+        },
+        "value_agreement_rate": {
+          "denominator": 17,
+          "numerator": 15,
+          "percent": 88.2353,
+          "population": "both-CAPTURED fact pairs"
+        }
+      }
+    }
+  }
+}

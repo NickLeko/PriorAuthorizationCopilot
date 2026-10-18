@@ -1,0 +1,5 @@
+$ /Users/nicholasleko/projects/PriorAuthorizationCopilot/.venv/bin/python -m ruff check .
+All checks passed!
+$ /Users/nicholasleko/projects/PriorAuthorizationCopilot/.venv/bin/python -m ruff format --check .
+101 files already formatted
+$ git diff ee4c3488e74d2aafd24f10644717d0ae95e36c27 --check

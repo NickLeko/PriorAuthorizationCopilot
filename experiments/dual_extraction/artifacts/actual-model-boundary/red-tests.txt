@@ -1,0 +1,599 @@
+FFFFFFFFFFFFFFFF                                                         [100%]
+=================================== FAILURES ===================================
+_ test_bare_actual_style_response_accepts_separate_trusted_identity_without_mutation _
+
+    def test_bare_actual_style_response_accepts_separate_trusted_identity_without_mutation():
+        body=bare_response()
+        before=deepcopy(body)
+>       result=adapt_recorded_response(NOTE,body,metadata=metadata())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       TypeError: adapt_recorded_response() got an unexpected keyword argument 'metadata'
+
+test/test_actual_model_boundary.py:49: TypeError
+_____ test_actual_content_rejections_are_strict_without_repair[wrong_note] _____
+
+mutation = 'wrong_note'
+
+    @pytest.mark.parametrize('mutation',['wrong_note','offset','fence','prose','malformed','missing_key','extra_key','wrong_type',
+        'unsupported_value','uncited','metadata_in_body','duplicate_json'])
+    def test_actual_content_rejections_are_strict_without_repair(mutation):
+        body=bare_response()
+        note=NOTE
+        if mutation=='wrong_note':
+            note='Nothing about OSA here.'
+        elif mutation=='offset':
+            body['facts']['osa_diagnosis']['evidence'][0].update(start=8,end=11)  # UTF-8 bytes, not Python [4,7)
+        elif mutation=='missing_key':
+            body['facts'].pop('ahi_documented')
+        elif mutation=='extra_key':
+            body['facts']['invented_key']=dict(state='MISSING',value=None,evidence=[])
+        elif mutation=='wrong_type':
+            body['facts']['osa_diagnosis']['value']='true'
+        elif mutation=='unsupported_value':
+            body['facts']['osa_diagnosis']['value']=False
+        elif mutation=='uncited':
+            body['facts']['osa_diagnosis']['evidence']=[]
+        elif mutation=='metadata_in_body':
+            body['recording']=metadata().model_dump()
+        text=json.dumps(body,ensure_ascii=False)
+        if mutation=='fence':
+            text='```json\n'+text+'\n```'
+        elif mutation=='prose':
+            text='Here is the result: '+text
+        elif mutation=='malformed':
+            text=text[:-1]
+        elif mutation=='duplicate_json':
+            text=text[:-1]+',"facts":{}}'
+        with pytest.raises(ExperimentFailure,match='INVALID_RECORDED_RESPONSE'):
+>           adapt_recorded_response(note,text,metadata=metadata())
+E           TypeError: adapt_recorded_response() got an unexpected keyword argument 'metadata'
+
+test/test_actual_model_boundary.py:89: TypeError
+_______ test_actual_content_rejections_are_strict_without_repair[offset] _______
+
+mutation = 'offset'
+
+    @pytest.mark.parametrize('mutation',['wrong_note','offset','fence','prose','malformed','missing_key','extra_key','wrong_type',
+        'unsupported_value','uncited','metadata_in_body','duplicate_json'])
+    def test_actual_content_rejections_are_strict_without_repair(mutation):
+        body=bare_response()
+        note=NOTE
+        if mutation=='wrong_note':
+            note='Nothing about OSA here.'
+        elif mutation=='offset':
+            body['facts']['osa_diagnosis']['evidence'][0].update(start=8,end=11)  # UTF-8 bytes, not Python [4,7)
+        elif mutation=='missing_key':
+            body['facts'].pop('ahi_documented')
+        elif mutation=='extra_key':
+            body['facts']['invented_key']=dict(state='MISSING',value=None,evidence=[])
+        elif mutation=='wrong_type':
+            body['facts']['osa_diagnosis']['value']='true'
+        elif mutation=='unsupported_value':
+            body['facts']['osa_diagnosis']['value']=False
+        elif mutation=='uncited':
+            body['facts']['osa_diagnosis']['evidence']=[]
+        elif mutation=='metadata_in_body':
+            body['recording']=metadata().model_dump()
+        text=json.dumps(body,ensure_ascii=False)
+        if mutation=='fence':
+            text='```json\n'+text+'\n```'
+        elif mutation=='prose':
+            text='Here is the result: '+text
+        elif mutation=='malformed':
+            text=text[:-1]
+        elif mutation=='duplicate_json':
+            text=text[:-1]+',"facts":{}}'
+        with pytest.raises(ExperimentFailure,match='INVALID_RECORDED_RESPONSE'):
+>           adapt_recorded_response(note,text,metadata=metadata())
+E           TypeError: adapt_recorded_response() got an unexpected keyword argument 'metadata'
+
+test/test_actual_model_boundary.py:89: TypeError
+_______ test_actual_content_rejections_are_strict_without_repair[fence] ________
+
+mutation = 'fence'
+
+    @pytest.mark.parametrize('mutation',['wrong_note','offset','fence','prose','malformed','missing_key','extra_key','wrong_type',
+        'unsupported_value','uncited','metadata_in_body','duplicate_json'])
+    def test_actual_content_rejections_are_strict_without_repair(mutation):
+        body=bare_response()
+        note=NOTE
+        if mutation=='wrong_note':
+            note='Nothing about OSA here.'
+        elif mutation=='offset':
+            body['facts']['osa_diagnosis']['evidence'][0].update(start=8,end=11)  # UTF-8 bytes, not Python [4,7)
+        elif mutation=='missing_key':
+            body['facts'].pop('ahi_documented')
+        elif mutation=='extra_key':
+            body['facts']['invented_key']=dict(state='MISSING',value=None,evidence=[])
+        elif mutation=='wrong_type':
+            body['facts']['osa_diagnosis']['value']='true'
+        elif mutation=='unsupported_value':
+            body['facts']['osa_diagnosis']['value']=False
+        elif mutation=='uncited':
+            body['facts']['osa_diagnosis']['evidence']=[]
+        elif mutation=='metadata_in_body':
+            body['recording']=metadata().model_dump()
+        text=json.dumps(body,ensure_ascii=False)
+        if mutation=='fence':
+            text='```json\n'+text+'\n```'
+        elif mutation=='prose':
+            text='Here is the result: '+text
+        elif mutation=='malformed':
+            text=text[:-1]
+        elif mutation=='duplicate_json':
+            text=text[:-1]+',"facts":{}}'
+        with pytest.raises(ExperimentFailure,match='INVALID_RECORDED_RESPONSE'):
+>           adapt_recorded_response(note,text,metadata=metadata())
+E           TypeError: adapt_recorded_response() got an unexpected keyword argument 'metadata'
+
+test/test_actual_model_boundary.py:89: TypeError
+_______ test_actual_content_rejections_are_strict_without_repair[prose] ________
+
+mutation = 'prose'
+
+    @pytest.mark.parametrize('mutation',['wrong_note','offset','fence','prose','malformed','missing_key','extra_key','wrong_type',
+        'unsupported_value','uncited','metadata_in_body','duplicate_json'])
+    def test_actual_content_rejections_are_strict_without_repair(mutation):
+        body=bare_response()
+        note=NOTE
+        if mutation=='wrong_note':
+            note='Nothing about OSA here.'
+        elif mutation=='offset':
+            body['facts']['osa_diagnosis']['evidence'][0].update(start=8,end=11)  # UTF-8 bytes, not Python [4,7)
+        elif mutation=='missing_key':
+            body['facts'].pop('ahi_documented')
+        elif mutation=='extra_key':
+            body['facts']['invented_key']=dict(state='MISSING',value=None,evidence=[])
+        elif mutation=='wrong_type':
+            body['facts']['osa_diagnosis']['value']='true'
+        elif mutation=='unsupported_value':
+            body['facts']['osa_diagnosis']['value']=False
+        elif mutation=='uncited':
+            body['facts']['osa_diagnosis']['evidence']=[]
+        elif mutation=='metadata_in_body':
+            body['recording']=metadata().model_dump()
+        text=json.dumps(body,ensure_ascii=False)
+        if mutation=='fence':
+            text='```json\n'+text+'\n```'
+        elif mutation=='prose':
+            text='Here is the result: '+text
+        elif mutation=='malformed':
+            text=text[:-1]
+        elif mutation=='duplicate_json':
+            text=text[:-1]+',"facts":{}}'
+        with pytest.raises(ExperimentFailure,match='INVALID_RECORDED_RESPONSE'):
+>           adapt_recorded_response(note,text,metadata=metadata())
+E           TypeError: adapt_recorded_response() got an unexpected keyword argument 'metadata'
+
+test/test_actual_model_boundary.py:89: TypeError
+_____ test_actual_content_rejections_are_strict_without_repair[malformed] ______
+
+mutation = 'malformed'
+
+    @pytest.mark.parametrize('mutation',['wrong_note','offset','fence','prose','malformed','missing_key','extra_key','wrong_type',
+        'unsupported_value','uncited','metadata_in_body','duplicate_json'])
+    def test_actual_content_rejections_are_strict_without_repair(mutation):
+        body=bare_response()
+        note=NOTE
+        if mutation=='wrong_note':
+            note='Nothing about OSA here.'
+        elif mutation=='offset':
+            body['facts']['osa_diagnosis']['evidence'][0].update(start=8,end=11)  # UTF-8 bytes, not Python [4,7)
+        elif mutation=='missing_key':
+            body['facts'].pop('ahi_documented')
+        elif mutation=='extra_key':
+            body['facts']['invented_key']=dict(state='MISSING',value=None,evidence=[])
+        elif mutation=='wrong_type':
+            body['facts']['osa_diagnosis']['value']='true'
+        elif mutation=='unsupported_value':
+            body['facts']['osa_diagnosis']['value']=False
+        elif mutation=='uncited':
+            body['facts']['osa_diagnosis']['evidence']=[]
+        elif mutation=='metadata_in_body':
+            body['recording']=metadata().model_dump()
+        text=json.dumps(body,ensure_ascii=False)
+        if mutation=='fence':
+            text='```json\n'+text+'\n```'
+        elif mutation=='prose':
+            text='Here is the result: '+text
+        elif mutation=='malformed':
+            text=text[:-1]
+        elif mutation=='duplicate_json':
+            text=text[:-1]+',"facts":{}}'
+        with pytest.raises(ExperimentFailure,match='INVALID_RECORDED_RESPONSE'):
+>           adapt_recorded_response(note,text,metadata=metadata())
+E           TypeError: adapt_recorded_response() got an unexpected keyword argument 'metadata'
+
+test/test_actual_model_boundary.py:89: TypeError
+____ test_actual_content_rejections_are_strict_without_repair[missing_key] _____
+
+mutation = 'missing_key'
+
+    @pytest.mark.parametrize('mutation',['wrong_note','offset','fence','prose','malformed','missing_key','extra_key','wrong_type',
+        'unsupported_value','uncited','metadata_in_body','duplicate_json'])
+    def test_actual_content_rejections_are_strict_without_repair(mutation):
+        body=bare_response()
+        note=NOTE
+        if mutation=='wrong_note':
+            note='Nothing about OSA here.'
+        elif mutation=='offset':
+            body['facts']['osa_diagnosis']['evidence'][0].update(start=8,end=11)  # UTF-8 bytes, not Python [4,7)
+        elif mutation=='missing_key':
+            body['facts'].pop('ahi_documented')
+        elif mutation=='extra_key':
+            body['facts']['invented_key']=dict(state='MISSING',value=None,evidence=[])
+        elif mutation=='wrong_type':
+            body['facts']['osa_diagnosis']['value']='true'
+        elif mutation=='unsupported_value':
+            body['facts']['osa_diagnosis']['value']=False
+        elif mutation=='uncited':
+            body['facts']['osa_diagnosis']['evidence']=[]
+        elif mutation=='metadata_in_body':
+            body['recording']=metadata().model_dump()
+        text=json.dumps(body,ensure_ascii=False)
+        if mutation=='fence':
+            text='```json\n'+text+'\n```'
+        elif mutation=='prose':
+            text='Here is the result: '+text
+        elif mutation=='malformed':
+            text=text[:-1]
+        elif mutation=='duplicate_json':
+            text=text[:-1]+',"facts":{}}'
+        with pytest.raises(ExperimentFailure,match='INVALID_RECORDED_RESPONSE'):
+>           adapt_recorded_response(note,text,metadata=metadata())
+E           TypeError: adapt_recorded_response() got an unexpected keyword argument 'metadata'
+
+test/test_actual_model_boundary.py:89: TypeError
+_____ test_actual_content_rejections_are_strict_without_repair[extra_key] ______
+
+mutation = 'extra_key'
+
+    @pytest.mark.parametrize('mutation',['wrong_note','offset','fence','prose','malformed','missing_key','extra_key','wrong_type',
+        'unsupported_value','uncited','metadata_in_body','duplicate_json'])
+    def test_actual_content_rejections_are_strict_without_repair(mutation):
+        body=bare_response()
+        note=NOTE
+        if mutation=='wrong_note':
+            note='Nothing about OSA here.'
+        elif mutation=='offset':
+            body['facts']['osa_diagnosis']['evidence'][0].update(start=8,end=11)  # UTF-8 bytes, not Python [4,7)
+        elif mutation=='missing_key':
+            body['facts'].pop('ahi_documented')
+        elif mutation=='extra_key':
+            body['facts']['invented_key']=dict(state='MISSING',value=None,evidence=[])
+        elif mutation=='wrong_type':
+            body['facts']['osa_diagnosis']['value']='true'
+        elif mutation=='unsupported_value':
+            body['facts']['osa_diagnosis']['value']=False
+        elif mutation=='uncited':
+            body['facts']['osa_diagnosis']['evidence']=[]
+        elif mutation=='metadata_in_body':
+            body['recording']=metadata().model_dump()
+        text=json.dumps(body,ensure_ascii=False)
+        if mutation=='fence':
+            text='```json\n'+text+'\n```'
+        elif mutation=='prose':
+            text='Here is the result: '+text
+        elif mutation=='malformed':
+            text=text[:-1]
+        elif mutation=='duplicate_json':
+            text=text[:-1]+',"facts":{}}'
+        with pytest.raises(ExperimentFailure,match='INVALID_RECORDED_RESPONSE'):
+>           adapt_recorded_response(note,text,metadata=metadata())
+E           TypeError: adapt_recorded_response() got an unexpected keyword argument 'metadata'
+
+test/test_actual_model_boundary.py:89: TypeError
+_____ test_actual_content_rejections_are_strict_without_repair[wrong_type] _____
+
+mutation = 'wrong_type'
+
+    @pytest.mark.parametrize('mutation',['wrong_note','offset','fence','prose','malformed','missing_key','extra_key','wrong_type',
+        'unsupported_value','uncited','metadata_in_body','duplicate_json'])
+    def test_actual_content_rejections_are_strict_without_repair(mutation):
+        body=bare_response()
+        note=NOTE
+        if mutation=='wrong_note':
+            note='Nothing about OSA here.'
+        elif mutation=='offset':
+            body['facts']['osa_diagnosis']['evidence'][0].update(start=8,end=11)  # UTF-8 bytes, not Python [4,7)
+        elif mutation=='missing_key':
+            body['facts'].pop('ahi_documented')
+        elif mutation=='extra_key':
+            body['facts']['invented_key']=dict(state='MISSING',value=None,evidence=[])
+        elif mutation=='wrong_type':
+            body['facts']['osa_diagnosis']['value']='true'
+        elif mutation=='unsupported_value':
+            body['facts']['osa_diagnosis']['value']=False
+        elif mutation=='uncited':
+            body['facts']['osa_diagnosis']['evidence']=[]
+        elif mutation=='metadata_in_body':
+            body['recording']=metadata().model_dump()
+        text=json.dumps(body,ensure_ascii=False)
+        if mutation=='fence':
+            text='```json\n'+text+'\n```'
+        elif mutation=='prose':
+            text='Here is the result: '+text
+        elif mutation=='malformed':
+            text=text[:-1]
+        elif mutation=='duplicate_json':
+            text=text[:-1]+',"facts":{}}'
+        with pytest.raises(ExperimentFailure,match='INVALID_RECORDED_RESPONSE'):
+>           adapt_recorded_response(note,text,metadata=metadata())
+E           TypeError: adapt_recorded_response() got an unexpected keyword argument 'metadata'
+
+test/test_actual_model_boundary.py:89: TypeError
+_ test_actual_content_rejections_are_strict_without_repair[unsupported_value] __
+
+mutation = 'unsupported_value'
+
+    @pytest.mark.parametrize('mutation',['wrong_note','offset','fence','prose','malformed','missing_key','extra_key','wrong_type',
+        'unsupported_value','uncited','metadata_in_body','duplicate_json'])
+    def test_actual_content_rejections_are_strict_without_repair(mutation):
+        body=bare_response()
+        note=NOTE
+        if mutation=='wrong_note':
+            note='Nothing about OSA here.'
+        elif mutation=='offset':
+            body['facts']['osa_diagnosis']['evidence'][0].update(start=8,end=11)  # UTF-8 bytes, not Python [4,7)
+        elif mutation=='missing_key':
+            body['facts'].pop('ahi_documented')
+        elif mutation=='extra_key':
+            body['facts']['invented_key']=dict(state='MISSING',value=None,evidence=[])
+        elif mutation=='wrong_type':
+            body['facts']['osa_diagnosis']['value']='true'
+        elif mutation=='unsupported_value':
+            body['facts']['osa_diagnosis']['value']=False
+        elif mutation=='uncited':
+            body['facts']['osa_diagnosis']['evidence']=[]
+        elif mutation=='metadata_in_body':
+            body['recording']=metadata().model_dump()
+        text=json.dumps(body,ensure_ascii=False)
+        if mutation=='fence':
+            text='```json\n'+text+'\n```'
+        elif mutation=='prose':
+            text='Here is the result: '+text
+        elif mutation=='malformed':
+            text=text[:-1]
+        elif mutation=='duplicate_json':
+            text=text[:-1]+',"facts":{}}'
+        with pytest.raises(ExperimentFailure,match='INVALID_RECORDED_RESPONSE'):
+>           adapt_recorded_response(note,text,metadata=metadata())
+E           TypeError: adapt_recorded_response() got an unexpected keyword argument 'metadata'
+
+test/test_actual_model_boundary.py:89: TypeError
+______ test_actual_content_rejections_are_strict_without_repair[uncited] _______
+
+mutation = 'uncited'
+
+    @pytest.mark.parametrize('mutation',['wrong_note','offset','fence','prose','malformed','missing_key','extra_key','wrong_type',
+        'unsupported_value','uncited','metadata_in_body','duplicate_json'])
+    def test_actual_content_rejections_are_strict_without_repair(mutation):
+        body=bare_response()
+        note=NOTE
+        if mutation=='wrong_note':
+            note='Nothing about OSA here.'
+        elif mutation=='offset':
+            body['facts']['osa_diagnosis']['evidence'][0].update(start=8,end=11)  # UTF-8 bytes, not Python [4,7)
+        elif mutation=='missing_key':
+            body['facts'].pop('ahi_documented')
+        elif mutation=='extra_key':
+            body['facts']['invented_key']=dict(state='MISSING',value=None,evidence=[])
+        elif mutation=='wrong_type':
+            body['facts']['osa_diagnosis']['value']='true'
+        elif mutation=='unsupported_value':
+            body['facts']['osa_diagnosis']['value']=False
+        elif mutation=='uncited':
+            body['facts']['osa_diagnosis']['evidence']=[]
+        elif mutation=='metadata_in_body':
+            body['recording']=metadata().model_dump()
+        text=json.dumps(body,ensure_ascii=False)
+        if mutation=='fence':
+            text='```json\n'+text+'\n```'
+        elif mutation=='prose':
+            text='Here is the result: '+text
+        elif mutation=='malformed':
+            text=text[:-1]
+        elif mutation=='duplicate_json':
+            text=text[:-1]+',"facts":{}}'
+        with pytest.raises(ExperimentFailure,match='INVALID_RECORDED_RESPONSE'):
+>           adapt_recorded_response(note,text,metadata=metadata())
+E           TypeError: adapt_recorded_response() got an unexpected keyword argument 'metadata'
+
+test/test_actual_model_boundary.py:89: TypeError
+__ test_actual_content_rejections_are_strict_without_repair[metadata_in_body] __
+
+mutation = 'metadata_in_body'
+
+    @pytest.mark.parametrize('mutation',['wrong_note','offset','fence','prose','malformed','missing_key','extra_key','wrong_type',
+        'unsupported_value','uncited','metadata_in_body','duplicate_json'])
+    def test_actual_content_rejections_are_strict_without_repair(mutation):
+        body=bare_response()
+        note=NOTE
+        if mutation=='wrong_note':
+            note='Nothing about OSA here.'
+        elif mutation=='offset':
+            body['facts']['osa_diagnosis']['evidence'][0].update(start=8,end=11)  # UTF-8 bytes, not Python [4,7)
+        elif mutation=='missing_key':
+            body['facts'].pop('ahi_documented')
+        elif mutation=='extra_key':
+            body['facts']['invented_key']=dict(state='MISSING',value=None,evidence=[])
+        elif mutation=='wrong_type':
+            body['facts']['osa_diagnosis']['value']='true'
+        elif mutation=='unsupported_value':
+            body['facts']['osa_diagnosis']['value']=False
+        elif mutation=='uncited':
+            body['facts']['osa_diagnosis']['evidence']=[]
+        elif mutation=='metadata_in_body':
+            body['recording']=metadata().model_dump()
+        text=json.dumps(body,ensure_ascii=False)
+        if mutation=='fence':
+            text='```json\n'+text+'\n```'
+        elif mutation=='prose':
+            text='Here is the result: '+text
+        elif mutation=='malformed':
+            text=text[:-1]
+        elif mutation=='duplicate_json':
+            text=text[:-1]+',"facts":{}}'
+        with pytest.raises(ExperimentFailure,match='INVALID_RECORDED_RESPONSE'):
+>           adapt_recorded_response(note,text,metadata=metadata())
+E           TypeError: adapt_recorded_response() got an unexpected keyword argument 'metadata'
+
+test/test_actual_model_boundary.py:89: TypeError
+___ test_actual_content_rejections_are_strict_without_repair[duplicate_json] ___
+
+mutation = 'duplicate_json'
+
+    @pytest.mark.parametrize('mutation',['wrong_note','offset','fence','prose','malformed','missing_key','extra_key','wrong_type',
+        'unsupported_value','uncited','metadata_in_body','duplicate_json'])
+    def test_actual_content_rejections_are_strict_without_repair(mutation):
+        body=bare_response()
+        note=NOTE
+        if mutation=='wrong_note':
+            note='Nothing about OSA here.'
+        elif mutation=='offset':
+            body['facts']['osa_diagnosis']['evidence'][0].update(start=8,end=11)  # UTF-8 bytes, not Python [4,7)
+        elif mutation=='missing_key':
+            body['facts'].pop('ahi_documented')
+        elif mutation=='extra_key':
+            body['facts']['invented_key']=dict(state='MISSING',value=None,evidence=[])
+        elif mutation=='wrong_type':
+            body['facts']['osa_diagnosis']['value']='true'
+        elif mutation=='unsupported_value':
+            body['facts']['osa_diagnosis']['value']=False
+        elif mutation=='uncited':
+            body['facts']['osa_diagnosis']['evidence']=[]
+        elif mutation=='metadata_in_body':
+            body['recording']=metadata().model_dump()
+        text=json.dumps(body,ensure_ascii=False)
+        if mutation=='fence':
+            text='```json\n'+text+'\n```'
+        elif mutation=='prose':
+            text='Here is the result: '+text
+        elif mutation=='malformed':
+            text=text[:-1]
+        elif mutation=='duplicate_json':
+            text=text[:-1]+',"facts":{}}'
+        with pytest.raises(ExperimentFailure,match='INVALID_RECORDED_RESPONSE'):
+>           adapt_recorded_response(note,text,metadata=metadata())
+E           TypeError: adapt_recorded_response() got an unexpected keyword argument 'metadata'
+
+test/test_actual_model_boundary.py:89: TypeError
+_ test_runner_preserves_bare_bytes_and_manifest_identity_no_archives_or_recapture _
+
+tmp_path = PosixPath('/private/var/folders/7r/2jvcn09d5kn8mv6007ycz0j00000gn/T/pytest-of-nicholasleko/pytest-211/test_runner_preserves_bare_byt0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x10bb259d0>
+
+    def test_runner_preserves_bare_bytes_and_manifest_identity_no_archives_or_recapture(tmp_path,monkeypatch):
+        import engine.extract
+        import engine.service
+
+        path,manifest=simulated_manifest(tmp_path,['valid','offset','provider','missing','valid','valid','valid'])
+        refs=manifest['attempts']
+        # A missing provider response ID is a capture identity error, not a model schema error.
+        refs[4]['recording']['response_id']=None
+        refs[5]['note_sha256']='0'*64
+        raw=tmp_path/refs[6]['path']
+        raw.write_bytes(raw.read_bytes()+b'CHANGED')
+        path.write_text(json.dumps(manifest))
+        before={p:p.read_bytes() for p in tmp_path.iterdir()}
+        def forbidden(*args,**kwargs):
+            raise AssertionError('Recapture or archive write')
+        monkeypatch.setattr(engine.extract,'extract_facts',forbidden)
+        monkeypatch.setattr(engine.service,'extract_facts',forbidden)
+        monkeypatch.setattr(DecisionStore,'record',forbidden)
+>       report=runner.build_report(manifest_path=path)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+test/test_actual_model_boundary.py:110:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+experiments/dual_extraction/runner.py:274: in build_report
+    manifest = load_manifest(manifest_path)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+path = PosixPath('/private/var/folders/7r/2jvcn09d5kn8mv6007ycz0j00000gn/T/pytest-of-nicholasleko/pytest-211/test_runner_preserves_bare_byt0/manifest.json')
+
+    def load_manifest(path: Path) -> RecordingManifest | RawAttemptManifest:
+        try:
+            data = json.loads(path.read_bytes(), object_pairs_hook=_unique_object, parse_constant=_reject_constant)
+            if type(data) is not dict:
+                raise ValueError("Expected manifest object.")
+            schema = RawAttemptManifest if data.get("schema_version") == 2 else RecordingManifest
+            manifest = schema.model_validate(data, strict=True)
+            entries = manifest.attempts if isinstance(manifest, RawAttemptManifest) else manifest.recordings
+            cases = [entry.case_id for entry in entries]
+            identities = [(entry.recording.source, entry.recording.response_id) for entry in entries if entry.recording.response_id is not None]
+            if len(set(cases)) != len(cases) or len(set(identities)) != len(identities):
+                raise ExperimentFailure("RECORDING_IDENTITY_FAILURE")
+            if isinstance(manifest, RawAttemptManifest):
+                selected = manifest.selected_attempted_case_ids
+                if len(selected) != len(set(selected)) or set(selected) != set(cases):
+                    raise ExperimentFailure("INVALID_RECORDING_MANIFEST")
+                if len({entry.attempt_id for entry in entries}) != len(entries):
+                    raise ExperimentFailure("RECORDING_IDENTITY_FAILURE")
+                origin = "actual_model_response" if manifest.population == "actual_model_study" else "hand_authored_synthetic"
+                if any(entry.recording.origin != origin for entry in entries):
+                    raise ExperimentFailure("INVALID_RECORDING_MANIFEST")
+            elif any(entry.recording.origin != "hand_authored_synthetic" for entry in entries):
+                # Legacy adapted fixtures never acquire measured model-attempt status.
+                raise ExperimentFailure("INVALID_RECORDING_MANIFEST")
+            return manifest
+        except ExperimentFailure:
+            raise
+        except (OSError, ValueError, TypeError):
+>           raise ExperimentFailure("INVALID_RECORDING_MANIFEST") from None
+E           experiments.dual_extraction.errors.ExperimentFailure: INVALID_RECORDING_MANIFEST
+
+experiments/dual_extraction/recordings.py:100: ExperimentFailure
+_________ test_legacy_external_identity_mismatch_is_a_capture_failure __________
+
+tmp_path = PosixPath('/private/var/folders/7r/2jvcn09d5kn8mv6007ycz0j00000gn/T/pytest-of-nicholasleko/pytest-211/test_legacy_external_identity_0')
+
+    def test_legacy_external_identity_mismatch_is_a_capture_failure(tmp_path):
+        path,manifest=attempt_manifest(tmp_path,['valid'])
+        manifest['attempts'][0]['recording']['response_id']='wrong-capture-identity'
+        path.write_text(json.dumps(manifest))
+        report=runner.build_report(manifest_path=path)
+        case=case_attempts(report)[0]
+>       assert case['attempt_status']=='RECORDING_IDENTITY_FAILURE'
+E       AssertionError: assert 'INVALID_RESPONSE' == 'RECORDING_IDENTITY_FAILURE'
+E
+E         - RECORDING_IDENTITY_FAILURE
+E         + INVALID_RESPONSE
+
+test/test_actual_model_boundary.py:140: AssertionError
+_ test_declared_provider_failure_with_valid_response_bytes_is_not_authenticated _
+
+tmp_path = PosixPath('/private/var/folders/7r/2jvcn09d5kn8mv6007ycz0j00000gn/T/pytest-of-nicholasleko/pytest-211/test_declared_provider_failure0')
+
+    def test_declared_provider_failure_with_valid_response_bytes_is_not_authenticated(tmp_path):
+        path,manifest=attempt_manifest(tmp_path,['valid'])
+        manifest['attempts'][0]['outcome']='extraction_failure'
+        path.write_text(json.dumps(manifest))
+        report=runner.build_report(manifest_path=path)
+        case=case_attempts(report)[0]
+        assert case['attempt_status']=='EXTRACTION_FAILURE'
+        assert case['comparison'] is None and case['evaluations'] is None
+>       assert report['provider_outcomes_authenticated'] is False
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       KeyError: 'provider_outcomes_authenticated'
+
+test/test_actual_model_boundary.py:155: KeyError
+=========================== short test summary info ============================
+FAILED test/test_actual_model_boundary.py::test_bare_actual_style_response_accepts_separate_trusted_identity_without_mutation
+FAILED test/test_actual_model_boundary.py::test_actual_content_rejections_are_strict_without_repair[wrong_note]
+FAILED test/test_actual_model_boundary.py::test_actual_content_rejections_are_strict_without_repair[offset]
+FAILED test/test_actual_model_boundary.py::test_actual_content_rejections_are_strict_without_repair[fence]
+FAILED test/test_actual_model_boundary.py::test_actual_content_rejections_are_strict_without_repair[prose]
+FAILED test/test_actual_model_boundary.py::test_actual_content_rejections_are_strict_without_repair[malformed]
+FAILED test/test_actual_model_boundary.py::test_actual_content_rejections_are_strict_without_repair[missing_key]
+FAILED test/test_actual_model_boundary.py::test_actual_content_rejections_are_strict_without_repair[extra_key]
+FAILED test/test_actual_model_boundary.py::test_actual_content_rejections_are_strict_without_repair[wrong_type]
+FAILED test/test_actual_model_boundary.py::test_actual_content_rejections_are_strict_without_repair[unsupported_value]
+FAILED test/test_actual_model_boundary.py::test_actual_content_rejections_are_strict_without_repair[uncited]
+FAILED test/test_actual_model_boundary.py::test_actual_content_rejections_are_strict_without_repair[metadata_in_body]
+FAILED test/test_actual_model_boundary.py::test_actual_content_rejections_are_strict_without_repair[duplicate_json]
+FAILED test/test_actual_model_boundary.py::test_runner_preserves_bare_bytes_and_manifest_identity_no_archives_or_recapture
+FAILED test/test_actual_model_boundary.py::test_legacy_external_identity_mismatch_is_a_capture_failure
+FAILED test/test_actual_model_boundary.py::test_declared_provider_failure_with_valid_response_bytes_is_not_authenticated
+16 failed in 0.36s
