@@ -46,3 +46,64 @@ python -m experiments.dual_extraction.baseline --write
 against the released capture. `--output` can direct a capture to a temporary file,
 and `--repo-root` selects the repository input root. Production goldens and decision
 archives are separate and must not be updated to accommodate experiment failures.
+
+## Proposal contract and adapter
+
+`proposals.ExtractionProposal` holds the original note, source identity, optional
+string diagnostics, and an existing immutable `OriginalProposal`. Its validation
+requires exactly the 12 existing fact keys and reuses `materialize()` for the
+extractor vocabulary, state/value consistency, and exact source slices. The
+legacy import adapter also validates raw types and offsets before JSON capture
+can normalize them. This does not establish semantic support.
+
+`extract_regex_proposal(note)` calls the unchanged extractor once.
+`proposal_from_legacy(note, legacy_tuple, source=...)` captures an already obtained
+result; `proposal_to_legacy(proposal)` returns fresh dictionaries and an
+`EvidenceMap`. The latter explicitly restores `total_counts` from the snapshot
+because its lists are already capped. Outbound adaptation revalidates the envelope
+even if a caller used Pydantic's validation-bypassing model-copy methods.
+
+Missing and review-required facts both use null in the snapshot's public value
+map, distinguished by explicit states. Export restores the internal review
+sentinel; captured false values remain false. Citation list order, offsets,
+quotations and pre-cap counts survive both adaptation and JSON transport. Mapping
+key insertion order is not part of the contract: the existing immutable snapshot
+uses canonical sorted keys. Source and diagnostics never enter the snapshot or
+production fingerprints.
+
+## Injectable service boundary
+
+The exact service type alias is:
+
+```python
+ExtractionCallable = Callable[[str], tuple[Dict[str, Any], Dict[str, List[Dict[str, Any]]]]]
+```
+
+`ReadinessService(extractor=...)` accepts this optional keyword-only callable. Its
+input is the exact original note; its output is the existing raw fact/evidence
+tuple. The evidence dictionary may be an `EvidenceMap` carrying `total_counts`.
+There is no mode selection or production import of this experimental package.
+With no injection the service resolves its existing imported `extract_facts` at
+evaluation time, preserving existing callers and module-patch behavior. Even a
+falsey callable is honored when explicitly supplied.
+
+The same service validation, corrections, operators, attestations, fingerprints,
+governance gates and result validators consume injected output. This seam does
+not add caching or change service lifetime. A later offline runner must capture
+each source once and provide a note-bound replay callable across modes; repeated
+service evaluation alone would call its extraction dependency again.
+
+## Checks
+
+```bash
+python -m pytest -q test/test_extraction_baseline.py test/test_extraction_proposals.py test/test_extraction_injection.py
+python -m pytest -q
+python -m ruff check .
+python -m ruff format --check .
+```
+
+The baseline and adapter tests exercise all existing input notes, including known
+failures. Compatibility tests compare full evaluations with only audit identity
+normalized, test human attestations and both trusted/untrusted governance, and
+exercise archive reload/replay without re-extraction. Existing cross-surface and
+golden tests continue to protect FastAPI, Streamlit, and CLI behavior.

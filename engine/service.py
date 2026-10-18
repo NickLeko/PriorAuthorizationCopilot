@@ -73,6 +73,8 @@ from .schemas import (
 MAX_POLICY_CLOCK_SKEW_SECONDS = 300
 SUPPORTED_DRIFT_LOG_EVENTS = {"BOOTSTRAP_SNAPSHOT_CREATED", "POLICY_DRIFT_DETECTED"}
 
+ExtractionCallable = Callable[[str], tuple[Dict[str, Any], Dict[str, List[Dict[str, Any]]]]]
+
 
 class ServiceError(Exception):
     code = "service_error"
@@ -267,9 +269,16 @@ def _load_bundle(digest, snapshot, repo_root, runtime_paths, manifest_path):
 
 
 class ReadinessService:
-    def __init__(self, config: AppConfig | None = None, *, utc_now_provider: Callable[[], datetime] | None = None) -> None:
+    def __init__(
+        self,
+        config: AppConfig | None = None,
+        *,
+        utc_now_provider: Callable[[], datetime] | None = None,
+        extractor: ExtractionCallable | None = None,
+    ) -> None:
         self.config = config or load_app_config()
         self._utc_now = utc_now_provider or (lambda: utc_now())
+        self._extractor = extractor
         configure_logging(self.config.log_level)
         self.logger = get_logger("pa_copilot.service")
         self._evaluation_bundle = ContextVar("evaluation_bundle", default=None)
@@ -495,7 +504,8 @@ class ReadinessService:
             )
 
         try:
-            raw_facts, raw_evidence_map = extract_facts(normalized_request.note_text)
+            extractor = self._extractor if self._extractor is not None else extract_facts
+            raw_facts, raw_evidence_map = extractor(normalized_request.note_text)
         except ValueError as exc:
             raise InvalidRequestError(str(exc)) from exc
         original = capture_original(raw_facts, raw_evidence_map)
