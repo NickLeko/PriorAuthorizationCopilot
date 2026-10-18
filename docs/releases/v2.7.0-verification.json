@@ -1,0 +1,331 @@
+{
+  "approved_baseline": "eac669e629b8f1ea7da5cbb8365b47d50d834f9e",
+  "normalization": {
+    "volatile_fields": [
+      "run_id",
+      "timestamp_utc"
+    ],
+    "release_metadata_allowlist": {
+      "/evaluation/engine_version": [
+        "2.6.0",
+        "2.7.0"
+      ]
+    },
+    "all_other_fields_compared_exactly": true
+  },
+  "baseline_suite": {
+    "passed": 1681,
+    "xfailed": 9,
+    "seconds": 43.23
+  },
+  "final_suite": {
+    "passed": 1681,
+    "xfailed": 9,
+    "seconds": 46.07
+  },
+  "contract_surface_suite": {
+    "passed": 145,
+    "xfailed": 4,
+    "seconds": 14.03
+  },
+  "mutation_checks": {
+    "source_laterality_order_swap": {
+      "failed": 1,
+      "detected": true
+    },
+    "restored_reviewed_mixed_side_opt_out": {
+      "failed": 27,
+      "passed": 192,
+      "detected": true
+    }
+  },
+  "safeguards": {
+    "bundle_digest": "1e3dea24499fa5619e8862e53c75ed3596d7e94812314c995f7508a44353d0ef",
+    "fixed_clock": "2026-09-01T00:00:00Z",
+    "material_change_rejects_attestation": true,
+    "mismatch_attestation_cannot_make_ready": true,
+    "real_clock_governance_blocks_submission_independently": true,
+    "source_order_retains_only_objective_evidence": true
+  },
+  "local_runtime_drift": {
+    "any_review_required": true,
+    "sources": [
+      {
+        "check_frequency": "monthly",
+        "days_since_last_checked": 48,
+        "freshness_status": "STALE",
+        "id": "aetna_mri_lumbar",
+        "last_checked_utc": "2026-08-31T02:03:09Z",
+        "last_rule_reviewed": "2026-08-22",
+        "latest_diff_path": null,
+        "latest_event": null,
+        "latest_hash": "5688a01dea8d5e55d9bb074fb4184f4b0722c89a7a35aacd343bf3444577e622",
+        "latest_snapshot_path": "policy_snapshots/aetna_mri_lumbar/latest.json",
+        "notes": "Verified only for the persistent back pain with radiculopathy branch implemented by MRI_LUMBAR; alternate CPB 0236 indications remain out of scope.",
+        "owner": "NickLeko",
+        "payer": "Aetna",
+        "procedure_code": "MRI_LUMBAR",
+        "review_reason": "Last successful policy check exceeds the configured monthly monitoring window.",
+        "rule_source_label": "Verified mapping to Aetna CPB 0236, persistent back pain with radiculopathy branch",
+        "source_name": "Aetna CPB 0236 - Magnetic Resonance Imaging (MRI) and Computed Tomography (CT) of the Spine",
+        "source_type": "official_policy_web",
+        "status": "OK",
+        "trust_level": "verified",
+        "url": "https://www.aetna.com/cpb/medical/data/200_299/0236.html"
+      }
+    ],
+    "stale_source_count": 1
+  },
+  "local_fixed_clock_rulebook": {
+    "active_release_id": "2026-08-22-active-v1.0",
+    "manifest_version": "1",
+    "releases": [
+      {
+        "based_on_release_id": "2026-04-09-reviewed-v0.4",
+        "created_at": "2026-04-09T12:15:00Z",
+        "files": {
+          "policy_sources_path": "rulebook/releases/2026-04-09-active-v0.5/policy_sources.yaml",
+          "provenance_path": "rulebook/releases/2026-04-09-active-v0.5/provenance.yaml",
+          "rules_path": "rulebook/releases/2026-04-09-active-v0.5/payer_rules.yaml"
+        },
+        "notes": [
+          "Historical active snapshot retained for versioned comparison; it is no longer expected to match current runtime files."
+        ],
+        "procedures": [
+          "Aetna:CPAP_DEVICE",
+          "Aetna:MRI_CERVICAL",
+          "Aetna:MRI_KNEE",
+          "Aetna:MRI_LUMBAR"
+        ],
+        "release_id": "2026-04-09-active-v0.5",
+        "reviewed_at": "2026-04-09",
+        "reviewer": "demo-maintainer",
+        "rules_version": "0.5",
+        "runtime_matches": null,
+        "stage": "active",
+        "summary": "Active rulebook after the narrow non-spine knee MRI expansion."
+      },
+      {
+        "based_on_release_id": null,
+        "created_at": "2026-04-09T10:45:00Z",
+        "files": {
+          "policy_sources_path": "rulebook/releases/2026-04-09-reviewed-v0.4/policy_sources.yaml",
+          "provenance_path": "rulebook/releases/2026-04-09-reviewed-v0.4/provenance.yaml",
+          "rules_path": "rulebook/releases/2026-04-09-reviewed-v0.4/payer_rules.yaml"
+        },
+        "notes": [
+          "Historical reviewed snapshot retained for governance diffs."
+        ],
+        "procedures": [
+          "Aetna:CPAP_DEVICE",
+          "Aetna:MRI_CERVICAL",
+          "Aetna:MRI_LUMBAR"
+        ],
+        "release_id": "2026-04-09-reviewed-v0.4",
+        "reviewed_at": "2026-04-09",
+        "reviewer": "demo-maintainer",
+        "rules_version": "0.4",
+        "runtime_matches": null,
+        "stage": "reviewed",
+        "summary": "Reviewed rulebook before the narrow non-spine knee MRI expansion."
+      },
+      {
+        "based_on_release_id": "2026-04-09-active-v0.5",
+        "created_at": "2026-07-17T19:52:06Z",
+        "files": {
+          "policy_sources_path": "rulebook/releases/2026-07-17-active-v0.6/policy_sources.yaml",
+          "provenance_path": "rulebook/releases/2026-07-17-active-v0.6/provenance.yaml",
+          "rules_path": "rulebook/releases/2026-07-17-active-v0.6/payer_rules.yaml"
+        },
+        "notes": [
+          "Records NEEDS_REVIEW semantics, drafting-boundary and dosing checks, artifact contract/redaction changes, corrected MRI_LUMBAR provenance, and prior OSA/imaging extraction fixes."
+        ],
+        "procedures": [
+          "Aetna:CPAP_DEVICE",
+          "Aetna:MRI_CERVICAL",
+          "Aetna:MRI_KNEE",
+          "Aetna:MRI_LUMBAR"
+        ],
+        "release_id": "2026-07-17-active-v0.6",
+        "reviewed_at": "2026-07-17",
+        "reviewer": "demo-maintainer",
+        "rules_version": "0.6",
+        "runtime_matches": null,
+        "stage": "active",
+        "summary": "Claims-integrity remediation with distinct human-review semantics and corrected lumbar-MRI provenance."
+      },
+      {
+        "based_on_release_id": "2026-07-17-active-v0.6",
+        "created_at": "2026-08-21T00:00:00Z",
+        "files": {
+          "policy_sources_path": "rulebook/releases/2026-08-21-active-v0.7/policy_sources.yaml",
+          "provenance_path": "rulebook/releases/2026-08-21-active-v0.7/provenance.yaml",
+          "rules_path": "rulebook/releases/2026-08-21-active-v0.7/payer_rules.yaml"
+        },
+        "notes": [
+          "Adds explicit requirement operators while preserving the existing synthetic rule criteria.",
+          "Pairs the rule snapshot with conservative extraction, fail-closed empty-set behavior, qualified payer/procedure identity, and strengthened trust semantics in app version 1.3.0."
+        ],
+        "procedures": [
+          "Aetna:CPAP_DEVICE",
+          "Aetna:MRI_CERVICAL",
+          "Aetna:MRI_KNEE",
+          "Aetna:MRI_LUMBAR"
+        ],
+        "release_id": "2026-08-21-active-v0.7",
+        "reviewed_at": "2026-08-21",
+        "reviewer": "demo-maintainer",
+        "rules_version": "0.7",
+        "runtime_matches": null,
+        "stage": "active",
+        "summary": "Conservative extraction and explicit rule-semantics remediation."
+      },
+      {
+        "based_on_release_id": "2026-08-21-active-v0.7",
+        "created_at": "2026-08-22T12:21:19-07:00",
+        "files": {
+          "policy_sources_path": "rulebook/releases/2026-08-22-active-v0.8/policy_sources.yaml",
+          "provenance_path": "rulebook/releases/2026-08-22-active-v0.8/provenance.yaml",
+          "rules_path": "rulebook/releases/2026-08-22-active-v0.8/payer_rules.yaml"
+        },
+        "notes": [
+          "Separates explicit normal imaging from specific negative findings; normal remains accepted in existing imaging-documentation pathways while negative findings fail closed.",
+          "Keeps explicit operators on every active requirement and makes implicit legacy booleans fail conservatively."
+        ],
+        "procedures": [
+          "Aetna:CPAP_DEVICE",
+          "Aetna:MRI_CERVICAL",
+          "Aetna:MRI_KNEE",
+          "Aetna:MRI_LUMBAR"
+        ],
+        "release_id": "2026-08-22-active-v0.8",
+        "reviewed_at": "2026-08-22",
+        "reviewer": "demo-maintainer",
+        "rules_version": "0.8",
+        "runtime_matches": null,
+        "stage": "active",
+        "summary": "Recognized normal/negative imaging semantics and conservative legacy operator fallback."
+      },
+      {
+        "based_on_release_id": "2026-08-22-active-v0.8",
+        "created_at": "2026-08-22T12:33:50-07:00",
+        "files": {
+          "policy_sources_path": "rulebook/releases/2026-08-22-active-v0.9/policy_sources.yaml",
+          "provenance_path": "rulebook/releases/2026-08-22-active-v0.9/provenance.yaml",
+          "rules_path": "rulebook/releases/2026-08-22-active-v0.9/payer_rules.yaml"
+        },
+        "notes": [
+          "Adds the existing negative extraction category to MRI imaging allowed sets because the demo criterion requires documented imaging context, not a qualifying abnormal finding.",
+          "Leaves extraction categories and inconclusive/unrecognized evaluation behavior unchanged."
+        ],
+        "procedures": [
+          "Aetna:CPAP_DEVICE",
+          "Aetna:MRI_CERVICAL",
+          "Aetna:MRI_KNEE",
+          "Aetna:MRI_LUMBAR"
+        ],
+        "release_id": "2026-08-22-active-v0.9",
+        "reviewed_at": "2026-08-22",
+        "reviewer": "demo-maintainer",
+        "rules_version": "0.9",
+        "runtime_matches": null,
+        "stage": "active",
+        "summary": "Align recognized negative imaging with the documented imaging-context criterion."
+      },
+      {
+        "based_on_release_id": "2026-08-22-active-v0.9",
+        "created_at": "2026-08-22T19:46:51Z",
+        "files": {
+          "policy_sources_path": "rulebook/releases/2026-08-22-active-v1.0/policy_sources.yaml",
+          "provenance_path": "rulebook/releases/2026-08-22-active-v1.0/provenance.yaml",
+          "rules_path": "rulebook/releases/2026-08-22-active-v1.0/payer_rules.yaml"
+        },
+        "notes": [
+          "Replaces only the MRI_LUMBAR demo pathway with the persistent back pain with radiculopathy alternative from Aetna CPB 0236.",
+          "Maps every MRI_LUMBAR requirement to the official clause and records the source URL, policy dates, access date, and normalized-content hash.",
+          "All other payer/procedure pathways remain synthetic demo rules."
+        ],
+        "procedures": [
+          "Aetna:CPAP_DEVICE",
+          "Aetna:MRI_CERVICAL",
+          "Aetna:MRI_KNEE",
+          "Aetna:MRI_LUMBAR"
+        ],
+        "release_id": "2026-08-22-active-v1.0",
+        "reviewed_at": "2026-08-22",
+        "reviewer": "demo-maintainer",
+        "rules_version": "1.0",
+        "runtime_matches": true,
+        "stage": "active",
+        "summary": "Verified Aetna lumbar-MRI radiculopathy pathway grounded in CPB 0236."
+      }
+    ],
+    "runtime_rules_version": "1.0",
+    "stage_assignments": {
+      "active": "2026-08-22-active-v1.0",
+      "draft": null,
+      "reviewed": "2026-04-09-reviewed-v0.4"
+    },
+    "validation_errors": []
+  },
+  "fixture_comparison": {
+    "approved_baseline": "eac669e629b8f1ea7da5cbb8365b47d50d834f9e",
+    "unique_inputs": 757,
+    "occurrences": 1672,
+    "scoped_service_inputs": 449,
+    "successful_full_service_outputs": 441,
+    "service_errors_unchanged": 8,
+    "metadata_only_changes": 441,
+    "safeguard_metadata_only_changes": 8,
+    "unexpected_changes": [],
+    "permitted_metadata_pointers": [
+      "/evaluation/engine_version"
+    ],
+    "volatile_fields_normalized": [
+      "run_id",
+      "timestamp_utc"
+    ],
+    "facts_states_citations_offsets_requirements_readiness_verifications_audits_fingerprints_preserved": true
+  },
+  "eight_rejected_service_inputs": "Unchanged PARequest validation rejections of redacted display-artifact note strings, not failures of the synthetic source cases.",
+  "expected_failures": [
+    "XFAIL test/test_h1_review_triggers.py::test_improved_newline_response_should_require_review - cross-sentence therapy response: improvement on the next line is not linked",
+    "XFAIL test/test_h1_review_triggers.py::test_cross_sentence_copy_forward_should_require_review - cross-sentence copy-forward: header does not scope later sentences",
+    "XFAIL test/test_v150_contract.py::TestExtractionContractAlignment::test_G01_exact_examples_and_determinism[negated_strength] - negation: score is explicitly negated",
+    "XFAIL test/test_v150_contract.py::TestExtractionContractAlignment::test_G01_exact_examples_and_determinism[unrelated_therapy] - attribution: headache therapy borrowed for lumbar episode",
+    "XFAIL test/test_v150_contract.py::TestExtractionContractAlignment::test_G01_exact_examples_and_determinism[neither_nor_negation] - negation: neither/nor scope is unsupported",
+    "XFAIL test/test_v150_contract.py::TestExtractionContractAlignment::test_G01_exact_examples_and_determinism[same_sentence_borrowed_date] - date association: unrelated visit date in the same sentence",
+    "XFAIL test/test_v210_independent.py::test_independent_correct_values_and_states[independent_12_cross_sentence_resolved] - cross-sentence temporality",
+    "XFAIL test/test_v210_independent.py::test_independent_02_secondary_analgesic_duration_correct_value - generic therapy vocabulary does not recognize analgesics",
+    "XFAIL test/test_v210_safety.py::test_resolved_historical_episode_across_sentences_requires_review - temporality: resolved historical episode across sentences requires coreference"
+  ],
+  "commands": [
+    "git fetch --no-tags origin",
+    "PA_RELEASE_STAGE=baseline PA_RELEASE_AUDIT_PATH=/private/tmp/pa-copilot-v270/baseline-generation.json python -B < docs/releases/v2.7.0-generation-command.txt (before version bump)",
+    "python -B < docs/releases/v2.7.0-preflight-command.txt",
+    "python -B < docs/releases/v2.7.0-generation-command.txt",
+    "PA_RELEASE_STAGE=verify PA_RELEASE_AUDIT_PATH=docs/releases/v2.7.0-regeneration-verify.json python -B < docs/releases/v2.7.0-generation-command.txt",
+    "PYTHONDONTWRITEBYTECODE=1 PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 PYTEST_ADDOPTS=\"-p no:cacheprovider -rx --basetemp=/private/tmp/pa-copilot-v270/final-temp\" make test PYTHON=/Users/nicholasleko/projects/PriorAuthorizationCopilot/.venv/bin/python",
+    "RUFF_NO_CACHE=true PYTHONDONTWRITEBYTECODE=1 make lint PYTHON=/Users/nicholasleko/projects/PriorAuthorizationCopilot/.venv/bin/python",
+    "PYTHONDONTWRITEBYTECODE=1 PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python -B -m pytest -q -p no:cacheprovider --basetemp=/private/tmp/pa-copilot-v270/contract-temp test/test_v150_contract.py test/test_v200_surfaces.py",
+    "PYTHONDONTWRITEBYTECODE=1 PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python -B /private/tmp/pa-copilot-premerge-evidence/mutate_order.py",
+    "PYTHONDONTWRITEBYTECODE=1 PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python -B /private/tmp/pa-copilot-phase6-evidence/mutation.py reviewed-opt-out",
+    "python -B /private/tmp/pa-copilot-v270/compare_fixtures.py /private/tmp/pa-copilot-v270/before-fixtures.json (approved feature tree before version bump)",
+    "python -B /private/tmp/pa-copilot-v270/compare_fixtures.py /private/tmp/pa-copilot-v270/after-fixtures.json /private/tmp/pa-copilot-v270/before-fixtures.json",
+    "python -B /private/tmp/pa-copilot-v270/safeguards.py /private/tmp/pa-copilot-v270/before-safeguards.json (approved feature worktree)",
+    "python -B /private/tmp/pa-copilot-v270/safeguards.py /private/tmp/pa-copilot-v270/after-safeguards.json (release worktree)",
+    "python -B /private/tmp/pa-copilot-v270/compare_release.py",
+    "git diff --check"
+  ],
+  "runtime": "Existing project .venv, Python 3.12.3; no installations; bytecode/pytest cache disabled; baseline and release run in separate Python processes.",
+  "lint_invocation_correction": "Initial RUFF_NO_CACHE=1 was rejected by Ruff before lint ran (expects true/false); reran with true and both checks passed. No code or rule change was needed.",
+  "not_performed": [
+    "Live policy-source fetch or monitoring timestamp update",
+    "Real-patient or new held-out evaluation",
+    "Deployment/browser-host verification, reboot, tag or merge",
+    "Remote PR CI results are not claimed as local verification"
+  ],
+  "unexpected_behavior_changes": [],
+  "console_log_normalization": "Removed trailing whitespace from pytest mutation traceback lines so Git whitespace checks pass; diagnostic outcomes are unchanged. Raw capture remains in /private/tmp/pa-copilot-v270/mutation-laterality.txt.",
+  "whitespace_check_correction": "The first committed-range diff check detected trailing whitespace in captured mutation output. Only log line endings were normalized, and the check was repeated."
+}

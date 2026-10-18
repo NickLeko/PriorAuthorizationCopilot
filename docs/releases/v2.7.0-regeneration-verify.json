@@ -1,0 +1,185 @@
+{
+  "stage": "verify",
+  "clock": "2026-09-01T00:00:00+00:00",
+  "outputs": 25,
+  "changed": 0,
+  "non_version_changes": [],
+  "governance_changes": [],
+  "files": [
+    {
+      "file": "test/golden/evaluations/MRI-01-complete.json",
+      "changed": false,
+      "before_sha256": "021c6f8a7e7feb371db7d905e081c2e7efa65dd1fcc9c83991ecbfb59b8362d3",
+      "after_sha256": "021c6f8a7e7feb371db7d905e081c2e7efa65dd1fcc9c83991ecbfb59b8362d3",
+      "changes": []
+    },
+    {
+      "file": "test/golden/evaluations/MRI-01-human-verified.json",
+      "changed": false,
+      "before_sha256": "894a8f24c41bf65396dd92e14a95139693592906dfd5cd20377768d97786c9af",
+      "after_sha256": "894a8f24c41bf65396dd92e14a95139693592906dfd5cd20377768d97786c9af",
+      "changes": []
+    },
+    {
+      "file": "test/golden/evaluations/MRI-08-edge-below-threshold.json",
+      "changed": false,
+      "before_sha256": "8a60e7d92b725cec98f53c917acafeb704024569549952fbf78cb9d4b1217652",
+      "after_sha256": "8a60e7d92b725cec98f53c917acafeb704024569549952fbf78cb9d4b1217652",
+      "changes": []
+    },
+    {
+      "file": "test/golden/evaluations/CPAP-02-borderline.json",
+      "changed": false,
+      "before_sha256": "cfb781a1323c89f0f09930bd92d49cbb4cc8cf05d90eaa8e860b247a0fceb297",
+      "after_sha256": "cfb781a1323c89f0f09930bd92d49cbb4cc8cf05d90eaa8e860b247a0fceb297",
+      "changes": []
+    },
+    {
+      "file": "test/golden/evaluations/MRI-KNEE-01-ready.json",
+      "changed": false,
+      "before_sha256": "def7ec5cc8e1f2110401c26f040f74122408f9fa3aa8068b7128b43af60316ab",
+      "after_sha256": "def7ec5cc8e1f2110401c26f040f74122408f9fa3aa8068b7128b43af60316ab",
+      "changes": []
+    },
+    {
+      "file": "test/golden/governance/drift_status.json",
+      "changed": false,
+      "before_sha256": "e37bb494406b73741bdd0f9828c0aac0706520fdd8ebfc4cadbba8b2943e8fc6",
+      "after_sha256": "e37bb494406b73741bdd0f9828c0aac0706520fdd8ebfc4cadbba8b2943e8fc6",
+      "changes": []
+    },
+    {
+      "file": "test/golden/governance/rulebook_status.json",
+      "changed": false,
+      "before_sha256": "e971c156c4e7e4b8ce42056e95ae1f5c32201d76ae2f14208a4c2e8a47a9f0fc",
+      "after_sha256": "e971c156c4e7e4b8ce42056e95ae1f5c32201d76ae2f14208a4c2e8a47a9f0fc",
+      "changes": []
+    },
+    {
+      "file": "test/golden/governance/rulebook_diff_reviewed_vs_active.json",
+      "changed": false,
+      "before_sha256": "9f143bf6ee8a5e4c1c8c91e43a716532bdd01a8da1dd6b66cbc8c456d177d3d8",
+      "after_sha256": "9f143bf6ee8a5e4c1c8c91e43a716532bdd01a8da1dd6b66cbc8c456d177d3d8",
+      "changes": []
+    },
+    {
+      "file": "test/golden/evaluations/reviewer-corrected-e2e.json",
+      "changed": false,
+      "before_sha256": "f154385e8e416fff23142b164f02eb625b824e3216d1fefef61b26d96704a30f",
+      "after_sha256": "f154385e8e416fff23142b164f02eb625b824e3216d1fefef61b26d96704a30f",
+      "changes": []
+    },
+    {
+      "file": "test/golden/evaluations/reviewer-corrected-full-projection.json",
+      "changed": false,
+      "before_sha256": "387d61e52b8b5e570f8e265d1665599acf20e99a52518259d8aca997b40196f7",
+      "after_sha256": "387d61e52b8b5e570f8e265d1665599acf20e99a52518259d8aca997b40196f7",
+      "changes": []
+    },
+    {
+      "file": "docs/artifacts/MRI-01-complete.json",
+      "changed": false,
+      "before_sha256": "265b9dbd5cfda2740103822622efeec834d4ac95a406f394d8db93f44f8022a9",
+      "after_sha256": "265b9dbd5cfda2740103822622efeec834d4ac95a406f394d8db93f44f8022a9",
+      "changes": []
+    },
+    {
+      "file": "docs/artifacts/MRI-08-edge-below-threshold.json",
+      "changed": false,
+      "before_sha256": "143ef89e5d26710fa4e48b0ae1303c77bea3c9ef2bf1f741d2a3a0c3fed3b467",
+      "after_sha256": "143ef89e5d26710fa4e48b0ae1303c77bea3c9ef2bf1f741d2a3a0c3fed3b467",
+      "changes": []
+    },
+    {
+      "file": "docs/artifacts/MRI-CERV-01-ready.json",
+      "changed": false,
+      "before_sha256": "f9ba4a7997697c066f255873652105ad6b5f5936e580e4d58079d643ba9d14d7",
+      "after_sha256": "f9ba4a7997697c066f255873652105ad6b5f5936e580e4d58079d643ba9d14d7",
+      "changes": []
+    },
+    {
+      "file": "docs/artifacts/MRI-KNEE-01-ready.json",
+      "changed": false,
+      "before_sha256": "5bd6ce2f24db03ea9207a8249a77751421e3a9e9b9edf4e59e5c07347b20b018",
+      "after_sha256": "5bd6ce2f24db03ea9207a8249a77751421e3a9e9b9edf4e59e5c07347b20b018",
+      "changes": []
+    },
+    {
+      "file": "docs/artifacts/CPAP-02-borderline.json",
+      "changed": false,
+      "before_sha256": "b3a01648f62b4a892fd9fdf57165488b0e91ce9c1d143e524713ff2b6563a4de",
+      "after_sha256": "b3a01648f62b4a892fd9fdf57165488b0e91ce9c1d143e524713ff2b6563a4de",
+      "changes": []
+    },
+    {
+      "file": "docs/artifacts/drift_status.json",
+      "changed": false,
+      "before_sha256": "e37bb494406b73741bdd0f9828c0aac0706520fdd8ebfc4cadbba8b2943e8fc6",
+      "after_sha256": "e37bb494406b73741bdd0f9828c0aac0706520fdd8ebfc4cadbba8b2943e8fc6",
+      "changes": []
+    },
+    {
+      "file": "docs/artifacts/drift_report.md",
+      "changed": false,
+      "before_sha256": "9f5606371c206c4494b16916a614739d17d020f083def7b3a8812a39eb7b63b3",
+      "after_sha256": "9f5606371c206c4494b16916a614739d17d020f083def7b3a8812a39eb7b63b3",
+      "changes": []
+    },
+    {
+      "file": "docs/artifacts/supported_procedures.json",
+      "changed": false,
+      "before_sha256": "f5d030978286d7a1685af3361a895ef2657a3d303985ad7dc34097482d251103",
+      "after_sha256": "f5d030978286d7a1685af3361a895ef2657a3d303985ad7dc34097482d251103",
+      "changes": []
+    },
+    {
+      "file": "docs/artifacts/demo_cases.json",
+      "changed": false,
+      "before_sha256": "8526f491a5148f92d8773adf203a0916b4f4dff908160a63fcadae81c35bc003",
+      "after_sha256": "8526f491a5148f92d8773adf203a0916b4f4dff908160a63fcadae81c35bc003",
+      "changes": []
+    },
+    {
+      "file": "docs/artifacts/featured_demo_cases.json",
+      "changed": false,
+      "before_sha256": "1971d370900c6b550cdd3fd0e12e1c1c672891efdea730e9fad6be04a825cac2",
+      "after_sha256": "1971d370900c6b550cdd3fd0e12e1c1c672891efdea730e9fad6be04a825cac2",
+      "changes": []
+    },
+    {
+      "file": "docs/artifacts/status.json",
+      "changed": false,
+      "before_sha256": "619e6855a10b29e07f11eb6f5afc2c33961245a0464984ea972de86df09e2804",
+      "after_sha256": "619e6855a10b29e07f11eb6f5afc2c33961245a0464984ea972de86df09e2804",
+      "changes": []
+    },
+    {
+      "file": "docs/artifacts/safety_metrics.json",
+      "changed": false,
+      "before_sha256": "754a40327fbbb8635f3471c9c96a7165e7c95760f4bfe8e27051d4dd56c2c5f6",
+      "after_sha256": "754a40327fbbb8635f3471c9c96a7165e7c95760f4bfe8e27051d4dd56c2c5f6",
+      "changes": []
+    },
+    {
+      "file": "docs/artifacts/rulebook_status.json",
+      "changed": false,
+      "before_sha256": "e971c156c4e7e4b8ce42056e95ae1f5c32201d76ae2f14208a4c2e8a47a9f0fc",
+      "after_sha256": "e971c156c4e7e4b8ce42056e95ae1f5c32201d76ae2f14208a4c2e8a47a9f0fc",
+      "changes": []
+    },
+    {
+      "file": "docs/artifacts/rulebook_diff_reviewed_vs_active.json",
+      "changed": false,
+      "before_sha256": "9f143bf6ee8a5e4c1c8c91e43a716532bdd01a8da1dd6b66cbc8c456d177d3d8",
+      "after_sha256": "9f143bf6ee8a5e4c1c8c91e43a716532bdd01a8da1dd6b66cbc8c456d177d3d8",
+      "changes": []
+    },
+    {
+      "file": "docs/artifacts/rulebook_diff_reviewed_vs_active.md",
+      "changed": false,
+      "before_sha256": "f4fe04bb18558223a628ed2dbb4d8ac3189cc12c78419b5917a563b9b28a5487",
+      "after_sha256": "f4fe04bb18558223a628ed2dbb4d8ac3189cc12c78419b5917a563b9b28a5487",
+      "changes": []
+    }
+  ]
+}
