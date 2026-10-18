@@ -6,7 +6,7 @@ v2.0.0 mitigation: typed correction validation rejects SET_VALUE spans over 300 
 
 **Project:** Prior Authorization Readiness Copilot  
 **Owner:** Nicholas Leko  
-**Last Updated:** October 16, 2026 — v2.6.0
+**Last Updated:** October 18, 2026 — v2.7.0 release candidate
 **Status:** Versioned current behavior. Changes should update tests and docs.
 
 ---
@@ -18,7 +18,7 @@ Current repo status:
 - no LLM implementation
 - bundled case data is synthetic; the official policy snapshot and rule provenance are source material; input is not screened and must not contain real PHI, with screening remaining the operator's responsibility
 
-Automated extraction is a **drafting aid, not a decision gate**. v1.4.0's posture over-trusted extraction. Negated diagnoses returned affirmative facts, contradicting the extraction contract as written. v1.5.0 resolves that contradiction by changing what the engine may assert rather than by making extraction match the contract. v2.6.0 handles the bounded patterns below; the negation, temporality, attribution and other failure classes remain open.
+Automated extraction is a **drafting aid, not a decision gate**. v1.4.0's posture over-trusted extraction. Negated diagnoses returned affirmative facts, contradicting the extraction contract as written. v1.5.0 resolves that contradiction by changing what the engine may assert rather than by making extraction match the contract. v2.7.0 handles the bounded patterns below; the negation, temporality, attribution and other failure classes remain open.
 
 Requirement results describe the captured proposals:
 - proposed scalar passes the operator (`MET`), without asserting source support
@@ -235,7 +235,7 @@ requires:
 ---
 
 
-## Patterns handled through v2.6.0; classes remain open
+## Patterns handled through v2.7.0; classes remain open
 
 These patterns are handled; the class remains open. No row establishes general
 correctness for negation, temporality, therapy response, event completion,
@@ -401,3 +401,19 @@ rerun here; earlier failure-class feedback informed the source guard. The three
 remaining exact-status misses were not inspected. This is distinct from visible
 dev’s 11→27/27 and from the safety failure on the prior held-out set. See
 [v2.6.0](docs/releases/v2.6.0.md) and [exp-004](autoloop/exp-004/REPORT.md).
+
+
+## v2.7.0 current verification and laterality bounds
+
+Validation: **1681 passed, 9 xfailed**. The historical v2.6.0 counts above describe
+that release. The explicit contralateral H1(a) test now passes; the other nine
+strict expected failures remain. Source qualification must precede laterality:
+agreeing patient-reported evidence is excluded before it can become a spurious
+opposite-side review conflict with a legitimate objective examination.
+
+A shared literal predicate handles recognized slash, word, typed motor/reflex,
+descriptive reflex and objective-weakness routes. Normal and abnormal unilateral
+mismatches require NEEDS_REVIEW. Historical, negated, relative-attributed and
+mixed-side mentions can over-trigger review. Current episodes, general negation,
+non-patient attribution and anatomical vocabulary remain bounded, not solved.
+See [v2.7.0](docs/releases/v2.7.0.md) for release-candidate verification.

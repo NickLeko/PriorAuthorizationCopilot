@@ -1,0 +1,68 @@
+"""Synthetic fixed-clock release safeguards; no policy fetching or repository writes."""
+import json
+import sys
+from datetime import datetime, timezone
+from pathlib import Path
+sys.path.insert(0,str(Path.cwd()))
+from engine.schemas import PARequest
+from engine.service import InvalidRequestError, ReadinessService
+
+clock=lambda:datetime(2026,9,1,tzinfo=timezone.utc)
+service=ReadinessService(utc_now_provider=clock)
+OBJECTIVE='objective_motor_or_reflex_change_in_root_distribution'
+notes={
+'mismatched_abnormal':'Low back pain with right leg radiculopathy. Left L5 distribution: strength 4/5. NSAIDs for 8 weeks with no improvement.',
+'mismatched_normal':'Low back pain with right leg radiculopathy. Left L5 distribution: strength 5/5. NSAIDs for 8 weeks with no improvement.',
+'matching':'Low back pain with right leg radiculopathy. Right L5 distribution: strength 4/5. NSAIDs for 8 weeks with no improvement.',
+'source_order':'Low back pain with left leg radiculopathy. On exam left L5 distribution: strength 4/5. Patient reports right L5 distribution: strength 4/5. NSAIDs for 8 weeks with no improvement.',
+}
+
+def attest(result):
+    payload=result.request.model_dump(mode='json')
+    payload['fact_verifications']={r.key:{'state':'HUMAN_VERIFIED','reviewer':'Synthetic release fixture only','verified_at':'2026-01-01T00:00:00Z','fingerprint':r.verification_fingerprint} for r in result.results}
+    return PARequest.model_validate(payload)
+
+
+def normalize(value):
+    if isinstance(value,dict):
+        return {k:('__VOLATILE__' if k in {'run_id','timestamp_utc'} else normalize(v)) for k,v in value.items()}
+    if isinstance(value,list):
+        return [normalize(v) for v in value]
+    return value
+
+rows={}
+for name,text in notes.items():
+    proposal=service.evaluate(PARequest(payer='Aetna',procedure_code='MRI_LUMBAR',note_text=text))
+    verified=service.evaluate(attest(proposal))
+    if name.startswith('mismatched'):
+        assert proposal.overall_status==verified.overall_status=='NEEDS_REVIEW'
+        assert not verified.submission_readiness
+    else:
+        assert proposal.overall_status=='PENDING_VERIFICATION'
+        assert verified.overall_status=='READY' and verified.submission_readiness
+    if name=='source_order':
+        assert proposal.captured_fact_states[OBJECTIVE]=='CAPTURED'
+        assert len(proposal.evidence_map[OBJECTIVE])==1
+        assert 'Patient reports' not in proposal.evidence_map[OBJECTIVE][0].text
+    rows[name]={'proposal':normalize(proposal.model_dump(mode='json')),'attested':normalize(verified.model_dump(mode='json'))}
+original=service.evaluate(PARequest(payer='Aetna',procedure_code='MRI_LUMBAR',note_text=notes['matching']))
+payload=attest(original).model_dump(mode='json')
+payload['note_text']=notes['mismatched_abnormal']
+try:
+    service.evaluate(PARequest.model_validate(payload))
+except InvalidRequestError as exc:
+    assert 'Stale or mismatched verification' in str(exc)
+else:
+    raise AssertionError('Old attestations were accepted after material input change.')
+# Independent governance gate: same matching proposal, same verified facts, real clock.
+runtime=ReadinessService()
+current=runtime.evaluate(attest(original))
+assert current.overall_status=='READY'
+assert not current.submission_readiness and current.policy_trust_level=='demo'
+report={'fixed_clock':'2026-09-01T00:00:00Z','cases':rows,
+        'mismatch_attestation_cannot_make_ready':True,'material_change_rejects_attestation':True,
+        'source_order_retains_only_objective_evidence':True,'real_clock_governance_blocks_submission_independently':True,
+        'runtime_drift':runtime.get_drift_status().model_dump(mode='json'),
+        'rulebook':service.get_rulebook_status().model_dump(mode='json'),'bundle_digest':service._bundle_digest()}
+Path(sys.argv[1]).write_text(json.dumps(report,sort_keys=True,indent=2)+'\n')
+print(json.dumps({k:v for k,v in report.items() if k not in {'cases','runtime_drift','rulebook'}}))

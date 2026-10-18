@@ -1,0 +1,86 @@
+# From repository root: .venv/bin/python < docs/releases/v2.7.0-generation-command.txt
+# PA_RELEASE_STAGE=baseline performs a non-writing comparison at the approved feature version.
+# Default stage=release permits only 2.6.0 -> 2.7.0 release metadata; verify permits no changes.
+import hashlib
+import json
+import os
+from pathlib import Path
+
+import requests
+
+from engine.acceptance import ACCEPTANCE_GOVERNANCE_NOW
+from scripts.generate_artifacts import main as artifacts
+from scripts.generate_golden_outputs import main as goldens
+
+stage = os.environ.get('PA_RELEASE_STAGE', 'release')
+assert stage in {'baseline', 'release', 'verify'}
+root = Path.cwd().resolve()
+report_path = Path(os.environ.get('PA_RELEASE_AUDIT_PATH', 'docs/releases/v2.7.0-generation-audit.json'))
+original_write = Path.write_text
+original_request = requests.Session.request
+before = {}
+rows = []
+
+
+def differences(old, new, pointer=''):
+    if type(old) is not type(new):
+        return [(pointer, old, new)]
+    if isinstance(old, dict):
+        if old.keys() != new.keys():
+            return [(pointer, old, new)]
+        return [d for key in old for d in differences(old[key], new[key], pointer + '/' + key)]
+    if isinstance(old, list):
+        if len(old) != len(new):
+            return [(pointer, old, new)]
+        return [d for i, (left, right) in enumerate(zip(old, new)) for d in differences(left, right, pointer + '/' + str(i))]
+    return [] if old == new else [(pointer, old, new)]
+
+
+def offline(*args, **kwargs):
+    raise AssertionError('Live source requests are prohibited during release generation.')
+
+
+def capture_write(path, data, *args, **kwargs):
+    absolute = path.resolve()
+    relative = absolute.relative_to(root).as_posix()
+    assert relative.startswith(('test/golden/', 'docs/artifacts/')), relative
+    assert absolute.is_file(), relative
+    assert absolute not in before, ('Repeated generator write', relative)
+    old = absolute.read_bytes()
+    new = data.encode(kwargs.get('encoding') or 'utf-8')
+    before[absolute] = old
+    changes = []
+    if old != new:
+        assert stage == 'release', ('Unexpected baseline/repeat difference', relative)
+        assert absolute.suffix == '.json', relative
+        changes = differences(json.loads(old), json.loads(new))
+        assert changes, ('Formatting-only difference', relative)
+        for pointer, left, right in changes:
+            assert pointer in ('/engine_version', '/app_version') and left == '2.6.0' and right == '2.7.0', (relative, pointer, left, right)
+    rows.append({'file': relative, 'changed': old != new,
+                 'before_sha256': hashlib.sha256(old).hexdigest(), 'after_sha256': hashlib.sha256(new).hexdigest(),
+                 'changes': [{'pointer': p, 'before': left, 'after': right} for p, left, right in changes]})
+    return len(data) if stage == 'baseline' else original_write(path, data, *args, **kwargs)
+
+
+try:
+    Path.write_text = capture_write
+    requests.Session.request = offline
+    clock = lambda: ACCEPTANCE_GOVERNANCE_NOW
+    goldens(utc_now_provider=clock)
+    artifacts(utc_now_provider=clock)
+    assert len(rows) == 25, len(rows)
+except BaseException:
+    Path.write_text = original_write
+    if stage != 'baseline':
+        for path, content in before.items():
+            path.write_bytes(content)
+    raise
+finally:
+    Path.write_text = original_write
+    requests.Session.request = original_request
+
+report = {'stage': stage, 'clock': ACCEPTANCE_GOVERNANCE_NOW.isoformat(), 'outputs': len(rows),
+          'changed': sum(row['changed'] for row in rows), 'non_version_changes': [], 'governance_changes': [], 'files': rows}
+report_path.write_text(json.dumps(report, indent=2) + '\n')
+print(json.dumps({k: v for k, v in report.items() if k != 'files'}, indent=2))

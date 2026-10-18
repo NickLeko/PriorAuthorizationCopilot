@@ -1,0 +1,31 @@
+# Run from repository root: .venv/bin/python < docs/releases/v2.7.0-preflight-command.txt
+# Read-only fixed-clock governance preflight. Any difference stops release work.
+import json
+from pathlib import Path
+
+from engine.acceptance import ACCEPTANCE_GOVERNANCE_NOW, build_acceptance_governance_payloads, normalize_drift_payload
+from engine.rendering import render_drift_markdown, render_rulebook_diff_markdown
+from engine.service import ReadinessService
+
+service = ReadinessService(utc_now_provider=lambda: ACCEPTANCE_GOVERNANCE_NOW)
+checks = []
+for name, actual in build_acceptance_governance_payloads(service).items():
+    path = Path('test/golden/governance') / (name + '.json')
+    checks.append({'file': path.as_posix(), 'unchanged': json.loads(path.read_text()) == actual})
+drift = service.get_drift_status()
+diff = service.get_rulebook_diff('2026-04-09-reviewed-v0.4', '2026-08-22-active-v1.0')
+for name, actual in {
+    'drift_status.json': normalize_drift_payload(drift.model_dump(mode='json')),
+    'rulebook_status.json': service.get_rulebook_status().model_dump(mode='json'),
+    'rulebook_diff_reviewed_vs_active.json': diff.model_dump(mode='json'),
+    'drift_report.md': render_drift_markdown(drift),
+    'rulebook_diff_reviewed_vs_active.md': render_rulebook_diff_markdown(diff),
+}.items():
+    path = Path('docs/artifacts') / name
+    expected = json.loads(path.read_text()) if path.suffix == '.json' else path.read_text()
+    checks.append({'file': path.as_posix(), 'unchanged': expected == actual})
+report = {'clock': ACCEPTANCE_GOVERNANCE_NOW.isoformat(), 'bundle_digest': service._bundle_digest(),
+          'stop_required': any(not item['unchanged'] for item in checks), 'checks': checks}
+Path('docs/releases/v2.7.0-preflight.json').write_text(json.dumps(report, indent=2) + '\n')
+assert not report['stop_required'], 'Governance drift: stop without regenerating.'
+print(json.dumps(report, indent=2))

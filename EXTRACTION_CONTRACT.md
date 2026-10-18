@@ -1,4 +1,4 @@
-# Extraction, correction and verification contract v2.6
+# Extraction, correction and verification contract v2.7
 
 v2.0.0 retains the extractor and deterministic operators. Typed, source-located corrections materialize effective facts over an immutable original proposal; every ordered event is retained and the last event wins. SET_VALUE requires exact quotations of at most 300 characters per span and the submitted note hash; multiple spans are allowed and overlength spans are rejected, never truncated. SET_MISSING records document review and any offending proposal spans. SET_NEEDS_REVIEW and RESTORE_ORIGINAL preserve explicit state/history. Types, units and reviewer-enterable values come from fact contracts; there is no scalar coercion or free-text fact value.
 
@@ -11,7 +11,7 @@ Its claim that a diagnosis returned True only without supported negation was
 contradicted by `Patient does not have low back pain with radiculopathy`.
 v1.5.0 resolves that contradiction by changing what the engine may assert,
 not by making extraction match the old contract. Negation, temporality and
-attribution errors remain. v2.6 handles the specific patterns listed below; each failure class remains open.
+attribution errors remain. v2.7 handles the specific patterns listed below; each failure class remains open.
 
 The normative guarantees are G01–G07 below and the exact examples in the JSON
 block. `TestExtractionContractAlignment` executes correct expectations; remaining known failures are strict xfails. These finite examples are not universal language claims;
@@ -365,7 +365,7 @@ decline unsupported proposals. This API records attestations; it cannot prove a 
 Use synthetic notes only. There is no production clinical-language guarantee.
 
 
-## Patterns handled through v2.6; failure classes remain open
+## Patterns handled through v2.7; failure classes remain open
 
 The following bounded patterns are handled; the class remains open in every row:
 
@@ -409,7 +409,7 @@ reading, and reviewer identity remains self-reported. This display aid does not
 change extraction, statuses, the readiness gate or the remaining false-READY
 pathways.
 
-Current release validation: **1461 passed, 10 xfailed**. Contract JSON alone
+Historical v2.6.0 release validation: **1461 passed, 10 xfailed**. Contract JSON alone
 drives known-failure markers; there is no exemption list. Four contract examples
 are marked: `unrelated_therapy`, `neither_nor_negation`,
 `same_sentence_borrowed_date`, and the disputed `negated_strength` expectation.
@@ -417,7 +417,7 @@ For that last example, the unchanged False / NOT_READY label remains disputed:
 the implementation returns review because not 4/5 establishes no observed score.
 It is not a remaining affirmative numeric-strength proposal.
 
-The six other strict xfails cover two cross-sentence temporality tests, generic
+At v2.6.0, six other strict xfails covered two cross-sentence temporality tests, generic
 analgesic duration, next-line improvement, contralateral attribution, and a
 copy-forward header in another sentence. Independent case 18 (intact reflexes)
 now passes. Independent case 17's input is unchanged; the owner corrected its
@@ -430,9 +430,11 @@ Negation, temporality, copy-forward, template, attribution and cross-sentence
 linkage **remain open failure classes**. The H1(a) regressions cover selected
 same-sentence cues, not general note provenance or clinical interpretation.
 Sentence-wide cues can over-trigger review when they refer to a different
-finding. Improvement on a following line, contralateral strength attributed to
-prior surgery, and copy-forward headers in another sentence remain correct-value
-strict xfails in `test/test_h1_review_triggers.py`. With supplied attestations,
+finding. Improvement on a following line and copy-forward headers in another
+sentence remain correct-value strict xfails in `test/test_h1_review_triggers.py`.
+The explicit contralateral prior-surgery example now requires review under shared
+literal laterality qualification; broader episode and causal attribution remain
+unresolved. With supplied attestations,
 these remaining examples can still reach `READY` and
 `submission_readiness=true` on the verified lumbar pathway. Human attestation
 remains a necessary safety gate and does not establish extraction accuracy.
@@ -513,3 +515,22 @@ negation, laterality, episode attribution and same-sentence date borrowing remai
 open. Sentence-wide exclusion can conservatively abstain on a qualifier about a
 different event. See [v2.6.0](docs/releases/v2.6.0.md) and
 [exp-004](autoloop/exp-004/REPORT.md) for development versus held-out evidence.
+
+
+## v2.7 shared objective-exam laterality
+
+Recognition is followed by source qualification, shared literal laterality
+qualification, then candidate resolution. All retained objective exam routes
+use the same opposite-side radiculopathy predicate. Explicit unilateral
+mismatches, including normal exams, require NEEDS_REVIEW; matching, unsided and
+bilateral examination handling keeps its existing bounded semantics.
+Historical, negated, relative-attributed and mixed-side mentions can conservatively
+trigger review. No episode-aware temporality, general negation interpretation,
+anatomical inference or vocabulary expansion is claimed.
+
+Validation: **1681 passed, 9 xfailed**. The 91 executable JSON examples and four
+known-failure objects are unchanged from the approved feature baseline. The
+previous contralateral H1(a) expected failure is now an ordinary passing test;
+the other nine expected failures remain. Exact citations and source offsets are
+preserved; material fact changes invalidate stale attestations. Attesting a
+NEEDS_REVIEW fact does not satisfy its requirement. See [v2.7.0](docs/releases/v2.7.0.md).

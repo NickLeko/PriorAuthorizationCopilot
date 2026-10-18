@@ -4,11 +4,14 @@ This self-directed prototype demonstrates deterministic prior-authorization docu
 
 v2.0.0 adds typed, source-located reviewer corrections for wrong or missed facts, with contract meanings and original/effective values shown in Streamlit. Applying a correction clears attestations and letters; passing facts remain `PENDING_VERIFICATION` until reviewed and attested again. Letters disclose reviewer-supplied facts, quotations and self-reported identities, excluding audit comments from reasoning. See the canonical [correction limits](docs/safety_and_scope.md#correction-limits).
 
-v2.6.0 releases exp-004’s reported drug-course grammar, typed motor/reflex
-exams, additional sleep-study dates and full AHI/RDI names. Patient-reported,
-historical or unperformed exams cannot supply objective evidence under the
-supported sentence qualifiers. Engine/app version is **2.6.0**; record schema
-remains **2.0.0**. No policy, trust setting or monitor clock changes.
+The v2.7.0 release candidate shares bounded literal opposite-side qualification
+across slash, word, typed motor/reflex, descriptive reflex and objective-weakness
+findings. Source qualification precedes laterality qualification and resolution.
+Explicitly mismatched normal or abnormal exams require `NEEDS_REVIEW`.
+Historical or negated opposite-side mentions can also conservatively require review;
+this does not establish current episode truth. Engine/app version is **2.7.0**;
+record schema remains **2.0.0**. Policies, human verification and governance are
+unchanged. Validation: **1681 passed, 9 xfailed**. See [release notes](docs/releases/v2.7.0.md).
 
 [engine/data/cpb0236_drugs_v1.json](engine/data/cpb0236_drugs_v1.json) remains
 owner-approved reviewed data: 26 generic drugs, common US brands, ATC codes and
@@ -19,7 +22,7 @@ negation, patient and linkage guards remain. Leading verbs such as “Took”,
 supported doses/frequencies and duration-first courses are now recognized;
 unusual prose and unresolved courses can still be missed or require review.
 
-Release validation: **1461 passed, 10 xfailed**. Corpus is **52/52**, owner visible
+Historical v2.6.0 release validation: **1461 passed, 10 xfailed**. Corpus is **52/52**, owner visible
 dev **27/27** (11/27 before development), and own pairs **102/102**, with zero
 false PENDING_VERIFICATION across these sets and all exp-002/003 pairs. The
 owner dev set remains in [dev.json](autoloop/exp-004/dev.json), unchanged.
@@ -93,7 +96,7 @@ trust gate; it does not validate the borrowed date or the incorrect attestations
 
 ## Quick Reviewer Path
 
-The record schema version and release version are versioned independently. v2.6.0 writes record `schema_version: "2.0.0"`; v1.5 records retain their existing validation, and legacy records remain explicitly labeled and viewable only.
+The record schema version and release version are versioned independently. v2.7.0 writes record `schema_version: "2.0.0"`; v1.5 records retain their existing validation, and legacy records remain explicitly labeled and viewable only.
 
 From a fresh clone, enter the repo and run:
 

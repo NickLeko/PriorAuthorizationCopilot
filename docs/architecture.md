@@ -130,3 +130,14 @@ For the one verified pathway, provenance remains inspectable as `official source
 - no LLM orchestration layer
 
 The existing archive is sufficient to demonstrate versioned history and replay within the local deterministic scope.
+
+
+## Shared objective-exam qualification in v2.7.0
+
+Within extraction, the existing candidate tuples flow explicitly through source
+qualification, laterality qualification and boolean resolution, before policy
+evaluation. `_has_opposite_side_radiculopathy` supplies the same literal predicate
+to the shared stage and retained inline checks. It does not interpret negation,
+historical episodes or a different person's diagnosis. Citations and tuple offsets
+are retained; normal and abnormal explicit mismatches become review evidence.
+This release packages the approved feature without further production changes.

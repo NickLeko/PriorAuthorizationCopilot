@@ -252,3 +252,19 @@ rerun here; failure-class feedback from a prior held-out set informed the repair
 The visible dev check (11→27/27) and own cases are development evidence, not that
 independent evaluation. See [v2.6.0](releases/v2.6.0.md), the
 [contract](../EXTRACTION_CONTRACT.md), and [exp-004](../autoloop/exp-004/REPORT.md).
+
+
+## v2.7.0 current review limits
+
+Release-candidate validation: **1681 passed, 9 xfailed**. The v2.6.0 section above
+is historical. All retained objective-exam notations receive shared literal
+opposite-side qualification after source qualification; explicit mismatched
+normal or abnormal findings require NEEDS_REVIEW. Historical, negated,
+relative-attributed and mixed-side mentions can conservatively trigger review.
+This does not infer current episodes, anatomy or general language meaning.
+
+Passing matching-side facts remain PENDING_VERIFICATION until attested. Review
+findings do not become MET merely through attestation. Policy trust and rulebook
+readiness remain independent. Release preparation adds no extraction behavior
+beyond the approved feature and does not verify a live deployment or live policy
+freshness. See [v2.7.0](releases/v2.7.0.md).
