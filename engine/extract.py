@@ -776,8 +776,37 @@ def _resolve_boolean_candidates(
     return bool(value)
 
 
+def _objective_candidates_with_laterality_guards(
+    text: str, candidates: List[Tuple[bool | str, int, int]]
+) -> List[Tuple[bool | str, int, int]]:
+    """Qualify explicit unilateral root evidence without expanding recognition.
+
+    Keep unsided/bilateral contexts unchanged. A mismatched normal finding is
+    review evidence too; changing only the value preserves its exact citation.
+    """
+    bilateral = r"\b(?:bilateral|left\s+and\s+right|right\s+and\s+left)\b"
+    if re.search(bilateral + r"(?:[- ]sided)?\s+(?:leg\s+)?radiculopathy\b", text):
+        return list(candidates)
+    diagnosis_sides = {
+        match.group("side") for match in re.finditer(r"\b(?P<side>right|left)(?:[- ]sided)?\s+(?:leg\s+)?radiculopathy\b", text)
+    }
+    if len(diagnosis_sides) != 1:
+        return list(candidates)
+
+    qualified = []
+    for value, start, end in candidates:
+        evidence = text[start:end]
+        exam_sides = {
+            match.group("side") for match in re.finditer(rf"\b(?P<side>right|left)\s+(?:{ROOT_DISTRIBUTION_RE.pattern})", evidence)
+        }
+        if len(exam_sides) == 1 and exam_sides != diagnosis_sides and not re.search(bilateral, evidence):
+            value = REVIEW_REQUIRED_FACT
+        qualified.append((value, start, end))
+    return qualified
+
+
 def _objective_candidates_with_source_guards(text: str, candidates: List[Tuple[bool | str, int, int]]) -> List[Tuple[bool | str, int, int]]:
-    """Separate subjective/unperformed exams before resolving objective facts.
+    """Qualify source and laterality before resolving objective facts.
 
     Qualifiers cover the entire real sentence, including semicolons and decimal
     grades. Apply this once to every extraction route, including legacy paths.
@@ -811,7 +840,7 @@ def _objective_candidates_with_source_guards(text: str, candidates: List[Tuple[b
         for value, start, end in nonobjective
         if value == REVIEW_REQUIRED_FACT or value not in objective_values
     ]
-    return objective + conflicts
+    return _objective_candidates_with_laterality_guards(text, objective + conflicts)
 
 
 def _typed_root_exam_candidates(text: str) -> List[Tuple[bool | str, int, int]]:

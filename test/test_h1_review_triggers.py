@@ -117,7 +117,6 @@ def test_improved_newline_response_should_require_review():
     assert extract_facts(N4)[0][R] == REVIEW_REQUIRED_FACT
 
 
-@pytest.mark.xfail(strict=True, reason="laterality and attribution: contralateral strength belongs to prior hip surgery")
 def test_left_vs_right_objective_finding_should_require_review():
     assert extract_facts(N5)[0][OBJECTIVE] == REVIEW_REQUIRED_FACT
 
