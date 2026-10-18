@@ -52,6 +52,8 @@ class ExtractionProposal(BaseModel):
             raise ValueError("Extraction evidence exceeds the existing citation cap.")
         # Reuse strict extractor vocabulary, state, and exact note-slice validation.
         materialize(self.snapshot, [], self.note_text, FACT_CONTRACTS)
+        if any(state == "CAPTURED" and not snapshot["evidence"].get(key) for key, state in snapshot["states"].items()):
+            raise ValueError("CAPTURED facts require a retained source citation.")
         return self
 
 

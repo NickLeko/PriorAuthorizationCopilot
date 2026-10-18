@@ -53,6 +53,8 @@ archives are separate and must not be updated to accommodate experiment failures
 string diagnostics, and an existing immutable `OriginalProposal`. Its validation
 requires exactly the 12 existing fact keys and reuses `materialize()` for the
 extractor vocabulary, state/value consistency, and exact source slices. The
+Phase 2 entry gate additionally requires at least one retained valid citation
+for every captured fact; missing/review evidence semantics are unchanged. The
 legacy import adapter also validates raw types and offsets before JSON capture
 can normalize them. This does not establish semantic support.
 
