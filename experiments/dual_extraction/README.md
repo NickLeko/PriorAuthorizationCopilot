@@ -1,0 +1,48 @@
+# Dual extraction foundation — Phase 1
+
+This opt-in, offline foundation preserves the released regex extractor and the
+existing service workflow. It contains no LLM calls, provider configuration,
+reconciliation, three-mode runner, or application mode switch.
+
+## Frozen release behavior
+
+The reference is v2.7.0, commit
+`5d7a03f646eccd70e69bfc32f3281057b3bf6b54`. The separate
+[`artifacts/regex-v2.7.0.jsonl`](artifacts/regex-v2.7.0.jsonl) contains a manifest
+followed by 177 case records:
+
+| Existing input | Cases | Service evaluations |
+| --- | ---: | ---: |
+| `inputs/synthetic_cases.json` | 52 | 52 |
+| JSON examples in `EXTRACTION_CONTRACT.md` | 91 | 62 |
+| `test/fixtures/v210_independent.json` | 20 | 20 |
+| `inputs/replay/cases.json` | 14 | 14 |
+| Total | 177 | 148 |
+
+These are regression inputs, not held-out validation. The artifact records what
+the release does, including known wrong proposals; it creates no clinical gold
+labels and measures no semantic accuracy. Existing source labels are unchanged.
+Contract examples without a procedure have extraction captures only. Replay
+inputs are evaluated against the current active policy without importing their
+synthetic attestation flags or performing counterfactual policy replay.
+
+Every record includes the source identifier, exact note and SHA-256, request
+metadata where declared, all 12 raw facts with Python type names, captured states,
+ordered citations, offsets, truncation counts, and the downstream evaluation
+where scoped. Each source runs once: scoped records reuse the service's immutable
+original proposal. Only audit run IDs and wall-clock audit timestamps are
+normalized. Values, snapshots, fingerprints, policy trust, and governance results
+remain intact. The governance clock is the existing historical acceptance instant
+`2026-09-01T00:00:00Z`; this does not refresh monitoring or change runtime clocks.
+
+From the repository root, using the project's Python environment:
+
+```bash
+python -m experiments.dual_extraction.baseline --check
+python -m experiments.dual_extraction.baseline --write
+```
+
+`--check` never writes. Regeneration requires explicit `--write`; review its diff
+against the released capture. `--output` can direct a capture to a temporary file,
+and `--repo-root` selects the repository input root. Production goldens and decision
+archives are separate and must not be updated to accommodate experiment failures.
