@@ -1,4 +1,8 @@
 {
+  "adaptation_attempted": false,
+  "attempt": null,
+  "attempt_population": null,
+  "attempt_status": "NOT_ATTEMPTED",
   "case_id": "EXTRACTION_CONTRACT.md#neither_nor_negation",
   "comparison": {
     "clinical_verification": false,
@@ -2966,6 +2970,7 @@
   "known_failure": "negation: neither/nor scope is unsupported",
   "note_sha256": "c752c9dfa6d9fd68ac384c2129a656e62b8884660fb5dac2abfd908bbdf28001",
   "note_text": "Patient has neither low back pain nor radiculopathy. Right L5 distribution: strength 4/5. NSAIDs for 8 weeks with no improvement.",
+  "recording_kind": "hand_authored_adapted",
   "recording_status": "VALID",
   "scope": "SUPPORTED"
 }

@@ -1,4 +1,8 @@
 {
+  "adaptation_attempted": false,
+  "attempt": null,
+  "attempt_population": null,
+  "attempt_status": "NOT_ATTEMPTED",
   "case_id": "inputs/synthetic_cases.json#MRI-01-complete",
   "comparison": {
     "clinical_verification": false,
@@ -3306,6 +3310,7 @@
   "known_failure": null,
   "note_sha256": "b66310c6bfc8e97dbd6f93c79fa3af51ae95a0d47c6c0d5cfad338ab451b128d",
   "note_text": "Low back pain with right leg radiculopathy x 8 weeks. NSAIDs for 8 weeks with minimal improvement; PT also completed. Objective motor exam in the right L5 distribution: ankle dorsiflexion strength 4/5. Denies bowel/bladder incontinence. No saddle anesthesia. Prior imaging: lumbar xray inconclusive.",
+  "recording_kind": "hand_authored_adapted",
   "recording_status": "VALID",
   "scope": "SUPPORTED"
 }

@@ -1,0 +1,2517 @@
+{
+  "adaptation_attempted": true,
+  "attempt": {
+    "attempt_id": "synthetic-attempt-valid-response",
+    "case_id": "inputs/synthetic_cases.json#CPAP-01-complete",
+    "note_sha256": "a6ba49740239357153c74a1398bfcf4f1ea07ca6ca76500f77da99692fbfb2b2",
+    "outcome": "response",
+    "path": "valid-response.json",
+    "provider_id": "synthetic-no-provider",
+    "recording": {
+      "model_id": "synthetic-no-model",
+      "origin": "hand_authored_synthetic",
+      "prompt_version": "synthetic-schema-v1",
+      "response_id": "synthetic-valid-response",
+      "source": "recorded-llm:synthetic"
+    },
+    "stored_sha256": "9310f83ace595115c7c0e49b10eb3f17d70821d7c63d624fd387476670fdcb40"
+  },
+  "attempt_population": "synthetic_raw_demonstration",
+  "attempt_status": "VALID_RESPONSE",
+  "case_id": "inputs/synthetic_cases.json#CPAP-01-complete",
+  "comparison": {
+    "clinical_verification": false,
+    "comparisons": [
+      {
+        "analysis_flags": [],
+        "citation_comparison_complete": true,
+        "citation_order_disagreement": false,
+        "citation_set_disagreement": false,
+        "disposition": "MISSING",
+        "dual_citation_sources": [],
+        "dual_complete_citation_count": 0,
+        "dual_evidence_capped": false,
+        "dual_observed_unique_citation_count": 0,
+        "evidence_source": "none",
+        "key": "back_pain_with_radiculopathy",
+        "reason": "BOTH_MISSING",
+        "retained_citation_order_equal": true,
+        "retained_citation_sets_equal": true,
+        "state_disagreement": false,
+        "total_citation_counts_equal": true,
+        "truncated_or_incomplete_citation_comparison": false,
+        "value_disagreement": false,
+        "values_agree": null
+      },
+      {
+        "analysis_flags": [],
+        "citation_comparison_complete": true,
+        "citation_order_disagreement": false,
+        "citation_set_disagreement": false,
+        "disposition": "MISSING",
+        "dual_citation_sources": [],
+        "dual_complete_citation_count": 0,
+        "dual_evidence_capped": false,
+        "dual_observed_unique_citation_count": 0,
+        "evidence_source": "none",
+        "key": "objective_motor_or_reflex_change_in_root_distribution",
+        "reason": "BOTH_MISSING",
+        "retained_citation_order_equal": true,
+        "retained_citation_sets_equal": true,
+        "state_disagreement": false,
+        "total_citation_counts_equal": true,
+        "truncated_or_incomplete_citation_comparison": false,
+        "value_disagreement": false,
+        "values_agree": null
+      },
+      {
+        "analysis_flags": [],
+        "citation_comparison_complete": true,
+        "citation_order_disagreement": false,
+        "citation_set_disagreement": false,
+        "disposition": "MISSING",
+        "dual_citation_sources": [],
+        "dual_complete_citation_count": 0,
+        "dual_evidence_capped": false,
+        "dual_observed_unique_citation_count": 0,
+        "evidence_source": "none",
+        "key": "cpb_0236_conservative_therapy_weeks",
+        "reason": "BOTH_MISSING",
+        "retained_citation_order_equal": true,
+        "retained_citation_sets_equal": true,
+        "state_disagreement": false,
+        "total_citation_counts_equal": true,
+        "truncated_or_incomplete_citation_comparison": false,
+        "value_disagreement": false,
+        "values_agree": null
+      },
+      {
+        "analysis_flags": [],
+        "citation_comparison_complete": true,
+        "citation_order_disagreement": false,
+        "citation_set_disagreement": false,
+        "disposition": "MISSING",
+        "dual_citation_sources": [],
+        "dual_complete_citation_count": 0,
+        "dual_evidence_capped": false,
+        "dual_observed_unique_citation_count": 0,
+        "evidence_source": "none",
+        "key": "cpb_0236_conservative_therapy_no_improvement",
+        "reason": "BOTH_MISSING",
+        "retained_citation_order_equal": true,
+        "retained_citation_sets_equal": true,
+        "state_disagreement": false,
+        "total_citation_counts_equal": true,
+        "truncated_or_incomplete_citation_comparison": false,
+        "value_disagreement": false,
+        "values_agree": null
+      },
+      {
+        "analysis_flags": [],
+        "citation_comparison_complete": true,
+        "citation_order_disagreement": false,
+        "citation_set_disagreement": false,
+        "disposition": "MISSING",
+        "dual_citation_sources": [],
+        "dual_complete_citation_count": 0,
+        "dual_evidence_capped": false,
+        "dual_observed_unique_citation_count": 0,
+        "evidence_source": "none",
+        "key": "conservative_therapy_weeks",
+        "reason": "BOTH_MISSING",
+        "retained_citation_order_equal": true,
+        "retained_citation_sets_equal": true,
+        "state_disagreement": false,
+        "total_citation_counts_equal": true,
+        "truncated_or_incomplete_citation_comparison": false,
+        "value_disagreement": false,
+        "values_agree": null
+      },
+      {
+        "analysis_flags": [],
+        "citation_comparison_complete": true,
+        "citation_order_disagreement": false,
+        "citation_set_disagreement": false,
+        "disposition": "MISSING",
+        "dual_citation_sources": [],
+        "dual_complete_citation_count": 0,
+        "dual_evidence_capped": false,
+        "dual_observed_unique_citation_count": 0,
+        "evidence_source": "none",
+        "key": "symptom_duration_weeks",
+        "reason": "BOTH_MISSING",
+        "retained_citation_order_equal": true,
+        "retained_citation_sets_equal": true,
+        "state_disagreement": false,
+        "total_citation_counts_equal": true,
+        "truncated_or_incomplete_citation_comparison": false,
+        "value_disagreement": false,
+        "values_agree": null
+      },
+      {
+        "analysis_flags": [],
+        "citation_comparison_complete": true,
+        "citation_order_disagreement": false,
+        "citation_set_disagreement": false,
+        "disposition": "MISSING",
+        "dual_citation_sources": [],
+        "dual_complete_citation_count": 0,
+        "dual_evidence_capped": false,
+        "dual_observed_unique_citation_count": 0,
+        "evidence_source": "none",
+        "key": "neuro_red_flags_documented",
+        "reason": "BOTH_MISSING",
+        "retained_citation_order_equal": true,
+        "retained_citation_sets_equal": true,
+        "state_disagreement": false,
+        "total_citation_counts_equal": true,
+        "truncated_or_incomplete_citation_comparison": false,
+        "value_disagreement": false,
+        "values_agree": null
+      },
+      {
+        "analysis_flags": [],
+        "citation_comparison_complete": true,
+        "citation_order_disagreement": false,
+        "citation_set_disagreement": false,
+        "disposition": "MISSING",
+        "dual_citation_sources": [],
+        "dual_complete_citation_count": 0,
+        "dual_evidence_capped": false,
+        "dual_observed_unique_citation_count": 0,
+        "evidence_source": "none",
+        "key": "prior_imaging_result",
+        "reason": "BOTH_MISSING",
+        "retained_citation_order_equal": true,
+        "retained_citation_sets_equal": true,
+        "state_disagreement": false,
+        "total_citation_counts_equal": true,
+        "truncated_or_incomplete_citation_comparison": false,
+        "value_disagreement": false,
+        "values_agree": null
+      },
+      {
+        "analysis_flags": [],
+        "citation_comparison_complete": true,
+        "citation_order_disagreement": false,
+        "citation_set_disagreement": false,
+        "disposition": "MISSING",
+        "dual_citation_sources": [],
+        "dual_complete_citation_count": 0,
+        "dual_evidence_capped": false,
+        "dual_observed_unique_citation_count": 0,
+        "evidence_source": "none",
+        "key": "mechanical_symptoms_documented",
+        "reason": "BOTH_MISSING",
+        "retained_citation_order_equal": true,
+        "retained_citation_sets_equal": true,
+        "state_disagreement": false,
+        "total_citation_counts_equal": true,
+        "truncated_or_incomplete_citation_comparison": false,
+        "value_disagreement": false,
+        "values_agree": null
+      },
+      {
+        "analysis_flags": [],
+        "citation_comparison_complete": true,
+        "citation_order_disagreement": false,
+        "citation_set_disagreement": false,
+        "disposition": "CAPTURED",
+        "dual_citation_sources": [
+          [
+            "regex"
+          ]
+        ],
+        "dual_complete_citation_count": 1,
+        "dual_evidence_capped": false,
+        "dual_observed_unique_citation_count": 1,
+        "evidence_source": "regex",
+        "key": "osa_diagnosis",
+        "reason": "AGREED_CAPTURE",
+        "retained_citation_order_equal": true,
+        "retained_citation_sets_equal": true,
+        "state_disagreement": false,
+        "total_citation_counts_equal": true,
+        "truncated_or_incomplete_citation_comparison": false,
+        "value_disagreement": false,
+        "values_agree": true
+      },
+      {
+        "analysis_flags": [],
+        "citation_comparison_complete": true,
+        "citation_order_disagreement": true,
+        "citation_set_disagreement": true,
+        "disposition": "NEEDS_REVIEW",
+        "dual_citation_sources": [
+          [
+            "regex"
+          ]
+        ],
+        "dual_complete_citation_count": 1,
+        "dual_evidence_capped": false,
+        "dual_observed_unique_citation_count": 1,
+        "evidence_source": "regex",
+        "key": "sleep_study_date",
+        "reason": "STATE_DISAGREEMENT",
+        "retained_citation_order_equal": false,
+        "retained_citation_sets_equal": false,
+        "state_disagreement": true,
+        "total_citation_counts_equal": false,
+        "truncated_or_incomplete_citation_comparison": false,
+        "value_disagreement": false,
+        "values_agree": null
+      },
+      {
+        "analysis_flags": [],
+        "citation_comparison_complete": true,
+        "citation_order_disagreement": true,
+        "citation_set_disagreement": true,
+        "disposition": "NEEDS_REVIEW",
+        "dual_citation_sources": [
+          [
+            "regex"
+          ]
+        ],
+        "dual_complete_citation_count": 1,
+        "dual_evidence_capped": false,
+        "dual_observed_unique_citation_count": 1,
+        "evidence_source": "regex",
+        "key": "ahi_documented",
+        "reason": "STATE_DISAGREEMENT",
+        "retained_citation_order_equal": false,
+        "retained_citation_sets_equal": false,
+        "state_disagreement": true,
+        "total_citation_counts_equal": false,
+        "truncated_or_incomplete_citation_comparison": false,
+        "value_disagreement": false,
+        "values_agree": null
+      }
+    ],
+    "dual": {
+      "diagnostics": [
+        "STRUCTURAL_COMPARISON_ONLY"
+      ],
+      "evidence": {
+        "ahi_documented": [
+          {
+            "end": 49,
+            "start": 43,
+            "text": "AHI 22"
+          }
+        ],
+        "osa_diagnosis": [
+          {
+            "end": 7,
+            "start": 4,
+            "text": "OSA"
+          }
+        ],
+        "sleep_study_date": [
+          {
+            "end": 41,
+            "start": 31,
+            "text": "2024-05-18"
+          }
+        ]
+      },
+      "evidence_counts": {},
+      "fact_types": {
+        "ahi_documented": "str",
+        "back_pain_with_radiculopathy": "NoneType",
+        "conservative_therapy_weeks": "NoneType",
+        "cpb_0236_conservative_therapy_no_improvement": "NoneType",
+        "cpb_0236_conservative_therapy_weeks": "NoneType",
+        "mechanical_symptoms_documented": "NoneType",
+        "neuro_red_flags_documented": "NoneType",
+        "objective_motor_or_reflex_change_in_root_distribution": "NoneType",
+        "osa_diagnosis": "bool",
+        "prior_imaging_result": "NoneType",
+        "sleep_study_date": "str",
+        "symptom_duration_weeks": "NoneType"
+      },
+      "facts": {
+        "ahi_documented": "__REVIEW_REQUIRED__",
+        "back_pain_with_radiculopathy": null,
+        "conservative_therapy_weeks": null,
+        "cpb_0236_conservative_therapy_no_improvement": null,
+        "cpb_0236_conservative_therapy_weeks": null,
+        "mechanical_symptoms_documented": null,
+        "neuro_red_flags_documented": null,
+        "objective_motor_or_reflex_change_in_root_distribution": null,
+        "osa_diagnosis": true,
+        "prior_imaging_result": null,
+        "sleep_study_date": "__REVIEW_REQUIRED__",
+        "symptom_duration_weeks": null
+      },
+      "original_snapshot_hash": "28af17aa51bc59ff2d345a0808649b184bd9c326e458231a5c162bc2dff39233",
+      "source": "dual:structural-v2",
+      "states": {
+        "ahi_documented": "NEEDS_REVIEW",
+        "back_pain_with_radiculopathy": "MISSING",
+        "conservative_therapy_weeks": "MISSING",
+        "cpb_0236_conservative_therapy_no_improvement": "MISSING",
+        "cpb_0236_conservative_therapy_weeks": "MISSING",
+        "mechanical_symptoms_documented": "MISSING",
+        "neuro_red_flags_documented": "MISSING",
+        "objective_motor_or_reflex_change_in_root_distribution": "MISSING",
+        "osa_diagnosis": "CAPTURED",
+        "prior_imaging_result": "MISSING",
+        "sleep_study_date": "NEEDS_REVIEW",
+        "symptom_duration_weeks": "MISSING"
+      }
+    },
+    "jointly_captured_therapy_citation_source": null,
+    "reconciliation_version": "structural-v2",
+    "recorded_llm": {
+      "proposal": {
+        "diagnostics": [
+          "HAND_AUTHORED_SYNTHETIC"
+        ],
+        "evidence": {
+          "osa_diagnosis": [
+            {
+              "end": 7,
+              "start": 4,
+              "text": "OSA"
+            }
+          ]
+        },
+        "evidence_counts": {},
+        "fact_types": {
+          "ahi_documented": "NoneType",
+          "back_pain_with_radiculopathy": "NoneType",
+          "conservative_therapy_weeks": "NoneType",
+          "cpb_0236_conservative_therapy_no_improvement": "NoneType",
+          "cpb_0236_conservative_therapy_weeks": "NoneType",
+          "mechanical_symptoms_documented": "NoneType",
+          "neuro_red_flags_documented": "NoneType",
+          "objective_motor_or_reflex_change_in_root_distribution": "NoneType",
+          "osa_diagnosis": "bool",
+          "prior_imaging_result": "NoneType",
+          "sleep_study_date": "NoneType",
+          "symptom_duration_weeks": "NoneType"
+        },
+        "facts": {
+          "ahi_documented": null,
+          "back_pain_with_radiculopathy": null,
+          "conservative_therapy_weeks": null,
+          "cpb_0236_conservative_therapy_no_improvement": null,
+          "cpb_0236_conservative_therapy_weeks": null,
+          "mechanical_symptoms_documented": null,
+          "neuro_red_flags_documented": null,
+          "objective_motor_or_reflex_change_in_root_distribution": null,
+          "osa_diagnosis": true,
+          "prior_imaging_result": null,
+          "sleep_study_date": null,
+          "symptom_duration_weeks": null
+        },
+        "original_snapshot_hash": "fd7ad3f586b95faf54e3df9db22dadd113e3cff721ff7991dc5b224e881d1801",
+        "source": "recorded-llm:synthetic",
+        "states": {
+          "ahi_documented": "MISSING",
+          "back_pain_with_radiculopathy": "MISSING",
+          "conservative_therapy_weeks": "MISSING",
+          "cpb_0236_conservative_therapy_no_improvement": "MISSING",
+          "cpb_0236_conservative_therapy_weeks": "MISSING",
+          "mechanical_symptoms_documented": "MISSING",
+          "neuro_red_flags_documented": "MISSING",
+          "objective_motor_or_reflex_change_in_root_distribution": "MISSING",
+          "osa_diagnosis": "CAPTURED",
+          "prior_imaging_result": "MISSING",
+          "sleep_study_date": "MISSING",
+          "symptom_duration_weeks": "MISSING"
+        }
+      },
+      "recording": {
+        "model_id": "synthetic-no-model",
+        "origin": "hand_authored_synthetic",
+        "prompt_version": "synthetic-schema-v1",
+        "response_id": "synthetic-valid-response",
+        "source": "recorded-llm:synthetic"
+      },
+      "recording_sha256": "ea24585668e0fc8ee7eea211e2568f3705d8cd36c180a83d89cdadcd3b15cffc"
+    },
+    "regex": {
+      "diagnostics": [],
+      "evidence": {
+        "ahi_documented": [
+          {
+            "end": 49,
+            "start": 43,
+            "text": "AHI 22"
+          }
+        ],
+        "osa_diagnosis": [
+          {
+            "end": 7,
+            "start": 4,
+            "text": "OSA"
+          }
+        ],
+        "sleep_study_date": [
+          {
+            "end": 41,
+            "start": 31,
+            "text": "2024-05-18"
+          }
+        ]
+      },
+      "evidence_counts": {},
+      "fact_types": {
+        "ahi_documented": "bool",
+        "back_pain_with_radiculopathy": "NoneType",
+        "conservative_therapy_weeks": "NoneType",
+        "cpb_0236_conservative_therapy_no_improvement": "NoneType",
+        "cpb_0236_conservative_therapy_weeks": "NoneType",
+        "mechanical_symptoms_documented": "NoneType",
+        "neuro_red_flags_documented": "NoneType",
+        "objective_motor_or_reflex_change_in_root_distribution": "NoneType",
+        "osa_diagnosis": "bool",
+        "prior_imaging_result": "NoneType",
+        "sleep_study_date": "bool",
+        "symptom_duration_weeks": "NoneType"
+      },
+      "facts": {
+        "ahi_documented": true,
+        "back_pain_with_radiculopathy": null,
+        "conservative_therapy_weeks": null,
+        "cpb_0236_conservative_therapy_no_improvement": null,
+        "cpb_0236_conservative_therapy_weeks": null,
+        "mechanical_symptoms_documented": null,
+        "neuro_red_flags_documented": null,
+        "objective_motor_or_reflex_change_in_root_distribution": null,
+        "osa_diagnosis": true,
+        "prior_imaging_result": null,
+        "sleep_study_date": true,
+        "symptom_duration_weeks": null
+      },
+      "original_snapshot_hash": "819c795e5f0b4087a0499b8d6ad1d734d1921917f2d59f8fc19443030ae53e67",
+      "source": "regex:2.7.0",
+      "states": {
+        "ahi_documented": "CAPTURED",
+        "back_pain_with_radiculopathy": "MISSING",
+        "conservative_therapy_weeks": "MISSING",
+        "cpb_0236_conservative_therapy_no_improvement": "MISSING",
+        "cpb_0236_conservative_therapy_weeks": "MISSING",
+        "mechanical_symptoms_documented": "MISSING",
+        "neuro_red_flags_documented": "MISSING",
+        "objective_motor_or_reflex_change_in_root_distribution": "MISSING",
+        "osa_diagnosis": "CAPTURED",
+        "prior_imaging_result": "MISSING",
+        "sleep_study_date": "CAPTURED",
+        "symptom_duration_weeks": "MISSING"
+      }
+    }
+  },
+  "demonstration": null,
+  "downstream": {
+    "any_decision_difference": true,
+    "any_requirement_status_difference": true,
+    "governance": {
+      "dual": {
+        "active_release": "2026-08-22-active-v1.0",
+        "bundle_fingerprint": "1e3dea24499fa5619e8862e53c75ed3596d7e94812314c995f7508a44353d0ef",
+        "policy_trust_level": "demo"
+      },
+      "llm_only": {
+        "active_release": "2026-08-22-active-v1.0",
+        "bundle_fingerprint": "1e3dea24499fa5619e8862e53c75ed3596d7e94812314c995f7508a44353d0ef",
+        "policy_trust_level": "demo"
+      },
+      "regex_only": {
+        "active_release": "2026-08-22-active-v1.0",
+        "bundle_fingerprint": "1e3dea24499fa5619e8862e53c75ed3596d7e94812314c995f7508a44353d0ef",
+        "policy_trust_level": "demo"
+      }
+    },
+    "overall_status_difference": true,
+    "overall_statuses": {
+      "dual": "NEEDS_REVIEW",
+      "llm_only": "CANNOT_DETERMINE",
+      "regex_only": "PENDING_VERIFICATION"
+    },
+    "requirements": [
+      {
+        "different": false,
+        "key": "osa_diagnosis",
+        "statuses": {
+          "dual": "MET",
+          "llm_only": "MET",
+          "regex_only": "MET"
+        }
+      },
+      {
+        "different": true,
+        "key": "sleep_study_date",
+        "statuses": {
+          "dual": "NEEDS_REVIEW",
+          "llm_only": "NOT_DOCUMENTED",
+          "regex_only": "MET"
+        }
+      },
+      {
+        "different": true,
+        "key": "ahi_documented",
+        "statuses": {
+          "dual": "NEEDS_REVIEW",
+          "llm_only": "NOT_DOCUMENTED",
+          "regex_only": "MET"
+        }
+      }
+    ],
+    "submission_readiness": {
+      "dual": false,
+      "llm_only": false,
+      "regex_only": false
+    },
+    "submission_readiness_difference": false
+  },
+  "error_code": null,
+  "evaluations": {
+    "dual": {
+      "audit_trail": {
+        "blocking_issues": {
+          "needs_review": [
+            {
+              "key": "sleep_study_date",
+              "label": "Sleep study date documented",
+              "reason": "Relevant documentation is ambiguous, contradictory, uncertain, or cannot be safely linked; human review is required.",
+              "status": "NEEDS_REVIEW"
+            },
+            {
+              "key": "ahi_documented",
+              "label": "AHI/RDI documented",
+              "reason": "Relevant documentation is ambiguous, contradictory, uncertain, or cannot be safely linked; human review is required.",
+              "status": "NEEDS_REVIEW"
+            }
+          ],
+          "not_documented": [],
+          "not_met": []
+        },
+        "corrected_requirement_keys": [],
+        "evaluation_warnings": [
+          "Policy trust remains DEMO for this procedure. Verify against official policy before real-world use."
+        ],
+        "evidence_map": {
+          "ahi_documented": [
+            {
+              "end": 49,
+              "start": 43,
+              "text": "AHI 22"
+            }
+          ],
+          "osa_diagnosis": [
+            {
+              "end": 7,
+              "start": 4,
+              "text": "OSA"
+            }
+          ],
+          "sleep_study_date": [
+            {
+              "end": 41,
+              "start": 31,
+              "text": "2024-05-18"
+            }
+          ]
+        },
+        "fact_set_fingerprint": "5843b7f950e78c93c927b83af37a6ceefdb12af15186b3ca05912b4f0561d3e9",
+        "fact_verifications": {
+          "ahi_documented": {
+            "fingerprint": null,
+            "reviewer": null,
+            "state": "UNVERIFIED",
+            "verified_at": null
+          },
+          "osa_diagnosis": {
+            "fingerprint": null,
+            "reviewer": null,
+            "state": "UNVERIFIED",
+            "verified_at": null
+          },
+          "sleep_study_date": {
+            "fingerprint": null,
+            "reviewer": null,
+            "state": "UNVERIFIED",
+            "verified_at": null
+          }
+        },
+        "facts_extracted": {
+          "ahi_documented": null,
+          "back_pain_with_radiculopathy": null,
+          "conservative_therapy_weeks": null,
+          "cpb_0236_conservative_therapy_no_improvement": null,
+          "cpb_0236_conservative_therapy_weeks": null,
+          "mechanical_symptoms_documented": null,
+          "neuro_red_flags_documented": null,
+          "objective_motor_or_reflex_change_in_root_distribution": null,
+          "osa_diagnosis": true,
+          "prior_imaging_result": null,
+          "sleep_study_date": null,
+          "symptom_duration_weeks": null
+        },
+        "input_fingerprint": "d9b6b0b64e0b4ba0ce536040dcbd998783e8d75842ff134dbea74f7c4c557045",
+        "invariant_errors": [],
+        "metrics": {
+          "criteria_met_count": 1,
+          "criteria_not_met_count": 0,
+          "documentation_coverage_pct": 100.0,
+          "documented_requirement_count": 3,
+          "evaluable_requirement_count": 1,
+          "human_review_count": 2,
+          "missing_requirement_count": 0,
+          "total_requirements": 3
+        },
+        "note_hash": "a6ba497402393571",
+        "note_length": 82,
+        "overall_status": "NEEDS_REVIEW",
+        "payer": "Aetna",
+        "policy_trust_level": "demo",
+        "policy_version": {
+          "content_hash": "d640e268da5bc5cff9ba487d9154131c4257cef93b4ffe00d7df82d414040383",
+          "criteria_json": "[{\"allowed\":[],\"evidence\":\"Diagnosis present\",\"key\":\"osa_diagnosis\",\"label\":\"OSA diagnosis documented\",\"operator\":\"equals_true\",\"type\":\"boolean\"},{\"allowed\":[],\"evidence\":\"Date in chart\",\"key\":\"sleep_study_date\",\"label\":\"Sleep study date documented\",\"operator\":\"equals_true\",\"type\":\"boolean\"},{\"allowed\":[],\"evidence\":\"AHI value included\",\"key\":\"ahi_documented\",\"label\":\"AHI/RDI documented\",\"operator\":\"equals_true\",\"type\":\"boolean\"}]",
+          "effective_date": "2026-04-09",
+          "payer": "Aetna",
+          "policy_id": "Aetna:CPAP_DEVICE",
+          "procedure_code": "CPAP_DEVICE",
+          "supported_sites": [
+            "outpatient"
+          ],
+          "version_id": "runtime-1.0-2026-04-09-c1dec378482c682c"
+        },
+        "procedure_code": "CPAP_DEVICE",
+        "procedure_name": "CPAP Device (HCPCS E0601)",
+        "provenance_snapshot": {
+          "accessed_date": null,
+          "content_hash_sha256": null,
+          "last_reviewed": "2026-04-09",
+          "monitored_check_frequency": null,
+          "monitored_source_id": null,
+          "monitored_source_name": null,
+          "monitored_source_owner": null,
+          "monitored_source_url": null,
+          "notes": "Rules are illustrative for demo.",
+          "policy_effective_date": null,
+          "policy_identifier": null,
+          "policy_last_reviewed": null,
+          "policy_title": null,
+          "requirement_clause_map": {},
+          "rule_last_updated": "2026-04-09",
+          "rule_source_label": "Human-curated summary of CPAP administrative documentation criteria",
+          "source_name": "Aetna DME policy (summary)",
+          "source_type": "manual_summary",
+          "source_url": null,
+          "status": null
+        },
+        "requirements_checked": [
+          "osa_diagnosis",
+          "sleep_study_date",
+          "ahi_documented"
+        ],
+        "rulebook_active_release_id": "2026-08-22-active-v1.0",
+        "rules_version": "1.0",
+        "run_id": "__RUN_ID__",
+        "site_of_care": "outpatient",
+        "specialty": "Sleep Medicine",
+        "submission_readiness": false,
+        "timestamp_utc": "__TIMESTAMP_UTC__",
+        "uses_reviewer_corrections": false
+      },
+      "blockers": {
+        "needs_review": [
+          {
+            "key": "sleep_study_date",
+            "label": "Sleep study date documented",
+            "reason": "Relevant documentation is ambiguous, contradictory, uncertain, or cannot be safely linked; human review is required.",
+            "status": "NEEDS_REVIEW"
+          },
+          {
+            "key": "ahi_documented",
+            "label": "AHI/RDI documented",
+            "reason": "Relevant documentation is ambiguous, contradictory, uncertain, or cannot be safely linked; human review is required.",
+            "status": "NEEDS_REVIEW"
+          }
+        ],
+        "not_documented": [],
+        "not_met": []
+      },
+      "bundle_fingerprint": "1e3dea24499fa5619e8862e53c75ed3596d7e94812314c995f7508a44353d0ef",
+      "captured_fact_states": {
+        "ahi_documented": "NEEDS_REVIEW",
+        "back_pain_with_radiculopathy": "MISSING",
+        "conservative_therapy_weeks": "MISSING",
+        "cpb_0236_conservative_therapy_no_improvement": "MISSING",
+        "cpb_0236_conservative_therapy_weeks": "MISSING",
+        "mechanical_symptoms_documented": "MISSING",
+        "neuro_red_flags_documented": "MISSING",
+        "objective_motor_or_reflex_change_in_root_distribution": "MISSING",
+        "osa_diagnosis": "CAPTURED",
+        "prior_imaging_result": "MISSING",
+        "sleep_study_date": "NEEDS_REVIEW",
+        "symptom_duration_weeks": "MISSING"
+      },
+      "contract_version": "6779fd812df9d1fa44d8c17af56bff917d91c0395f00fea78846b643bcdaf74c",
+      "corrected_requirement_keys": [],
+      "engine_version": "2.7.0",
+      "evidence_map": {
+        "ahi_documented": [
+          {
+            "end": 49,
+            "start": 43,
+            "text": "AHI 22"
+          }
+        ],
+        "osa_diagnosis": [
+          {
+            "end": 7,
+            "start": 4,
+            "text": "OSA"
+          }
+        ],
+        "sleep_study_date": [
+          {
+            "end": 41,
+            "start": 31,
+            "text": "2024-05-18"
+          }
+        ]
+      },
+      "fact_set_fingerprint": "5843b7f950e78c93c927b83af37a6ceefdb12af15186b3ca05912b4f0561d3e9",
+      "facts": {
+        "ahi_documented": null,
+        "back_pain_with_radiculopathy": null,
+        "conservative_therapy_weeks": null,
+        "cpb_0236_conservative_therapy_no_improvement": null,
+        "cpb_0236_conservative_therapy_weeks": null,
+        "mechanical_symptoms_documented": null,
+        "neuro_red_flags_documented": null,
+        "objective_motor_or_reflex_change_in_root_distribution": null,
+        "osa_diagnosis": true,
+        "prior_imaging_result": null,
+        "sleep_study_date": null,
+        "symptom_duration_weeks": null
+      },
+      "input_fingerprint": "d9b6b0b64e0b4ba0ce536040dcbd998783e8d75842ff134dbea74f7c4c557045",
+      "metrics": {
+        "criteria_met_count": 1,
+        "criteria_not_met_count": 0,
+        "documentation_coverage_pct": 100.0,
+        "documented_requirement_count": 3,
+        "evaluable_requirement_count": 1,
+        "human_review_count": 2,
+        "missing_requirement_count": 0,
+        "total_requirements": 3
+      },
+      "original_snapshot": {
+        "content_hash": "28af17aa51bc59ff2d345a0808649b184bd9c326e458231a5c162bc2dff39233",
+        "snapshot_json": "{\"evidence\":{\"ahi_documented\":[{\"end\":49,\"start\":43,\"text\":\"AHI 22\"}],\"osa_diagnosis\":[{\"end\":7,\"start\":4,\"text\":\"OSA\"}],\"sleep_study_date\":[{\"end\":41,\"start\":31,\"text\":\"2024-05-18\"}]},\"facts\":{\"ahi_documented\":null,\"back_pain_with_radiculopathy\":null,\"conservative_therapy_weeks\":null,\"cpb_0236_conservative_therapy_no_improvement\":null,\"cpb_0236_conservative_therapy_weeks\":null,\"mechanical_symptoms_documented\":null,\"neuro_red_flags_documented\":null,\"objective_motor_or_reflex_change_in_root_distribution\":null,\"osa_diagnosis\":true,\"prior_imaging_result\":null,\"sleep_study_date\":null,\"symptom_duration_weeks\":null},\"states\":{\"ahi_documented\":\"NEEDS_REVIEW\",\"back_pain_with_radiculopathy\":\"MISSING\",\"conservative_therapy_weeks\":\"MISSING\",\"cpb_0236_conservative_therapy_no_improvement\":\"MISSING\",\"cpb_0236_conservative_therapy_weeks\":\"MISSING\",\"mechanical_symptoms_documented\":\"MISSING\",\"neuro_red_flags_documented\":\"MISSING\",\"objective_motor_or_reflex_change_in_root_distribution\":\"MISSING\",\"osa_diagnosis\":\"CAPTURED\",\"prior_imaging_result\":\"MISSING\",\"sleep_study_date\":\"NEEDS_REVIEW\",\"symptom_duration_weeks\":\"MISSING\"}}"
+      },
+      "overall_status": "NEEDS_REVIEW",
+      "policy_trust_level": "demo",
+      "policy_version": {
+        "content_hash": "d640e268da5bc5cff9ba487d9154131c4257cef93b4ffe00d7df82d414040383",
+        "criteria_json": "[{\"allowed\":[],\"evidence\":\"Diagnosis present\",\"key\":\"osa_diagnosis\",\"label\":\"OSA diagnosis documented\",\"operator\":\"equals_true\",\"type\":\"boolean\"},{\"allowed\":[],\"evidence\":\"Date in chart\",\"key\":\"sleep_study_date\",\"label\":\"Sleep study date documented\",\"operator\":\"equals_true\",\"type\":\"boolean\"},{\"allowed\":[],\"evidence\":\"AHI value included\",\"key\":\"ahi_documented\",\"label\":\"AHI/RDI documented\",\"operator\":\"equals_true\",\"type\":\"boolean\"}]",
+        "effective_date": "2026-04-09",
+        "payer": "Aetna",
+        "policy_id": "Aetna:CPAP_DEVICE",
+        "procedure_code": "CPAP_DEVICE",
+        "supported_sites": [
+          "outpatient"
+        ],
+        "version_id": "runtime-1.0-2026-04-09-c1dec378482c682c"
+      },
+      "provenance": {
+        "accessed_date": null,
+        "content_hash_sha256": null,
+        "last_reviewed": "2026-04-09",
+        "monitored_check_frequency": null,
+        "monitored_source_id": null,
+        "monitored_source_name": null,
+        "monitored_source_owner": null,
+        "monitored_source_url": null,
+        "notes": "Rules are illustrative for demo.",
+        "policy_effective_date": null,
+        "policy_identifier": null,
+        "policy_last_reviewed": null,
+        "policy_title": null,
+        "requirement_clause_map": {},
+        "rule_last_updated": "2026-04-09",
+        "rule_source_label": "Human-curated summary of CPAP administrative documentation criteria",
+        "source_name": "Aetna DME policy (summary)",
+        "source_type": "manual_summary",
+        "source_url": null,
+        "status": null
+      },
+      "report": {
+        "audit_trail": {
+          "blocking_issues": {
+            "needs_review": [
+              {
+                "key": "sleep_study_date",
+                "label": "Sleep study date documented",
+                "reason": "Relevant documentation is ambiguous, contradictory, uncertain, or cannot be safely linked; human review is required.",
+                "status": "NEEDS_REVIEW"
+              },
+              {
+                "key": "ahi_documented",
+                "label": "AHI/RDI documented",
+                "reason": "Relevant documentation is ambiguous, contradictory, uncertain, or cannot be safely linked; human review is required.",
+                "status": "NEEDS_REVIEW"
+              }
+            ],
+            "not_documented": [],
+            "not_met": []
+          },
+          "corrected_requirement_keys": [],
+          "evaluation_warnings": [
+            "Policy trust remains DEMO for this procedure. Verify against official policy before real-world use."
+          ],
+          "evidence_map": {
+            "ahi_documented": [
+              {
+                "end": 49,
+                "start": 43,
+                "text": "AHI 22"
+              }
+            ],
+            "osa_diagnosis": [
+              {
+                "end": 7,
+                "start": 4,
+                "text": "OSA"
+              }
+            ],
+            "sleep_study_date": [
+              {
+                "end": 41,
+                "start": 31,
+                "text": "2024-05-18"
+              }
+            ]
+          },
+          "fact_set_fingerprint": "5843b7f950e78c93c927b83af37a6ceefdb12af15186b3ca05912b4f0561d3e9",
+          "fact_verifications": {
+            "ahi_documented": {
+              "fingerprint": null,
+              "reviewer": null,
+              "state": "UNVERIFIED",
+              "verified_at": null
+            },
+            "osa_diagnosis": {
+              "fingerprint": null,
+              "reviewer": null,
+              "state": "UNVERIFIED",
+              "verified_at": null
+            },
+            "sleep_study_date": {
+              "fingerprint": null,
+              "reviewer": null,
+              "state": "UNVERIFIED",
+              "verified_at": null
+            }
+          },
+          "facts_extracted": {
+            "ahi_documented": null,
+            "back_pain_with_radiculopathy": null,
+            "conservative_therapy_weeks": null,
+            "cpb_0236_conservative_therapy_no_improvement": null,
+            "cpb_0236_conservative_therapy_weeks": null,
+            "mechanical_symptoms_documented": null,
+            "neuro_red_flags_documented": null,
+            "objective_motor_or_reflex_change_in_root_distribution": null,
+            "osa_diagnosis": true,
+            "prior_imaging_result": null,
+            "sleep_study_date": null,
+            "symptom_duration_weeks": null
+          },
+          "input_fingerprint": "d9b6b0b64e0b4ba0ce536040dcbd998783e8d75842ff134dbea74f7c4c557045",
+          "invariant_errors": [],
+          "metrics": {
+            "criteria_met_count": 1,
+            "criteria_not_met_count": 0,
+            "documentation_coverage_pct": 100.0,
+            "documented_requirement_count": 3,
+            "evaluable_requirement_count": 1,
+            "human_review_count": 2,
+            "missing_requirement_count": 0,
+            "total_requirements": 3
+          },
+          "note_hash": "a6ba497402393571",
+          "note_length": 82,
+          "overall_status": "NEEDS_REVIEW",
+          "payer": "Aetna",
+          "policy_trust_level": "demo",
+          "policy_version": {
+            "content_hash": "d640e268da5bc5cff9ba487d9154131c4257cef93b4ffe00d7df82d414040383",
+            "criteria_json": "[{\"allowed\":[],\"evidence\":\"Diagnosis present\",\"key\":\"osa_diagnosis\",\"label\":\"OSA diagnosis documented\",\"operator\":\"equals_true\",\"type\":\"boolean\"},{\"allowed\":[],\"evidence\":\"Date in chart\",\"key\":\"sleep_study_date\",\"label\":\"Sleep study date documented\",\"operator\":\"equals_true\",\"type\":\"boolean\"},{\"allowed\":[],\"evidence\":\"AHI value included\",\"key\":\"ahi_documented\",\"label\":\"AHI/RDI documented\",\"operator\":\"equals_true\",\"type\":\"boolean\"}]",
+            "effective_date": "2026-04-09",
+            "payer": "Aetna",
+            "policy_id": "Aetna:CPAP_DEVICE",
+            "procedure_code": "CPAP_DEVICE",
+            "supported_sites": [
+              "outpatient"
+            ],
+            "version_id": "runtime-1.0-2026-04-09-c1dec378482c682c"
+          },
+          "procedure_code": "CPAP_DEVICE",
+          "procedure_name": "CPAP Device (HCPCS E0601)",
+          "provenance_snapshot": {
+            "accessed_date": null,
+            "content_hash_sha256": null,
+            "last_reviewed": "2026-04-09",
+            "monitored_check_frequency": null,
+            "monitored_source_id": null,
+            "monitored_source_name": null,
+            "monitored_source_owner": null,
+            "monitored_source_url": null,
+            "notes": "Rules are illustrative for demo.",
+            "policy_effective_date": null,
+            "policy_identifier": null,
+            "policy_last_reviewed": null,
+            "policy_title": null,
+            "requirement_clause_map": {},
+            "rule_last_updated": "2026-04-09",
+            "rule_source_label": "Human-curated summary of CPAP administrative documentation criteria",
+            "source_name": "Aetna DME policy (summary)",
+            "source_type": "manual_summary",
+            "source_url": null,
+            "status": null
+          },
+          "requirements_checked": [
+            "osa_diagnosis",
+            "sleep_study_date",
+            "ahi_documented"
+          ],
+          "rulebook_active_release_id": "2026-08-22-active-v1.0",
+          "rules_version": "1.0",
+          "run_id": "__RUN_ID__",
+          "site_of_care": "outpatient",
+          "specialty": "Sleep Medicine",
+          "submission_readiness": false,
+          "timestamp_utc": "__TIMESTAMP_UTC__",
+          "uses_reviewer_corrections": false
+        },
+        "letter_draft": "",
+        "met_count": 1,
+        "needs_review_count": 2,
+        "not_documented_count": 0,
+        "not_met_count": 0,
+        "results": [
+          {
+            "evidence": "Diagnosis present",
+            "evidence_snippets": [
+              "OSA"
+            ],
+            "evidence_spans": [
+              {
+                "end": 7,
+                "start": 4,
+                "text": "OSA"
+              }
+            ],
+            "fact_value": true,
+            "key": "osa_diagnosis",
+            "label": "OSA diagnosis documented",
+            "reason": "Explicit affirmative documentation found.",
+            "status": "MET",
+            "verification": {
+              "fingerprint": null,
+              "reviewer": null,
+              "state": "UNVERIFIED",
+              "verified_at": null
+            },
+            "verification_fingerprint": "746c9b863780302e5ca4ac7296a848f16014186a885fbb21cf801a91c28d8e58"
+          },
+          {
+            "evidence": "Date in chart",
+            "evidence_snippets": [
+              "2024-05-18"
+            ],
+            "evidence_spans": [
+              {
+                "end": 41,
+                "start": 31,
+                "text": "2024-05-18"
+              }
+            ],
+            "fact_value": null,
+            "key": "sleep_study_date",
+            "label": "Sleep study date documented",
+            "reason": "Relevant documentation is ambiguous, contradictory, uncertain, or cannot be safely linked; human review is required.",
+            "status": "NEEDS_REVIEW",
+            "verification": {
+              "fingerprint": null,
+              "reviewer": null,
+              "state": "UNVERIFIED",
+              "verified_at": null
+            },
+            "verification_fingerprint": "f8d3b5569565cb6a4a249e0c05b9b24f68aa80041502cb9773f47f89078fca0a"
+          },
+          {
+            "evidence": "AHI value included",
+            "evidence_snippets": [
+              "AHI 22"
+            ],
+            "evidence_spans": [
+              {
+                "end": 49,
+                "start": 43,
+                "text": "AHI 22"
+              }
+            ],
+            "fact_value": null,
+            "key": "ahi_documented",
+            "label": "AHI/RDI documented",
+            "reason": "Relevant documentation is ambiguous, contradictory, uncertain, or cannot be safely linked; human review is required.",
+            "status": "NEEDS_REVIEW",
+            "verification": {
+              "fingerprint": null,
+              "reviewer": null,
+              "state": "UNVERIFIED",
+              "verified_at": null
+            },
+            "verification_fingerprint": "9999bc22985071db3a4b4aba13947667cc5d38ef69bc23e55bcdc924828e8f84"
+          }
+        ],
+        "rule_reasons": [
+          "Sleep study date documented: NEEDS_REVIEW — Relevant documentation is ambiguous, contradictory, uncertain, or cannot be safely linked; human review is required.",
+          "AHI/RDI documented: NEEDS_REVIEW — Relevant documentation is ambiguous, contradictory, uncertain, or cannot be safely linked; human review is required."
+        ]
+      },
+      "request": {
+        "dx_codes": [
+          "G47.33"
+        ],
+        "fact_verifications": {},
+        "note_text": "Dx: OSA. Sleep study completed 2024-05-18. AHI 22 documented. Requests CPAP E0601.",
+        "payer": "Aetna",
+        "procedure_code": "CPAP_DEVICE",
+        "site_of_care": "outpatient",
+        "specialty": "Sleep Medicine"
+      },
+      "results": [
+        {
+          "evidence": "Diagnosis present",
+          "evidence_snippets": [
+            "OSA"
+          ],
+          "evidence_spans": [
+            {
+              "end": 7,
+              "start": 4,
+              "text": "OSA"
+            }
+          ],
+          "fact_value": true,
+          "key": "osa_diagnosis",
+          "label": "OSA diagnosis documented",
+          "reason": "Explicit affirmative documentation found.",
+          "status": "MET",
+          "verification": {
+            "fingerprint": null,
+            "reviewer": null,
+            "state": "UNVERIFIED",
+            "verified_at": null
+          },
+          "verification_fingerprint": "746c9b863780302e5ca4ac7296a848f16014186a885fbb21cf801a91c28d8e58"
+        },
+        {
+          "evidence": "Date in chart",
+          "evidence_snippets": [
+            "2024-05-18"
+          ],
+          "evidence_spans": [
+            {
+              "end": 41,
+              "start": 31,
+              "text": "2024-05-18"
+            }
+          ],
+          "fact_value": null,
+          "key": "sleep_study_date",
+          "label": "Sleep study date documented",
+          "reason": "Relevant documentation is ambiguous, contradictory, uncertain, or cannot be safely linked; human review is required.",
+          "status": "NEEDS_REVIEW",
+          "verification": {
+            "fingerprint": null,
+            "reviewer": null,
+            "state": "UNVERIFIED",
+            "verified_at": null
+          },
+          "verification_fingerprint": "f8d3b5569565cb6a4a249e0c05b9b24f68aa80041502cb9773f47f89078fca0a"
+        },
+        {
+          "evidence": "AHI value included",
+          "evidence_snippets": [
+            "AHI 22"
+          ],
+          "evidence_spans": [
+            {
+              "end": 49,
+              "start": 43,
+              "text": "AHI 22"
+            }
+          ],
+          "fact_value": null,
+          "key": "ahi_documented",
+          "label": "AHI/RDI documented",
+          "reason": "Relevant documentation is ambiguous, contradictory, uncertain, or cannot be safely linked; human review is required.",
+          "status": "NEEDS_REVIEW",
+          "verification": {
+            "fingerprint": null,
+            "reviewer": null,
+            "state": "UNVERIFIED",
+            "verified_at": null
+          },
+          "verification_fingerprint": "9999bc22985071db3a4b4aba13947667cc5d38ef69bc23e55bcdc924828e8f84"
+        }
+      ],
+      "rule_reasons": [
+        "Sleep study date documented: NEEDS_REVIEW — Relevant documentation is ambiguous, contradictory, uncertain, or cannot be safely linked; human review is required.",
+        "AHI/RDI documented: NEEDS_REVIEW — Relevant documentation is ambiguous, contradictory, uncertain, or cannot be safely linked; human review is required."
+      ],
+      "schema_version": "2.0.0",
+      "submission_readiness": false,
+      "supported_procedure": {
+        "display_name": "CPAP Device (HCPCS E0601)",
+        "metadata": {
+          "category": "durable_medical_equipment",
+          "last_rule_update": "2026-04-09",
+          "notes": [
+            "The current demo checks for OSA diagnosis, dated sleep study evidence, and AHI/RDI documentation.",
+            "It does not determine clinical appropriateness or device approval likelihood."
+          ],
+          "rule_family": "sleep_study_documentation",
+          "summary": "Administrative readiness check for CPAP device requests using a narrow deterministic documentation contract.",
+          "supported_sites": [
+            "outpatient"
+          ]
+        },
+        "monitored_for_drift": false,
+        "payer": "Aetna",
+        "policy_trust_level": "demo",
+        "procedure_code": "CPAP_DEVICE",
+        "provenance": {
+          "accessed_date": null,
+          "content_hash_sha256": null,
+          "last_reviewed": "2026-04-09",
+          "monitored_check_frequency": null,
+          "monitored_source_id": null,
+          "monitored_source_name": null,
+          "monitored_source_owner": null,
+          "monitored_source_url": null,
+          "notes": "Rules are illustrative for demo.",
+          "policy_effective_date": null,
+          "policy_identifier": null,
+          "policy_last_reviewed": null,
+          "policy_title": null,
+          "requirement_clause_map": {},
+          "rule_last_updated": "2026-04-09",
+          "rule_source_label": "Human-curated summary of CPAP administrative documentation criteria",
+          "source_name": "Aetna DME policy (summary)",
+          "source_type": "manual_summary",
+          "source_url": null,
+          "status": null
+        },
+        "required_field_keys": [
+          "osa_diagnosis",
+          "sleep_study_date",
+          "ahi_documented"
+        ],
+        "requirements": [
+          {
+            "allowed": [],
+            "evidence": "Diagnosis present",
+            "key": "osa_diagnosis",
+            "label": "OSA diagnosis documented",
+            "min": null,
+            "operator": "equals_true",
+            "type": "boolean"
+          },
+          {
+            "allowed": [],
+            "evidence": "Date in chart",
+            "key": "sleep_study_date",
+            "label": "Sleep study date documented",
+            "min": null,
+            "operator": "equals_true",
+            "type": "boolean"
+          },
+          {
+            "allowed": [],
+            "evidence": "AHI value included",
+            "key": "ahi_documented",
+            "label": "AHI/RDI documented",
+            "min": null,
+            "operator": "equals_true",
+            "type": "boolean"
+          }
+        ]
+      },
+      "uses_reviewer_corrections": false,
+      "warnings": [
+        "Policy trust remains DEMO for this procedure. Verify against official policy before real-world use."
+      ]
+    },
+    "llm_only": {
+      "audit_trail": {
+        "blocking_issues": {
+          "needs_review": [],
+          "not_documented": [
+            {
+              "key": "sleep_study_date",
+              "label": "Sleep study date documented",
+              "reason": "Not found in note. Add explicit affirmative documentation.",
+              "status": "NOT_DOCUMENTED"
+            },
+            {
+              "key": "ahi_documented",
+              "label": "AHI/RDI documented",
+              "reason": "Not found in note. Add explicit affirmative documentation.",
+              "status": "NOT_DOCUMENTED"
+            }
+          ],
+          "not_met": []
+        },
+        "corrected_requirement_keys": [],
+        "evaluation_warnings": [
+          "Policy trust remains DEMO for this procedure. Verify against official policy before real-world use."
+        ],
+        "evidence_map": {
+          "osa_diagnosis": [
+            {
+              "end": 7,
+              "start": 4,
+              "text": "OSA"
+            }
+          ]
+        },
+        "fact_set_fingerprint": "b37047da78631ed1141acf48ac28ef0a49827caf8f82416f994abd302dcef95a",
+        "fact_verifications": {
+          "ahi_documented": {
+            "fingerprint": null,
+            "reviewer": null,
+            "state": "UNVERIFIED",
+            "verified_at": null
+          },
+          "osa_diagnosis": {
+            "fingerprint": null,
+            "reviewer": null,
+            "state": "UNVERIFIED",
+            "verified_at": null
+          },
+          "sleep_study_date": {
+            "fingerprint": null,
+            "reviewer": null,
+            "state": "UNVERIFIED",
+            "verified_at": null
+          }
+        },
+        "facts_extracted": {
+          "ahi_documented": null,
+          "back_pain_with_radiculopathy": null,
+          "conservative_therapy_weeks": null,
+          "cpb_0236_conservative_therapy_no_improvement": null,
+          "cpb_0236_conservative_therapy_weeks": null,
+          "mechanical_symptoms_documented": null,
+          "neuro_red_flags_documented": null,
+          "objective_motor_or_reflex_change_in_root_distribution": null,
+          "osa_diagnosis": true,
+          "prior_imaging_result": null,
+          "sleep_study_date": null,
+          "symptom_duration_weeks": null
+        },
+        "input_fingerprint": "d9b6b0b64e0b4ba0ce536040dcbd998783e8d75842ff134dbea74f7c4c557045",
+        "invariant_errors": [],
+        "metrics": {
+          "criteria_met_count": 1,
+          "criteria_not_met_count": 0,
+          "documentation_coverage_pct": 33.3,
+          "documented_requirement_count": 1,
+          "evaluable_requirement_count": 1,
+          "human_review_count": 0,
+          "missing_requirement_count": 2,
+          "total_requirements": 3
+        },
+        "note_hash": "a6ba497402393571",
+        "note_length": 82,
+        "overall_status": "CANNOT_DETERMINE",
+        "payer": "Aetna",
+        "policy_trust_level": "demo",
+        "policy_version": {
+          "content_hash": "d640e268da5bc5cff9ba487d9154131c4257cef93b4ffe00d7df82d414040383",
+          "criteria_json": "[{\"allowed\":[],\"evidence\":\"Diagnosis present\",\"key\":\"osa_diagnosis\",\"label\":\"OSA diagnosis documented\",\"operator\":\"equals_true\",\"type\":\"boolean\"},{\"allowed\":[],\"evidence\":\"Date in chart\",\"key\":\"sleep_study_date\",\"label\":\"Sleep study date documented\",\"operator\":\"equals_true\",\"type\":\"boolean\"},{\"allowed\":[],\"evidence\":\"AHI value included\",\"key\":\"ahi_documented\",\"label\":\"AHI/RDI documented\",\"operator\":\"equals_true\",\"type\":\"boolean\"}]",
+          "effective_date": "2026-04-09",
+          "payer": "Aetna",
+          "policy_id": "Aetna:CPAP_DEVICE",
+          "procedure_code": "CPAP_DEVICE",
+          "supported_sites": [
+            "outpatient"
+          ],
+          "version_id": "runtime-1.0-2026-04-09-c1dec378482c682c"
+        },
+        "procedure_code": "CPAP_DEVICE",
+        "procedure_name": "CPAP Device (HCPCS E0601)",
+        "provenance_snapshot": {
+          "accessed_date": null,
+          "content_hash_sha256": null,
+          "last_reviewed": "2026-04-09",
+          "monitored_check_frequency": null,
+          "monitored_source_id": null,
+          "monitored_source_name": null,
+          "monitored_source_owner": null,
+          "monitored_source_url": null,
+          "notes": "Rules are illustrative for demo.",
+          "policy_effective_date": null,
+          "policy_identifier": null,
+          "policy_last_reviewed": null,
+          "policy_title": null,
+          "requirement_clause_map": {},
+          "rule_last_updated": "2026-04-09",
+          "rule_source_label": "Human-curated summary of CPAP administrative documentation criteria",
+          "source_name": "Aetna DME policy (summary)",
+          "source_type": "manual_summary",
+          "source_url": null,
+          "status": null
+        },
+        "requirements_checked": [
+          "osa_diagnosis",
+          "sleep_study_date",
+          "ahi_documented"
+        ],
+        "rulebook_active_release_id": "2026-08-22-active-v1.0",
+        "rules_version": "1.0",
+        "run_id": "__RUN_ID__",
+        "site_of_care": "outpatient",
+        "specialty": "Sleep Medicine",
+        "submission_readiness": false,
+        "timestamp_utc": "__TIMESTAMP_UTC__",
+        "uses_reviewer_corrections": false
+      },
+      "blockers": {
+        "needs_review": [],
+        "not_documented": [
+          {
+            "key": "sleep_study_date",
+            "label": "Sleep study date documented",
+            "reason": "Not found in note. Add explicit affirmative documentation.",
+            "status": "NOT_DOCUMENTED"
+          },
+          {
+            "key": "ahi_documented",
+            "label": "AHI/RDI documented",
+            "reason": "Not found in note. Add explicit affirmative documentation.",
+            "status": "NOT_DOCUMENTED"
+          }
+        ],
+        "not_met": []
+      },
+      "bundle_fingerprint": "1e3dea24499fa5619e8862e53c75ed3596d7e94812314c995f7508a44353d0ef",
+      "captured_fact_states": {
+        "ahi_documented": "MISSING",
+        "back_pain_with_radiculopathy": "MISSING",
+        "conservative_therapy_weeks": "MISSING",
+        "cpb_0236_conservative_therapy_no_improvement": "MISSING",
+        "cpb_0236_conservative_therapy_weeks": "MISSING",
+        "mechanical_symptoms_documented": "MISSING",
+        "neuro_red_flags_documented": "MISSING",
+        "objective_motor_or_reflex_change_in_root_distribution": "MISSING",
+        "osa_diagnosis": "CAPTURED",
+        "prior_imaging_result": "MISSING",
+        "sleep_study_date": "MISSING",
+        "symptom_duration_weeks": "MISSING"
+      },
+      "contract_version": "6779fd812df9d1fa44d8c17af56bff917d91c0395f00fea78846b643bcdaf74c",
+      "corrected_requirement_keys": [],
+      "engine_version": "2.7.0",
+      "evidence_map": {
+        "osa_diagnosis": [
+          {
+            "end": 7,
+            "start": 4,
+            "text": "OSA"
+          }
+        ]
+      },
+      "fact_set_fingerprint": "b37047da78631ed1141acf48ac28ef0a49827caf8f82416f994abd302dcef95a",
+      "facts": {
+        "ahi_documented": null,
+        "back_pain_with_radiculopathy": null,
+        "conservative_therapy_weeks": null,
+        "cpb_0236_conservative_therapy_no_improvement": null,
+        "cpb_0236_conservative_therapy_weeks": null,
+        "mechanical_symptoms_documented": null,
+        "neuro_red_flags_documented": null,
+        "objective_motor_or_reflex_change_in_root_distribution": null,
+        "osa_diagnosis": true,
+        "prior_imaging_result": null,
+        "sleep_study_date": null,
+        "symptom_duration_weeks": null
+      },
+      "input_fingerprint": "d9b6b0b64e0b4ba0ce536040dcbd998783e8d75842ff134dbea74f7c4c557045",
+      "metrics": {
+        "criteria_met_count": 1,
+        "criteria_not_met_count": 0,
+        "documentation_coverage_pct": 33.3,
+        "documented_requirement_count": 1,
+        "evaluable_requirement_count": 1,
+        "human_review_count": 0,
+        "missing_requirement_count": 2,
+        "total_requirements": 3
+      },
+      "original_snapshot": {
+        "content_hash": "fd7ad3f586b95faf54e3df9db22dadd113e3cff721ff7991dc5b224e881d1801",
+        "snapshot_json": "{\"evidence\":{\"osa_diagnosis\":[{\"end\":7,\"start\":4,\"text\":\"OSA\"}]},\"facts\":{\"ahi_documented\":null,\"back_pain_with_radiculopathy\":null,\"conservative_therapy_weeks\":null,\"cpb_0236_conservative_therapy_no_improvement\":null,\"cpb_0236_conservative_therapy_weeks\":null,\"mechanical_symptoms_documented\":null,\"neuro_red_flags_documented\":null,\"objective_motor_or_reflex_change_in_root_distribution\":null,\"osa_diagnosis\":true,\"prior_imaging_result\":null,\"sleep_study_date\":null,\"symptom_duration_weeks\":null},\"states\":{\"ahi_documented\":\"MISSING\",\"back_pain_with_radiculopathy\":\"MISSING\",\"conservative_therapy_weeks\":\"MISSING\",\"cpb_0236_conservative_therapy_no_improvement\":\"MISSING\",\"cpb_0236_conservative_therapy_weeks\":\"MISSING\",\"mechanical_symptoms_documented\":\"MISSING\",\"neuro_red_flags_documented\":\"MISSING\",\"objective_motor_or_reflex_change_in_root_distribution\":\"MISSING\",\"osa_diagnosis\":\"CAPTURED\",\"prior_imaging_result\":\"MISSING\",\"sleep_study_date\":\"MISSING\",\"symptom_duration_weeks\":\"MISSING\"}}"
+      },
+      "overall_status": "CANNOT_DETERMINE",
+      "policy_trust_level": "demo",
+      "policy_version": {
+        "content_hash": "d640e268da5bc5cff9ba487d9154131c4257cef93b4ffe00d7df82d414040383",
+        "criteria_json": "[{\"allowed\":[],\"evidence\":\"Diagnosis present\",\"key\":\"osa_diagnosis\",\"label\":\"OSA diagnosis documented\",\"operator\":\"equals_true\",\"type\":\"boolean\"},{\"allowed\":[],\"evidence\":\"Date in chart\",\"key\":\"sleep_study_date\",\"label\":\"Sleep study date documented\",\"operator\":\"equals_true\",\"type\":\"boolean\"},{\"allowed\":[],\"evidence\":\"AHI value included\",\"key\":\"ahi_documented\",\"label\":\"AHI/RDI documented\",\"operator\":\"equals_true\",\"type\":\"boolean\"}]",
+        "effective_date": "2026-04-09",
+        "payer": "Aetna",
+        "policy_id": "Aetna:CPAP_DEVICE",
+        "procedure_code": "CPAP_DEVICE",
+        "supported_sites": [
+          "outpatient"
+        ],
+        "version_id": "runtime-1.0-2026-04-09-c1dec378482c682c"
+      },
+      "provenance": {
+        "accessed_date": null,
+        "content_hash_sha256": null,
+        "last_reviewed": "2026-04-09",
+        "monitored_check_frequency": null,
+        "monitored_source_id": null,
+        "monitored_source_name": null,
+        "monitored_source_owner": null,
+        "monitored_source_url": null,
+        "notes": "Rules are illustrative for demo.",
+        "policy_effective_date": null,
+        "policy_identifier": null,
+        "policy_last_reviewed": null,
+        "policy_title": null,
+        "requirement_clause_map": {},
+        "rule_last_updated": "2026-04-09",
+        "rule_source_label": "Human-curated summary of CPAP administrative documentation criteria",
+        "source_name": "Aetna DME policy (summary)",
+        "source_type": "manual_summary",
+        "source_url": null,
+        "status": null
+      },
+      "report": {
+        "audit_trail": {
+          "blocking_issues": {
+            "needs_review": [],
+            "not_documented": [
+              {
+                "key": "sleep_study_date",
+                "label": "Sleep study date documented",
+                "reason": "Not found in note. Add explicit affirmative documentation.",
+                "status": "NOT_DOCUMENTED"
+              },
+              {
+                "key": "ahi_documented",
+                "label": "AHI/RDI documented",
+                "reason": "Not found in note. Add explicit affirmative documentation.",
+                "status": "NOT_DOCUMENTED"
+              }
+            ],
+            "not_met": []
+          },
+          "corrected_requirement_keys": [],
+          "evaluation_warnings": [
+            "Policy trust remains DEMO for this procedure. Verify against official policy before real-world use."
+          ],
+          "evidence_map": {
+            "osa_diagnosis": [
+              {
+                "end": 7,
+                "start": 4,
+                "text": "OSA"
+              }
+            ]
+          },
+          "fact_set_fingerprint": "b37047da78631ed1141acf48ac28ef0a49827caf8f82416f994abd302dcef95a",
+          "fact_verifications": {
+            "ahi_documented": {
+              "fingerprint": null,
+              "reviewer": null,
+              "state": "UNVERIFIED",
+              "verified_at": null
+            },
+            "osa_diagnosis": {
+              "fingerprint": null,
+              "reviewer": null,
+              "state": "UNVERIFIED",
+              "verified_at": null
+            },
+            "sleep_study_date": {
+              "fingerprint": null,
+              "reviewer": null,
+              "state": "UNVERIFIED",
+              "verified_at": null
+            }
+          },
+          "facts_extracted": {
+            "ahi_documented": null,
+            "back_pain_with_radiculopathy": null,
+            "conservative_therapy_weeks": null,
+            "cpb_0236_conservative_therapy_no_improvement": null,
+            "cpb_0236_conservative_therapy_weeks": null,
+            "mechanical_symptoms_documented": null,
+            "neuro_red_flags_documented": null,
+            "objective_motor_or_reflex_change_in_root_distribution": null,
+            "osa_diagnosis": true,
+            "prior_imaging_result": null,
+            "sleep_study_date": null,
+            "symptom_duration_weeks": null
+          },
+          "input_fingerprint": "d9b6b0b64e0b4ba0ce536040dcbd998783e8d75842ff134dbea74f7c4c557045",
+          "invariant_errors": [],
+          "metrics": {
+            "criteria_met_count": 1,
+            "criteria_not_met_count": 0,
+            "documentation_coverage_pct": 33.3,
+            "documented_requirement_count": 1,
+            "evaluable_requirement_count": 1,
+            "human_review_count": 0,
+            "missing_requirement_count": 2,
+            "total_requirements": 3
+          },
+          "note_hash": "a6ba497402393571",
+          "note_length": 82,
+          "overall_status": "CANNOT_DETERMINE",
+          "payer": "Aetna",
+          "policy_trust_level": "demo",
+          "policy_version": {
+            "content_hash": "d640e268da5bc5cff9ba487d9154131c4257cef93b4ffe00d7df82d414040383",
+            "criteria_json": "[{\"allowed\":[],\"evidence\":\"Diagnosis present\",\"key\":\"osa_diagnosis\",\"label\":\"OSA diagnosis documented\",\"operator\":\"equals_true\",\"type\":\"boolean\"},{\"allowed\":[],\"evidence\":\"Date in chart\",\"key\":\"sleep_study_date\",\"label\":\"Sleep study date documented\",\"operator\":\"equals_true\",\"type\":\"boolean\"},{\"allowed\":[],\"evidence\":\"AHI value included\",\"key\":\"ahi_documented\",\"label\":\"AHI/RDI documented\",\"operator\":\"equals_true\",\"type\":\"boolean\"}]",
+            "effective_date": "2026-04-09",
+            "payer": "Aetna",
+            "policy_id": "Aetna:CPAP_DEVICE",
+            "procedure_code": "CPAP_DEVICE",
+            "supported_sites": [
+              "outpatient"
+            ],
+            "version_id": "runtime-1.0-2026-04-09-c1dec378482c682c"
+          },
+          "procedure_code": "CPAP_DEVICE",
+          "procedure_name": "CPAP Device (HCPCS E0601)",
+          "provenance_snapshot": {
+            "accessed_date": null,
+            "content_hash_sha256": null,
+            "last_reviewed": "2026-04-09",
+            "monitored_check_frequency": null,
+            "monitored_source_id": null,
+            "monitored_source_name": null,
+            "monitored_source_owner": null,
+            "monitored_source_url": null,
+            "notes": "Rules are illustrative for demo.",
+            "policy_effective_date": null,
+            "policy_identifier": null,
+            "policy_last_reviewed": null,
+            "policy_title": null,
+            "requirement_clause_map": {},
+            "rule_last_updated": "2026-04-09",
+            "rule_source_label": "Human-curated summary of CPAP administrative documentation criteria",
+            "source_name": "Aetna DME policy (summary)",
+            "source_type": "manual_summary",
+            "source_url": null,
+            "status": null
+          },
+          "requirements_checked": [
+            "osa_diagnosis",
+            "sleep_study_date",
+            "ahi_documented"
+          ],
+          "rulebook_active_release_id": "2026-08-22-active-v1.0",
+          "rules_version": "1.0",
+          "run_id": "__RUN_ID__",
+          "site_of_care": "outpatient",
+          "specialty": "Sleep Medicine",
+          "submission_readiness": false,
+          "timestamp_utc": "__TIMESTAMP_UTC__",
+          "uses_reviewer_corrections": false
+        },
+        "letter_draft": "",
+        "met_count": 1,
+        "needs_review_count": 0,
+        "not_documented_count": 2,
+        "not_met_count": 0,
+        "results": [
+          {
+            "evidence": "Diagnosis present",
+            "evidence_snippets": [
+              "OSA"
+            ],
+            "evidence_spans": [
+              {
+                "end": 7,
+                "start": 4,
+                "text": "OSA"
+              }
+            ],
+            "fact_value": true,
+            "key": "osa_diagnosis",
+            "label": "OSA diagnosis documented",
+            "reason": "Explicit affirmative documentation found.",
+            "status": "MET",
+            "verification": {
+              "fingerprint": null,
+              "reviewer": null,
+              "state": "UNVERIFIED",
+              "verified_at": null
+            },
+            "verification_fingerprint": "97d0d54c019b786c289f10ac1bbe3915606cd6b2abb1939d4c7c986d51268393"
+          },
+          {
+            "evidence": "Date in chart",
+            "evidence_snippets": [],
+            "evidence_spans": [],
+            "fact_value": null,
+            "key": "sleep_study_date",
+            "label": "Sleep study date documented",
+            "reason": "Not found in note. Add explicit affirmative documentation.",
+            "status": "NOT_DOCUMENTED",
+            "verification": {
+              "fingerprint": null,
+              "reviewer": null,
+              "state": "UNVERIFIED",
+              "verified_at": null
+            },
+            "verification_fingerprint": "d126b611bc0d673532bf3b93882f10bfbaf828cd81545d1059fc0b5a837c3364"
+          },
+          {
+            "evidence": "AHI value included",
+            "evidence_snippets": [],
+            "evidence_spans": [],
+            "fact_value": null,
+            "key": "ahi_documented",
+            "label": "AHI/RDI documented",
+            "reason": "Not found in note. Add explicit affirmative documentation.",
+            "status": "NOT_DOCUMENTED",
+            "verification": {
+              "fingerprint": null,
+              "reviewer": null,
+              "state": "UNVERIFIED",
+              "verified_at": null
+            },
+            "verification_fingerprint": "0aaebc0396cf53ef63ab028e2569ce62c3554cf32be905c3d53c513435b67304"
+          }
+        ],
+        "rule_reasons": [
+          "Sleep study date documented: NOT_DOCUMENTED — Not found in note. Add explicit affirmative documentation.",
+          "AHI/RDI documented: NOT_DOCUMENTED — Not found in note. Add explicit affirmative documentation."
+        ]
+      },
+      "request": {
+        "dx_codes": [
+          "G47.33"
+        ],
+        "fact_verifications": {},
+        "note_text": "Dx: OSA. Sleep study completed 2024-05-18. AHI 22 documented. Requests CPAP E0601.",
+        "payer": "Aetna",
+        "procedure_code": "CPAP_DEVICE",
+        "site_of_care": "outpatient",
+        "specialty": "Sleep Medicine"
+      },
+      "results": [
+        {
+          "evidence": "Diagnosis present",
+          "evidence_snippets": [
+            "OSA"
+          ],
+          "evidence_spans": [
+            {
+              "end": 7,
+              "start": 4,
+              "text": "OSA"
+            }
+          ],
+          "fact_value": true,
+          "key": "osa_diagnosis",
+          "label": "OSA diagnosis documented",
+          "reason": "Explicit affirmative documentation found.",
+          "status": "MET",
+          "verification": {
+            "fingerprint": null,
+            "reviewer": null,
+            "state": "UNVERIFIED",
+            "verified_at": null
+          },
+          "verification_fingerprint": "97d0d54c019b786c289f10ac1bbe3915606cd6b2abb1939d4c7c986d51268393"
+        },
+        {
+          "evidence": "Date in chart",
+          "evidence_snippets": [],
+          "evidence_spans": [],
+          "fact_value": null,
+          "key": "sleep_study_date",
+          "label": "Sleep study date documented",
+          "reason": "Not found in note. Add explicit affirmative documentation.",
+          "status": "NOT_DOCUMENTED",
+          "verification": {
+            "fingerprint": null,
+            "reviewer": null,
+            "state": "UNVERIFIED",
+            "verified_at": null
+          },
+          "verification_fingerprint": "d126b611bc0d673532bf3b93882f10bfbaf828cd81545d1059fc0b5a837c3364"
+        },
+        {
+          "evidence": "AHI value included",
+          "evidence_snippets": [],
+          "evidence_spans": [],
+          "fact_value": null,
+          "key": "ahi_documented",
+          "label": "AHI/RDI documented",
+          "reason": "Not found in note. Add explicit affirmative documentation.",
+          "status": "NOT_DOCUMENTED",
+          "verification": {
+            "fingerprint": null,
+            "reviewer": null,
+            "state": "UNVERIFIED",
+            "verified_at": null
+          },
+          "verification_fingerprint": "0aaebc0396cf53ef63ab028e2569ce62c3554cf32be905c3d53c513435b67304"
+        }
+      ],
+      "rule_reasons": [
+        "Sleep study date documented: NOT_DOCUMENTED — Not found in note. Add explicit affirmative documentation.",
+        "AHI/RDI documented: NOT_DOCUMENTED — Not found in note. Add explicit affirmative documentation."
+      ],
+      "schema_version": "2.0.0",
+      "submission_readiness": false,
+      "supported_procedure": {
+        "display_name": "CPAP Device (HCPCS E0601)",
+        "metadata": {
+          "category": "durable_medical_equipment",
+          "last_rule_update": "2026-04-09",
+          "notes": [
+            "The current demo checks for OSA diagnosis, dated sleep study evidence, and AHI/RDI documentation.",
+            "It does not determine clinical appropriateness or device approval likelihood."
+          ],
+          "rule_family": "sleep_study_documentation",
+          "summary": "Administrative readiness check for CPAP device requests using a narrow deterministic documentation contract.",
+          "supported_sites": [
+            "outpatient"
+          ]
+        },
+        "monitored_for_drift": false,
+        "payer": "Aetna",
+        "policy_trust_level": "demo",
+        "procedure_code": "CPAP_DEVICE",
+        "provenance": {
+          "accessed_date": null,
+          "content_hash_sha256": null,
+          "last_reviewed": "2026-04-09",
+          "monitored_check_frequency": null,
+          "monitored_source_id": null,
+          "monitored_source_name": null,
+          "monitored_source_owner": null,
+          "monitored_source_url": null,
+          "notes": "Rules are illustrative for demo.",
+          "policy_effective_date": null,
+          "policy_identifier": null,
+          "policy_last_reviewed": null,
+          "policy_title": null,
+          "requirement_clause_map": {},
+          "rule_last_updated": "2026-04-09",
+          "rule_source_label": "Human-curated summary of CPAP administrative documentation criteria",
+          "source_name": "Aetna DME policy (summary)",
+          "source_type": "manual_summary",
+          "source_url": null,
+          "status": null
+        },
+        "required_field_keys": [
+          "osa_diagnosis",
+          "sleep_study_date",
+          "ahi_documented"
+        ],
+        "requirements": [
+          {
+            "allowed": [],
+            "evidence": "Diagnosis present",
+            "key": "osa_diagnosis",
+            "label": "OSA diagnosis documented",
+            "min": null,
+            "operator": "equals_true",
+            "type": "boolean"
+          },
+          {
+            "allowed": [],
+            "evidence": "Date in chart",
+            "key": "sleep_study_date",
+            "label": "Sleep study date documented",
+            "min": null,
+            "operator": "equals_true",
+            "type": "boolean"
+          },
+          {
+            "allowed": [],
+            "evidence": "AHI value included",
+            "key": "ahi_documented",
+            "label": "AHI/RDI documented",
+            "min": null,
+            "operator": "equals_true",
+            "type": "boolean"
+          }
+        ]
+      },
+      "uses_reviewer_corrections": false,
+      "warnings": [
+        "Policy trust remains DEMO for this procedure. Verify against official policy before real-world use."
+      ]
+    },
+    "regex_only": {
+      "audit_trail": {
+        "blocking_issues": {
+          "needs_review": [],
+          "not_documented": [],
+          "not_met": []
+        },
+        "corrected_requirement_keys": [],
+        "evaluation_warnings": [
+          "Automated extraction is a drafting aid. All proposed facts require human verification before READY.",
+          "Policy trust remains DEMO for this procedure. Verify against official policy before real-world use."
+        ],
+        "evidence_map": {
+          "ahi_documented": [
+            {
+              "end": 49,
+              "start": 43,
+              "text": "AHI 22"
+            }
+          ],
+          "osa_diagnosis": [
+            {
+              "end": 7,
+              "start": 4,
+              "text": "OSA"
+            }
+          ],
+          "sleep_study_date": [
+            {
+              "end": 41,
+              "start": 31,
+              "text": "2024-05-18"
+            }
+          ]
+        },
+        "fact_set_fingerprint": "a274a875586f0167233638312f68b211af45f6fb51773bd6125417dda935d2a0",
+        "fact_verifications": {
+          "ahi_documented": {
+            "fingerprint": null,
+            "reviewer": null,
+            "state": "UNVERIFIED",
+            "verified_at": null
+          },
+          "osa_diagnosis": {
+            "fingerprint": null,
+            "reviewer": null,
+            "state": "UNVERIFIED",
+            "verified_at": null
+          },
+          "sleep_study_date": {
+            "fingerprint": null,
+            "reviewer": null,
+            "state": "UNVERIFIED",
+            "verified_at": null
+          }
+        },
+        "facts_extracted": {
+          "ahi_documented": true,
+          "back_pain_with_radiculopathy": null,
+          "conservative_therapy_weeks": null,
+          "cpb_0236_conservative_therapy_no_improvement": null,
+          "cpb_0236_conservative_therapy_weeks": null,
+          "mechanical_symptoms_documented": null,
+          "neuro_red_flags_documented": null,
+          "objective_motor_or_reflex_change_in_root_distribution": null,
+          "osa_diagnosis": true,
+          "prior_imaging_result": null,
+          "sleep_study_date": true,
+          "symptom_duration_weeks": null
+        },
+        "input_fingerprint": "d9b6b0b64e0b4ba0ce536040dcbd998783e8d75842ff134dbea74f7c4c557045",
+        "invariant_errors": [],
+        "metrics": {
+          "criteria_met_count": 3,
+          "criteria_not_met_count": 0,
+          "documentation_coverage_pct": 100.0,
+          "documented_requirement_count": 3,
+          "evaluable_requirement_count": 3,
+          "human_review_count": 0,
+          "missing_requirement_count": 0,
+          "total_requirements": 3
+        },
+        "note_hash": "a6ba497402393571",
+        "note_length": 82,
+        "overall_status": "PENDING_VERIFICATION",
+        "payer": "Aetna",
+        "policy_trust_level": "demo",
+        "policy_version": {
+          "content_hash": "d640e268da5bc5cff9ba487d9154131c4257cef93b4ffe00d7df82d414040383",
+          "criteria_json": "[{\"allowed\":[],\"evidence\":\"Diagnosis present\",\"key\":\"osa_diagnosis\",\"label\":\"OSA diagnosis documented\",\"operator\":\"equals_true\",\"type\":\"boolean\"},{\"allowed\":[],\"evidence\":\"Date in chart\",\"key\":\"sleep_study_date\",\"label\":\"Sleep study date documented\",\"operator\":\"equals_true\",\"type\":\"boolean\"},{\"allowed\":[],\"evidence\":\"AHI value included\",\"key\":\"ahi_documented\",\"label\":\"AHI/RDI documented\",\"operator\":\"equals_true\",\"type\":\"boolean\"}]",
+          "effective_date": "2026-04-09",
+          "payer": "Aetna",
+          "policy_id": "Aetna:CPAP_DEVICE",
+          "procedure_code": "CPAP_DEVICE",
+          "supported_sites": [
+            "outpatient"
+          ],
+          "version_id": "runtime-1.0-2026-04-09-c1dec378482c682c"
+        },
+        "procedure_code": "CPAP_DEVICE",
+        "procedure_name": "CPAP Device (HCPCS E0601)",
+        "provenance_snapshot": {
+          "accessed_date": null,
+          "content_hash_sha256": null,
+          "last_reviewed": "2026-04-09",
+          "monitored_check_frequency": null,
+          "monitored_source_id": null,
+          "monitored_source_name": null,
+          "monitored_source_owner": null,
+          "monitored_source_url": null,
+          "notes": "Rules are illustrative for demo.",
+          "policy_effective_date": null,
+          "policy_identifier": null,
+          "policy_last_reviewed": null,
+          "policy_title": null,
+          "requirement_clause_map": {},
+          "rule_last_updated": "2026-04-09",
+          "rule_source_label": "Human-curated summary of CPAP administrative documentation criteria",
+          "source_name": "Aetna DME policy (summary)",
+          "source_type": "manual_summary",
+          "source_url": null,
+          "status": null
+        },
+        "requirements_checked": [
+          "osa_diagnosis",
+          "sleep_study_date",
+          "ahi_documented"
+        ],
+        "rulebook_active_release_id": "2026-08-22-active-v1.0",
+        "rules_version": "1.0",
+        "run_id": "__RUN_ID__",
+        "site_of_care": "outpatient",
+        "specialty": "Sleep Medicine",
+        "submission_readiness": false,
+        "timestamp_utc": "__TIMESTAMP_UTC__",
+        "uses_reviewer_corrections": false
+      },
+      "blockers": {
+        "needs_review": [],
+        "not_documented": [],
+        "not_met": []
+      },
+      "bundle_fingerprint": "1e3dea24499fa5619e8862e53c75ed3596d7e94812314c995f7508a44353d0ef",
+      "captured_fact_states": {
+        "ahi_documented": "CAPTURED",
+        "back_pain_with_radiculopathy": "MISSING",
+        "conservative_therapy_weeks": "MISSING",
+        "cpb_0236_conservative_therapy_no_improvement": "MISSING",
+        "cpb_0236_conservative_therapy_weeks": "MISSING",
+        "mechanical_symptoms_documented": "MISSING",
+        "neuro_red_flags_documented": "MISSING",
+        "objective_motor_or_reflex_change_in_root_distribution": "MISSING",
+        "osa_diagnosis": "CAPTURED",
+        "prior_imaging_result": "MISSING",
+        "sleep_study_date": "CAPTURED",
+        "symptom_duration_weeks": "MISSING"
+      },
+      "contract_version": "6779fd812df9d1fa44d8c17af56bff917d91c0395f00fea78846b643bcdaf74c",
+      "corrected_requirement_keys": [],
+      "engine_version": "2.7.0",
+      "evidence_map": {
+        "ahi_documented": [
+          {
+            "end": 49,
+            "start": 43,
+            "text": "AHI 22"
+          }
+        ],
+        "osa_diagnosis": [
+          {
+            "end": 7,
+            "start": 4,
+            "text": "OSA"
+          }
+        ],
+        "sleep_study_date": [
+          {
+            "end": 41,
+            "start": 31,
+            "text": "2024-05-18"
+          }
+        ]
+      },
+      "fact_set_fingerprint": "a274a875586f0167233638312f68b211af45f6fb51773bd6125417dda935d2a0",
+      "facts": {
+        "ahi_documented": true,
+        "back_pain_with_radiculopathy": null,
+        "conservative_therapy_weeks": null,
+        "cpb_0236_conservative_therapy_no_improvement": null,
+        "cpb_0236_conservative_therapy_weeks": null,
+        "mechanical_symptoms_documented": null,
+        "neuro_red_flags_documented": null,
+        "objective_motor_or_reflex_change_in_root_distribution": null,
+        "osa_diagnosis": true,
+        "prior_imaging_result": null,
+        "sleep_study_date": true,
+        "symptom_duration_weeks": null
+      },
+      "input_fingerprint": "d9b6b0b64e0b4ba0ce536040dcbd998783e8d75842ff134dbea74f7c4c557045",
+      "metrics": {
+        "criteria_met_count": 3,
+        "criteria_not_met_count": 0,
+        "documentation_coverage_pct": 100.0,
+        "documented_requirement_count": 3,
+        "evaluable_requirement_count": 3,
+        "human_review_count": 0,
+        "missing_requirement_count": 0,
+        "total_requirements": 3
+      },
+      "original_snapshot": {
+        "content_hash": "819c795e5f0b4087a0499b8d6ad1d734d1921917f2d59f8fc19443030ae53e67",
+        "snapshot_json": "{\"evidence\":{\"ahi_documented\":[{\"end\":49,\"start\":43,\"text\":\"AHI 22\"}],\"osa_diagnosis\":[{\"end\":7,\"start\":4,\"text\":\"OSA\"}],\"sleep_study_date\":[{\"end\":41,\"start\":31,\"text\":\"2024-05-18\"}]},\"facts\":{\"ahi_documented\":true,\"back_pain_with_radiculopathy\":null,\"conservative_therapy_weeks\":null,\"cpb_0236_conservative_therapy_no_improvement\":null,\"cpb_0236_conservative_therapy_weeks\":null,\"mechanical_symptoms_documented\":null,\"neuro_red_flags_documented\":null,\"objective_motor_or_reflex_change_in_root_distribution\":null,\"osa_diagnosis\":true,\"prior_imaging_result\":null,\"sleep_study_date\":true,\"symptom_duration_weeks\":null},\"states\":{\"ahi_documented\":\"CAPTURED\",\"back_pain_with_radiculopathy\":\"MISSING\",\"conservative_therapy_weeks\":\"MISSING\",\"cpb_0236_conservative_therapy_no_improvement\":\"MISSING\",\"cpb_0236_conservative_therapy_weeks\":\"MISSING\",\"mechanical_symptoms_documented\":\"MISSING\",\"neuro_red_flags_documented\":\"MISSING\",\"objective_motor_or_reflex_change_in_root_distribution\":\"MISSING\",\"osa_diagnosis\":\"CAPTURED\",\"prior_imaging_result\":\"MISSING\",\"sleep_study_date\":\"CAPTURED\",\"symptom_duration_weeks\":\"MISSING\"}}"
+      },
+      "overall_status": "PENDING_VERIFICATION",
+      "policy_trust_level": "demo",
+      "policy_version": {
+        "content_hash": "d640e268da5bc5cff9ba487d9154131c4257cef93b4ffe00d7df82d414040383",
+        "criteria_json": "[{\"allowed\":[],\"evidence\":\"Diagnosis present\",\"key\":\"osa_diagnosis\",\"label\":\"OSA diagnosis documented\",\"operator\":\"equals_true\",\"type\":\"boolean\"},{\"allowed\":[],\"evidence\":\"Date in chart\",\"key\":\"sleep_study_date\",\"label\":\"Sleep study date documented\",\"operator\":\"equals_true\",\"type\":\"boolean\"},{\"allowed\":[],\"evidence\":\"AHI value included\",\"key\":\"ahi_documented\",\"label\":\"AHI/RDI documented\",\"operator\":\"equals_true\",\"type\":\"boolean\"}]",
+        "effective_date": "2026-04-09",
+        "payer": "Aetna",
+        "policy_id": "Aetna:CPAP_DEVICE",
+        "procedure_code": "CPAP_DEVICE",
+        "supported_sites": [
+          "outpatient"
+        ],
+        "version_id": "runtime-1.0-2026-04-09-c1dec378482c682c"
+      },
+      "provenance": {
+        "accessed_date": null,
+        "content_hash_sha256": null,
+        "last_reviewed": "2026-04-09",
+        "monitored_check_frequency": null,
+        "monitored_source_id": null,
+        "monitored_source_name": null,
+        "monitored_source_owner": null,
+        "monitored_source_url": null,
+        "notes": "Rules are illustrative for demo.",
+        "policy_effective_date": null,
+        "policy_identifier": null,
+        "policy_last_reviewed": null,
+        "policy_title": null,
+        "requirement_clause_map": {},
+        "rule_last_updated": "2026-04-09",
+        "rule_source_label": "Human-curated summary of CPAP administrative documentation criteria",
+        "source_name": "Aetna DME policy (summary)",
+        "source_type": "manual_summary",
+        "source_url": null,
+        "status": null
+      },
+      "report": {
+        "audit_trail": {
+          "blocking_issues": {
+            "needs_review": [],
+            "not_documented": [],
+            "not_met": []
+          },
+          "corrected_requirement_keys": [],
+          "evaluation_warnings": [
+            "Automated extraction is a drafting aid. All proposed facts require human verification before READY.",
+            "Policy trust remains DEMO for this procedure. Verify against official policy before real-world use."
+          ],
+          "evidence_map": {
+            "ahi_documented": [
+              {
+                "end": 49,
+                "start": 43,
+                "text": "AHI 22"
+              }
+            ],
+            "osa_diagnosis": [
+              {
+                "end": 7,
+                "start": 4,
+                "text": "OSA"
+              }
+            ],
+            "sleep_study_date": [
+              {
+                "end": 41,
+                "start": 31,
+                "text": "2024-05-18"
+              }
+            ]
+          },
+          "fact_set_fingerprint": "a274a875586f0167233638312f68b211af45f6fb51773bd6125417dda935d2a0",
+          "fact_verifications": {
+            "ahi_documented": {
+              "fingerprint": null,
+              "reviewer": null,
+              "state": "UNVERIFIED",
+              "verified_at": null
+            },
+            "osa_diagnosis": {
+              "fingerprint": null,
+              "reviewer": null,
+              "state": "UNVERIFIED",
+              "verified_at": null
+            },
+            "sleep_study_date": {
+              "fingerprint": null,
+              "reviewer": null,
+              "state": "UNVERIFIED",
+              "verified_at": null
+            }
+          },
+          "facts_extracted": {
+            "ahi_documented": true,
+            "back_pain_with_radiculopathy": null,
+            "conservative_therapy_weeks": null,
+            "cpb_0236_conservative_therapy_no_improvement": null,
+            "cpb_0236_conservative_therapy_weeks": null,
+            "mechanical_symptoms_documented": null,
+            "neuro_red_flags_documented": null,
+            "objective_motor_or_reflex_change_in_root_distribution": null,
+            "osa_diagnosis": true,
+            "prior_imaging_result": null,
+            "sleep_study_date": true,
+            "symptom_duration_weeks": null
+          },
+          "input_fingerprint": "d9b6b0b64e0b4ba0ce536040dcbd998783e8d75842ff134dbea74f7c4c557045",
+          "invariant_errors": [],
+          "metrics": {
+            "criteria_met_count": 3,
+            "criteria_not_met_count": 0,
+            "documentation_coverage_pct": 100.0,
+            "documented_requirement_count": 3,
+            "evaluable_requirement_count": 3,
+            "human_review_count": 0,
+            "missing_requirement_count": 0,
+            "total_requirements": 3
+          },
+          "note_hash": "a6ba497402393571",
+          "note_length": 82,
+          "overall_status": "PENDING_VERIFICATION",
+          "payer": "Aetna",
+          "policy_trust_level": "demo",
+          "policy_version": {
+            "content_hash": "d640e268da5bc5cff9ba487d9154131c4257cef93b4ffe00d7df82d414040383",
+            "criteria_json": "[{\"allowed\":[],\"evidence\":\"Diagnosis present\",\"key\":\"osa_diagnosis\",\"label\":\"OSA diagnosis documented\",\"operator\":\"equals_true\",\"type\":\"boolean\"},{\"allowed\":[],\"evidence\":\"Date in chart\",\"key\":\"sleep_study_date\",\"label\":\"Sleep study date documented\",\"operator\":\"equals_true\",\"type\":\"boolean\"},{\"allowed\":[],\"evidence\":\"AHI value included\",\"key\":\"ahi_documented\",\"label\":\"AHI/RDI documented\",\"operator\":\"equals_true\",\"type\":\"boolean\"}]",
+            "effective_date": "2026-04-09",
+            "payer": "Aetna",
+            "policy_id": "Aetna:CPAP_DEVICE",
+            "procedure_code": "CPAP_DEVICE",
+            "supported_sites": [
+              "outpatient"
+            ],
+            "version_id": "runtime-1.0-2026-04-09-c1dec378482c682c"
+          },
+          "procedure_code": "CPAP_DEVICE",
+          "procedure_name": "CPAP Device (HCPCS E0601)",
+          "provenance_snapshot": {
+            "accessed_date": null,
+            "content_hash_sha256": null,
+            "last_reviewed": "2026-04-09",
+            "monitored_check_frequency": null,
+            "monitored_source_id": null,
+            "monitored_source_name": null,
+            "monitored_source_owner": null,
+            "monitored_source_url": null,
+            "notes": "Rules are illustrative for demo.",
+            "policy_effective_date": null,
+            "policy_identifier": null,
+            "policy_last_reviewed": null,
+            "policy_title": null,
+            "requirement_clause_map": {},
+            "rule_last_updated": "2026-04-09",
+            "rule_source_label": "Human-curated summary of CPAP administrative documentation criteria",
+            "source_name": "Aetna DME policy (summary)",
+            "source_type": "manual_summary",
+            "source_url": null,
+            "status": null
+          },
+          "requirements_checked": [
+            "osa_diagnosis",
+            "sleep_study_date",
+            "ahi_documented"
+          ],
+          "rulebook_active_release_id": "2026-08-22-active-v1.0",
+          "rules_version": "1.0",
+          "run_id": "__RUN_ID__",
+          "site_of_care": "outpatient",
+          "specialty": "Sleep Medicine",
+          "submission_readiness": false,
+          "timestamp_utc": "__TIMESTAMP_UTC__",
+          "uses_reviewer_corrections": false
+        },
+        "letter_draft": "",
+        "met_count": 3,
+        "needs_review_count": 0,
+        "not_documented_count": 0,
+        "not_met_count": 0,
+        "results": [
+          {
+            "evidence": "Diagnosis present",
+            "evidence_snippets": [
+              "OSA"
+            ],
+            "evidence_spans": [
+              {
+                "end": 7,
+                "start": 4,
+                "text": "OSA"
+              }
+            ],
+            "fact_value": true,
+            "key": "osa_diagnosis",
+            "label": "OSA diagnosis documented",
+            "reason": "Explicit affirmative documentation found.",
+            "status": "MET",
+            "verification": {
+              "fingerprint": null,
+              "reviewer": null,
+              "state": "UNVERIFIED",
+              "verified_at": null
+            },
+            "verification_fingerprint": "d7f25336b340388f225663c75894767ff5430ae504c507b0a6d1989c6c8d9296"
+          },
+          {
+            "evidence": "Date in chart",
+            "evidence_snippets": [
+              "2024-05-18"
+            ],
+            "evidence_spans": [
+              {
+                "end": 41,
+                "start": 31,
+                "text": "2024-05-18"
+              }
+            ],
+            "fact_value": true,
+            "key": "sleep_study_date",
+            "label": "Sleep study date documented",
+            "reason": "Explicit affirmative documentation found.",
+            "status": "MET",
+            "verification": {
+              "fingerprint": null,
+              "reviewer": null,
+              "state": "UNVERIFIED",
+              "verified_at": null
+            },
+            "verification_fingerprint": "666c63eb44065edfbafeae8371c3e7b6362d7bf8119a5094f8db6fc65dad51a4"
+          },
+          {
+            "evidence": "AHI value included",
+            "evidence_snippets": [
+              "AHI 22"
+            ],
+            "evidence_spans": [
+              {
+                "end": 49,
+                "start": 43,
+                "text": "AHI 22"
+              }
+            ],
+            "fact_value": true,
+            "key": "ahi_documented",
+            "label": "AHI/RDI documented",
+            "reason": "Explicit affirmative documentation found.",
+            "status": "MET",
+            "verification": {
+              "fingerprint": null,
+              "reviewer": null,
+              "state": "UNVERIFIED",
+              "verified_at": null
+            },
+            "verification_fingerprint": "095b1afe9057a82c37e6a47d08558c1198877f3dcd037452886fa056957c3d0d"
+          }
+        ],
+        "rule_reasons": []
+      },
+      "request": {
+        "dx_codes": [
+          "G47.33"
+        ],
+        "fact_verifications": {},
+        "note_text": "Dx: OSA. Sleep study completed 2024-05-18. AHI 22 documented. Requests CPAP E0601.",
+        "payer": "Aetna",
+        "procedure_code": "CPAP_DEVICE",
+        "site_of_care": "outpatient",
+        "specialty": "Sleep Medicine"
+      },
+      "results": [
+        {
+          "evidence": "Diagnosis present",
+          "evidence_snippets": [
+            "OSA"
+          ],
+          "evidence_spans": [
+            {
+              "end": 7,
+              "start": 4,
+              "text": "OSA"
+            }
+          ],
+          "fact_value": true,
+          "key": "osa_diagnosis",
+          "label": "OSA diagnosis documented",
+          "reason": "Explicit affirmative documentation found.",
+          "status": "MET",
+          "verification": {
+            "fingerprint": null,
+            "reviewer": null,
+            "state": "UNVERIFIED",
+            "verified_at": null
+          },
+          "verification_fingerprint": "d7f25336b340388f225663c75894767ff5430ae504c507b0a6d1989c6c8d9296"
+        },
+        {
+          "evidence": "Date in chart",
+          "evidence_snippets": [
+            "2024-05-18"
+          ],
+          "evidence_spans": [
+            {
+              "end": 41,
+              "start": 31,
+              "text": "2024-05-18"
+            }
+          ],
+          "fact_value": true,
+          "key": "sleep_study_date",
+          "label": "Sleep study date documented",
+          "reason": "Explicit affirmative documentation found.",
+          "status": "MET",
+          "verification": {
+            "fingerprint": null,
+            "reviewer": null,
+            "state": "UNVERIFIED",
+            "verified_at": null
+          },
+          "verification_fingerprint": "666c63eb44065edfbafeae8371c3e7b6362d7bf8119a5094f8db6fc65dad51a4"
+        },
+        {
+          "evidence": "AHI value included",
+          "evidence_snippets": [
+            "AHI 22"
+          ],
+          "evidence_spans": [
+            {
+              "end": 49,
+              "start": 43,
+              "text": "AHI 22"
+            }
+          ],
+          "fact_value": true,
+          "key": "ahi_documented",
+          "label": "AHI/RDI documented",
+          "reason": "Explicit affirmative documentation found.",
+          "status": "MET",
+          "verification": {
+            "fingerprint": null,
+            "reviewer": null,
+            "state": "UNVERIFIED",
+            "verified_at": null
+          },
+          "verification_fingerprint": "095b1afe9057a82c37e6a47d08558c1198877f3dcd037452886fa056957c3d0d"
+        }
+      ],
+      "rule_reasons": [],
+      "schema_version": "2.0.0",
+      "submission_readiness": false,
+      "supported_procedure": {
+        "display_name": "CPAP Device (HCPCS E0601)",
+        "metadata": {
+          "category": "durable_medical_equipment",
+          "last_rule_update": "2026-04-09",
+          "notes": [
+            "The current demo checks for OSA diagnosis, dated sleep study evidence, and AHI/RDI documentation.",
+            "It does not determine clinical appropriateness or device approval likelihood."
+          ],
+          "rule_family": "sleep_study_documentation",
+          "summary": "Administrative readiness check for CPAP device requests using a narrow deterministic documentation contract.",
+          "supported_sites": [
+            "outpatient"
+          ]
+        },
+        "monitored_for_drift": false,
+        "payer": "Aetna",
+        "policy_trust_level": "demo",
+        "procedure_code": "CPAP_DEVICE",
+        "provenance": {
+          "accessed_date": null,
+          "content_hash_sha256": null,
+          "last_reviewed": "2026-04-09",
+          "monitored_check_frequency": null,
+          "monitored_source_id": null,
+          "monitored_source_name": null,
+          "monitored_source_owner": null,
+          "monitored_source_url": null,
+          "notes": "Rules are illustrative for demo.",
+          "policy_effective_date": null,
+          "policy_identifier": null,
+          "policy_last_reviewed": null,
+          "policy_title": null,
+          "requirement_clause_map": {},
+          "rule_last_updated": "2026-04-09",
+          "rule_source_label": "Human-curated summary of CPAP administrative documentation criteria",
+          "source_name": "Aetna DME policy (summary)",
+          "source_type": "manual_summary",
+          "source_url": null,
+          "status": null
+        },
+        "required_field_keys": [
+          "osa_diagnosis",
+          "sleep_study_date",
+          "ahi_documented"
+        ],
+        "requirements": [
+          {
+            "allowed": [],
+            "evidence": "Diagnosis present",
+            "key": "osa_diagnosis",
+            "label": "OSA diagnosis documented",
+            "min": null,
+            "operator": "equals_true",
+            "type": "boolean"
+          },
+          {
+            "allowed": [],
+            "evidence": "Date in chart",
+            "key": "sleep_study_date",
+            "label": "Sleep study date documented",
+            "min": null,
+            "operator": "equals_true",
+            "type": "boolean"
+          },
+          {
+            "allowed": [],
+            "evidence": "AHI value included",
+            "key": "ahi_documented",
+            "label": "AHI/RDI documented",
+            "min": null,
+            "operator": "equals_true",
+            "type": "boolean"
+          }
+        ]
+      },
+      "uses_reviewer_corrections": false,
+      "warnings": [
+        "Automated extraction is a drafting aid. All proposed facts require human verification before READY.",
+        "Policy trust remains DEMO for this procedure. Verify against official policy before real-world use."
+      ]
+    }
+  },
+  "known_failure": null,
+  "note_sha256": "a6ba49740239357153c74a1398bfcf4f1ea07ca6ca76500f77da99692fbfb2b2",
+  "note_text": "Dx: OSA. Sleep study completed 2024-05-18. AHI 22 documented. Requests CPAP E0601.",
+  "recording_kind": "raw_attempt",
+  "recording_status": "VALID",
+  "scope": "SUPPORTED"
+}

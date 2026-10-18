@@ -19,6 +19,8 @@ Structural comparisons only; no clinical accuracy claim. Labeled shared-error de
 | malformed_recordings | 0 |
 | integrity_failures | 0 |
 | rejected_recordings | 0 |
+| invalid_raw_responses | 0 |
+| extraction_failures | 0 |
 | successful_three_mode_cases | 3 |
 | extraction_only_compared_cases | 1 |
 | comparison_failures | 0 |
@@ -33,8 +35,58 @@ Structural comparisons only; no clinical accuracy claim. Labeled shared-error de
 | citation_disagreement_rate | 3 / 48 | 6.25% | valid fact pairs; retained citation sets, including empty sets |
 | citation_order_disagreement_rate | 3 / 48 | 6.25% | valid fact pairs; retained citation lists |
 | dual_needs_review_rate | 2 / 48 | 4.1667% | valid compared facts |
-| invalid_recorded_response_rate | 0 / 4 | 0.0% | available recording attempts; excludes absent/missing files |
 | downstream_requirement_status_difference_rate | 1 / 11 | 9.0909% | requirements in successful three-mode cases; any mode differs |
+
+## Response accounting
+
+Hand-authored and simulated responses are never measured LLM performance.
+
+### actual_model
+
+| Count or rate | Value |
+| --- | --- |
+| attempted_cases | 0 |
+| declared_responses_received | 0 |
+| responses_received | 0 |
+| valid_adapted_responses | 0 |
+| invalid_responses | 0 |
+| extraction_failures | 0 |
+| missing_stored_responses | 0 |
+| file_integrity_failures | 0 |
+| malformed_storage_failures | 0 |
+| not_attempted_cases | 177 |
+| successful_three_mode_evaluations | 0 |
+| invalid_recorded_response_rate | 0 / 0; not available; adapter-rejected / adaptation-attempted raw responses; excludes provider, missing-file, integrity and storage failures |
+| end_to_end_usable_response_rate | 0 / 0; not available; valid adapted responses / all selected model attempts, including all failures |
+
+### synthetic_raw_demonstration
+
+| Count or rate | Value |
+| --- | --- |
+| attempted_cases | 0 |
+| declared_responses_received | 0 |
+| responses_received | 0 |
+| valid_adapted_responses | 0 |
+| invalid_responses | 0 |
+| extraction_failures | 0 |
+| missing_stored_responses | 0 |
+| file_integrity_failures | 0 |
+| malformed_storage_failures | 0 |
+| not_attempted_cases | 177 |
+| successful_three_mode_evaluations | 0 |
+| invalid_recorded_response_rate | 0 / 0; not available; adapter-rejected / adaptation-attempted raw responses; excludes provider, missing-file, integrity and storage failures |
+| end_to_end_usable_response_rate | 0 / 0; not available; valid adapted responses / all selected model attempts, including all failures |
+
+### hand_authored_adapted
+
+| Count or rate | Value |
+| --- | --- |
+| selected_recordings | 4 |
+| valid_recordings | 4 |
+| missing_recordings | 0 |
+| malformed_recordings | 0 |
+| integrity_failures | 0 |
+| measured_llm_performance | False |
 
 ## Compared cases
 
@@ -51,7 +103,7 @@ Structural comparisons only; no clinical accuracy claim. Labeled shared-error de
 
 ## Limits
 
-The bundled recordings were deliberately hand-authored for four selected frozen notes, not produced by a real LLM. This run's coverage is shown above. The three Phase 2 fixture notes do not exactly match this corpus and were not silently substituted.
+The default recordings and bundled raw-response examples are hand-authored synthetic data, not produced by a real LLM. This run's declared population, provenance and coverage are shown above. The three Phase 2 fixture notes do not exactly match this corpus and were not silently substituted.
 Absent recordings and extraction failures are coverage outcomes, never MISSING clinical facts. Missing policy scope produces extraction-only comparisons.
 Rates include the shared-error demonstration, describe only these compared proposals, and do not estimate correctness, precision, recall, sensitivity, or population performance.
 Citation comparisons cover retained spans only; combined totals can be unknown. Numeric literal flags are advisory and can flag valid unit normalization.

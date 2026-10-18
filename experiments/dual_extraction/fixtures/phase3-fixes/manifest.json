@@ -1,0 +1,145 @@
+{
+  "attempts": [
+    {
+      "attempt_id": "synthetic-attempt-valid-response",
+      "case_id": "inputs/synthetic_cases.json#CPAP-01-complete",
+      "note_sha256": "a6ba49740239357153c74a1398bfcf4f1ea07ca6ca76500f77da99692fbfb2b2",
+      "outcome": "response",
+      "path": "valid-response.json",
+      "provider_id": "synthetic-no-provider",
+      "recording": {
+        "model_id": "synthetic-no-model",
+        "origin": "hand_authored_synthetic",
+        "prompt_version": "synthetic-schema-v1",
+        "response_id": "synthetic-valid-response",
+        "source": "recorded-llm:synthetic"
+      },
+      "stored_sha256": "9310f83ace595115c7c0e49b10eb3f17d70821d7c63d624fd387476670fdcb40"
+    },
+    {
+      "attempt_id": "synthetic-attempt-invalid-unicode-offset",
+      "case_id": "EXTRACTION_CONTRACT.md#unicode",
+      "note_sha256": "e3ab633fff1fc935412ba1498daa7bfe0097f8faad538b80319a7111f153e2f2",
+      "outcome": "response",
+      "path": "invalid-unicode-offset.json",
+      "provider_id": "synthetic-no-provider",
+      "recording": {
+        "model_id": "synthetic-no-model",
+        "origin": "hand_authored_synthetic",
+        "prompt_version": "synthetic-schema-v1",
+        "response_id": "synthetic-invalid-unicode-offset",
+        "source": "recorded-llm:synthetic"
+      },
+      "stored_sha256": "faa005e40263258985da52f1d3aa0570ea964f758e731f55deb3159eb67ac94e"
+    },
+    {
+      "attempt_id": "synthetic-attempt-invalid-type",
+      "case_id": "inputs/synthetic_cases.json#CPAP-02-borderline",
+      "note_sha256": "5ef99d034f3c708e05511febfd66771705a2de1f450fcfc0efaf197b9e4313fc",
+      "outcome": "response",
+      "path": "invalid-type.json",
+      "provider_id": "synthetic-no-provider",
+      "recording": {
+        "model_id": "synthetic-no-model",
+        "origin": "hand_authored_synthetic",
+        "prompt_version": "synthetic-schema-v1",
+        "response_id": "synthetic-invalid-type",
+        "source": "recorded-llm:synthetic"
+      },
+      "stored_sha256": "f93ee15f145bea6c26aef876ef0ae341e17954681a6c1bb2475de93bc8df2308"
+    },
+    {
+      "attempt_id": "synthetic-attempt-uncited-capture",
+      "case_id": "inputs/synthetic_cases.json#CPAP-04-incomplete",
+      "note_sha256": "e0d3de983a93cb1f46b7669f221fce995100da78ab32d7bee8654656a9dfbb1a",
+      "outcome": "response",
+      "path": "uncited-capture.json",
+      "provider_id": "synthetic-no-provider",
+      "recording": {
+        "model_id": "synthetic-no-model",
+        "origin": "hand_authored_synthetic",
+        "prompt_version": "synthetic-schema-v1",
+        "response_id": "synthetic-uncited-capture",
+        "source": "recorded-llm:synthetic"
+      },
+      "stored_sha256": "0f9f20cd0c3f1a74ff1924469e6ab152dc2a1d2255b63f8e1e5ca778935ef500"
+    },
+    {
+      "attempt_id": "synthetic-attempt-provider-failure",
+      "case_id": "inputs/synthetic_cases.json#MRI-01-complete",
+      "note_sha256": "b66310c6bfc8e97dbd6f93c79fa3af51ae95a0d47c6c0d5cfad338ab451b128d",
+      "outcome": "extraction_failure",
+      "path": "provider-failure.json",
+      "provider_id": "synthetic-no-provider",
+      "recording": {
+        "model_id": "synthetic-no-model",
+        "origin": "hand_authored_synthetic",
+        "prompt_version": "synthetic-schema-v1",
+        "response_id": null,
+        "source": "recorded-llm:synthetic"
+      },
+      "stored_sha256": "7f6f22e0c073ed1d5d0f07a14baf403c484d3efac57019e1211de7c965541af4"
+    },
+    {
+      "attempt_id": "synthetic-attempt-missing-response",
+      "case_id": "inputs/synthetic_cases.json#MRI-08-edge-below-threshold",
+      "note_sha256": "2f9bb605eac5f3ce5481e3d4cc974aa90a8c984c13d7dea240168c742b585b6f",
+      "outcome": "response",
+      "path": "missing-response.json",
+      "provider_id": "synthetic-no-provider",
+      "recording": {
+        "model_id": "synthetic-no-model",
+        "origin": "hand_authored_synthetic",
+        "prompt_version": "synthetic-schema-v1",
+        "response_id": "synthetic-missing-response",
+        "source": "recorded-llm:synthetic"
+      },
+      "stored_sha256": "dcaf03f5f6f9d7c051933eda57161c63fcc351223e7e579579933a9d18a9fb84"
+    },
+    {
+      "attempt_id": "synthetic-attempt-changed-bytes",
+      "case_id": "inputs/synthetic_cases.json#MRI-KNEE-01-ready",
+      "note_sha256": "59421e8561fe0462a994e918046d06fb7a547ebb3e0189f17538cf11490975e3",
+      "outcome": "response",
+      "path": "changed-bytes.json",
+      "provider_id": "synthetic-no-provider",
+      "recording": {
+        "model_id": "synthetic-no-model",
+        "origin": "hand_authored_synthetic",
+        "prompt_version": "synthetic-schema-v1",
+        "response_id": "synthetic-changed-bytes",
+        "source": "recorded-llm:synthetic"
+      },
+      "stored_sha256": "29a51952504376dc1e6cb7351415b32b03f1c3694ec3d89344eb47dc59780277"
+    },
+    {
+      "attempt_id": "synthetic-attempt-malformed-response",
+      "case_id": "inputs/synthetic_cases.json#CPAP-03-incomplete",
+      "note_sha256": "8a3e04b0d8cffc5c3f891eaf0f10d616c73aa52183c43722efb92a4f4115a0e4",
+      "outcome": "response",
+      "path": "malformed-response.json",
+      "provider_id": "synthetic-no-provider",
+      "recording": {
+        "model_id": "synthetic-no-model",
+        "origin": "hand_authored_synthetic",
+        "prompt_version": "synthetic-schema-v1",
+        "response_id": "synthetic-malformed-response",
+        "source": "recorded-llm:synthetic"
+      },
+      "stored_sha256": "19998bbef6519b71353cf6f91c5556fa3d27b08aca96778615e1e61aec68d020"
+    }
+  ],
+  "notice": "Offline response attempts; provenance is declared per population.",
+  "population": "synthetic_raw_demonstration",
+  "schema_version": 2,
+  "selected_attempted_case_ids": [
+    "inputs/synthetic_cases.json#CPAP-01-complete",
+    "EXTRACTION_CONTRACT.md#unicode",
+    "inputs/synthetic_cases.json#CPAP-02-borderline",
+    "inputs/synthetic_cases.json#CPAP-04-incomplete",
+    "inputs/synthetic_cases.json#MRI-01-complete",
+    "inputs/synthetic_cases.json#MRI-08-edge-below-threshold",
+    "inputs/synthetic_cases.json#MRI-KNEE-01-ready",
+    "inputs/synthetic_cases.json#CPAP-03-incomplete"
+  ]
+}

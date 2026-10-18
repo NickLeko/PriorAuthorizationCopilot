@@ -103,8 +103,9 @@ def test_missing_malformed_and_integrity_coverage_do_not_become_clinical_missing
     for case in report["cases"]:
         if case["recording_status"] != "VALID":
             assert case["comparison"] is None and case["evaluations"] is None
-    assert report["metrics"]["invalid_recorded_response_rate"]["numerator"] == 2
-    assert report["metrics"]["invalid_recorded_response_rate"]["denominator"] == 3
+    legacy = report["response_accounting"]["hand_authored_adapted"]
+    assert legacy["malformed_recordings"] == legacy["integrity_failures"] == 1
+    assert report["response_accounting"]["actual_model"]["invalid_recorded_response_rate"]["denominator"] == 0
 
 
 def test_inputs_and_sources_are_not_mutated_and_case_order_is_frozen():

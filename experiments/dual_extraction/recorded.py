@@ -1,4 +1,4 @@
-"""Strict adapter for explicitly hand-authored synthetic recorded LLM proposals."""
+"""Strict response adapter; recording origin is explicit, never verification."""
 
 from __future__ import annotations
 
@@ -26,7 +26,7 @@ class RecordingMetadata(BaseModel):
     model_id: str = Field(pattern=IDENTIFIER_PATTERN)
     prompt_version: str = Field(pattern=IDENTIFIER_PATTERN)
     response_id: str = Field(pattern=IDENTIFIER_PATTERN)
-    origin: Literal["hand_authored_synthetic"]
+    origin: Literal["hand_authored_synthetic", "actual_model_response"]
 
 
 class RecordedLLMProposal(BaseModel):
@@ -109,7 +109,7 @@ def adapt_recorded_response(note_text: str, payload: str | dict) -> RecordedLLMP
             note_text,
             (facts, bounded_evidence),
             source=response.recording.source,
-            diagnostics=("HAND_AUTHORED_SYNTHETIC",),
+            diagnostics=("HAND_AUTHORED_SYNTHETIC" if response.recording.origin == "hand_authored_synthetic" else "ACTUAL_MODEL_RESPONSE",),
         )
         return RecordedLLMProposal(
             recording=response.recording,

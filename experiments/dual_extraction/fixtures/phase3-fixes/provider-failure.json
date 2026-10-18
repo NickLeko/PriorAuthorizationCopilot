@@ -1,0 +1,6 @@
+{
+  "error": {
+    "code": "synthetic_provider_failure",
+    "message": "Hand-authored simulated failure; no provider was called."
+  }
+}
