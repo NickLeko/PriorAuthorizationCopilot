@@ -776,30 +776,28 @@ def _resolve_boolean_candidates(
     return bool(value)
 
 
+def _has_opposite_side_radiculopathy(text: str, exam_side: str | None) -> bool:
+    """Existing literal mention check; no negation or episode interpretation."""
+    opposite = {"right": "left", "left": "right"}.get(exam_side)
+    return bool(opposite and re.search(rf"\b{opposite}(?:[- ]sided)?\s+(?:leg\s+)?radiculopathy\b", text))
+
+
 def _objective_candidates_with_laterality_guards(
     text: str, candidates: List[Tuple[bool | str, int, int]]
 ) -> List[Tuple[bool | str, int, int]]:
-    """Qualify explicit unilateral root evidence without expanding recognition.
+    """Qualify sided root evidence using the existing opposite-mention rule.
 
-    Keep unsided/bilateral contexts unchanged. A mismatched normal finding is
+    Keep unsided/bilateral exams unchanged. A mismatched normal finding is
     review evidence too; changing only the value preserves its exact citation.
     """
     bilateral = r"\b(?:bilateral|left\s+and\s+right|right\s+and\s+left)\b"
-    if re.search(bilateral + r"(?:[- ]sided)?\s+(?:leg\s+)?radiculopathy\b", text):
-        return list(candidates)
-    diagnosis_sides = {
-        match.group("side") for match in re.finditer(r"\b(?P<side>right|left)(?:[- ]sided)?\s+(?:leg\s+)?radiculopathy\b", text)
-    }
-    if len(diagnosis_sides) != 1:
-        return list(candidates)
-
     qualified = []
     for value, start, end in candidates:
         evidence = text[start:end]
         exam_sides = {
             match.group("side") for match in re.finditer(rf"\b(?P<side>right|left)\s+(?:{ROOT_DISTRIBUTION_RE.pattern})", evidence)
         }
-        if len(exam_sides) == 1 and exam_sides != diagnosis_sides and not re.search(bilateral, evidence):
+        if len(exam_sides) == 1 and not re.search(bilateral, evidence) and _has_opposite_side_radiculopathy(text, next(iter(exam_sides))):
             value = REVIEW_REQUIRED_FACT
         qualified.append((value, start, end))
     return qualified
@@ -861,8 +859,7 @@ def _typed_root_exam_candidates(text: str) -> List[Tuple[bool | str, int, int]]:
                 if _mention_is_nonpatient_context(clause, match.start(), match.end()):
                     continue
                 side = roots[0].group("side")
-                opposite = {"right": "left", "left": "right"}.get(side)
-                side_conflict = opposite and re.search(rf"\b{opposite}(?:[- ]sided)?\s+(?:leg\s+)?radiculopathy\b", text)
+                side_conflict = _has_opposite_side_radiculopathy(text, side)
                 questionable = (
                     len(roots) != 1
                     or side_conflict
@@ -1084,8 +1081,7 @@ def _extract_facts(note_text: str) -> Tuple[Dict[str, Any], Dict[str, List[Dict[
         if match is None or _mention_is_nonpatient_context(sentence, match.start(), match.end()):
             continue
         side = match.group("side")
-        opposite_side = {"right": "left", "left": "right"}.get(side)
-        side_conflict = opposite_side and re.search(rf"\b{opposite_side}(?:[- ]sided)?\s+(?:leg\s+)?radiculopathy\b", t)
+        side_conflict = _has_opposite_side_radiculopathy(t, side)
         if (
             match.group("negated")
             or match.group("attribution")

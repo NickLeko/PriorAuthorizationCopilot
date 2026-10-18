@@ -93,3 +93,14 @@ case was read or rerun here. A prior held-out set supplied the safety-defect
 feedback used for iteration 5; no universal safety or clinical generalization
 claim follows. See [v2.6.0](docs/releases/v2.6.0.md) and
 [exp-004](autoloop/exp-004/REPORT.md).
+
+
+## Objective-exam laterality qualification
+
+All objective-exam recognition routes use the same literal opposite-side
+radiculopathy mention check. An opposite-side mention can require review even
+when it is negated or historical, or another diagnosis side also appears. This
+is conservative notation consistency, not temporal or negation interpretation.
+The check does not expand anatomical vocabulary or infer omitted laterality or
+root relationships. Unsided and bilateral examination handling remains as before;
+existing recognition and inline-check limitations still apply.
