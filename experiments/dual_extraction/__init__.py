@@ -1,1 +1,1 @@
-"""Phase 1 extraction foundation. No LLM calls or reconciliation implementation."""
+"""Offline extraction proposals and structural reconciliation; no model calls."""

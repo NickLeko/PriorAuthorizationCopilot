@@ -1,0 +1,376 @@
+{
+  "clinical_verification": false,
+  "comparisons": [
+    {
+      "analysis_flags": [],
+      "citation_comparison_complete": true,
+      "disposition": "MISSING",
+      "evidence_source": "none",
+      "key": "back_pain_with_radiculopathy",
+      "reason": "BOTH_MISSING",
+      "retained_citation_order_equal": true,
+      "retained_citation_sets_equal": true,
+      "state_disagreement": false,
+      "total_citation_counts_equal": true,
+      "values_agree": null
+    },
+    {
+      "analysis_flags": [],
+      "citation_comparison_complete": true,
+      "disposition": "MISSING",
+      "evidence_source": "none",
+      "key": "objective_motor_or_reflex_change_in_root_distribution",
+      "reason": "BOTH_MISSING",
+      "retained_citation_order_equal": true,
+      "retained_citation_sets_equal": true,
+      "state_disagreement": false,
+      "total_citation_counts_equal": true,
+      "values_agree": null
+    },
+    {
+      "analysis_flags": [],
+      "citation_comparison_complete": true,
+      "disposition": "MISSING",
+      "evidence_source": "none",
+      "key": "cpb_0236_conservative_therapy_weeks",
+      "reason": "BOTH_MISSING",
+      "retained_citation_order_equal": true,
+      "retained_citation_sets_equal": true,
+      "state_disagreement": false,
+      "total_citation_counts_equal": true,
+      "values_agree": null
+    },
+    {
+      "analysis_flags": [],
+      "citation_comparison_complete": true,
+      "disposition": "MISSING",
+      "evidence_source": "none",
+      "key": "cpb_0236_conservative_therapy_no_improvement",
+      "reason": "BOTH_MISSING",
+      "retained_citation_order_equal": true,
+      "retained_citation_sets_equal": true,
+      "state_disagreement": false,
+      "total_citation_counts_equal": true,
+      "values_agree": null
+    },
+    {
+      "analysis_flags": [
+        "LLM_NUMERIC_NOT_LITERAL_IN_RETAINED_CITATIONS"
+      ],
+      "citation_comparison_complete": true,
+      "disposition": "NEEDS_REVIEW",
+      "evidence_source": "regex",
+      "key": "conservative_therapy_weeks",
+      "reason": "VALUE_DISAGREEMENT",
+      "retained_citation_order_equal": true,
+      "retained_citation_sets_equal": true,
+      "state_disagreement": false,
+      "total_citation_counts_equal": true,
+      "values_agree": false
+    },
+    {
+      "analysis_flags": [],
+      "citation_comparison_complete": true,
+      "disposition": "CAPTURED",
+      "evidence_source": "regex",
+      "key": "symptom_duration_weeks",
+      "reason": "AGREED_CAPTURE",
+      "retained_citation_order_equal": false,
+      "retained_citation_sets_equal": false,
+      "state_disagreement": false,
+      "total_citation_counts_equal": true,
+      "values_agree": true
+    },
+    {
+      "analysis_flags": [],
+      "citation_comparison_complete": true,
+      "disposition": "CAPTURED",
+      "evidence_source": "regex",
+      "key": "neuro_red_flags_documented",
+      "reason": "AGREED_CAPTURE",
+      "retained_citation_order_equal": true,
+      "retained_citation_sets_equal": true,
+      "state_disagreement": false,
+      "total_citation_counts_equal": true,
+      "values_agree": true
+    },
+    {
+      "analysis_flags": [],
+      "citation_comparison_complete": true,
+      "disposition": "CAPTURED",
+      "evidence_source": "regex",
+      "key": "prior_imaging_result",
+      "reason": "AGREED_CAPTURE",
+      "retained_citation_order_equal": false,
+      "retained_citation_sets_equal": false,
+      "state_disagreement": false,
+      "total_citation_counts_equal": true,
+      "values_agree": true
+    },
+    {
+      "analysis_flags": [],
+      "citation_comparison_complete": true,
+      "disposition": "MISSING",
+      "evidence_source": "none",
+      "key": "mechanical_symptoms_documented",
+      "reason": "BOTH_MISSING",
+      "retained_citation_order_equal": true,
+      "retained_citation_sets_equal": true,
+      "state_disagreement": false,
+      "total_citation_counts_equal": true,
+      "values_agree": null
+    },
+    {
+      "analysis_flags": [],
+      "citation_comparison_complete": true,
+      "disposition": "MISSING",
+      "evidence_source": "none",
+      "key": "osa_diagnosis",
+      "reason": "BOTH_MISSING",
+      "retained_citation_order_equal": true,
+      "retained_citation_sets_equal": true,
+      "state_disagreement": false,
+      "total_citation_counts_equal": true,
+      "values_agree": null
+    },
+    {
+      "analysis_flags": [],
+      "citation_comparison_complete": true,
+      "disposition": "MISSING",
+      "evidence_source": "none",
+      "key": "sleep_study_date",
+      "reason": "BOTH_MISSING",
+      "retained_citation_order_equal": true,
+      "retained_citation_sets_equal": true,
+      "state_disagreement": false,
+      "total_citation_counts_equal": true,
+      "values_agree": null
+    },
+    {
+      "analysis_flags": [],
+      "citation_comparison_complete": true,
+      "disposition": "MISSING",
+      "evidence_source": "none",
+      "key": "ahi_documented",
+      "reason": "BOTH_MISSING",
+      "retained_citation_order_equal": true,
+      "retained_citation_sets_equal": true,
+      "state_disagreement": false,
+      "total_citation_counts_equal": true,
+      "values_agree": null
+    }
+  ],
+  "dual": {
+    "diagnostics": [
+      "STRUCTURAL_COMPARISON_ONLY"
+    ],
+    "note_text": "Neck pain for 8 weeks. PT for 8 weeks. Denies weakness. X-ray normal.",
+    "snapshot": {
+      "evidence": {
+        "conservative_therapy_weeks": [
+          {
+            "end": 37,
+            "start": 23,
+            "text": "PT for 8 weeks"
+          }
+        ],
+        "neuro_red_flags_documented": [
+          {
+            "end": 54,
+            "start": 39,
+            "text": "Denies weakness"
+          }
+        ],
+        "prior_imaging_result": [
+          {
+            "end": 68,
+            "start": 62,
+            "text": "normal"
+          }
+        ],
+        "symptom_duration_weeks": [
+          {
+            "end": 21,
+            "start": 14,
+            "text": "8 weeks"
+          }
+        ]
+      },
+      "facts": {
+        "ahi_documented": null,
+        "back_pain_with_radiculopathy": null,
+        "conservative_therapy_weeks": null,
+        "cpb_0236_conservative_therapy_no_improvement": null,
+        "cpb_0236_conservative_therapy_weeks": null,
+        "mechanical_symptoms_documented": null,
+        "neuro_red_flags_documented": true,
+        "objective_motor_or_reflex_change_in_root_distribution": null,
+        "osa_diagnosis": null,
+        "prior_imaging_result": "normal",
+        "sleep_study_date": null,
+        "symptom_duration_weeks": 8
+      },
+      "states": {
+        "ahi_documented": "MISSING",
+        "back_pain_with_radiculopathy": "MISSING",
+        "conservative_therapy_weeks": "NEEDS_REVIEW",
+        "cpb_0236_conservative_therapy_no_improvement": "MISSING",
+        "cpb_0236_conservative_therapy_weeks": "MISSING",
+        "mechanical_symptoms_documented": "MISSING",
+        "neuro_red_flags_documented": "CAPTURED",
+        "objective_motor_or_reflex_change_in_root_distribution": "MISSING",
+        "osa_diagnosis": "MISSING",
+        "prior_imaging_result": "CAPTURED",
+        "sleep_study_date": "MISSING",
+        "symptom_duration_weeks": "CAPTURED"
+      }
+    },
+    "source": "dual:structural-v1"
+  },
+  "jointly_captured_therapy_citation_source": null,
+  "notice": "Hand-authored synthetic recorded response; no model was called. Structural comparison only, not clinical verification.",
+  "reconciliation_version": "structural-v1",
+  "recorded_llm": {
+    "notice": "Hand-authored synthetic recorded response; no model was called. Structural comparison only, not clinical verification.",
+    "proposal": {
+      "diagnostics": [
+        "HAND_AUTHORED_SYNTHETIC"
+      ],
+      "note_text": "Neck pain for 8 weeks. PT for 8 weeks. Denies weakness. X-ray normal.",
+      "snapshot": {
+        "evidence": {
+          "conservative_therapy_weeks": [
+            {
+              "end": 37,
+              "start": 23,
+              "text": "PT for 8 weeks"
+            }
+          ],
+          "neuro_red_flags_documented": [
+            {
+              "end": 54,
+              "start": 39,
+              "text": "Denies weakness"
+            }
+          ],
+          "prior_imaging_result": [
+            {
+              "end": 68,
+              "start": 56,
+              "text": "X-ray normal"
+            }
+          ],
+          "symptom_duration_weeks": [
+            {
+              "end": 21,
+              "start": 0,
+              "text": "Neck pain for 8 weeks"
+            }
+          ]
+        },
+        "facts": {
+          "ahi_documented": null,
+          "back_pain_with_radiculopathy": null,
+          "conservative_therapy_weeks": 6,
+          "cpb_0236_conservative_therapy_no_improvement": null,
+          "cpb_0236_conservative_therapy_weeks": null,
+          "mechanical_symptoms_documented": null,
+          "neuro_red_flags_documented": true,
+          "objective_motor_or_reflex_change_in_root_distribution": null,
+          "osa_diagnosis": null,
+          "prior_imaging_result": "normal",
+          "sleep_study_date": null,
+          "symptom_duration_weeks": 8
+        },
+        "states": {
+          "ahi_documented": "MISSING",
+          "back_pain_with_radiculopathy": "MISSING",
+          "conservative_therapy_weeks": "CAPTURED",
+          "cpb_0236_conservative_therapy_no_improvement": "MISSING",
+          "cpb_0236_conservative_therapy_weeks": "MISSING",
+          "mechanical_symptoms_documented": "MISSING",
+          "neuro_red_flags_documented": "CAPTURED",
+          "objective_motor_or_reflex_change_in_root_distribution": "MISSING",
+          "osa_diagnosis": "MISSING",
+          "prior_imaging_result": "CAPTURED",
+          "sleep_study_date": "MISSING",
+          "symptom_duration_weeks": "CAPTURED"
+        }
+      },
+      "source": "recorded-llm:synthetic"
+    },
+    "recording": {
+      "model_id": "synthetic-no-model",
+      "origin": "hand_authored_synthetic",
+      "prompt_version": "synthetic-schema-v1",
+      "response_id": "synthetic-duration-disagreement",
+      "source": "recorded-llm:synthetic"
+    },
+    "recording_sha256": "e70eb128999abbf950fbe37d8570ad17360e3ec4f7ab7182b96ac0c89a082827"
+  },
+  "regex": {
+    "diagnostics": [],
+    "note_text": "Neck pain for 8 weeks. PT for 8 weeks. Denies weakness. X-ray normal.",
+    "snapshot": {
+      "evidence": {
+        "conservative_therapy_weeks": [
+          {
+            "end": 37,
+            "start": 23,
+            "text": "PT for 8 weeks"
+          }
+        ],
+        "neuro_red_flags_documented": [
+          {
+            "end": 54,
+            "start": 39,
+            "text": "Denies weakness"
+          }
+        ],
+        "prior_imaging_result": [
+          {
+            "end": 68,
+            "start": 62,
+            "text": "normal"
+          }
+        ],
+        "symptom_duration_weeks": [
+          {
+            "end": 21,
+            "start": 14,
+            "text": "8 weeks"
+          }
+        ]
+      },
+      "facts": {
+        "ahi_documented": null,
+        "back_pain_with_radiculopathy": null,
+        "conservative_therapy_weeks": 8,
+        "cpb_0236_conservative_therapy_no_improvement": null,
+        "cpb_0236_conservative_therapy_weeks": null,
+        "mechanical_symptoms_documented": null,
+        "neuro_red_flags_documented": true,
+        "objective_motor_or_reflex_change_in_root_distribution": null,
+        "osa_diagnosis": null,
+        "prior_imaging_result": "normal",
+        "sleep_study_date": null,
+        "symptom_duration_weeks": 8
+      },
+      "states": {
+        "ahi_documented": "MISSING",
+        "back_pain_with_radiculopathy": "MISSING",
+        "conservative_therapy_weeks": "CAPTURED",
+        "cpb_0236_conservative_therapy_no_improvement": "MISSING",
+        "cpb_0236_conservative_therapy_weeks": "MISSING",
+        "mechanical_symptoms_documented": "MISSING",
+        "neuro_red_flags_documented": "CAPTURED",
+        "objective_motor_or_reflex_change_in_root_distribution": "MISSING",
+        "osa_diagnosis": "MISSING",
+        "prior_imaging_result": "CAPTURED",
+        "sleep_study_date": "MISSING",
+        "symptom_duration_weeks": "CAPTURED"
+      }
+    },
+    "source": "regex:2.7.0"
+  }
+}

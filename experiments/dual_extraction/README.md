@@ -1,8 +1,10 @@
-# Dual extraction foundation — Phase 1
+# Dual extraction experiment
 
-This opt-in, offline foundation preserves the released regex extractor and the
-existing service workflow. It contains no LLM calls, provider configuration,
-reconciliation, three-mode runner, or application mode switch.
+This opt-in, offline experiment preserves the released regex extractor and the
+existing service workflow. Phase 1 introduced the proposal contract and callable
+seam described below. [Phase 2](PHASE2.md) adds validated hand-authored synthetic
+recordings and pure structural reconciliation. There are no model calls,
+credentials, three-mode comparison runner, or application mode switch.
 
 ## Frozen release behavior
 
