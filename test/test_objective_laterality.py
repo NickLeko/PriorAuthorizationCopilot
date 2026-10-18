@@ -65,7 +65,6 @@ def test_shared_stage_qualifies_opposite_side_without_changing_offsets(value, di
         ("", "left"),
         ("right", "bilateral"),
         ("bilateral", "left"),
-        ("left and right", "left"),
         ("right", "left and right"),
     ],
 )
@@ -211,3 +210,78 @@ def test_changed_qualification_invalidates_old_attestation(monkeypatch):
     assert corrected.evidence_map == legacy.evidence_map
     with pytest.raises(InvalidRequestError, match="Stale or mismatched verification"):
         service.evaluate(attest(legacy))
+
+
+MIXED_DIAGNOSES = [
+    pytest.param(
+        "History of left leg radiculopathy. Low back pain with current right leg radiculopathy.",
+        id="historical-contralateral",
+    ),
+    pytest.param("No left leg radiculopathy. Low back pain with right leg radiculopathy.", id="negated-contralateral"),
+]
+
+
+@pytest.mark.parametrize("diagnoses", MIXED_DIAGNOSES)
+@pytest.mark.parametrize("template", ROUTES)
+@pytest.mark.parametrize("normal", [False, True], ids=["abnormal", "normal"])
+@pytest.mark.parametrize("exam_side", ["left", "right"], ids=["opposite-current", "matching-current"])
+def test_mixed_diagnosis_mentions_require_notation_parity(diagnoses, template, normal, exam_side):
+    # Existing inline semantics are literal: either exam side has an opposite
+    # mention here. This does not resolve historical or negated diagnoses.
+    text = f"{diagnoses} {exam(template, exam_side, normal)} NSAIDs for 8 weeks with no improvement."
+    result = ReadinessService().evaluate(request(text))
+    requirement = next(item for item in result.results if item.key == OBJECTIVE)
+    assert result.overall_status == requirement.status == "NEEDS_REVIEW"
+    assert result.facts[OBJECTIVE] is None
+    assert result.captured_fact_states[OBJECTIVE] == "NEEDS_REVIEW"
+    assert result.submission_readiness is False
+    assert len(result.evidence_map[OBJECTIVE]) == 1
+    assert_spans(text, result.evidence_map)
+    quote = exam(template, exam_side, normal).removesuffix(".")
+    span = result.evidence_map[OBJECTIVE][0]
+    assert (span.start, span.end, span.text) == (text.index(quote), text.index(quote) + len(quote), quote)
+
+
+@pytest.mark.parametrize("diagnoses", MIXED_DIAGNOSES)
+@pytest.mark.parametrize("template", ROUTES)
+@pytest.mark.parametrize("normal", [False, True], ids=["abnormal", "normal"])
+@pytest.mark.parametrize("exam_side", ["", "bilateral"], ids=["unsided", "bilateral"])
+def test_mixed_diagnoses_preserve_unsided_and_bilateral_exams(diagnoses, template, normal, exam_side):
+    text = f"{diagnoses} {exam(template, exam_side, normal)} NSAIDs for 8 weeks with no improvement."
+    facts, evidence = extraction.extract_facts(text)
+    expected = None if exam_side == "bilateral" and " of 5" in template else not normal
+    assert facts[OBJECTIVE] is expected
+    assert_spans(text, evidence)
+
+
+@pytest.mark.parametrize("value", [True, False, REVIEW_REQUIRED_FACT])
+def test_shared_stage_uses_existing_literal_opposite_mention_semantics(value):
+    clause = "left l5 distribution: strength 4/5"
+    text = note(clause, "left and right").lower()
+    start = text.index(clause)
+    assert extraction._objective_candidates_with_source_guards(text, [(value, start, start + len(clause))]) == [
+        (REVIEW_REQUIRED_FACT, start, start + len(clause))
+    ]
+
+
+def test_mixed_side_correction_invalidates_reviewed_branch_attestation(monkeypatch):
+    text = "No left leg radiculopathy. Low back pain with right leg radiculopathy. Right L5 distribution: strength 4/5."
+    text += " NSAIDs for 8 weeks with no improvement."
+    service = ReadinessService()
+    corrected = service.evaluate(request(text))
+    assert corrected.overall_status == "NEEDS_REVIEW"
+    # On 2c762a8, both diagnosis sides caused this shared step to return unchanged.
+    with monkeypatch.context() as patch:
+        patch.setattr(extraction, "_objective_candidates_with_laterality_guards", lambda text, candidates: list(candidates))
+        reviewed = service.evaluate(request(text))
+    assert reviewed.overall_status == "PENDING_VERIFICATION"
+    assert corrected.input_fingerprint == reviewed.input_fingerprint
+    assert corrected.bundle_fingerprint == reviewed.bundle_fingerprint
+    assert corrected.contract_version == reviewed.contract_version
+    assert corrected.evidence_map == reviewed.evidence_map
+    assert corrected.original_snapshot.content_hash != reviewed.original_snapshot.content_hash
+    assert corrected.fact_set_fingerprint != reviewed.fact_set_fingerprint
+    assert all(a.verification_fingerprint != b.verification_fingerprint for a, b in zip(corrected.results, reviewed.results, strict=True))
+    assert {k: v for k, v in corrected.facts.items() if k != OBJECTIVE} == {k: v for k, v in reviewed.facts.items() if k != OBJECTIVE}
+    with pytest.raises(InvalidRequestError, match="Stale or mismatched verification"):
+        service.evaluate(attest(reviewed))
