@@ -60,6 +60,13 @@ class _RecordedResponse(BaseModel):
     evidence_counts: dict[str, int] = Field(default_factory=dict)
 
 
+class _ModelResponse(BaseModel):
+    model_config = ConfigDict(extra="forbid", strict=True, hide_input_in_errors=True)
+
+    facts: dict[str, _RecordedFact]
+    evidence_counts: dict[str, int]
+
+
 def _unique_object(pairs):
     result = {}
     for key, value in pairs:
@@ -73,25 +80,41 @@ def _reject_constant(value):
     raise ValueError("Nonfinite JSON number.")
 
 
-def adapt_recorded_response(note_text: str, payload: str | dict) -> RecordedLLMProposal:
+def adapt_recorded_response(note_text: str, payload: str | dict, *, metadata: RecordingMetadata | None = None) -> RecordedLLMProposal:
     """Validate before legacy conversion; errors contain fixed codes, never payloads.
 
     The recording hash addresses the normalized accepted recording, including its
     metadata. It is experimental provenance, not a production attestation.
+    Actual-origin content has only facts/counts; trusted metadata stays separate.
     """
+    if metadata is not None:
+        try:
+            if not isinstance(metadata, RecordingMetadata):
+                raise ValueError("Expected trusted recording metadata.")
+            metadata = RecordingMetadata.model_validate_json(metadata.model_dump_json(warnings=False))
+            if metadata.origin != "actual_model_response":
+                raise ValueError("Bare model content requires actual-origin metadata.")
+        except (ValueError, TypeError, AttributeError):
+            raise ExperimentFailure("RECORDING_IDENTITY_FAILURE") from None
     try:
         decoded = (
             json.loads(payload, object_pairs_hook=_unique_object, parse_constant=_reject_constant) if type(payload) is str else payload
         )
         if type(decoded) is not dict:
             raise ValueError("Expected an object.")
-        if "error" in decoded:
+        if metadata is None and "error" in decoded:
             raise ExperimentFailure("RECORDED_EXTRACTION_FAILURE")
         # Raw responses must be JSON data, not Python model objects whose
         # validation may have been bypassed with model_construct/model_copy.
         canonical_json(decoded)
-        response = _RecordedResponse.model_validate(decoded, strict=True)
-        if set(response.facts) != set(FACT_CONTRACTS) or response.note_sha256 != note_hash(note_text):
+        response = (_ModelResponse if metadata is not None else _RecordedResponse).model_validate(decoded, strict=True)
+        if metadata is None:
+            if response.recording.origin != "hand_authored_synthetic":
+                raise ExperimentFailure("RECORDING_IDENTITY_FAILURE")
+            if response.note_sha256 != note_hash(note_text):
+                raise ExperimentFailure("RECORDING_NOTE_MISMATCH")
+        recording = metadata if metadata is not None else response.recording
+        if set(response.facts) != set(FACT_CONTRACTS):
             raise ValueError("Recording scope mismatch.")
         facts, evidence = {}, {}
         for key, item in response.facts.items():
@@ -108,12 +131,19 @@ def adapt_recorded_response(note_text: str, payload: str | dict) -> RecordedLLMP
         proposal = proposal_from_legacy(
             note_text,
             (facts, bounded_evidence),
-            source=response.recording.source,
-            diagnostics=("HAND_AUTHORED_SYNTHETIC" if response.recording.origin == "hand_authored_synthetic" else "ACTUAL_MODEL_RESPONSE",),
+            source=recording.source,
+            diagnostics=("HAND_AUTHORED_SYNTHETIC" if recording.origin == "hand_authored_synthetic" else "ACTUAL_MODEL_RESPONSE",),
+        )
+        # Hash the accepted internal recording, never rewrite/enrich the raw body.
+        normalized = dict(
+            recording=recording.model_dump(mode="json"),
+            note_sha256=note_hash(note_text),
+            facts={key: item.model_dump(mode="json") for key, item in response.facts.items()},
+            evidence_counts=response.evidence_counts,
         )
         return RecordedLLMProposal(
-            recording=response.recording,
-            recording_sha256=content_hash(response.model_dump(mode="json")),
+            recording=recording,
+            recording_sha256=content_hash(normalized),
             proposal=proposal,
         )
     except ExperimentFailure:

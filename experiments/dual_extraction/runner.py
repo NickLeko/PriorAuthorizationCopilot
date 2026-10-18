@@ -219,12 +219,15 @@ def response_accounting(cases):
             missing_stored_responses=statuses["MISSING_RECORDING"],
             file_integrity_failures=statuses["STORED_FILE_INTEGRITY_FAILURE"],
             malformed_storage_failures=statuses["MALFORMED_STORAGE"],
+            capture_identity_failures=statuses["RECORDING_IDENTITY_FAILURE"],
+            note_identity_failures=statuses["RECORDING_NOTE_MISMATCH"],
             not_attempted_cases=len(cases) - len(attempts),
             successful_three_mode_evaluations=sum(case["evaluations"] is not None for case in attempts),
             invalid_recorded_response_rate=_rate(
                 invalid,
                 valid + invalid,
-                "adapter-rejected / adaptation-attempted raw responses; excludes provider, missing-file, integrity and storage failures",
+                "adapter-rejected / validity-assessed raw responses; "
+                "excludes provider, missing-file, storage and capture-identity failures",
             ),
             end_to_end_usable_response_rate=_rate(
                 valid, len(attempts), "valid adapted responses / all selected model attempts, including all failures"
@@ -250,12 +253,25 @@ def adapt_attempt(entry, ref, directory):
             entry["attempt_status"] = "EXTRACTION_FAILURE"
             entry["error_code"] = "RECORDED_EXTRACTION_FAILURE"
             return None
+        metadata = None
+        if ref.recording.origin == "actual_model_response":
+            try:
+                metadata = recorded_adapter.RecordingMetadata.model_validate_json(ref.recording.model_dump_json(warnings=False))
+            except ValueError:
+                raise ExperimentFailure("RECORDING_IDENTITY_FAILURE") from None
         entry["adaptation_attempted"] = True
         try:
-            recorded = recorded_adapter.adapt_recorded_response(entry["note_text"], raw.decode("utf-8"))
+            payload = raw.decode("utf-8")
+            recorded = (
+                recorded_adapter.adapt_recorded_response(entry["note_text"], payload, metadata=metadata)
+                if metadata is not None
+                else recorded_adapter.adapt_recorded_response(entry["note_text"], payload)
+            )
             if recorded.recording.model_dump(mode="json") != ref.recording.model_dump(mode="json"):
-                raise ExperimentFailure("INVALID_RECORDED_RESPONSE")
-        except (ExperimentFailure, UnicodeError):
+                raise ExperimentFailure("RECORDING_IDENTITY_FAILURE")
+        except (ExperimentFailure, UnicodeError) as exc:
+            if isinstance(exc, ExperimentFailure) and exc.code in {"RECORDING_IDENTITY_FAILURE", "RECORDING_NOTE_MISMATCH"}:
+                raise
             # An error-shaped reply declared as a response is still rejected;
             # explicit provider failures are separately declared in the manifest.
             entry["attempt_status"] = "INVALID_RESPONSE"
@@ -265,7 +281,11 @@ def adapt_attempt(entry, ref, directory):
         return recorded
     except ExperimentFailure as exc:
         entry["error_code"] = exc.code
-        entry["attempt_status"] = exc.code if exc.code in {"MISSING_RECORDING", "STORED_FILE_INTEGRITY_FAILURE"} else "MALFORMED_STORAGE"
+        entry["attempt_status"] = (
+            exc.code
+            if exc.code in {"MISSING_RECORDING", "STORED_FILE_INTEGRITY_FAILURE", "RECORDING_IDENTITY_FAILURE", "RECORDING_NOTE_MISMATCH"}
+            else "MALFORMED_STORAGE"
+        )
         return None
 
 
@@ -306,7 +326,9 @@ def build_report(*, repo_root: Path | None = None, manifest_path: Path = DEFAULT
             entry["recording_kind"] = "raw_attempt" if raw_manifest else "hand_authored_adapted"
             if raw_manifest:
                 entry["attempt"] = ref.model_dump(mode="json")
-                entry["attempt_population"] = "actual_model" if manifest.population == "actual_model_study" else manifest.population
+                entry["attempt_population"] = (
+                    "actual_model" if manifest.population == "actual_model_study" else "synthetic_raw_demonstration"
+                )
             else:
                 entry["demonstration"] = ref.demonstration
             try:
@@ -356,13 +378,20 @@ def build_report(*, repo_root: Path | None = None, manifest_path: Path = DEFAULT
         absent_manifest_entries=statuses["ABSENT"],
         missing_recording_files=statuses["MISSING"] + statuses["MISSING_RECORDING"],
         malformed_recordings=statuses["MALFORMED"] + statuses["MALFORMED_STORAGE"],
-        integrity_failures=statuses["INTEGRITY_FAILURE"] + statuses["STORED_FILE_INTEGRITY_FAILURE"],
+        integrity_failures=(
+            statuses["INTEGRITY_FAILURE"]
+            + statuses["STORED_FILE_INTEGRITY_FAILURE"]
+            + statuses["RECORDING_IDENTITY_FAILURE"]
+            + statuses["RECORDING_NOTE_MISMATCH"]
+        ),
         rejected_recordings=(
             statuses["MALFORMED"]
             + statuses["INTEGRITY_FAILURE"]
             + statuses["INVALID_RESPONSE"]
             + statuses["STORED_FILE_INTEGRITY_FAILURE"]
             + statuses["MALFORMED_STORAGE"]
+            + statuses["RECORDING_IDENTITY_FAILURE"]
+            + statuses["RECORDING_NOTE_MISMATCH"]
         ),
         invalid_raw_responses=statuses["INVALID_RESPONSE"],
         extraction_failures=statuses["EXTRACTION_FAILURE"],
@@ -374,8 +403,16 @@ def build_report(*, repo_root: Path | None = None, manifest_path: Path = DEFAULT
         ),
     )
     return dict(
-        report_schema_version=2,
-        notice=manifest.notice if raw_manifest else NOTICE,
+        report_schema_version=3,
+        notice=(
+            "Simulated actual-model capture; hand-authored bytes, no model was called."
+            if raw_manifest and manifest.population == "simulated_actual_model_capture"
+            else manifest.notice
+            if raw_manifest
+            else NOTICE
+        ),
+        input_population=manifest.population if raw_manifest else "hand_authored_adapted",
+        provider_outcomes_authenticated=False,
         clinical_accuracy_claim=False,
         baseline_sha256=BASELINE_SHA256,
         manifest_content_sha256=content_hash(manifest.model_dump(mode="json")),

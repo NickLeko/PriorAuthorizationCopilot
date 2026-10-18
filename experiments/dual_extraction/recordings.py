@@ -64,7 +64,7 @@ class RawAttemptManifest(BaseModel):
 
     schema_version: Literal[2]
     notice: Literal["Offline response attempts; provenance is declared per population."]
-    population: Literal["synthetic_raw_demonstration", "actual_model_study"]
+    population: Literal["synthetic_raw_demonstration", "actual_model_study", "simulated_actual_model_capture"]
     selected_attempted_case_ids: list[str]
     attempts: list[RawAttemptRef]
 
@@ -87,7 +87,7 @@ def load_manifest(path: Path) -> RecordingManifest | RawAttemptManifest:
                 raise ExperimentFailure("INVALID_RECORDING_MANIFEST")
             if len({entry.attempt_id for entry in entries}) != len(entries):
                 raise ExperimentFailure("RECORDING_IDENTITY_FAILURE")
-            origin = "actual_model_response" if manifest.population == "actual_model_study" else "hand_authored_synthetic"
+            origin = "hand_authored_synthetic" if manifest.population == "synthetic_raw_demonstration" else "actual_model_response"
             if any(entry.recording.origin != origin for entry in entries):
                 raise ExperimentFailure("INVALID_RECORDING_MANIFEST")
         elif any(entry.recording.origin != "hand_authored_synthetic" for entry in entries):
@@ -105,7 +105,9 @@ def load_raw_attempt(note_text: str, ref: RawAttemptRef, directory: Path) -> byt
     try:
         ref = RawAttemptRef.model_validate_json(ref.model_dump_json(warnings=False))
         path = (directory / ref.path).resolve()
-        if not path.is_relative_to(directory.resolve()) or note_hash(note_text) != ref.note_sha256:
+        if note_hash(note_text) != ref.note_sha256:
+            raise ExperimentFailure("RECORDING_NOTE_MISMATCH")
+        if not path.is_relative_to(directory.resolve()):
             raise ValueError("Invalid stored identity.")
         try:
             stored = path.read_bytes()

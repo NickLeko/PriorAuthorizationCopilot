@@ -148,7 +148,7 @@ def test_recorded_structure_and_identity_are_strict(mutation):
         response["recording"]["origin"] = "generated_by_real_model"
     else:
         response["recording"]["model_id"] = 1
-    with pytest.raises(ExperimentFailure, match="INVALID_RECORDED_RESPONSE"):
+    with pytest.raises(ExperimentFailure, match="RECORDING_NOTE_MISMATCH" if mutation == "note_hash" else "INVALID_RECORDED_RESPONSE"):
         adapt_recorded_response("OSA", response)
 
 

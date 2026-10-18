@@ -54,9 +54,11 @@ Hand-authored and simulated responses are never measured LLM performance.
 | missing_stored_responses | 0 |
 | file_integrity_failures | 0 |
 | malformed_storage_failures | 0 |
+| capture_identity_failures | 0 |
+| note_identity_failures | 0 |
 | not_attempted_cases | 177 |
 | successful_three_mode_evaluations | 0 |
-| invalid_recorded_response_rate | 0 / 0; not available; adapter-rejected / adaptation-attempted raw responses; excludes provider, missing-file, integrity and storage failures |
+| invalid_recorded_response_rate | 0 / 0; not available; adapter-rejected / validity-assessed raw responses; excludes provider, missing-file, storage and capture-identity failures |
 | end_to_end_usable_response_rate | 0 / 0; not available; valid adapted responses / all selected model attempts, including all failures |
 
 ### synthetic_raw_demonstration
@@ -72,9 +74,11 @@ Hand-authored and simulated responses are never measured LLM performance.
 | missing_stored_responses | 0 |
 | file_integrity_failures | 0 |
 | malformed_storage_failures | 0 |
+| capture_identity_failures | 0 |
+| note_identity_failures | 0 |
 | not_attempted_cases | 177 |
 | successful_three_mode_evaluations | 0 |
-| invalid_recorded_response_rate | 0 / 0; not available; adapter-rejected / adaptation-attempted raw responses; excludes provider, missing-file, integrity and storage failures |
+| invalid_recorded_response_rate | 0 / 0; not available; adapter-rejected / validity-assessed raw responses; excludes provider, missing-file, storage and capture-identity failures |
 | end_to_end_usable_response_rate | 0 / 0; not available; valid adapted responses / all selected model attempts, including all failures |
 
 ### hand_authored_adapted

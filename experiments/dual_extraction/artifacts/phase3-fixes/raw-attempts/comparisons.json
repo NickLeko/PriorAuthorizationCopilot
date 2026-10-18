@@ -5843,6 +5843,7 @@
     "stale_source_count": 0
   },
   "governance_clock": "2026-09-01T00:00:00+00:00",
+  "input_population": "synthetic_raw_demonstration",
   "manifest_content_sha256": "4ae06003791b80e80ab6b925be71da463938e5e0fdf50e5fe3f1f40ff22f56d6",
   "metrics": {
     "citation_disagreement_rate": {
@@ -5883,10 +5884,12 @@
     }
   },
   "notice": "Offline response attempts; provenance is declared per population.",
-  "report_schema_version": 2,
+  "provider_outcomes_authenticated": false,
+  "report_schema_version": 3,
   "response_accounting": {
     "actual_model": {
       "attempted_cases": 0,
+      "capture_identity_failures": 0,
       "declared_responses_received": 0,
       "end_to_end_usable_response_rate": {
         "denominator": 0,
@@ -5900,12 +5903,13 @@
         "denominator": 0,
         "numerator": 0,
         "percent": null,
-        "population": "adapter-rejected / adaptation-attempted raw responses; excludes provider, missing-file, integrity and storage failures"
+        "population": "adapter-rejected / validity-assessed raw responses; excludes provider, missing-file, storage and capture-identity failures"
       },
       "invalid_responses": 0,
       "malformed_storage_failures": 0,
       "missing_stored_responses": 0,
       "not_attempted_cases": 177,
+      "note_identity_failures": 0,
       "responses_received": 0,
       "successful_three_mode_evaluations": 0,
       "valid_adapted_responses": 0
@@ -5920,6 +5924,7 @@
     },
     "synthetic_raw_demonstration": {
       "attempted_cases": 8,
+      "capture_identity_failures": 0,
       "declared_responses_received": 7,
       "end_to_end_usable_response_rate": {
         "denominator": 8,
@@ -5933,12 +5938,13 @@
         "denominator": 5,
         "numerator": 4,
         "percent": 80.0,
-        "population": "adapter-rejected / adaptation-attempted raw responses; excludes provider, missing-file, integrity and storage failures"
+        "population": "adapter-rejected / validity-assessed raw responses; excludes provider, missing-file, storage and capture-identity failures"
       },
       "invalid_responses": 4,
       "malformed_storage_failures": 0,
       "missing_stored_responses": 1,
       "not_attempted_cases": 169,
+      "note_identity_failures": 0,
       "responses_received": 5,
       "successful_three_mode_evaluations": 1,
       "valid_adapted_responses": 1

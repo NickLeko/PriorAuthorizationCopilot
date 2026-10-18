@@ -165,8 +165,7 @@ def test_actual_model_accounting_is_separate_from_hand_authored_statistics(tmp_p
         p = tmp_path / attempt["path"]
         if p.exists() and attempt["outcome"] == "response":
             payload = json.loads(p.read_text())
-            payload["recording"]["origin"] = "actual_model_response"
-            p.write_text(json.dumps(payload))
+            p.write_text(json.dumps({key: payload[key] for key in ("facts", "evidence_counts")}))
             attempt["stored_sha256"] = sha256(p.read_bytes()).hexdigest()
     path.write_text(json.dumps(manifest))
     report = runner.build_report(manifest_path=path)
@@ -188,12 +187,12 @@ def test_provider_failure_without_response_id_and_storage_failures_are_not_inval
     path.write_text(json.dumps(manifest))
     report = runner.build_report(manifest_path=path)
     attempts = case_attempts(report)
-    assert {case["attempt_status"] for case in attempts} == {"EXTRACTION_FAILURE", "MALFORMED_STORAGE"}
+    assert {case["attempt_status"] for case in attempts} == {"EXTRACTION_FAILURE", "RECORDING_NOTE_MISMATCH"}
     provider = next(case for case in attempts if case["attempt_status"] == "EXTRACTION_FAILURE")
     assert provider["attempt"]["recording"]["response_id"] is None
     accounting = report["response_accounting"]["synthetic_raw_demonstration"]
     assert accounting["invalid_recorded_response_rate"]["denominator"] == 0
-    assert accounting["malformed_storage_failures"] == 1
+    assert accounting["note_identity_failures"] == 1
     assert accounting["end_to_end_usable_response_rate"]["denominator"] == 2
 
 
@@ -215,7 +214,8 @@ def test_raw_rejections_preserve_external_identity_without_repair(tmp_path, chan
     path.write_text(json.dumps(manifest))
     before = raw.read_bytes()
     case = case_attempts(runner.build_report(manifest_path=path))[0]
-    assert case["attempt_status"] == "INVALID_RESPONSE"
+    expected = {"response_identity": "RECORDING_IDENTITY_FAILURE", "note_identity": "RECORDING_NOTE_MISMATCH"}
+    assert case["attempt_status"] == expected.get(change, "INVALID_RESPONSE")
     assert case["attempt"]["recording"]["response_id"] == "simulated-response-0"
     assert before == raw.read_bytes()
 

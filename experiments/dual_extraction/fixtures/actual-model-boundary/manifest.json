@@ -1,0 +1,43 @@
+{
+  "attempts": [
+    {
+      "attempt_id": "simulated-bare-valid",
+      "case_id": "inputs/synthetic_cases.json#CPAP-01-complete",
+      "note_sha256": "a6ba49740239357153c74a1398bfcf4f1ea07ca6ca76500f77da99692fbfb2b2",
+      "outcome": "response",
+      "path": "valid.json",
+      "provider_id": "synthetic-no-provider",
+      "recording": {
+        "model_id": "synthetic-no-model",
+        "origin": "actual_model_response",
+        "prompt_version": "simulated-bare-v1",
+        "response_id": "simulated-response-valid",
+        "source": "simulated-capture"
+      },
+      "stored_sha256": "08d88834b1cc7eb94ae61e206c52e140a6ce419a67de78fcef6883acd22ef881"
+    },
+    {
+      "attempt_id": "simulated-bare-invalid-offset",
+      "case_id": "EXTRACTION_CONTRACT.md#unicode",
+      "note_sha256": "e3ab633fff1fc935412ba1498daa7bfe0097f8faad538b80319a7111f153e2f2",
+      "outcome": "response",
+      "path": "invalid-offset.json",
+      "provider_id": "synthetic-no-provider",
+      "recording": {
+        "model_id": "synthetic-no-model",
+        "origin": "actual_model_response",
+        "prompt_version": "simulated-bare-v1",
+        "response_id": "simulated-response-invalid-offset",
+        "source": "simulated-capture"
+      },
+      "stored_sha256": "08d88834b1cc7eb94ae61e206c52e140a6ce419a67de78fcef6883acd22ef881"
+    }
+  ],
+  "notice": "Offline response attempts; provenance is declared per population.",
+  "population": "simulated_actual_model_capture",
+  "schema_version": 2,
+  "selected_attempted_case_ids": [
+    "inputs/synthetic_cases.json#CPAP-01-complete",
+    "EXTRACTION_CONTRACT.md#unicode"
+  ]
+}

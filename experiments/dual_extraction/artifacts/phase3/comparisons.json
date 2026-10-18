@@ -12442,6 +12442,7 @@
     "stale_source_count": 0
   },
   "governance_clock": "2026-09-01T00:00:00+00:00",
+  "input_population": "hand_authored_adapted",
   "manifest_content_sha256": "f2285f94919da2af5b1fc75633b3b5e52fd2d608170446cd69727202e7ce7d9d",
   "metrics": {
     "citation_disagreement_rate": {
@@ -12482,10 +12483,12 @@
     }
   },
   "notice": "Hand-authored synthetic recordings; no model was called.",
-  "report_schema_version": 2,
+  "provider_outcomes_authenticated": false,
+  "report_schema_version": 3,
   "response_accounting": {
     "actual_model": {
       "attempted_cases": 0,
+      "capture_identity_failures": 0,
       "declared_responses_received": 0,
       "end_to_end_usable_response_rate": {
         "denominator": 0,
@@ -12499,12 +12502,13 @@
         "denominator": 0,
         "numerator": 0,
         "percent": null,
-        "population": "adapter-rejected / adaptation-attempted raw responses; excludes provider, missing-file, integrity and storage failures"
+        "population": "adapter-rejected / validity-assessed raw responses; excludes provider, missing-file, storage and capture-identity failures"
       },
       "invalid_responses": 0,
       "malformed_storage_failures": 0,
       "missing_stored_responses": 0,
       "not_attempted_cases": 177,
+      "note_identity_failures": 0,
       "responses_received": 0,
       "successful_three_mode_evaluations": 0,
       "valid_adapted_responses": 0
@@ -12519,6 +12523,7 @@
     },
     "synthetic_raw_demonstration": {
       "attempted_cases": 0,
+      "capture_identity_failures": 0,
       "declared_responses_received": 0,
       "end_to_end_usable_response_rate": {
         "denominator": 0,
@@ -12532,12 +12537,13 @@
         "denominator": 0,
         "numerator": 0,
         "percent": null,
-        "population": "adapter-rejected / adaptation-attempted raw responses; excludes provider, missing-file, integrity and storage failures"
+        "population": "adapter-rejected / validity-assessed raw responses; excludes provider, missing-file, storage and capture-identity failures"
       },
       "invalid_responses": 0,
       "malformed_storage_failures": 0,
       "missing_stored_responses": 0,
       "not_attempted_cases": 177,
+      "note_identity_failures": 0,
       "responses_received": 0,
       "successful_three_mode_evaluations": 0,
       "valid_adapted_responses": 0
