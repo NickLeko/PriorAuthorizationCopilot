@@ -1,0 +1,217 @@
+{
+  "approved_phase2_commit": "a32bb8a3a4764eff4b5fb0f8abdcad8248a81928",
+  "baseline_sha256": "af9a1805c42df33e2985542a7b85307262dfa0fe8ab33cfcbf7f69d2ece46728",
+  "branch": "codex/dual-extraction-phase3-fixes",
+  "ci": "Final pushed-commit CI status and URL supplied in delivery handoff; never inferred from local tests.",
+  "default_response_accounting": {
+    "actual_model": {
+      "attempted_cases": 0,
+      "declared_responses_received": 0,
+      "end_to_end_usable_response_rate": {
+        "denominator": 0,
+        "numerator": 0,
+        "percent": null,
+        "population": "valid adapted responses / all selected model attempts, including all failures"
+      },
+      "extraction_failures": 0,
+      "file_integrity_failures": 0,
+      "invalid_recorded_response_rate": {
+        "denominator": 0,
+        "numerator": 0,
+        "percent": null,
+        "population": "adapter-rejected / adaptation-attempted raw responses; excludes provider, missing-file, integrity and storage failures"
+      },
+      "invalid_responses": 0,
+      "malformed_storage_failures": 0,
+      "missing_stored_responses": 0,
+      "not_attempted_cases": 177,
+      "responses_received": 0,
+      "successful_three_mode_evaluations": 0,
+      "valid_adapted_responses": 0
+    },
+    "hand_authored_adapted": {
+      "integrity_failures": 0,
+      "malformed_recordings": 0,
+      "measured_llm_performance": false,
+      "missing_recordings": 0,
+      "selected_recordings": 4,
+      "valid_recordings": 4
+    },
+    "synthetic_raw_demonstration": {
+      "attempted_cases": 0,
+      "declared_responses_received": 0,
+      "end_to_end_usable_response_rate": {
+        "denominator": 0,
+        "numerator": 0,
+        "percent": null,
+        "population": "valid adapted responses / all selected model attempts, including all failures"
+      },
+      "extraction_failures": 0,
+      "file_integrity_failures": 0,
+      "invalid_recorded_response_rate": {
+        "denominator": 0,
+        "numerator": 0,
+        "percent": null,
+        "population": "adapter-rejected / adaptation-attempted raw responses; excludes provider, missing-file, integrity and storage failures"
+      },
+      "invalid_responses": 0,
+      "malformed_storage_failures": 0,
+      "missing_stored_responses": 0,
+      "not_attempted_cases": 177,
+      "responses_received": 0,
+      "successful_three_mode_evaluations": 0,
+      "valid_adapted_responses": 0
+    }
+  },
+  "default_structural_rates": {
+    "citation_disagreement_rate": {
+      "denominator": 48,
+      "numerator": 3,
+      "percent": 6.25,
+      "population": "valid fact pairs; retained citation sets, including empty sets"
+    },
+    "citation_order_disagreement_rate": {
+      "denominator": 48,
+      "numerator": 3,
+      "percent": 6.25,
+      "population": "valid fact pairs; retained citation lists"
+    },
+    "downstream_requirement_status_difference_rate": {
+      "denominator": 11,
+      "numerator": 1,
+      "percent": 9.0909,
+      "population": "requirements in successful three-mode cases; any mode differs"
+    },
+    "dual_needs_review_rate": {
+      "denominator": 48,
+      "numerator": 2,
+      "percent": 4.1667,
+      "population": "valid compared facts"
+    },
+    "state_disagreement_rate": {
+      "denominator": 48,
+      "numerator": 0,
+      "percent": 0.0,
+      "population": "valid compared fact pairs"
+    },
+    "value_agreement_rate": {
+      "denominator": 17,
+      "numerator": 15,
+      "percent": 88.2353,
+      "population": "both-CAPTURED fact pairs"
+    }
+  },
+  "historical_example_sha256": {
+    "experiments/dual_extraction/artifacts/phase2-reconciliation-example.json": "e96f873a00b5d2316a63d1171977be51e32da13f220818b63fffe40c48dd4479",
+    "experiments/dual_extraction/artifacts/phase2-recorded-proposal-example.json": "83ca3cdba476f99759a597c51ac29006170f7478f89dbaa0c118865c5ced47c0"
+  },
+  "implementation_commits": [
+    "0bb02c5b4a43d66977e42f4a7c2b18a5429c50d1",
+    "073b10cab63c417dd1c80c2ad9ec74b114812234",
+    "742a5a6c84ee1d0e99de3d5cdd15b0a876b3ce1d"
+  ],
+  "notice": "All bundled raw attempts are hand-authored synthetic demonstrations; no model was called.",
+  "original_phase3_cases_unchanged": 177,
+  "production_sha256": {
+    "docs/artifacts/CPAP-02-borderline.json": "b3a01648f62b4a892fd9fdf57165488b0e91ce9c1d143e524713ff2b6563a4de",
+    "docs/artifacts/MRI-01-complete.json": "265b9dbd5cfda2740103822622efeec834d4ac95a406f394d8db93f44f8022a9",
+    "docs/artifacts/MRI-08-edge-below-threshold.json": "143ef89e5d26710fa4e48b0ae1303c77bea3c9ef2bf1f741d2a3a0c3fed3b467",
+    "docs/artifacts/MRI-CERV-01-ready.json": "f9ba4a7997697c066f255873652105ad6b5f5936e580e4d58079d643ba9d14d7",
+    "docs/artifacts/MRI-KNEE-01-ready.json": "5bd6ce2f24db03ea9207a8249a77751421e3a9e9b9edf4e59e5c07347b20b018",
+    "docs/artifacts/README.md": "4d8757e9dcdd7134b4e40b041392cb490f0476638e5721dc851672674f7ca016",
+    "docs/artifacts/demo_cases.json": "8526f491a5148f92d8773adf203a0916b4f4dff908160a63fcadae81c35bc003",
+    "docs/artifacts/drift_report.md": "9f5606371c206c4494b16916a614739d17d020f083def7b3a8812a39eb7b63b3",
+    "docs/artifacts/drift_status.json": "e37bb494406b73741bdd0f9828c0aac0706520fdd8ebfc4cadbba8b2943e8fc6",
+    "docs/artifacts/featured_demo_cases.json": "1971d370900c6b550cdd3fd0e12e1c1c672891efdea730e9fad6be04a825cac2",
+    "docs/artifacts/policy_replay_summary.json": "c98f7bbf55bfe1e5daf421644a0f956306c889cde3f3eed9c6d659b4c7a17171",
+    "docs/artifacts/rulebook_diff_reviewed_vs_active.json": "9f143bf6ee8a5e4c1c8c91e43a716532bdd01a8da1dd6b66cbc8c456d177d3d8",
+    "docs/artifacts/rulebook_diff_reviewed_vs_active.md": "f4fe04bb18558223a628ed2dbb4d8ac3189cc12c78419b5917a563b9b28a5487",
+    "docs/artifacts/rulebook_status.json": "e971c156c4e7e4b8ce42056e95ae1f5c32201d76ae2f14208a4c2e8a47a9f0fc",
+    "docs/artifacts/safety_metrics.json": "754a40327fbbb8635f3471c9c96a7165e7c95760f4bfe8e27051d4dd56c2c5f6",
+    "docs/artifacts/status.json": "619e6855a10b29e07f11eb6f5afc2c33961245a0464984ea972de86df09e2804",
+    "docs/artifacts/supported_procedures.json": "f5d030978286d7a1685af3361a895ef2657a3d303985ad7dc34097482d251103",
+    "test/golden/evaluations/CPAP-02-borderline.json": "cfb781a1323c89f0f09930bd92d49cbb4cc8cf05d90eaa8e860b247a0fceb297",
+    "test/golden/evaluations/MRI-01-complete.json": "021c6f8a7e7feb371db7d905e081c2e7efa65dd1fcc9c83991ecbfb59b8362d3",
+    "test/golden/evaluations/MRI-01-human-verified.json": "894a8f24c41bf65396dd92e14a95139693592906dfd5cd20377768d97786c9af",
+    "test/golden/evaluations/MRI-08-edge-below-threshold.json": "8a60e7d92b725cec98f53c917acafeb704024569549952fbf78cb9d4b1217652",
+    "test/golden/evaluations/MRI-KNEE-01-ready.json": "def7ec5cc8e1f2110401c26f040f74122408f9fa3aa8068b7128b43af60316ab",
+    "test/golden/evaluations/reviewer-corrected-e2e.json": "f154385e8e416fff23142b164f02eb625b824e3216d1fefef61b26d96704a30f",
+    "test/golden/evaluations/reviewer-corrected-full-projection.json": "387d61e52b8b5e570f8e265d1665599acf20e99a52518259d8aca997b40196f7",
+    "test/golden/governance/drift_status.json": "e37bb494406b73741bdd0f9828c0aac0706520fdd8ebfc4cadbba8b2943e8fc6",
+    "test/golden/governance/rulebook_diff_reviewed_vs_active.json": "9f143bf6ee8a5e4c1c8c91e43a716532bdd01a8da1dd6b66cbc8c456d177d3d8",
+    "test/golden/governance/rulebook_status.json": "e971c156c4e7e4b8ce42056e95ae1f5c32201d76ae2f14208a4c2e8a47a9f0fc"
+  },
+  "quality": {
+    "branch_diff_whitespace": "passed",
+    "format_files": 100,
+    "ruff": "passed"
+  },
+  "raw_demonstration_response_accounting": {
+    "actual_model": {
+      "attempted_cases": 0,
+      "declared_responses_received": 0,
+      "end_to_end_usable_response_rate": {
+        "denominator": 0,
+        "numerator": 0,
+        "percent": null,
+        "population": "valid adapted responses / all selected model attempts, including all failures"
+      },
+      "extraction_failures": 0,
+      "file_integrity_failures": 0,
+      "invalid_recorded_response_rate": {
+        "denominator": 0,
+        "numerator": 0,
+        "percent": null,
+        "population": "adapter-rejected / adaptation-attempted raw responses; excludes provider, missing-file, integrity and storage failures"
+      },
+      "invalid_responses": 0,
+      "malformed_storage_failures": 0,
+      "missing_stored_responses": 0,
+      "not_attempted_cases": 177,
+      "responses_received": 0,
+      "successful_three_mode_evaluations": 0,
+      "valid_adapted_responses": 0
+    },
+    "hand_authored_adapted": {
+      "integrity_failures": 0,
+      "malformed_recordings": 0,
+      "measured_llm_performance": false,
+      "missing_recordings": 0,
+      "selected_recordings": 0,
+      "valid_recordings": 0
+    },
+    "synthetic_raw_demonstration": {
+      "attempted_cases": 8,
+      "declared_responses_received": 7,
+      "end_to_end_usable_response_rate": {
+        "denominator": 8,
+        "numerator": 1,
+        "percent": 12.5,
+        "population": "valid adapted responses / all selected model attempts, including all failures"
+      },
+      "extraction_failures": 1,
+      "file_integrity_failures": 1,
+      "invalid_recorded_response_rate": {
+        "denominator": 5,
+        "numerator": 4,
+        "percent": 80.0,
+        "population": "adapter-rejected / adaptation-attempted raw responses; excludes provider, missing-file, integrity and storage failures"
+      },
+      "invalid_responses": 4,
+      "malformed_storage_failures": 0,
+      "missing_stored_responses": 1,
+      "not_attempted_cases": 169,
+      "responses_received": 5,
+      "successful_three_mode_evaluations": 1,
+      "valid_adapted_responses": 1
+    }
+  },
+  "reviewed_phase3_commit": "51b220d88a8e426a769a903734caf6acbea1edd7",
+  "tests": {
+    "focused_passed": 532,
+    "full_expected_failures": 9,
+    "full_passed": 2213,
+    "test_first_red_failed": 11,
+    "test_first_red_passed": 7
+  }
+}

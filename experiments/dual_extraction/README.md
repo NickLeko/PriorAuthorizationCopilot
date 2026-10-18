@@ -5,6 +5,8 @@ existing service workflow. Phase 1 introduced the proposal contract and callable
 seam described below. [Phase 2](PHASE2.md) adds validated hand-authored synthetic
 recordings and pure structural reconciliation. [Phase 3](PHASE3.md) adds verified
 recording reload and the explicitly invoked offline three-mode comparison runner.
+[The Phase 3 corrective patch](PHASE3_FIXES.md) adds raw-attempt accounting,
+complete review evidence and historical example preservation.
 There are no model calls, credentials, or application mode switch.
 
 ## Frozen release behavior

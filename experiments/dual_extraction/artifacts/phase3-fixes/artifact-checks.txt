@@ -1,0 +1,17 @@
+$ /Users/nicholasleko/projects/PriorAuthorizationCopilot/.venv/bin/python -m experiments.dual_extraction.runner --check
+Offline experiment artifacts match.
+$ /Users/nicholasleko/projects/PriorAuthorizationCopilot/.venv/bin/python -m experiments.dual_extraction.runner --manifest experiments/dual_extraction/fixtures/phase3-fixes/manifest.json --output-dir experiments/dual_extraction/artifacts/phase3-fixes/raw-attempts --check
+Offline experiment artifacts match.
+$ /Users/nicholasleko/projects/PriorAuthorizationCopilot/.venv/bin/python -m experiments.dual_extraction.baseline --check
+Experimental baseline matches: /private/tmp/pa-copilot-dual-extraction-phase3-fixes/experiments/dual_extraction/artifacts/regex-v2.7.0.jsonl
+$ /Users/nicholasleko/projects/PriorAuthorizationCopilot/.venv/bin/python -m experiments.dual_extraction.examples --check
+Historical Phase 2 examples match. Phase 3 example matches.
+$ /Users/nicholasleko/projects/PriorAuthorizationCopilot/.venv/bin/python -m experiments.dual_extraction.baseline --check
+Experimental baseline matches: /private/tmp/pa-copilot-dual-extraction-phase1/experiments/dual_extraction/artifacts/regex-v2.7.0.jsonl
+$ /Users/nicholasleko/projects/PriorAuthorizationCopilot/.venv/bin/python -m experiments.dual_extraction.baseline --check
+Experimental baseline matches: /private/tmp/pa-copilot-dual-extraction-phase2/experiments/dual_extraction/artifacts/regex-v2.7.0.jsonl
+$ /Users/nicholasleko/projects/PriorAuthorizationCopilot/.venv/bin/python -m experiments.dual_extraction.examples --check
+Synthetic Phase 2 examples match.
+Fixed-clock regeneration: all 27 protected production files unchanged before/after and versus approved Phase 2.
+Frozen 177-case baseline byte-identical to approved Phase 2; all original Phase 3 comparisons and decisions unchanged.
+Both Phase 2 example files byte-identical to approved Phase 2. Approved Phase 1 and 2 generators pass.
