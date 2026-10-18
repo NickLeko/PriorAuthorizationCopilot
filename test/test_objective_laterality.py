@@ -52,7 +52,7 @@ def test_shared_stage_qualifies_opposite_side_without_changing_offsets(value, di
     text = note(clause, diagnosis_side).lower()
     start = text.index(clause)
     candidates = [(value, start, start + len(clause))]
-    assert extraction._objective_candidates_with_source_guards(text, candidates) == [(REVIEW_REQUIRED_FACT, start, start + len(clause))]
+    assert extraction._objective_candidates_with_laterality_guards(text, candidates) == [(REVIEW_REQUIRED_FACT, start, start + len(clause))]
     assert candidates == [(value, start, start + len(clause))]
 
 
@@ -74,7 +74,7 @@ def test_shared_stage_preserves_matching_unsided_and_bilateral_candidates(diagno
     text = note(clause, diagnosis_side).lower()
     start = text.index(clause)
     candidates = [(value, start, start + len(clause))]
-    assert extraction._objective_candidates_with_source_guards(text, candidates) == candidates
+    assert extraction._objective_candidates_with_laterality_guards(text, candidates) == candidates
 
 
 @pytest.mark.parametrize("qualifier", ["patient reports", "by history", "exam not performed", "exam deferred"])
@@ -259,7 +259,7 @@ def test_shared_stage_uses_existing_literal_opposite_mention_semantics(value):
     clause = "left l5 distribution: strength 4/5"
     text = note(clause, "left and right").lower()
     start = text.index(clause)
-    assert extraction._objective_candidates_with_source_guards(text, [(value, start, start + len(clause))]) == [
+    assert extraction._objective_candidates_with_laterality_guards(text, [(value, start, start + len(clause))]) == [
         (REVIEW_REQUIRED_FACT, start, start + len(clause))
     ]
 

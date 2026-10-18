@@ -804,7 +804,7 @@ def _objective_candidates_with_laterality_guards(
 
 
 def _objective_candidates_with_source_guards(text: str, candidates: List[Tuple[bool | str, int, int]]) -> List[Tuple[bool | str, int, int]]:
-    """Qualify source and laterality before resolving objective facts.
+    """Qualify objective sources before laterality and fact resolution.
 
     Qualifiers cover the entire real sentence, including semicolons and decimal
     grades. Apply this once to every extraction route, including legacy paths.
@@ -838,7 +838,7 @@ def _objective_candidates_with_source_guards(text: str, candidates: List[Tuple[b
         for value, start, end in nonobjective
         if value == REVIEW_REQUIRED_FACT or value not in objective_values
     ]
-    return _objective_candidates_with_laterality_guards(text, objective + conflicts)
+    return objective + conflicts
 
 
 def _typed_root_exam_candidates(text: str) -> List[Tuple[bool | str, int, int]]:
@@ -1162,8 +1162,10 @@ def _extract_facts(note_text: str) -> Tuple[Dict[str, Any], Dict[str, List[Dict[
             objective_value = bool(next(iter(distinct_findings)))
         objective_candidates.append((objective_value, sentence_start, sentence_end))
 
+    objective_candidates = _objective_candidates_with_source_guards(t, objective_candidates)
+    objective_candidates = _objective_candidates_with_laterality_guards(t, objective_candidates)
     objective_motor_or_reflex_change = _resolve_boolean_candidates(
-        _objective_candidates_with_source_guards(t, objective_candidates),
+        objective_candidates,
         key="objective_motor_or_reflex_change_in_root_distribution",
         evidence=evidence,
         raw=raw,
