@@ -1,0 +1,21 @@
+{
+  "recording": {
+    "source": "recorded-llm:synthetic",
+    "model_id": "synthetic-no-model",
+    "prompt_version": "synthetic-schema-v1",
+    "response_id": "phase3-cpap-unicode",
+    "origin": "hand_authored_synthetic"
+  },
+  "recording_sha256": "01c70241088604b244dc4655835cb4ee874387f377168a4e15db435398ca9802",
+  "proposal": {
+    "note_text": "İ. OSA. Sleep study completed 2024-05-18. AHI 22.",
+    "source": "recorded-llm:synthetic",
+    "snapshot": {
+      "snapshot_json": "{\"evidence\":{\"ahi_documented\":[{\"end\":48,\"start\":42,\"text\":\"AHI 22\"}],\"osa_diagnosis\":[{\"end\":6,\"start\":3,\"text\":\"OSA\"}],\"sleep_study_date\":[{\"end\":40,\"start\":8,\"text\":\"Sleep study completed 2024-05-18\"}]},\"facts\":{\"ahi_documented\":true,\"back_pain_with_radiculopathy\":null,\"conservative_therapy_weeks\":null,\"cpb_0236_conservative_therapy_no_improvement\":null,\"cpb_0236_conservative_therapy_weeks\":null,\"mechanical_symptoms_documented\":null,\"neuro_red_flags_documented\":null,\"objective_motor_or_reflex_change_in_root_distribution\":null,\"osa_diagnosis\":true,\"prior_imaging_result\":null,\"sleep_study_date\":true,\"symptom_duration_weeks\":null},\"states\":{\"ahi_documented\":\"CAPTURED\",\"back_pain_with_radiculopathy\":\"MISSING\",\"conservative_therapy_weeks\":\"MISSING\",\"cpb_0236_conservative_therapy_no_improvement\":\"MISSING\",\"cpb_0236_conservative_therapy_weeks\":\"MISSING\",\"mechanical_symptoms_documented\":\"MISSING\",\"neuro_red_flags_documented\":\"MISSING\",\"objective_motor_or_reflex_change_in_root_distribution\":\"MISSING\",\"osa_diagnosis\":\"CAPTURED\",\"prior_imaging_result\":\"MISSING\",\"sleep_study_date\":\"CAPTURED\",\"symptom_duration_weeks\":\"MISSING\"}}",
+      "content_hash": "dfe8ded72d05783c9365471bacb48f803166966e5a980aa88e85cb1b576dd8f7"
+    },
+    "diagnostics": [
+      "HAND_AUTHORED_SYNTHETIC"
+    ]
+  }
+}

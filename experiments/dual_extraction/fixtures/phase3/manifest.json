@@ -1,0 +1,66 @@
+{
+  "notice": "Hand-authored synthetic recordings; no model was called.",
+  "recordings": [
+    {
+      "case_id": "EXTRACTION_CONTRACT.md#unicode",
+      "demonstration": null,
+      "note_sha256": "e3ab633fff1fc935412ba1498daa7bfe0097f8faad538b80319a7111f153e2f2",
+      "path": "recordings/cpap-unicode.json",
+      "recording": {
+        "model_id": "synthetic-no-model",
+        "origin": "hand_authored_synthetic",
+        "prompt_version": "synthetic-schema-v1",
+        "response_id": "phase3-cpap-unicode",
+        "source": "recorded-llm:synthetic"
+      },
+      "recording_sha256": "01c70241088604b244dc4655835cb4ee874387f377168a4e15db435398ca9802",
+      "stored_sha256": "f9fe876a69c8f9fb373c5f4c76c1d0b2ff0b36fad737899d36b0c524a15b36e0"
+    },
+    {
+      "case_id": "inputs/synthetic_cases.json#MRI-01-complete",
+      "demonstration": null,
+      "note_sha256": "b66310c6bfc8e97dbd6f93c79fa3af51ae95a0d47c6c0d5cfad338ab451b128d",
+      "path": "recordings/lumbar-duration-conflict.json",
+      "recording": {
+        "model_id": "synthetic-no-model",
+        "origin": "hand_authored_synthetic",
+        "prompt_version": "synthetic-schema-v1",
+        "response_id": "phase3-lumbar-duration-conflict",
+        "source": "recorded-llm:synthetic"
+      },
+      "recording_sha256": "0920154107b9dc17dba3f9901a1f0a56e2899575602f250c64016efcf8fef099",
+      "stored_sha256": "a45efadc130b910179a62c1007d381a03e3b9e48562040c104cd1f0906e6659a"
+    },
+    {
+      "case_id": "EXTRACTION_CONTRACT.md#neither_nor_negation",
+      "demonstration": "known_shared_error",
+      "note_sha256": "c752c9dfa6d9fd68ac384c2129a656e62b8884660fb5dac2abfd908bbdf28001",
+      "path": "recordings/shared-error-neither-nor.json",
+      "recording": {
+        "model_id": "synthetic-no-model",
+        "origin": "hand_authored_synthetic",
+        "prompt_version": "synthetic-schema-v1",
+        "response_id": "phase3-shared-error-neither-nor",
+        "source": "recorded-llm:synthetic"
+      },
+      "recording_sha256": "6bfa74228f44fd03bea3f4559f7fb8db2857f06a15c0cdddcada2ad139988be1",
+      "stored_sha256": "b0d878ace766e8daac1cd0da0d8da841d384cd625ff841695d03a864cf1ccedb"
+    },
+    {
+      "case_id": "EXTRACTION_CONTRACT.md#therapy_weeks",
+      "demonstration": null,
+      "note_sha256": "ee59dcf97ca02784be419e31c92dbcfc52fc8e549bf89ebb617b36cb42b27f05",
+      "path": "recordings/therapy-extraction-only.json",
+      "recording": {
+        "model_id": "synthetic-no-model",
+        "origin": "hand_authored_synthetic",
+        "prompt_version": "synthetic-schema-v1",
+        "response_id": "phase3-therapy-extraction-only",
+        "source": "recorded-llm:synthetic"
+      },
+      "recording_sha256": "ff27766e36429b3ec1d98b54a97acca2876a86c163158881aeaa89ff3745c727",
+      "stored_sha256": "f3072ccacae9f11dcbb0141831949dc9f1cd87ceae30b299e4cedb4e9e0ee611"
+    }
+  ],
+  "schema_version": 1
+}

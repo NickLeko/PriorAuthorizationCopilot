@@ -2,8 +2,9 @@
 
 This offline package accepts **hand-authored synthetic recordings only**. The
 fixtures are not outputs of a real model, prompts are not implemented, and no
-provider, credentials, network call, production mode switch, comparison runner,
-or production archive write is present. `model_id: synthetic-no-model` and
+provider, credentials, network call, production mode switch,
+or production archive write is present. The offline comparison runner is described
+in [Phase 3](PHASE3.md). `model_id: synthetic-no-model` and
 `origin: hand_authored_synthetic` make that provenance explicit.
 
 ## Citation entry gate
@@ -155,4 +156,4 @@ python -m ruff format --check .
 The explicit example command produces exactly two fixed review artifacts from
 one synthetic note, capturing each source once. It has no corpus iteration,
 mode execution, downstream evaluation, performance metrics, or archive writes;
-the complete three-mode comparison runner belongs to Phase 3.
+the complete three-mode comparison runner is separately invoked through Phase 3.

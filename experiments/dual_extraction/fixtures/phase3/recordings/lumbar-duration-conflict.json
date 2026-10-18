@@ -1,0 +1,21 @@
+{
+  "recording": {
+    "source": "recorded-llm:synthetic",
+    "model_id": "synthetic-no-model",
+    "prompt_version": "synthetic-schema-v1",
+    "response_id": "phase3-lumbar-duration-conflict",
+    "origin": "hand_authored_synthetic"
+  },
+  "recording_sha256": "0920154107b9dc17dba3f9901a1f0a56e2899575602f250c64016efcf8fef099",
+  "proposal": {
+    "note_text": "Low back pain with right leg radiculopathy x 8 weeks. NSAIDs for 8 weeks with minimal improvement; PT also completed. Objective motor exam in the right L5 distribution: ankle dorsiflexion strength 4/5. Denies bowel/bladder incontinence. No saddle anesthesia. Prior imaging: lumbar xray inconclusive.",
+    "source": "recorded-llm:synthetic",
+    "snapshot": {
+      "snapshot_json": "{\"evidence\":{\"back_pain_with_radiculopathy\":[{\"end\":52,\"start\":0,\"text\":\"Low back pain with right leg radiculopathy x 8 weeks\"}],\"conservative_therapy_weeks\":[{\"end\":72,\"start\":54,\"text\":\"NSAIDs for 8 weeks\"}],\"cpb_0236_conservative_therapy_no_improvement\":[{\"end\":97,\"start\":54,\"text\":\"NSAIDs for 8 weeks with minimal improvement\"}],\"cpb_0236_conservative_therapy_weeks\":[{\"end\":97,\"start\":54,\"text\":\"NSAIDs for 8 weeks with minimal improvement\"}],\"neuro_red_flags_documented\":[{\"end\":235,\"start\":202,\"text\":\"Denies bowel/bladder incontinence\"}],\"objective_motor_or_reflex_change_in_root_distribution\":[{\"end\":200,\"start\":118,\"text\":\"Objective motor exam in the right L5 distribution: ankle dorsiflexion strength 4/5\"}],\"prior_imaging_result\":[{\"end\":298,\"start\":286,\"text\":\"inconclusive\"}],\"symptom_duration_weeks\":[{\"end\":52,\"start\":45,\"text\":\"8 weeks\"}]},\"facts\":{\"ahi_documented\":null,\"back_pain_with_radiculopathy\":true,\"conservative_therapy_weeks\":3,\"cpb_0236_conservative_therapy_no_improvement\":true,\"cpb_0236_conservative_therapy_weeks\":3,\"mechanical_symptoms_documented\":null,\"neuro_red_flags_documented\":true,\"objective_motor_or_reflex_change_in_root_distribution\":true,\"osa_diagnosis\":null,\"prior_imaging_result\":\"inconclusive\",\"sleep_study_date\":null,\"symptom_duration_weeks\":8},\"states\":{\"ahi_documented\":\"MISSING\",\"back_pain_with_radiculopathy\":\"CAPTURED\",\"conservative_therapy_weeks\":\"CAPTURED\",\"cpb_0236_conservative_therapy_no_improvement\":\"CAPTURED\",\"cpb_0236_conservative_therapy_weeks\":\"CAPTURED\",\"mechanical_symptoms_documented\":\"MISSING\",\"neuro_red_flags_documented\":\"CAPTURED\",\"objective_motor_or_reflex_change_in_root_distribution\":\"CAPTURED\",\"osa_diagnosis\":\"MISSING\",\"prior_imaging_result\":\"CAPTURED\",\"sleep_study_date\":\"MISSING\",\"symptom_duration_weeks\":\"CAPTURED\"}}",
+      "content_hash": "7b62fefc4b45346d1d3b880856787139ddb9639fb2509eb6cc9e2574fe615c2c"
+    },
+    "diagnostics": [
+      "HAND_AUTHORED_SYNTHETIC"
+    ]
+  }
+}
