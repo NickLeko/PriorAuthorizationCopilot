@@ -1,0 +1,261 @@
+{
+  "clinical_verification": false,
+  "comparisons": [
+    {
+      "analysis_flags": [],
+      "citation_comparison_complete": true,
+      "disposition": "MISSING",
+      "dual_citation_sources": [],
+      "dual_complete_citation_count": 0,
+      "dual_evidence_capped": false,
+      "dual_observed_unique_citation_count": 0,
+      "evidence_source": "none",
+      "key": "back_pain_with_radiculopathy",
+      "reason": "BOTH_MISSING",
+      "retained_citation_order_equal": true,
+      "retained_citation_sets_equal": true,
+      "state_disagreement": false,
+      "total_citation_counts_equal": true,
+      "values_agree": null
+    },
+    {
+      "analysis_flags": [],
+      "citation_comparison_complete": true,
+      "disposition": "MISSING",
+      "dual_citation_sources": [],
+      "dual_complete_citation_count": 0,
+      "dual_evidence_capped": false,
+      "dual_observed_unique_citation_count": 0,
+      "evidence_source": "none",
+      "key": "objective_motor_or_reflex_change_in_root_distribution",
+      "reason": "BOTH_MISSING",
+      "retained_citation_order_equal": true,
+      "retained_citation_sets_equal": true,
+      "state_disagreement": false,
+      "total_citation_counts_equal": true,
+      "values_agree": null
+    },
+    {
+      "analysis_flags": [],
+      "citation_comparison_complete": true,
+      "disposition": "NEEDS_REVIEW",
+      "dual_citation_sources": [
+        [
+          "regex"
+        ],
+        [
+          "llm"
+        ]
+      ],
+      "dual_complete_citation_count": 2,
+      "dual_evidence_capped": false,
+      "dual_observed_unique_citation_count": 2,
+      "evidence_source": "both",
+      "key": "cpb_0236_conservative_therapy_weeks",
+      "reason": "REVIEW_REQUIRED",
+      "retained_citation_order_equal": false,
+      "retained_citation_sets_equal": false,
+      "state_disagreement": true,
+      "total_citation_counts_equal": true,
+      "values_agree": null
+    },
+    {
+      "analysis_flags": [],
+      "citation_comparison_complete": true,
+      "disposition": "MISSING",
+      "dual_citation_sources": [],
+      "dual_complete_citation_count": 0,
+      "dual_evidence_capped": false,
+      "dual_observed_unique_citation_count": 0,
+      "evidence_source": "none",
+      "key": "cpb_0236_conservative_therapy_no_improvement",
+      "reason": "BOTH_MISSING",
+      "retained_citation_order_equal": true,
+      "retained_citation_sets_equal": true,
+      "state_disagreement": false,
+      "total_citation_counts_equal": true,
+      "values_agree": null
+    },
+    {
+      "analysis_flags": [],
+      "citation_comparison_complete": true,
+      "disposition": "MISSING",
+      "dual_citation_sources": [],
+      "dual_complete_citation_count": 0,
+      "dual_evidence_capped": false,
+      "dual_observed_unique_citation_count": 0,
+      "evidence_source": "none",
+      "key": "conservative_therapy_weeks",
+      "reason": "BOTH_MISSING",
+      "retained_citation_order_equal": true,
+      "retained_citation_sets_equal": true,
+      "state_disagreement": false,
+      "total_citation_counts_equal": true,
+      "values_agree": null
+    },
+    {
+      "analysis_flags": [],
+      "citation_comparison_complete": true,
+      "disposition": "MISSING",
+      "dual_citation_sources": [],
+      "dual_complete_citation_count": 0,
+      "dual_evidence_capped": false,
+      "dual_observed_unique_citation_count": 0,
+      "evidence_source": "none",
+      "key": "symptom_duration_weeks",
+      "reason": "BOTH_MISSING",
+      "retained_citation_order_equal": true,
+      "retained_citation_sets_equal": true,
+      "state_disagreement": false,
+      "total_citation_counts_equal": true,
+      "values_agree": null
+    },
+    {
+      "analysis_flags": [],
+      "citation_comparison_complete": true,
+      "disposition": "MISSING",
+      "dual_citation_sources": [],
+      "dual_complete_citation_count": 0,
+      "dual_evidence_capped": false,
+      "dual_observed_unique_citation_count": 0,
+      "evidence_source": "none",
+      "key": "neuro_red_flags_documented",
+      "reason": "BOTH_MISSING",
+      "retained_citation_order_equal": true,
+      "retained_citation_sets_equal": true,
+      "state_disagreement": false,
+      "total_citation_counts_equal": true,
+      "values_agree": null
+    },
+    {
+      "analysis_flags": [],
+      "citation_comparison_complete": true,
+      "disposition": "MISSING",
+      "dual_citation_sources": [],
+      "dual_complete_citation_count": 0,
+      "dual_evidence_capped": false,
+      "dual_observed_unique_citation_count": 0,
+      "evidence_source": "none",
+      "key": "prior_imaging_result",
+      "reason": "BOTH_MISSING",
+      "retained_citation_order_equal": true,
+      "retained_citation_sets_equal": true,
+      "state_disagreement": false,
+      "total_citation_counts_equal": true,
+      "values_agree": null
+    },
+    {
+      "analysis_flags": [],
+      "citation_comparison_complete": true,
+      "disposition": "MISSING",
+      "dual_citation_sources": [],
+      "dual_complete_citation_count": 0,
+      "dual_evidence_capped": false,
+      "dual_observed_unique_citation_count": 0,
+      "evidence_source": "none",
+      "key": "mechanical_symptoms_documented",
+      "reason": "BOTH_MISSING",
+      "retained_citation_order_equal": true,
+      "retained_citation_sets_equal": true,
+      "state_disagreement": false,
+      "total_citation_counts_equal": true,
+      "values_agree": null
+    },
+    {
+      "analysis_flags": [],
+      "citation_comparison_complete": true,
+      "disposition": "MISSING",
+      "dual_citation_sources": [],
+      "dual_complete_citation_count": 0,
+      "dual_evidence_capped": false,
+      "dual_observed_unique_citation_count": 0,
+      "evidence_source": "none",
+      "key": "osa_diagnosis",
+      "reason": "BOTH_MISSING",
+      "retained_citation_order_equal": true,
+      "retained_citation_sets_equal": true,
+      "state_disagreement": false,
+      "total_citation_counts_equal": true,
+      "values_agree": null
+    },
+    {
+      "analysis_flags": [],
+      "citation_comparison_complete": true,
+      "disposition": "MISSING",
+      "dual_citation_sources": [],
+      "dual_complete_citation_count": 0,
+      "dual_evidence_capped": false,
+      "dual_observed_unique_citation_count": 0,
+      "evidence_source": "none",
+      "key": "sleep_study_date",
+      "reason": "BOTH_MISSING",
+      "retained_citation_order_equal": true,
+      "retained_citation_sets_equal": true,
+      "state_disagreement": false,
+      "total_citation_counts_equal": true,
+      "values_agree": null
+    },
+    {
+      "analysis_flags": [],
+      "citation_comparison_complete": true,
+      "disposition": "MISSING",
+      "dual_citation_sources": [],
+      "dual_complete_citation_count": 0,
+      "dual_evidence_capped": false,
+      "dual_observed_unique_citation_count": 0,
+      "evidence_source": "none",
+      "key": "ahi_documented",
+      "reason": "BOTH_MISSING",
+      "retained_citation_order_equal": true,
+      "retained_citation_sets_equal": true,
+      "state_disagreement": false,
+      "total_citation_counts_equal": true,
+      "values_agree": null
+    }
+  ],
+  "dual": {
+    "diagnostics": [
+      "STRUCTURAL_COMPARISON_ONLY",
+      "COMPETING_CITATIONS_NOT_A_SHARED_INTERPRETATION"
+    ],
+    "note_text": "NSAIDs for 8 weeks with no improvement. Gabapentin for 3 weeks with no improvement.",
+    "snapshot": {
+      "content_hash": "b3d7db61a4ce4bbf227d9ef0371e79e9a48b4989aadaddd04d33d2ff4a2a1655",
+      "snapshot_json": "{\"evidence\":{\"cpb_0236_conservative_therapy_weeks\":[{\"end\":38,\"start\":0,\"text\":\"NSAIDs for 8 weeks with no improvement\"},{\"end\":82,\"start\":40,\"text\":\"Gabapentin for 3 weeks with no improvement\"}]},\"facts\":{\"ahi_documented\":null,\"back_pain_with_radiculopathy\":null,\"conservative_therapy_weeks\":null,\"cpb_0236_conservative_therapy_no_improvement\":null,\"cpb_0236_conservative_therapy_weeks\":null,\"mechanical_symptoms_documented\":null,\"neuro_red_flags_documented\":null,\"objective_motor_or_reflex_change_in_root_distribution\":null,\"osa_diagnosis\":null,\"prior_imaging_result\":null,\"sleep_study_date\":null,\"symptom_duration_weeks\":null},\"states\":{\"ahi_documented\":\"MISSING\",\"back_pain_with_radiculopathy\":\"MISSING\",\"conservative_therapy_weeks\":\"MISSING\",\"cpb_0236_conservative_therapy_no_improvement\":\"MISSING\",\"cpb_0236_conservative_therapy_weeks\":\"NEEDS_REVIEW\",\"mechanical_symptoms_documented\":\"MISSING\",\"neuro_red_flags_documented\":\"MISSING\",\"objective_motor_or_reflex_change_in_root_distribution\":\"MISSING\",\"osa_diagnosis\":\"MISSING\",\"prior_imaging_result\":\"MISSING\",\"sleep_study_date\":\"MISSING\",\"symptom_duration_weeks\":\"MISSING\"}}"
+    },
+    "source": "dual:structural-v2"
+  },
+  "jointly_captured_therapy_citation_source": null,
+  "notice": "Hand-authored synthetic source-role reproduction; neither source was called.",
+  "reconciliation_version": "structural-v2",
+  "recorded_llm": {
+    "proposal": {
+      "diagnostics": [
+        "HAND_AUTHORED_SYNTHETIC"
+      ],
+      "note_text": "NSAIDs for 8 weeks with no improvement. Gabapentin for 3 weeks with no improvement.",
+      "snapshot": {
+        "content_hash": "a9da5058cc53674c5e0519023af7db98d0726331276d5646fc33fcd598f59b10",
+        "snapshot_json": "{\"evidence\":{\"cpb_0236_conservative_therapy_weeks\":[{\"end\":82,\"start\":40,\"text\":\"Gabapentin for 3 weeks with no improvement\"}]},\"facts\":{\"ahi_documented\":null,\"back_pain_with_radiculopathy\":null,\"conservative_therapy_weeks\":null,\"cpb_0236_conservative_therapy_no_improvement\":null,\"cpb_0236_conservative_therapy_weeks\":null,\"mechanical_symptoms_documented\":null,\"neuro_red_flags_documented\":null,\"objective_motor_or_reflex_change_in_root_distribution\":null,\"osa_diagnosis\":null,\"prior_imaging_result\":null,\"sleep_study_date\":null,\"symptom_duration_weeks\":null},\"states\":{\"ahi_documented\":\"MISSING\",\"back_pain_with_radiculopathy\":\"MISSING\",\"conservative_therapy_weeks\":\"MISSING\",\"cpb_0236_conservative_therapy_no_improvement\":\"MISSING\",\"cpb_0236_conservative_therapy_weeks\":\"NEEDS_REVIEW\",\"mechanical_symptoms_documented\":\"MISSING\",\"neuro_red_flags_documented\":\"MISSING\",\"objective_motor_or_reflex_change_in_root_distribution\":\"MISSING\",\"osa_diagnosis\":\"MISSING\",\"prior_imaging_result\":\"MISSING\",\"sleep_study_date\":\"MISSING\",\"symptom_duration_weeks\":\"MISSING\"}}"
+      },
+      "source": "recorded-llm:synthetic"
+    },
+    "recording": {
+      "model_id": "synthetic-no-model",
+      "origin": "hand_authored_synthetic",
+      "prompt_version": "synthetic-schema-v1",
+      "response_id": "synthetic-review-llm",
+      "source": "recorded-llm:synthetic"
+    },
+    "recording_sha256": "44bbddc532443d882546c543263ce2356a55dff34e2ca0f11aa94edd3292edd1"
+  },
+  "regex": {
+    "diagnostics": [],
+    "note_text": "NSAIDs for 8 weeks with no improvement. Gabapentin for 3 weeks with no improvement.",
+    "snapshot": {
+      "content_hash": "82615f691aac603173765386de95f587c04df29daf940eea3c0ff23b3aa90ce1",
+      "snapshot_json": "{\"evidence\":{\"cpb_0236_conservative_therapy_weeks\":[{\"end\":38,\"start\":0,\"text\":\"NSAIDs for 8 weeks with no improvement\"}]},\"facts\":{\"ahi_documented\":null,\"back_pain_with_radiculopathy\":null,\"conservative_therapy_weeks\":null,\"cpb_0236_conservative_therapy_no_improvement\":null,\"cpb_0236_conservative_therapy_weeks\":8,\"mechanical_symptoms_documented\":null,\"neuro_red_flags_documented\":null,\"objective_motor_or_reflex_change_in_root_distribution\":null,\"osa_diagnosis\":null,\"prior_imaging_result\":null,\"sleep_study_date\":null,\"symptom_duration_weeks\":null},\"states\":{\"ahi_documented\":\"MISSING\",\"back_pain_with_radiculopathy\":\"MISSING\",\"conservative_therapy_weeks\":\"MISSING\",\"cpb_0236_conservative_therapy_no_improvement\":\"MISSING\",\"cpb_0236_conservative_therapy_weeks\":\"CAPTURED\",\"mechanical_symptoms_documented\":\"MISSING\",\"neuro_red_flags_documented\":\"MISSING\",\"objective_motor_or_reflex_change_in_root_distribution\":\"MISSING\",\"osa_diagnosis\":\"MISSING\",\"prior_imaging_result\":\"MISSING\",\"sleep_study_date\":\"MISSING\",\"symptom_duration_weeks\":\"MISSING\"}}"
+    },
+    "source": "synthetic-regex-proposal"
+  }
+}
