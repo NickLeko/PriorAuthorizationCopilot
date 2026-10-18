@@ -1,0 +1,4 @@
+Fixed-clock generation passed; all 27 tracked production artifacts/goldens match approved Phase 1.
+All production engine, entry-point, clinical input, policy, governance and dependency files are unchanged.
+All 177 frozen captures, including 148 full evaluations, are byte-for-byte identical.
+Baseline SHA-256: af9a1805c42df33e2985542a7b85307262dfa0fe8ab33cfcbf7f69d2ece46728

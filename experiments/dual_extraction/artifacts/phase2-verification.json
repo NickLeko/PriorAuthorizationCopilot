@@ -1,0 +1,73 @@
+{
+  "actual_model_calls": 0,
+  "approved_phase1_commit": "34cd003896d912b924fd44c154770896e122a8c2",
+  "baseline_sha256": "af9a1805c42df33e2985542a7b85307262dfa0fe8ab33cfcbf7f69d2ece46728",
+  "branch": "codex/dual-extraction-phase2",
+  "checks": {
+    "example_regeneration": "identical",
+    "frozen_baseline": "byte-for-byte identical",
+    "frozen_baseline_cases": 177,
+    "frozen_baseline_evaluations": 148,
+    "governance_and_fingerprints": "unchanged",
+    "historical_artifacts_and_goldens_unchanged": 27,
+    "production_files_changed": 0,
+    "ruff_check": "passed",
+    "ruff_format": "94 files already formatted",
+    "whitespace": "passed"
+  },
+  "clinical_accuracy_claim": false,
+  "entry_gate": {
+    "all_frozen_regex_cases_validate": 177,
+    "green_passed": 308,
+    "red_failed": 13,
+    "red_passed": 3
+  },
+  "entry_gate_commit": "e2242e8b3a79d7adfe33bb2fe5606067ee9adc39",
+  "evidence_sha256": {
+    "phase2-artifact-checks.txt": "bb7a6bceaac93afd4db16cca9231a173fd4d5113677d4b3aa361343452ec19f3",
+    "phase2-entry-baseline-tests.txt": "9ee46e6ccb525e1be3a6c7d8b1a0391accea46f41b6886333f136cfb3e553bef",
+    "phase2-focused-tests.txt": "c7acc01d4e7fa75674fabfc86cc713e5e450a764df500dac6e03e3238c890d05",
+    "phase2-gate-green.txt": "63893ce090540df0ff866a54656d15f414176a09b38542b1e68edeaf9bb3e5e8",
+    "phase2-gate-red.txt": "3aff963230724fc54843fe922eb8a13875acfb12f35a2b4096e1fce7fa5d32bb",
+    "phase2-quality.txt": "c4be5a18e4ed630732cb5a2408f90bea8cc5d1e62ffffd9b3c256ba77e2a8107",
+    "phase2-regression-tests.txt": "b91ed638dae7742e513814bcbd001212e4a6a470fdb308a9ec9b5557c2b5bffb"
+  },
+  "focus_inventory": {
+    "example_tests": 2,
+    "inherited_phase1_tests": 292,
+    "new_citation_gate_tests": 16,
+    "reconciliation_tests": 105,
+    "recorded_response_tests": 63
+  },
+  "governance_clock": "2026-09-01T00:00:00Z",
+  "limits": [
+    "Structural support is not semantic truth",
+    "Numeric lexical flags are advisory, not clinical plausibility rules",
+    "Truncated citation comparisons cover retained spans only",
+    "Recording identity is declared, not authenticated",
+    "No runner, live calls, production switching, production archive writes, merge, tag or deployment"
+  ],
+  "phase": 2,
+  "python": "3.12.3",
+  "reconciliation_commit": "29d182c7e721b257e5a0ad67be320a701bcb8c20",
+  "recorded_adapter_commit": "ea202d8be04d630278d6544d4dd2bc22465ed751",
+  "recording_origin": "hand_authored_synthetic",
+  "ruff": "0.12.0",
+  "tests": {
+    "focused": {
+      "passed": 478,
+      "seconds": 5.81,
+      "xfailed": 0
+    },
+    "full_regression": {
+      "passed": 2159,
+      "seconds": 43.6,
+      "xfailed": 9
+    },
+    "phase1_entry": {
+      "passed": 292,
+      "seconds": 5.63,
+      "xfailed": 0
+    }
+  }
+}

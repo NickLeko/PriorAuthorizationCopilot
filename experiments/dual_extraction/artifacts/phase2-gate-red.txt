@@ -1,0 +1,194 @@
+FFFFFFFFFFFFF...                                                         [100%]
+=================================== FAILURES ===================================
+_______________ test_exact_uncited_osa_reproduction_is_rejected ________________
+
+    def test_exact_uncited_osa_reproduction_is_rejected():
+        facts = missing_facts()
+        facts["osa_diagnosis"] = True
+>       with pytest.raises(ValueError, match="retained source citation"):
+E       Failed: DID NOT RAISE <class 'ValueError'>
+
+test/test_extraction_citation_gate.py:17: Failed
+_ test_citation_gate_applies_to_every_captured_key_and_direct_envelopes[back_pain_with_radiculopathy] _
+
+key = 'back_pain_with_radiculopathy'
+
+    @pytest.mark.parametrize("key", FACT_CONTRACTS)
+    def test_citation_gate_applies_to_every_captured_key_and_direct_envelopes(key):
+        facts = missing_facts()
+        contract = FACT_CONTRACTS[key]
+        facts[key] = 1 if contract.fact_kind == "duration_weeks" else contract.extractor_emittable[0]
+        note = "Synthetic quoted documentation."
+>       with pytest.raises(ValueError, match="retained source citation"):
+E       Failed: DID NOT RAISE <class 'ValueError'>
+
+test/test_extraction_citation_gate.py:27: Failed
+_ test_citation_gate_applies_to_every_captured_key_and_direct_envelopes[objective_motor_or_reflex_change_in_root_distribution] _
+
+key = 'objective_motor_or_reflex_change_in_root_distribution'
+
+    @pytest.mark.parametrize("key", FACT_CONTRACTS)
+    def test_citation_gate_applies_to_every_captured_key_and_direct_envelopes(key):
+        facts = missing_facts()
+        contract = FACT_CONTRACTS[key]
+        facts[key] = 1 if contract.fact_kind == "duration_weeks" else contract.extractor_emittable[0]
+        note = "Synthetic quoted documentation."
+>       with pytest.raises(ValueError, match="retained source citation"):
+E       Failed: DID NOT RAISE <class 'ValueError'>
+
+test/test_extraction_citation_gate.py:27: Failed
+_ test_citation_gate_applies_to_every_captured_key_and_direct_envelopes[cpb_0236_conservative_therapy_weeks] _
+
+key = 'cpb_0236_conservative_therapy_weeks'
+
+    @pytest.mark.parametrize("key", FACT_CONTRACTS)
+    def test_citation_gate_applies_to_every_captured_key_and_direct_envelopes(key):
+        facts = missing_facts()
+        contract = FACT_CONTRACTS[key]
+        facts[key] = 1 if contract.fact_kind == "duration_weeks" else contract.extractor_emittable[0]
+        note = "Synthetic quoted documentation."
+>       with pytest.raises(ValueError, match="retained source citation"):
+E       Failed: DID NOT RAISE <class 'ValueError'>
+
+test/test_extraction_citation_gate.py:27: Failed
+_ test_citation_gate_applies_to_every_captured_key_and_direct_envelopes[cpb_0236_conservative_therapy_no_improvement] _
+
+key = 'cpb_0236_conservative_therapy_no_improvement'
+
+    @pytest.mark.parametrize("key", FACT_CONTRACTS)
+    def test_citation_gate_applies_to_every_captured_key_and_direct_envelopes(key):
+        facts = missing_facts()
+        contract = FACT_CONTRACTS[key]
+        facts[key] = 1 if contract.fact_kind == "duration_weeks" else contract.extractor_emittable[0]
+        note = "Synthetic quoted documentation."
+>       with pytest.raises(ValueError, match="retained source citation"):
+E       Failed: DID NOT RAISE <class 'ValueError'>
+
+test/test_extraction_citation_gate.py:27: Failed
+_ test_citation_gate_applies_to_every_captured_key_and_direct_envelopes[conservative_therapy_weeks] _
+
+key = 'conservative_therapy_weeks'
+
+    @pytest.mark.parametrize("key", FACT_CONTRACTS)
+    def test_citation_gate_applies_to_every_captured_key_and_direct_envelopes(key):
+        facts = missing_facts()
+        contract = FACT_CONTRACTS[key]
+        facts[key] = 1 if contract.fact_kind == "duration_weeks" else contract.extractor_emittable[0]
+        note = "Synthetic quoted documentation."
+>       with pytest.raises(ValueError, match="retained source citation"):
+E       Failed: DID NOT RAISE <class 'ValueError'>
+
+test/test_extraction_citation_gate.py:27: Failed
+_ test_citation_gate_applies_to_every_captured_key_and_direct_envelopes[symptom_duration_weeks] _
+
+key = 'symptom_duration_weeks'
+
+    @pytest.mark.parametrize("key", FACT_CONTRACTS)
+    def test_citation_gate_applies_to_every_captured_key_and_direct_envelopes(key):
+        facts = missing_facts()
+        contract = FACT_CONTRACTS[key]
+        facts[key] = 1 if contract.fact_kind == "duration_weeks" else contract.extractor_emittable[0]
+        note = "Synthetic quoted documentation."
+>       with pytest.raises(ValueError, match="retained source citation"):
+E       Failed: DID NOT RAISE <class 'ValueError'>
+
+test/test_extraction_citation_gate.py:27: Failed
+_ test_citation_gate_applies_to_every_captured_key_and_direct_envelopes[neuro_red_flags_documented] _
+
+key = 'neuro_red_flags_documented'
+
+    @pytest.mark.parametrize("key", FACT_CONTRACTS)
+    def test_citation_gate_applies_to_every_captured_key_and_direct_envelopes(key):
+        facts = missing_facts()
+        contract = FACT_CONTRACTS[key]
+        facts[key] = 1 if contract.fact_kind == "duration_weeks" else contract.extractor_emittable[0]
+        note = "Synthetic quoted documentation."
+>       with pytest.raises(ValueError, match="retained source citation"):
+E       Failed: DID NOT RAISE <class 'ValueError'>
+
+test/test_extraction_citation_gate.py:27: Failed
+_ test_citation_gate_applies_to_every_captured_key_and_direct_envelopes[prior_imaging_result] _
+
+key = 'prior_imaging_result'
+
+    @pytest.mark.parametrize("key", FACT_CONTRACTS)
+    def test_citation_gate_applies_to_every_captured_key_and_direct_envelopes(key):
+        facts = missing_facts()
+        contract = FACT_CONTRACTS[key]
+        facts[key] = 1 if contract.fact_kind == "duration_weeks" else contract.extractor_emittable[0]
+        note = "Synthetic quoted documentation."
+>       with pytest.raises(ValueError, match="retained source citation"):
+E       Failed: DID NOT RAISE <class 'ValueError'>
+
+test/test_extraction_citation_gate.py:27: Failed
+_ test_citation_gate_applies_to_every_captured_key_and_direct_envelopes[mechanical_symptoms_documented] _
+
+key = 'mechanical_symptoms_documented'
+
+    @pytest.mark.parametrize("key", FACT_CONTRACTS)
+    def test_citation_gate_applies_to_every_captured_key_and_direct_envelopes(key):
+        facts = missing_facts()
+        contract = FACT_CONTRACTS[key]
+        facts[key] = 1 if contract.fact_kind == "duration_weeks" else contract.extractor_emittable[0]
+        note = "Synthetic quoted documentation."
+>       with pytest.raises(ValueError, match="retained source citation"):
+E       Failed: DID NOT RAISE <class 'ValueError'>
+
+test/test_extraction_citation_gate.py:27: Failed
+_ test_citation_gate_applies_to_every_captured_key_and_direct_envelopes[osa_diagnosis] _
+
+key = 'osa_diagnosis'
+
+    @pytest.mark.parametrize("key", FACT_CONTRACTS)
+    def test_citation_gate_applies_to_every_captured_key_and_direct_envelopes(key):
+        facts = missing_facts()
+        contract = FACT_CONTRACTS[key]
+        facts[key] = 1 if contract.fact_kind == "duration_weeks" else contract.extractor_emittable[0]
+        note = "Synthetic quoted documentation."
+>       with pytest.raises(ValueError, match="retained source citation"):
+E       Failed: DID NOT RAISE <class 'ValueError'>
+
+test/test_extraction_citation_gate.py:27: Failed
+_ test_citation_gate_applies_to_every_captured_key_and_direct_envelopes[sleep_study_date] _
+
+key = 'sleep_study_date'
+
+    @pytest.mark.parametrize("key", FACT_CONTRACTS)
+    def test_citation_gate_applies_to_every_captured_key_and_direct_envelopes(key):
+        facts = missing_facts()
+        contract = FACT_CONTRACTS[key]
+        facts[key] = 1 if contract.fact_kind == "duration_weeks" else contract.extractor_emittable[0]
+        note = "Synthetic quoted documentation."
+>       with pytest.raises(ValueError, match="retained source citation"):
+E       Failed: DID NOT RAISE <class 'ValueError'>
+
+test/test_extraction_citation_gate.py:27: Failed
+_ test_citation_gate_applies_to_every_captured_key_and_direct_envelopes[ahi_documented] _
+
+key = 'ahi_documented'
+
+    @pytest.mark.parametrize("key", FACT_CONTRACTS)
+    def test_citation_gate_applies_to_every_captured_key_and_direct_envelopes(key):
+        facts = missing_facts()
+        contract = FACT_CONTRACTS[key]
+        facts[key] = 1 if contract.fact_kind == "duration_weeks" else contract.extractor_emittable[0]
+        note = "Synthetic quoted documentation."
+>       with pytest.raises(ValueError, match="retained source citation"):
+E       Failed: DID NOT RAISE <class 'ValueError'>
+
+test/test_extraction_citation_gate.py:27: Failed
+=========================== short test summary info ============================
+FAILED test/test_extraction_citation_gate.py::test_exact_uncited_osa_reproduction_is_rejected
+FAILED test/test_extraction_citation_gate.py::test_citation_gate_applies_to_every_captured_key_and_direct_envelopes[back_pain_with_radiculopathy]
+FAILED test/test_extraction_citation_gate.py::test_citation_gate_applies_to_every_captured_key_and_direct_envelopes[objective_motor_or_reflex_change_in_root_distribution]
+FAILED test/test_extraction_citation_gate.py::test_citation_gate_applies_to_every_captured_key_and_direct_envelopes[cpb_0236_conservative_therapy_weeks]
+FAILED test/test_extraction_citation_gate.py::test_citation_gate_applies_to_every_captured_key_and_direct_envelopes[cpb_0236_conservative_therapy_no_improvement]
+FAILED test/test_extraction_citation_gate.py::test_citation_gate_applies_to_every_captured_key_and_direct_envelopes[conservative_therapy_weeks]
+FAILED test/test_extraction_citation_gate.py::test_citation_gate_applies_to_every_captured_key_and_direct_envelopes[symptom_duration_weeks]
+FAILED test/test_extraction_citation_gate.py::test_citation_gate_applies_to_every_captured_key_and_direct_envelopes[neuro_red_flags_documented]
+FAILED test/test_extraction_citation_gate.py::test_citation_gate_applies_to_every_captured_key_and_direct_envelopes[prior_imaging_result]
+FAILED test/test_extraction_citation_gate.py::test_citation_gate_applies_to_every_captured_key_and_direct_envelopes[mechanical_symptoms_documented]
+FAILED test/test_extraction_citation_gate.py::test_citation_gate_applies_to_every_captured_key_and_direct_envelopes[osa_diagnosis]
+FAILED test/test_extraction_citation_gate.py::test_citation_gate_applies_to_every_captured_key_and_direct_envelopes[sleep_study_date]
+FAILED test/test_extraction_citation_gate.py::test_citation_gate_applies_to_every_captured_key_and_direct_envelopes[ahi_documented]
+13 failed, 3 passed in 0.03s
