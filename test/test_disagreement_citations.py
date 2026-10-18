@@ -93,3 +93,46 @@ def test_agreed_capture_is_not_changed_or_unionized():
     assert record.dual.snapshot.content["evidence"][KEY] == left["facts"][KEY]["evidence"]
     assert item(record).evidence_source == "regex"
     assert record.jointly_captured_therapy_citation_source is None
+
+
+@pytest.mark.parametrize("review_role", ["regex", "llm"])
+@pytest.mark.parametrize("truncated", [False, True])
+def test_review_required_retains_competing_passages_from_both_sources(review_role, truncated):
+    note = "NSAIDs for 8 weeks with no improvement. Gabapentin for 3 weeks with no improvement."
+    left = synthetic_response(note, {KEY: 8}, evidence={KEY: passages(note, "NSAIDs for 8 weeks with no improvement")})
+    right = synthetic_response(note, {KEY: 3}, evidence={KEY: passages(note, "Gabapentin for 3 weeks with no improvement")})
+    selected = left if review_role == "regex" else right
+    selected["facts"][KEY]["state"] = "NEEDS_REVIEW"
+    selected["facts"][KEY]["value"] = None
+    if truncated:
+        # A truncated source must retain ten spans, so extend the note explicitly.
+        note = " ".join(f"Course {n} weeks." for n in range(20))
+        spans = passages(note, *(f"Course {n} weeks" for n in range(20)))
+        for response, side in ((left, spans[:10]), (right, spans[10:])):
+            from engine.corrections import note_hash
+
+            response["note_sha256"] = note_hash(note)
+            response["facts"][KEY]["evidence"] = side
+        selected["evidence_counts"] = {KEY: 15}
+        # A duplicate across sources is deduplicated without losing either role.
+        right["facts"][KEY]["evidence"][0] = left["facts"][KEY]["evidence"][0]
+    regex = adapt_recorded_response(note, left).proposal
+    llm = adapt_recorded_response(note, right)
+    record = reconcile(regex, llm)
+    assert item(record).reason == "REVIEW_REQUIRED"
+    assert item(record).disposition == "NEEDS_REVIEW"
+    assert item(record).evidence_source == "both"
+    assert record.regex == regex and record.recorded_llm == llm
+    assert "COMPETING_CITATIONS_NOT_A_SHARED_INTERPRETATION" in record.dual.diagnostics
+    assert not record.clinical_verification
+    retained = record.dual.snapshot.content["evidence"][KEY]
+    if truncated:
+        assert len(retained) == 10
+        assert item(record).dual_complete_citation_count is None
+        assert item(record).dual_citation_sources[0] == ("regex", "llm")
+        assert "COMBINED_CITATION_TOTAL_UNKNOWN" in record.dual.diagnostics
+        assert record.dual.snapshot.content.get("evidence_counts", {}) == {}
+    else:
+        assert retained == left["facts"][KEY]["evidence"] + right["facts"][KEY]["evidence"]
+        assert item(record).dual_citation_sources == (("regex",), ("llm",))
+    assert record.jointly_captured_therapy_citation_source is None

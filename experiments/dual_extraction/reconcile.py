@@ -125,7 +125,9 @@ def _reconcile_validated(regex: ExtractionProposal, recorded: RecordedLLMProposa
         le, revidence = left["evidence"].get(key, []), right["evidence"].get(key, [])
         lc = left.get("evidence_counts", {}).get(key, len(le))
         rc = right.get("evidence_counts", {}).get(key, len(revidence))
-        combine = reason in {"STATE_DISAGREEMENT", "VALUE_DISAGREEMENT"}
+        combine = reason in {"STATE_DISAGREEMENT", "VALUE_DISAGREEMENT"} or (
+            state == "NEEDS_REVIEW" and bool(le) and bool(revidence) and le != revidence
+        )
         retained, origins, complete_count, observed_count = _dual_evidence(left, right, key, combine)
         roles = {role for group in origins for role in group}
         source = "both" if len(roles) == 2 else next(iter(roles)) if roles else "none"
