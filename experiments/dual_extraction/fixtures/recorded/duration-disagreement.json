@@ -1,0 +1,101 @@
+{
+  "notice": "Hand-authored synthetic proposal; no model was called. Values are test inputs, not clinical gold labels.",
+  "note_text": "Neck pain for 8 weeks. PT for 8 weeks. Denies weakness. X-ray normal.",
+  "recorded_response": {
+    "recording": {
+      "source": "recorded-llm:synthetic",
+      "model_id": "synthetic-no-model",
+      "prompt_version": "synthetic-schema-v1",
+      "response_id": "synthetic-duration-disagreement",
+      "origin": "hand_authored_synthetic"
+    },
+    "note_sha256": "d8ba7702e009f38fd146c577c35ba0444fcc0979c0fd58248fc5517998e95703",
+    "facts": {
+      "back_pain_with_radiculopathy": {
+        "state": "MISSING",
+        "value": null,
+        "evidence": []
+      },
+      "objective_motor_or_reflex_change_in_root_distribution": {
+        "state": "MISSING",
+        "value": null,
+        "evidence": []
+      },
+      "cpb_0236_conservative_therapy_weeks": {
+        "state": "MISSING",
+        "value": null,
+        "evidence": []
+      },
+      "cpb_0236_conservative_therapy_no_improvement": {
+        "state": "MISSING",
+        "value": null,
+        "evidence": []
+      },
+      "conservative_therapy_weeks": {
+        "state": "CAPTURED",
+        "value": 6,
+        "evidence": [
+          {
+            "start": 23,
+            "end": 37,
+            "text": "PT for 8 weeks"
+          }
+        ]
+      },
+      "symptom_duration_weeks": {
+        "state": "CAPTURED",
+        "value": 8,
+        "evidence": [
+          {
+            "start": 0,
+            "end": 21,
+            "text": "Neck pain for 8 weeks"
+          }
+        ]
+      },
+      "neuro_red_flags_documented": {
+        "state": "CAPTURED",
+        "value": true,
+        "evidence": [
+          {
+            "start": 39,
+            "end": 54,
+            "text": "Denies weakness"
+          }
+        ]
+      },
+      "prior_imaging_result": {
+        "state": "CAPTURED",
+        "value": "normal",
+        "evidence": [
+          {
+            "start": 56,
+            "end": 68,
+            "text": "X-ray normal"
+          }
+        ]
+      },
+      "mechanical_symptoms_documented": {
+        "state": "MISSING",
+        "value": null,
+        "evidence": []
+      },
+      "osa_diagnosis": {
+        "state": "MISSING",
+        "value": null,
+        "evidence": []
+      },
+      "sleep_study_date": {
+        "state": "MISSING",
+        "value": null,
+        "evidence": []
+      },
+      "ahi_documented": {
+        "state": "MISSING",
+        "value": null,
+        "evidence": []
+      }
+    },
+    "evidence_counts": {}
+  }
+}

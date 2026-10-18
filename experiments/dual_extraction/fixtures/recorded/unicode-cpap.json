@@ -1,0 +1,95 @@
+{
+  "notice": "Hand-authored synthetic proposal; no model was called. Values are test inputs, not clinical gold labels.",
+  "note_text": "😀İ. OSA. Sleep study completed 2024-05-18. AHI 22.",
+  "recorded_response": {
+    "recording": {
+      "source": "recorded-llm:synthetic",
+      "model_id": "synthetic-no-model",
+      "prompt_version": "synthetic-schema-v1",
+      "response_id": "synthetic-unicode-cpap",
+      "origin": "hand_authored_synthetic"
+    },
+    "note_sha256": "29629eedb5931434f5d1c0ee981bcb7dd94af9a5fff8ebfabd6a3faa341ad385",
+    "facts": {
+      "back_pain_with_radiculopathy": {
+        "state": "MISSING",
+        "value": null,
+        "evidence": []
+      },
+      "objective_motor_or_reflex_change_in_root_distribution": {
+        "state": "MISSING",
+        "value": null,
+        "evidence": []
+      },
+      "cpb_0236_conservative_therapy_weeks": {
+        "state": "MISSING",
+        "value": null,
+        "evidence": []
+      },
+      "cpb_0236_conservative_therapy_no_improvement": {
+        "state": "MISSING",
+        "value": null,
+        "evidence": []
+      },
+      "conservative_therapy_weeks": {
+        "state": "MISSING",
+        "value": null,
+        "evidence": []
+      },
+      "symptom_duration_weeks": {
+        "state": "MISSING",
+        "value": null,
+        "evidence": []
+      },
+      "neuro_red_flags_documented": {
+        "state": "MISSING",
+        "value": null,
+        "evidence": []
+      },
+      "prior_imaging_result": {
+        "state": "MISSING",
+        "value": null,
+        "evidence": []
+      },
+      "mechanical_symptoms_documented": {
+        "state": "MISSING",
+        "value": null,
+        "evidence": []
+      },
+      "osa_diagnosis": {
+        "state": "CAPTURED",
+        "value": true,
+        "evidence": [
+          {
+            "start": 4,
+            "end": 7,
+            "text": "OSA"
+          }
+        ]
+      },
+      "sleep_study_date": {
+        "state": "CAPTURED",
+        "value": true,
+        "evidence": [
+          {
+            "start": 9,
+            "end": 41,
+            "text": "Sleep study completed 2024-05-18"
+          }
+        ]
+      },
+      "ahi_documented": {
+        "state": "CAPTURED",
+        "value": true,
+        "evidence": [
+          {
+            "start": 43,
+            "end": 49,
+            "text": "AHI 22"
+          }
+        ]
+      }
+    },
+    "evidence_counts": {}
+  }
+}
