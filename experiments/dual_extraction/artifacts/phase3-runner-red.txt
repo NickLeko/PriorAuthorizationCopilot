@@ -1,0 +1,16 @@
+
+==================================== ERRORS ====================================
+_______________ ERROR collecting test/test_offline_experiment.py _______________
+ImportError while importing test module '/private/tmp/pa-copilot-dual-extraction-phase3/test/test_offline_experiment.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+/Users/nicholasleko/.pyenv/versions/3.12.3/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+test/test_offline_experiment.py:9: in <module>
+    from experiments.dual_extraction import runner
+E   ImportError: cannot import name 'runner' from 'experiments.dual_extraction' (/private/tmp/pa-copilot-dual-extraction-phase3/experiments/dual_extraction/__init__.py)
+=========================== short test summary info ============================
+ERROR test/test_offline_experiment.py
+!!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!
+1 error in 0.06s

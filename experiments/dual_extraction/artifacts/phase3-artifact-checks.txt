@@ -1,0 +1,9 @@
+$ /Users/nicholasleko/projects/PriorAuthorizationCopilot/.venv/bin/python -B -m experiments.dual_extraction.runner --check
+Offline experiment artifacts match.
+$ /Users/nicholasleko/projects/PriorAuthorizationCopilot/.venv/bin/python -B -m experiments.dual_extraction.baseline --check
+Experimental baseline matches: /private/tmp/pa-copilot-dual-extraction-phase3/experiments/dual_extraction/artifacts/regex-v2.7.0.jsonl
+$ /Users/nicholasleko/projects/PriorAuthorizationCopilot/.venv/bin/python -B -m experiments.dual_extraction.examples --check
+Synthetic Phase 2 examples match.
+Fixed-clock production regeneration completed: all 27 artifact/golden files byte-identical before/after and to approved Phase 2.
+All 177 frozen regex captures remain byte-identical to approved Phase 2.
+No production source/policy/verification/governance/entrypoint/archive/dependency changes.
