@@ -1,0 +1,2 @@
+# Optional experimental CLI only; production requirements remain unchanged.
+openai==3.35.1

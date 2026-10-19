@@ -9,7 +9,9 @@ recording reload and the explicitly invoked offline three-mode comparison runner
 complete review evidence and historical example preservation.
 [The final adapter boundary](ACTUAL_MODEL_BOUNDARY.md) separates bare model
 content from trusted capture metadata and includes the proposed 15-note pilot.
-There are no model calls, credentials, or application mode switch.
+[The opt-in pilot capture CLI](pilot/CAPTURE.md) can preserve real Responses API
+outputs only with explicit execution authorization. It is separate from production
+and the offline runner; no application mode switch is added.
 
 ## Frozen release behavior
 

@@ -6,6 +6,9 @@ __pycache__/
 *.pyc
 .venv/
 
+# Opt-in synthetic model capture runs, including provider envelopes and reports.
+/experiments/dual_extraction/runs/
+
 # Streamlit runtime
 .streamlit/*
 !.streamlit/config.toml
