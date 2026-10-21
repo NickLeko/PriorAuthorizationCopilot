@@ -26,5 +26,45 @@
   "CVE-2026-54283": {
     "package": "starlette",
     "reason": "Local-only API does not call request.form(); public Streamlit explicitly uses Tornado."
+  },
+  "CVE-2026-112895": {
+    "package": "pillow",
+    "reason": "No PDF append or PdfParser calls in application or Streamlit 1.55.0; temporary compatibility exception. See security/pillow-review-2026-10-21.md.",
+    "expires": "2026-11-04"
+  },
+  "CVE-2026-112400": {
+    "package": "pillow",
+    "reason": "No GIF seek/recovery after DecompressionBombError in application or Streamlit 1.55.0; current text/JSON flows do not decode images. See security/pillow-review-2026-10-21.md.",
+    "expires": "2026-11-04"
+  },
+  "CVE-2026-112397": {
+    "package": "pillow",
+    "reason": "No ImageMorph operations in application or Streamlit 1.55.0; opening alone is insufficient to trigger this CVE. See security/pillow-review-2026-10-21.md.",
+    "expires": "2026-11-04"
+  },
+  "CVE-2026-112896": {
+    "package": "pillow",
+    "reason": "No TIFF encoding in application; Streamlit 1.55.0 image conversion writes JPEG/PNG/GIF, not TIFF. See security/pillow-review-2026-10-21.md.",
+    "expires": "2026-11-04"
+  },
+  "CVE-2026-112897": {
+    "package": "pillow",
+    "reason": "Current app consumes text/JSON only; traced Tornado uploads store bytes and media routes return bytes without Pillow decoding. TIFF decoding remains dangerous if image features are added. See security/pillow-review-2026-10-21.md.",
+    "expires": "2026-11-04"
+  },
+  "CVE-2026-112395": {
+    "package": "pillow",
+    "reason": "No path found from current app inputs or traced Tornado upload/media routes to TIFF pixel decoding; Streamlit image conversion could expose it if enabled. See security/pillow-review-2026-10-21.md.",
+    "expires": "2026-11-04"
+  },
+  "CVE-2026-112404": {
+    "package": "pillow",
+    "reason": "No path found from current app inputs or traced Tornado upload/media routes to TIFF pixel decoding; malformed TIFFs can leak memory if passed to Streamlit image conversion. See security/pillow-review-2026-10-21.md.",
+    "expires": "2026-11-04"
+  },
+  "CVE-2026-112899": {
+    "package": "pillow",
+    "reason": "No EPS load(scale>1) calls in application or Streamlit 1.55.0; current text/JSON flows do not render EPS. See security/pillow-review-2026-10-21.md.",
+    "expires": "2026-11-04"
   }
 }
