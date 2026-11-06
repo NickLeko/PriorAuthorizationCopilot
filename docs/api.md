@@ -218,6 +218,16 @@ The API is intentionally conservative:
 
 ## Notes
 
+- Request-validation failures return HTTP `422` with `error: "invalid_request"`
+  and a `detail` list of at most 20 entries. Each entry contains a validation
+  `type`, a `loc` of at most 8 components, and the fixed message `Invalid request.`
+  Locations retain declared field names and bounded array indices; caller-defined
+  dictionary keys and unknown fields appear as `<key>` and `<field>`. JSON syntax
+  or decoder-limit failures use `json_invalid` at `["body"]`.
+  Submitted values, raw bodies, validator messages, and exception context are omitted.
+  Service-level client rejections retain their existing status/error codes but
+  use fixed messages. Existing non-finite-number and body-size errors retain
+  their fixed diagnostic formats. Successful response schemas are unchanged.
 - The API is designed for synthetic demo inputs, but `note_text` is not screened; do not submit real patient information.
 - API evaluations embed `policy_version` in the result and audit trace but are not automatically persisted. The opt-in CLI SQLite archive retains decisions, full requests, captured evidence, and verification records; see [policy replay](policy_replay.md). It is not an authenticated, encrypted, or production patient-record service.
 - There is no authentication layer.

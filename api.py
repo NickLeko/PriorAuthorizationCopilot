@@ -2,10 +2,14 @@ from __future__ import annotations
 
 import json
 import math
+from types import UnionType
+from typing import Union, get_args, get_origin
 
 from fastapi import FastAPI, Request
+from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
-from pydantic import computed_field
+from pydantic import BaseModel, computed_field
+from pydantic_core import ErrorType
 
 from engine import __version__
 from engine.citation_context import evaluation_citation_context
@@ -74,6 +78,67 @@ class RequestBodyLimit:
 
 service = ReadinessService()
 
+MAX_VALIDATION_ERRORS = 20
+MAX_VALIDATION_LOCATION_DEPTH = 8
+VALIDATION_ERROR_TYPES = frozenset(get_args(ErrorType)) | {"json_invalid"}
+
+
+def validation_error_location(request: Request, location) -> list[str | int]:
+    """Keep declared field names and bounded indices, never caller-defined keys."""
+    if not isinstance(location, (tuple, list)) or not location:
+        return []
+    source = location[0]
+    if source not in {"body", "query", "path", "header", "cookie"}:
+        return []
+    safe = [source]
+    if source != "body":
+        route = request.scope.get("route")
+        parameters = getattr(getattr(route, "dependant", None), f"{source}_params", ())
+        if len(location) > 1:
+            safe.append(location[1] if location[1] in {parameter.alias for parameter in parameters} else "<field>")
+        return safe
+
+    annotation = PARequest
+    for segment in location[1:MAX_VALIDATION_LOCATION_DEPTH]:
+        if get_origin(annotation) in {Union, UnionType}:
+            members = [member for member in get_args(annotation) if member is not type(None)]
+            annotation = members[0] if len(members) == 1 else None
+        origin, members = get_origin(annotation), get_args(annotation)
+        if isinstance(annotation, type) and issubclass(annotation, BaseModel):
+            if isinstance(segment, str) and segment in annotation.model_fields:
+                safe.append(segment)
+                annotation = annotation.model_fields[segment].annotation
+            else:
+                safe.append("<field>")
+                break
+        elif origin in {list, tuple} and type(segment) is int and 0 <= segment <= MAX_REQUEST_BYTES:
+            safe.append(segment)
+            annotation = members[0]
+        elif origin is dict:
+            safe.append("<key>")
+            annotation = members[1]
+        else:
+            safe.append("<field>")
+            break
+    return safe
+
+
+def validation_error_response(request: Request, errors) -> JSONResponse:
+    # Do not encode whole error dictionaries: input/ctx/msg and even loc keys can
+    # contain submitted data. Raw nested inputs also break recursive encoders.
+    detail = []
+    for error in errors[:MAX_VALIDATION_ERRORS]:
+        code = error.get("type")
+        code = code if isinstance(code, str) and code in VALIDATION_ERROR_TYPES else "validation_error"
+        location = ("body",) if code == "json_invalid" else error.get("loc", ())
+        detail.append({"type": code, "loc": validation_error_location(request, location), "msg": "Invalid request."})
+    return JSONResponse(status_code=422, content={"error": "invalid_request", "detail": detail})
+
+
+@app.exception_handler(RequestValidationError)
+async def handle_request_validation_error(request: Request, exc: RequestValidationError) -> JSONResponse:
+    return validation_error_response(request, exc.errors())
+
 
 class NonfiniteJSONNumber(ValueError):
     pass
@@ -100,7 +165,10 @@ async def reject_nonfinite_json(request: Request, call_next):
         except NonfiniteJSONNumber as exc:
             return JSONResponse(status_code=422, content=ErrorResponse(error="invalid_request", detail=str(exc)).model_dump())
         except (json.JSONDecodeError, UnicodeDecodeError):
-            pass  # Ordinary malformed JSON retains FastAPI's normal 422 handling.
+            pass  # FastAPI reports ordinary malformed JSON through the sanitized handler.
+        except (RecursionError, ValueError):
+            # Decoder depth/integer limits are client errors; never echo decoder diagnostics.
+            return validation_error_response(request, [{"type": "json_invalid", "loc": ("body",)}])
     return await call_next(request)
 
 
@@ -111,7 +179,13 @@ app.add_middleware(RequestBodyLimit)
 @app.exception_handler(InvalidRequestError)
 @app.exception_handler(ServiceError)
 async def handle_service_error(_: Request, exc: ServiceError) -> JSONResponse:
-    error = ErrorResponse(error=exc.code, detail=str(exc))
+    # Service-level client rejections can also quote caller-controlled keys/scope.
+    detail = str(exc)
+    if isinstance(exc, InvalidRequestError):
+        detail = "Invalid request."
+    elif isinstance(exc, UnsupportedScopeError):
+        detail = "Unsupported request scope. See /supported-procedures for supported inputs."
+    error = ErrorResponse(error=exc.code, detail=detail)
     status_code = 400 if isinstance(exc, InvalidRequestError) else 422 if isinstance(exc, UnsupportedScopeError) else 500
     return JSONResponse(status_code=status_code, content=error.model_dump())
 
