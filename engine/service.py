@@ -173,7 +173,8 @@ def _read_drift_log(log_path: Path) -> tuple[List[Dict[str, Any]], List[str]]:
     try:
         lines = log_path.read_text(encoding="utf-8").splitlines()
     except OSError as exc:
-        return [], [f"Policy drift log could not be read: {exc}"]
+        # str(exc) embeds the absolute path, and this text is served by /drift-status.
+        return [], [f"Policy drift log could not be read: {exc.strerror or type(exc).__name__}"]
 
     for line_number, line in enumerate(lines, start=1):
         line = line.strip()
@@ -236,10 +237,10 @@ def _load_bundle(digest, snapshot, repo_root, runtime_paths, manifest_path):
     for path, content in snapshot:
         try:
             if content is None:
-                raise FileNotFoundError(path)
+                raise FileNotFoundError(_display_repo_relative_path(Path(repo_root), path))
             payload = _thaw(_parsed_manifest(content)) if path == manifest_path else yaml.safe_load(content)
             if not isinstance(payload, dict):
-                raise RulebookError(f"YAML file must contain a mapping: {path}")
+                raise RulebookError(f"YAML file must contain a mapping: {_display_repo_relative_path(Path(repo_root), path)}")
             documents[path] = payload
         except Exception as exc:
             documents[path] = exc

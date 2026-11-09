@@ -190,6 +190,15 @@ async def handle_service_error(_: Request, exc: ServiceError) -> JSONResponse:
     return JSONResponse(status_code=status_code, content=error.model_dump())
 
 
+@app.exception_handler(Exception)
+async def handle_unexpected_error(_: Request, exc: Exception) -> JSONResponse:
+    # Keep the documented error envelope and never return exception text, which can
+    # carry server paths or parser diagnostics. Starlette re-raises after this
+    # response is sent, so the traceback still reaches the server log.
+    error = ErrorResponse(error="internal_error", detail="Internal server error.")
+    return JSONResponse(status_code=500, content=error.model_dump())
+
+
 @app.get("/", response_model=StatusResponse, tags=["status"])
 def root_status() -> StatusResponse:
     return service.get_status()
