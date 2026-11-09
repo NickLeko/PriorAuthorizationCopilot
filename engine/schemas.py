@@ -739,11 +739,14 @@ class EvaluationResult(EvaluationResultV15):
         if isinstance(value, dict) and "evidence_counts" in value:
             from .corrections import materialize
 
-            original = OriginalProposal.model_validate(value["original_snapshot"])
-            request = PARequest.model_validate(value["request"])
-            expected_counts = materialize(original, request.corrections, request.note_text, [r["key"] for r in value["results"]]).get(
-                "evidence_counts", {}
-            )
+            try:
+                original = OriginalProposal.model_validate(value["original_snapshot"])
+                request = PARequest.model_validate(value["request"])
+                result_keys = [r["key"] for r in value["results"]]
+                expected_counts = materialize(original, request.corrections, request.note_text, result_keys).get("evidence_counts", {})
+            except (KeyError, TypeError) as exc:
+                # A malformed envelope must surface as ValidationError, like the citation_context branch below.
+                raise ValueError("Invalid envelope for derived evidence counts.") from exc
             if value["evidence_counts"] != expected_counts:
                 raise ValueError("Derived evidence counts disagree with captured proposal.")
             value = {k: v for k, v in value.items() if k != "evidence_counts"}
