@@ -12,6 +12,10 @@ class RulebookError(Exception):
     pass
 
 
+class UnknownRulebookReleaseError(RulebookError):
+    """The caller named a release that the manifest does not define."""
+
+
 def _load_yaml(path: Path) -> Dict[str, Any]:
     payload = yaml.safe_load(path.read_text(encoding="utf-8"))
     if payload is None:
@@ -200,9 +204,9 @@ def get_rulebook_diff(repo_root: Path, manifest_path: Path, from_release_id: str
     releases_raw = manifest.get("releases") or {}
 
     if from_release_id not in releases_raw:
-        raise RulebookError(f"Unknown rulebook release: {from_release_id}")
+        raise UnknownRulebookReleaseError(f"Unknown rulebook release: {from_release_id}")
     if to_release_id not in releases_raw:
-        raise RulebookError(f"Unknown rulebook release: {to_release_id}")
+        raise UnknownRulebookReleaseError(f"Unknown rulebook release: {to_release_id}")
 
     _, from_rules, from_provenance, from_policy_sources = _load_release_bundle(repo_root, releases_raw[from_release_id])
     _, to_rules, to_provenance, to_policy_sources = _load_release_bundle(repo_root, releases_raw[to_release_id])

@@ -39,7 +39,7 @@ from .provenance import (
     normalized_dx_codes,
     policy_trust_from_provenance,
 )
-from .rulebook import RulebookError, get_rulebook_diff, get_rulebook_status, load_rulebook_manifest
+from .rulebook import RulebookError, UnknownRulebookReleaseError, get_rulebook_diff, get_rulebook_status, load_rulebook_manifest
 from .rules_loader import load_rules
 from .schemas import (
     REVIEW_REQUIRED_FACT,
@@ -352,6 +352,8 @@ class ReadinessService:
                 from_release_id=from_release_id,
                 to_release_id=to_release_id,
             )
+        except UnknownRulebookReleaseError as exc:
+            raise InvalidRequestError(str(exc)) from exc
         except RulebookError as exc:
             raise GovernanceConfigError(str(exc)) from exc
 
