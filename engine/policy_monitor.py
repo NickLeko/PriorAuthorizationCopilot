@@ -54,7 +54,7 @@ class SnapshotValidationError(ValueError):
 
 def utc_now_iso() -> str:
     # RFC3339-ish (Z)
-    return dt.datetime.utcnow().replace(microsecond=0).isoformat() + "Z"
+    return dt.datetime.now(dt.timezone.utc).replace(microsecond=0, tzinfo=None).isoformat() + "Z"
 
 
 def _safe_mkdir(p: Path) -> None:
@@ -178,7 +178,6 @@ class _HTMLTextExtractor:
 
     def __init__(self) -> None:
         self._chunks: List[str] = []
-        self._skip_depth: int = 0
 
     def feed(self, html: str) -> None:
         # We avoid bs4 dependency: regex-based stripping + conservative block handling.

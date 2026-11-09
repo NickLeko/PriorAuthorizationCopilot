@@ -219,7 +219,6 @@ def _thaw(value):
 @dataclass(frozen=True)
 class _RuleBundle:
     digest: str
-    documents: Any
     rules: Any
     provenance: Any
     policy_sources: tuple[Any, ...]
@@ -259,7 +258,6 @@ def _load_bundle(digest, snapshot, repo_root, runtime_paths, manifest_path):
     )
     return _RuleBundle(
         digest,
-        _freeze(documents),
         _freeze(rules),
         _freeze(provenance),
         tuple(sources),
