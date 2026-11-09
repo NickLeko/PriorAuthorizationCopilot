@@ -663,7 +663,9 @@ if drift_report.any_review_required:
     )
 else:
     st.success("No monitored-source drift or stale/missing baselines currently require review.")
-    st.session_state["ack_policy_drift"] = True
+    # Nothing to acknowledge now. Do not carry an implicit acknowledgement into a
+    # later rerun in which a source has become stale or drifted.
+    st.session_state["ack_policy_drift"] = False
 
 if drift_report.stale_source_count:
     st.warning(
