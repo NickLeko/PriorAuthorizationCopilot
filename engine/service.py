@@ -6,7 +6,7 @@ import uuid
 from contextvars import ContextVar
 from dataclasses import dataclass
 from datetime import datetime, timezone
-from functools import cached_property, lru_cache
+from functools import cached_property, lru_cache, wraps
 from hashlib import sha256
 from pathlib import Path
 from types import MappingProxyType
@@ -267,6 +267,30 @@ def _load_bundle(digest, snapshot, repo_root, runtime_paths, manifest_path):
     )
 
 
+def _single_bundle(method):
+    """Serve one public read from one rulebook bundle, as evaluate() already does.
+
+    Without this, each property access re-reads and re-hashes every governed file,
+    and a single response can mix two bundles if a file changes mid-call.
+    """
+
+    @wraps(method)
+    def wrapper(self, *args, **kwargs):
+        if self._evaluation_bundle.get() is not None:
+            return method(self, *args, **kwargs)
+        try:
+            bundle = self._current_bundle()
+        except RulebookError as exc:
+            raise GovernanceConfigError(str(exc)) from exc
+        token = self._evaluation_bundle.set(bundle)
+        try:
+            return method(self, *args, **kwargs)
+        finally:
+            self._evaluation_bundle.reset(token)
+
+    return wrapper
+
+
 class ReadinessService:
     def __init__(self, config: AppConfig | None = None, *, utc_now_provider: Callable[[], datetime] | None = None) -> None:
         self.config = config or load_app_config()
@@ -296,6 +320,7 @@ class ReadinessService:
     def demo_cases(self) -> List[DemoCase]:
         return list_demo_cases(self.config)
 
+    @_single_bundle
     def list_supported_procedures(self) -> List[SupportedProcedure]:
         out: List[SupportedProcedure] = []
 
@@ -704,6 +729,7 @@ class ReadinessService:
             letter_type=letter_type,
         )
 
+    @_single_bundle
     def get_drift_status(self, payer: str | None = None, procedure_code: str | None = None) -> DriftStatusReport:
         events, drift_log_errors = _read_drift_log(self.config.snapshot_root / "drift_log.jsonl")
         latest_event_by_id = {str(event.get("id")): event for event in events if event.get("id")}
@@ -833,6 +859,7 @@ class ReadinessService:
             stale_source_count=stale_source_count,
         )
 
+    @_single_bundle
     def get_status(self) -> StatusResponse:
         rulebook_status = self.get_rulebook_status()
         return StatusResponse(
