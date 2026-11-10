@@ -222,7 +222,7 @@ def test_api_and_cli_result_context_matches(tmp_path, capsys):
 
 
 def test_streamlit_verification_and_correction_show_full_contrast_context():
-    at = AppTest.from_file("app.py").run(timeout=15)
+    at = AppTest.from_file(Path(__file__).resolve().parents[1] / "app.py").run(timeout=15)
     assert not at.exception
     next(button for button in at.button if button.key == "case_MRI-01-complete").click().run(timeout=15)
     assert not at.exception
@@ -284,7 +284,7 @@ def test_streamlit_engine_version_change_builds_new_service(monkeypatch):
     monkeypatch.setattr(service_module, "ReadinessService", build_service)
     monkeypatch.setattr(Path, "read_text", release_source)
     monkeypatch.setattr(engine, "__version__", "99.0.1")
-    at = AppTest.from_file("app.py").run(timeout=15)
+    at = AppTest.from_file(Path(__file__).resolve().parents[1] / "app.py").run(timeout=15)
     assert not at.exception
     assert len(instances) == 2  # Digest probe, then cached factory.
     first_service = instances[-1]

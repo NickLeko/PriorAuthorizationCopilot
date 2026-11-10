@@ -2,6 +2,7 @@
 
 import json
 from datetime import datetime, timezone
+from pathlib import Path
 
 import pytest
 from fastapi.testclient import TestClient
@@ -38,7 +39,7 @@ def corrected_ready():
 
 
 def ready_app():
-    at = AppTest.from_file("app.py", default_timeout=TIMEOUT).run()
+    at = AppTest.from_file(Path(__file__).resolve().parents[1] / "app.py", default_timeout=TIMEOUT).run()
     load_request(at, "MRI-01-complete", CORRECTED_ACCEPTANCE_NOTE)
     correct(at, "back_pain_with_radiculopathy", "Lumbosacral radicular syndrome documented.", True)
     verify(at)
@@ -56,7 +57,7 @@ def assert_caches_cleared(at):
     assert at.session_state["letter_meta"] == {}
     for key in ("result_context", "attestation_context", "letter_context"):
         assert at.session_state[key] is None
-    assert not any(str(key).startswith("verify_") for key in at.session_state.filtered_state)
+    assert not any(str(key).startswith("verify_") for key in at.session_state.keys())
 
 
 def test_streamlit_governance_expiration_clears_all_cached_outputs(monkeypatch):
@@ -140,7 +141,7 @@ def test_letter_rejects_301_character_quotation():
 
 
 def test_streamlit_fractional_weeks_rejected_without_truncation():
-    at = AppTest.from_file("app.py", default_timeout=TIMEOUT).run()
+    at = AppTest.from_file(Path(__file__).resolve().parents[1] / "app.py", default_timeout=TIMEOUT).run()
     button_case = widget(at, "button", "case_MRI-CERV-01-ready")
     button_case.click().run(timeout=TIMEOUT)
     note = at.session_state["last_eval_payload"]["request"]["note_text"]
@@ -157,7 +158,7 @@ def test_streamlit_fractional_weeks_rejected_without_truncation():
 
 
 def test_streamlit_integer_weeks_retains_integer_representation():
-    at = AppTest.from_file("app.py", default_timeout=TIMEOUT).run()
+    at = AppTest.from_file(Path(__file__).resolve().parents[1] / "app.py", default_timeout=TIMEOUT).run()
     widget(at, "button", "case_MRI-CERV-01-ready").click().run(timeout=TIMEOUT)
     note = at.session_state["last_eval_payload"]["request"]["note_text"]
     key = "symptom_duration_weeks"
@@ -172,7 +173,7 @@ def test_streamlit_integer_weeks_retains_integer_representation():
 
 
 def test_streamlit_overlength_audit_comment_rejected_without_truncation():
-    at = AppTest.from_file("app.py", default_timeout=TIMEOUT).run()
+    at = AppTest.from_file(Path(__file__).resolve().parents[1] / "app.py", default_timeout=TIMEOUT).run()
     load_request(at, "MRI-01-complete", CORRECTED_ACCEPTANCE_NOTE)
     key = "back_pain_with_radiculopathy"
     quote = "Lumbosacral radicular syndrome documented."

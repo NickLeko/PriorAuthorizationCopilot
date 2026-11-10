@@ -1,10 +1,12 @@
+from pathlib import Path
+
 from streamlit.testing.v1 import AppTest
 
 APPTEST_TIMEOUT_SECONDS = 10
 
 
 def test_streamlit_app_loads_without_exceptions():
-    at = AppTest.from_file("app.py")
+    at = AppTest.from_file(Path(__file__).resolve().parents[1] / "app.py")
 
     at.run(timeout=APPTEST_TIMEOUT_SECONDS)
 
@@ -14,7 +16,7 @@ def test_streamlit_app_loads_without_exceptions():
 
 
 def test_streamlit_featured_case_load_produces_results():
-    at = AppTest.from_file("app.py")
+    at = AppTest.from_file(Path(__file__).resolve().parents[1] / "app.py")
 
     at.run(timeout=APPTEST_TIMEOUT_SECONDS)
     if at.checkbox:
@@ -33,7 +35,7 @@ def test_streamlit_featured_case_load_produces_results():
 
 
 def test_site_of_care_options_are_scoped_to_selected_procedure():
-    at = AppTest.from_file("app.py")
+    at = AppTest.from_file(Path(__file__).resolve().parents[1] / "app.py")
 
     at.run(timeout=APPTEST_TIMEOUT_SECONDS)
 
@@ -42,7 +44,7 @@ def test_site_of_care_options_are_scoped_to_selected_procedure():
 
 
 def test_unrelated_drift_does_not_block_unmonitored_featured_case():
-    at = AppTest.from_file("app.py")
+    at = AppTest.from_file(Path(__file__).resolve().parents[1] / "app.py")
 
     at.run(timeout=APPTEST_TIMEOUT_SECONDS)
     cpap_button = next(button for button in at.button if button.key == "case_CPAP-02-borderline")
@@ -64,7 +66,7 @@ def test_unrelated_drift_does_not_block_unmonitored_featured_case():
 
 
 def test_current_verified_monitored_case_does_not_require_drift_acknowledgement():
-    at = AppTest.from_file("app.py")
+    at = AppTest.from_file(Path(__file__).resolve().parents[1] / "app.py")
 
     at.run(timeout=APPTEST_TIMEOUT_SECONDS)
     lumbar_button = next(button for button in at.button if button.key == "case_MRI-01-complete")

@@ -63,7 +63,7 @@ def test_retained_service_survives_mixed_engine_module_loads():
 
 
 def test_streamlit_version_guard_checks_disk_on_every_rerun(monkeypatch):
-    at = AppTest.from_file("app.py").run(timeout=15)
+    at = AppTest.from_file(Path(__file__).resolve().parents[1] / "app.py").run(timeout=15)
     assert not at.exception
     next(button for button in at.button if button.key == "case_MRI-01-complete").click().run(timeout=15)
     assert not at.exception
@@ -83,7 +83,7 @@ def test_streamlit_version_guard_checks_disk_on_every_rerun(monkeypatch):
         assert [item.value for item in at.error] == ["App code was updated; the server needs a restart"]
         assert not at.button  # Stop before any evaluation or review controls render.
         evaluate.assert_not_called()
-        fresh_session = AppTest.from_file("app.py").run(timeout=15)
+        fresh_session = AppTest.from_file(Path(__file__).resolve().parents[1] / "app.py").run(timeout=15)
         assert not fresh_session.exception
         assert [item.value for item in fresh_session.error] == ["App code was updated; the server needs a restart"]
         assert not fresh_session.button

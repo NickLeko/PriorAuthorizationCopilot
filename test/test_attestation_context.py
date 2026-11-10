@@ -1,5 +1,7 @@
 """Reviewer context is visible, literal, and separate from decision semantics."""
 
+from pathlib import Path
+
 from streamlit.testing.v1 import AppTest
 from test_v200_surfaces import load_request
 
@@ -17,7 +19,7 @@ CAPTION = "Context shown is an aid; read the full note before attesting."
 
 
 def evaluated_app(note):
-    at = AppTest.from_file("app.py", default_timeout=30).run()
+    at = AppTest.from_file(Path(__file__).resolve().parents[1] / "app.py", default_timeout=30).run()
     load_request(at, "MRI-01-complete", note)
     return at
 

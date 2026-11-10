@@ -1,11 +1,11 @@
-"""Conservative source guard requiring Pillow risk reassessment in the CI test job.
+"""Conservative source guard retaining the text-only application's input scope.
 
 This detects selected Python syntax, not global reachability or arbitrary dynamic
-dispatch. See security/pillow-review-2026-10-21.md for the scope and limitations.
+dispatch. Patched Pillow removes the old exceptions, not the need to review a
+future image-processing feature. The historical exception review is retained.
 """
 
 import ast
-import json
 import os
 from pathlib import Path
 
@@ -112,14 +112,11 @@ def image_exposures(source):
     return sorted(set(issues))
 
 
-def test_production_image_paths_require_reassessment_while_pillow_exceptions_configured():
-    exceptions = json.loads((ROOT / "security/pip-audit-ignores.json").read_text())
-    if not any(entry["package"] == "pillow" for entry in exceptions.values()):
-        pytest.skip("Pillow exceptions removed; this temporary exposure policy no longer applies")
+def test_production_app_retains_its_reviewed_text_only_scope():
     modules = list(production_modules(ROOT))
     assert {ROOT / name for name in ("app.py", "api.py", "cli.py", "engine/service.py")} <= set(modules)
     issues = [f"{path.relative_to(ROOT)}:{line}: {reason}" for path in modules for line, reason in image_exposures(path.read_text())]
-    assert not issues, "Reassess/remove Pillow exceptions before accepting image-processing pathways:\n" + "\n".join(issues)
+    assert not issues, "Review new image-processing pathways before changing the text-only application scope:\n" + "\n".join(issues)
 
 
 @pytest.mark.parametrize(

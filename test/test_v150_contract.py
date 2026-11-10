@@ -299,7 +299,7 @@ def test_running_api_rereads_changed_rule_bundle_and_rejects_old_attestation(tmp
 
 @pytest.mark.parametrize("verified", [False, True])
 def test_identical_request_status_across_streamlit_fastapi_cli(tmp_path, capsys, verified):
-    at = AppTest.from_file("app.py").run(timeout=15)
+    at = AppTest.from_file(Path(__file__).resolve().parents[1] / "app.py").run(timeout=15)
     next(button for button in at.button if button.key == "case_MRI-01-complete").click().run(timeout=15)
     assert not at.exception
     if verified:
