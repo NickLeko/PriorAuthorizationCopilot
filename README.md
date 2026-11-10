@@ -248,8 +248,9 @@ python3.12 -m venv .venv
 For reviewed artifact regeneration, use the fixed acceptance-clock procedure in
 [docs/testing.md](docs/testing.md); ordinary generator commands use the wall clock.
 
-Security limits, dependency audit exceptions, and validation results are documented in
-[the v2.1.3 security release notes](docs/releases/v2.1.3.md). Streamlit Cloud installs
+Current dependency security, the supported ASGI server and validation results are
+documented in [the integration validation record](docs/production_integration_final.md).
+The [v2.1.3 security release notes](docs/releases/v2.1.3.md) remain historical evidence. Streamlit Cloud installs
 the hashed transitive lock through `requirements.txt`. Use synthetic data only.
 
 ## FastAPI

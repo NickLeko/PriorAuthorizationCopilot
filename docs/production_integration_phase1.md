@@ -1,5 +1,10 @@
 # Production integration candidate — Phase 1
 
+**Historical Phase 1 record.** The November 10 follow-up clears the dependency
+gate without exceptions and records the finalized stack and test-count
+reconciliation in [the current validation record](production_integration_final.md).
+The measurements and blockers below describe the original Phase 1 checkpoint.
+
 This candidate starts at verified production main
 `6913a990cc722655c3fd945cd097251b72f49d53`, including merged security PR #21.
 It does not merge the extraction-research branch or change clinical rules.
