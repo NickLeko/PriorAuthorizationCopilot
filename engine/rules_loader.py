@@ -5,7 +5,7 @@ from typing import Any, Dict
 
 import yaml
 
-from .schemas import LEGACY_OPERATOR_BY_TYPE
+from .schemas import LEGACY_OPERATOR_BY_TYPE, validate_numeric_minimum
 
 ALLOWED_REQUIREMENT_TYPES = {"number", "boolean", "enum"}
 ALLOWED_REQUIREMENT_OPERATORS = {"documented", "equals_true", "minimum", "one_of"}
@@ -65,8 +65,9 @@ def _validate_requirement(req: Dict[str, Any], payer: str, procedure_code: str, 
         raise ValueError(f"Invalid rules file: {location}.label must be a non-empty string.")
 
     if req_type == "number":
-        if "min" not in req or not isinstance(req["min"], (int, float)):
+        if "min" not in req or req["min"] is None:
             raise ValueError(f"Invalid rules file: {location}.min must be numeric for number requirements.")
+        validate_numeric_minimum(req["min"])
 
     if req_type == "enum":
         allowed = req.get("allowed")

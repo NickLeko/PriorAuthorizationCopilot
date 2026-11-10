@@ -7,12 +7,29 @@ import re
 import sqlite3
 from pathlib import Path
 
+from pydantic import ValidationError, field_validator
+
 from .policies import canonical_dump, canonical_json, content_hash
-from .schemas import EvaluationResult, EvaluationResultV15, LegacyEvaluationRecord, PolicyVersion
+from .schemas import EvaluationResult, EvaluationResultV15, LegacyEvaluationRecord, PARequest, PolicyVersion
+
+
+class _ArchivedPARequest(PARequest):
+    """Read existing v2 diagnosis metadata without changing its bytes or fingerprints."""
+
+    @field_validator("dx_codes")
+    @classmethod
+    def _validate_dx_code_shape(cls, value: list[str]) -> list[str]:
+        # Before this input restriction, v2 allowed arbitrary diagnosis strings.
+        # All other request and full-envelope validators remain active.
+        return value
+
+
+class _ArchivedEvaluationResult(EvaluationResult):
+    request: _ArchivedPARequest
 
 
 def validate_archived_evaluation(payload: dict):
-    """Dispatch by stamped schema, retaining the original v1.5 structural validator."""
+    """Read by stamped schema; historical metadata never relaxes new writes/redrafting."""
     for key in ("schema_version", "engine_version"):
         if key in payload:
             match = re.fullmatch(r"(\d+)\.(\d+)\.(\d+)(?:[-+][0-9A-Za-z.-]+)?", str(payload[key]))
@@ -23,8 +40,14 @@ def validate_archived_evaluation(payload: dict):
     if _is_legacy_payload(payload):
         return LegacyEvaluationRecord(payload=payload)
     schema = payload.get("schema_version", "1.5.0")
-    validator = EvaluationResult if schema.startswith("2.") else EvaluationResultV15
-    return validator.model_validate(payload)
+    if schema.startswith("2."):
+        try:
+            return EvaluationResult.model_validate(payload)
+        except ValidationError:
+            # Only historical diagnosis metadata is relaxed. This private reader
+            # still validates every v2 consistency/fingerprint/readiness invariant.
+            return _ArchivedEvaluationResult.model_validate(payload)
+    return EvaluationResultV15.model_validate(payload)
 
 
 def _is_legacy_payload(payload: dict) -> bool:

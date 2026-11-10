@@ -8,6 +8,9 @@ from datetime import datetime, timezone
 from hashlib import sha256
 from typing import Dict, List, Tuple
 
+from pydantic import ValidationError
+from pydantic_core import PydanticSerializationError
+
 from .schemas import (
     LetterDraftInput,
     LetterType,
@@ -249,16 +252,27 @@ def draft_letter(
     - Accepts only no-note request metadata plus supplied requirement results, snippets, and hints.
     - Does not mutate requirement statuses; standard templates do not promise approval.
     - Applies the enumerated PROHIBITED_SUBSTRINGS check; this is not a semantic filter.
-    - Diagnosis-code sanitation is limited to trim, uppercase, and removal of spaces and '%'.
+    - Revalidates diagnosis-code shape/count before trim, uppercase, and removal of spaces and '%'.
     Returns (letter_text, letter_metadata_dict).
     """
     if not isinstance(draft_input, LetterDraftInput):
         raise TypeError("draft_letter requires LetterDraftInput.")
 
     ts = _now_utc_iso()
+    try:
+        # Nested models and model_copy updates are mutable. Validate a detached
+        # snapshot at the drafting boundary, before skipping the Dx header scan.
+        draft_input = LetterDraftInput.model_validate_json(draft_input.model_dump_json())
+    except (ValidationError, PydanticSerializationError):
+        blocked_reasons = ["Invalid letter input. Check diagnosis codes and requirement data."]
+    else:
+        blocked_reasons = _validate_inputs(draft_input, letter_type)
     request = draft_input.request
-    policy_trust_level = draft_input.policy_trust_level
-    blocked_reasons = _validate_inputs(draft_input, letter_type)
+    policy_trust_level = (
+        draft_input.policy_trust_level
+        if isinstance(draft_input.policy_trust_level, str) and draft_input.policy_trust_level in ALLOWED_POLICY_TRUST
+        else "demo"
+    )
 
     if blocked_reasons:
         text = (

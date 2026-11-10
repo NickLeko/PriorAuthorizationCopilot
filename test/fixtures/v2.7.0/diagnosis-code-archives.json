@@ -1,0 +1,2589 @@
+{
+  "free-text": {
+    "audit_trail": {
+      "blocking_issues": {
+        "needs_review": [],
+        "not_documented": [],
+        "not_met": []
+      },
+      "corrected_requirement_keys": [],
+      "evaluation_warnings": [
+        "Automated extraction is a drafting aid. All proposed facts require human verification before READY."
+      ],
+      "evidence_map": {
+        "back_pain_with_radiculopathy": [
+          {
+            "end": 52,
+            "start": 0,
+            "text": "Low back pain with right leg radiculopathy x 8 weeks"
+          }
+        ],
+        "conservative_therapy_weeks": [
+          {
+            "end": 72,
+            "start": 54,
+            "text": "NSAIDs for 8 weeks"
+          }
+        ],
+        "cpb_0236_conservative_therapy_no_improvement": [
+          {
+            "end": 97,
+            "start": 54,
+            "text": "NSAIDs for 8 weeks with minimal improvement"
+          }
+        ],
+        "cpb_0236_conservative_therapy_weeks": [
+          {
+            "end": 97,
+            "start": 54,
+            "text": "NSAIDs for 8 weeks with minimal improvement"
+          }
+        ],
+        "neuro_red_flags_documented": [
+          {
+            "end": 235,
+            "start": 202,
+            "text": "Denies bowel/bladder incontinence"
+          },
+          {
+            "end": 257,
+            "start": 237,
+            "text": "No saddle anesthesia"
+          }
+        ],
+        "objective_motor_or_reflex_change_in_root_distribution": [
+          {
+            "end": 200,
+            "start": 118,
+            "text": "Objective motor exam in the right L5 distribution: ankle dorsiflexion strength 4/5"
+          }
+        ],
+        "prior_imaging_result": [
+          {
+            "end": 298,
+            "start": 286,
+            "text": "inconclusive"
+          }
+        ],
+        "symptom_duration_weeks": [
+          {
+            "end": 52,
+            "start": 45,
+            "text": "8 weeks"
+          }
+        ]
+      },
+      "fact_set_fingerprint": "0aa139209464fe028c8a49227d705a4ae2a448686c1d2687054d25ed689faccb",
+      "fact_verifications": {
+        "back_pain_with_radiculopathy": {
+          "fingerprint": null,
+          "reviewer": null,
+          "state": "UNVERIFIED",
+          "verified_at": null
+        },
+        "cpb_0236_conservative_therapy_no_improvement": {
+          "fingerprint": null,
+          "reviewer": null,
+          "state": "UNVERIFIED",
+          "verified_at": null
+        },
+        "cpb_0236_conservative_therapy_weeks": {
+          "fingerprint": null,
+          "reviewer": null,
+          "state": "UNVERIFIED",
+          "verified_at": null
+        },
+        "objective_motor_or_reflex_change_in_root_distribution": {
+          "fingerprint": null,
+          "reviewer": null,
+          "state": "UNVERIFIED",
+          "verified_at": null
+        }
+      },
+      "facts_extracted": {
+        "ahi_documented": null,
+        "back_pain_with_radiculopathy": true,
+        "conservative_therapy_weeks": 8,
+        "cpb_0236_conservative_therapy_no_improvement": true,
+        "cpb_0236_conservative_therapy_weeks": 8,
+        "mechanical_symptoms_documented": null,
+        "neuro_red_flags_documented": true,
+        "objective_motor_or_reflex_change_in_root_distribution": true,
+        "osa_diagnosis": null,
+        "prior_imaging_result": "inconclusive",
+        "sleep_study_date": null,
+        "symptom_duration_weeks": 8
+      },
+      "input_fingerprint": "2471d3993da85b4760ff07bef2945e98df082fd656c4a84169a120ef4e7bfe99",
+      "invariant_errors": [],
+      "metrics": {
+        "criteria_met_count": 4,
+        "criteria_not_met_count": 0,
+        "documentation_coverage_pct": 100.0,
+        "documented_requirement_count": 4,
+        "evaluable_requirement_count": 4,
+        "human_review_count": 0,
+        "missing_requirement_count": 0,
+        "total_requirements": 4
+      },
+      "note_hash": "b66310c6bfc8e97d",
+      "note_length": 299,
+      "overall_status": "PENDING_VERIFICATION",
+      "payer": "Aetna",
+      "policy_trust_level": "verified",
+      "policy_version": {
+        "content_hash": "be1461a07b8ede0231f6033d0130302e070f49b8d78540a36542d18f2985dcd6",
+        "criteria_json": "[{\"allowed\":[],\"evidence\":\"Back pain and radiculopathy documented together\",\"key\":\"back_pain_with_radiculopathy\",\"label\":\"Persistent back pain with radiculopathy documented\",\"operator\":\"equals_true\",\"type\":\"boolean\"},{\"allowed\":[],\"evidence\":\"Objective motor strength or reflex change documented in a named nerve-root distribution\",\"key\":\"objective_motor_or_reflex_change_in_root_distribution\",\"label\":\"Objective motor or reflex change in a nerve-root distribution\",\"operator\":\"equals_true\",\"type\":\"boolean\"},{\"allowed\":[],\"evidence\":\"At least 6 weeks of CPB 0236 Footnote 1 conservative therapy documented\",\"key\":\"cpb_0236_conservative_therapy_weeks\",\"label\":\"Conservative therapy duration (weeks)\",\"min\":6.0,\"operator\":\"minimum\",\"type\":\"number\"},{\"allowed\":[],\"evidence\":\"Explicit no, minimal, or insufficient improvement after CPB 0236 Footnote 1 conservative therapy\",\"key\":\"cpb_0236_conservative_therapy_no_improvement\",\"label\":\"No improvement after conservative therapy\",\"operator\":\"equals_true\",\"type\":\"boolean\"}]",
+        "effective_date": "2026-08-22",
+        "payer": "Aetna",
+        "policy_id": "Aetna:MRI_LUMBAR",
+        "procedure_code": "MRI_LUMBAR",
+        "supported_sites": [
+          "outpatient"
+        ],
+        "version_id": "runtime-1.0-2026-08-22-6ee790b526750a37"
+      },
+      "procedure_code": "MRI_LUMBAR",
+      "procedure_name": "MRI Lumbar Spine (no contrast)",
+      "provenance_snapshot": {
+        "accessed_date": "2026-08-22",
+        "content_hash_sha256": "5688a01dea8d5e55d9bb074fb4184f4b0722c89a7a35aacd343bf3444577e622",
+        "last_reviewed": "2026-08-22",
+        "monitored_check_frequency": "monthly",
+        "monitored_source_id": "aetna_mri_lumbar",
+        "monitored_source_name": "Aetna CPB 0236 - Magnetic Resonance Imaging (MRI) and Computed Tomography (CT) of the Spine",
+        "monitored_source_owner": "NickLeko",
+        "monitored_source_url": "https://www.aetna.com/cpb/medical/data/200_299/0236.html",
+        "notes": "Only one CPB 0236 alternative is implemented. CPT 72148 is listed by the bulletin when selection criteria are met; plan terms and precertification requirements still control.",
+        "policy_effective_date": "1998-05-06",
+        "policy_identifier": "CPB 0236",
+        "policy_last_reviewed": "2026-04-09",
+        "policy_title": "Magnetic Resonance Imaging (MRI) and Computed Tomography (CT) of the Spine",
+        "requirement_clause_map": {
+          "back_pain_with_radiculopathy": "Policy > Medical Necessity > persistent back or neck pain with radiculopathy alternative (lumbar scope).",
+          "cpb_0236_conservative_therapy_no_improvement": "Same Medical Necessity alternative: explicit lack of improvement after the conservative-therapy period.",
+          "cpb_0236_conservative_therapy_weeks": "Same Medical Necessity alternative: no improvement after 6 weeks of conservative therapy; Footnote 1 defines the supported modalities.",
+          "objective_motor_or_reflex_change_in_root_distribution": "Same Medical Necessity alternative: pain plus objective motor or reflex findings in the specific nerve-root distribution."
+        },
+        "rule_last_updated": "2026-08-22",
+        "rule_source_label": "Verified mapping to Aetna CPB 0236, persistent back pain with radiculopathy branch",
+        "source_name": "Aetna Clinical Policy Bulletin 0236",
+        "source_type": "official_policy_web",
+        "source_url": "https://www.aetna.com/cpb/medical/data/200_299/0236.html",
+        "status": "verified"
+      },
+      "requirements_checked": [
+        "back_pain_with_radiculopathy",
+        "objective_motor_or_reflex_change_in_root_distribution",
+        "cpb_0236_conservative_therapy_weeks",
+        "cpb_0236_conservative_therapy_no_improvement"
+      ],
+      "rulebook_active_release_id": "2026-08-22-active-v1.0",
+      "rules_version": "1.0",
+      "run_id": "00000000-0000-0000-0000-000000000000",
+      "site_of_care": "outpatient",
+      "specialty": "Orthopedics",
+      "submission_readiness": false,
+      "timestamp_utc": "2026-09-01T00:00:00Z",
+      "uses_reviewer_corrections": false
+    },
+    "blockers": {
+      "needs_review": [],
+      "not_documented": [],
+      "not_met": []
+    },
+    "bundle_fingerprint": "1e3dea24499fa5619e8862e53c75ed3596d7e94812314c995f7508a44353d0ef",
+    "captured_fact_states": {
+      "ahi_documented": "MISSING",
+      "back_pain_with_radiculopathy": "CAPTURED",
+      "conservative_therapy_weeks": "CAPTURED",
+      "cpb_0236_conservative_therapy_no_improvement": "CAPTURED",
+      "cpb_0236_conservative_therapy_weeks": "CAPTURED",
+      "mechanical_symptoms_documented": "MISSING",
+      "neuro_red_flags_documented": "CAPTURED",
+      "objective_motor_or_reflex_change_in_root_distribution": "CAPTURED",
+      "osa_diagnosis": "MISSING",
+      "prior_imaging_result": "CAPTURED",
+      "sleep_study_date": "MISSING",
+      "symptom_duration_weeks": "CAPTURED"
+    },
+    "contract_version": "6779fd812df9d1fa44d8c17af56bff917d91c0395f00fea78846b643bcdaf74c",
+    "corrected_requirement_keys": [],
+    "engine_version": "2.7.0",
+    "evidence_map": {
+      "back_pain_with_radiculopathy": [
+        {
+          "end": 52,
+          "start": 0,
+          "text": "Low back pain with right leg radiculopathy x 8 weeks"
+        }
+      ],
+      "conservative_therapy_weeks": [
+        {
+          "end": 72,
+          "start": 54,
+          "text": "NSAIDs for 8 weeks"
+        }
+      ],
+      "cpb_0236_conservative_therapy_no_improvement": [
+        {
+          "end": 97,
+          "start": 54,
+          "text": "NSAIDs for 8 weeks with minimal improvement"
+        }
+      ],
+      "cpb_0236_conservative_therapy_weeks": [
+        {
+          "end": 97,
+          "start": 54,
+          "text": "NSAIDs for 8 weeks with minimal improvement"
+        }
+      ],
+      "neuro_red_flags_documented": [
+        {
+          "end": 235,
+          "start": 202,
+          "text": "Denies bowel/bladder incontinence"
+        },
+        {
+          "end": 257,
+          "start": 237,
+          "text": "No saddle anesthesia"
+        }
+      ],
+      "objective_motor_or_reflex_change_in_root_distribution": [
+        {
+          "end": 200,
+          "start": 118,
+          "text": "Objective motor exam in the right L5 distribution: ankle dorsiflexion strength 4/5"
+        }
+      ],
+      "prior_imaging_result": [
+        {
+          "end": 298,
+          "start": 286,
+          "text": "inconclusive"
+        }
+      ],
+      "symptom_duration_weeks": [
+        {
+          "end": 52,
+          "start": 45,
+          "text": "8 weeks"
+        }
+      ]
+    },
+    "fact_set_fingerprint": "0aa139209464fe028c8a49227d705a4ae2a448686c1d2687054d25ed689faccb",
+    "facts": {
+      "ahi_documented": null,
+      "back_pain_with_radiculopathy": true,
+      "conservative_therapy_weeks": 8,
+      "cpb_0236_conservative_therapy_no_improvement": true,
+      "cpb_0236_conservative_therapy_weeks": 8,
+      "mechanical_symptoms_documented": null,
+      "neuro_red_flags_documented": true,
+      "objective_motor_or_reflex_change_in_root_distribution": true,
+      "osa_diagnosis": null,
+      "prior_imaging_result": "inconclusive",
+      "sleep_study_date": null,
+      "symptom_duration_weeks": 8
+    },
+    "input_fingerprint": "2471d3993da85b4760ff07bef2945e98df082fd656c4a84169a120ef4e7bfe99",
+    "metrics": {
+      "criteria_met_count": 4,
+      "criteria_not_met_count": 0,
+      "documentation_coverage_pct": 100.0,
+      "documented_requirement_count": 4,
+      "evaluable_requirement_count": 4,
+      "human_review_count": 0,
+      "missing_requirement_count": 0,
+      "total_requirements": 4
+    },
+    "original_snapshot": {
+      "content_hash": "4f172743d2f21724bf06eca7f6fa6306f46c837d8b64fc1532d4bd1379ca9adc",
+      "snapshot_json": "{\"evidence\":{\"back_pain_with_radiculopathy\":[{\"end\":52,\"start\":0,\"text\":\"Low back pain with right leg radiculopathy x 8 weeks\"}],\"conservative_therapy_weeks\":[{\"end\":72,\"start\":54,\"text\":\"NSAIDs for 8 weeks\"}],\"cpb_0236_conservative_therapy_no_improvement\":[{\"end\":97,\"start\":54,\"text\":\"NSAIDs for 8 weeks with minimal improvement\"}],\"cpb_0236_conservative_therapy_weeks\":[{\"end\":97,\"start\":54,\"text\":\"NSAIDs for 8 weeks with minimal improvement\"}],\"neuro_red_flags_documented\":[{\"end\":235,\"start\":202,\"text\":\"Denies bowel/bladder incontinence\"},{\"end\":257,\"start\":237,\"text\":\"No saddle anesthesia\"}],\"objective_motor_or_reflex_change_in_root_distribution\":[{\"end\":200,\"start\":118,\"text\":\"Objective motor exam in the right L5 distribution: ankle dorsiflexion strength 4/5\"}],\"prior_imaging_result\":[{\"end\":298,\"start\":286,\"text\":\"inconclusive\"}],\"symptom_duration_weeks\":[{\"end\":52,\"start\":45,\"text\":\"8 weeks\"}]},\"facts\":{\"ahi_documented\":null,\"back_pain_with_radiculopathy\":true,\"conservative_therapy_weeks\":8,\"cpb_0236_conservative_therapy_no_improvement\":true,\"cpb_0236_conservative_therapy_weeks\":8,\"mechanical_symptoms_documented\":null,\"neuro_red_flags_documented\":true,\"objective_motor_or_reflex_change_in_root_distribution\":true,\"osa_diagnosis\":null,\"prior_imaging_result\":\"inconclusive\",\"sleep_study_date\":null,\"symptom_duration_weeks\":8},\"states\":{\"ahi_documented\":\"MISSING\",\"back_pain_with_radiculopathy\":\"CAPTURED\",\"conservative_therapy_weeks\":\"CAPTURED\",\"cpb_0236_conservative_therapy_no_improvement\":\"CAPTURED\",\"cpb_0236_conservative_therapy_weeks\":\"CAPTURED\",\"mechanical_symptoms_documented\":\"MISSING\",\"neuro_red_flags_documented\":\"CAPTURED\",\"objective_motor_or_reflex_change_in_root_distribution\":\"CAPTURED\",\"osa_diagnosis\":\"MISSING\",\"prior_imaging_result\":\"CAPTURED\",\"sleep_study_date\":\"MISSING\",\"symptom_duration_weeks\":\"CAPTURED\"}}"
+    },
+    "overall_status": "PENDING_VERIFICATION",
+    "policy_trust_level": "verified",
+    "policy_version": {
+      "content_hash": "be1461a07b8ede0231f6033d0130302e070f49b8d78540a36542d18f2985dcd6",
+      "criteria_json": "[{\"allowed\":[],\"evidence\":\"Back pain and radiculopathy documented together\",\"key\":\"back_pain_with_radiculopathy\",\"label\":\"Persistent back pain with radiculopathy documented\",\"operator\":\"equals_true\",\"type\":\"boolean\"},{\"allowed\":[],\"evidence\":\"Objective motor strength or reflex change documented in a named nerve-root distribution\",\"key\":\"objective_motor_or_reflex_change_in_root_distribution\",\"label\":\"Objective motor or reflex change in a nerve-root distribution\",\"operator\":\"equals_true\",\"type\":\"boolean\"},{\"allowed\":[],\"evidence\":\"At least 6 weeks of CPB 0236 Footnote 1 conservative therapy documented\",\"key\":\"cpb_0236_conservative_therapy_weeks\",\"label\":\"Conservative therapy duration (weeks)\",\"min\":6.0,\"operator\":\"minimum\",\"type\":\"number\"},{\"allowed\":[],\"evidence\":\"Explicit no, minimal, or insufficient improvement after CPB 0236 Footnote 1 conservative therapy\",\"key\":\"cpb_0236_conservative_therapy_no_improvement\",\"label\":\"No improvement after conservative therapy\",\"operator\":\"equals_true\",\"type\":\"boolean\"}]",
+      "effective_date": "2026-08-22",
+      "payer": "Aetna",
+      "policy_id": "Aetna:MRI_LUMBAR",
+      "procedure_code": "MRI_LUMBAR",
+      "supported_sites": [
+        "outpatient"
+      ],
+      "version_id": "runtime-1.0-2026-08-22-6ee790b526750a37"
+    },
+    "provenance": {
+      "accessed_date": "2026-08-22",
+      "content_hash_sha256": "5688a01dea8d5e55d9bb074fb4184f4b0722c89a7a35aacd343bf3444577e622",
+      "last_reviewed": "2026-08-22",
+      "monitored_check_frequency": "monthly",
+      "monitored_source_id": "aetna_mri_lumbar",
+      "monitored_source_name": "Aetna CPB 0236 - Magnetic Resonance Imaging (MRI) and Computed Tomography (CT) of the Spine",
+      "monitored_source_owner": "NickLeko",
+      "monitored_source_url": "https://www.aetna.com/cpb/medical/data/200_299/0236.html",
+      "notes": "Only one CPB 0236 alternative is implemented. CPT 72148 is listed by the bulletin when selection criteria are met; plan terms and precertification requirements still control.",
+      "policy_effective_date": "1998-05-06",
+      "policy_identifier": "CPB 0236",
+      "policy_last_reviewed": "2026-04-09",
+      "policy_title": "Magnetic Resonance Imaging (MRI) and Computed Tomography (CT) of the Spine",
+      "requirement_clause_map": {
+        "back_pain_with_radiculopathy": "Policy > Medical Necessity > persistent back or neck pain with radiculopathy alternative (lumbar scope).",
+        "cpb_0236_conservative_therapy_no_improvement": "Same Medical Necessity alternative: explicit lack of improvement after the conservative-therapy period.",
+        "cpb_0236_conservative_therapy_weeks": "Same Medical Necessity alternative: no improvement after 6 weeks of conservative therapy; Footnote 1 defines the supported modalities.",
+        "objective_motor_or_reflex_change_in_root_distribution": "Same Medical Necessity alternative: pain plus objective motor or reflex findings in the specific nerve-root distribution."
+      },
+      "rule_last_updated": "2026-08-22",
+      "rule_source_label": "Verified mapping to Aetna CPB 0236, persistent back pain with radiculopathy branch",
+      "source_name": "Aetna Clinical Policy Bulletin 0236",
+      "source_type": "official_policy_web",
+      "source_url": "https://www.aetna.com/cpb/medical/data/200_299/0236.html",
+      "status": "verified"
+    },
+    "report": {
+      "audit_trail": {
+        "blocking_issues": {
+          "needs_review": [],
+          "not_documented": [],
+          "not_met": []
+        },
+        "corrected_requirement_keys": [],
+        "evaluation_warnings": [
+          "Automated extraction is a drafting aid. All proposed facts require human verification before READY."
+        ],
+        "evidence_map": {
+          "back_pain_with_radiculopathy": [
+            {
+              "end": 52,
+              "start": 0,
+              "text": "Low back pain with right leg radiculopathy x 8 weeks"
+            }
+          ],
+          "conservative_therapy_weeks": [
+            {
+              "end": 72,
+              "start": 54,
+              "text": "NSAIDs for 8 weeks"
+            }
+          ],
+          "cpb_0236_conservative_therapy_no_improvement": [
+            {
+              "end": 97,
+              "start": 54,
+              "text": "NSAIDs for 8 weeks with minimal improvement"
+            }
+          ],
+          "cpb_0236_conservative_therapy_weeks": [
+            {
+              "end": 97,
+              "start": 54,
+              "text": "NSAIDs for 8 weeks with minimal improvement"
+            }
+          ],
+          "neuro_red_flags_documented": [
+            {
+              "end": 235,
+              "start": 202,
+              "text": "Denies bowel/bladder incontinence"
+            },
+            {
+              "end": 257,
+              "start": 237,
+              "text": "No saddle anesthesia"
+            }
+          ],
+          "objective_motor_or_reflex_change_in_root_distribution": [
+            {
+              "end": 200,
+              "start": 118,
+              "text": "Objective motor exam in the right L5 distribution: ankle dorsiflexion strength 4/5"
+            }
+          ],
+          "prior_imaging_result": [
+            {
+              "end": 298,
+              "start": 286,
+              "text": "inconclusive"
+            }
+          ],
+          "symptom_duration_weeks": [
+            {
+              "end": 52,
+              "start": 45,
+              "text": "8 weeks"
+            }
+          ]
+        },
+        "fact_set_fingerprint": "0aa139209464fe028c8a49227d705a4ae2a448686c1d2687054d25ed689faccb",
+        "fact_verifications": {
+          "back_pain_with_radiculopathy": {
+            "fingerprint": null,
+            "reviewer": null,
+            "state": "UNVERIFIED",
+            "verified_at": null
+          },
+          "cpb_0236_conservative_therapy_no_improvement": {
+            "fingerprint": null,
+            "reviewer": null,
+            "state": "UNVERIFIED",
+            "verified_at": null
+          },
+          "cpb_0236_conservative_therapy_weeks": {
+            "fingerprint": null,
+            "reviewer": null,
+            "state": "UNVERIFIED",
+            "verified_at": null
+          },
+          "objective_motor_or_reflex_change_in_root_distribution": {
+            "fingerprint": null,
+            "reviewer": null,
+            "state": "UNVERIFIED",
+            "verified_at": null
+          }
+        },
+        "facts_extracted": {
+          "ahi_documented": null,
+          "back_pain_with_radiculopathy": true,
+          "conservative_therapy_weeks": 8,
+          "cpb_0236_conservative_therapy_no_improvement": true,
+          "cpb_0236_conservative_therapy_weeks": 8,
+          "mechanical_symptoms_documented": null,
+          "neuro_red_flags_documented": true,
+          "objective_motor_or_reflex_change_in_root_distribution": true,
+          "osa_diagnosis": null,
+          "prior_imaging_result": "inconclusive",
+          "sleep_study_date": null,
+          "symptom_duration_weeks": 8
+        },
+        "input_fingerprint": "2471d3993da85b4760ff07bef2945e98df082fd656c4a84169a120ef4e7bfe99",
+        "invariant_errors": [],
+        "metrics": {
+          "criteria_met_count": 4,
+          "criteria_not_met_count": 0,
+          "documentation_coverage_pct": 100.0,
+          "documented_requirement_count": 4,
+          "evaluable_requirement_count": 4,
+          "human_review_count": 0,
+          "missing_requirement_count": 0,
+          "total_requirements": 4
+        },
+        "note_hash": "b66310c6bfc8e97d",
+        "note_length": 299,
+        "overall_status": "PENDING_VERIFICATION",
+        "payer": "Aetna",
+        "policy_trust_level": "verified",
+        "policy_version": {
+          "content_hash": "be1461a07b8ede0231f6033d0130302e070f49b8d78540a36542d18f2985dcd6",
+          "criteria_json": "[{\"allowed\":[],\"evidence\":\"Back pain and radiculopathy documented together\",\"key\":\"back_pain_with_radiculopathy\",\"label\":\"Persistent back pain with radiculopathy documented\",\"operator\":\"equals_true\",\"type\":\"boolean\"},{\"allowed\":[],\"evidence\":\"Objective motor strength or reflex change documented in a named nerve-root distribution\",\"key\":\"objective_motor_or_reflex_change_in_root_distribution\",\"label\":\"Objective motor or reflex change in a nerve-root distribution\",\"operator\":\"equals_true\",\"type\":\"boolean\"},{\"allowed\":[],\"evidence\":\"At least 6 weeks of CPB 0236 Footnote 1 conservative therapy documented\",\"key\":\"cpb_0236_conservative_therapy_weeks\",\"label\":\"Conservative therapy duration (weeks)\",\"min\":6.0,\"operator\":\"minimum\",\"type\":\"number\"},{\"allowed\":[],\"evidence\":\"Explicit no, minimal, or insufficient improvement after CPB 0236 Footnote 1 conservative therapy\",\"key\":\"cpb_0236_conservative_therapy_no_improvement\",\"label\":\"No improvement after conservative therapy\",\"operator\":\"equals_true\",\"type\":\"boolean\"}]",
+          "effective_date": "2026-08-22",
+          "payer": "Aetna",
+          "policy_id": "Aetna:MRI_LUMBAR",
+          "procedure_code": "MRI_LUMBAR",
+          "supported_sites": [
+            "outpatient"
+          ],
+          "version_id": "runtime-1.0-2026-08-22-6ee790b526750a37"
+        },
+        "procedure_code": "MRI_LUMBAR",
+        "procedure_name": "MRI Lumbar Spine (no contrast)",
+        "provenance_snapshot": {
+          "accessed_date": "2026-08-22",
+          "content_hash_sha256": "5688a01dea8d5e55d9bb074fb4184f4b0722c89a7a35aacd343bf3444577e622",
+          "last_reviewed": "2026-08-22",
+          "monitored_check_frequency": "monthly",
+          "monitored_source_id": "aetna_mri_lumbar",
+          "monitored_source_name": "Aetna CPB 0236 - Magnetic Resonance Imaging (MRI) and Computed Tomography (CT) of the Spine",
+          "monitored_source_owner": "NickLeko",
+          "monitored_source_url": "https://www.aetna.com/cpb/medical/data/200_299/0236.html",
+          "notes": "Only one CPB 0236 alternative is implemented. CPT 72148 is listed by the bulletin when selection criteria are met; plan terms and precertification requirements still control.",
+          "policy_effective_date": "1998-05-06",
+          "policy_identifier": "CPB 0236",
+          "policy_last_reviewed": "2026-04-09",
+          "policy_title": "Magnetic Resonance Imaging (MRI) and Computed Tomography (CT) of the Spine",
+          "requirement_clause_map": {
+            "back_pain_with_radiculopathy": "Policy > Medical Necessity > persistent back or neck pain with radiculopathy alternative (lumbar scope).",
+            "cpb_0236_conservative_therapy_no_improvement": "Same Medical Necessity alternative: explicit lack of improvement after the conservative-therapy period.",
+            "cpb_0236_conservative_therapy_weeks": "Same Medical Necessity alternative: no improvement after 6 weeks of conservative therapy; Footnote 1 defines the supported modalities.",
+            "objective_motor_or_reflex_change_in_root_distribution": "Same Medical Necessity alternative: pain plus objective motor or reflex findings in the specific nerve-root distribution."
+          },
+          "rule_last_updated": "2026-08-22",
+          "rule_source_label": "Verified mapping to Aetna CPB 0236, persistent back pain with radiculopathy branch",
+          "source_name": "Aetna Clinical Policy Bulletin 0236",
+          "source_type": "official_policy_web",
+          "source_url": "https://www.aetna.com/cpb/medical/data/200_299/0236.html",
+          "status": "verified"
+        },
+        "requirements_checked": [
+          "back_pain_with_radiculopathy",
+          "objective_motor_or_reflex_change_in_root_distribution",
+          "cpb_0236_conservative_therapy_weeks",
+          "cpb_0236_conservative_therapy_no_improvement"
+        ],
+        "rulebook_active_release_id": "2026-08-22-active-v1.0",
+        "rules_version": "1.0",
+        "run_id": "00000000-0000-0000-0000-000000000000",
+        "site_of_care": "outpatient",
+        "specialty": "Orthopedics",
+        "submission_readiness": false,
+        "timestamp_utc": "2026-09-01T00:00:00Z",
+        "uses_reviewer_corrections": false
+      },
+      "letter_draft": "",
+      "met_count": 4,
+      "needs_review_count": 0,
+      "not_documented_count": 0,
+      "not_met_count": 0,
+      "results": [
+        {
+          "evidence": "Back pain and radiculopathy documented together",
+          "evidence_snippets": [
+            "Low back pain with right leg radiculopathy x 8 weeks"
+          ],
+          "evidence_spans": [
+            {
+              "end": 52,
+              "start": 0,
+              "text": "Low back pain with right leg radiculopathy x 8 weeks"
+            }
+          ],
+          "fact_value": true,
+          "key": "back_pain_with_radiculopathy",
+          "label": "Persistent back pain with radiculopathy documented",
+          "reason": "Explicit affirmative documentation found.",
+          "status": "MET",
+          "verification": {
+            "fingerprint": null,
+            "reviewer": null,
+            "state": "UNVERIFIED",
+            "verified_at": null
+          },
+          "verification_fingerprint": "baef3fa82c6d2f37cc465cb2482866203655cefd970fa97be31dc62715b60dae"
+        },
+        {
+          "evidence": "Objective motor strength or reflex change documented in a named nerve-root distribution",
+          "evidence_snippets": [
+            "Objective motor exam in the right L5 distribution: ankle dorsiflexion strength 4/5"
+          ],
+          "evidence_spans": [
+            {
+              "end": 200,
+              "start": 118,
+              "text": "Objective motor exam in the right L5 distribution: ankle dorsiflexion strength 4/5"
+            }
+          ],
+          "fact_value": true,
+          "key": "objective_motor_or_reflex_change_in_root_distribution",
+          "label": "Objective motor or reflex change in a nerve-root distribution",
+          "reason": "Explicit affirmative documentation found.",
+          "status": "MET",
+          "verification": {
+            "fingerprint": null,
+            "reviewer": null,
+            "state": "UNVERIFIED",
+            "verified_at": null
+          },
+          "verification_fingerprint": "a6b79a12ce97018540ec4a42061eb86212d6cd7ac7b96160aea722490c0d9b1f"
+        },
+        {
+          "evidence": "At least 6 weeks of CPB 0236 Footnote 1 conservative therapy documented",
+          "evidence_snippets": [
+            "NSAIDs for 8 weeks with minimal improvement"
+          ],
+          "evidence_spans": [
+            {
+              "end": 97,
+              "start": 54,
+              "text": "NSAIDs for 8 weeks with minimal improvement"
+            }
+          ],
+          "fact_value": 8,
+          "key": "cpb_0236_conservative_therapy_weeks",
+          "label": "Conservative therapy duration (weeks)",
+          "reason": "Documented value: 8.",
+          "status": "MET",
+          "verification": {
+            "fingerprint": null,
+            "reviewer": null,
+            "state": "UNVERIFIED",
+            "verified_at": null
+          },
+          "verification_fingerprint": "46b9f09eb759db9df336b838454a8b66b7825d01c0873c3dd59baec1939ea0a9"
+        },
+        {
+          "evidence": "Explicit no, minimal, or insufficient improvement after CPB 0236 Footnote 1 conservative therapy",
+          "evidence_snippets": [
+            "NSAIDs for 8 weeks with minimal improvement"
+          ],
+          "evidence_spans": [
+            {
+              "end": 97,
+              "start": 54,
+              "text": "NSAIDs for 8 weeks with minimal improvement"
+            }
+          ],
+          "fact_value": true,
+          "key": "cpb_0236_conservative_therapy_no_improvement",
+          "label": "No improvement after conservative therapy",
+          "reason": "Explicit affirmative documentation found.",
+          "status": "MET",
+          "verification": {
+            "fingerprint": null,
+            "reviewer": null,
+            "state": "UNVERIFIED",
+            "verified_at": null
+          },
+          "verification_fingerprint": "67fd1a090fa8581f41f352f31a5c1d176c6a84285c06f612c14baed731632269"
+        }
+      ],
+      "rule_reasons": []
+    },
+    "request": {
+      "dx_codes": [
+        "OTHER"
+      ],
+      "fact_verifications": {},
+      "note_text": "Low back pain with right leg radiculopathy x 8 weeks. NSAIDs for 8 weeks with minimal improvement; PT also completed. Objective motor exam in the right L5 distribution: ankle dorsiflexion strength 4/5. Denies bowel/bladder incontinence. No saddle anesthesia. Prior imaging: lumbar xray inconclusive.",
+      "payer": "Aetna",
+      "procedure_code": "MRI_LUMBAR",
+      "site_of_care": "outpatient",
+      "specialty": "Orthopedics"
+    },
+    "results": [
+      {
+        "evidence": "Back pain and radiculopathy documented together",
+        "evidence_snippets": [
+          "Low back pain with right leg radiculopathy x 8 weeks"
+        ],
+        "evidence_spans": [
+          {
+            "end": 52,
+            "start": 0,
+            "text": "Low back pain with right leg radiculopathy x 8 weeks"
+          }
+        ],
+        "fact_value": true,
+        "key": "back_pain_with_radiculopathy",
+        "label": "Persistent back pain with radiculopathy documented",
+        "reason": "Explicit affirmative documentation found.",
+        "status": "MET",
+        "verification": {
+          "fingerprint": null,
+          "reviewer": null,
+          "state": "UNVERIFIED",
+          "verified_at": null
+        },
+        "verification_fingerprint": "baef3fa82c6d2f37cc465cb2482866203655cefd970fa97be31dc62715b60dae"
+      },
+      {
+        "evidence": "Objective motor strength or reflex change documented in a named nerve-root distribution",
+        "evidence_snippets": [
+          "Objective motor exam in the right L5 distribution: ankle dorsiflexion strength 4/5"
+        ],
+        "evidence_spans": [
+          {
+            "end": 200,
+            "start": 118,
+            "text": "Objective motor exam in the right L5 distribution: ankle dorsiflexion strength 4/5"
+          }
+        ],
+        "fact_value": true,
+        "key": "objective_motor_or_reflex_change_in_root_distribution",
+        "label": "Objective motor or reflex change in a nerve-root distribution",
+        "reason": "Explicit affirmative documentation found.",
+        "status": "MET",
+        "verification": {
+          "fingerprint": null,
+          "reviewer": null,
+          "state": "UNVERIFIED",
+          "verified_at": null
+        },
+        "verification_fingerprint": "a6b79a12ce97018540ec4a42061eb86212d6cd7ac7b96160aea722490c0d9b1f"
+      },
+      {
+        "evidence": "At least 6 weeks of CPB 0236 Footnote 1 conservative therapy documented",
+        "evidence_snippets": [
+          "NSAIDs for 8 weeks with minimal improvement"
+        ],
+        "evidence_spans": [
+          {
+            "end": 97,
+            "start": 54,
+            "text": "NSAIDs for 8 weeks with minimal improvement"
+          }
+        ],
+        "fact_value": 8,
+        "key": "cpb_0236_conservative_therapy_weeks",
+        "label": "Conservative therapy duration (weeks)",
+        "reason": "Documented value: 8.",
+        "status": "MET",
+        "verification": {
+          "fingerprint": null,
+          "reviewer": null,
+          "state": "UNVERIFIED",
+          "verified_at": null
+        },
+        "verification_fingerprint": "46b9f09eb759db9df336b838454a8b66b7825d01c0873c3dd59baec1939ea0a9"
+      },
+      {
+        "evidence": "Explicit no, minimal, or insufficient improvement after CPB 0236 Footnote 1 conservative therapy",
+        "evidence_snippets": [
+          "NSAIDs for 8 weeks with minimal improvement"
+        ],
+        "evidence_spans": [
+          {
+            "end": 97,
+            "start": 54,
+            "text": "NSAIDs for 8 weeks with minimal improvement"
+          }
+        ],
+        "fact_value": true,
+        "key": "cpb_0236_conservative_therapy_no_improvement",
+        "label": "No improvement after conservative therapy",
+        "reason": "Explicit affirmative documentation found.",
+        "status": "MET",
+        "verification": {
+          "fingerprint": null,
+          "reviewer": null,
+          "state": "UNVERIFIED",
+          "verified_at": null
+        },
+        "verification_fingerprint": "67fd1a090fa8581f41f352f31a5c1d176c6a84285c06f612c14baed731632269"
+      }
+    ],
+    "rule_reasons": [],
+    "schema_version": "2.0.0",
+    "submission_readiness": false,
+    "supported_procedure": {
+      "display_name": "MRI Lumbar Spine (no contrast)",
+      "metadata": {
+        "category": "advanced_imaging",
+        "last_rule_update": "2026-08-22",
+        "notes": [
+          "Verified only against the persistent back pain with radiculopathy alternative in CPB 0236; other policy indications are outside this pathway.",
+          "READY means the synthetic note satisfies this narrow documentation branch, not that Aetna will authorize the request."
+        ],
+        "rule_family": "aetna_cpb_0236_lumbar_radiculopathy",
+        "summary": "Documentation-readiness check for the persistent back pain with radiculopathy branch of Aetna CPB 0236.",
+        "supported_sites": [
+          "outpatient"
+        ]
+      },
+      "monitored_for_drift": true,
+      "payer": "Aetna",
+      "policy_trust_level": "verified",
+      "procedure_code": "MRI_LUMBAR",
+      "provenance": {
+        "accessed_date": "2026-08-22",
+        "content_hash_sha256": "5688a01dea8d5e55d9bb074fb4184f4b0722c89a7a35aacd343bf3444577e622",
+        "last_reviewed": "2026-08-22",
+        "monitored_check_frequency": "monthly",
+        "monitored_source_id": "aetna_mri_lumbar",
+        "monitored_source_name": "Aetna CPB 0236 - Magnetic Resonance Imaging (MRI) and Computed Tomography (CT) of the Spine",
+        "monitored_source_owner": "NickLeko",
+        "monitored_source_url": "https://www.aetna.com/cpb/medical/data/200_299/0236.html",
+        "notes": "Only one CPB 0236 alternative is implemented. CPT 72148 is listed by the bulletin when selection criteria are met; plan terms and precertification requirements still control.",
+        "policy_effective_date": "1998-05-06",
+        "policy_identifier": "CPB 0236",
+        "policy_last_reviewed": "2026-04-09",
+        "policy_title": "Magnetic Resonance Imaging (MRI) and Computed Tomography (CT) of the Spine",
+        "requirement_clause_map": {
+          "back_pain_with_radiculopathy": "Policy > Medical Necessity > persistent back or neck pain with radiculopathy alternative (lumbar scope).",
+          "cpb_0236_conservative_therapy_no_improvement": "Same Medical Necessity alternative: explicit lack of improvement after the conservative-therapy period.",
+          "cpb_0236_conservative_therapy_weeks": "Same Medical Necessity alternative: no improvement after 6 weeks of conservative therapy; Footnote 1 defines the supported modalities.",
+          "objective_motor_or_reflex_change_in_root_distribution": "Same Medical Necessity alternative: pain plus objective motor or reflex findings in the specific nerve-root distribution."
+        },
+        "rule_last_updated": "2026-08-22",
+        "rule_source_label": "Verified mapping to Aetna CPB 0236, persistent back pain with radiculopathy branch",
+        "source_name": "Aetna Clinical Policy Bulletin 0236",
+        "source_type": "official_policy_web",
+        "source_url": "https://www.aetna.com/cpb/medical/data/200_299/0236.html",
+        "status": "verified"
+      },
+      "required_field_keys": [
+        "back_pain_with_radiculopathy",
+        "objective_motor_or_reflex_change_in_root_distribution",
+        "cpb_0236_conservative_therapy_weeks",
+        "cpb_0236_conservative_therapy_no_improvement"
+      ],
+      "requirements": [
+        {
+          "allowed": [],
+          "evidence": "Back pain and radiculopathy documented together",
+          "key": "back_pain_with_radiculopathy",
+          "label": "Persistent back pain with radiculopathy documented",
+          "min": null,
+          "operator": "equals_true",
+          "type": "boolean"
+        },
+        {
+          "allowed": [],
+          "evidence": "Objective motor strength or reflex change documented in a named nerve-root distribution",
+          "key": "objective_motor_or_reflex_change_in_root_distribution",
+          "label": "Objective motor or reflex change in a nerve-root distribution",
+          "min": null,
+          "operator": "equals_true",
+          "type": "boolean"
+        },
+        {
+          "allowed": [],
+          "evidence": "At least 6 weeks of CPB 0236 Footnote 1 conservative therapy documented",
+          "key": "cpb_0236_conservative_therapy_weeks",
+          "label": "Conservative therapy duration (weeks)",
+          "min": 6.0,
+          "operator": "minimum",
+          "type": "number"
+        },
+        {
+          "allowed": [],
+          "evidence": "Explicit no, minimal, or insufficient improvement after CPB 0236 Footnote 1 conservative therapy",
+          "key": "cpb_0236_conservative_therapy_no_improvement",
+          "label": "No improvement after conservative therapy",
+          "min": null,
+          "operator": "equals_true",
+          "type": "boolean"
+        }
+      ]
+    },
+    "uses_reviewer_corrections": false,
+    "warnings": [
+      "Automated extraction is a drafting aid. All proposed facts require human verification before READY."
+    ]
+  },
+  "old-malformed-shape": {
+    "audit_trail": {
+      "blocking_issues": {
+        "needs_review": [],
+        "not_documented": [],
+        "not_met": []
+      },
+      "corrected_requirement_keys": [],
+      "evaluation_warnings": [
+        "Automated extraction is a drafting aid. All proposed facts require human verification before READY."
+      ],
+      "evidence_map": {
+        "back_pain_with_radiculopathy": [
+          {
+            "end": 52,
+            "start": 0,
+            "text": "Low back pain with right leg radiculopathy x 8 weeks"
+          }
+        ],
+        "conservative_therapy_weeks": [
+          {
+            "end": 72,
+            "start": 54,
+            "text": "NSAIDs for 8 weeks"
+          }
+        ],
+        "cpb_0236_conservative_therapy_no_improvement": [
+          {
+            "end": 97,
+            "start": 54,
+            "text": "NSAIDs for 8 weeks with minimal improvement"
+          }
+        ],
+        "cpb_0236_conservative_therapy_weeks": [
+          {
+            "end": 97,
+            "start": 54,
+            "text": "NSAIDs for 8 weeks with minimal improvement"
+          }
+        ],
+        "neuro_red_flags_documented": [
+          {
+            "end": 235,
+            "start": 202,
+            "text": "Denies bowel/bladder incontinence"
+          },
+          {
+            "end": 257,
+            "start": 237,
+            "text": "No saddle anesthesia"
+          }
+        ],
+        "objective_motor_or_reflex_change_in_root_distribution": [
+          {
+            "end": 200,
+            "start": 118,
+            "text": "Objective motor exam in the right L5 distribution: ankle dorsiflexion strength 4/5"
+          }
+        ],
+        "prior_imaging_result": [
+          {
+            "end": 298,
+            "start": 286,
+            "text": "inconclusive"
+          }
+        ],
+        "symptom_duration_weeks": [
+          {
+            "end": 52,
+            "start": 45,
+            "text": "8 weeks"
+          }
+        ]
+      },
+      "fact_set_fingerprint": "1604b49d644eb922710076dd584b243fbda26b215cba35bf946c04d0bf97928e",
+      "fact_verifications": {
+        "back_pain_with_radiculopathy": {
+          "fingerprint": null,
+          "reviewer": null,
+          "state": "UNVERIFIED",
+          "verified_at": null
+        },
+        "cpb_0236_conservative_therapy_no_improvement": {
+          "fingerprint": null,
+          "reviewer": null,
+          "state": "UNVERIFIED",
+          "verified_at": null
+        },
+        "cpb_0236_conservative_therapy_weeks": {
+          "fingerprint": null,
+          "reviewer": null,
+          "state": "UNVERIFIED",
+          "verified_at": null
+        },
+        "objective_motor_or_reflex_change_in_root_distribution": {
+          "fingerprint": null,
+          "reviewer": null,
+          "state": "UNVERIFIED",
+          "verified_at": null
+        }
+      },
+      "facts_extracted": {
+        "ahi_documented": null,
+        "back_pain_with_radiculopathy": true,
+        "conservative_therapy_weeks": 8,
+        "cpb_0236_conservative_therapy_no_improvement": true,
+        "cpb_0236_conservative_therapy_weeks": 8,
+        "mechanical_symptoms_documented": null,
+        "neuro_red_flags_documented": true,
+        "objective_motor_or_reflex_change_in_root_distribution": true,
+        "osa_diagnosis": null,
+        "prior_imaging_result": "inconclusive",
+        "sleep_study_date": null,
+        "symptom_duration_weeks": 8
+      },
+      "input_fingerprint": "57303896a546121ebf59d44cdb06f2817e16b0139c1afdb46dd4bd1f700867c4",
+      "invariant_errors": [],
+      "metrics": {
+        "criteria_met_count": 4,
+        "criteria_not_met_count": 0,
+        "documentation_coverage_pct": 100.0,
+        "documented_requirement_count": 4,
+        "evaluable_requirement_count": 4,
+        "human_review_count": 0,
+        "missing_requirement_count": 0,
+        "total_requirements": 4
+      },
+      "note_hash": "b66310c6bfc8e97d",
+      "note_length": 299,
+      "overall_status": "PENDING_VERIFICATION",
+      "payer": "Aetna",
+      "policy_trust_level": "verified",
+      "policy_version": {
+        "content_hash": "be1461a07b8ede0231f6033d0130302e070f49b8d78540a36542d18f2985dcd6",
+        "criteria_json": "[{\"allowed\":[],\"evidence\":\"Back pain and radiculopathy documented together\",\"key\":\"back_pain_with_radiculopathy\",\"label\":\"Persistent back pain with radiculopathy documented\",\"operator\":\"equals_true\",\"type\":\"boolean\"},{\"allowed\":[],\"evidence\":\"Objective motor strength or reflex change documented in a named nerve-root distribution\",\"key\":\"objective_motor_or_reflex_change_in_root_distribution\",\"label\":\"Objective motor or reflex change in a nerve-root distribution\",\"operator\":\"equals_true\",\"type\":\"boolean\"},{\"allowed\":[],\"evidence\":\"At least 6 weeks of CPB 0236 Footnote 1 conservative therapy documented\",\"key\":\"cpb_0236_conservative_therapy_weeks\",\"label\":\"Conservative therapy duration (weeks)\",\"min\":6.0,\"operator\":\"minimum\",\"type\":\"number\"},{\"allowed\":[],\"evidence\":\"Explicit no, minimal, or insufficient improvement after CPB 0236 Footnote 1 conservative therapy\",\"key\":\"cpb_0236_conservative_therapy_no_improvement\",\"label\":\"No improvement after conservative therapy\",\"operator\":\"equals_true\",\"type\":\"boolean\"}]",
+        "effective_date": "2026-08-22",
+        "payer": "Aetna",
+        "policy_id": "Aetna:MRI_LUMBAR",
+        "procedure_code": "MRI_LUMBAR",
+        "supported_sites": [
+          "outpatient"
+        ],
+        "version_id": "runtime-1.0-2026-08-22-6ee790b526750a37"
+      },
+      "procedure_code": "MRI_LUMBAR",
+      "procedure_name": "MRI Lumbar Spine (no contrast)",
+      "provenance_snapshot": {
+        "accessed_date": "2026-08-22",
+        "content_hash_sha256": "5688a01dea8d5e55d9bb074fb4184f4b0722c89a7a35aacd343bf3444577e622",
+        "last_reviewed": "2026-08-22",
+        "monitored_check_frequency": "monthly",
+        "monitored_source_id": "aetna_mri_lumbar",
+        "monitored_source_name": "Aetna CPB 0236 - Magnetic Resonance Imaging (MRI) and Computed Tomography (CT) of the Spine",
+        "monitored_source_owner": "NickLeko",
+        "monitored_source_url": "https://www.aetna.com/cpb/medical/data/200_299/0236.html",
+        "notes": "Only one CPB 0236 alternative is implemented. CPT 72148 is listed by the bulletin when selection criteria are met; plan terms and precertification requirements still control.",
+        "policy_effective_date": "1998-05-06",
+        "policy_identifier": "CPB 0236",
+        "policy_last_reviewed": "2026-04-09",
+        "policy_title": "Magnetic Resonance Imaging (MRI) and Computed Tomography (CT) of the Spine",
+        "requirement_clause_map": {
+          "back_pain_with_radiculopathy": "Policy > Medical Necessity > persistent back or neck pain with radiculopathy alternative (lumbar scope).",
+          "cpb_0236_conservative_therapy_no_improvement": "Same Medical Necessity alternative: explicit lack of improvement after the conservative-therapy period.",
+          "cpb_0236_conservative_therapy_weeks": "Same Medical Necessity alternative: no improvement after 6 weeks of conservative therapy; Footnote 1 defines the supported modalities.",
+          "objective_motor_or_reflex_change_in_root_distribution": "Same Medical Necessity alternative: pain plus objective motor or reflex findings in the specific nerve-root distribution."
+        },
+        "rule_last_updated": "2026-08-22",
+        "rule_source_label": "Verified mapping to Aetna CPB 0236, persistent back pain with radiculopathy branch",
+        "source_name": "Aetna Clinical Policy Bulletin 0236",
+        "source_type": "official_policy_web",
+        "source_url": "https://www.aetna.com/cpb/medical/data/200_299/0236.html",
+        "status": "verified"
+      },
+      "requirements_checked": [
+        "back_pain_with_radiculopathy",
+        "objective_motor_or_reflex_change_in_root_distribution",
+        "cpb_0236_conservative_therapy_weeks",
+        "cpb_0236_conservative_therapy_no_improvement"
+      ],
+      "rulebook_active_release_id": "2026-08-22-active-v1.0",
+      "rules_version": "1.0",
+      "run_id": "00000000-0000-0000-0000-000000000000",
+      "site_of_care": "outpatient",
+      "specialty": "Orthopedics",
+      "submission_readiness": false,
+      "timestamp_utc": "2026-09-01T00:00:00Z",
+      "uses_reviewer_corrections": false
+    },
+    "blockers": {
+      "needs_review": [],
+      "not_documented": [],
+      "not_met": []
+    },
+    "bundle_fingerprint": "1e3dea24499fa5619e8862e53c75ed3596d7e94812314c995f7508a44353d0ef",
+    "captured_fact_states": {
+      "ahi_documented": "MISSING",
+      "back_pain_with_radiculopathy": "CAPTURED",
+      "conservative_therapy_weeks": "CAPTURED",
+      "cpb_0236_conservative_therapy_no_improvement": "CAPTURED",
+      "cpb_0236_conservative_therapy_weeks": "CAPTURED",
+      "mechanical_symptoms_documented": "MISSING",
+      "neuro_red_flags_documented": "CAPTURED",
+      "objective_motor_or_reflex_change_in_root_distribution": "CAPTURED",
+      "osa_diagnosis": "MISSING",
+      "prior_imaging_result": "CAPTURED",
+      "sleep_study_date": "MISSING",
+      "symptom_duration_weeks": "CAPTURED"
+    },
+    "contract_version": "6779fd812df9d1fa44d8c17af56bff917d91c0395f00fea78846b643bcdaf74c",
+    "corrected_requirement_keys": [],
+    "engine_version": "2.7.0",
+    "evidence_map": {
+      "back_pain_with_radiculopathy": [
+        {
+          "end": 52,
+          "start": 0,
+          "text": "Low back pain with right leg radiculopathy x 8 weeks"
+        }
+      ],
+      "conservative_therapy_weeks": [
+        {
+          "end": 72,
+          "start": 54,
+          "text": "NSAIDs for 8 weeks"
+        }
+      ],
+      "cpb_0236_conservative_therapy_no_improvement": [
+        {
+          "end": 97,
+          "start": 54,
+          "text": "NSAIDs for 8 weeks with minimal improvement"
+        }
+      ],
+      "cpb_0236_conservative_therapy_weeks": [
+        {
+          "end": 97,
+          "start": 54,
+          "text": "NSAIDs for 8 weeks with minimal improvement"
+        }
+      ],
+      "neuro_red_flags_documented": [
+        {
+          "end": 235,
+          "start": 202,
+          "text": "Denies bowel/bladder incontinence"
+        },
+        {
+          "end": 257,
+          "start": 237,
+          "text": "No saddle anesthesia"
+        }
+      ],
+      "objective_motor_or_reflex_change_in_root_distribution": [
+        {
+          "end": 200,
+          "start": 118,
+          "text": "Objective motor exam in the right L5 distribution: ankle dorsiflexion strength 4/5"
+        }
+      ],
+      "prior_imaging_result": [
+        {
+          "end": 298,
+          "start": 286,
+          "text": "inconclusive"
+        }
+      ],
+      "symptom_duration_weeks": [
+        {
+          "end": 52,
+          "start": 45,
+          "text": "8 weeks"
+        }
+      ]
+    },
+    "fact_set_fingerprint": "1604b49d644eb922710076dd584b243fbda26b215cba35bf946c04d0bf97928e",
+    "facts": {
+      "ahi_documented": null,
+      "back_pain_with_radiculopathy": true,
+      "conservative_therapy_weeks": 8,
+      "cpb_0236_conservative_therapy_no_improvement": true,
+      "cpb_0236_conservative_therapy_weeks": 8,
+      "mechanical_symptoms_documented": null,
+      "neuro_red_flags_documented": true,
+      "objective_motor_or_reflex_change_in_root_distribution": true,
+      "osa_diagnosis": null,
+      "prior_imaging_result": "inconclusive",
+      "sleep_study_date": null,
+      "symptom_duration_weeks": 8
+    },
+    "input_fingerprint": "57303896a546121ebf59d44cdb06f2817e16b0139c1afdb46dd4bd1f700867c4",
+    "metrics": {
+      "criteria_met_count": 4,
+      "criteria_not_met_count": 0,
+      "documentation_coverage_pct": 100.0,
+      "documented_requirement_count": 4,
+      "evaluable_requirement_count": 4,
+      "human_review_count": 0,
+      "missing_requirement_count": 0,
+      "total_requirements": 4
+    },
+    "original_snapshot": {
+      "content_hash": "4f172743d2f21724bf06eca7f6fa6306f46c837d8b64fc1532d4bd1379ca9adc",
+      "snapshot_json": "{\"evidence\":{\"back_pain_with_radiculopathy\":[{\"end\":52,\"start\":0,\"text\":\"Low back pain with right leg radiculopathy x 8 weeks\"}],\"conservative_therapy_weeks\":[{\"end\":72,\"start\":54,\"text\":\"NSAIDs for 8 weeks\"}],\"cpb_0236_conservative_therapy_no_improvement\":[{\"end\":97,\"start\":54,\"text\":\"NSAIDs for 8 weeks with minimal improvement\"}],\"cpb_0236_conservative_therapy_weeks\":[{\"end\":97,\"start\":54,\"text\":\"NSAIDs for 8 weeks with minimal improvement\"}],\"neuro_red_flags_documented\":[{\"end\":235,\"start\":202,\"text\":\"Denies bowel/bladder incontinence\"},{\"end\":257,\"start\":237,\"text\":\"No saddle anesthesia\"}],\"objective_motor_or_reflex_change_in_root_distribution\":[{\"end\":200,\"start\":118,\"text\":\"Objective motor exam in the right L5 distribution: ankle dorsiflexion strength 4/5\"}],\"prior_imaging_result\":[{\"end\":298,\"start\":286,\"text\":\"inconclusive\"}],\"symptom_duration_weeks\":[{\"end\":52,\"start\":45,\"text\":\"8 weeks\"}]},\"facts\":{\"ahi_documented\":null,\"back_pain_with_radiculopathy\":true,\"conservative_therapy_weeks\":8,\"cpb_0236_conservative_therapy_no_improvement\":true,\"cpb_0236_conservative_therapy_weeks\":8,\"mechanical_symptoms_documented\":null,\"neuro_red_flags_documented\":true,\"objective_motor_or_reflex_change_in_root_distribution\":true,\"osa_diagnosis\":null,\"prior_imaging_result\":\"inconclusive\",\"sleep_study_date\":null,\"symptom_duration_weeks\":8},\"states\":{\"ahi_documented\":\"MISSING\",\"back_pain_with_radiculopathy\":\"CAPTURED\",\"conservative_therapy_weeks\":\"CAPTURED\",\"cpb_0236_conservative_therapy_no_improvement\":\"CAPTURED\",\"cpb_0236_conservative_therapy_weeks\":\"CAPTURED\",\"mechanical_symptoms_documented\":\"MISSING\",\"neuro_red_flags_documented\":\"CAPTURED\",\"objective_motor_or_reflex_change_in_root_distribution\":\"CAPTURED\",\"osa_diagnosis\":\"MISSING\",\"prior_imaging_result\":\"CAPTURED\",\"sleep_study_date\":\"MISSING\",\"symptom_duration_weeks\":\"CAPTURED\"}}"
+    },
+    "overall_status": "PENDING_VERIFICATION",
+    "policy_trust_level": "verified",
+    "policy_version": {
+      "content_hash": "be1461a07b8ede0231f6033d0130302e070f49b8d78540a36542d18f2985dcd6",
+      "criteria_json": "[{\"allowed\":[],\"evidence\":\"Back pain and radiculopathy documented together\",\"key\":\"back_pain_with_radiculopathy\",\"label\":\"Persistent back pain with radiculopathy documented\",\"operator\":\"equals_true\",\"type\":\"boolean\"},{\"allowed\":[],\"evidence\":\"Objective motor strength or reflex change documented in a named nerve-root distribution\",\"key\":\"objective_motor_or_reflex_change_in_root_distribution\",\"label\":\"Objective motor or reflex change in a nerve-root distribution\",\"operator\":\"equals_true\",\"type\":\"boolean\"},{\"allowed\":[],\"evidence\":\"At least 6 weeks of CPB 0236 Footnote 1 conservative therapy documented\",\"key\":\"cpb_0236_conservative_therapy_weeks\",\"label\":\"Conservative therapy duration (weeks)\",\"min\":6.0,\"operator\":\"minimum\",\"type\":\"number\"},{\"allowed\":[],\"evidence\":\"Explicit no, minimal, or insufficient improvement after CPB 0236 Footnote 1 conservative therapy\",\"key\":\"cpb_0236_conservative_therapy_no_improvement\",\"label\":\"No improvement after conservative therapy\",\"operator\":\"equals_true\",\"type\":\"boolean\"}]",
+      "effective_date": "2026-08-22",
+      "payer": "Aetna",
+      "policy_id": "Aetna:MRI_LUMBAR",
+      "procedure_code": "MRI_LUMBAR",
+      "supported_sites": [
+        "outpatient"
+      ],
+      "version_id": "runtime-1.0-2026-08-22-6ee790b526750a37"
+    },
+    "provenance": {
+      "accessed_date": "2026-08-22",
+      "content_hash_sha256": "5688a01dea8d5e55d9bb074fb4184f4b0722c89a7a35aacd343bf3444577e622",
+      "last_reviewed": "2026-08-22",
+      "monitored_check_frequency": "monthly",
+      "monitored_source_id": "aetna_mri_lumbar",
+      "monitored_source_name": "Aetna CPB 0236 - Magnetic Resonance Imaging (MRI) and Computed Tomography (CT) of the Spine",
+      "monitored_source_owner": "NickLeko",
+      "monitored_source_url": "https://www.aetna.com/cpb/medical/data/200_299/0236.html",
+      "notes": "Only one CPB 0236 alternative is implemented. CPT 72148 is listed by the bulletin when selection criteria are met; plan terms and precertification requirements still control.",
+      "policy_effective_date": "1998-05-06",
+      "policy_identifier": "CPB 0236",
+      "policy_last_reviewed": "2026-04-09",
+      "policy_title": "Magnetic Resonance Imaging (MRI) and Computed Tomography (CT) of the Spine",
+      "requirement_clause_map": {
+        "back_pain_with_radiculopathy": "Policy > Medical Necessity > persistent back or neck pain with radiculopathy alternative (lumbar scope).",
+        "cpb_0236_conservative_therapy_no_improvement": "Same Medical Necessity alternative: explicit lack of improvement after the conservative-therapy period.",
+        "cpb_0236_conservative_therapy_weeks": "Same Medical Necessity alternative: no improvement after 6 weeks of conservative therapy; Footnote 1 defines the supported modalities.",
+        "objective_motor_or_reflex_change_in_root_distribution": "Same Medical Necessity alternative: pain plus objective motor or reflex findings in the specific nerve-root distribution."
+      },
+      "rule_last_updated": "2026-08-22",
+      "rule_source_label": "Verified mapping to Aetna CPB 0236, persistent back pain with radiculopathy branch",
+      "source_name": "Aetna Clinical Policy Bulletin 0236",
+      "source_type": "official_policy_web",
+      "source_url": "https://www.aetna.com/cpb/medical/data/200_299/0236.html",
+      "status": "verified"
+    },
+    "report": {
+      "audit_trail": {
+        "blocking_issues": {
+          "needs_review": [],
+          "not_documented": [],
+          "not_met": []
+        },
+        "corrected_requirement_keys": [],
+        "evaluation_warnings": [
+          "Automated extraction is a drafting aid. All proposed facts require human verification before READY."
+        ],
+        "evidence_map": {
+          "back_pain_with_radiculopathy": [
+            {
+              "end": 52,
+              "start": 0,
+              "text": "Low back pain with right leg radiculopathy x 8 weeks"
+            }
+          ],
+          "conservative_therapy_weeks": [
+            {
+              "end": 72,
+              "start": 54,
+              "text": "NSAIDs for 8 weeks"
+            }
+          ],
+          "cpb_0236_conservative_therapy_no_improvement": [
+            {
+              "end": 97,
+              "start": 54,
+              "text": "NSAIDs for 8 weeks with minimal improvement"
+            }
+          ],
+          "cpb_0236_conservative_therapy_weeks": [
+            {
+              "end": 97,
+              "start": 54,
+              "text": "NSAIDs for 8 weeks with minimal improvement"
+            }
+          ],
+          "neuro_red_flags_documented": [
+            {
+              "end": 235,
+              "start": 202,
+              "text": "Denies bowel/bladder incontinence"
+            },
+            {
+              "end": 257,
+              "start": 237,
+              "text": "No saddle anesthesia"
+            }
+          ],
+          "objective_motor_or_reflex_change_in_root_distribution": [
+            {
+              "end": 200,
+              "start": 118,
+              "text": "Objective motor exam in the right L5 distribution: ankle dorsiflexion strength 4/5"
+            }
+          ],
+          "prior_imaging_result": [
+            {
+              "end": 298,
+              "start": 286,
+              "text": "inconclusive"
+            }
+          ],
+          "symptom_duration_weeks": [
+            {
+              "end": 52,
+              "start": 45,
+              "text": "8 weeks"
+            }
+          ]
+        },
+        "fact_set_fingerprint": "1604b49d644eb922710076dd584b243fbda26b215cba35bf946c04d0bf97928e",
+        "fact_verifications": {
+          "back_pain_with_radiculopathy": {
+            "fingerprint": null,
+            "reviewer": null,
+            "state": "UNVERIFIED",
+            "verified_at": null
+          },
+          "cpb_0236_conservative_therapy_no_improvement": {
+            "fingerprint": null,
+            "reviewer": null,
+            "state": "UNVERIFIED",
+            "verified_at": null
+          },
+          "cpb_0236_conservative_therapy_weeks": {
+            "fingerprint": null,
+            "reviewer": null,
+            "state": "UNVERIFIED",
+            "verified_at": null
+          },
+          "objective_motor_or_reflex_change_in_root_distribution": {
+            "fingerprint": null,
+            "reviewer": null,
+            "state": "UNVERIFIED",
+            "verified_at": null
+          }
+        },
+        "facts_extracted": {
+          "ahi_documented": null,
+          "back_pain_with_radiculopathy": true,
+          "conservative_therapy_weeks": 8,
+          "cpb_0236_conservative_therapy_no_improvement": true,
+          "cpb_0236_conservative_therapy_weeks": 8,
+          "mechanical_symptoms_documented": null,
+          "neuro_red_flags_documented": true,
+          "objective_motor_or_reflex_change_in_root_distribution": true,
+          "osa_diagnosis": null,
+          "prior_imaging_result": "inconclusive",
+          "sleep_study_date": null,
+          "symptom_duration_weeks": 8
+        },
+        "input_fingerprint": "57303896a546121ebf59d44cdb06f2817e16b0139c1afdb46dd4bd1f700867c4",
+        "invariant_errors": [],
+        "metrics": {
+          "criteria_met_count": 4,
+          "criteria_not_met_count": 0,
+          "documentation_coverage_pct": 100.0,
+          "documented_requirement_count": 4,
+          "evaluable_requirement_count": 4,
+          "human_review_count": 0,
+          "missing_requirement_count": 0,
+          "total_requirements": 4
+        },
+        "note_hash": "b66310c6bfc8e97d",
+        "note_length": 299,
+        "overall_status": "PENDING_VERIFICATION",
+        "payer": "Aetna",
+        "policy_trust_level": "verified",
+        "policy_version": {
+          "content_hash": "be1461a07b8ede0231f6033d0130302e070f49b8d78540a36542d18f2985dcd6",
+          "criteria_json": "[{\"allowed\":[],\"evidence\":\"Back pain and radiculopathy documented together\",\"key\":\"back_pain_with_radiculopathy\",\"label\":\"Persistent back pain with radiculopathy documented\",\"operator\":\"equals_true\",\"type\":\"boolean\"},{\"allowed\":[],\"evidence\":\"Objective motor strength or reflex change documented in a named nerve-root distribution\",\"key\":\"objective_motor_or_reflex_change_in_root_distribution\",\"label\":\"Objective motor or reflex change in a nerve-root distribution\",\"operator\":\"equals_true\",\"type\":\"boolean\"},{\"allowed\":[],\"evidence\":\"At least 6 weeks of CPB 0236 Footnote 1 conservative therapy documented\",\"key\":\"cpb_0236_conservative_therapy_weeks\",\"label\":\"Conservative therapy duration (weeks)\",\"min\":6.0,\"operator\":\"minimum\",\"type\":\"number\"},{\"allowed\":[],\"evidence\":\"Explicit no, minimal, or insufficient improvement after CPB 0236 Footnote 1 conservative therapy\",\"key\":\"cpb_0236_conservative_therapy_no_improvement\",\"label\":\"No improvement after conservative therapy\",\"operator\":\"equals_true\",\"type\":\"boolean\"}]",
+          "effective_date": "2026-08-22",
+          "payer": "Aetna",
+          "policy_id": "Aetna:MRI_LUMBAR",
+          "procedure_code": "MRI_LUMBAR",
+          "supported_sites": [
+            "outpatient"
+          ],
+          "version_id": "runtime-1.0-2026-08-22-6ee790b526750a37"
+        },
+        "procedure_code": "MRI_LUMBAR",
+        "procedure_name": "MRI Lumbar Spine (no contrast)",
+        "provenance_snapshot": {
+          "accessed_date": "2026-08-22",
+          "content_hash_sha256": "5688a01dea8d5e55d9bb074fb4184f4b0722c89a7a35aacd343bf3444577e622",
+          "last_reviewed": "2026-08-22",
+          "monitored_check_frequency": "monthly",
+          "monitored_source_id": "aetna_mri_lumbar",
+          "monitored_source_name": "Aetna CPB 0236 - Magnetic Resonance Imaging (MRI) and Computed Tomography (CT) of the Spine",
+          "monitored_source_owner": "NickLeko",
+          "monitored_source_url": "https://www.aetna.com/cpb/medical/data/200_299/0236.html",
+          "notes": "Only one CPB 0236 alternative is implemented. CPT 72148 is listed by the bulletin when selection criteria are met; plan terms and precertification requirements still control.",
+          "policy_effective_date": "1998-05-06",
+          "policy_identifier": "CPB 0236",
+          "policy_last_reviewed": "2026-04-09",
+          "policy_title": "Magnetic Resonance Imaging (MRI) and Computed Tomography (CT) of the Spine",
+          "requirement_clause_map": {
+            "back_pain_with_radiculopathy": "Policy > Medical Necessity > persistent back or neck pain with radiculopathy alternative (lumbar scope).",
+            "cpb_0236_conservative_therapy_no_improvement": "Same Medical Necessity alternative: explicit lack of improvement after the conservative-therapy period.",
+            "cpb_0236_conservative_therapy_weeks": "Same Medical Necessity alternative: no improvement after 6 weeks of conservative therapy; Footnote 1 defines the supported modalities.",
+            "objective_motor_or_reflex_change_in_root_distribution": "Same Medical Necessity alternative: pain plus objective motor or reflex findings in the specific nerve-root distribution."
+          },
+          "rule_last_updated": "2026-08-22",
+          "rule_source_label": "Verified mapping to Aetna CPB 0236, persistent back pain with radiculopathy branch",
+          "source_name": "Aetna Clinical Policy Bulletin 0236",
+          "source_type": "official_policy_web",
+          "source_url": "https://www.aetna.com/cpb/medical/data/200_299/0236.html",
+          "status": "verified"
+        },
+        "requirements_checked": [
+          "back_pain_with_radiculopathy",
+          "objective_motor_or_reflex_change_in_root_distribution",
+          "cpb_0236_conservative_therapy_weeks",
+          "cpb_0236_conservative_therapy_no_improvement"
+        ],
+        "rulebook_active_release_id": "2026-08-22-active-v1.0",
+        "rules_version": "1.0",
+        "run_id": "00000000-0000-0000-0000-000000000000",
+        "site_of_care": "outpatient",
+        "specialty": "Orthopedics",
+        "submission_readiness": false,
+        "timestamp_utc": "2026-09-01T00:00:00Z",
+        "uses_reviewer_corrections": false
+      },
+      "letter_draft": "",
+      "met_count": 4,
+      "needs_review_count": 0,
+      "not_documented_count": 0,
+      "not_met_count": 0,
+      "results": [
+        {
+          "evidence": "Back pain and radiculopathy documented together",
+          "evidence_snippets": [
+            "Low back pain with right leg radiculopathy x 8 weeks"
+          ],
+          "evidence_spans": [
+            {
+              "end": 52,
+              "start": 0,
+              "text": "Low back pain with right leg radiculopathy x 8 weeks"
+            }
+          ],
+          "fact_value": true,
+          "key": "back_pain_with_radiculopathy",
+          "label": "Persistent back pain with radiculopathy documented",
+          "reason": "Explicit affirmative documentation found.",
+          "status": "MET",
+          "verification": {
+            "fingerprint": null,
+            "reviewer": null,
+            "state": "UNVERIFIED",
+            "verified_at": null
+          },
+          "verification_fingerprint": "8ea32b444f008f055d8a03a5fb6439f9023b874eb9b78d396c21ae9df3826bc1"
+        },
+        {
+          "evidence": "Objective motor strength or reflex change documented in a named nerve-root distribution",
+          "evidence_snippets": [
+            "Objective motor exam in the right L5 distribution: ankle dorsiflexion strength 4/5"
+          ],
+          "evidence_spans": [
+            {
+              "end": 200,
+              "start": 118,
+              "text": "Objective motor exam in the right L5 distribution: ankle dorsiflexion strength 4/5"
+            }
+          ],
+          "fact_value": true,
+          "key": "objective_motor_or_reflex_change_in_root_distribution",
+          "label": "Objective motor or reflex change in a nerve-root distribution",
+          "reason": "Explicit affirmative documentation found.",
+          "status": "MET",
+          "verification": {
+            "fingerprint": null,
+            "reviewer": null,
+            "state": "UNVERIFIED",
+            "verified_at": null
+          },
+          "verification_fingerprint": "cbe2e30ff3892d9c8e57c5e173f9593f32103d37a9e8575b1cf9340e3127bc0d"
+        },
+        {
+          "evidence": "At least 6 weeks of CPB 0236 Footnote 1 conservative therapy documented",
+          "evidence_snippets": [
+            "NSAIDs for 8 weeks with minimal improvement"
+          ],
+          "evidence_spans": [
+            {
+              "end": 97,
+              "start": 54,
+              "text": "NSAIDs for 8 weeks with minimal improvement"
+            }
+          ],
+          "fact_value": 8,
+          "key": "cpb_0236_conservative_therapy_weeks",
+          "label": "Conservative therapy duration (weeks)",
+          "reason": "Documented value: 8.",
+          "status": "MET",
+          "verification": {
+            "fingerprint": null,
+            "reviewer": null,
+            "state": "UNVERIFIED",
+            "verified_at": null
+          },
+          "verification_fingerprint": "68d4e84d49a280aa7bf71dabda623c40f91382b27f89404cfea7948217b5272a"
+        },
+        {
+          "evidence": "Explicit no, minimal, or insufficient improvement after CPB 0236 Footnote 1 conservative therapy",
+          "evidence_snippets": [
+            "NSAIDs for 8 weeks with minimal improvement"
+          ],
+          "evidence_spans": [
+            {
+              "end": 97,
+              "start": 54,
+              "text": "NSAIDs for 8 weeks with minimal improvement"
+            }
+          ],
+          "fact_value": true,
+          "key": "cpb_0236_conservative_therapy_no_improvement",
+          "label": "No improvement after conservative therapy",
+          "reason": "Explicit affirmative documentation found.",
+          "status": "MET",
+          "verification": {
+            "fingerprint": null,
+            "reviewer": null,
+            "state": "UNVERIFIED",
+            "verified_at": null
+          },
+          "verification_fingerprint": "09f502cef2b088da6f4f6473387d72e996be58fcaad06323bdbd4a0bb424c216"
+        }
+      ],
+      "rule_reasons": []
+    },
+    "request": {
+      "dx_codes": [
+        "M4.5"
+      ],
+      "fact_verifications": {},
+      "note_text": "Low back pain with right leg radiculopathy x 8 weeks. NSAIDs for 8 weeks with minimal improvement; PT also completed. Objective motor exam in the right L5 distribution: ankle dorsiflexion strength 4/5. Denies bowel/bladder incontinence. No saddle anesthesia. Prior imaging: lumbar xray inconclusive.",
+      "payer": "Aetna",
+      "procedure_code": "MRI_LUMBAR",
+      "site_of_care": "outpatient",
+      "specialty": "Orthopedics"
+    },
+    "results": [
+      {
+        "evidence": "Back pain and radiculopathy documented together",
+        "evidence_snippets": [
+          "Low back pain with right leg radiculopathy x 8 weeks"
+        ],
+        "evidence_spans": [
+          {
+            "end": 52,
+            "start": 0,
+            "text": "Low back pain with right leg radiculopathy x 8 weeks"
+          }
+        ],
+        "fact_value": true,
+        "key": "back_pain_with_radiculopathy",
+        "label": "Persistent back pain with radiculopathy documented",
+        "reason": "Explicit affirmative documentation found.",
+        "status": "MET",
+        "verification": {
+          "fingerprint": null,
+          "reviewer": null,
+          "state": "UNVERIFIED",
+          "verified_at": null
+        },
+        "verification_fingerprint": "8ea32b444f008f055d8a03a5fb6439f9023b874eb9b78d396c21ae9df3826bc1"
+      },
+      {
+        "evidence": "Objective motor strength or reflex change documented in a named nerve-root distribution",
+        "evidence_snippets": [
+          "Objective motor exam in the right L5 distribution: ankle dorsiflexion strength 4/5"
+        ],
+        "evidence_spans": [
+          {
+            "end": 200,
+            "start": 118,
+            "text": "Objective motor exam in the right L5 distribution: ankle dorsiflexion strength 4/5"
+          }
+        ],
+        "fact_value": true,
+        "key": "objective_motor_or_reflex_change_in_root_distribution",
+        "label": "Objective motor or reflex change in a nerve-root distribution",
+        "reason": "Explicit affirmative documentation found.",
+        "status": "MET",
+        "verification": {
+          "fingerprint": null,
+          "reviewer": null,
+          "state": "UNVERIFIED",
+          "verified_at": null
+        },
+        "verification_fingerprint": "cbe2e30ff3892d9c8e57c5e173f9593f32103d37a9e8575b1cf9340e3127bc0d"
+      },
+      {
+        "evidence": "At least 6 weeks of CPB 0236 Footnote 1 conservative therapy documented",
+        "evidence_snippets": [
+          "NSAIDs for 8 weeks with minimal improvement"
+        ],
+        "evidence_spans": [
+          {
+            "end": 97,
+            "start": 54,
+            "text": "NSAIDs for 8 weeks with minimal improvement"
+          }
+        ],
+        "fact_value": 8,
+        "key": "cpb_0236_conservative_therapy_weeks",
+        "label": "Conservative therapy duration (weeks)",
+        "reason": "Documented value: 8.",
+        "status": "MET",
+        "verification": {
+          "fingerprint": null,
+          "reviewer": null,
+          "state": "UNVERIFIED",
+          "verified_at": null
+        },
+        "verification_fingerprint": "68d4e84d49a280aa7bf71dabda623c40f91382b27f89404cfea7948217b5272a"
+      },
+      {
+        "evidence": "Explicit no, minimal, or insufficient improvement after CPB 0236 Footnote 1 conservative therapy",
+        "evidence_snippets": [
+          "NSAIDs for 8 weeks with minimal improvement"
+        ],
+        "evidence_spans": [
+          {
+            "end": 97,
+            "start": 54,
+            "text": "NSAIDs for 8 weeks with minimal improvement"
+          }
+        ],
+        "fact_value": true,
+        "key": "cpb_0236_conservative_therapy_no_improvement",
+        "label": "No improvement after conservative therapy",
+        "reason": "Explicit affirmative documentation found.",
+        "status": "MET",
+        "verification": {
+          "fingerprint": null,
+          "reviewer": null,
+          "state": "UNVERIFIED",
+          "verified_at": null
+        },
+        "verification_fingerprint": "09f502cef2b088da6f4f6473387d72e996be58fcaad06323bdbd4a0bb424c216"
+      }
+    ],
+    "rule_reasons": [],
+    "schema_version": "2.0.0",
+    "submission_readiness": false,
+    "supported_procedure": {
+      "display_name": "MRI Lumbar Spine (no contrast)",
+      "metadata": {
+        "category": "advanced_imaging",
+        "last_rule_update": "2026-08-22",
+        "notes": [
+          "Verified only against the persistent back pain with radiculopathy alternative in CPB 0236; other policy indications are outside this pathway.",
+          "READY means the synthetic note satisfies this narrow documentation branch, not that Aetna will authorize the request."
+        ],
+        "rule_family": "aetna_cpb_0236_lumbar_radiculopathy",
+        "summary": "Documentation-readiness check for the persistent back pain with radiculopathy branch of Aetna CPB 0236.",
+        "supported_sites": [
+          "outpatient"
+        ]
+      },
+      "monitored_for_drift": true,
+      "payer": "Aetna",
+      "policy_trust_level": "verified",
+      "procedure_code": "MRI_LUMBAR",
+      "provenance": {
+        "accessed_date": "2026-08-22",
+        "content_hash_sha256": "5688a01dea8d5e55d9bb074fb4184f4b0722c89a7a35aacd343bf3444577e622",
+        "last_reviewed": "2026-08-22",
+        "monitored_check_frequency": "monthly",
+        "monitored_source_id": "aetna_mri_lumbar",
+        "monitored_source_name": "Aetna CPB 0236 - Magnetic Resonance Imaging (MRI) and Computed Tomography (CT) of the Spine",
+        "monitored_source_owner": "NickLeko",
+        "monitored_source_url": "https://www.aetna.com/cpb/medical/data/200_299/0236.html",
+        "notes": "Only one CPB 0236 alternative is implemented. CPT 72148 is listed by the bulletin when selection criteria are met; plan terms and precertification requirements still control.",
+        "policy_effective_date": "1998-05-06",
+        "policy_identifier": "CPB 0236",
+        "policy_last_reviewed": "2026-04-09",
+        "policy_title": "Magnetic Resonance Imaging (MRI) and Computed Tomography (CT) of the Spine",
+        "requirement_clause_map": {
+          "back_pain_with_radiculopathy": "Policy > Medical Necessity > persistent back or neck pain with radiculopathy alternative (lumbar scope).",
+          "cpb_0236_conservative_therapy_no_improvement": "Same Medical Necessity alternative: explicit lack of improvement after the conservative-therapy period.",
+          "cpb_0236_conservative_therapy_weeks": "Same Medical Necessity alternative: no improvement after 6 weeks of conservative therapy; Footnote 1 defines the supported modalities.",
+          "objective_motor_or_reflex_change_in_root_distribution": "Same Medical Necessity alternative: pain plus objective motor or reflex findings in the specific nerve-root distribution."
+        },
+        "rule_last_updated": "2026-08-22",
+        "rule_source_label": "Verified mapping to Aetna CPB 0236, persistent back pain with radiculopathy branch",
+        "source_name": "Aetna Clinical Policy Bulletin 0236",
+        "source_type": "official_policy_web",
+        "source_url": "https://www.aetna.com/cpb/medical/data/200_299/0236.html",
+        "status": "verified"
+      },
+      "required_field_keys": [
+        "back_pain_with_radiculopathy",
+        "objective_motor_or_reflex_change_in_root_distribution",
+        "cpb_0236_conservative_therapy_weeks",
+        "cpb_0236_conservative_therapy_no_improvement"
+      ],
+      "requirements": [
+        {
+          "allowed": [],
+          "evidence": "Back pain and radiculopathy documented together",
+          "key": "back_pain_with_radiculopathy",
+          "label": "Persistent back pain with radiculopathy documented",
+          "min": null,
+          "operator": "equals_true",
+          "type": "boolean"
+        },
+        {
+          "allowed": [],
+          "evidence": "Objective motor strength or reflex change documented in a named nerve-root distribution",
+          "key": "objective_motor_or_reflex_change_in_root_distribution",
+          "label": "Objective motor or reflex change in a nerve-root distribution",
+          "min": null,
+          "operator": "equals_true",
+          "type": "boolean"
+        },
+        {
+          "allowed": [],
+          "evidence": "At least 6 weeks of CPB 0236 Footnote 1 conservative therapy documented",
+          "key": "cpb_0236_conservative_therapy_weeks",
+          "label": "Conservative therapy duration (weeks)",
+          "min": 6.0,
+          "operator": "minimum",
+          "type": "number"
+        },
+        {
+          "allowed": [],
+          "evidence": "Explicit no, minimal, or insufficient improvement after CPB 0236 Footnote 1 conservative therapy",
+          "key": "cpb_0236_conservative_therapy_no_improvement",
+          "label": "No improvement after conservative therapy",
+          "min": null,
+          "operator": "equals_true",
+          "type": "boolean"
+        }
+      ]
+    },
+    "uses_reviewer_corrections": false,
+    "warnings": [
+      "Automated extraction is a drafting aid. All proposed facts require human verification before READY."
+    ]
+  },
+  "over-count": {
+    "audit_trail": {
+      "blocking_issues": {
+        "needs_review": [],
+        "not_documented": [],
+        "not_met": []
+      },
+      "corrected_requirement_keys": [],
+      "evaluation_warnings": [
+        "Automated extraction is a drafting aid. All proposed facts require human verification before READY."
+      ],
+      "evidence_map": {
+        "back_pain_with_radiculopathy": [
+          {
+            "end": 52,
+            "start": 0,
+            "text": "Low back pain with right leg radiculopathy x 8 weeks"
+          }
+        ],
+        "conservative_therapy_weeks": [
+          {
+            "end": 72,
+            "start": 54,
+            "text": "NSAIDs for 8 weeks"
+          }
+        ],
+        "cpb_0236_conservative_therapy_no_improvement": [
+          {
+            "end": 97,
+            "start": 54,
+            "text": "NSAIDs for 8 weeks with minimal improvement"
+          }
+        ],
+        "cpb_0236_conservative_therapy_weeks": [
+          {
+            "end": 97,
+            "start": 54,
+            "text": "NSAIDs for 8 weeks with minimal improvement"
+          }
+        ],
+        "neuro_red_flags_documented": [
+          {
+            "end": 235,
+            "start": 202,
+            "text": "Denies bowel/bladder incontinence"
+          },
+          {
+            "end": 257,
+            "start": 237,
+            "text": "No saddle anesthesia"
+          }
+        ],
+        "objective_motor_or_reflex_change_in_root_distribution": [
+          {
+            "end": 200,
+            "start": 118,
+            "text": "Objective motor exam in the right L5 distribution: ankle dorsiflexion strength 4/5"
+          }
+        ],
+        "prior_imaging_result": [
+          {
+            "end": 298,
+            "start": 286,
+            "text": "inconclusive"
+          }
+        ],
+        "symptom_duration_weeks": [
+          {
+            "end": 52,
+            "start": 45,
+            "text": "8 weeks"
+          }
+        ]
+      },
+      "fact_set_fingerprint": "7d0e435f4fc8fd7b5122b15e92484ca29034b079ab9c144b0adc53cae841c375",
+      "fact_verifications": {
+        "back_pain_with_radiculopathy": {
+          "fingerprint": null,
+          "reviewer": null,
+          "state": "UNVERIFIED",
+          "verified_at": null
+        },
+        "cpb_0236_conservative_therapy_no_improvement": {
+          "fingerprint": null,
+          "reviewer": null,
+          "state": "UNVERIFIED",
+          "verified_at": null
+        },
+        "cpb_0236_conservative_therapy_weeks": {
+          "fingerprint": null,
+          "reviewer": null,
+          "state": "UNVERIFIED",
+          "verified_at": null
+        },
+        "objective_motor_or_reflex_change_in_root_distribution": {
+          "fingerprint": null,
+          "reviewer": null,
+          "state": "UNVERIFIED",
+          "verified_at": null
+        }
+      },
+      "facts_extracted": {
+        "ahi_documented": null,
+        "back_pain_with_radiculopathy": true,
+        "conservative_therapy_weeks": 8,
+        "cpb_0236_conservative_therapy_no_improvement": true,
+        "cpb_0236_conservative_therapy_weeks": 8,
+        "mechanical_symptoms_documented": null,
+        "neuro_red_flags_documented": true,
+        "objective_motor_or_reflex_change_in_root_distribution": true,
+        "osa_diagnosis": null,
+        "prior_imaging_result": "inconclusive",
+        "sleep_study_date": null,
+        "symptom_duration_weeks": 8
+      },
+      "input_fingerprint": "248ce4a5d28715dbcfcbf49465c3d855a92553d5475f861208a8c57e3c057e54",
+      "invariant_errors": [],
+      "metrics": {
+        "criteria_met_count": 4,
+        "criteria_not_met_count": 0,
+        "documentation_coverage_pct": 100.0,
+        "documented_requirement_count": 4,
+        "evaluable_requirement_count": 4,
+        "human_review_count": 0,
+        "missing_requirement_count": 0,
+        "total_requirements": 4
+      },
+      "note_hash": "b66310c6bfc8e97d",
+      "note_length": 299,
+      "overall_status": "PENDING_VERIFICATION",
+      "payer": "Aetna",
+      "policy_trust_level": "verified",
+      "policy_version": {
+        "content_hash": "be1461a07b8ede0231f6033d0130302e070f49b8d78540a36542d18f2985dcd6",
+        "criteria_json": "[{\"allowed\":[],\"evidence\":\"Back pain and radiculopathy documented together\",\"key\":\"back_pain_with_radiculopathy\",\"label\":\"Persistent back pain with radiculopathy documented\",\"operator\":\"equals_true\",\"type\":\"boolean\"},{\"allowed\":[],\"evidence\":\"Objective motor strength or reflex change documented in a named nerve-root distribution\",\"key\":\"objective_motor_or_reflex_change_in_root_distribution\",\"label\":\"Objective motor or reflex change in a nerve-root distribution\",\"operator\":\"equals_true\",\"type\":\"boolean\"},{\"allowed\":[],\"evidence\":\"At least 6 weeks of CPB 0236 Footnote 1 conservative therapy documented\",\"key\":\"cpb_0236_conservative_therapy_weeks\",\"label\":\"Conservative therapy duration (weeks)\",\"min\":6.0,\"operator\":\"minimum\",\"type\":\"number\"},{\"allowed\":[],\"evidence\":\"Explicit no, minimal, or insufficient improvement after CPB 0236 Footnote 1 conservative therapy\",\"key\":\"cpb_0236_conservative_therapy_no_improvement\",\"label\":\"No improvement after conservative therapy\",\"operator\":\"equals_true\",\"type\":\"boolean\"}]",
+        "effective_date": "2026-08-22",
+        "payer": "Aetna",
+        "policy_id": "Aetna:MRI_LUMBAR",
+        "procedure_code": "MRI_LUMBAR",
+        "supported_sites": [
+          "outpatient"
+        ],
+        "version_id": "runtime-1.0-2026-08-22-6ee790b526750a37"
+      },
+      "procedure_code": "MRI_LUMBAR",
+      "procedure_name": "MRI Lumbar Spine (no contrast)",
+      "provenance_snapshot": {
+        "accessed_date": "2026-08-22",
+        "content_hash_sha256": "5688a01dea8d5e55d9bb074fb4184f4b0722c89a7a35aacd343bf3444577e622",
+        "last_reviewed": "2026-08-22",
+        "monitored_check_frequency": "monthly",
+        "monitored_source_id": "aetna_mri_lumbar",
+        "monitored_source_name": "Aetna CPB 0236 - Magnetic Resonance Imaging (MRI) and Computed Tomography (CT) of the Spine",
+        "monitored_source_owner": "NickLeko",
+        "monitored_source_url": "https://www.aetna.com/cpb/medical/data/200_299/0236.html",
+        "notes": "Only one CPB 0236 alternative is implemented. CPT 72148 is listed by the bulletin when selection criteria are met; plan terms and precertification requirements still control.",
+        "policy_effective_date": "1998-05-06",
+        "policy_identifier": "CPB 0236",
+        "policy_last_reviewed": "2026-04-09",
+        "policy_title": "Magnetic Resonance Imaging (MRI) and Computed Tomography (CT) of the Spine",
+        "requirement_clause_map": {
+          "back_pain_with_radiculopathy": "Policy > Medical Necessity > persistent back or neck pain with radiculopathy alternative (lumbar scope).",
+          "cpb_0236_conservative_therapy_no_improvement": "Same Medical Necessity alternative: explicit lack of improvement after the conservative-therapy period.",
+          "cpb_0236_conservative_therapy_weeks": "Same Medical Necessity alternative: no improvement after 6 weeks of conservative therapy; Footnote 1 defines the supported modalities.",
+          "objective_motor_or_reflex_change_in_root_distribution": "Same Medical Necessity alternative: pain plus objective motor or reflex findings in the specific nerve-root distribution."
+        },
+        "rule_last_updated": "2026-08-22",
+        "rule_source_label": "Verified mapping to Aetna CPB 0236, persistent back pain with radiculopathy branch",
+        "source_name": "Aetna Clinical Policy Bulletin 0236",
+        "source_type": "official_policy_web",
+        "source_url": "https://www.aetna.com/cpb/medical/data/200_299/0236.html",
+        "status": "verified"
+      },
+      "requirements_checked": [
+        "back_pain_with_radiculopathy",
+        "objective_motor_or_reflex_change_in_root_distribution",
+        "cpb_0236_conservative_therapy_weeks",
+        "cpb_0236_conservative_therapy_no_improvement"
+      ],
+      "rulebook_active_release_id": "2026-08-22-active-v1.0",
+      "rules_version": "1.0",
+      "run_id": "00000000-0000-0000-0000-000000000000",
+      "site_of_care": "outpatient",
+      "specialty": "Orthopedics",
+      "submission_readiness": false,
+      "timestamp_utc": "2026-09-01T00:00:00Z",
+      "uses_reviewer_corrections": false
+    },
+    "blockers": {
+      "needs_review": [],
+      "not_documented": [],
+      "not_met": []
+    },
+    "bundle_fingerprint": "1e3dea24499fa5619e8862e53c75ed3596d7e94812314c995f7508a44353d0ef",
+    "captured_fact_states": {
+      "ahi_documented": "MISSING",
+      "back_pain_with_radiculopathy": "CAPTURED",
+      "conservative_therapy_weeks": "CAPTURED",
+      "cpb_0236_conservative_therapy_no_improvement": "CAPTURED",
+      "cpb_0236_conservative_therapy_weeks": "CAPTURED",
+      "mechanical_symptoms_documented": "MISSING",
+      "neuro_red_flags_documented": "CAPTURED",
+      "objective_motor_or_reflex_change_in_root_distribution": "CAPTURED",
+      "osa_diagnosis": "MISSING",
+      "prior_imaging_result": "CAPTURED",
+      "sleep_study_date": "MISSING",
+      "symptom_duration_weeks": "CAPTURED"
+    },
+    "contract_version": "6779fd812df9d1fa44d8c17af56bff917d91c0395f00fea78846b643bcdaf74c",
+    "corrected_requirement_keys": [],
+    "engine_version": "2.7.0",
+    "evidence_map": {
+      "back_pain_with_radiculopathy": [
+        {
+          "end": 52,
+          "start": 0,
+          "text": "Low back pain with right leg radiculopathy x 8 weeks"
+        }
+      ],
+      "conservative_therapy_weeks": [
+        {
+          "end": 72,
+          "start": 54,
+          "text": "NSAIDs for 8 weeks"
+        }
+      ],
+      "cpb_0236_conservative_therapy_no_improvement": [
+        {
+          "end": 97,
+          "start": 54,
+          "text": "NSAIDs for 8 weeks with minimal improvement"
+        }
+      ],
+      "cpb_0236_conservative_therapy_weeks": [
+        {
+          "end": 97,
+          "start": 54,
+          "text": "NSAIDs for 8 weeks with minimal improvement"
+        }
+      ],
+      "neuro_red_flags_documented": [
+        {
+          "end": 235,
+          "start": 202,
+          "text": "Denies bowel/bladder incontinence"
+        },
+        {
+          "end": 257,
+          "start": 237,
+          "text": "No saddle anesthesia"
+        }
+      ],
+      "objective_motor_or_reflex_change_in_root_distribution": [
+        {
+          "end": 200,
+          "start": 118,
+          "text": "Objective motor exam in the right L5 distribution: ankle dorsiflexion strength 4/5"
+        }
+      ],
+      "prior_imaging_result": [
+        {
+          "end": 298,
+          "start": 286,
+          "text": "inconclusive"
+        }
+      ],
+      "symptom_duration_weeks": [
+        {
+          "end": 52,
+          "start": 45,
+          "text": "8 weeks"
+        }
+      ]
+    },
+    "fact_set_fingerprint": "7d0e435f4fc8fd7b5122b15e92484ca29034b079ab9c144b0adc53cae841c375",
+    "facts": {
+      "ahi_documented": null,
+      "back_pain_with_radiculopathy": true,
+      "conservative_therapy_weeks": 8,
+      "cpb_0236_conservative_therapy_no_improvement": true,
+      "cpb_0236_conservative_therapy_weeks": 8,
+      "mechanical_symptoms_documented": null,
+      "neuro_red_flags_documented": true,
+      "objective_motor_or_reflex_change_in_root_distribution": true,
+      "osa_diagnosis": null,
+      "prior_imaging_result": "inconclusive",
+      "sleep_study_date": null,
+      "symptom_duration_weeks": 8
+    },
+    "input_fingerprint": "248ce4a5d28715dbcfcbf49465c3d855a92553d5475f861208a8c57e3c057e54",
+    "metrics": {
+      "criteria_met_count": 4,
+      "criteria_not_met_count": 0,
+      "documentation_coverage_pct": 100.0,
+      "documented_requirement_count": 4,
+      "evaluable_requirement_count": 4,
+      "human_review_count": 0,
+      "missing_requirement_count": 0,
+      "total_requirements": 4
+    },
+    "original_snapshot": {
+      "content_hash": "4f172743d2f21724bf06eca7f6fa6306f46c837d8b64fc1532d4bd1379ca9adc",
+      "snapshot_json": "{\"evidence\":{\"back_pain_with_radiculopathy\":[{\"end\":52,\"start\":0,\"text\":\"Low back pain with right leg radiculopathy x 8 weeks\"}],\"conservative_therapy_weeks\":[{\"end\":72,\"start\":54,\"text\":\"NSAIDs for 8 weeks\"}],\"cpb_0236_conservative_therapy_no_improvement\":[{\"end\":97,\"start\":54,\"text\":\"NSAIDs for 8 weeks with minimal improvement\"}],\"cpb_0236_conservative_therapy_weeks\":[{\"end\":97,\"start\":54,\"text\":\"NSAIDs for 8 weeks with minimal improvement\"}],\"neuro_red_flags_documented\":[{\"end\":235,\"start\":202,\"text\":\"Denies bowel/bladder incontinence\"},{\"end\":257,\"start\":237,\"text\":\"No saddle anesthesia\"}],\"objective_motor_or_reflex_change_in_root_distribution\":[{\"end\":200,\"start\":118,\"text\":\"Objective motor exam in the right L5 distribution: ankle dorsiflexion strength 4/5\"}],\"prior_imaging_result\":[{\"end\":298,\"start\":286,\"text\":\"inconclusive\"}],\"symptom_duration_weeks\":[{\"end\":52,\"start\":45,\"text\":\"8 weeks\"}]},\"facts\":{\"ahi_documented\":null,\"back_pain_with_radiculopathy\":true,\"conservative_therapy_weeks\":8,\"cpb_0236_conservative_therapy_no_improvement\":true,\"cpb_0236_conservative_therapy_weeks\":8,\"mechanical_symptoms_documented\":null,\"neuro_red_flags_documented\":true,\"objective_motor_or_reflex_change_in_root_distribution\":true,\"osa_diagnosis\":null,\"prior_imaging_result\":\"inconclusive\",\"sleep_study_date\":null,\"symptom_duration_weeks\":8},\"states\":{\"ahi_documented\":\"MISSING\",\"back_pain_with_radiculopathy\":\"CAPTURED\",\"conservative_therapy_weeks\":\"CAPTURED\",\"cpb_0236_conservative_therapy_no_improvement\":\"CAPTURED\",\"cpb_0236_conservative_therapy_weeks\":\"CAPTURED\",\"mechanical_symptoms_documented\":\"MISSING\",\"neuro_red_flags_documented\":\"CAPTURED\",\"objective_motor_or_reflex_change_in_root_distribution\":\"CAPTURED\",\"osa_diagnosis\":\"MISSING\",\"prior_imaging_result\":\"CAPTURED\",\"sleep_study_date\":\"MISSING\",\"symptom_duration_weeks\":\"CAPTURED\"}}"
+    },
+    "overall_status": "PENDING_VERIFICATION",
+    "policy_trust_level": "verified",
+    "policy_version": {
+      "content_hash": "be1461a07b8ede0231f6033d0130302e070f49b8d78540a36542d18f2985dcd6",
+      "criteria_json": "[{\"allowed\":[],\"evidence\":\"Back pain and radiculopathy documented together\",\"key\":\"back_pain_with_radiculopathy\",\"label\":\"Persistent back pain with radiculopathy documented\",\"operator\":\"equals_true\",\"type\":\"boolean\"},{\"allowed\":[],\"evidence\":\"Objective motor strength or reflex change documented in a named nerve-root distribution\",\"key\":\"objective_motor_or_reflex_change_in_root_distribution\",\"label\":\"Objective motor or reflex change in a nerve-root distribution\",\"operator\":\"equals_true\",\"type\":\"boolean\"},{\"allowed\":[],\"evidence\":\"At least 6 weeks of CPB 0236 Footnote 1 conservative therapy documented\",\"key\":\"cpb_0236_conservative_therapy_weeks\",\"label\":\"Conservative therapy duration (weeks)\",\"min\":6.0,\"operator\":\"minimum\",\"type\":\"number\"},{\"allowed\":[],\"evidence\":\"Explicit no, minimal, or insufficient improvement after CPB 0236 Footnote 1 conservative therapy\",\"key\":\"cpb_0236_conservative_therapy_no_improvement\",\"label\":\"No improvement after conservative therapy\",\"operator\":\"equals_true\",\"type\":\"boolean\"}]",
+      "effective_date": "2026-08-22",
+      "payer": "Aetna",
+      "policy_id": "Aetna:MRI_LUMBAR",
+      "procedure_code": "MRI_LUMBAR",
+      "supported_sites": [
+        "outpatient"
+      ],
+      "version_id": "runtime-1.0-2026-08-22-6ee790b526750a37"
+    },
+    "provenance": {
+      "accessed_date": "2026-08-22",
+      "content_hash_sha256": "5688a01dea8d5e55d9bb074fb4184f4b0722c89a7a35aacd343bf3444577e622",
+      "last_reviewed": "2026-08-22",
+      "monitored_check_frequency": "monthly",
+      "monitored_source_id": "aetna_mri_lumbar",
+      "monitored_source_name": "Aetna CPB 0236 - Magnetic Resonance Imaging (MRI) and Computed Tomography (CT) of the Spine",
+      "monitored_source_owner": "NickLeko",
+      "monitored_source_url": "https://www.aetna.com/cpb/medical/data/200_299/0236.html",
+      "notes": "Only one CPB 0236 alternative is implemented. CPT 72148 is listed by the bulletin when selection criteria are met; plan terms and precertification requirements still control.",
+      "policy_effective_date": "1998-05-06",
+      "policy_identifier": "CPB 0236",
+      "policy_last_reviewed": "2026-04-09",
+      "policy_title": "Magnetic Resonance Imaging (MRI) and Computed Tomography (CT) of the Spine",
+      "requirement_clause_map": {
+        "back_pain_with_radiculopathy": "Policy > Medical Necessity > persistent back or neck pain with radiculopathy alternative (lumbar scope).",
+        "cpb_0236_conservative_therapy_no_improvement": "Same Medical Necessity alternative: explicit lack of improvement after the conservative-therapy period.",
+        "cpb_0236_conservative_therapy_weeks": "Same Medical Necessity alternative: no improvement after 6 weeks of conservative therapy; Footnote 1 defines the supported modalities.",
+        "objective_motor_or_reflex_change_in_root_distribution": "Same Medical Necessity alternative: pain plus objective motor or reflex findings in the specific nerve-root distribution."
+      },
+      "rule_last_updated": "2026-08-22",
+      "rule_source_label": "Verified mapping to Aetna CPB 0236, persistent back pain with radiculopathy branch",
+      "source_name": "Aetna Clinical Policy Bulletin 0236",
+      "source_type": "official_policy_web",
+      "source_url": "https://www.aetna.com/cpb/medical/data/200_299/0236.html",
+      "status": "verified"
+    },
+    "report": {
+      "audit_trail": {
+        "blocking_issues": {
+          "needs_review": [],
+          "not_documented": [],
+          "not_met": []
+        },
+        "corrected_requirement_keys": [],
+        "evaluation_warnings": [
+          "Automated extraction is a drafting aid. All proposed facts require human verification before READY."
+        ],
+        "evidence_map": {
+          "back_pain_with_radiculopathy": [
+            {
+              "end": 52,
+              "start": 0,
+              "text": "Low back pain with right leg radiculopathy x 8 weeks"
+            }
+          ],
+          "conservative_therapy_weeks": [
+            {
+              "end": 72,
+              "start": 54,
+              "text": "NSAIDs for 8 weeks"
+            }
+          ],
+          "cpb_0236_conservative_therapy_no_improvement": [
+            {
+              "end": 97,
+              "start": 54,
+              "text": "NSAIDs for 8 weeks with minimal improvement"
+            }
+          ],
+          "cpb_0236_conservative_therapy_weeks": [
+            {
+              "end": 97,
+              "start": 54,
+              "text": "NSAIDs for 8 weeks with minimal improvement"
+            }
+          ],
+          "neuro_red_flags_documented": [
+            {
+              "end": 235,
+              "start": 202,
+              "text": "Denies bowel/bladder incontinence"
+            },
+            {
+              "end": 257,
+              "start": 237,
+              "text": "No saddle anesthesia"
+            }
+          ],
+          "objective_motor_or_reflex_change_in_root_distribution": [
+            {
+              "end": 200,
+              "start": 118,
+              "text": "Objective motor exam in the right L5 distribution: ankle dorsiflexion strength 4/5"
+            }
+          ],
+          "prior_imaging_result": [
+            {
+              "end": 298,
+              "start": 286,
+              "text": "inconclusive"
+            }
+          ],
+          "symptom_duration_weeks": [
+            {
+              "end": 52,
+              "start": 45,
+              "text": "8 weeks"
+            }
+          ]
+        },
+        "fact_set_fingerprint": "7d0e435f4fc8fd7b5122b15e92484ca29034b079ab9c144b0adc53cae841c375",
+        "fact_verifications": {
+          "back_pain_with_radiculopathy": {
+            "fingerprint": null,
+            "reviewer": null,
+            "state": "UNVERIFIED",
+            "verified_at": null
+          },
+          "cpb_0236_conservative_therapy_no_improvement": {
+            "fingerprint": null,
+            "reviewer": null,
+            "state": "UNVERIFIED",
+            "verified_at": null
+          },
+          "cpb_0236_conservative_therapy_weeks": {
+            "fingerprint": null,
+            "reviewer": null,
+            "state": "UNVERIFIED",
+            "verified_at": null
+          },
+          "objective_motor_or_reflex_change_in_root_distribution": {
+            "fingerprint": null,
+            "reviewer": null,
+            "state": "UNVERIFIED",
+            "verified_at": null
+          }
+        },
+        "facts_extracted": {
+          "ahi_documented": null,
+          "back_pain_with_radiculopathy": true,
+          "conservative_therapy_weeks": 8,
+          "cpb_0236_conservative_therapy_no_improvement": true,
+          "cpb_0236_conservative_therapy_weeks": 8,
+          "mechanical_symptoms_documented": null,
+          "neuro_red_flags_documented": true,
+          "objective_motor_or_reflex_change_in_root_distribution": true,
+          "osa_diagnosis": null,
+          "prior_imaging_result": "inconclusive",
+          "sleep_study_date": null,
+          "symptom_duration_weeks": 8
+        },
+        "input_fingerprint": "248ce4a5d28715dbcfcbf49465c3d855a92553d5475f861208a8c57e3c057e54",
+        "invariant_errors": [],
+        "metrics": {
+          "criteria_met_count": 4,
+          "criteria_not_met_count": 0,
+          "documentation_coverage_pct": 100.0,
+          "documented_requirement_count": 4,
+          "evaluable_requirement_count": 4,
+          "human_review_count": 0,
+          "missing_requirement_count": 0,
+          "total_requirements": 4
+        },
+        "note_hash": "b66310c6bfc8e97d",
+        "note_length": 299,
+        "overall_status": "PENDING_VERIFICATION",
+        "payer": "Aetna",
+        "policy_trust_level": "verified",
+        "policy_version": {
+          "content_hash": "be1461a07b8ede0231f6033d0130302e070f49b8d78540a36542d18f2985dcd6",
+          "criteria_json": "[{\"allowed\":[],\"evidence\":\"Back pain and radiculopathy documented together\",\"key\":\"back_pain_with_radiculopathy\",\"label\":\"Persistent back pain with radiculopathy documented\",\"operator\":\"equals_true\",\"type\":\"boolean\"},{\"allowed\":[],\"evidence\":\"Objective motor strength or reflex change documented in a named nerve-root distribution\",\"key\":\"objective_motor_or_reflex_change_in_root_distribution\",\"label\":\"Objective motor or reflex change in a nerve-root distribution\",\"operator\":\"equals_true\",\"type\":\"boolean\"},{\"allowed\":[],\"evidence\":\"At least 6 weeks of CPB 0236 Footnote 1 conservative therapy documented\",\"key\":\"cpb_0236_conservative_therapy_weeks\",\"label\":\"Conservative therapy duration (weeks)\",\"min\":6.0,\"operator\":\"minimum\",\"type\":\"number\"},{\"allowed\":[],\"evidence\":\"Explicit no, minimal, or insufficient improvement after CPB 0236 Footnote 1 conservative therapy\",\"key\":\"cpb_0236_conservative_therapy_no_improvement\",\"label\":\"No improvement after conservative therapy\",\"operator\":\"equals_true\",\"type\":\"boolean\"}]",
+          "effective_date": "2026-08-22",
+          "payer": "Aetna",
+          "policy_id": "Aetna:MRI_LUMBAR",
+          "procedure_code": "MRI_LUMBAR",
+          "supported_sites": [
+            "outpatient"
+          ],
+          "version_id": "runtime-1.0-2026-08-22-6ee790b526750a37"
+        },
+        "procedure_code": "MRI_LUMBAR",
+        "procedure_name": "MRI Lumbar Spine (no contrast)",
+        "provenance_snapshot": {
+          "accessed_date": "2026-08-22",
+          "content_hash_sha256": "5688a01dea8d5e55d9bb074fb4184f4b0722c89a7a35aacd343bf3444577e622",
+          "last_reviewed": "2026-08-22",
+          "monitored_check_frequency": "monthly",
+          "monitored_source_id": "aetna_mri_lumbar",
+          "monitored_source_name": "Aetna CPB 0236 - Magnetic Resonance Imaging (MRI) and Computed Tomography (CT) of the Spine",
+          "monitored_source_owner": "NickLeko",
+          "monitored_source_url": "https://www.aetna.com/cpb/medical/data/200_299/0236.html",
+          "notes": "Only one CPB 0236 alternative is implemented. CPT 72148 is listed by the bulletin when selection criteria are met; plan terms and precertification requirements still control.",
+          "policy_effective_date": "1998-05-06",
+          "policy_identifier": "CPB 0236",
+          "policy_last_reviewed": "2026-04-09",
+          "policy_title": "Magnetic Resonance Imaging (MRI) and Computed Tomography (CT) of the Spine",
+          "requirement_clause_map": {
+            "back_pain_with_radiculopathy": "Policy > Medical Necessity > persistent back or neck pain with radiculopathy alternative (lumbar scope).",
+            "cpb_0236_conservative_therapy_no_improvement": "Same Medical Necessity alternative: explicit lack of improvement after the conservative-therapy period.",
+            "cpb_0236_conservative_therapy_weeks": "Same Medical Necessity alternative: no improvement after 6 weeks of conservative therapy; Footnote 1 defines the supported modalities.",
+            "objective_motor_or_reflex_change_in_root_distribution": "Same Medical Necessity alternative: pain plus objective motor or reflex findings in the specific nerve-root distribution."
+          },
+          "rule_last_updated": "2026-08-22",
+          "rule_source_label": "Verified mapping to Aetna CPB 0236, persistent back pain with radiculopathy branch",
+          "source_name": "Aetna Clinical Policy Bulletin 0236",
+          "source_type": "official_policy_web",
+          "source_url": "https://www.aetna.com/cpb/medical/data/200_299/0236.html",
+          "status": "verified"
+        },
+        "requirements_checked": [
+          "back_pain_with_radiculopathy",
+          "objective_motor_or_reflex_change_in_root_distribution",
+          "cpb_0236_conservative_therapy_weeks",
+          "cpb_0236_conservative_therapy_no_improvement"
+        ],
+        "rulebook_active_release_id": "2026-08-22-active-v1.0",
+        "rules_version": "1.0",
+        "run_id": "00000000-0000-0000-0000-000000000000",
+        "site_of_care": "outpatient",
+        "specialty": "Orthopedics",
+        "submission_readiness": false,
+        "timestamp_utc": "2026-09-01T00:00:00Z",
+        "uses_reviewer_corrections": false
+      },
+      "letter_draft": "",
+      "met_count": 4,
+      "needs_review_count": 0,
+      "not_documented_count": 0,
+      "not_met_count": 0,
+      "results": [
+        {
+          "evidence": "Back pain and radiculopathy documented together",
+          "evidence_snippets": [
+            "Low back pain with right leg radiculopathy x 8 weeks"
+          ],
+          "evidence_spans": [
+            {
+              "end": 52,
+              "start": 0,
+              "text": "Low back pain with right leg radiculopathy x 8 weeks"
+            }
+          ],
+          "fact_value": true,
+          "key": "back_pain_with_radiculopathy",
+          "label": "Persistent back pain with radiculopathy documented",
+          "reason": "Explicit affirmative documentation found.",
+          "status": "MET",
+          "verification": {
+            "fingerprint": null,
+            "reviewer": null,
+            "state": "UNVERIFIED",
+            "verified_at": null
+          },
+          "verification_fingerprint": "bf86bab3d94f3d7556d12ee99164595d8899020e2653b0bc3967e5eb35b83227"
+        },
+        {
+          "evidence": "Objective motor strength or reflex change documented in a named nerve-root distribution",
+          "evidence_snippets": [
+            "Objective motor exam in the right L5 distribution: ankle dorsiflexion strength 4/5"
+          ],
+          "evidence_spans": [
+            {
+              "end": 200,
+              "start": 118,
+              "text": "Objective motor exam in the right L5 distribution: ankle dorsiflexion strength 4/5"
+            }
+          ],
+          "fact_value": true,
+          "key": "objective_motor_or_reflex_change_in_root_distribution",
+          "label": "Objective motor or reflex change in a nerve-root distribution",
+          "reason": "Explicit affirmative documentation found.",
+          "status": "MET",
+          "verification": {
+            "fingerprint": null,
+            "reviewer": null,
+            "state": "UNVERIFIED",
+            "verified_at": null
+          },
+          "verification_fingerprint": "4d77c07d34339ff33df19206cb03b072c4db21acb71ec13f5b9d2986a13ad219"
+        },
+        {
+          "evidence": "At least 6 weeks of CPB 0236 Footnote 1 conservative therapy documented",
+          "evidence_snippets": [
+            "NSAIDs for 8 weeks with minimal improvement"
+          ],
+          "evidence_spans": [
+            {
+              "end": 97,
+              "start": 54,
+              "text": "NSAIDs for 8 weeks with minimal improvement"
+            }
+          ],
+          "fact_value": 8,
+          "key": "cpb_0236_conservative_therapy_weeks",
+          "label": "Conservative therapy duration (weeks)",
+          "reason": "Documented value: 8.",
+          "status": "MET",
+          "verification": {
+            "fingerprint": null,
+            "reviewer": null,
+            "state": "UNVERIFIED",
+            "verified_at": null
+          },
+          "verification_fingerprint": "cf29291cd76af8839c0d43b17683861aa2ec394d7f15e6d5079471f3cdd06420"
+        },
+        {
+          "evidence": "Explicit no, minimal, or insufficient improvement after CPB 0236 Footnote 1 conservative therapy",
+          "evidence_snippets": [
+            "NSAIDs for 8 weeks with minimal improvement"
+          ],
+          "evidence_spans": [
+            {
+              "end": 97,
+              "start": 54,
+              "text": "NSAIDs for 8 weeks with minimal improvement"
+            }
+          ],
+          "fact_value": true,
+          "key": "cpb_0236_conservative_therapy_no_improvement",
+          "label": "No improvement after conservative therapy",
+          "reason": "Explicit affirmative documentation found.",
+          "status": "MET",
+          "verification": {
+            "fingerprint": null,
+            "reviewer": null,
+            "state": "UNVERIFIED",
+            "verified_at": null
+          },
+          "verification_fingerprint": "c8ad9b0a698278cb900ac4bb3451722a0ee0ca05d40ae8ed01b8fe6e4e977486"
+        }
+      ],
+      "rule_reasons": []
+    },
+    "request": {
+      "dx_codes": [
+        "Z00.00",
+        "Z00.01",
+        "Z00.02",
+        "Z00.03",
+        "Z00.04",
+        "Z00.05",
+        "Z00.06",
+        "Z00.07",
+        "Z00.08",
+        "Z00.09",
+        "Z00.10",
+        "Z00.11",
+        "Z00.12",
+        "Z00.13",
+        "Z00.14",
+        "Z00.15",
+        "Z00.16",
+        "Z00.17",
+        "Z00.18",
+        "Z00.19",
+        "Z00.20",
+        "Z00.21",
+        "Z00.22",
+        "Z00.23",
+        "Z00.24",
+        "Z00.25"
+      ],
+      "fact_verifications": {},
+      "note_text": "Low back pain with right leg radiculopathy x 8 weeks. NSAIDs for 8 weeks with minimal improvement; PT also completed. Objective motor exam in the right L5 distribution: ankle dorsiflexion strength 4/5. Denies bowel/bladder incontinence. No saddle anesthesia. Prior imaging: lumbar xray inconclusive.",
+      "payer": "Aetna",
+      "procedure_code": "MRI_LUMBAR",
+      "site_of_care": "outpatient",
+      "specialty": "Orthopedics"
+    },
+    "results": [
+      {
+        "evidence": "Back pain and radiculopathy documented together",
+        "evidence_snippets": [
+          "Low back pain with right leg radiculopathy x 8 weeks"
+        ],
+        "evidence_spans": [
+          {
+            "end": 52,
+            "start": 0,
+            "text": "Low back pain with right leg radiculopathy x 8 weeks"
+          }
+        ],
+        "fact_value": true,
+        "key": "back_pain_with_radiculopathy",
+        "label": "Persistent back pain with radiculopathy documented",
+        "reason": "Explicit affirmative documentation found.",
+        "status": "MET",
+        "verification": {
+          "fingerprint": null,
+          "reviewer": null,
+          "state": "UNVERIFIED",
+          "verified_at": null
+        },
+        "verification_fingerprint": "bf86bab3d94f3d7556d12ee99164595d8899020e2653b0bc3967e5eb35b83227"
+      },
+      {
+        "evidence": "Objective motor strength or reflex change documented in a named nerve-root distribution",
+        "evidence_snippets": [
+          "Objective motor exam in the right L5 distribution: ankle dorsiflexion strength 4/5"
+        ],
+        "evidence_spans": [
+          {
+            "end": 200,
+            "start": 118,
+            "text": "Objective motor exam in the right L5 distribution: ankle dorsiflexion strength 4/5"
+          }
+        ],
+        "fact_value": true,
+        "key": "objective_motor_or_reflex_change_in_root_distribution",
+        "label": "Objective motor or reflex change in a nerve-root distribution",
+        "reason": "Explicit affirmative documentation found.",
+        "status": "MET",
+        "verification": {
+          "fingerprint": null,
+          "reviewer": null,
+          "state": "UNVERIFIED",
+          "verified_at": null
+        },
+        "verification_fingerprint": "4d77c07d34339ff33df19206cb03b072c4db21acb71ec13f5b9d2986a13ad219"
+      },
+      {
+        "evidence": "At least 6 weeks of CPB 0236 Footnote 1 conservative therapy documented",
+        "evidence_snippets": [
+          "NSAIDs for 8 weeks with minimal improvement"
+        ],
+        "evidence_spans": [
+          {
+            "end": 97,
+            "start": 54,
+            "text": "NSAIDs for 8 weeks with minimal improvement"
+          }
+        ],
+        "fact_value": 8,
+        "key": "cpb_0236_conservative_therapy_weeks",
+        "label": "Conservative therapy duration (weeks)",
+        "reason": "Documented value: 8.",
+        "status": "MET",
+        "verification": {
+          "fingerprint": null,
+          "reviewer": null,
+          "state": "UNVERIFIED",
+          "verified_at": null
+        },
+        "verification_fingerprint": "cf29291cd76af8839c0d43b17683861aa2ec394d7f15e6d5079471f3cdd06420"
+      },
+      {
+        "evidence": "Explicit no, minimal, or insufficient improvement after CPB 0236 Footnote 1 conservative therapy",
+        "evidence_snippets": [
+          "NSAIDs for 8 weeks with minimal improvement"
+        ],
+        "evidence_spans": [
+          {
+            "end": 97,
+            "start": 54,
+            "text": "NSAIDs for 8 weeks with minimal improvement"
+          }
+        ],
+        "fact_value": true,
+        "key": "cpb_0236_conservative_therapy_no_improvement",
+        "label": "No improvement after conservative therapy",
+        "reason": "Explicit affirmative documentation found.",
+        "status": "MET",
+        "verification": {
+          "fingerprint": null,
+          "reviewer": null,
+          "state": "UNVERIFIED",
+          "verified_at": null
+        },
+        "verification_fingerprint": "c8ad9b0a698278cb900ac4bb3451722a0ee0ca05d40ae8ed01b8fe6e4e977486"
+      }
+    ],
+    "rule_reasons": [],
+    "schema_version": "2.0.0",
+    "submission_readiness": false,
+    "supported_procedure": {
+      "display_name": "MRI Lumbar Spine (no contrast)",
+      "metadata": {
+        "category": "advanced_imaging",
+        "last_rule_update": "2026-08-22",
+        "notes": [
+          "Verified only against the persistent back pain with radiculopathy alternative in CPB 0236; other policy indications are outside this pathway.",
+          "READY means the synthetic note satisfies this narrow documentation branch, not that Aetna will authorize the request."
+        ],
+        "rule_family": "aetna_cpb_0236_lumbar_radiculopathy",
+        "summary": "Documentation-readiness check for the persistent back pain with radiculopathy branch of Aetna CPB 0236.",
+        "supported_sites": [
+          "outpatient"
+        ]
+      },
+      "monitored_for_drift": true,
+      "payer": "Aetna",
+      "policy_trust_level": "verified",
+      "procedure_code": "MRI_LUMBAR",
+      "provenance": {
+        "accessed_date": "2026-08-22",
+        "content_hash_sha256": "5688a01dea8d5e55d9bb074fb4184f4b0722c89a7a35aacd343bf3444577e622",
+        "last_reviewed": "2026-08-22",
+        "monitored_check_frequency": "monthly",
+        "monitored_source_id": "aetna_mri_lumbar",
+        "monitored_source_name": "Aetna CPB 0236 - Magnetic Resonance Imaging (MRI) and Computed Tomography (CT) of the Spine",
+        "monitored_source_owner": "NickLeko",
+        "monitored_source_url": "https://www.aetna.com/cpb/medical/data/200_299/0236.html",
+        "notes": "Only one CPB 0236 alternative is implemented. CPT 72148 is listed by the bulletin when selection criteria are met; plan terms and precertification requirements still control.",
+        "policy_effective_date": "1998-05-06",
+        "policy_identifier": "CPB 0236",
+        "policy_last_reviewed": "2026-04-09",
+        "policy_title": "Magnetic Resonance Imaging (MRI) and Computed Tomography (CT) of the Spine",
+        "requirement_clause_map": {
+          "back_pain_with_radiculopathy": "Policy > Medical Necessity > persistent back or neck pain with radiculopathy alternative (lumbar scope).",
+          "cpb_0236_conservative_therapy_no_improvement": "Same Medical Necessity alternative: explicit lack of improvement after the conservative-therapy period.",
+          "cpb_0236_conservative_therapy_weeks": "Same Medical Necessity alternative: no improvement after 6 weeks of conservative therapy; Footnote 1 defines the supported modalities.",
+          "objective_motor_or_reflex_change_in_root_distribution": "Same Medical Necessity alternative: pain plus objective motor or reflex findings in the specific nerve-root distribution."
+        },
+        "rule_last_updated": "2026-08-22",
+        "rule_source_label": "Verified mapping to Aetna CPB 0236, persistent back pain with radiculopathy branch",
+        "source_name": "Aetna Clinical Policy Bulletin 0236",
+        "source_type": "official_policy_web",
+        "source_url": "https://www.aetna.com/cpb/medical/data/200_299/0236.html",
+        "status": "verified"
+      },
+      "required_field_keys": [
+        "back_pain_with_radiculopathy",
+        "objective_motor_or_reflex_change_in_root_distribution",
+        "cpb_0236_conservative_therapy_weeks",
+        "cpb_0236_conservative_therapy_no_improvement"
+      ],
+      "requirements": [
+        {
+          "allowed": [],
+          "evidence": "Back pain and radiculopathy documented together",
+          "key": "back_pain_with_radiculopathy",
+          "label": "Persistent back pain with radiculopathy documented",
+          "min": null,
+          "operator": "equals_true",
+          "type": "boolean"
+        },
+        {
+          "allowed": [],
+          "evidence": "Objective motor strength or reflex change documented in a named nerve-root distribution",
+          "key": "objective_motor_or_reflex_change_in_root_distribution",
+          "label": "Objective motor or reflex change in a nerve-root distribution",
+          "min": null,
+          "operator": "equals_true",
+          "type": "boolean"
+        },
+        {
+          "allowed": [],
+          "evidence": "At least 6 weeks of CPB 0236 Footnote 1 conservative therapy documented",
+          "key": "cpb_0236_conservative_therapy_weeks",
+          "label": "Conservative therapy duration (weeks)",
+          "min": 6.0,
+          "operator": "minimum",
+          "type": "number"
+        },
+        {
+          "allowed": [],
+          "evidence": "Explicit no, minimal, or insufficient improvement after CPB 0236 Footnote 1 conservative therapy",
+          "key": "cpb_0236_conservative_therapy_no_improvement",
+          "label": "No improvement after conservative therapy",
+          "min": null,
+          "operator": "equals_true",
+          "type": "boolean"
+        }
+      ]
+    },
+    "uses_reviewer_corrections": false,
+    "warnings": [
+      "Automated extraction is a drafting aid. All proposed facts require human verification before READY."
+    ]
+  }
+}

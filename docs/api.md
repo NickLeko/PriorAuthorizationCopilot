@@ -218,6 +218,18 @@ The API is intentionally conservative:
 
 ## Notes
 
+- New requests accept at most 25 nonblank diagnosis codes. Each must have the
+  ICD-10-CM shape after the existing trim/uppercase/ASCII-space/percent
+  normalization, for example `M54.16`, `M5416`, `C4A.0`, or `S72.001A`.
+  Free text, malformed shapes and excessive counts return sanitized HTTP `422`.
+  This checks format only; it neither looks up codes nor infers clinical meaning.
+  Embedded control characters are rejected; boundary whitespace is trimmed.
+- Existing schema-2.x archives retain their original diagnosis metadata when read,
+  with the full v2 fingerprint, evidence and readiness checks still enforced.
+  A historical record that fails the current diagnosis-code contract can be
+  inspected/exported unchanged, but cannot be saved as a new decision, replayed
+  through the current strict path, or redrafted into a letter. No archive migration
+  or stored-byte rewrite occurs. Schema-1.5 compatibility is unchanged.
 - Request-validation failures return HTTP `422` with `error: "invalid_request"`
   and a `detail` list of at most 20 entries. Each entry contains a validation
   `type`, a `loc` of at most 8 components, and the fixed message `Invalid request.`

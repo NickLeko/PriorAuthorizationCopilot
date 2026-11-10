@@ -80,9 +80,9 @@ def load_policy_sources(path: Path = DEFAULT_SOURCES_YAML, *, data: dict | None 
         raise ValueError("'sources' must be a list")
 
     out: List[PolicySource] = []
-    for s in sources_raw:
+    for index, s in enumerate(sources_raw):
         if not isinstance(s, dict):
-            continue
+            raise ValueError(f"Source entry {index} must be a mapping.")
         missing = [
             k
             for k in (
@@ -99,7 +99,10 @@ def load_policy_sources(path: Path = DEFAULT_SOURCES_YAML, *, data: dict | None 
             if k not in s
         ]
         if missing:
-            raise ValueError(f"Source entry missing fields {missing}: {s}")
+            raise ValueError(f"Source entry {index} is missing required fields: {missing}.")
+        for name in ("id", "payer", "procedure_code", "url", "source_name", "source_type", "trust_level", "check_frequency", "owner"):
+            if not isinstance(s[name], str) or not s[name].strip():
+                raise ValueError(f"Source entry {index}.{name} must be a nonempty string.")
         out.append(
             PolicySource(
                 id=str(s["id"]),

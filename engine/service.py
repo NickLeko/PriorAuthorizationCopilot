@@ -172,6 +172,8 @@ def _read_drift_log(log_path: Path) -> tuple[List[Dict[str, Any]], List[str]]:
     errors: List[str] = []
     try:
         lines = log_path.read_text(encoding="utf-8").splitlines()
+    except UnicodeDecodeError:
+        return [], ["Policy drift log must contain valid UTF-8 text."]
     except OSError as exc:
         # str(exc) embeds the absolute path, and this text is served by /drift-status.
         return [], [f"Policy drift log could not be read: {exc.strerror or type(exc).__name__}"]
