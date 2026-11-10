@@ -169,7 +169,7 @@ class TestExtractionContractAlignment:
         else:
             assert compute_overall_status(results) == {"overall_status": expected, "submission_readiness": False}
 
-    @pytest.mark.parametrize("field,value", [("note_text", "Changed note."), ("dx_codes", ["OTHER"]), ("specialty", "Changed")])
+    @pytest.mark.parametrize("field,value", [("note_text", "Changed note."), ("dx_codes", ["M51.26"]), ("specialty", "Changed")])
     def test_G05_changed_request_invalidates_attestations(self, field, value):
         service = ReadinessService()
         request = attest(service.evaluate(service.get_demo_case_request("MRI-01-complete")))

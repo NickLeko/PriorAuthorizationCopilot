@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import re
 from datetime import date, datetime, timezone
 from hashlib import sha256
 from typing import Any, Dict, List, Literal, Optional
@@ -28,6 +29,28 @@ LEGACY_OPERATOR_BY_TYPE: dict[RequirementType, RequirementOperator] = {
     "boolean": "equals_true",
     "enum": "one_of",
 }
+
+# ICD-10-CM diagnosis code shape: letter, digit, alphanumeric category, then up to
+# four alphanumeric subcategory characters, with or without the dot (M54.16, M5416,
+# C4A.0, S72.001A). This checks the shape only, never whether a code exists or fits
+# the request, so it adds no clinical inference. Its alphabet cannot spell words,
+# so the letter's unscanned "Dx codes:" header cannot carry prohibited language.
+ICD10CM_SHAPE = re.compile(r"[A-Z][0-9][0-9A-Z](?:\.?[0-9A-Z]{1,4})?")
+MAX_DX_CODES = 25  # UB-04 limit: one principal plus 24 secondary diagnoses
+
+
+def normalize_dx_code(code: str) -> str:
+    """The normalization the service and letter already apply to every code."""
+    return code.strip().upper().replace(" ", "").replace("%", "")
+
+
+def validate_dx_codes(codes: List[str]) -> List[str]:
+    """Reject anything that is not an ICD-10-CM-shaped code; keep accepted codes unchanged."""
+    if len(codes) > MAX_DX_CODES:
+        raise ValueError(f"At most {MAX_DX_CODES} diagnosis codes are accepted.")
+    if any(ICD10CM_SHAPE.fullmatch(normalize_dx_code(code)) is None for code in codes):
+        raise ValueError("Diagnosis codes must be ICD-10-CM codes such as M54.16.")
+    return codes
 
 
 class FactVerification(BaseModel):
@@ -138,6 +161,12 @@ class PARequestV15(BaseModel):
 class PARequest(PARequestV15):
     corrections: List[ReviewerCorrection] = Field(default_factory=list, max_length=50, exclude_if=lambda value: not value)
 
+    # PARequestV15 stays lenient so archived v1.5 records remain readable.
+    @field_validator("dx_codes")
+    @classmethod
+    def _validate_dx_code_shape(cls, value: List[str]) -> List[str]:
+        return validate_dx_codes(value)
+
     @field_validator("note_text")
     @classmethod
     def _validate_note_limits(cls, value):
@@ -171,7 +200,8 @@ class LetterRequestMetadata(BaseModel):
     @field_validator("dx_codes")
     @classmethod
     def _ensure_dx_codes_not_none(cls, value: List[str]) -> List[str]:
-        return [str(code) for code in value if str(code).strip()]
+        # The letter guard does not scan the "Dx codes:" header, so validate here too.
+        return validate_dx_codes([str(code) for code in value if str(code).strip()])
 
 
 class EvidenceSpan(BaseModel):

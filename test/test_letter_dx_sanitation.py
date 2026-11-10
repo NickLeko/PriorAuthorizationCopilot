@@ -25,7 +25,7 @@ def test_dx_codes_are_sanitized_in_letter_output():
     request = LetterRequestMetadata(
         payer="Aetna",
         procedure_code="MRI_LUMBAR",
-        dx_codes=["M%4.5", " M54.5 "],
+        dx_codes=["M%54.5", " m54.5 "],
         site_of_care="outpatient",
         specialty="Orthopedics",
     )

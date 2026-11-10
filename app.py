@@ -851,7 +851,7 @@ if should_run:
     try:
         request = current_request()
     except ValueError as exc:
-        st.error("Invalid synthetic input. Check the note and correction limits.")
+        st.error("Invalid synthetic input. Check the note, ICD-10-CM diagnosis codes and correction limits.")
         st.text("; ".join(error["msg"] for error in exc.errors()) if hasattr(exc, "errors") else str(exc))
         st.stop()
     if policy_gate_blocked(request.payer, request.procedure_code):
