@@ -54,7 +54,7 @@ class SnapshotValidationError(ValueError):
 
 def utc_now_iso() -> str:
     # RFC3339-ish (Z)
-    return dt.datetime.utcnow().replace(microsecond=0).isoformat() + "Z"
+    return dt.datetime.now(dt.timezone.utc).replace(microsecond=0, tzinfo=None).isoformat() + "Z"
 
 
 def _safe_mkdir(p: Path) -> None:
@@ -80,9 +80,9 @@ def load_policy_sources(path: Path = DEFAULT_SOURCES_YAML, *, data: dict | None 
         raise ValueError("'sources' must be a list")
 
     out: List[PolicySource] = []
-    for s in sources_raw:
+    for index, s in enumerate(sources_raw):
         if not isinstance(s, dict):
-            continue
+            raise ValueError(f"Source entry {index} must be a mapping.")
         missing = [
             k
             for k in (
@@ -99,7 +99,10 @@ def load_policy_sources(path: Path = DEFAULT_SOURCES_YAML, *, data: dict | None 
             if k not in s
         ]
         if missing:
-            raise ValueError(f"Source entry missing fields {missing}: {s}")
+            raise ValueError(f"Source entry {index} is missing required fields: {missing}.")
+        for name in ("id", "payer", "procedure_code", "url", "source_name", "source_type", "trust_level", "check_frequency", "owner"):
+            if not isinstance(s[name], str) or not s[name].strip():
+                raise ValueError(f"Source entry {index}.{name} must be a nonempty string.")
         out.append(
             PolicySource(
                 id=str(s["id"]),
@@ -178,7 +181,6 @@ class _HTMLTextExtractor:
 
     def __init__(self) -> None:
         self._chunks: List[str] = []
-        self._skip_depth: int = 0
 
     def feed(self, html: str) -> None:
         # We avoid bs4 dependency: regex-based stripping + conservative block handling.

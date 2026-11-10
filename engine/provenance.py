@@ -6,7 +6,7 @@ from typing import Any, Dict
 
 import yaml
 
-from .schemas import PARequest, PolicyTrustLevel
+from .schemas import PARequest, PolicyTrustLevel, normalize_dx_code
 
 PROVENANCE_STRING_FIELDS = {
     "source_type",
@@ -133,7 +133,7 @@ def normalized_dx_codes(dx_codes: list[str]) -> list[str]:
     cleaned: list[str] = []
     seen: set[str] = set()
     for code in request.dx_codes:
-        normalized = code.strip().upper().replace(" ", "").replace("%", "")
+        normalized = normalize_dx_code(code)
         if normalized and normalized not in seen:
             seen.add(normalized)
             cleaned.append(normalized)

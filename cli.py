@@ -7,6 +7,7 @@ import sys
 from pathlib import Path
 from typing import Sequence
 
+import yaml
 from pydantic import ValidationError
 
 from engine.decision_store import DecisionStore
@@ -254,13 +255,7 @@ def main(argv: Sequence[str] | None = None) -> int:
                 print("warnings: none")
             return 0
 
-    except (ValidationError, ValueError, OSError, sqlite3.DatabaseError, TypeError) as exc:
-        print(str(exc), file=sys.stderr)
-        return 2
-    except KeyError as exc:
-        print(str(exc), file=sys.stderr)
-        return 2
-    except ServiceError as exc:
+    except (ValidationError, ValueError, OSError, sqlite3.DatabaseError, TypeError, KeyError, yaml.YAMLError, ServiceError) as exc:
         print(str(exc), file=sys.stderr)
         return 2
 

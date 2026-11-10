@@ -32,8 +32,6 @@ class AppConfig(BaseModel):
     synthetic_cases_path: Path
     docs_artifacts_dir: Path
     log_level: str = "WARNING"
-    api_host: str = "127.0.0.1"
-    api_port: int = 8000
     allowed_sites: List[str] = Field(default_factory=lambda: ["outpatient", "inpatient", "ASC", "office"])
 
     @field_validator("log_level")
@@ -43,21 +41,6 @@ class AppConfig(BaseModel):
         if normalized not in VALID_LOG_LEVELS:
             raise ValueError(f"log_level must be one of {sorted(VALID_LOG_LEVELS)}")
         return normalized
-
-    @field_validator("api_host")
-    @classmethod
-    def _strip_api_host(cls, value: str) -> str:
-        stripped = value.strip()
-        if not stripped:
-            raise ValueError("api_host must be non-empty.")
-        return stripped
-
-    @field_validator("api_port")
-    @classmethod
-    def _validate_port(cls, value: int) -> int:
-        if value <= 0 or value > 65535:
-            raise ValueError("api_port must be between 1 and 65535.")
-        return value
 
     @field_validator("allowed_sites")
     @classmethod
@@ -98,6 +81,4 @@ def load_app_config(base_dir: Path | None = None) -> AppConfig:
         synthetic_cases_path=_resolve_path(os.getenv("PA_COPILOT_SYNTHETIC_CASES_PATH", "inputs/synthetic_cases.json"), repo_root),
         docs_artifacts_dir=_resolve_path(os.getenv("PA_COPILOT_ARTIFACTS_DIR", "docs/artifacts"), repo_root),
         log_level=os.getenv("PA_COPILOT_LOG_LEVEL", "WARNING"),
-        api_host=os.getenv("PA_COPILOT_API_HOST", "127.0.0.1"),
-        api_port=int(os.getenv("PA_COPILOT_API_PORT", "8000")),
     )

@@ -81,7 +81,7 @@ def assert_surface_parity(at, tmp_path, capsys, expected):
 
 
 def test_corrected_request_pending_then_ready_parity_and_stale_letter_removal(tmp_path, capsys):
-    at = AppTest.from_file("app.py").run(timeout=TIMEOUT)
+    at = AppTest.from_file(Path(__file__).resolve().parents[1] / "app.py").run(timeout=TIMEOUT)
     load_request(at, "MRI-01-complete", CORRECTED_ACCEPTANCE_NOTE)
     assert at.session_state["last_eval_payload"]["overall_status"] == "CANNOT_DETERMINE"
     assert any(get_fact_contract(CORRECTED_KEY).meaning in item.value for item in at.caption)
@@ -109,7 +109,7 @@ def test_corrected_request_pending_then_ready_parity_and_stale_letter_removal(tm
 
 
 def test_osa_false_is_not_ready_on_all_surfaces(tmp_path, capsys):
-    at = AppTest.from_file("app.py").run(timeout=TIMEOUT)
+    at = AppTest.from_file(Path(__file__).resolve().parents[1] / "app.py").run(timeout=TIMEOUT)
     note = "😀 İ. Patient denies OSA. Sleep study completed 2024-02-29. AHI 22."
     load_request(at, "CPAP-02-borderline", note)
     assert at.session_state["last_eval_payload"]["overall_status"] == "CANNOT_DETERMINE"
@@ -118,7 +118,7 @@ def test_osa_false_is_not_ready_on_all_surfaces(tmp_path, capsys):
 
 
 def test_note_change_discards_corrections_even_after_failed_apply():
-    at = AppTest.from_file("app.py").run(timeout=TIMEOUT)
+    at = AppTest.from_file(Path(__file__).resolve().parents[1] / "app.py").run(timeout=TIMEOUT)
     load_request(at, "MRI-01-complete", CORRECTED_ACCEPTANCE_NOTE)
     correct(at, CORRECTED_KEY, "Lumbosacral radicular syndrome documented.", True)
     widget(at, "text_input", f"correction_quote_{CORRECTED_KEY}").set_value("").run(timeout=TIMEOUT)
@@ -137,7 +137,7 @@ def test_note_change_discards_corrections_even_after_failed_apply():
     [("SET_MISSING", "CANNOT_DETERMINE"), ("SET_NEEDS_REVIEW", "NEEDS_REVIEW"), ("RESTORE_ORIGINAL", "PENDING_VERIFICATION")],
 )
 def test_nonvalue_ui_actions_preserve_original_and_clear_verification(action, expected):
-    at = AppTest.from_file("app.py").run(timeout=TIMEOUT)
+    at = AppTest.from_file(Path(__file__).resolve().parents[1] / "app.py").run(timeout=TIMEOUT)
     widget(at, "button", "case_MRI-01-complete").click().run(timeout=TIMEOUT)
     original = at.session_state["last_eval_payload"]["original_snapshot"]
     widget(at, "selectbox", f"correction_action_{CORRECTED_KEY}").select(action).run(timeout=TIMEOUT)
@@ -152,7 +152,7 @@ def test_nonvalue_ui_actions_preserve_original_and_clear_verification(action, ex
 
 
 def test_empty_quotation_cannot_apply_a_value_or_retain_old_letter():
-    at = AppTest.from_file("app.py").run(timeout=TIMEOUT)
+    at = AppTest.from_file(Path(__file__).resolve().parents[1] / "app.py").run(timeout=TIMEOUT)
     widget(at, "button", "case_MRI-01-complete").click().run(timeout=TIMEOUT)
     button(at, "Generate deterministic letter").click().run(timeout=TIMEOUT)
     assert at.session_state["letter_text"]
@@ -166,7 +166,7 @@ def test_empty_quotation_cannot_apply_a_value_or_retain_old_letter():
 
 @pytest.mark.parametrize("case", ["MRI-01-complete", "CPAP-02-borderline", "MRI-KNEE-01-ready", "MRI-CERV-01-ready"])
 def test_every_entry_renders_meaning_and_only_reviewer_enterable_values(case):
-    at = AppTest.from_file("app.py").run(timeout=TIMEOUT)
+    at = AppTest.from_file(Path(__file__).resolve().parents[1] / "app.py").run(timeout=TIMEOUT)
     widget(at, "button", f"case_{case}").click().run(timeout=TIMEOUT)
     assert not at.exception
     for result in at.session_state["last_eval_payload"]["results"]:

@@ -169,7 +169,7 @@ class TestExtractionContractAlignment:
         else:
             assert compute_overall_status(results) == {"overall_status": expected, "submission_readiness": False}
 
-    @pytest.mark.parametrize("field,value", [("note_text", "Changed note."), ("dx_codes", ["OTHER"]), ("specialty", "Changed")])
+    @pytest.mark.parametrize("field,value", [("note_text", "Changed note."), ("dx_codes", ["M51.26"]), ("specialty", "Changed")])
     def test_G05_changed_request_invalidates_attestations(self, field, value):
         service = ReadinessService()
         request = attest(service.evaluate(service.get_demo_case_request("MRI-01-complete")))
@@ -299,7 +299,7 @@ def test_running_api_rereads_changed_rule_bundle_and_rejects_old_attestation(tmp
 
 @pytest.mark.parametrize("verified", [False, True])
 def test_identical_request_status_across_streamlit_fastapi_cli(tmp_path, capsys, verified):
-    at = AppTest.from_file("app.py").run(timeout=15)
+    at = AppTest.from_file(Path(__file__).resolve().parents[1] / "app.py").run(timeout=15)
     next(button for button in at.button if button.key == "case_MRI-01-complete").click().run(timeout=15)
     assert not at.exception
     if verified:

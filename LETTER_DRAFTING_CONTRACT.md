@@ -42,12 +42,18 @@ The standard templates are designed to:
 ## 2) Inputs (Required)
 
 ### 2.1 Required Inputs
+
+The drafting function revalidates a detached snapshot of `LetterDraftInput` on
+every call, including nested metadata changed in place or through `model_copy`.
+Invalid current input produces `DRAFT_BLOCKED` with a fixed diagnostic and no
+diagnosis header. The submitted object is not mutated.
+
 - `LetterDraftInput.request` (`LetterRequestMetadata`):
   - payer (string)
   - procedure_code (string)
   - site_of_care (string)
   - specialty (string)
-  - dx_codes (list[string], minimally normalized by trimming, uppercasing, and removing spaces and `%`; there is no ICD-catalog or general unsafe-character validation)
+  - dx_codes (at most 25 nonblank strings, each ICD-10-CM-shaped after trimming, uppercasing, and removing ASCII spaces and `%`; this is not ICD-catalog validation or clinical inference)
 - `LetterDraftInput`:
   - met_count, not_met_count, not_documented_count, needs_review_count
   - results[]:

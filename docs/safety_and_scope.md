@@ -98,6 +98,13 @@ It does not:
 
 Every service result includes a sealed policy snapshot. CLI `evaluate --store` persists full synthetic requests, captured facts, verification records, and results in append-only SQLite. UI/API evaluations are not automatically archived. Triggers and hashes protect the supported local workflow, but do not provide authentication, encryption, retention controls, or resistance to a privileged rewrite.
 
+Schema-2.x historical diagnosis metadata remains readable without changing stored
+bytes or fingerprints, even if it fails the newer diagnosis-code shape/count
+contract. All other v2 envelope invariants remain checked. Such a noncompliant
+record is inspectable/exportable only: current new writes, letter generation and
+replay revalidate strictly and reject it. This is a read compatibility boundary,
+not automatic migration or authorization to reuse historical attestations.
+
 Replay uses originally captured evidence and an explicit target version. Missing and ambiguous evidence keep their refusal semantics. A relaxed policy can resolve a correct old refusal using the same evidence; that is a reason to revisit history, not to overwrite it. All replay reports require fresh human review and have `submission_readiness=false`; passing criteria produce `PENDING_VERIFICATION`. See [policy replay](policy_replay.md).
 
 ## Human Review In A Real Workflow

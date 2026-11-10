@@ -2,5 +2,6 @@
 showErrorDetails = "none"
 
 [server]
-# The accepted Starlette exceptions do not apply to this public server.
-useStarlette = false
+# Retain explicit browser protections on the patched Starlette/ASGI server.
+enableCORS = true
+enableXsrfProtection = true

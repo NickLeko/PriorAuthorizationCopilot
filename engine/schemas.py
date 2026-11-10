@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import json
+import math
+import re
 from datetime import date, datetime, timezone
 from hashlib import sha256
 from typing import Any, Dict, List, Literal, Optional
@@ -28,6 +30,43 @@ LEGACY_OPERATOR_BY_TYPE: dict[RequirementType, RequirementOperator] = {
     "boolean": "equals_true",
     "enum": "one_of",
 }
+
+# ICD-10-CM diagnosis code shape: letter, digit, alphanumeric category, then up to
+# four alphanumeric subcategory characters, with or without the dot (M54.16, M5416,
+# C4A.0, S72.001A). This checks the shape only, never whether a code exists or fits
+# the request, so it adds no clinical inference. Its alphabet cannot spell words,
+# so the letter's unscanned "Dx codes:" header cannot carry prohibited language.
+ICD10CM_SHAPE = re.compile(r"[A-Z][0-9][0-9A-Z](?:\.?[0-9A-Z]{1,4})?")
+MAX_DX_CODES = 25  # UB-04 limit: one principal plus 24 secondary diagnoses
+
+
+def normalize_dx_code(code: str) -> str:
+    """The normalization the service and letter already apply to every code."""
+    return code.strip().upper().replace(" ", "").replace("%", "")
+
+
+def validate_dx_codes(codes: List[str]) -> List[str]:
+    """Reject anything that is not an ICD-10-CM-shaped code; keep accepted codes unchanged."""
+    if len(codes) > MAX_DX_CODES:
+        raise ValueError(f"At most {MAX_DX_CODES} diagnosis codes are accepted.")
+    if any(ICD10CM_SHAPE.fullmatch(normalize_dx_code(code)) is None for code in codes):
+        raise ValueError("Diagnosis codes must be ICD-10-CM codes such as M54.16.")
+    return codes
+
+
+def validate_numeric_minimum(value):
+    """Governance thresholds must be real finite numbers, never coerced booleans/text."""
+    if value is None:
+        return None
+    if type(value) not in (int, float):
+        raise ValueError("A minimum must be a finite numeric value, not a boolean or text.")
+    try:
+        finite = math.isfinite(value)
+    except OverflowError:
+        finite = False
+    if not finite:
+        raise ValueError("A minimum must be a finite numeric value.")
+    return value
 
 
 class FactVerification(BaseModel):
@@ -138,6 +177,12 @@ class PARequestV15(BaseModel):
 class PARequest(PARequestV15):
     corrections: List[ReviewerCorrection] = Field(default_factory=list, max_length=50, exclude_if=lambda value: not value)
 
+    # PARequestV15 stays lenient so archived v1.5 records remain readable.
+    @field_validator("dx_codes")
+    @classmethod
+    def _validate_dx_code_shape(cls, value: List[str]) -> List[str]:
+        return validate_dx_codes(value)
+
     @field_validator("note_text")
     @classmethod
     def _validate_note_limits(cls, value):
@@ -171,7 +216,8 @@ class LetterRequestMetadata(BaseModel):
     @field_validator("dx_codes")
     @classmethod
     def _ensure_dx_codes_not_none(cls, value: List[str]) -> List[str]:
-        return [str(code) for code in value if str(code).strip()]
+        # The letter guard does not scan the "Dx codes:" header, so validate here too.
+        return validate_dx_codes([str(code) for code in value if str(code).strip()])
 
 
 class EvidenceSpan(BaseModel):
@@ -205,6 +251,11 @@ class RequirementDefinition(BaseModel):
     min: Optional[float] = None
     allowed: List[str] = Field(default_factory=list)
     evidence: Optional[str] = None
+
+    @field_validator("min", mode="before")
+    @classmethod
+    def _validate_minimum(cls, value):
+        return validate_numeric_minimum(value)
 
     @field_validator("key", "label")
     @classmethod
@@ -739,11 +790,16 @@ class EvaluationResult(EvaluationResultV15):
         if isinstance(value, dict) and "evidence_counts" in value:
             from .corrections import materialize
 
-            original = OriginalProposal.model_validate(value["original_snapshot"])
-            request = PARequest.model_validate(value["request"])
-            expected_counts = materialize(original, request.corrections, request.note_text, [r["key"] for r in value["results"]]).get(
-                "evidence_counts", {}
-            )
+            try:
+                original = OriginalProposal.model_validate(value["original_snapshot"])
+                # Archive readers use the same v2 invariants with their historical
+                # request type; new evaluations retain strict PARequest validation.
+                request = cls.model_fields["request"].annotation.model_validate(value["request"])
+                result_keys = [r["key"] for r in value["results"]]
+                expected_counts = materialize(original, request.corrections, request.note_text, result_keys).get("evidence_counts", {})
+            except (KeyError, TypeError) as exc:
+                # A malformed envelope must surface as ValidationError, like the citation_context branch below.
+                raise ValueError("Invalid envelope for derived evidence counts.") from exc
             if value["evidence_counts"] != expected_counts:
                 raise ValueError("Derived evidence counts disagree with captured proposal.")
             value = {k: v for k, v in value.items() if k != "evidence_counts"}

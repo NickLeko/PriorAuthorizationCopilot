@@ -663,7 +663,9 @@ if drift_report.any_review_required:
     )
 else:
     st.success("No monitored-source drift or stale/missing baselines currently require review.")
-    st.session_state["ack_policy_drift"] = True
+    # Nothing to acknowledge now. Do not carry an implicit acknowledgement into a
+    # later rerun in which a source has become stale or drifted.
+    st.session_state["ack_policy_drift"] = False
 
 if drift_report.stale_source_count:
     st.warning(
@@ -849,7 +851,7 @@ if should_run:
     try:
         request = current_request()
     except ValueError as exc:
-        st.error("Invalid synthetic input. Check the note and correction limits.")
+        st.error("Invalid synthetic input. Check the note, ICD-10-CM diagnosis codes and correction limits.")
         st.text("; ".join(error["msg"] for error in exc.errors()) if hasattr(exc, "errors") else str(exc))
         st.stop()
     if policy_gate_blocked(request.payer, request.procedure_code):

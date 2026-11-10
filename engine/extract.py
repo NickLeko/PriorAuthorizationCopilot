@@ -101,10 +101,10 @@ EXCLUSION_TRIGGER = (
     r"has\s+not\s+started|not\s+completed|never\s+completed|cancelled|canceled)\b"
 )
 THERAPY_EXCLUSION_TRIGGER = EXCLUSION_TRIGGER.replace("ruled\\s+out|", "")
-# Stop at the next cue rather than rescanning a suffix for repeated prefixes.
+# Stop at the next cue, and try a [\w/-] token only from its run start (search-equivalent to \b[\w/-]+, but linear).
 PERSISTENCE_REVIEW_TRIGGER = (
     r"\bno\s+longer\b(?:(?!\bno\s+longer\b).)*?\b(?:present|has|have|reports|noted|seen|evident|active)\b"
-    r"|\b[\w/-]+\s+no\s+longer\b(?!\s+than\b)"
+    r"|(?<![\w/-])[/-]*\w[\w/-]*\s+no\s+longer\b(?!\s+than\b)"
 )
 COPIED_NOTE_REVIEW_TRIGGER = (
     r"\b(?:(?:previous|prior)\s+note|copied[\s-]+(?:from|forward)|carried[\s-]+forward|"

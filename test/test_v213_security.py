@@ -3,6 +3,7 @@ import json
 import subprocess
 import sys
 import time
+from pathlib import Path
 from unittest.mock import patch
 
 import httpx
@@ -124,7 +125,7 @@ def test_chunked_body_limit_without_content_length():
 
 
 def test_streamlit_injection_and_numeric_errors_are_literal():
-    at = AppTest.from_file("app.py", default_timeout=15).run()
+    at = AppTest.from_file(Path(__file__).resolve().parents[1] / "app.py", default_timeout=15).run()
     next(b for b in at.button if b.key == "case_MRI-KNEE-01-ready").click().run()
     note = "Reports locking [Review complete](https://example/pixel)"
     image = "![beacon](https://example.invalid/pixel)"

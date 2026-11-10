@@ -42,14 +42,11 @@ def test_each_authorized_pillow_exception_and_alias_is_visible(tmp_path, capsys,
     assert "EXCEPTED pillow==12.3.0 GHSA-test" in output
 
 
-def test_repository_exceptions_preserve_seven_starlette_entries():
-    current = audit.load_exceptions(ROOT / "security/pip-audit-ignores.json", today=TODAY)
-    assert set(current) == audit.STARLETTE_CVES | audit.PILLOW_CVES
-    for cve in audit.STARLETTE_CVES:
-        assert current[cve]["package"] == "starlette"
-        assert "expires" not in current[cve]
-        assert audit.report_findings(report("starlette", "0.46.2", "PYSEC-test", [cve]), current) == 0
-    assert all(current[cve]["expires"] == "2026-11-04" for cve in audit.PILLOW_CVES)
+def test_patched_repository_has_no_active_security_exceptions():
+    assert audit.load_exceptions(ROOT / "security/pip-audit-ignores.json") == {}
+    # Removing exceptions must never turn a vulnerable report into success.
+    assert audit.report_findings(report(), {}) == 1
+    assert audit.report_findings(report("starlette", "0.46.2", "CVE-2025-54121"), {}) == 1
 
 
 @pytest.mark.parametrize("today", [date(2026, 11, 4), date(2026, 11, 5), date(2027, 1, 1)])
