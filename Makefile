@@ -3,7 +3,7 @@ VENV_PYTHON ?= .venv/bin/python
 CASE ?= MRI-01-complete
 RUN_PYTHON := $(if $(wildcard $(VENV_PYTHON)),$(VENV_PYTHON),$(PYTHON))
 
-.PHONY: install run api test lint format artifacts cli-status reviewer-demo verify smoke-ui evaluate-case acceptance goldens
+.PHONY: install run api test lint format artifacts cli-status reviewer-demo verify smoke-ui evaluate-case acceptance goldens evaluation
 
 install:
 	$(PYTHON) -m venv .venv
@@ -51,5 +51,8 @@ artifacts:
 
 goldens:
 	$(RUN_PYTHON) -m scripts.generate_golden_outputs
+
+evaluation:
+	$(RUN_PYTHON) -m evaluation.report
 
 verify: lint test artifacts goldens

@@ -1,0 +1,2720 @@
+{
+  "dataset_id": "corpus52",
+  "dataset_version": 1,
+  "split": "regression",
+  "sealed": false,
+  "description": "Per-requirement labels for the 52 bundled synthetic cases in inputs/synthetic_cases.json.",
+  "note_authorship": "Synthetic notes bundled with the repository. Many were written alongside the extractor as regression fixtures.",
+  "selection": "Not a sample of real notes. 42 of 52 cases were built to end in an abstention; affirmative cases are few.",
+  "independent_clinical_ground_truth": false,
+  "notes_source": "inputs/synthetic_cases.json",
+  "label_defaults": {
+    "author_type": "agent",
+    "author": "Claude (AI agent)",
+    "authored_on": "2026-11-16",
+    "blind_to_extractor_output": true,
+    "basis": "Written from the note text, the fact meanings in engine/fact_contracts.py, the rule operators in rules/payer_rules.yaml and CPB 0236 Footnote 1 as stored in the policy snapshot, before viewing per-requirement extractor output for these cases. The author had read the extractor source and the existing case-level expected statuses."
+  },
+  "cases": [
+    {
+      "case_id": "MRI-01-complete",
+      "payer": "Aetna",
+      "procedure_code": "MRI_LUMBAR",
+      "note_sha256": "b66310c6bfc8e97dbd6f93c79fa3af51ae95a0d47c6c0d5cfad338ab451b128d",
+      "phenomena": [],
+      "labels": [
+        {
+          "requirement_key": "back_pain_with_radiculopathy",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "Low back pain with right leg radiculopathy",
+          "rationale": "Back pain and radiculopathy are documented together affirmatively.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "objective_motor_or_reflex_change_in_root_distribution",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "ankle dorsiflexion strength 4/5",
+          "rationale": "Reduced strength on objective exam in a named nerve-root distribution.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "cpb_0236_conservative_therapy_weeks",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "NSAIDs for 8 weeks",
+          "rationale": "An 8-week NSAID course meets the 6-week minimum.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "cpb_0236_conservative_therapy_no_improvement",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "minimal improvement",
+          "rationale": "Minimal improvement is documented for the NSAID course.",
+          "uncertainty": "low"
+        }
+      ]
+    },
+    {
+      "case_id": "MRI-02-complete",
+      "payer": "Aetna",
+      "procedure_code": "MRI_LUMBAR",
+      "note_sha256": "5b046404ac7bfa33d2ab7b2a1aefc5ee1673d9b9b1d7f5a4ff281781259a339e",
+      "phenomena": [],
+      "labels": [
+        {
+          "requirement_key": "back_pain_with_radiculopathy",
+          "review_status": "provisional",
+          "expected_state": "NOT_DOCUMENTED",
+          "acceptable_states": [
+            "NOT_DOCUMENTED"
+          ],
+          "evidence_quote": null,
+          "rationale": "Back pain is mentioned without radiculopathy; the pair is not documented together.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "objective_motor_or_reflex_change_in_root_distribution",
+          "review_status": "provisional",
+          "expected_state": "NOT_DOCUMENTED",
+          "acceptable_states": [
+            "NOT_DOCUMENTED",
+            "NEEDS_REVIEW"
+          ],
+          "evidence_quote": null,
+          "rationale": "'Reports progressive weakness' is a symptom report or denial, not an objective finding in a named nerve-root distribution.",
+          "uncertainty": "medium",
+          "uncertainty_note": "Subjective weakness statements could be routed to review."
+        },
+        {
+          "requirement_key": "cpb_0236_conservative_therapy_weeks",
+          "review_status": "needs_review",
+          "expected_state": "MET",
+          "evidence_quote": "NSAIDs and PT x 6 weeks",
+          "rationale": "A grouped trial lists NSAIDs with a 6-week duration.",
+          "uncertainty": "high",
+          "uncertainty_note": "Does 'activity modification + NSAIDs and PT x 6 weeks' document a 6-week NSAID course, or only 6 weeks of PT?"
+        },
+        {
+          "requirement_key": "cpb_0236_conservative_therapy_no_improvement",
+          "review_status": "needs_review",
+          "expected_state": "MET",
+          "evidence_quote": "persistent symptoms",
+          "rationale": "Persistent symptoms after the trial may mean no improvement.",
+          "uncertainty": "high",
+          "uncertainty_note": "Is 'persistent symptoms' an explicit statement of no improvement after the therapy course?"
+        }
+      ]
+    },
+    {
+      "case_id": "MRI-03-borderline",
+      "payer": "Aetna",
+      "procedure_code": "MRI_LUMBAR",
+      "note_sha256": "620fd5f46b97e4381681432f29caf3bec9204c95001a2e364e37e4ad591c1779",
+      "phenomena": [],
+      "labels": [
+        {
+          "requirement_key": "back_pain_with_radiculopathy",
+          "review_status": "provisional",
+          "expected_state": "NOT_DOCUMENTED",
+          "acceptable_states": [
+            "NOT_DOCUMENTED"
+          ],
+          "evidence_quote": null,
+          "rationale": "Back pain is mentioned without radiculopathy; the pair is not documented together.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "objective_motor_or_reflex_change_in_root_distribution",
+          "review_status": "provisional",
+          "expected_state": "NOT_DOCUMENTED",
+          "acceptable_states": [
+            "NOT_DOCUMENTED"
+          ],
+          "evidence_quote": null,
+          "rationale": "No objective motor or reflex finding in a named nerve-root distribution.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "cpb_0236_conservative_therapy_weeks",
+          "review_status": "provisional",
+          "expected_state": "NOT_DOCUMENTED",
+          "acceptable_states": [
+            "NOT_DOCUMENTED"
+          ],
+          "evidence_quote": null,
+          "rationale": "No CPB 0236 Footnote 1 therapy (moderate activity, analgesics, NSAIDs, muscle relaxants) with a duration; physical therapy is not a Footnote 1 modality.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "cpb_0236_conservative_therapy_no_improvement",
+          "review_status": "provisional",
+          "expected_state": "NOT_DOCUMENTED",
+          "acceptable_states": [
+            "NOT_DOCUMENTED"
+          ],
+          "evidence_quote": null,
+          "rationale": "No response is documented for a Footnote 1 therapy course.",
+          "uncertainty": "low"
+        }
+      ]
+    },
+    {
+      "case_id": "MRI-04-borderline",
+      "payer": "Aetna",
+      "procedure_code": "MRI_LUMBAR",
+      "note_sha256": "23abd50e9165deb4d9a48b2d960344f611b35f00217dc5bcb2443458ac2e5777",
+      "phenomena": [],
+      "labels": [
+        {
+          "requirement_key": "back_pain_with_radiculopathy",
+          "review_status": "provisional",
+          "expected_state": "NOT_DOCUMENTED",
+          "acceptable_states": [
+            "NOT_DOCUMENTED"
+          ],
+          "evidence_quote": null,
+          "rationale": "Back pain is mentioned without radiculopathy; the pair is not documented together.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "objective_motor_or_reflex_change_in_root_distribution",
+          "review_status": "provisional",
+          "expected_state": "NOT_DOCUMENTED",
+          "acceptable_states": [
+            "NOT_DOCUMENTED",
+            "NEEDS_REVIEW"
+          ],
+          "evidence_quote": null,
+          "rationale": "'Denies weakness' is a symptom report or denial, not an objective finding in a named nerve-root distribution.",
+          "uncertainty": "medium",
+          "uncertainty_note": "Subjective weakness statements could be routed to review."
+        },
+        {
+          "requirement_key": "cpb_0236_conservative_therapy_weeks",
+          "review_status": "provisional",
+          "expected_state": "NOT_DOCUMENTED",
+          "acceptable_states": [
+            "NOT_DOCUMENTED"
+          ],
+          "evidence_quote": null,
+          "rationale": "No CPB 0236 Footnote 1 therapy (moderate activity, analgesics, NSAIDs, muscle relaxants) with a duration; physical therapy is not a Footnote 1 modality.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "cpb_0236_conservative_therapy_no_improvement",
+          "review_status": "provisional",
+          "expected_state": "NOT_DOCUMENTED",
+          "acceptable_states": [
+            "NOT_DOCUMENTED",
+            "NEEDS_REVIEW"
+          ],
+          "evidence_quote": null,
+          "rationale": "The response ('no improvement') is attached to physical therapy, which is not a Footnote 1 course.",
+          "uncertainty": "medium",
+          "uncertainty_note": "A reader could route a response attached to a non-qualifying therapy to review instead of treating it as absent."
+        }
+      ]
+    },
+    {
+      "case_id": "MRI-05-incomplete",
+      "payer": "Aetna",
+      "procedure_code": "MRI_LUMBAR",
+      "note_sha256": "ed5102a8acc6d0de25b4a1fac4d61784607d7ce0a415b9b0ed8954b3b9ff1051",
+      "phenomena": [],
+      "labels": [
+        {
+          "requirement_key": "back_pain_with_radiculopathy",
+          "review_status": "provisional",
+          "expected_state": "NOT_DOCUMENTED",
+          "acceptable_states": [
+            "NOT_DOCUMENTED"
+          ],
+          "evidence_quote": null,
+          "rationale": "Back pain is mentioned without radiculopathy; the pair is not documented together.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "objective_motor_or_reflex_change_in_root_distribution",
+          "review_status": "provisional",
+          "expected_state": "NOT_DOCUMENTED",
+          "acceptable_states": [
+            "NOT_DOCUMENTED"
+          ],
+          "evidence_quote": null,
+          "rationale": "No objective motor or reflex finding in a named nerve-root distribution.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "cpb_0236_conservative_therapy_weeks",
+          "review_status": "provisional",
+          "expected_state": "NOT_DOCUMENTED",
+          "acceptable_states": [
+            "NOT_DOCUMENTED"
+          ],
+          "evidence_quote": null,
+          "rationale": "No CPB 0236 Footnote 1 therapy (moderate activity, analgesics, NSAIDs, muscle relaxants) with a duration; physical therapy is not a Footnote 1 modality.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "cpb_0236_conservative_therapy_no_improvement",
+          "review_status": "provisional",
+          "expected_state": "NOT_DOCUMENTED",
+          "acceptable_states": [
+            "NOT_DOCUMENTED"
+          ],
+          "evidence_quote": null,
+          "rationale": "No response is documented for a Footnote 1 therapy course.",
+          "uncertainty": "low"
+        }
+      ]
+    },
+    {
+      "case_id": "MRI-06-incomplete",
+      "payer": "Aetna",
+      "procedure_code": "MRI_LUMBAR",
+      "note_sha256": "fa68b82ea74c0d8e58b69fd6c9255c7bb2cbad4ea80298bec6695aa0e89ac283",
+      "phenomena": [],
+      "labels": [
+        {
+          "requirement_key": "back_pain_with_radiculopathy",
+          "review_status": "provisional",
+          "expected_state": "NOT_DOCUMENTED",
+          "acceptable_states": [
+            "NOT_DOCUMENTED",
+            "NEEDS_REVIEW"
+          ],
+          "evidence_quote": null,
+          "rationale": "Radicular pain is stated without back pain; the pair is not documented together.",
+          "uncertainty": "medium",
+          "uncertainty_note": "'Radicular pain' alone may or may not imply the back-pain half of the pair."
+        },
+        {
+          "requirement_key": "objective_motor_or_reflex_change_in_root_distribution",
+          "review_status": "provisional",
+          "expected_state": "NOT_DOCUMENTED",
+          "acceptable_states": [
+            "NOT_DOCUMENTED"
+          ],
+          "evidence_quote": null,
+          "rationale": "No objective motor or reflex finding in a named nerve-root distribution.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "cpb_0236_conservative_therapy_weeks",
+          "review_status": "provisional",
+          "expected_state": "NOT_DOCUMENTED",
+          "acceptable_states": [
+            "NOT_DOCUMENTED"
+          ],
+          "evidence_quote": null,
+          "rationale": "No CPB 0236 Footnote 1 therapy (moderate activity, analgesics, NSAIDs, muscle relaxants) with a duration; physical therapy is not a Footnote 1 modality.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "cpb_0236_conservative_therapy_no_improvement",
+          "review_status": "provisional",
+          "expected_state": "NOT_DOCUMENTED",
+          "acceptable_states": [
+            "NOT_DOCUMENTED"
+          ],
+          "evidence_quote": null,
+          "rationale": "No response is documented for a Footnote 1 therapy course.",
+          "uncertainty": "low"
+        }
+      ]
+    },
+    {
+      "case_id": "CPAP-01-complete",
+      "payer": "Aetna",
+      "procedure_code": "CPAP_DEVICE",
+      "note_sha256": "a6ba49740239357153c74a1398bfcf4f1ea07ca6ca76500f77da99692fbfb2b2",
+      "phenomena": [],
+      "labels": [
+        {
+          "requirement_key": "osa_diagnosis",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "Dx: OSA",
+          "rationale": "An affirmative patient OSA diagnosis is documented.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "sleep_study_date",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "Sleep study completed 2024-05-18",
+          "rationale": "A completed, dated sleep study is documented.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "ahi_documented",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "AHI 22",
+          "rationale": "A numeric AHI/RDI value is documented.",
+          "uncertainty": "low"
+        }
+      ]
+    },
+    {
+      "case_id": "CPAP-02-borderline",
+      "payer": "Aetna",
+      "procedure_code": "CPAP_DEVICE",
+      "note_sha256": "5ef99d034f3c708e05511febfd66771705a2de1f450fcfc0efaf197b9e4313fc",
+      "phenomena": [],
+      "labels": [
+        {
+          "requirement_key": "osa_diagnosis",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "OSA noted in problem list",
+          "rationale": "OSA is listed affirmatively for the patient.",
+          "uncertainty": "medium",
+          "uncertainty_note": "A problem-list entry is weaker than a stated diagnosis."
+        },
+        {
+          "requirement_key": "sleep_study_date",
+          "review_status": "provisional",
+          "expected_state": "NOT_DOCUMENTED",
+          "acceptable_states": [
+            "NOT_DOCUMENTED",
+            "NEEDS_REVIEW"
+          ],
+          "evidence_quote": null,
+          "rationale": "A sleep study is mentioned but the note says no date is documented; the rule asks for a documented date.",
+          "uncertainty": "medium",
+          "uncertainty_note": "The fact contract speaks of a completed study while the rule label asks for a date; a year-only or undated mention sits between them."
+        },
+        {
+          "requirement_key": "ahi_documented",
+          "review_status": "provisional",
+          "expected_state": "NOT_DOCUMENTED",
+          "acceptable_states": [
+            "NOT_DOCUMENTED"
+          ],
+          "evidence_quote": null,
+          "rationale": "The note says AHI is not documented.",
+          "uncertainty": "low"
+        }
+      ]
+    },
+    {
+      "case_id": "CPAP-03-incomplete",
+      "payer": "Aetna",
+      "procedure_code": "CPAP_DEVICE",
+      "note_sha256": "8a3e04b0d8cffc5c3f891eaf0f10d616c73aa52183c43722efb92a4f4115a0e4",
+      "phenomena": [],
+      "labels": [
+        {
+          "requirement_key": "osa_diagnosis",
+          "review_status": "provisional",
+          "expected_state": "NOT_DOCUMENTED",
+          "acceptable_states": [
+            "NOT_DOCUMENTED"
+          ],
+          "evidence_quote": null,
+          "rationale": "Symptoms only; no OSA diagnosis.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "sleep_study_date",
+          "review_status": "provisional",
+          "expected_state": "NOT_DOCUMENTED",
+          "acceptable_states": [
+            "NOT_DOCUMENTED"
+          ],
+          "evidence_quote": null,
+          "rationale": "No sleep study is mentioned.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "ahi_documented",
+          "review_status": "provisional",
+          "expected_state": "NOT_DOCUMENTED",
+          "acceptable_states": [
+            "NOT_DOCUMENTED"
+          ],
+          "evidence_quote": null,
+          "rationale": "No AHI/RDI is mentioned.",
+          "uncertainty": "low"
+        }
+      ]
+    },
+    {
+      "case_id": "CPAP-04-incomplete",
+      "payer": "Aetna",
+      "procedure_code": "CPAP_DEVICE",
+      "note_sha256": "e0d3de983a93cb1f46b7669f221fce995100da78ab32d7bee8654656a9dfbb1a",
+      "phenomena": [],
+      "labels": [
+        {
+          "requirement_key": "osa_diagnosis",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "OSA",
+          "rationale": "An affirmative patient OSA diagnosis is documented.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "sleep_study_date",
+          "review_status": "provisional",
+          "expected_state": "NOT_DOCUMENTED",
+          "acceptable_states": [
+            "NOT_DOCUMENTED"
+          ],
+          "evidence_quote": null,
+          "rationale": "The note says the sleep study date is not documented.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "ahi_documented",
+          "review_status": "provisional",
+          "expected_state": "NOT_DOCUMENTED",
+          "acceptable_states": [
+            "NOT_DOCUMENTED",
+            "NEEDS_REVIEW"
+          ],
+          "evidence_quote": null,
+          "rationale": "'AHI documented' asserts documentation but gives no numeric value, which the fact contract requires.",
+          "uncertainty": "medium",
+          "uncertainty_note": "An assertion that a value exists elsewhere could be routed to review."
+        }
+      ]
+    },
+    {
+      "case_id": "MRI-07-edge-exact-threshold",
+      "payer": "Aetna",
+      "procedure_code": "MRI_LUMBAR",
+      "note_sha256": "9c8f7c88f900caf856864f8de8938cee71ed20c120a91b82d4957d96e1d0a677",
+      "phenomena": [],
+      "labels": [
+        {
+          "requirement_key": "back_pain_with_radiculopathy",
+          "review_status": "provisional",
+          "expected_state": "NOT_DOCUMENTED",
+          "acceptable_states": [
+            "NOT_DOCUMENTED"
+          ],
+          "evidence_quote": null,
+          "rationale": "Back pain is mentioned without radiculopathy; the pair is not documented together.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "objective_motor_or_reflex_change_in_root_distribution",
+          "review_status": "provisional",
+          "expected_state": "NOT_DOCUMENTED",
+          "acceptable_states": [
+            "NOT_DOCUMENTED",
+            "NEEDS_REVIEW"
+          ],
+          "evidence_quote": null,
+          "rationale": "'Denies weakness' is a symptom report or denial, not an objective finding in a named nerve-root distribution.",
+          "uncertainty": "medium",
+          "uncertainty_note": "Subjective weakness statements could be routed to review."
+        },
+        {
+          "requirement_key": "cpb_0236_conservative_therapy_weeks",
+          "review_status": "needs_review",
+          "expected_state": "NOT_DOCUMENTED",
+          "evidence_quote": "PT x 6 weeks and NSAIDs",
+          "rationale": "NSAIDs are listed without their own duration.",
+          "uncertainty": "high",
+          "uncertainty_note": "Does the 6-week duration apply to NSAIDs as well as PT?"
+        },
+        {
+          "requirement_key": "cpb_0236_conservative_therapy_no_improvement",
+          "review_status": "needs_review",
+          "expected_state": "MET",
+          "evidence_quote": "without improvement",
+          "rationale": "No improvement is stated for PT and NSAIDs together.",
+          "uncertainty": "high",
+          "uncertainty_note": "If the NSAID course has no documented duration, is its response still a linked-course response?"
+        }
+      ]
+    },
+    {
+      "case_id": "MRI-08-edge-below-threshold",
+      "payer": "Aetna",
+      "procedure_code": "MRI_LUMBAR",
+      "note_sha256": "2f9bb605eac5f3ce5481e3d4cc974aa90a8c984c13d7dea240168c742b585b6f",
+      "phenomena": [],
+      "labels": [
+        {
+          "requirement_key": "back_pain_with_radiculopathy",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "Low back pain with right leg radiculopathy",
+          "rationale": "Back pain and radiculopathy are documented together affirmatively.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "objective_motor_or_reflex_change_in_root_distribution",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "ankle dorsiflexion strength 4/5",
+          "rationale": "Reduced strength on objective exam in a named nerve-root distribution.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "cpb_0236_conservative_therapy_weeks",
+          "review_status": "provisional",
+          "expected_state": "NOT_MET",
+          "acceptable_states": [
+            "NOT_MET"
+          ],
+          "evidence_quote": "NSAIDs for 5 weeks",
+          "rationale": "A 5-week NSAID course is below the 6-week minimum.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "cpb_0236_conservative_therapy_no_improvement",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "no improvement",
+          "rationale": "No improvement is documented for the NSAID course.",
+          "uncertainty": "low"
+        }
+      ]
+    },
+    {
+      "case_id": "MRI-09-negation-variant",
+      "payer": "Aetna",
+      "procedure_code": "MRI_LUMBAR",
+      "note_sha256": "e00963c68427c635c0369ff25d6eb889a4fa79d0846b1ecc140dd3dc2b923dbf",
+      "phenomena": [],
+      "labels": [
+        {
+          "requirement_key": "back_pain_with_radiculopathy",
+          "review_status": "provisional",
+          "expected_state": "NOT_DOCUMENTED",
+          "acceptable_states": [
+            "NOT_DOCUMENTED"
+          ],
+          "evidence_quote": null,
+          "rationale": "Back pain is mentioned without radiculopathy; the pair is not documented together.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "objective_motor_or_reflex_change_in_root_distribution",
+          "review_status": "provisional",
+          "expected_state": "NOT_DOCUMENTED",
+          "acceptable_states": [
+            "NOT_DOCUMENTED",
+            "NEEDS_REVIEW"
+          ],
+          "evidence_quote": null,
+          "rationale": "'Weakness absent' is a symptom report or denial, not an objective finding in a named nerve-root distribution.",
+          "uncertainty": "medium",
+          "uncertainty_note": "Subjective weakness statements could be routed to review."
+        },
+        {
+          "requirement_key": "cpb_0236_conservative_therapy_weeks",
+          "review_status": "provisional",
+          "expected_state": "NOT_DOCUMENTED",
+          "acceptable_states": [
+            "NOT_DOCUMENTED"
+          ],
+          "evidence_quote": null,
+          "rationale": "No CPB 0236 Footnote 1 therapy (moderate activity, analgesics, NSAIDs, muscle relaxants) with a duration; physical therapy is not a Footnote 1 modality.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "cpb_0236_conservative_therapy_no_improvement",
+          "review_status": "provisional",
+          "expected_state": "NOT_DOCUMENTED",
+          "acceptable_states": [
+            "NOT_DOCUMENTED",
+            "NEEDS_REVIEW"
+          ],
+          "evidence_quote": null,
+          "rationale": "The response ('minimal relief') is attached to physical therapy, which is not a Footnote 1 course.",
+          "uncertainty": "medium",
+          "uncertainty_note": "A reader could route a response attached to a non-qualifying therapy to review instead of treating it as absent."
+        }
+      ]
+    },
+    {
+      "case_id": "MRI-10-doc-gap-redflags",
+      "payer": "Aetna",
+      "procedure_code": "MRI_LUMBAR",
+      "note_sha256": "7c34028f4e2de5478149e0bf2a5f62c8b2204c1fc975a887ee473f8567f72b2f",
+      "phenomena": [],
+      "labels": [
+        {
+          "requirement_key": "back_pain_with_radiculopathy",
+          "review_status": "provisional",
+          "expected_state": "NOT_DOCUMENTED",
+          "acceptable_states": [
+            "NOT_DOCUMENTED"
+          ],
+          "evidence_quote": null,
+          "rationale": "Back pain is mentioned without radiculopathy; the pair is not documented together.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "objective_motor_or_reflex_change_in_root_distribution",
+          "review_status": "provisional",
+          "expected_state": "NOT_DOCUMENTED",
+          "acceptable_states": [
+            "NOT_DOCUMENTED"
+          ],
+          "evidence_quote": null,
+          "rationale": "No objective motor or reflex finding in a named nerve-root distribution.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "cpb_0236_conservative_therapy_weeks",
+          "review_status": "provisional",
+          "expected_state": "NOT_DOCUMENTED",
+          "acceptable_states": [
+            "NOT_DOCUMENTED"
+          ],
+          "evidence_quote": null,
+          "rationale": "No CPB 0236 Footnote 1 therapy (moderate activity, analgesics, NSAIDs, muscle relaxants) with a duration; physical therapy is not a Footnote 1 modality.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "cpb_0236_conservative_therapy_no_improvement",
+          "review_status": "provisional",
+          "expected_state": "NOT_DOCUMENTED",
+          "acceptable_states": [
+            "NOT_DOCUMENTED"
+          ],
+          "evidence_quote": null,
+          "rationale": "No response is documented for a Footnote 1 therapy course.",
+          "uncertainty": "low"
+        }
+      ]
+    },
+    {
+      "case_id": "MRI-11-conflict-deny-then-report",
+      "payer": "Aetna",
+      "procedure_code": "MRI_LUMBAR",
+      "note_sha256": "fd3f6e45093827854dda41682c3de0067ee10d3b9a221828f8c442de9744c3c9",
+      "phenomena": [],
+      "labels": [
+        {
+          "requirement_key": "back_pain_with_radiculopathy",
+          "review_status": "provisional",
+          "expected_state": "NOT_DOCUMENTED",
+          "acceptable_states": [
+            "NOT_DOCUMENTED"
+          ],
+          "evidence_quote": null,
+          "rationale": "Back pain is mentioned without radiculopathy; the pair is not documented together.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "objective_motor_or_reflex_change_in_root_distribution",
+          "review_status": "provisional",
+          "expected_state": "NOT_DOCUMENTED",
+          "acceptable_states": [
+            "NOT_DOCUMENTED",
+            "NEEDS_REVIEW"
+          ],
+          "evidence_quote": null,
+          "rationale": "'reports progressive weakness' is a symptom report or denial, not an objective finding in a named nerve-root distribution.",
+          "uncertainty": "medium",
+          "uncertainty_note": "Subjective weakness statements could be routed to review."
+        },
+        {
+          "requirement_key": "cpb_0236_conservative_therapy_weeks",
+          "review_status": "provisional",
+          "expected_state": "NOT_DOCUMENTED",
+          "acceptable_states": [
+            "NOT_DOCUMENTED"
+          ],
+          "evidence_quote": null,
+          "rationale": "No CPB 0236 Footnote 1 therapy (moderate activity, analgesics, NSAIDs, muscle relaxants) with a duration; physical therapy is not a Footnote 1 modality.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "cpb_0236_conservative_therapy_no_improvement",
+          "review_status": "provisional",
+          "expected_state": "NOT_DOCUMENTED",
+          "acceptable_states": [
+            "NOT_DOCUMENTED"
+          ],
+          "evidence_quote": null,
+          "rationale": "No response is documented for a Footnote 1 therapy course.",
+          "uncertainty": "low"
+        }
+      ]
+    },
+    {
+      "case_id": "MRI-12-imaging-normal",
+      "payer": "Aetna",
+      "procedure_code": "MRI_LUMBAR",
+      "note_sha256": "1d1d0a5da504cac51776bcbe493a3d7f965ab055e86e839ad97e82b285830f9e",
+      "phenomena": [],
+      "labels": [
+        {
+          "requirement_key": "back_pain_with_radiculopathy",
+          "review_status": "provisional",
+          "expected_state": "NOT_DOCUMENTED",
+          "acceptable_states": [
+            "NOT_DOCUMENTED"
+          ],
+          "evidence_quote": null,
+          "rationale": "Back pain is mentioned without radiculopathy; the pair is not documented together.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "objective_motor_or_reflex_change_in_root_distribution",
+          "review_status": "provisional",
+          "expected_state": "NOT_DOCUMENTED",
+          "acceptable_states": [
+            "NOT_DOCUMENTED",
+            "NEEDS_REVIEW"
+          ],
+          "evidence_quote": null,
+          "rationale": "'Denies weakness' is a symptom report or denial, not an objective finding in a named nerve-root distribution.",
+          "uncertainty": "medium",
+          "uncertainty_note": "Subjective weakness statements could be routed to review."
+        },
+        {
+          "requirement_key": "cpb_0236_conservative_therapy_weeks",
+          "review_status": "provisional",
+          "expected_state": "NOT_DOCUMENTED",
+          "acceptable_states": [
+            "NOT_DOCUMENTED"
+          ],
+          "evidence_quote": null,
+          "rationale": "No CPB 0236 Footnote 1 therapy (moderate activity, analgesics, NSAIDs, muscle relaxants) with a duration; physical therapy is not a Footnote 1 modality.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "cpb_0236_conservative_therapy_no_improvement",
+          "review_status": "provisional",
+          "expected_state": "NOT_DOCUMENTED",
+          "acceptable_states": [
+            "NOT_DOCUMENTED"
+          ],
+          "evidence_quote": null,
+          "rationale": "No response is documented for a Footnote 1 therapy course.",
+          "uncertainty": "low"
+        }
+      ]
+    },
+    {
+      "case_id": "MRI-13-imaging-unclear",
+      "payer": "Aetna",
+      "procedure_code": "MRI_LUMBAR",
+      "note_sha256": "ccff87b96a5ecf2ac8ec97933ea7cede47f9272b43f67cea8647d3d07083d227",
+      "phenomena": [],
+      "labels": [
+        {
+          "requirement_key": "back_pain_with_radiculopathy",
+          "review_status": "provisional",
+          "expected_state": "NOT_DOCUMENTED",
+          "acceptable_states": [
+            "NOT_DOCUMENTED"
+          ],
+          "evidence_quote": null,
+          "rationale": "Back pain is mentioned without radiculopathy; the pair is not documented together.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "objective_motor_or_reflex_change_in_root_distribution",
+          "review_status": "provisional",
+          "expected_state": "NOT_DOCUMENTED",
+          "acceptable_states": [
+            "NOT_DOCUMENTED",
+            "NEEDS_REVIEW"
+          ],
+          "evidence_quote": null,
+          "rationale": "'Denies weakness' is a symptom report or denial, not an objective finding in a named nerve-root distribution.",
+          "uncertainty": "medium",
+          "uncertainty_note": "Subjective weakness statements could be routed to review."
+        },
+        {
+          "requirement_key": "cpb_0236_conservative_therapy_weeks",
+          "review_status": "provisional",
+          "expected_state": "NOT_DOCUMENTED",
+          "acceptable_states": [
+            "NOT_DOCUMENTED"
+          ],
+          "evidence_quote": null,
+          "rationale": "No CPB 0236 Footnote 1 therapy (moderate activity, analgesics, NSAIDs, muscle relaxants) with a duration; physical therapy is not a Footnote 1 modality.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "cpb_0236_conservative_therapy_no_improvement",
+          "review_status": "provisional",
+          "expected_state": "NOT_DOCUMENTED",
+          "acceptable_states": [
+            "NOT_DOCUMENTED"
+          ],
+          "evidence_quote": null,
+          "rationale": "No response is documented for a Footnote 1 therapy course.",
+          "uncertainty": "low"
+        }
+      ]
+    },
+    {
+      "case_id": "MRI-14-therapy-context-missing",
+      "payer": "Aetna",
+      "procedure_code": "MRI_LUMBAR",
+      "note_sha256": "7dee1ead0051a9345263e2eb3fa145d2c35a7cc17ee567c81cf0fab2943fa20f",
+      "phenomena": [],
+      "labels": [
+        {
+          "requirement_key": "back_pain_with_radiculopathy",
+          "review_status": "provisional",
+          "expected_state": "NOT_DOCUMENTED",
+          "acceptable_states": [
+            "NOT_DOCUMENTED"
+          ],
+          "evidence_quote": null,
+          "rationale": "Back pain is mentioned without radiculopathy; the pair is not documented together.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "objective_motor_or_reflex_change_in_root_distribution",
+          "review_status": "provisional",
+          "expected_state": "NOT_DOCUMENTED",
+          "acceptable_states": [
+            "NOT_DOCUMENTED",
+            "NEEDS_REVIEW"
+          ],
+          "evidence_quote": null,
+          "rationale": "'Denies weakness' is a symptom report or denial, not an objective finding in a named nerve-root distribution.",
+          "uncertainty": "medium",
+          "uncertainty_note": "Subjective weakness statements could be routed to review."
+        },
+        {
+          "requirement_key": "cpb_0236_conservative_therapy_weeks",
+          "review_status": "provisional",
+          "expected_state": "NOT_DOCUMENTED",
+          "acceptable_states": [
+            "NOT_DOCUMENTED"
+          ],
+          "evidence_quote": null,
+          "rationale": "No CPB 0236 Footnote 1 therapy (moderate activity, analgesics, NSAIDs, muscle relaxants) with a duration; physical therapy is not a Footnote 1 modality.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "cpb_0236_conservative_therapy_no_improvement",
+          "review_status": "provisional",
+          "expected_state": "NOT_DOCUMENTED",
+          "acceptable_states": [
+            "NOT_DOCUMENTED"
+          ],
+          "evidence_quote": null,
+          "rationale": "No response is documented for a Footnote 1 therapy course.",
+          "uncertainty": "low"
+        }
+      ]
+    },
+    {
+      "case_id": "CPAP-05-edge-with-date-no-ahi",
+      "payer": "Aetna",
+      "procedure_code": "CPAP_DEVICE",
+      "note_sha256": "fd8614b68981a5b044ea1ad55790a294edb6a789ffa9f78a77e1d3115966b5a7",
+      "phenomena": [],
+      "labels": [
+        {
+          "requirement_key": "osa_diagnosis",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "OSA diagnosed",
+          "rationale": "An affirmative patient OSA diagnosis is documented.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "sleep_study_date",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "Sleep study completed 2023-11-10",
+          "rationale": "A completed, dated sleep study is documented.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "ahi_documented",
+          "review_status": "provisional",
+          "expected_state": "NOT_DOCUMENTED",
+          "acceptable_states": [
+            "NOT_DOCUMENTED"
+          ],
+          "evidence_quote": null,
+          "rationale": "The note says AHI is not stated.",
+          "uncertainty": "low"
+        }
+      ]
+    },
+    {
+      "case_id": "CPAP-06-edge-with-ahi-no-date",
+      "payer": "Aetna",
+      "procedure_code": "CPAP_DEVICE",
+      "note_sha256": "8e9be96200b7e02c42d3b812366fa4fc2074da30633c8d32c1d254c88308c465",
+      "phenomena": [],
+      "labels": [
+        {
+          "requirement_key": "osa_diagnosis",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "OSA",
+          "rationale": "An affirmative patient OSA diagnosis is documented.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "sleep_study_date",
+          "review_status": "provisional",
+          "expected_state": "NOT_DOCUMENTED",
+          "acceptable_states": [
+            "NOT_DOCUMENTED",
+            "NEEDS_REVIEW"
+          ],
+          "evidence_quote": null,
+          "rationale": "A sleep study is mentioned but the note says no date is documented; the rule asks for a documented date.",
+          "uncertainty": "medium",
+          "uncertainty_note": "The fact contract speaks of a completed study while the rule label asks for a date; a year-only or undated mention sits between them."
+        },
+        {
+          "requirement_key": "ahi_documented",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "AHI 18",
+          "rationale": "A numeric AHI/RDI value is documented.",
+          "uncertainty": "low"
+        }
+      ]
+    },
+    {
+      "case_id": "CPAP-07-complete-alt-format-date",
+      "payer": "Aetna",
+      "procedure_code": "CPAP_DEVICE",
+      "note_sha256": "f81083503181f7a5c9ddbd6aafca26dcb1506b20462aeba70ba03aba6c1228cb",
+      "phenomena": [],
+      "labels": [
+        {
+          "requirement_key": "osa_diagnosis",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "Dx obstructive sleep apnea",
+          "rationale": "An affirmative patient OSA diagnosis is documented.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "sleep_study_date",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "Sleep study 2024/06/01",
+          "rationale": "A dated sleep study is documented.",
+          "uncertainty": "medium",
+          "uncertainty_note": "The note does not say 'completed'; a past date is read as a completed study."
+        },
+        {
+          "requirement_key": "ahi_documented",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "RDI 28",
+          "rationale": "A numeric AHI/RDI value is documented.",
+          "uncertainty": "low"
+        }
+      ]
+    },
+    {
+      "case_id": "MRI-CERV-01-ready",
+      "payer": "Aetna",
+      "procedure_code": "MRI_CERVICAL",
+      "note_sha256": "449f7c6ef18386370cd2adc4d0557a5fb09802685782eeb1076b05b9a5c89a80",
+      "phenomena": [],
+      "labels": [
+        {
+          "requirement_key": "conservative_therapy_weeks",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "PT for 8 weeks",
+          "rationale": "A conservative-therapy duration is explicitly attached to therapy.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "neuro_red_flags_documented",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "Denies weakness",
+          "rationale": "Neurological red flags are explicitly addressed (denied).",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "prior_imaging_result",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "Prior cervical xray inconclusive",
+          "rationale": "Prior imaging is documented with category 'inconclusive'.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "symptom_duration_weeks",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "x 8 weeks",
+          "rationale": "A symptom duration is documented.",
+          "uncertainty": "low"
+        }
+      ]
+    },
+    {
+      "case_id": "MRI-CERV-02-not-ready",
+      "payer": "Aetna",
+      "procedure_code": "MRI_CERVICAL",
+      "note_sha256": "830b19a00136e7af044c2b8a78c99e37517d74a881a11c62182833f387c7e97c",
+      "phenomena": [],
+      "labels": [
+        {
+          "requirement_key": "conservative_therapy_weeks",
+          "review_status": "provisional",
+          "expected_state": "NOT_MET",
+          "acceptable_states": [
+            "NOT_MET"
+          ],
+          "evidence_quote": "PT x 4 weeks",
+          "rationale": "A conservative-therapy duration is explicitly attached to therapy. It is below the 6-week minimum.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "neuro_red_flags_documented",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "Denies weakness",
+          "rationale": "Neurological red flags are explicitly addressed (denied).",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "prior_imaging_result",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "Prior cervical xray unremarkable",
+          "rationale": "Prior imaging is documented with category 'normal'.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "symptom_duration_weeks",
+          "review_status": "provisional",
+          "expected_state": "NOT_MET",
+          "acceptable_states": [
+            "NOT_MET"
+          ],
+          "evidence_quote": "x 4 weeks",
+          "rationale": "A symptom duration is documented. It is below the 6-week minimum.",
+          "uncertainty": "low"
+        }
+      ]
+    },
+    {
+      "case_id": "MRI-CERV-03-cannot-determine",
+      "payer": "Aetna",
+      "procedure_code": "MRI_CERVICAL",
+      "note_sha256": "52b4108bd403241d996a876319e1a80cfc391f0c7681e868f653416e16c880e3",
+      "phenomena": [],
+      "labels": [
+        {
+          "requirement_key": "conservative_therapy_weeks",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "PT x 8 weeks",
+          "rationale": "A conservative-therapy duration is explicitly attached to therapy.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "neuro_red_flags_documented",
+          "review_status": "provisional",
+          "expected_state": "NOT_DOCUMENTED",
+          "acceptable_states": [
+            "NOT_DOCUMENTED",
+            "NEEDS_REVIEW"
+          ],
+          "evidence_quote": null,
+          "rationale": "'No red flags mentioned' says the topic was not addressed, which is not an explicit denial.",
+          "uncertainty": "medium",
+          "uncertainty_note": "It could also be read as a blanket denial."
+        },
+        {
+          "requirement_key": "prior_imaging_result",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "No prior imaging",
+          "rationale": "Prior imaging is documented with category 'none'.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "symptom_duration_weeks",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "x 8 weeks",
+          "rationale": "A symptom duration is documented.",
+          "uncertainty": "low"
+        }
+      ]
+    },
+    {
+      "case_id": "MRI-CERV-04-positive-redflags",
+      "payer": "Aetna",
+      "procedure_code": "MRI_CERVICAL",
+      "note_sha256": "1d9429aa993a9a0a5d78b0357a9cd46bc1cab4c6f9811289c861e4563c248acb",
+      "phenomena": [],
+      "labels": [
+        {
+          "requirement_key": "conservative_therapy_weeks",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "physical therapy for 6 weeks",
+          "rationale": "A conservative-therapy duration is explicitly attached to therapy.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "neuro_red_flags_documented",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "Reports progressive weakness",
+          "rationale": "A neurological red flag is explicitly addressed (present).",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "prior_imaging_result",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "Prior CT described as abnormal",
+          "rationale": "Prior imaging is documented with category 'abnormal'.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "symptom_duration_weeks",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "x 2 months",
+          "rationale": "A symptom duration is documented.",
+          "uncertainty": "low"
+        }
+      ]
+    },
+    {
+      "case_id": "MRI-KNEE-01-ready",
+      "payer": "Aetna",
+      "procedure_code": "MRI_KNEE",
+      "note_sha256": "59421e8561fe0462a994e918046d06fb7a547ebb3e0189f17538cf11490975e3",
+      "phenomena": [],
+      "labels": [
+        {
+          "requirement_key": "conservative_therapy_weeks",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "PT for 8 weeks",
+          "rationale": "A conservative-therapy duration is explicitly attached to therapy.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "symptom_duration_weeks",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "x 8 weeks",
+          "rationale": "A symptom duration is documented.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "prior_imaging_result",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "Prior knee xray normal/unremarkable",
+          "rationale": "Prior imaging is documented with category 'normal'.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "mechanical_symptoms_documented",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "locking and catching",
+          "rationale": "Mechanical symptoms are explicitly addressed (present).",
+          "uncertainty": "low"
+        }
+      ]
+    },
+    {
+      "case_id": "MRI-KNEE-02-not-ready-no-imaging",
+      "payer": "Aetna",
+      "procedure_code": "MRI_KNEE",
+      "note_sha256": "24c14bd4fcde036db4632d576787512f5e89279d4efaab1c3e1d720f63fc1f65",
+      "phenomena": [],
+      "labels": [
+        {
+          "requirement_key": "conservative_therapy_weeks",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "PT x 8 weeks",
+          "rationale": "A conservative-therapy duration is explicitly attached to therapy.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "symptom_duration_weeks",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "x 8 weeks",
+          "rationale": "A symptom duration is documented.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "prior_imaging_result",
+          "review_status": "provisional",
+          "expected_state": "NOT_MET",
+          "acceptable_states": [
+            "NOT_MET"
+          ],
+          "evidence_quote": "No prior imaging yet",
+          "rationale": "Prior imaging is documented with category 'none'. That category is not in this procedure's allowed set.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "mechanical_symptoms_documented",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "locking",
+          "rationale": "Mechanical symptoms are explicitly addressed (present).",
+          "uncertainty": "low"
+        }
+      ]
+    },
+    {
+      "case_id": "MRI-KNEE-03-cannot-determine",
+      "payer": "Aetna",
+      "procedure_code": "MRI_KNEE",
+      "note_sha256": "f440d3d90cca6a70e47835e27eafb099661226f5790fb903c337225ba99886cf",
+      "phenomena": [],
+      "labels": [
+        {
+          "requirement_key": "conservative_therapy_weeks",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "PT x 8 weeks",
+          "rationale": "A conservative-therapy duration is explicitly attached to therapy.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "symptom_duration_weeks",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "x 8 weeks",
+          "rationale": "A symptom duration is documented.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "prior_imaging_result",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "Prior knee xray normal/unremarkable",
+          "rationale": "Prior imaging is documented with category 'normal'.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "mechanical_symptoms_documented",
+          "review_status": "provisional",
+          "expected_state": "NOT_DOCUMENTED",
+          "acceptable_states": [
+            "NOT_DOCUMENTED"
+          ],
+          "evidence_quote": null,
+          "rationale": "Mechanical symptoms are not mentioned.",
+          "uncertainty": "low"
+        }
+      ]
+    },
+    {
+      "case_id": "MRI-KNEE-04-ready-denied-mechanical",
+      "payer": "Aetna",
+      "procedure_code": "MRI_KNEE",
+      "note_sha256": "f48d51e10a0acd9ba5ef69b32c50c224779069126d48d0cd3a198686b5d9d944",
+      "phenomena": [],
+      "labels": [
+        {
+          "requirement_key": "conservative_therapy_weeks",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "PT for 6 weeks",
+          "rationale": "A conservative-therapy duration is explicitly attached to therapy.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "symptom_duration_weeks",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "x 10 weeks",
+          "rationale": "A symptom duration is documented.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "prior_imaging_result",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "Prior knee xray findings unclear",
+          "rationale": "Prior imaging is documented with category 'inconclusive'.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "mechanical_symptoms_documented",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "Denies locking or instability",
+          "rationale": "Mechanical symptoms are explicitly addressed (denied); the operator is 'documented'.",
+          "uncertainty": "low"
+        }
+      ]
+    },
+    {
+      "case_id": "MRI-KNEE-05-conflict-deny-then-positive",
+      "payer": "Aetna",
+      "procedure_code": "MRI_KNEE",
+      "note_sha256": "994f21c08480c5a6cc3355b623859613ba637167ae802aec18d5c6bd12e36f27",
+      "phenomena": [],
+      "labels": [
+        {
+          "requirement_key": "conservative_therapy_weeks",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "PT x 8 weeks",
+          "rationale": "A conservative-therapy duration is explicitly attached to therapy.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "symptom_duration_weeks",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "x 8 weeks",
+          "rationale": "A symptom duration is documented.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "prior_imaging_result",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "Prior knee xray normal",
+          "rationale": "Prior imaging is documented with category 'normal'.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "mechanical_symptoms_documented",
+          "review_status": "provisional",
+          "expected_state": "NEEDS_REVIEW",
+          "acceptable_states": [
+            "NEEDS_REVIEW",
+            "MET"
+          ],
+          "evidence_quote": "reports buckling with stairs",
+          "rationale": "The note denies and then reports mechanical symptoms.",
+          "uncertainty": "medium",
+          "uncertainty_note": "Under the 'documented' operator either statement addresses the topic, so MET is also defensible."
+        }
+      ]
+    },
+    {
+      "case_id": "CPAP-08-doc-gap-osa-not-stated",
+      "payer": "Aetna",
+      "procedure_code": "CPAP_DEVICE",
+      "note_sha256": "88c7891aa0cb968bf06431e9d54c0e68a0a39db8c8ace5f0341169471a2580a5",
+      "phenomena": [],
+      "labels": [
+        {
+          "requirement_key": "osa_diagnosis",
+          "review_status": "provisional",
+          "expected_state": "NOT_DOCUMENTED",
+          "acceptable_states": [
+            "NOT_DOCUMENTED"
+          ],
+          "evidence_quote": null,
+          "rationale": "No OSA diagnosis is stated.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "sleep_study_date",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "Sleep study completed 2024-01-05",
+          "rationale": "A completed, dated sleep study is documented.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "ahi_documented",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "AHI 22",
+          "rationale": "A numeric AHI/RDI value is documented.",
+          "uncertainty": "low"
+        }
+      ]
+    },
+    {
+      "case_id": "CPAP-09-noise-contains-date-unrelated",
+      "payer": "Aetna",
+      "procedure_code": "CPAP_DEVICE",
+      "note_sha256": "505e47f9a59a04669e95f6d3a2bf9a48d8b48f33952872d29d54d49a6d1b0a17",
+      "phenomena": [],
+      "labels": [
+        {
+          "requirement_key": "osa_diagnosis",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "OSA listed",
+          "rationale": "OSA is listed affirmatively for the patient.",
+          "uncertainty": "medium",
+          "uncertainty_note": "'Listed' is weaker than a stated diagnosis."
+        },
+        {
+          "requirement_key": "sleep_study_date",
+          "review_status": "provisional",
+          "expected_state": "NOT_DOCUMENTED",
+          "acceptable_states": [
+            "NOT_DOCUMENTED",
+            "NEEDS_REVIEW"
+          ],
+          "evidence_quote": null,
+          "rationale": "The only full date belongs to a scheduled follow-up; the note says there is no sleep study date.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "ahi_documented",
+          "review_status": "provisional",
+          "expected_state": "NOT_DOCUMENTED",
+          "acceptable_states": [
+            "NOT_DOCUMENTED"
+          ],
+          "evidence_quote": null,
+          "rationale": "The note says AHI is not documented.",
+          "uncertainty": "low"
+        }
+      ]
+    },
+    {
+      "case_id": "MRI-15-noise-unrelated-weeks",
+      "payer": "Aetna",
+      "procedure_code": "MRI_LUMBAR",
+      "note_sha256": "06489edc14d553e6b2512ca16e115c1d6806132fc0d0e6decba3d4d6639b9ebb",
+      "phenomena": [],
+      "labels": [
+        {
+          "requirement_key": "back_pain_with_radiculopathy",
+          "review_status": "provisional",
+          "expected_state": "NOT_DOCUMENTED",
+          "acceptable_states": [
+            "NOT_DOCUMENTED"
+          ],
+          "evidence_quote": null,
+          "rationale": "Back pain is mentioned without radiculopathy; the pair is not documented together.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "objective_motor_or_reflex_change_in_root_distribution",
+          "review_status": "provisional",
+          "expected_state": "NOT_DOCUMENTED",
+          "acceptable_states": [
+            "NOT_DOCUMENTED",
+            "NEEDS_REVIEW"
+          ],
+          "evidence_quote": null,
+          "rationale": "'Denies weakness' is a symptom report or denial, not an objective finding in a named nerve-root distribution.",
+          "uncertainty": "medium",
+          "uncertainty_note": "Subjective weakness statements could be routed to review."
+        },
+        {
+          "requirement_key": "cpb_0236_conservative_therapy_weeks",
+          "review_status": "provisional",
+          "expected_state": "NOT_DOCUMENTED",
+          "acceptable_states": [
+            "NOT_DOCUMENTED"
+          ],
+          "evidence_quote": null,
+          "rationale": "No CPB 0236 Footnote 1 therapy (moderate activity, analgesics, NSAIDs, muscle relaxants) with a duration; physical therapy is not a Footnote 1 modality.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "cpb_0236_conservative_therapy_no_improvement",
+          "review_status": "provisional",
+          "expected_state": "NOT_DOCUMENTED",
+          "acceptable_states": [
+            "NOT_DOCUMENTED"
+          ],
+          "evidence_quote": null,
+          "rationale": "No response is documented for a Footnote 1 therapy course.",
+          "uncertainty": "low"
+        }
+      ]
+    },
+    {
+      "case_id": "MRI-16-pt-mentioned-no-duration",
+      "payer": "Aetna",
+      "procedure_code": "MRI_LUMBAR",
+      "note_sha256": "07c78b03ceca3923f93b49724de18ccd879aaf2a4c369435221f5cee87e2c37d",
+      "phenomena": [],
+      "labels": [
+        {
+          "requirement_key": "back_pain_with_radiculopathy",
+          "review_status": "provisional",
+          "expected_state": "NOT_DOCUMENTED",
+          "acceptable_states": [
+            "NOT_DOCUMENTED"
+          ],
+          "evidence_quote": null,
+          "rationale": "Back pain is mentioned without radiculopathy; the pair is not documented together.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "objective_motor_or_reflex_change_in_root_distribution",
+          "review_status": "provisional",
+          "expected_state": "NOT_DOCUMENTED",
+          "acceptable_states": [
+            "NOT_DOCUMENTED",
+            "NEEDS_REVIEW"
+          ],
+          "evidence_quote": null,
+          "rationale": "'Denies weakness' is a symptom report or denial, not an objective finding in a named nerve-root distribution.",
+          "uncertainty": "medium",
+          "uncertainty_note": "Subjective weakness statements could be routed to review."
+        },
+        {
+          "requirement_key": "cpb_0236_conservative_therapy_weeks",
+          "review_status": "provisional",
+          "expected_state": "NOT_DOCUMENTED",
+          "acceptable_states": [
+            "NOT_DOCUMENTED"
+          ],
+          "evidence_quote": null,
+          "rationale": "NSAIDs were completed but the note says the duration is not specified.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "cpb_0236_conservative_therapy_no_improvement",
+          "review_status": "provisional",
+          "expected_state": "NOT_DOCUMENTED",
+          "acceptable_states": [
+            "NOT_DOCUMENTED"
+          ],
+          "evidence_quote": null,
+          "rationale": "No response is documented for a Footnote 1 therapy course.",
+          "uncertainty": "low"
+        }
+      ]
+    },
+    {
+      "case_id": "SAFETY-01-cross-therapy-linkage",
+      "payer": "Aetna",
+      "procedure_code": "MRI_LUMBAR",
+      "note_sha256": "4a8d27f5f7ef26530e22de9edf606af0f847b8c0c6029b8da3ed24844a89eb08",
+      "phenomena": [],
+      "labels": [
+        {
+          "requirement_key": "back_pain_with_radiculopathy",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "Low back pain with right leg radiculopathy",
+          "rationale": "Back pain and radiculopathy are documented together affirmatively.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "objective_motor_or_reflex_change_in_root_distribution",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "strength 4/5",
+          "rationale": "Reduced strength on objective exam in a named nerve-root distribution.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "cpb_0236_conservative_therapy_weeks",
+          "review_status": "provisional",
+          "expected_state": "NEEDS_REVIEW",
+          "acceptable_states": [
+            "NEEDS_REVIEW",
+            "MET"
+          ],
+          "evidence_quote": "NSAIDs for 8 weeks",
+          "rationale": "Two courses are documented (2 and 8 weeks); which one the request relies on is not stated.",
+          "uncertainty": "medium",
+          "uncertainty_note": "The 8-week NSAID course alone would meet the minimum, so MET is also defensible for duration."
+        },
+        {
+          "requirement_key": "cpb_0236_conservative_therapy_no_improvement",
+          "review_status": "provisional",
+          "expected_state": "NEEDS_REVIEW",
+          "acceptable_states": [
+            "NEEDS_REVIEW",
+            "NOT_DOCUMENTED"
+          ],
+          "evidence_quote": "no improvement",
+          "rationale": "No improvement is documented only for the 2-week muscle-relaxant course; the 8-week NSAID course has no response.",
+          "uncertainty": "low"
+        }
+      ]
+    },
+    {
+      "case_id": "SAFETY-02-cross-therapy-reversed",
+      "payer": "Aetna",
+      "procedure_code": "MRI_LUMBAR",
+      "note_sha256": "a86563ce8e7ca10cfb7d0c591fd7f1380f9a54049a2f038d6274e98fbe1ae91b",
+      "phenomena": [],
+      "labels": [
+        {
+          "requirement_key": "back_pain_with_radiculopathy",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "Low back pain with right leg radiculopathy",
+          "rationale": "Back pain and radiculopathy are documented together affirmatively.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "objective_motor_or_reflex_change_in_root_distribution",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "strength 4/5",
+          "rationale": "Reduced strength on objective exam in a named nerve-root distribution.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "cpb_0236_conservative_therapy_weeks",
+          "review_status": "provisional",
+          "expected_state": "NEEDS_REVIEW",
+          "acceptable_states": [
+            "NEEDS_REVIEW",
+            "MET"
+          ],
+          "evidence_quote": "NSAIDs for 8 weeks",
+          "rationale": "Two courses are documented (2 and 8 weeks); which one the request relies on is not stated.",
+          "uncertainty": "medium",
+          "uncertainty_note": "The 8-week NSAID course alone would meet the minimum, so MET is also defensible for duration."
+        },
+        {
+          "requirement_key": "cpb_0236_conservative_therapy_no_improvement",
+          "review_status": "provisional",
+          "expected_state": "NEEDS_REVIEW",
+          "acceptable_states": [
+            "NEEDS_REVIEW",
+            "NOT_DOCUMENTED"
+          ],
+          "evidence_quote": "no improvement",
+          "rationale": "No improvement is documented only for the 2-week muscle-relaxant course; the 8-week NSAID course has no response.",
+          "uncertainty": "low"
+        }
+      ]
+    },
+    {
+      "case_id": "SAFETY-03-family-therapy-coreference",
+      "payer": "Aetna",
+      "procedure_code": "MRI_LUMBAR",
+      "note_sha256": "f2217092e967331e15accbc281362991c6ee0ca98b47bc564a59d6bfe0170f58",
+      "phenomena": [],
+      "labels": [
+        {
+          "requirement_key": "back_pain_with_radiculopathy",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "Low back pain with right leg radiculopathy",
+          "rationale": "Back pain and radiculopathy are documented together affirmatively.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "objective_motor_or_reflex_change_in_root_distribution",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "strength 4/5",
+          "rationale": "Reduced strength on objective exam in a named nerve-root distribution.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "cpb_0236_conservative_therapy_weeks",
+          "review_status": "provisional",
+          "expected_state": "NOT_DOCUMENTED",
+          "acceptable_states": [
+            "NOT_DOCUMENTED",
+            "NEEDS_REVIEW"
+          ],
+          "evidence_quote": null,
+          "rationale": "The therapy course belongs to the patient's mother, not the patient.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "cpb_0236_conservative_therapy_no_improvement",
+          "review_status": "provisional",
+          "expected_state": "NOT_DOCUMENTED",
+          "acceptable_states": [
+            "NOT_DOCUMENTED",
+            "NEEDS_REVIEW"
+          ],
+          "evidence_quote": null,
+          "rationale": "The response belongs to the mother's course, not the patient's.",
+          "uncertainty": "low"
+        }
+      ]
+    },
+    {
+      "case_id": "SAFETY-04-family-therapy-variant",
+      "payer": "Aetna",
+      "procedure_code": "MRI_LUMBAR",
+      "note_sha256": "f60703a89490b4a754c5b737e757243f6f363932e1831ea94fba0874cc18c301",
+      "phenomena": [],
+      "labels": [
+        {
+          "requirement_key": "back_pain_with_radiculopathy",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "Low back pain with right leg radiculopathy",
+          "rationale": "Back pain and radiculopathy are documented together affirmatively.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "objective_motor_or_reflex_change_in_root_distribution",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "strength 4/5",
+          "rationale": "Reduced strength on objective exam in a named nerve-root distribution.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "cpb_0236_conservative_therapy_weeks",
+          "review_status": "provisional",
+          "expected_state": "NOT_DOCUMENTED",
+          "acceptable_states": [
+            "NOT_DOCUMENTED",
+            "NEEDS_REVIEW"
+          ],
+          "evidence_quote": null,
+          "rationale": "The therapy course belongs to the patient's mother, not the patient.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "cpb_0236_conservative_therapy_no_improvement",
+          "review_status": "provisional",
+          "expected_state": "NOT_DOCUMENTED",
+          "acceptable_states": [
+            "NOT_DOCUMENTED",
+            "NEEDS_REVIEW"
+          ],
+          "evidence_quote": null,
+          "rationale": "The response belongs to the mother's course, not the patient's.",
+          "uncertainty": "low"
+        }
+      ]
+    },
+    {
+      "case_id": "SAFETY-05-planned-therapy",
+      "payer": "Aetna",
+      "procedure_code": "MRI_LUMBAR",
+      "note_sha256": "0dbc47ffc70cf4d9f5d63d5239afde8b6400a25e18b62492ffa143ce8169ac44",
+      "phenomena": [],
+      "labels": [
+        {
+          "requirement_key": "back_pain_with_radiculopathy",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "Low back pain with right leg radiculopathy",
+          "rationale": "Back pain and radiculopathy are documented together affirmatively.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "objective_motor_or_reflex_change_in_root_distribution",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "strength 4/5",
+          "rationale": "Reduced strength on objective exam in a named nerve-root distribution.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "cpb_0236_conservative_therapy_weeks",
+          "review_status": "provisional",
+          "expected_state": "NOT_DOCUMENTED",
+          "acceptable_states": [
+            "NOT_DOCUMENTED",
+            "NEEDS_REVIEW"
+          ],
+          "evidence_quote": null,
+          "rationale": "The course is planned or proposed, not completed.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "cpb_0236_conservative_therapy_no_improvement",
+          "review_status": "provisional",
+          "expected_state": "NOT_DOCUMENTED",
+          "acceptable_states": [
+            "NOT_DOCUMENTED",
+            "NEEDS_REVIEW"
+          ],
+          "evidence_quote": null,
+          "rationale": "The response is an expectation about a future course.",
+          "uncertainty": "low"
+        }
+      ]
+    },
+    {
+      "case_id": "SAFETY-06-hypothetical-therapy-variant",
+      "payer": "Aetna",
+      "procedure_code": "MRI_LUMBAR",
+      "note_sha256": "1a477851ffa7215770701f39565d65c2c47b168f8ba2fe01d37e5874ebb80607",
+      "phenomena": [],
+      "labels": [
+        {
+          "requirement_key": "back_pain_with_radiculopathy",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "Low back pain with right leg radiculopathy",
+          "rationale": "Back pain and radiculopathy are documented together affirmatively.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "objective_motor_or_reflex_change_in_root_distribution",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "strength 4/5",
+          "rationale": "Reduced strength on objective exam in a named nerve-root distribution.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "cpb_0236_conservative_therapy_weeks",
+          "review_status": "provisional",
+          "expected_state": "NOT_DOCUMENTED",
+          "acceptable_states": [
+            "NOT_DOCUMENTED",
+            "NEEDS_REVIEW"
+          ],
+          "evidence_quote": null,
+          "rationale": "The course is planned or proposed, not completed.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "cpb_0236_conservative_therapy_no_improvement",
+          "review_status": "provisional",
+          "expected_state": "NOT_DOCUMENTED",
+          "acceptable_states": [
+            "NOT_DOCUMENTED",
+            "NEEDS_REVIEW"
+          ],
+          "evidence_quote": null,
+          "rationale": "The response is an expectation about a future course.",
+          "uncertainty": "low"
+        }
+      ]
+    },
+    {
+      "case_id": "SAFETY-07-uncertain-diagnosis",
+      "payer": "Aetna",
+      "procedure_code": "MRI_LUMBAR",
+      "note_sha256": "ffcb782b8546590949d967c6ed53e22f5f39a4019acbf354de2a86e2cc12e75e",
+      "phenomena": [],
+      "labels": [
+        {
+          "requirement_key": "back_pain_with_radiculopathy",
+          "review_status": "provisional",
+          "expected_state": "NEEDS_REVIEW",
+          "acceptable_states": [
+            "NEEDS_REVIEW",
+            "NOT_DOCUMENTED"
+          ],
+          "evidence_quote": "radiculopathy that cannot be excluded",
+          "rationale": "Radiculopathy is stated as not excluded, not as present.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "objective_motor_or_reflex_change_in_root_distribution",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "strength 4/5",
+          "rationale": "Reduced strength on objective exam in a named nerve-root distribution.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "cpb_0236_conservative_therapy_weeks",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "NSAIDs for 8 weeks",
+          "rationale": "An 8-week NSAID course meets the 6-week minimum.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "cpb_0236_conservative_therapy_no_improvement",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "no improvement",
+          "rationale": "No improvement is documented for the NSAID course.",
+          "uncertainty": "low"
+        }
+      ]
+    },
+    {
+      "case_id": "SAFETY-08-uncertain-diagnosis-variant",
+      "payer": "Aetna",
+      "procedure_code": "MRI_LUMBAR",
+      "note_sha256": "752b41c86426ffc4a7f10ff015906bd40ceea9e0890388e56e198dcfa8477d27",
+      "phenomena": [],
+      "labels": [
+        {
+          "requirement_key": "back_pain_with_radiculopathy",
+          "review_status": "provisional",
+          "expected_state": "NEEDS_REVIEW",
+          "acceptable_states": [
+            "NEEDS_REVIEW",
+            "NOT_DOCUMENTED"
+          ],
+          "evidence_quote": "radiculopathy not yet ruled out",
+          "rationale": "Radiculopathy is stated as not yet ruled out, not as present.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "objective_motor_or_reflex_change_in_root_distribution",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "strength 4/5",
+          "rationale": "Reduced strength on objective exam in a named nerve-root distribution.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "cpb_0236_conservative_therapy_weeks",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "NSAIDs for 8 weeks",
+          "rationale": "An 8-week NSAID course meets the 6-week minimum.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "cpb_0236_conservative_therapy_no_improvement",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "no improvement",
+          "rationale": "No improvement is documented for the NSAID course.",
+          "uncertainty": "low"
+        }
+      ]
+    },
+    {
+      "case_id": "SAFETY-09-contradictory-diagnosis",
+      "payer": "Aetna",
+      "procedure_code": "MRI_LUMBAR",
+      "note_sha256": "e62891534c3472a25d0cff16dd31c71969e61ced1f9950b87fd7b4685bcb3929",
+      "phenomena": [],
+      "labels": [
+        {
+          "requirement_key": "back_pain_with_radiculopathy",
+          "review_status": "provisional",
+          "expected_state": "NEEDS_REVIEW",
+          "acceptable_states": [
+            "NEEDS_REVIEW",
+            "NOT_MET"
+          ],
+          "evidence_quote": "repeat assessment ruled out radiculopathy",
+          "rationale": "The note asserts radiculopathy and then rules it out.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "objective_motor_or_reflex_change_in_root_distribution",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "strength 4/5",
+          "rationale": "Reduced strength on objective exam in a named nerve-root distribution.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "cpb_0236_conservative_therapy_weeks",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "NSAIDs for 8 weeks",
+          "rationale": "An 8-week NSAID course meets the 6-week minimum.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "cpb_0236_conservative_therapy_no_improvement",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "no improvement",
+          "rationale": "No improvement is documented for the NSAID course.",
+          "uncertainty": "low"
+        }
+      ]
+    },
+    {
+      "case_id": "SAFETY-10-objective-conflict-abnormal-first",
+      "payer": "Aetna",
+      "procedure_code": "MRI_LUMBAR",
+      "note_sha256": "0513b0194dc88b4e5adb395d922eda8df09ad15006a56d4acbec311de3ba5183",
+      "phenomena": [],
+      "labels": [
+        {
+          "requirement_key": "back_pain_with_radiculopathy",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "Low back pain with radiculopathy",
+          "rationale": "Back pain and radiculopathy are documented together affirmatively.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "objective_motor_or_reflex_change_in_root_distribution",
+          "review_status": "provisional",
+          "expected_state": "NEEDS_REVIEW",
+          "acceptable_states": [
+            "NEEDS_REVIEW",
+            "NOT_MET"
+          ],
+          "evidence_quote": "strength 5/5 on repeat",
+          "rationale": "The exam documents an abnormal and a normal finding in the same distribution.",
+          "uncertainty": "medium",
+          "uncertainty_note": "If the later normal finding is taken as current, NOT_MET is also defensible."
+        },
+        {
+          "requirement_key": "cpb_0236_conservative_therapy_weeks",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "NSAIDs for 8 weeks",
+          "rationale": "An 8-week NSAID course meets the 6-week minimum.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "cpb_0236_conservative_therapy_no_improvement",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "no improvement",
+          "rationale": "No improvement is documented for the NSAID course.",
+          "uncertainty": "low"
+        }
+      ]
+    },
+    {
+      "case_id": "SAFETY-11-objective-conflict-normal-first",
+      "payer": "Aetna",
+      "procedure_code": "MRI_LUMBAR",
+      "note_sha256": "b50b85e2d3c615716ebc984f7b2a962581293a973b7232e709c29f06de581911",
+      "phenomena": [],
+      "labels": [
+        {
+          "requirement_key": "back_pain_with_radiculopathy",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "Low back pain with radiculopathy",
+          "rationale": "Back pain and radiculopathy are documented together affirmatively.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "objective_motor_or_reflex_change_in_root_distribution",
+          "review_status": "provisional",
+          "expected_state": "NEEDS_REVIEW",
+          "acceptable_states": [
+            "NEEDS_REVIEW",
+            "NOT_MET"
+          ],
+          "evidence_quote": "initial strength 4/5",
+          "rationale": "The exam documents an abnormal and a normal finding in the same distribution.",
+          "uncertainty": "medium",
+          "uncertainty_note": "If the later normal finding is taken as current, NOT_MET is also defensible."
+        },
+        {
+          "requirement_key": "cpb_0236_conservative_therapy_weeks",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "NSAIDs for 8 weeks",
+          "rationale": "An 8-week NSAID course meets the 6-week minimum.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "cpb_0236_conservative_therapy_no_improvement",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "no improvement",
+          "rationale": "No improvement is documented for the NSAID course.",
+          "uncertainty": "low"
+        }
+      ]
+    },
+    {
+      "case_id": "SAFETY-12-objective-reflex-conflict",
+      "payer": "Aetna",
+      "procedure_code": "MRI_LUMBAR",
+      "note_sha256": "685b2243e9bb4db030bf29c48e0917ff6cc0b8eab90b1fa0dad8efb8e1f0164c",
+      "phenomena": [],
+      "labels": [
+        {
+          "requirement_key": "back_pain_with_radiculopathy",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "Low back pain with radiculopathy",
+          "rationale": "Back pain and radiculopathy are documented together affirmatively.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "objective_motor_or_reflex_change_in_root_distribution",
+          "review_status": "provisional",
+          "expected_state": "NEEDS_REVIEW",
+          "acceptable_states": [
+            "NEEDS_REVIEW",
+            "NOT_MET"
+          ],
+          "evidence_quote": "later reflexes were normal",
+          "rationale": "The exam documents an abnormal and a normal finding in the same distribution.",
+          "uncertainty": "medium",
+          "uncertainty_note": "If the later normal finding is taken as current, NOT_MET is also defensible."
+        },
+        {
+          "requirement_key": "cpb_0236_conservative_therapy_weeks",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "NSAIDs for 8 weeks",
+          "rationale": "An 8-week NSAID course meets the 6-week minimum.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "cpb_0236_conservative_therapy_no_improvement",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "no improvement",
+          "rationale": "No improvement is documented for the NSAID course.",
+          "uncertainty": "low"
+        }
+      ]
+    },
+    {
+      "case_id": "SAFETY-13-family-attribution-after-therapy",
+      "payer": "Aetna",
+      "procedure_code": "MRI_LUMBAR",
+      "note_sha256": "978b33cff13774de610f0fcf8dafcbd06343584d178cb7ec3e538299693df8e9",
+      "phenomena": [],
+      "labels": [
+        {
+          "requirement_key": "back_pain_with_radiculopathy",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "Low back pain with radiculopathy",
+          "rationale": "Back pain and radiculopathy are documented together affirmatively.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "objective_motor_or_reflex_change_in_root_distribution",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "strength 4/5",
+          "rationale": "Reduced strength on objective exam in a named nerve-root distribution.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "cpb_0236_conservative_therapy_weeks",
+          "review_status": "provisional",
+          "expected_state": "NOT_DOCUMENTED",
+          "acceptable_states": [
+            "NOT_DOCUMENTED",
+            "NEEDS_REVIEW"
+          ],
+          "evidence_quote": null,
+          "rationale": "The therapy course belongs to the patient's mother, not the patient.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "cpb_0236_conservative_therapy_no_improvement",
+          "review_status": "provisional",
+          "expected_state": "NOT_DOCUMENTED",
+          "acceptable_states": [
+            "NOT_DOCUMENTED",
+            "NEEDS_REVIEW"
+          ],
+          "evidence_quote": null,
+          "rationale": "The response belongs to the mother's course, not the patient's.",
+          "uncertainty": "low"
+        }
+      ]
+    },
+    {
+      "case_id": "SAFETY-14-future-therapy-after-mention",
+      "payer": "Aetna",
+      "procedure_code": "MRI_LUMBAR",
+      "note_sha256": "b300420a8e4a969382f1fb3d4942bd9daf9fd93270626bce817ab69759022f16",
+      "phenomena": [],
+      "labels": [
+        {
+          "requirement_key": "back_pain_with_radiculopathy",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "Low back pain with radiculopathy",
+          "rationale": "Back pain and radiculopathy are documented together affirmatively.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "objective_motor_or_reflex_change_in_root_distribution",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "strength 4/5",
+          "rationale": "Reduced strength on objective exam in a named nerve-root distribution.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "cpb_0236_conservative_therapy_weeks",
+          "review_status": "provisional",
+          "expected_state": "NOT_DOCUMENTED",
+          "acceptable_states": [
+            "NOT_DOCUMENTED",
+            "NEEDS_REVIEW"
+          ],
+          "evidence_quote": null,
+          "rationale": "The course is planned or proposed, not completed.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "cpb_0236_conservative_therapy_no_improvement",
+          "review_status": "provisional",
+          "expected_state": "NOT_DOCUMENTED",
+          "acceptable_states": [
+            "NOT_DOCUMENTED",
+            "NEEDS_REVIEW"
+          ],
+          "evidence_quote": null,
+          "rationale": "The response is an expectation about a future course.",
+          "uncertainty": "low"
+        }
+      ]
+    },
+    {
+      "case_id": "SAFETY-15-diagnosis-differential",
+      "payer": "Aetna",
+      "procedure_code": "MRI_LUMBAR",
+      "note_sha256": "96027d2bf6acb5c157ab94de862304be5b66b31c1f831c221ea3f35d05f34940",
+      "phenomena": [],
+      "labels": [
+        {
+          "requirement_key": "back_pain_with_radiculopathy",
+          "review_status": "provisional",
+          "expected_state": "NEEDS_REVIEW",
+          "acceptable_states": [
+            "NEEDS_REVIEW",
+            "NOT_DOCUMENTED"
+          ],
+          "evidence_quote": "radiculopathy remains in the differential",
+          "rationale": "Radiculopathy is a differential, not a documented finding.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "objective_motor_or_reflex_change_in_root_distribution",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "strength 4/5",
+          "rationale": "Reduced strength on objective exam in a named nerve-root distribution.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "cpb_0236_conservative_therapy_weeks",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "NSAIDs for 8 weeks",
+          "rationale": "An 8-week NSAID course meets the 6-week minimum.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "cpb_0236_conservative_therapy_no_improvement",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "no improvement",
+          "rationale": "No improvement is documented for the NSAID course.",
+          "uncertainty": "low"
+        }
+      ]
+    },
+    {
+      "case_id": "SAFETY-16-objective-finding-unconfirmed",
+      "payer": "Aetna",
+      "procedure_code": "MRI_LUMBAR",
+      "note_sha256": "99f681e644ae0f10482eca2b68fa4ca9cf5669073d8a1c6ad048fe960657ec75",
+      "phenomena": [],
+      "labels": [
+        {
+          "requirement_key": "back_pain_with_radiculopathy",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "Low back pain with radiculopathy",
+          "rationale": "Back pain and radiculopathy are documented together affirmatively.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "objective_motor_or_reflex_change_in_root_distribution",
+          "review_status": "provisional",
+          "expected_state": "NEEDS_REVIEW",
+          "acceptable_states": [
+            "NEEDS_REVIEW",
+            "NOT_DOCUMENTED"
+          ],
+          "evidence_quote": "strength 4/5 cannot be confirmed",
+          "rationale": "The finding is stated as unconfirmed.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "cpb_0236_conservative_therapy_weeks",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "NSAIDs for 8 weeks",
+          "rationale": "An 8-week NSAID course meets the 6-week minimum.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "cpb_0236_conservative_therapy_no_improvement",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "no improvement",
+          "rationale": "No improvement is documented for the NSAID course.",
+          "uncertainty": "low"
+        }
+      ]
+    },
+    {
+      "case_id": "SAFETY-17-nonpatient-osa-attribution",
+      "payer": "Aetna",
+      "procedure_code": "CPAP_DEVICE",
+      "note_sha256": "9f00d567728e14c0222ec5a35fad8342868ff3dcef2280f7662b0c8a3c7e65e4",
+      "phenomena": [],
+      "labels": [
+        {
+          "requirement_key": "osa_diagnosis",
+          "review_status": "provisional",
+          "expected_state": "NOT_DOCUMENTED",
+          "acceptable_states": [
+            "NOT_DOCUMENTED",
+            "NEEDS_REVIEW"
+          ],
+          "evidence_quote": null,
+          "rationale": "OSA is attributed to the patient's mother.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "sleep_study_date",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "Sleep study completed 2024-05-18",
+          "rationale": "A completed, dated sleep study is documented.",
+          "uncertainty": "medium",
+          "uncertainty_note": "The preceding sentence is about the mother; whose study this is is not explicit."
+        },
+        {
+          "requirement_key": "ahi_documented",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "AHI 22",
+          "rationale": "A numeric AHI is documented.",
+          "uncertainty": "medium",
+          "uncertainty_note": "Whose AHI this is is not explicit."
+        }
+      ]
+    },
+    {
+      "case_id": "SAFETY-18-questioned-osa-diagnosis",
+      "payer": "Aetna",
+      "procedure_code": "CPAP_DEVICE",
+      "note_sha256": "d2873f296b41bca8f6fbdcaff0010e6caf1ee754328ee81dc0cb6bc8a14e34ed",
+      "phenomena": [],
+      "labels": [
+        {
+          "requirement_key": "osa_diagnosis",
+          "review_status": "provisional",
+          "expected_state": "NEEDS_REVIEW",
+          "acceptable_states": [
+            "NEEDS_REVIEW",
+            "NOT_DOCUMENTED"
+          ],
+          "evidence_quote": "OSA?",
+          "rationale": "OSA is written as a question, not a diagnosis.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "sleep_study_date",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "Sleep study completed 2024-05-18",
+          "rationale": "A completed, dated sleep study is documented.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "ahi_documented",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "AHI 22",
+          "rationale": "A numeric AHI/RDI value is documented.",
+          "uncertainty": "low"
+        }
+      ]
+    }
+  ]
+}
