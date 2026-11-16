@@ -228,6 +228,7 @@ def test_bundled_synthetic_eval_cases_match_expected_labels():
     assert metrics["false_pending_verification_rate_pct"] == 0.0
     # READY needs human verification, which this harness never supplies: no false-READY rate may be published.
     assert metrics["ready_reachable"] is False
+    assert "regression invariant, not a safety estimate" in metrics["scope_note"]
     assert metrics["ready_count"] == 0
     assert not any(key.startswith("false_ready") for key in metrics)
     assert metrics["needs_review_count"] == 12

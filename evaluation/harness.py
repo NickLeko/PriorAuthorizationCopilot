@@ -12,7 +12,7 @@ from engine.schemas import PARequest
 from engine.service import ReadinessService
 
 from .metrics import CONTROLS, ScoredItem, apply_control, by_requirement, error_class, summarize
-from .schema import SCORED_TIERS, Dataset, LabeledCase
+from .schema import SCORED_TIERS, Dataset, LabeledCase, source_case_ids
 
 Predictor = Callable[[LabeledCase], Dict[str, Any]]
 
@@ -123,6 +123,8 @@ def evaluate_dataset(dataset: Dataset, predict: Predictor) -> Dict[str, Any]:
                 "all_expected_met": fully_scored and all(item.expected == "MET" for item in case_items),
                 "all_met_acceptable": fully_scored and all("MET" in item.acceptable for item in case_items),
                 "false_met_keys": false_met_keys,
+                # Requirements that stand between this case and an all-MET result.
+                "blockers": sum(1 for item in case_items if "MET" not in item.acceptable),
             }
         )
 
@@ -146,6 +148,11 @@ def evaluate_dataset(dataset: Dataset, predict: Predictor) -> Dict[str, Any]:
     should_pass = [row for row in fully if row["all_expected_met"]]
     with_false_met = [row for row in case_rows if row["false_met_keys"]]
     ready = [row for row in case_rows if row["overall_status"] == "READY"]
+    labeled_ids = {case.case_id for case in dataset.cases}
+    unlabeled_cases = [case_id for case_id in source_case_ids(dataset) if case_id not in labeled_ids]
+    depth: Dict[str, int] = {}
+    for row in should_not_pass:
+        depth[str(row["blockers"])] = depth.get(str(row["blockers"]), 0) + 1
 
     return {
         "dataset_id": dataset.dataset_id,
@@ -160,6 +167,7 @@ def evaluate_dataset(dataset: Dataset, predict: Predictor) -> Dict[str, Any]:
         "requirement_slots": len(items) + len(unscored) + len(unlabeled),
         "label_counts": label_counts,
         "unlabeled_requirements": unlabeled,
+        "unlabeled_source_cases": unlabeled_cases,
         "unscored_needs_review": unscored,
         "labels_without_matching_requirement": orphan_labels,
         "tiers": tiers,
@@ -179,6 +187,15 @@ def evaluate_dataset(dataset: Dataset, predict: Predictor) -> Dict[str, Any]:
                 "case_ids": [row["case_id"] for row in should_pass if row["overall_status"] != "PENDING_VERIFICATION"],
             },
             "predicted_all_met": len(pending),
+            "blocker_depth": {
+                "note": (
+                    "Among fully scored cases that must not be all-MET: how many requirements block each one. "
+                    "A single false MET surfaces at case level only where exactly one requirement blocks."
+                ),
+                "cases_by_blocking_requirements": dict(sorted(depth.items())),
+                "single_blocker_cases": depth.get("1", 0),
+                "denominator": len(should_not_pass),
+            },
             "false_met_hidden_by_another_blocker": {
                 "numerator": sum(1 for row in with_false_met if row["overall_status"] != "PENDING_VERIFICATION"),
                 "denominator": len(with_false_met),

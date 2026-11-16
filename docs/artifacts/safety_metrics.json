@@ -14,6 +14,6 @@
   "pending_verification_rate_pct": 13.5,
   "ready_count": 0,
   "ready_reachable": false,
-  "scope_note": "Overall-status regression on the bundled fixture. No human verifications are supplied, so READY is unreachable and no false-READY rate is reported. A correct overall status can hide a wrong requirement; requirement-level results are in docs/evaluation/requirement_level_baseline.md.",
+  "scope_note": "Overall-status regression on the bundled fixture. No human verifications are supplied, so READY is unreachable and no false-READY rate is reported. The false-PENDING_VERIFICATION count is implied by the exact-status match on fixtures written alongside the extractor, so it is a regression invariant, not a safety estimate. A correct overall status can hide a wrong requirement; requirement-level results are in docs/evaluation/requirement_level_baseline.md.",
   "total_labeled_cases": 52
 }

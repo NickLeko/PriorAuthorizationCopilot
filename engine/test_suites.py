@@ -63,8 +63,10 @@ def run_cases(rules_path: str, cases_path: str) -> List[Dict[str, Any]]:
 
 READY_SCOPE_NOTE = (
     "Overall-status regression on the bundled fixture. No human verifications are supplied, so READY is "
-    "unreachable and no false-READY rate is reported. A correct overall status can hide a wrong requirement; "
-    "requirement-level results are in docs/evaluation/requirement_level_baseline.md."
+    "unreachable and no false-READY rate is reported. The false-PENDING_VERIFICATION count is implied by the "
+    "exact-status match on fixtures written alongside the extractor, so it is a regression invariant, not a "
+    "safety estimate. A correct overall status can hide a wrong requirement; requirement-level results are in "
+    "docs/evaluation/requirement_level_baseline.md."
 )
 
 
