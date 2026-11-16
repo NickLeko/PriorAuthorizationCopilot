@@ -238,6 +238,50 @@ def test_known_lumbar_failures_are_represented_as_measured_baseline_failures(bas
     assert challenge["case_level"]["false_all_met"]["numerator"] == 7
 
 
+def test_a_case_added_to_the_note_file_cannot_go_silently_unlabeled(tmp_path, monkeypatch):
+    notes = tmp_path / "notes.json"
+    notes.write_text(json.dumps([{"id": "c1", "note_text": NOTE}, {"id": "c2", "note_text": "New case."}]), encoding="utf-8")
+    payload = dataset([label()], notes_source="notes.json")
+    del payload["cases"][0]["note_text"]
+    data = load_dataset(write(tmp_path, payload), repo_root=tmp_path)
+    monkeypatch.setattr("evaluation.harness.source_case_ids", lambda dataset: ["c1", "c2"])
+    assert evaluate_dataset(data, fake_predictor({"a": "MET"}))["unlabeled_source_cases"] == ["c2"]
+
+
+def test_blocker_depth_shows_where_a_single_false_met_would_stay_hidden(baseline):
+    depth = baseline["datasets"]["corpus52"]["case_level"]["blocker_depth"]
+    assert (depth["single_blocker_cases"], depth["denominator"]) == (19, 42)
+    assert sum(depth["cases_by_blocking_requirements"].values()) == depth["denominator"]
+    assert baseline["datasets"]["corpus52"]["unlabeled_source_cases"] == []
+
+
+def test_challenge_results_are_never_rendered_as_percentages(baseline):
+    text = report_module.render_markdown(baseline)
+    challenge = text.split("## Dataset `challenge_v1`")[1].split("## Sealed holdouts")[0]
+    assert "%" not in challenge
+    assert "13 of 17" in challenge and "known failures, not rates" in challenge
+    assert "say nothing about real-world or clinical performance" in text
+
+
+def test_decision_packet_is_compact_blind_and_quotes_the_stored_policy(baseline):
+    spec = json.loads((DATASET_DIR / "decision_packet_v1.json").read_text(encoding="utf-8"))
+    selected = {(entry["dataset"], entry["case_id"], entry["requirement_key"]) for entry in spec["entries"]}
+    assert len(selected) == len(spec["entries"]) == 37
+    # Every baseline failure and every open question is in the first review pass.
+    for dataset_id, data in baseline["datasets"].items():
+        for row in data["observed_failures"] + data["unscored_needs_review"]:
+            assert (dataset_id, row["case_id"], row["requirement_key"]) in selected
+    assert not any(entry["dataset"] == "holdout_v1" for entry in spec["entries"])
+    packet = report_module.render_decision_packet()
+    for forbidden in ("observed", "Observed", "FALSE_MET", "MISSED_MET", "predicted", "HO-0"):
+        assert forbidden not in packet
+    assert packet.count("- Decision: state") == 37
+    assert "not clinical validation" in packet
+    snapshot = json.loads((REPO_ROOT / "policy_snapshots/aetna_mri_lumbar/latest.json").read_text(encoding="utf-8"))["normalized_text"]
+    for wording in (report_module.CPB_0236_CRITERION, report_module.CPB_0236_FOOTNOTE_1):
+        assert wording in snapshot and wording in packet
+
+
 def test_labeling_packet_keeps_the_reviewer_blind_to_extractor_output():
     rows = report_module.build_packet_rows()
     assert not any("observed" in column or "predicted" in column for column in report_module.PACKET_COLUMNS)

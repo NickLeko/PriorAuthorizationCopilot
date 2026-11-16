@@ -65,7 +65,9 @@
           ],
           "evidence_quote": "minimal improvement",
           "rationale": "Minimal improvement is documented for the NSAID course.",
-          "uncertainty": "low"
+          "uncertainty": "medium",
+          "decision_type": "policy",
+          "uncertainty_note": "The policy says 'no improvement'. The rule and this label treat 'minimal improvement' as satisfying it. That reading is the rule author's, not confirmed against the payer."
         }
       ]
     },
@@ -107,7 +109,8 @@
           "evidence_quote": "NSAIDs and PT x 6 weeks",
           "rationale": "A grouped trial lists NSAIDs with a 6-week duration.",
           "uncertainty": "high",
-          "uncertainty_note": "Does 'activity modification + NSAIDs and PT x 6 weeks' document a 6-week NSAID course, or only 6 weeks of PT?"
+          "uncertainty_note": "Does 'activity modification + NSAIDs and PT x 6 weeks' document a 6-week NSAID course, or only 6 weeks of PT?",
+          "decision_type": "textual"
         },
         {
           "requirement_key": "cpb_0236_conservative_therapy_no_improvement",
@@ -116,7 +119,8 @@
           "evidence_quote": "persistent symptoms",
           "rationale": "Persistent symptoms after the trial may mean no improvement.",
           "uncertainty": "high",
-          "uncertainty_note": "Is 'persistent symptoms' an explicit statement of no improvement after the therapy course?"
+          "uncertainty_note": "Is 'persistent symptoms' an explicit statement of no improvement after the therapy course?",
+          "decision_type": "policy"
         }
       ]
     },
@@ -549,7 +553,8 @@
           "evidence_quote": "PT x 6 weeks and NSAIDs",
           "rationale": "NSAIDs are listed without their own duration.",
           "uncertainty": "high",
-          "uncertainty_note": "Does the 6-week duration apply to NSAIDs as well as PT?"
+          "uncertainty_note": "Does the 6-week duration apply to NSAIDs as well as PT?",
+          "decision_type": "textual"
         },
         {
           "requirement_key": "cpb_0236_conservative_therapy_no_improvement",
@@ -558,7 +563,8 @@
           "evidence_quote": "without improvement",
           "rationale": "No improvement is stated for PT and NSAIDs together.",
           "uncertainty": "high",
-          "uncertainty_note": "If the NSAID course has no documented duration, is its response still a linked-course response?"
+          "uncertainty_note": "If the NSAID course has no documented duration, is its response still a linked-course response?",
+          "decision_type": "policy"
         }
       ]
     },
@@ -1791,7 +1797,8 @@
           "evidence_quote": "NSAIDs for 8 weeks",
           "rationale": "Two courses are documented (2 and 8 weeks); which one the request relies on is not stated.",
           "uncertainty": "medium",
-          "uncertainty_note": "The 8-week NSAID course alone would meet the minimum, so MET is also defensible for duration."
+          "uncertainty_note": "The 8-week NSAID course alone would meet the minimum, so MET is also defensible for duration.",
+          "decision_type": "policy"
         },
         {
           "requirement_key": "cpb_0236_conservative_therapy_no_improvement",
@@ -1902,7 +1909,8 @@
           ],
           "evidence_quote": null,
           "rationale": "The therapy course belongs to the patient's mother, not the patient.",
-          "uncertainty": "low"
+          "uncertainty": "low",
+          "decision_type": "textual"
         },
         {
           "requirement_key": "cpb_0236_conservative_therapy_no_improvement",

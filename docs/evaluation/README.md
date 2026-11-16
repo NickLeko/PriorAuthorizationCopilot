@@ -17,7 +17,9 @@ It is evaluation only. Nothing here changes extraction, evaluation, archives, ve
 | --- | --- |
 | [requirement_level_baseline.md](requirement_level_baseline.md) | Human-readable baseline for the current extractor |
 | [requirement_level_baseline.json](requirement_level_baseline.json) | The same results, machine-readable |
-| [labeling_packet.csv](labeling_packet.csv) | Labels awaiting human review, without extractor output |
+| [decision_packet.md](decision_packet.md) | First review pass: 37 label decisions, without extractor output |
+| [labeling_packet.csv](labeling_packet.csv) | Every label awaiting human review, without extractor output |
+| [phase2_proposal.md](phase2_proposal.md) | Metric audit, failure mechanisms and the proposed Phase 2 change |
 | `evaluation/datasets/corpus52_labels.json` | Per-requirement labels for the 52 bundled cases |
 | `evaluation/datasets/challenge_v1.json` | 20 agent-authored notes aimed at known weak areas |
 | `evaluation/datasets/holdout_v1.json` | 10 sealed notes, unlabeled and never run |
@@ -55,7 +57,7 @@ Each scored tier also reports three constant predictors on the same labels. Alwa
 
 ## Reviewing labels
 
-1. Open `labeling_packet.csv`. Rows are ordered: decide the open questions first, then confirm medium and high uncertainty labels, then the rest, then label the holdout from scratch.
+1. Start with `decision_packet.md`. Then open `labeling_packet.csv`, where rows are ordered: decide the open questions first, then confirm medium and high uncertainty labels, then the rest, then label the holdout from scratch.
 2. Do not run the tool on a note before labeling it. The packet leaves extractor output out for that reason.
 3. Fill the reviewer columns. For each row, record the state, any other defensible state, an exact quote from the note, your name and the date.
 4. Transfer decisions into the dataset file by setting `review_status` to `verified` with `reviewer`, `reviewer_type: "human"` and `reviewed_on`. Then regenerate the report.

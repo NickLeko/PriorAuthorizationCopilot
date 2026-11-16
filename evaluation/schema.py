@@ -64,6 +64,9 @@ class RequirementLabel(BaseModel):
     rationale: str = Field(min_length=1)
     uncertainty: Literal["low", "medium", "high"]
     uncertainty_note: Optional[str] = None
+    # Who can settle this label: a careful reader ("textual"), whoever owns the policy or
+    # rule ("policy"), or a clinician ("clinical"). Unset means it has not been classified.
+    decision_type: Optional[Literal["textual", "policy", "clinical"]] = None
     provenance: Optional[LabelProvenance] = None
     reviewer: Optional[str] = None
     reviewer_type: Optional[Literal["human"]] = None
@@ -146,6 +149,13 @@ class Dataset(BaseModel):
                         raise ValueError(f"Label without provenance: {case.case_id}/{label.requirement_key}")
                     label.provenance = self.label_defaults
         return self
+
+
+def source_case_ids(dataset: Dataset, repo_root: Path = REPO_ROOT) -> List[str]:
+    """Case IDs in the referenced note file, so a case added there cannot go silently unlabeled."""
+    if not dataset.notes_source:
+        return []
+    return [item["id"] for item in json.loads((repo_root / dataset.notes_source).read_text(encoding="utf-8"))]
 
 
 def _resolve_notes(dataset: Dataset, repo_root: Path) -> None:

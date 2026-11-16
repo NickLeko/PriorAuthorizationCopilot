@@ -2,16 +2,25 @@
   "dataset_files": {
     "challenge_v1": {
       "file": "evaluation/datasets/challenge_v1.json",
-      "sha256": "615937b8f41b27b3b07f572644f23ca5e93f64286137efd5ee6067cdd240c098"
+      "sha256": "b47960837353037569563f7cd087242be80ddc7b23dfeee640ffeb20dbb1baa2"
     },
     "corpus52": {
       "file": "evaluation/datasets/corpus52_labels.json",
-      "sha256": "d51502e7457f8a8a18e5762ba13b5bafed96c8f4ed038eebf98c2f31b3d2be8c"
+      "sha256": "8031a51f36bd72c1cd3c9345bf029f62a26fbc13645a4a08f920f0a2790c7be1"
     }
   },
   "datasets": {
     "challenge_v1": {
       "case_level": {
+        "blocker_depth": {
+          "cases_by_blocking_requirements": {
+            "1": 6,
+            "2": 5
+          },
+          "denominator": 11,
+          "note": "Among fully scored cases that must not be all-MET: how many requirements block each one. A single false MET surfaces at case level only where exactly one requirement blocks.",
+          "single_blocker_cases": 6
+        },
         "false_all_met": {
           "case_ids": [
             "CH-02-missed-nsaids",
@@ -3696,6 +3705,7 @@
         }
       },
       "unlabeled_requirements": [],
+      "unlabeled_source_cases": [],
       "unscored_needs_review": [
         {
           "case_id": "CH-05-intermittent-adherence",
@@ -3715,6 +3725,17 @@
     },
     "corpus52": {
       "case_level": {
+        "blocker_depth": {
+          "cases_by_blocking_requirements": {
+            "1": 19,
+            "2": 10,
+            "3": 1,
+            "4": 12
+          },
+          "denominator": 42,
+          "note": "Among fully scored cases that must not be all-MET: how many requirements block each one. A single false MET surfaces at case level only where exactly one requirement blocks.",
+          "single_blocker_cases": 19
+        },
         "false_all_met": {
           "case_ids": [],
           "denominator": 42,
@@ -6839,6 +6860,7 @@
         }
       },
       "unlabeled_requirements": [],
+      "unlabeled_source_cases": [],
       "unscored_needs_review": [
         {
           "case_id": "MRI-02-complete",
@@ -6876,6 +6898,8 @@
     "All notes are synthetic. No note is real clinical documentation.",
     "The datasets are small and were selected, not sampled. Counts are observed failures on these notes; no population-level error rate is estimated or implied.",
     "The label author had read the extractor source, and for part of the challenge set had seen extractor output before labeling.",
+    "The challenge set is adversarial and partly chosen because the extractor was already seen to fail on it. Its counts are a list of known failures. Its proportions say nothing about real-world or clinical performance and are shown without percentages.",
+    "The bundled corpus was written alongside the extractor. Agreement on it shows the extractor still does what its fixtures expect, not that it is accurate.",
     "READY is structurally unreachable in this harness because no human verifications are supplied. No false-READY rate exists here.",
     "Labels marked needs_review and requirements without a label are excluded from every rate and listed separately."
   ],

@@ -10,6 +10,8 @@ Requirement-level agreement between the production regex extractor and written l
 - All notes are synthetic. No note is real clinical documentation.
 - The datasets are small and were selected, not sampled. Counts are observed failures on these notes; no population-level error rate is estimated or implied.
 - The label author had read the extractor source, and for part of the challenge set had seen extractor output before labeling.
+- The challenge set is adversarial and partly chosen because the extractor was already seen to fail on it. Its counts are a list of known failures. Its proportions say nothing about real-world or clinical performance and are shown without percentages.
+- The bundled corpus was written alongside the extractor. Agreement on it shows the extractor still does what its fixtures expect, not that it is accurate.
 - READY is structurally unreachable in this harness because no human verifications are supplied. No false-READY rate exists here.
 - Labels marked needs_review and requirements without a label are excluded from every rate and listed separately.
 
@@ -23,6 +25,7 @@ Per-requirement labels for the 52 bundled synthetic cases in inputs/synthetic_ca
 - Selection: Not a sample of real notes. 42 of 52 cases were built to end in an abstention; affirmative cases are few.
 - Cases: 52; requirement slots: 197
 - Labels: 0 verified, 193 provisional, 4 needs review (unscored), 0 unlabeled (unscored)
+- Source cases with no labels at all: 0
 - Cases whose extractor output was seen before labeling: 0
 
 ### Verified labels
@@ -78,12 +81,14 @@ Per requirement:
 
 Controls on the same labels. A constant predictor must not look good:
 
-| Predictor | False MET | MET recall | Decided coverage | Meets minimum utility | Flags |
+| Predictor | False MET | MET recall | Decided coverage | Degenerate | Flags |
 | --- | --- | --- | --- | --- | --- |
-| Production extractor | 0/94 (0.0%) | 96/96 (100.0%) | 100/193 (51.8%) | yes | none |
-| ALWAYS_NOT_DOCUMENTED | 0/94 (0.0%) | 0/96 (0.0%) | 0/193 (0.0%) | no | ZERO_MET_RECALL, NEVER_DECIDES |
-| ALWAYS_NEEDS_REVIEW | 0/94 (0.0%) | 0/96 (0.0%) | 0/193 (0.0%) | no | ZERO_MET_RECALL, NEVER_DECIDES |
-| ALWAYS_MET | 94/94 (100.0%) | 96/96 (100.0%) | 193/193 (100.0%) | no | ASSERTS_EVERY_UNSUPPORTED_FACT |
+| Production extractor | 0/94 (0.0%) | 96/96 (100.0%) | 100/193 (51.8%) | no | none |
+| ALWAYS_NOT_DOCUMENTED | 0/94 (0.0%) | 0/96 (0.0%) | 0/193 (0.0%) | yes | ZERO_MET_RECALL, NEVER_DECIDES |
+| ALWAYS_NEEDS_REVIEW | 0/94 (0.0%) | 0/96 (0.0%) | 0/193 (0.0%) | yes | ZERO_MET_RECALL, NEVER_DECIDES |
+| ALWAYS_MET | 94/94 (100.0%) | 96/96 (100.0%) | 193/193 (100.0%) | yes | ASSERTS_EVERY_UNSUPPORTED_FACT |
+
+'Degenerate: no' only means the predictor is not one of these constant baselines. It is not a quality bar.
 
 ### Case level
 
@@ -94,6 +99,8 @@ Derived from requirement labels. A case counts only if every requirement has a s
 | All requirements MET when at least one must not be | 0/42 | fully scored cases where at least one requirement must not be MET |
 | Not all MET when every requirement is expected MET | 0/7 | fully scored cases where every requirement is expected MET |
 | False MET hidden by another blocker | 0/0 | cases with at least one false MET; overall status was not PENDING_VERIFICATION |
+
+Blocker depth: 19 of 42 non-passing cases are blocked by exactly one requirement. Only in those can a single false MET change the overall status; in the rest it stays hidden (cases by number of blocking requirements: {'1': 19, '2': 10, '3': 1, '4': 12}).
 
 READY: not reachable. No human verifications are supplied, so READY cannot occur. No false-READY rate is reported.
 
@@ -118,6 +125,7 @@ Twenty synthetic notes targeting temporal ambiguity, treatment adherence, contra
 - Selection: Adversarial and non-random. Fourteen notes were chosen after their extractor output had been seen, so failure counts here are a list of known failures, not a rate.
 - Cases: 20; requirement slots: 78
 - Labels: 0 verified, 76 provisional, 2 needs review (unscored), 0 unlabeled (unscored)
+- Source cases with no labels at all: 0
 - Cases whose extractor output was seen before labeling: 14
 
 ### Verified labels
@@ -128,20 +136,22 @@ No verified labels exist. Nothing is reported for this tier.
 
 Scored labels: 76.
 
+Adversarial set: counts only. These are known failures, not rates.
+
 | Metric | Result | Denominator |
 | --- | --- | --- |
-| False MET | 13/17 (76.5%) | scored labels where MET is not an acceptable state |
-| MET precision | 48/61 (78.7%) | scored labels predicted MET |
-| Missed MET | 11/59 (18.6%) | scored labels whose expected state is MET |
-| MET recall | 48/59 (81.4%) | scored labels whose expected state is MET |
-| Over-abstention | 11/61 (18.0%) | scored labels whose expected state is MET or NOT_MET |
-| Abstention rate | 14/76 (18.4%) | all scored labels; predicted NOT_DOCUMENTED or NEEDS_REVIEW |
-| Review rate | 0/76 (0.0%) | all scored labels; predicted NEEDS_REVIEW |
-| Decided coverage | 62/76 (81.6%) | all scored labels; predicted MET or NOT_MET |
-| Exact agreement | 52/76 (68.4%) | all scored labels |
-| Acceptable agreement | 52/76 (68.4%) | all scored labels |
-| Evidence coverage | 62/62 (100.0%) | scored labels predicted MET, NOT_MET or NEEDS_REVIEW; at least one cited span |
-| Evidence overlap | 49/49 (100.0%) | exact-agreement labels with an expected quote and a cited span; cited span overlaps the quote |
+| False MET | 13 of 17 | scored labels where MET is not an acceptable state |
+| MET precision | 48 of 61 | scored labels predicted MET |
+| Missed MET | 11 of 59 | scored labels whose expected state is MET |
+| MET recall | 48 of 59 | scored labels whose expected state is MET |
+| Over-abstention | 11 of 61 | scored labels whose expected state is MET or NOT_MET |
+| Abstention rate | 14 of 76 | all scored labels; predicted NOT_DOCUMENTED or NEEDS_REVIEW |
+| Review rate | 0 of 76 | all scored labels; predicted NEEDS_REVIEW |
+| Decided coverage | 62 of 76 | all scored labels; predicted MET or NOT_MET |
+| Exact agreement | 52 of 76 | all scored labels |
+| Acceptable agreement | 52 of 76 | all scored labels |
+| Evidence coverage | 62 of 62 | scored labels predicted MET, NOT_MET or NEEDS_REVIEW; at least one cited span |
+| Evidence overlap | 49 of 49 | exact-agreement labels with an expected quote and a cited span; cited span overlaps the quote |
 
 Utility flags: none.
 
@@ -158,27 +168,29 @@ Per requirement:
 
 | Requirement | Scored | False MET | Missed MET | MET precision | MET recall |
 | --- | ---: | --- | --- | --- | --- |
-| `ahi_documented` | 2 | not measured (no eligible labels) | 0/2 (0.0%) | 2/2 (100.0%) | 2/2 (100.0%) |
-| `back_pain_with_radiculopathy` | 15 | 0/1 (0.0%) | 0/14 (0.0%) | 14/14 (100.0%) | 14/14 (100.0%) |
-| `conservative_therapy_weeks` | 3 | 1/1 (100.0%) | 1/2 (50.0%) | 1/2 (50.0%) | 1/2 (50.0%) |
-| `cpb_0236_conservative_therapy_no_improvement` | 14 | 5/6 (83.3%) | 3/8 (37.5%) | 5/10 (50.0%) | 5/8 (62.5%) |
-| `cpb_0236_conservative_therapy_weeks` | 15 | 4/5 (80.0%) | 3/10 (30.0%) | 7/11 (63.6%) | 7/10 (70.0%) |
-| `mechanical_symptoms_documented` | 1 | not measured (no eligible labels) | 0/1 (0.0%) | 1/1 (100.0%) | 1/1 (100.0%) |
-| `neuro_red_flags_documented` | 2 | not measured (no eligible labels) | 0/2 (0.0%) | 2/2 (100.0%) | 2/2 (100.0%) |
-| `objective_motor_or_reflex_change_in_root_distribution` | 14 | 1/1 (100.0%) | 1/13 (7.7%) | 12/13 (92.3%) | 12/13 (92.3%) |
-| `osa_diagnosis` | 2 | not measured (no eligible labels) | 0/2 (0.0%) | 2/2 (100.0%) | 2/2 (100.0%) |
-| `prior_imaging_result` | 3 | 1/1 (100.0%) | 2/2 (100.0%) | 0/1 (0.0%) | 0/2 (0.0%) |
-| `sleep_study_date` | 2 | 0/1 (0.0%) | 0/1 (0.0%) | 1/1 (100.0%) | 1/1 (100.0%) |
-| `symptom_duration_weeks` | 3 | 1/1 (100.0%) | 1/2 (50.0%) | 1/2 (50.0%) | 1/2 (50.0%) |
+| `ahi_documented` | 2 | not measured (no eligible labels) | 0 of 2 | 2 of 2 | 2 of 2 |
+| `back_pain_with_radiculopathy` | 15 | 0 of 1 | 0 of 14 | 14 of 14 | 14 of 14 |
+| `conservative_therapy_weeks` | 3 | 1 of 1 | 1 of 2 | 1 of 2 | 1 of 2 |
+| `cpb_0236_conservative_therapy_no_improvement` | 14 | 5 of 6 | 3 of 8 | 5 of 10 | 5 of 8 |
+| `cpb_0236_conservative_therapy_weeks` | 15 | 4 of 5 | 3 of 10 | 7 of 11 | 7 of 10 |
+| `mechanical_symptoms_documented` | 1 | not measured (no eligible labels) | 0 of 1 | 1 of 1 | 1 of 1 |
+| `neuro_red_flags_documented` | 2 | not measured (no eligible labels) | 0 of 2 | 2 of 2 | 2 of 2 |
+| `objective_motor_or_reflex_change_in_root_distribution` | 14 | 1 of 1 | 1 of 13 | 12 of 13 | 12 of 13 |
+| `osa_diagnosis` | 2 | not measured (no eligible labels) | 0 of 2 | 2 of 2 | 2 of 2 |
+| `prior_imaging_result` | 3 | 1 of 1 | 2 of 2 | 0 of 1 | 0 of 2 |
+| `sleep_study_date` | 2 | 0 of 1 | 0 of 1 | 1 of 1 | 1 of 1 |
+| `symptom_duration_weeks` | 3 | 1 of 1 | 1 of 2 | 1 of 2 | 1 of 2 |
 
 Controls on the same labels. A constant predictor must not look good:
 
-| Predictor | False MET | MET recall | Decided coverage | Meets minimum utility | Flags |
+| Predictor | False MET | MET recall | Decided coverage | Degenerate | Flags |
 | --- | --- | --- | --- | --- | --- |
-| Production extractor | 13/17 (76.5%) | 48/59 (81.4%) | 62/76 (81.6%) | yes | none |
-| ALWAYS_NOT_DOCUMENTED | 0/17 (0.0%) | 0/59 (0.0%) | 0/76 (0.0%) | no | ZERO_MET_RECALL, NEVER_DECIDES |
-| ALWAYS_NEEDS_REVIEW | 0/17 (0.0%) | 0/59 (0.0%) | 0/76 (0.0%) | no | ZERO_MET_RECALL, NEVER_DECIDES |
-| ALWAYS_MET | 17/17 (100.0%) | 59/59 (100.0%) | 76/76 (100.0%) | no | ASSERTS_EVERY_UNSUPPORTED_FACT |
+| Production extractor | 13 of 17 | 48 of 59 | 62 of 76 | no | none |
+| ALWAYS_NOT_DOCUMENTED | 0 of 17 | 0 of 59 | 0 of 76 | yes | ZERO_MET_RECALL, NEVER_DECIDES |
+| ALWAYS_NEEDS_REVIEW | 0 of 17 | 0 of 59 | 0 of 76 | yes | ZERO_MET_RECALL, NEVER_DECIDES |
+| ALWAYS_MET | 17 of 17 | 59 of 59 | 76 of 76 | yes | ASSERTS_EVERY_UNSUPPORTED_FACT |
+
+'Degenerate: no' only means the predictor is not one of these constant baselines. It is not a quality bar.
 
 ### Case level
 
@@ -189,6 +201,8 @@ Derived from requirement labels. A case counts only if every requirement has a s
 | All requirements MET when at least one must not be | 7/11 | fully scored cases where at least one requirement must not be MET |
 | Not all MET when every requirement is expected MET | 5/7 | fully scored cases where every requirement is expected MET |
 | False MET hidden by another blocker | 1/9 | cases with at least one false MET; overall status was not PENDING_VERIFICATION |
+
+Blocker depth: 6 of 11 non-passing cases are blocked by exactly one requirement. Only in those can a single false MET change the overall status; in the rest it stays hidden (cases by number of blocking requirements: {'1': 6, '2': 5}).
 
 READY: not reachable. No human verifications are supplied, so READY cannot occur. No false-READY rate is reported.
 

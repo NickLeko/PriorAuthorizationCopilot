@@ -57,7 +57,8 @@
           ],
           "evidence_quote": "NSAIDs for 8 weeks",
           "rationale": "An 8-week NSAID course meets the 6-week minimum.",
-          "uncertainty": "low"
+          "uncertainty": "low",
+          "decision_type": "textual"
         },
         {
           "requirement_key": "cpb_0236_conservative_therapy_no_improvement",
@@ -115,7 +116,8 @@
           ],
           "evidence_quote": null,
           "rationale": "The note says the NSAIDs were missed, so no completed course is documented.",
-          "uncertainty": "low"
+          "uncertainty": "low",
+          "decision_type": "textual"
         },
         {
           "requirement_key": "cpb_0236_conservative_therapy_no_improvement",
@@ -127,7 +129,8 @@
           ],
           "evidence_quote": null,
           "rationale": "There is no completed course for the response to attach to.",
-          "uncertainty": "low"
+          "uncertainty": "low",
+          "decision_type": "textual"
         }
       ]
     },
@@ -176,7 +179,8 @@
           "evidence_quote": "In 2019, NSAIDs for 8 weeks",
           "rationale": "The course is dated 2019; the note does not link it to the current presentation.",
           "uncertainty": "medium",
-          "uncertainty_note": "Whether a years-old course can count for the current request is a policy question."
+          "uncertainty_note": "Whether a years-old course can count for the current request is a policy question.",
+          "decision_type": "policy"
         },
         {
           "requirement_key": "cpb_0236_conservative_therapy_no_improvement",
@@ -189,7 +193,8 @@
           "evidence_quote": "no improvement",
           "rationale": "The response belongs to the 2019 course.",
           "uncertainty": "medium",
-          "uncertainty_note": "Same question as the duration."
+          "uncertainty_note": "Same question as the duration.",
+          "decision_type": "policy"
         }
       ]
     },
@@ -249,7 +254,8 @@
           "evidence_quote": "now much improved",
           "rationale": "The note states no improvement initially and marked improvement now.",
           "uncertainty": "medium",
-          "uncertainty_note": "If the current state governs, NOT_MET is also defensible."
+          "uncertainty_note": "If the current state governs, NOT_MET is also defensible.",
+          "decision_type": "textual"
         }
       ]
     },
@@ -297,7 +303,8 @@
           "evidence_quote": "taken twice total",
           "rationale": "Two doses over 8 weeks is not clearly an 8-week course.",
           "uncertainty": "medium",
-          "uncertainty_note": "Whether minimal adherence defeats the duration is a policy question."
+          "uncertainty_note": "Whether minimal adherence defeats the duration is a policy question.",
+          "decision_type": "policy"
         },
         {
           "requirement_key": "cpb_0236_conservative_therapy_no_improvement",
@@ -306,7 +313,8 @@
           "evidence_quote": "with no improvement",
           "rationale": "No improvement is stated, but for a course that was barely taken.",
           "uncertainty": "high",
-          "uncertainty_note": "Does a response to a barely-taken course count as documented, need review, or count as absent?"
+          "uncertainty_note": "Does a response to a barely-taken course count as documented, need review, or count as absent?",
+          "decision_type": "policy"
         }
       ]
     },
@@ -365,7 +373,8 @@
           "evidence_quote": "Exam two years ago",
           "rationale": "The only objective finding is from two years ago.",
           "uncertainty": "medium",
-          "uncertainty_note": "The policy does not state how recent the exam must be."
+          "uncertainty_note": "The policy does not state how recent the exam must be.",
+          "decision_type": "policy"
         }
       ]
     },
@@ -412,7 +421,8 @@
           "evidence_quote": "ibuprofen daily for the past two months",
           "rationale": "Ibuprofen is an NSAID taken daily for two months, above the 6-week minimum.",
           "uncertainty": "medium",
-          "uncertainty_note": "Requires reading two months as at least 6 weeks."
+          "uncertainty_note": "Requires reading two months as at least 6 weeks.",
+          "decision_type": "textual"
         },
         {
           "requirement_key": "cpb_0236_conservative_therapy_no_improvement",
@@ -423,7 +433,8 @@
           ],
           "evidence_quote": "without relief",
           "rationale": "No relief is documented for that course.",
-          "uncertainty": "low"
+          "uncertainty": "low",
+          "decision_type": "textual"
         }
       ]
     },
@@ -469,7 +480,8 @@
           ],
           "evidence_quote": "naproxen x 8 wks",
           "rationale": "Naproxen is an NSAID trialled for 8 weeks.",
-          "uncertainty": "low"
+          "uncertainty": "low",
+          "decision_type": "textual"
         },
         {
           "requirement_key": "cpb_0236_conservative_therapy_no_improvement",
@@ -482,7 +494,8 @@
           "evidence_quote": "failed",
           "rationale": "A failed trial documents lack of improvement.",
           "uncertainty": "medium",
-          "uncertainty_note": "'Failed' can also mean intolerance rather than no improvement."
+          "uncertainty_note": "'Failed' can also mean intolerance rather than no improvement.",
+          "decision_type": "textual"
         }
       ]
     },
@@ -537,7 +550,8 @@
           "evidence_quote": "Right EHL 4/5",
           "rationale": "Reduced strength in a named muscle on exam; no nerve root is named.",
           "uncertainty": "high",
-          "uncertainty_note": "Does weakness in a named muscle (EHL) without a named root satisfy 'objective findings in the specific nerve root distribution'? This needs a clinician or the policy owner."
+          "uncertainty_note": "Does weakness in a named muscle (EHL) without a named root satisfy 'objective findings in the specific nerve root distribution'? This needs a clinician or the policy owner.",
+          "decision_type": "clinical"
         }
       ]
     },
@@ -595,7 +609,8 @@
           "evidence_quote": "right ankle dorsiflexion 4/5 (L5)",
           "rationale": "Reduced strength on motor exam with the L5 root named.",
           "uncertainty": "medium",
-          "uncertainty_note": "The root is named in parentheses rather than as 'L5 distribution'."
+          "uncertainty_note": "The root is named in parentheses rather than as 'L5 distribution'.",
+          "decision_type": "textual"
         }
       ]
     },
@@ -641,7 +656,8 @@
           ],
           "evidence_quote": "Ibuprofen 600 mg TID for 8 weeks",
           "rationale": "Ibuprofen is an NSAID taken for 8 weeks.",
-          "uncertainty": "low"
+          "uncertainty": "low",
+          "decision_type": "textual"
         },
         {
           "requirement_key": "cpb_0236_conservative_therapy_no_improvement",
@@ -653,7 +669,8 @@
           "evidence_quote": "symptoms unchanged",
           "rationale": "Unchanged symptoms after the course document no improvement.",
           "uncertainty": "medium",
-          "uncertainty_note": "'Unchanged' is not one of the contract's listed response words."
+          "uncertainty_note": "'Unchanged' is not one of the contract's listed response words.",
+          "decision_type": "textual"
         }
       ]
     },
@@ -701,7 +718,8 @@
           ],
           "evidence_quote": null,
           "rationale": "The 8 weeks were prescribed, not completed; the course lasted 3 days.",
-          "uncertainty": "low"
+          "uncertainty": "low",
+          "decision_type": "textual"
         },
         {
           "requirement_key": "cpb_0236_conservative_therapy_no_improvement",
@@ -738,7 +756,8 @@
           ],
           "evidence_quote": "No low back pain or radiculopathy today",
           "rationale": "Back pain and radiculopathy are explicitly negated.",
-          "uncertainty": "low"
+          "uncertainty": "low",
+          "decision_type": "textual"
         },
         {
           "requirement_key": "objective_motor_or_reflex_change_in_root_distribution",
@@ -830,7 +849,8 @@
           "evidence_quote": "pain has resolved",
           "rationale": "No improvement is followed by a statement that pain has resolved.",
           "uncertainty": "medium",
-          "uncertainty_note": "If the follow-up governs, NOT_MET is also defensible."
+          "uncertainty_note": "If the follow-up governs, NOT_MET is also defensible.",
+          "decision_type": "textual"
         }
       ]
     },
@@ -879,7 +899,8 @@
           "evidence_quote": "before the current flare began last week",
           "rationale": "The course predates the current flare.",
           "uncertainty": "medium",
-          "uncertainty_note": "Whether an earlier-episode course counts is a policy question."
+          "uncertainty_note": "Whether an earlier-episode course counts is a policy question.",
+          "decision_type": "policy"
         },
         {
           "requirement_key": "cpb_0236_conservative_therapy_no_improvement",
@@ -892,7 +913,8 @@
           "evidence_quote": "no improvement at the time",
           "rationale": "The response belongs to the earlier course.",
           "uncertainty": "medium",
-          "uncertainty_note": "Same question as the duration."
+          "uncertainty_note": "Same question as the duration.",
+          "decision_type": "policy"
         }
       ]
     },
@@ -942,7 +964,8 @@
           "evidence_quote": null,
           "rationale": "The only imaging is of the ankle, not the cervical spine.",
           "uncertainty": "medium",
-          "uncertainty_note": "The rule text does not say prior imaging must be of the requested region."
+          "uncertainty_note": "The rule text does not say prior imaging must be of the requested region.",
+          "decision_type": "policy"
         },
         {
           "requirement_key": "symptom_duration_weeks",
@@ -955,7 +978,8 @@
           ],
           "evidence_quote": "Neck pain for 3 days",
           "rationale": "Symptoms have lasted 3 days; the 12 weeks describe travel.",
-          "uncertainty": "low"
+          "uncertainty": "low",
+          "decision_type": "textual"
         }
       ]
     },
@@ -980,7 +1004,8 @@
           ],
           "evidence_quote": null,
           "rationale": "The note says PT was missed, so no completed therapy duration is documented.",
-          "uncertainty": "low"
+          "uncertainty": "low",
+          "decision_type": "textual"
         },
         {
           "requirement_key": "symptom_duration_weeks",
@@ -1003,7 +1028,8 @@
           "evidence_quote": "X-ray negative",
           "rationale": "A negative x-ray result is documented.",
           "uncertainty": "medium",
-          "uncertainty_note": "The x-ray region is not stated."
+          "uncertainty_note": "The x-ray region is not stated.",
+          "decision_type": "textual"
         },
         {
           "requirement_key": "mechanical_symptoms_documented",
@@ -1051,7 +1077,8 @@
           ],
           "evidence_quote": null,
           "rationale": "The dated study was cancelled and the repeat is pending; the 2019 study has no date.",
-          "uncertainty": "low"
+          "uncertainty": "low",
+          "decision_type": "textual"
         },
         {
           "requirement_key": "ahi_documented",
@@ -1137,7 +1164,8 @@
           "evidence_quote": "two-month course of physical therapy",
           "rationale": "Two months of completed physical therapy, above the 6-week minimum.",
           "uncertainty": "medium",
-          "uncertainty_note": "Requires reading two months as at least 6 weeks."
+          "uncertainty_note": "Requires reading two months as at least 6 weeks.",
+          "decision_type": "textual"
         },
         {
           "requirement_key": "neuro_red_flags_documented",
@@ -1159,7 +1187,8 @@
           ],
           "evidence_quote": "Cervical radiographs showed degenerative changes",
           "rationale": "Prior imaging with an abnormal finding is documented.",
-          "uncertainty": "low"
+          "uncertainty": "low",
+          "decision_type": "textual"
         },
         {
           "requirement_key": "symptom_duration_weeks",
@@ -1171,7 +1200,8 @@
           "evidence_quote": "began about three months ago",
           "rationale": "About three months of symptoms, above the 6-week minimum.",
           "uncertainty": "medium",
-          "uncertainty_note": "Duration is expressed as an onset, not as 'for N weeks'."
+          "uncertainty_note": "Duration is expressed as an onset, not as 'for N weeks'.",
+          "decision_type": "textual"
         }
       ]
     }
