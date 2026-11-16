@@ -39,7 +39,11 @@ def test_documented_fixture_metrics_match_the_bundled_labeled_suite():
     metrics = summarize_safety_metrics(run_cases("rules/payer_rules.yaml", "inputs/synthetic_cases.json"))
     expected_claims = [
         f"{metrics['exact_status_correct_count']}/{metrics['total_labeled_cases']} exact overall statuses",
-        (f"{metrics['false_ready_count']} false `READY` results among {metrics['expected_non_ready_count']} expected non-`READY` cases"),
+        (
+            f"{metrics['false_pending_verification_count']} false `PENDING_VERIFICATION` results among "
+            f"{metrics['expected_non_passing_count']} expected non-passing cases"
+        ),
+        "no false-`READY` rate is reported",
         f"{metrics['needs_review_count']} `NEEDS_REVIEW` results ({metrics['needs_review_rate_pct']:.1f}%)",
     ]
 

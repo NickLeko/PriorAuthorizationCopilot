@@ -67,7 +67,7 @@ Automated extraction is a drafting aid, not a decision gate. v1.4.0's posture ov
 
 ## Evaluation
 
-The repo includes pytest coverage for extraction, verification, evaluation, drafting, rule loading, policy-monitor helpers, archive immutability, and replay categories. All bundled evaluation cases are synthetic. The checked-in fixture reports 52/52 exact statuses and 0 false `READY` results among 52 expected non-`READY` cases, including seven `PENDING_VERIFICATION` cases. Zero automated READY is enforced structurally; it is not an extraction-accuracy estimate. The executable contract tests cover every numbered guarantee and published exact example, including the resolved auxiliary-verb denial and the remaining neither/nor
+The repo includes pytest coverage for extraction, verification, evaluation, drafting, rule loading, policy-monitor helpers, archive immutability, and replay categories. All bundled evaluation cases are synthetic. The checked-in fixture reports 52/52 exact statuses and 0 false `PENDING_VERIFICATION` results among 45 expected non-passing cases (`READY` is unreachable in this run because no human verifications are supplied, so no false-`READY` rate is reported), including seven `PENDING_VERIFICATION` cases. Zero automated READY is enforced structurally; it is not an extraction-accuracy estimate. The executable contract tests cover every numbered guarantee and published exact example, including the resolved auxiliary-verb denial and the remaining neither/nor
 and same-sentence date gaps, thirteen exp-002 recall examples, and sixteen
 exp-003 examples, and 24 exp-004 examples (91 total; four known failures). Historical v2.6.0 suite:
 **1461 passed, 10 xfailed**. The

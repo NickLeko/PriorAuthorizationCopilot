@@ -32,7 +32,7 @@ cases with intentional status and snapshot expectation updates. Governance tests
 explicitly attest facts before checking their independent submission gate, so
 PENDING cannot mask those checks.
 
-Current bundled-fixture snapshot: 52 labeled synthetic cases; 52/52 exact overall statuses; 0 false `READY` results among 52 expected non-`READY` cases; 12 `NEEDS_REVIEW` results (23.1%); and 42 combined `NEEDS_REVIEW`/`CANNOT_DETERMINE` abstentions (80.8%).
+Current bundled-fixture snapshot: 52 labeled synthetic cases; 52/52 exact overall statuses; 0 false `PENDING_VERIFICATION` results among 45 expected non-passing cases (`READY` is unreachable in this run because no human verifications are supplied, so no false-`READY` rate is reported); 12 `NEEDS_REVIEW` results (23.1%); and 42 combined `NEEDS_REVIEW`/`CANNOT_DETERMINE` abstentions (80.8%). Overall status can hide a wrong requirement, so requirement-level false MET, missed MET and abstention are measured separately in [docs/evaluation](evaluation/README.md).
 
 Archive and replay tests separately cover immutable policy content, append-only storage, corruption detection, type compatibility, each differential category, correct denominators, preserved refusals, resolved refusals, and fresh verification. See `test/test_policy_replay.py`. Its cases are separate from the main labeled fixture corpus.
 

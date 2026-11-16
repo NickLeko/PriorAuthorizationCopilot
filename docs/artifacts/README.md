@@ -2,7 +2,7 @@
 
 This directory contains checked-in sample outputs. The procedure evaluation JSON files are generated from bundled synthetic demo cases and active rules; `drift_status.json` and `drift_report.md` derive from the policy-source registry and checked-in snapshot state; rulebook artifacts derive from the manifest and release files; `status.json` reflects the loaded runtime configuration; `supported_procedures.json` derives from active rules; and the demo-case catalogs derive from bundled synthetic cases.
 
-`safety_metrics.json` reports exact-status, false-`READY`, `NEEDS_REVIEW`, and abstention metrics for the bundled labeled synthetic fixture only.
+`safety_metrics.json` reports exact-status, false-`PENDING_VERIFICATION`, `NEEDS_REVIEW`, and abstention metrics for the bundled labeled synthetic fixture only.
 
 These artifacts are intentionally committed because they make reviewer inspection easier and support stable diffs. Full `note_text` values are replaced by a short SHA-256 hash and `[redacted for repository]`; the files are not patient records, payer responses, production logs, or PHI-bearing outputs.
 

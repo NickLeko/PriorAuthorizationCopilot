@@ -611,18 +611,19 @@ with st.sidebar:
         safety_metrics, synthetic_rows = get_synthetic_eval_status()
         passed = safety_metrics["exact_status_correct_count"]
         total = safety_metrics["total_labeled_cases"]
-        if passed == total and safety_metrics["false_ready_count"] == 0:
+        if passed == total and safety_metrics["false_pending_verification_count"] == 0:
             st.success(f"Exact-status regression: {passed}/{total}")
         else:
             st.error(f"Exact-status regression: {passed}/{total}")
         st.caption(
-            f"Bundled labeled fixture false READY: {safety_metrics['false_ready_count']}/"
-            f"{safety_metrics['expected_non_ready_count']} "
-            f"({safety_metrics['false_ready_rate_pct']:.1f}%) | "
+            f"Fixture false PENDING_VERIFICATION: {safety_metrics['false_pending_verification_count']}/"
+            f"{safety_metrics['expected_non_passing_count']} | "
+            "READY not reachable in this check (no verifications supplied) | "
             f"Abstention: {safety_metrics['abstention_count']} "
             f"({safety_metrics['abstention_rate_pct']:.1f}%) | "
             f"NEEDS_REVIEW: {safety_metrics['needs_review_count']}"
         )
+        st.caption("Overall-status regression only. Requirement-level extraction results: docs/evaluation.")
         with st.expander("View synthetic evaluation details"):
             failures = [row for row in synthetic_rows if row.get("pass") != "✅"]
             if failures:

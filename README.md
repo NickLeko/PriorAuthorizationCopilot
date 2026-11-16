@@ -183,7 +183,7 @@ This problem is intentionally narrow. Deterministic logic is the right backbone 
 
 `CANNOT_DETERMINE` is a feature here, not a failure mode.
 
-The bundled labeled fixture currently contains 52 synthetic cases. Its regression snapshot is 52/52 exact overall statuses, 0 false `READY` results among 52 expected non-`READY` cases, 12 `NEEDS_REVIEW` results (23.1%), and 42 combined `NEEDS_REVIEW`/`CANNOT_DETERMINE` abstentions (80.8%). Seven cases now await human verification. Zero automated READY is a structural consequence of the verification gate, not evidence of extraction accuracy. These figures describe only the checked-in fixture; they are not estimates of performance on clinical notes or external data.
+The bundled labeled fixture currently contains 52 synthetic cases. Its regression snapshot is 52/52 exact overall statuses, 0 false `PENDING_VERIFICATION` results among 45 expected non-passing cases (`READY` is unreachable in this run because no human verifications are supplied, so no false-`READY` rate is reported), 12 `NEEDS_REVIEW` results (23.1%), and 42 combined `NEEDS_REVIEW`/`CANNOT_DETERMINE` abstentions (80.8%). Seven cases now await human verification. Zero automated READY is a structural consequence of the verification gate, not evidence of extraction accuracy. These figures describe only the checked-in fixture; they are not estimates of performance on clinical notes or external data. Overall status can hide a wrong requirement, so requirement-level false MET, missed MET and abstention are measured separately in [docs/evaluation](docs/evaluation/README.md).
 
 ## Current Supported Scope
 

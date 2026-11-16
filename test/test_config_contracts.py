@@ -222,9 +222,13 @@ def test_bundled_synthetic_eval_cases_match_expected_labels():
     assert all(row["pass"] == "✅" for row in rows)
     assert all(row["expected"] for row in rows)
     assert metrics["total_labeled_cases"] == 52
-    assert metrics["expected_non_ready_count"] == 52
+    assert metrics["expected_non_passing_count"] == 45
     assert metrics["exact_overall_status_accuracy_pct"] == 100.0
-    assert metrics["false_ready_count"] == 0
-    assert metrics["false_ready_rate_pct"] == 0.0
+    assert metrics["false_pending_verification_count"] == 0
+    assert metrics["false_pending_verification_rate_pct"] == 0.0
+    # READY needs human verification, which this harness never supplies: no false-READY rate may be published.
+    assert metrics["ready_reachable"] is False
+    assert metrics["ready_count"] == 0
+    assert not any(key.startswith("false_ready") for key in metrics)
     assert metrics["needs_review_count"] == 12
     assert metrics["abstention_count"] == 42

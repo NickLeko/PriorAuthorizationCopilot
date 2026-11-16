@@ -5,12 +5,15 @@
   "cannot_determine_rate_pct": 57.7,
   "exact_overall_status_accuracy_pct": 100.0,
   "exact_status_correct_count": 52,
-  "expected_non_ready_count": 52,
-  "false_ready_count": 0,
-  "false_ready_rate_pct": 0.0,
+  "expected_non_passing_count": 45,
+  "false_pending_verification_count": 0,
+  "false_pending_verification_rate_pct": 0.0,
   "needs_review_count": 12,
   "needs_review_rate_pct": 23.1,
   "pending_verification_count": 7,
   "pending_verification_rate_pct": 13.5,
+  "ready_count": 0,
+  "ready_reachable": false,
+  "scope_note": "Overall-status regression on the bundled fixture. No human verifications are supplied, so READY is unreachable and no false-READY rate is reported. A correct overall status can hide a wrong requirement; requirement-level results are in docs/evaluation/requirement_level_baseline.md.",
   "total_labeled_cases": 52
 }
