@@ -14,6 +14,7 @@ Requirement-level agreement between the production regex extractor and written l
 - The bundled corpus was written alongside the extractor. Agreement on it shows the extractor still does what its fixtures expect, not that it is accurate.
 - READY is structurally unreachable in this harness because no human verifications are supplied. No false-READY rate exists here.
 - Labels marked needs_review and requirements without a label are excluded from every rate and listed separately.
+- Evidence coverage and overlap are weak checks. The extractor often cites a whole sentence, so a cited span can overlap the expected quote and still contain the words that should have disqualified it.
 
 System under test: engine 2.7.0, rules 1.0, engine.service.ReadinessService.evaluate, no verifications, no corrections.
 
@@ -92,7 +93,7 @@ Controls on the same labels. A constant predictor must not look good:
 
 ### Case level
 
-Derived from requirement labels. A case counts only if every requirement has a scored label. Fully scored cases: 50 of 52.
+Derived from requirement labels. A case counts only if every requirement has a scored label. Unlike the requirement tables, case-level results use every scored tier together; see label_tiers_used. Fully scored cases: 50 of 52. Label tiers used: provisional.
 
 | Measure | Result | Denominator |
 | --- | --- | --- |
@@ -194,7 +195,7 @@ Controls on the same labels. A constant predictor must not look good:
 
 ### Case level
 
-Derived from requirement labels. A case counts only if every requirement has a scored label. Fully scored cases: 18 of 20.
+Derived from requirement labels. A case counts only if every requirement has a scored label. Unlike the requirement tables, case-level results use every scored tier together; see label_tiers_used. Fully scored cases: 18 of 20. Label tiers used: provisional.
 
 | Measure | Result | Denominator |
 | --- | --- | --- |

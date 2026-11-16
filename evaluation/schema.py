@@ -75,6 +75,8 @@ class RequirementLabel(BaseModel):
     @model_validator(mode="after")
     def _validate(self) -> "RequirementLabel":
         if self.review_status == "needs_review":
+            if self.reviewer or self.reviewer_type or self.reviewed_on:
+                raise ValueError("Only verified labels carry reviewer fields.")
             if self.acceptable_states:
                 raise ValueError("needs_review labels are unscored and cannot declare acceptable states.")
             if not (self.uncertainty_note or "").strip():
@@ -148,6 +150,9 @@ class Dataset(BaseModel):
                     if self.label_defaults is None:
                         raise ValueError(f"Label without provenance: {case.case_id}/{label.requirement_key}")
                     label.provenance = self.label_defaults
+                # A label cannot be verified by its own author, whatever reviewer_type claims.
+                if label.review_status == "verified" and (label.reviewer or "").strip().lower() == label.provenance.author.strip().lower():
+                    raise ValueError(f"A label cannot be verified by its own author: {case.case_id}/{label.requirement_key}")
         return self
 
 
@@ -163,6 +168,10 @@ def _resolve_notes(dataset: Dataset, repo_root: Path) -> None:
     if dataset.notes_source:
         payload = json.loads((repo_root / dataset.notes_source).read_text(encoding="utf-8"))
         referenced = {item["id"]: item.get("note_text", "") or "" for item in payload}
+        scope = {item["id"]: (item.get("payer"), item.get("procedure_code")) for item in payload}
+        for case in dataset.cases:
+            if case.case_id in scope and scope[case.case_id] != (case.payer, case.procedure_code):
+                raise ValueError(f"Payer or procedure differs from the note source: {case.case_id}. Labels must be re-reviewed.")
     for case in dataset.cases:
         if case.note_text is None:
             if case.case_id not in referenced:

@@ -44,6 +44,9 @@
           "numerator": 1
         },
         "fully_scored_cases": 18,
+        "label_tiers_used": [
+          "provisional"
+        ],
         "missed_all_met": {
           "case_ids": [
             "CH-07-natural-two-months",
@@ -56,7 +59,7 @@
           "denominator_meaning": "fully scored cases where every requirement is expected MET",
           "numerator": 5
         },
-        "note": "Derived from requirement labels. A case counts only if every requirement has a scored label.",
+        "note": "Derived from requirement labels. A case counts only if every requirement has a scored label. Unlike the requirement tables, case-level results use every scored tier together; see label_tiers_used.",
         "predicted_all_met": 9,
         "ready": {
           "observed": 0,
@@ -3749,13 +3752,16 @@
           "numerator": 0
         },
         "fully_scored_cases": 50,
+        "label_tiers_used": [
+          "provisional"
+        ],
         "missed_all_met": {
           "case_ids": [],
           "denominator": 7,
           "denominator_meaning": "fully scored cases where every requirement is expected MET",
           "numerator": 0
         },
-        "note": "Derived from requirement labels. A case counts only if every requirement has a scored label.",
+        "note": "Derived from requirement labels. A case counts only if every requirement has a scored label. Unlike the requirement tables, case-level results use every scored tier together; see label_tiers_used.",
         "predicted_all_met": 7,
         "ready": {
           "observed": 0,
@@ -6901,7 +6907,8 @@
     "The challenge set is adversarial and partly chosen because the extractor was already seen to fail on it. Its counts are a list of known failures. Its proportions say nothing about real-world or clinical performance and are shown without percentages.",
     "The bundled corpus was written alongside the extractor. Agreement on it shows the extractor still does what its fixtures expect, not that it is accurate.",
     "READY is structurally unreachable in this harness because no human verifications are supplied. No false-READY rate exists here.",
-    "Labels marked needs_review and requirements without a label are excluded from every rate and listed separately."
+    "Labels marked needs_review and requirements without a label are excluded from every rate and listed separately.",
+    "Evidence coverage and overlap are weak checks. The extractor often cites a whole sentence, so a cited span can overlap the expected quote and still contain the words that should have disqualified it."
   ],
   "population_error_rate_estimate": null,
   "report_version": 1,

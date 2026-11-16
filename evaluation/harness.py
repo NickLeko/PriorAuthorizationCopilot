@@ -12,7 +12,7 @@ from engine.schemas import PARequest
 from engine.service import ReadinessService
 
 from .metrics import CONTROLS, ScoredItem, apply_control, by_requirement, error_class, summarize
-from .schema import SCORED_TIERS, Dataset, LabeledCase, source_case_ids
+from .schema import SCORED_TIERS, Dataset, HoldoutSealedError, LabeledCase, source_case_ids
 
 Predictor = Callable[[LabeledCase], Dict[str, Any]]
 
@@ -49,7 +49,10 @@ def _overlaps(note: str, quote: Optional[str], spans: List[Dict[str, Any]]) -> O
     return any(span["start"] < start + len(quote) and start < span["end"] for start in starts for span in spans)
 
 
-def evaluate_dataset(dataset: Dataset, predict: Predictor) -> Dict[str, Any]:
+def evaluate_dataset(dataset: Dataset, predict: Predictor, *, allow_sealed_holdout: bool = False) -> Dict[str, Any]:
+    # The loader refuses a sealed holdout; so does the harness, in case one was loaded for another purpose.
+    if (dataset.sealed or dataset.split == "holdout") and not allow_sealed_holdout:
+        raise HoldoutSealedError(f"{dataset.dataset_id} is a sealed holdout and is not evaluated.")
     items: List[ScoredItem] = []
     observations: List[Dict[str, Any]] = []
     unlabeled: List[Dict[str, str]] = []
@@ -172,8 +175,12 @@ def evaluate_dataset(dataset: Dataset, predict: Predictor) -> Dict[str, Any]:
         "labels_without_matching_requirement": orphan_labels,
         "tiers": tiers,
         "case_level": {
-            "note": "Derived from requirement labels. A case counts only if every requirement has a scored label.",
+            "note": (
+                "Derived from requirement labels. A case counts only if every requirement has a scored label. "
+                "Unlike the requirement tables, case-level results use every scored tier together; see label_tiers_used."
+            ),
             "fully_scored_cases": len(fully),
+            "label_tiers_used": sorted({item.tier for item in items}),
             "false_all_met": {
                 "numerator": sum(1 for row in should_not_pass if row["overall_status"] == "PENDING_VERIFICATION"),
                 "denominator": len(should_not_pass),

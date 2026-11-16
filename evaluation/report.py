@@ -48,6 +48,8 @@ LIMITATIONS = [
     "expect, not that it is accurate.",
     "READY is structurally unreachable in this harness because no human verifications are supplied. No false-READY rate exists here.",
     "Labels marked needs_review and requirements without a label are excluded from every rate and listed separately.",
+    "Evidence coverage and overlap are weak checks. The extractor often cites a whole sentence, so a cited span can overlap the "
+    "expected quote and still contain the words that should have disqualified it.",
 ]
 
 
@@ -213,7 +215,8 @@ def render_markdown(report: Dict[str, Any]) -> str:
         out += [
             "### Case level",
             "",
-            f"{case_level['note']} Fully scored cases: {case_level['fully_scored_cases']} of {data['cases']}.",
+            f"{case_level['note']} Fully scored cases: {case_level['fully_scored_cases']} of {data['cases']}. "
+            f"Label tiers used: {', '.join(case_level['label_tiers_used']) or 'none'}.",
             "",
             "| Measure | Result | Denominator |",
             "| --- | --- | --- |",

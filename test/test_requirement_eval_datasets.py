@@ -127,6 +127,44 @@ def test_the_committed_holdout_is_unchanged_unlabeled_and_absent_from_the_report
     assert "HO-01" not in json.dumps(committed["datasets"])
 
 
+def test_the_harness_itself_refuses_a_sealed_holdout_and_holdout_notes_appear_nowhere_else():
+    holdout = load_dataset(DATASET_DIR / "holdout_v1.json", allow_sealed_holdout=True)
+
+    def must_not_run(case):
+        raise AssertionError("A holdout note reached the extractor.")
+
+    with pytest.raises(HoldoutSealedError):
+        evaluate_dataset(holdout, must_not_run)
+    evaluated = set()
+    for name in report_module.EVALUATED_DATASETS:
+        evaluated |= {case.note_sha256 for case in load_dataset(DATASET_DIR / name).cases}
+    assert not evaluated & {case.note_sha256 for case in holdout.cases}
+    assert "holdout_v1.json" not in report_module.EVALUATED_DATASETS
+
+
+def test_a_label_cannot_be_verified_by_its_own_author_or_carry_a_reviewer_while_open():
+    self_review = label(review_status="verified", reviewer="TEST", reviewer_type="human", reviewed_on="2026-11-17")
+    with pytest.raises(ValidationError, match="own author"):
+        Dataset.model_validate(dataset([self_review]))
+    other = {**self_review, "reviewer": "A Reviewer"}
+    assert Dataset.model_validate(dataset([other])).cases[0].labels[0].review_status == "verified"
+    with pytest.raises(ValidationError):
+        RequirementLabel.model_validate(
+            label(
+                review_status="needs_review", uncertainty_note="q", reviewer="A Reviewer", reviewer_type="human", reviewed_on="2026-11-17"
+            )
+        )
+
+
+def test_labels_are_bound_to_the_payer_and_procedure_of_their_source_case(tmp_path):
+    notes = tmp_path / "notes.json"
+    notes.write_text(json.dumps([{"id": "c1", "note_text": NOTE, "payer": "Aetna", "procedure_code": "Y"}]), encoding="utf-8")
+    payload = dataset([label()], notes_source="notes.json")
+    del payload["cases"][0]["note_text"]
+    with pytest.raises(ValueError, match="differs from the note source"):
+        load_dataset(write(tmp_path, payload), repo_root=tmp_path)
+
+
 def fake_predictor(statuses, overall="CANNOT_DETERMINE"):
     def predict(case):
         return {
@@ -240,7 +278,10 @@ def test_known_lumbar_failures_are_represented_as_measured_baseline_failures(bas
 
 def test_a_case_added_to_the_note_file_cannot_go_silently_unlabeled(tmp_path, monkeypatch):
     notes = tmp_path / "notes.json"
-    notes.write_text(json.dumps([{"id": "c1", "note_text": NOTE}, {"id": "c2", "note_text": "New case."}]), encoding="utf-8")
+    scope = {"payer": "Aetna", "procedure_code": "X"}
+    notes.write_text(
+        json.dumps([{"id": "c1", "note_text": NOTE, **scope}, {"id": "c2", "note_text": "New case.", **scope}]), encoding="utf-8"
+    )
     payload = dataset([label()], notes_source="notes.json")
     del payload["cases"][0]["note_text"]
     data = load_dataset(write(tmp_path, payload), repo_root=tmp_path)
