@@ -148,6 +148,9 @@ COURSE_COMMENTARY = [
     "NSAIDs for 8 weeks with no improvement; referred to spine clinic, stopped after 3 days.",
     "NSAIDs for 8 weeks with no improvement; pain is severe but now improving.",
     "NSAIDs for 8 weeks with no improvement; pain is no longer severe.",
+    # Pain severity describes the response, so it only agrees with a stated non-response.
+    "NSAIDs for 8 weeks with significant improvement; pain is severe.",
+    "NSAIDs for 8 weeks; pain is severe.",
 ]
 
 
