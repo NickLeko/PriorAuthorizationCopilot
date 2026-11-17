@@ -9230,7 +9230,7 @@
     }
   },
   "limitations": [
-    "No label has been reviewed by a human or a clinician. Every scored label is provisional and agent-authored.",
+    "3 of 350 scored labels were verified by a human reviewer, all as textual readings logged in review_log_v1. The other 347 scored labels are provisional and agent-authored. 7 policy or clinical answers are logged as opinions and verify nothing. No label has been reviewed by a clinician, and no payer-policy authority is claimed.",
     "All notes are synthetic. No note is real clinical documentation.",
     "The datasets are small and were selected, not sampled. Counts are observed failures on these notes; no population-level error rate is estimated or implied.",
     "The label author had read the extractor source, and for part of the challenge set had seen extractor output before labeling.",

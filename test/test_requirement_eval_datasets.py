@@ -236,8 +236,13 @@ def test_committed_reports_match_the_current_extractor_and_labels():
 def test_baseline_states_its_limits_and_makes_no_population_estimate(baseline):
     assert baseline["population_error_rate_estimate"] is None
     text = report_module.render_markdown(baseline)
-    for phrase in ("No label has been reviewed by a human", "synthetic", "no population-level error rate", "READY: not reachable"):
+    for phrase in ("No label has been reviewed by a clinician", "synthetic", "no population-level error rate", "READY: not reachable"):
         assert phrase in text
+    verified = sum(data["label_counts"]["verified"] for data in baseline["datasets"].values())
+    assert verified == 3
+    assert baseline["limitations"][0].startswith(f"{verified} of ")
+    assert "verified by a human reviewer" in baseline["limitations"][0]
+    assert "No label has been reviewed by a human" not in text
     log = json.loads((DATASET_DIR / "review_log_v1.json").read_text(encoding="utf-8"))
     for dataset_id, data in baseline["datasets"].items():
         assert data["independent_clinical_ground_truth"] is False
@@ -261,6 +266,16 @@ def test_bundled_corpus_baseline_is_scored_per_requirement(baseline):
     assert abstain["false_met"]["numerator"] == aggregate["false_met"]["numerator"] == 0
     assert abstain["met_recall"]["numerator"] == 0 and abstain["meets_minimum_utility"] is False
     assert aggregate["meets_minimum_utility"] is True
+
+
+def test_review_statement_follows_the_recorded_review_state():
+    empty = {"d": {"label_counts": {"verified": 0, "provisional": 4, "needs_review": 1}}}
+    assert report_module.review_limitation(empty, {}).startswith("No label has been verified by a human reviewer.")
+    reviewed = {"d": {"label_counts": {"verified": 1, "provisional": 3, "needs_review": 0}}}
+    log = {"log_x": {"policy_or_clinical_opinions_left_unverified": 2}}
+    statement = report_module.review_limitation(reviewed, log)
+    assert statement.startswith("1 of 4 scored labels were verified by a human reviewer")
+    assert "2 policy or clinical answers are logged as opinions" in statement
 
 
 def test_known_lumbar_failures_are_represented_as_measured_baseline_failures(baseline):

@@ -38,7 +38,6 @@ SCOPE = (
     "or clinical accuracy."
 )
 LIMITATIONS = [
-    "No label has been reviewed by a human or a clinician. Every scored label is provisional and agent-authored.",
     "All notes are synthetic. No note is real clinical documentation.",
     "The datasets are small and were selected, not sampled. Counts are observed failures on these notes; "
     "no population-level error rate is estimated or implied.",
@@ -52,6 +51,24 @@ LIMITATIONS = [
     "Evidence coverage and overlap are weak checks. The extractor often cites a whole sentence, so a cited span can overlap the "
     "expected quote and still contain the words that should have disqualified it.",
 ]
+
+
+def review_limitation(datasets: Dict[str, Any], reviews: Dict[str, Any]) -> str:
+    """State human review from the data, so the report cannot claim more or less review than was recorded."""
+    verified = sum(data["label_counts"]["verified"] for data in datasets.values())
+    scored = sum(data["label_counts"]["verified"] + data["label_counts"]["provisional"] for data in datasets.values())
+    opinions = sum(review["policy_or_clinical_opinions_left_unverified"] for review in reviews.values())
+    if not verified:
+        human = "No label has been verified by a human reviewer."
+    else:
+        human = (
+            f"{verified} of {scored} scored labels were verified by a human reviewer, all as textual readings logged in "
+            f"{', '.join(sorted(reviews))}. The other {scored - verified} scored labels are provisional and agent-authored."
+        )
+    return (
+        f"{human} {opinions} policy or clinical answers are logged as opinions and verify nothing. "
+        "No label has been reviewed by a clinician, and no payer-policy authority is claimed."
+    )
 
 
 def _dataset_summary(dataset: Dataset, path: Path) -> Dict[str, Any]:
@@ -97,7 +114,7 @@ def build_report(service: ReadinessService | None = None) -> Dict[str, Any]:
     return {
         "report_version": REPORT_VERSION,
         "scope": SCOPE,
-        "limitations": LIMITATIONS,
+        "limitations": [review_limitation(datasets, reviews), *LIMITATIONS],
         "population_error_rate_estimate": None,
         "system_under_test": {
             "engine_version": ENGINE_VERSION,
