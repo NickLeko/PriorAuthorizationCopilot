@@ -1,6 +1,12 @@
 # Phase 2 implementation specification
 
-Revised November 17, 2026. **Status: not implemented. Implementation needs explicit authorization from the repository owner.**
+Revised November 17, 2026. **Status: approved by the repository owner on November 17, 2026, for implementation in a separate pull request. Not implemented on this branch.**
+
+Owner decisions recorded on approval:
+
+- Option A in section 4: a longer course-uncertain course sends both facts to review. No payer threshold enters extraction.
+- The copied-note test change in section 7 is approved. The two therapy facts become `NEEDS_REVIEW`; the reviewer-context and attestation assertions are kept.
+- The independent-course behaviour is required: a separate historical 4-week course must not invalidate a clean 6-week course.
 
 This replaces section 3 of [phase2_proposal.md](phase2_proposal.md) as the implementation reference.
 
@@ -98,7 +104,7 @@ Today this note goes to review for both facts as well, so this is not a regressi
 | B. Always use the clean course | The clean course's duration and response | A short clean course gives `NOT_MET` while a longer uncertain course goes unseen. That is never a false `MET`, but the evidence a reviewer should look at is hidden. |
 | C. Give the extractor the threshold | Exact | Breaks policy-independent facts and replay; out of scope |
 
-**Recommendation: A.** It matches the existing longer-course guard, and its cost is visible to the reviewer rather than silent. **This is the one decision left for the owner.**
+**Decision: A**, approved by the owner. It matches the existing longer-course guard, and its cost is visible to the reviewer rather than silent.
 
 **Known result that moves toward MET.** One prototype case moves from review today to `MET`:
 
@@ -185,7 +191,7 @@ The full existing suite was run with the prototype patched in: 1,996 passed, 1 f
 
 | Test | Note | Today | Prototype | Proposal |
 | --- | --- | --- | --- | --- |
-| `test/test_attestation_context.py::test_n1b_shows_following_contradiction_for_all_four_attestations` | "Prior visit note (2019): …NSAIDs for 8 weeks with no improvement. Today: asymptomatic." | All four requirements `MET` | Therapy facts `NEEDS_REVIEW` | Update the two status assertions; keep the context assertions. **Needs owner approval before the change is made.** |
+| `test/test_attestation_context.py::test_n1b_shows_following_contradiction_for_all_four_attestations` | "Prior visit note (2019): …NSAIDs for 8 weeks with no improvement. Today: asymptomatic." | All four requirements `MET` | Therapy facts `NEEDS_REVIEW` | Update the two status assertions; keep the context assertions. **Approved by the owner on November 17, 2026.** |
 
 The test exists to check that reviewer context shows the contradicting "Today: asymptomatic." The copied 2019 course is the false `MET` this change targets, and the companion test `test_original_n1_attestation_view_renders_review_required_facts` shows that context still renders for review-required facts.
 
