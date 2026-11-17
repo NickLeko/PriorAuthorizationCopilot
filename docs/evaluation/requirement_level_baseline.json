@@ -27,24 +27,19 @@
         },
         "false_all_met": {
           "case_ids": [
-            "CH-02-missed-nsaids",
-            "CH-03-nsaids-2019",
-            "CH-04-initially-none-now-improved",
-            "CH-05-intermittent-adherence",
             "CH-06-historical-exam",
             "CH-14-response-reversed-next-sentence",
-            "CH-15-course-before-current-flare",
             "CH-16-cervical-borrowed-duration"
           ],
           "denominator": 12,
           "denominator_meaning": "fully scored cases where at least one requirement must not be MET",
-          "numerator": 8
+          "numerator": 3
         },
         "false_met_hidden_by_another_blocker": {
           "case_ids": [
             "CH-17-knee-missed-pt"
           ],
-          "denominator": 9,
+          "denominator": 4,
           "denominator_meaning": "cases with at least one false MET; overall status was not PENDING_VERIFICATION",
           "numerator": 1
         },
@@ -66,7 +61,7 @@
           "numerator": 5
         },
         "note": "Derived from requirement labels. A case counts only if every requirement has a scored label. Unlike the requirement tables, case-level results use every scored tier together; see label_tiers_used.",
-        "predicted_all_met": 10,
+        "predicted_all_met": 5,
         "ready": {
           "observed": 0,
           "reachable": false,
@@ -87,160 +82,6 @@
       "labels_without_matching_requirement": [],
       "note_authorship": "Synthetic, agent-authored (Claude). Not written or reviewed by a clinician.",
       "observed_failures": [
-        {
-          "acceptable_states": [
-            "NEEDS_REVIEW"
-          ],
-          "case_id": "CH-02-missed-nsaids",
-          "error_class": "FALSE_MET",
-          "expected_state": "NEEDS_REVIEW",
-          "label_tier": "verified",
-          "label_uncertainty": "low",
-          "note_text": "Low back pain with right leg radiculopathy. Objective motor exam in the right L5 distribution: strength 4/5. Missed NSAIDs for 8 weeks with no improvement.",
-          "observed_evidence": [
-            "Missed NSAIDs for 8 weeks with no improvement"
-          ],
-          "observed_fact_value": 8,
-          "observed_state": "MET",
-          "overall_status": "PENDING_VERIFICATION",
-          "phenomena": [
-            "treatment_adherence"
-          ],
-          "requirement_key": "cpb_0236_conservative_therapy_weeks"
-        },
-        {
-          "acceptable_states": [
-            "NEEDS_REVIEW"
-          ],
-          "case_id": "CH-02-missed-nsaids",
-          "error_class": "FALSE_MET",
-          "expected_state": "NEEDS_REVIEW",
-          "label_tier": "verified",
-          "label_uncertainty": "low",
-          "note_text": "Low back pain with right leg radiculopathy. Objective motor exam in the right L5 distribution: strength 4/5. Missed NSAIDs for 8 weeks with no improvement.",
-          "observed_evidence": [
-            "Missed NSAIDs for 8 weeks with no improvement"
-          ],
-          "observed_fact_value": true,
-          "observed_state": "MET",
-          "overall_status": "PENDING_VERIFICATION",
-          "phenomena": [
-            "treatment_adherence"
-          ],
-          "requirement_key": "cpb_0236_conservative_therapy_no_improvement"
-        },
-        {
-          "acceptable_states": [
-            "NEEDS_REVIEW",
-            "NOT_DOCUMENTED"
-          ],
-          "case_id": "CH-03-nsaids-2019",
-          "error_class": "FALSE_MET",
-          "expected_state": "NEEDS_REVIEW",
-          "label_tier": "provisional",
-          "label_uncertainty": "medium",
-          "note_text": "Low back pain with right leg radiculopathy. Objective motor exam in the right L5 distribution: strength 4/5. In 2019, NSAIDs for 8 weeks with no improvement.",
-          "observed_evidence": [
-            "In 2019, NSAIDs for 8 weeks with no improvement"
-          ],
-          "observed_fact_value": 8,
-          "observed_state": "MET",
-          "overall_status": "PENDING_VERIFICATION",
-          "phenomena": [
-            "historical_finding",
-            "temporal_ambiguity"
-          ],
-          "requirement_key": "cpb_0236_conservative_therapy_weeks"
-        },
-        {
-          "acceptable_states": [
-            "NEEDS_REVIEW",
-            "NOT_DOCUMENTED"
-          ],
-          "case_id": "CH-03-nsaids-2019",
-          "error_class": "FALSE_MET",
-          "expected_state": "NEEDS_REVIEW",
-          "label_tier": "provisional",
-          "label_uncertainty": "medium",
-          "note_text": "Low back pain with right leg radiculopathy. Objective motor exam in the right L5 distribution: strength 4/5. In 2019, NSAIDs for 8 weeks with no improvement.",
-          "observed_evidence": [
-            "In 2019, NSAIDs for 8 weeks with no improvement"
-          ],
-          "observed_fact_value": true,
-          "observed_state": "MET",
-          "overall_status": "PENDING_VERIFICATION",
-          "phenomena": [
-            "historical_finding",
-            "temporal_ambiguity"
-          ],
-          "requirement_key": "cpb_0236_conservative_therapy_no_improvement"
-        },
-        {
-          "acceptable_states": [
-            "NEEDS_REVIEW"
-          ],
-          "case_id": "CH-04-initially-none-now-improved",
-          "error_class": "FALSE_MET",
-          "expected_state": "NEEDS_REVIEW",
-          "label_tier": "verified",
-          "label_uncertainty": "low",
-          "note_text": "Low back pain with right leg radiculopathy. Objective motor exam in the right L5 distribution: strength 4/5. NSAIDs for 8 weeks with no improvement initially, now much improved.",
-          "observed_evidence": [
-            "NSAIDs for 8 weeks with no improvement initially, now much improved"
-          ],
-          "observed_fact_value": true,
-          "observed_state": "MET",
-          "overall_status": "PENDING_VERIFICATION",
-          "phenomena": [
-            "contradictory_evidence",
-            "temporal_ambiguity"
-          ],
-          "requirement_key": "cpb_0236_conservative_therapy_no_improvement"
-        },
-        {
-          "acceptable_states": [
-            "NEEDS_REVIEW",
-            "NOT_DOCUMENTED"
-          ],
-          "case_id": "CH-05-intermittent-adherence",
-          "error_class": "FALSE_MET",
-          "expected_state": "NEEDS_REVIEW",
-          "label_tier": "provisional",
-          "label_uncertainty": "medium",
-          "note_text": "Low back pain with right leg radiculopathy. Objective motor exam in the right L5 distribution: strength 4/5. Intermittent NSAIDs for 8 weeks, taken twice total, with no improvement.",
-          "observed_evidence": [
-            "Intermittent NSAIDs for 8 weeks, taken twice total, with no improvement"
-          ],
-          "observed_fact_value": 8,
-          "observed_state": "MET",
-          "overall_status": "PENDING_VERIFICATION",
-          "phenomena": [
-            "treatment_adherence"
-          ],
-          "requirement_key": "cpb_0236_conservative_therapy_weeks"
-        },
-        {
-          "acceptable_states": [
-            "NEEDS_REVIEW",
-            "NOT_DOCUMENTED"
-          ],
-          "case_id": "CH-05-intermittent-adherence",
-          "error_class": "FALSE_MET",
-          "expected_state": "NEEDS_REVIEW",
-          "label_tier": "provisional",
-          "label_uncertainty": "medium",
-          "note_text": "Low back pain with right leg radiculopathy. Objective motor exam in the right L5 distribution: strength 4/5. Intermittent NSAIDs for 8 weeks, taken twice total, with no improvement.",
-          "observed_evidence": [
-            "Intermittent NSAIDs for 8 weeks, taken twice total, with no improvement"
-          ],
-          "observed_fact_value": true,
-          "observed_state": "MET",
-          "overall_status": "PENDING_VERIFICATION",
-          "phenomena": [
-            "treatment_adherence"
-          ],
-          "requirement_key": "cpb_0236_conservative_therapy_no_improvement"
-        },
         {
           "acceptable_states": [
             "NEEDS_REVIEW",
@@ -421,52 +262,6 @@
         },
         {
           "acceptable_states": [
-            "NEEDS_REVIEW",
-            "NOT_DOCUMENTED"
-          ],
-          "case_id": "CH-15-course-before-current-flare",
-          "error_class": "FALSE_MET",
-          "expected_state": "NEEDS_REVIEW",
-          "label_tier": "provisional",
-          "label_uncertainty": "medium",
-          "note_text": "Low back pain with right leg radiculopathy. Objective motor exam in the right L5 distribution: strength 4/5. NSAIDs for 8 weeks with no improvement at the time; that was before the current flare began last week.",
-          "observed_evidence": [
-            "NSAIDs for 8 weeks with no improvement at the time"
-          ],
-          "observed_fact_value": 8,
-          "observed_state": "MET",
-          "overall_status": "PENDING_VERIFICATION",
-          "phenomena": [
-            "temporal_ambiguity",
-            "historical_finding"
-          ],
-          "requirement_key": "cpb_0236_conservative_therapy_weeks"
-        },
-        {
-          "acceptable_states": [
-            "NEEDS_REVIEW",
-            "NOT_DOCUMENTED"
-          ],
-          "case_id": "CH-15-course-before-current-flare",
-          "error_class": "FALSE_MET",
-          "expected_state": "NEEDS_REVIEW",
-          "label_tier": "provisional",
-          "label_uncertainty": "medium",
-          "note_text": "Low back pain with right leg radiculopathy. Objective motor exam in the right L5 distribution: strength 4/5. NSAIDs for 8 weeks with no improvement at the time; that was before the current flare began last week.",
-          "observed_evidence": [
-            "NSAIDs for 8 weeks with no improvement at the time"
-          ],
-          "observed_fact_value": true,
-          "observed_state": "MET",
-          "overall_status": "PENDING_VERIFICATION",
-          "phenomena": [
-            "temporal_ambiguity",
-            "historical_finding"
-          ],
-          "requirement_key": "cpb_0236_conservative_therapy_no_improvement"
-        },
-        {
-          "acceptable_states": [
             "NOT_DOCUMENTED",
             "NEEDS_REVIEW"
           ],
@@ -623,13 +418,13 @@
             "abstention_rate": {
               "denominator": 74,
               "denominator_meaning": "all scored labels; predicted NOT_DOCUMENTED or NEEDS_REVIEW",
-              "numerator": 14,
-              "value": 0.1892
+              "numerator": 20,
+              "value": 0.2703
             },
             "acceptable_agreement": {
               "denominator": 74,
-              "numerator": 52,
-              "value": 0.7027
+              "numerator": 58,
+              "value": 0.7838
             },
             "confusion_matrix": {
               "MET": {
@@ -639,8 +434,8 @@
                 "NOT_MET": 0
               },
               "NEEDS_REVIEW": {
-                "MET": 8,
-                "NEEDS_REVIEW": 0,
+                "MET": 2,
+                "NEEDS_REVIEW": 6,
                 "NOT_DOCUMENTED": 0,
                 "NOT_MET": 0
               },
@@ -660,11 +455,11 @@
             "decided_coverage": {
               "denominator": 74,
               "denominator_meaning": "all scored labels; predicted MET or NOT_MET",
-              "numerator": 60,
-              "value": 0.8108
+              "numerator": 54,
+              "value": 0.7297
             },
             "error_classes": {
-              "FALSE_MET": 11,
+              "FALSE_MET": 5,
               "MISSED_MET": 11
             },
             "evidence_coverage": {
@@ -674,28 +469,28 @@
               "value": 1.0
             },
             "evidence_overlap": {
-              "denominator": 49,
+              "denominator": 55,
               "denominator_meaning": "exact-agreement labels with an expected quote and a cited span; cited span overlaps the quote",
-              "numerator": 49,
-              "value": 1.0
+              "numerator": 54,
+              "value": 0.9818
             },
             "exact_agreement": {
               "denominator": 74,
-              "numerator": 52,
-              "value": 0.7027
+              "numerator": 58,
+              "value": 0.7838
             },
             "false_met": {
               "denominator": 15,
               "denominator_meaning": "scored labels where MET is not an acceptable state",
-              "numerator": 11,
-              "value": 0.7333
+              "numerator": 5,
+              "value": 0.3333
             },
             "meets_minimum_utility": true,
             "met_precision": {
-              "denominator": 59,
+              "denominator": 53,
               "denominator_meaning": "scored labels predicted MET",
               "numerator": 48,
-              "value": 0.8136
+              "value": 0.9057
             },
             "met_recall": {
               "denominator": 59,
@@ -718,9 +513,9 @@
             "per_state": {
               "MET": {
                 "precision": {
-                  "denominator": 59,
+                  "denominator": 53,
                   "numerator": 48,
-                  "value": 0.8136
+                  "value": 0.9057
                 },
                 "recall": {
                   "denominator": 59,
@@ -730,14 +525,14 @@
               },
               "NEEDS_REVIEW": {
                 "precision": {
-                  "denominator": 0,
-                  "numerator": 0,
-                  "value": null
+                  "denominator": 6,
+                  "numerator": 6,
+                  "value": 1.0
                 },
                 "recall": {
                   "denominator": 8,
-                  "numerator": 0,
-                  "value": 0.0
+                  "numerator": 6,
+                  "value": 0.75
                 }
               },
               "NOT_DOCUMENTED": {
@@ -768,8 +563,8 @@
             "review_rate": {
               "denominator": 74,
               "denominator_meaning": "all scored labels; predicted NEEDS_REVIEW",
-              "numerator": 0,
-              "value": 0.0
+              "numerator": 6,
+              "value": 0.0811
             },
             "scored_labels": 74,
             "utility_flags": []
@@ -1242,13 +1037,13 @@
               "abstention_rate": {
                 "denominator": 13,
                 "denominator_meaning": "all scored labels; predicted NOT_DOCUMENTED or NEEDS_REVIEW",
-                "numerator": 4,
-                "value": 0.3077
+                "numerator": 7,
+                "value": 0.5385
               },
               "acceptable_agreement": {
                 "denominator": 13,
-                "numerator": 6,
-                "value": 0.4615
+                "numerator": 9,
+                "value": 0.6923
               },
               "confusion_matrix": {
                 "MET": {
@@ -1258,8 +1053,8 @@
                   "NOT_MET": 0
                 },
                 "NEEDS_REVIEW": {
-                  "MET": 4,
-                  "NEEDS_REVIEW": 0,
+                  "MET": 1,
+                  "NEEDS_REVIEW": 3,
                   "NOT_DOCUMENTED": 0,
                   "NOT_MET": 0
                 },
@@ -1279,11 +1074,11 @@
               "decided_coverage": {
                 "denominator": 13,
                 "denominator_meaning": "all scored labels; predicted MET or NOT_MET",
-                "numerator": 9,
-                "value": 0.6923
+                "numerator": 6,
+                "value": 0.4615
               },
               "error_classes": {
-                "FALSE_MET": 4,
+                "FALSE_MET": 1,
                 "MISSED_MET": 3
               },
               "evidence_coverage": {
@@ -1293,28 +1088,28 @@
                 "value": 1.0
               },
               "evidence_overlap": {
-                "denominator": 5,
+                "denominator": 8,
                 "denominator_meaning": "exact-agreement labels with an expected quote and a cited span; cited span overlaps the quote",
-                "numerator": 5,
+                "numerator": 8,
                 "value": 1.0
               },
               "exact_agreement": {
                 "denominator": 13,
-                "numerator": 6,
-                "value": 0.4615
+                "numerator": 9,
+                "value": 0.6923
               },
               "false_met": {
                 "denominator": 5,
                 "denominator_meaning": "scored labels where MET is not an acceptable state",
-                "numerator": 4,
-                "value": 0.8
+                "numerator": 1,
+                "value": 0.2
               },
               "meets_minimum_utility": true,
               "met_precision": {
-                "denominator": 9,
+                "denominator": 6,
                 "denominator_meaning": "scored labels predicted MET",
                 "numerator": 5,
-                "value": 0.5556
+                "value": 0.8333
               },
               "met_recall": {
                 "denominator": 8,
@@ -1337,9 +1132,9 @@
               "per_state": {
                 "MET": {
                   "precision": {
-                    "denominator": 9,
+                    "denominator": 6,
                     "numerator": 5,
-                    "value": 0.5556
+                    "value": 0.8333
                   },
                   "recall": {
                     "denominator": 8,
@@ -1349,14 +1144,14 @@
                 },
                 "NEEDS_REVIEW": {
                   "precision": {
-                    "denominator": 0,
-                    "numerator": 0,
-                    "value": null
+                    "denominator": 3,
+                    "numerator": 3,
+                    "value": 1.0
                   },
                   "recall": {
                     "denominator": 4,
-                    "numerator": 0,
-                    "value": 0.0
+                    "numerator": 3,
+                    "value": 0.75
                   }
                 },
                 "NOT_DOCUMENTED": {
@@ -1387,8 +1182,8 @@
               "review_rate": {
                 "denominator": 13,
                 "denominator_meaning": "all scored labels; predicted NEEDS_REVIEW",
-                "numerator": 0,
-                "value": 0.0
+                "numerator": 3,
+                "value": 0.2308
               },
               "scored_labels": 13,
               "utility_flags": []
@@ -1397,13 +1192,13 @@
               "abstention_rate": {
                 "denominator": 14,
                 "denominator_meaning": "all scored labels; predicted NOT_DOCUMENTED or NEEDS_REVIEW",
-                "numerator": 4,
-                "value": 0.2857
+                "numerator": 7,
+                "value": 0.5
               },
               "acceptable_agreement": {
                 "denominator": 14,
-                "numerator": 8,
-                "value": 0.5714
+                "numerator": 11,
+                "value": 0.7857
               },
               "confusion_matrix": {
                 "MET": {
@@ -1413,8 +1208,8 @@
                   "NOT_MET": 0
                 },
                 "NEEDS_REVIEW": {
-                  "MET": 3,
-                  "NEEDS_REVIEW": 0,
+                  "MET": 0,
+                  "NEEDS_REVIEW": 3,
                   "NOT_DOCUMENTED": 0,
                   "NOT_MET": 0
                 },
@@ -1434,11 +1229,10 @@
               "decided_coverage": {
                 "denominator": 14,
                 "denominator_meaning": "all scored labels; predicted MET or NOT_MET",
-                "numerator": 10,
-                "value": 0.7143
+                "numerator": 7,
+                "value": 0.5
               },
               "error_classes": {
-                "FALSE_MET": 3,
                 "MISSED_MET": 3
               },
               "evidence_coverage": {
@@ -1448,28 +1242,28 @@
                 "value": 1.0
               },
               "evidence_overlap": {
-                "denominator": 7,
+                "denominator": 10,
                 "denominator_meaning": "exact-agreement labels with an expected quote and a cited span; cited span overlaps the quote",
-                "numerator": 7,
-                "value": 1.0
+                "numerator": 9,
+                "value": 0.9
               },
               "exact_agreement": {
                 "denominator": 14,
-                "numerator": 8,
-                "value": 0.5714
+                "numerator": 11,
+                "value": 0.7857
               },
               "false_met": {
                 "denominator": 4,
                 "denominator_meaning": "scored labels where MET is not an acceptable state",
-                "numerator": 3,
-                "value": 0.75
+                "numerator": 0,
+                "value": 0.0
               },
               "meets_minimum_utility": true,
               "met_precision": {
-                "denominator": 10,
+                "denominator": 7,
                 "denominator_meaning": "scored labels predicted MET",
                 "numerator": 7,
-                "value": 0.7
+                "value": 1.0
               },
               "met_recall": {
                 "denominator": 10,
@@ -1492,9 +1286,9 @@
               "per_state": {
                 "MET": {
                   "precision": {
-                    "denominator": 10,
+                    "denominator": 7,
                     "numerator": 7,
-                    "value": 0.7
+                    "value": 1.0
                   },
                   "recall": {
                     "denominator": 10,
@@ -1504,14 +1298,14 @@
                 },
                 "NEEDS_REVIEW": {
                   "precision": {
-                    "denominator": 0,
-                    "numerator": 0,
-                    "value": null
+                    "denominator": 3,
+                    "numerator": 3,
+                    "value": 1.0
                   },
                   "recall": {
                     "denominator": 3,
-                    "numerator": 0,
-                    "value": 0.0
+                    "numerator": 3,
+                    "value": 1.0
                   }
                 },
                 "NOT_DOCUMENTED": {
@@ -1542,8 +1336,8 @@
               "review_rate": {
                 "denominator": 14,
                 "denominator_meaning": "all scored labels; predicted NEEDS_REVIEW",
-                "numerator": 0,
-                "value": 0.0
+                "numerator": 3,
+                "value": 0.2143
               },
               "scored_labels": 14,
               "utility_flags": []
@@ -3115,13 +2909,13 @@
             "abstention_rate": {
               "denominator": 3,
               "denominator_meaning": "all scored labels; predicted NOT_DOCUMENTED or NEEDS_REVIEW",
-              "numerator": 0,
-              "value": 0.0
+              "numerator": 3,
+              "value": 1.0
             },
             "acceptable_agreement": {
               "denominator": 3,
-              "numerator": 0,
-              "value": 0.0
+              "numerator": 3,
+              "value": 1.0
             },
             "confusion_matrix": {
               "MET": {
@@ -3131,8 +2925,8 @@
                 "NOT_MET": 0
               },
               "NEEDS_REVIEW": {
-                "MET": 3,
-                "NEEDS_REVIEW": 0,
+                "MET": 0,
+                "NEEDS_REVIEW": 3,
                 "NOT_DOCUMENTED": 0,
                 "NOT_MET": 0
               },
@@ -3152,12 +2946,10 @@
             "decided_coverage": {
               "denominator": 3,
               "denominator_meaning": "all scored labels; predicted MET or NOT_MET",
-              "numerator": 3,
-              "value": 1.0
+              "numerator": 0,
+              "value": 0.0
             },
-            "error_classes": {
-              "FALSE_MET": 3
-            },
+            "error_classes": {},
             "evidence_coverage": {
               "denominator": 3,
               "denominator_meaning": "scored labels predicted MET, NOT_MET or NEEDS_REVIEW; at least one cited span",
@@ -3165,28 +2957,28 @@
               "value": 1.0
             },
             "evidence_overlap": {
-              "denominator": 0,
+              "denominator": 3,
               "denominator_meaning": "exact-agreement labels with an expected quote and a cited span; cited span overlaps the quote",
-              "numerator": 0,
-              "value": null
+              "numerator": 3,
+              "value": 1.0
             },
             "exact_agreement": {
               "denominator": 3,
-              "numerator": 0,
-              "value": 0.0
+              "numerator": 3,
+              "value": 1.0
             },
             "false_met": {
               "denominator": 3,
               "denominator_meaning": "scored labels where MET is not an acceptable state",
-              "numerator": 3,
-              "value": 1.0
+              "numerator": 0,
+              "value": 0.0
             },
             "meets_minimum_utility": false,
             "met_precision": {
-              "denominator": 3,
+              "denominator": 0,
               "denominator_meaning": "scored labels predicted MET",
               "numerator": 0,
-              "value": 0.0
+              "value": null
             },
             "met_recall": {
               "denominator": 0,
@@ -3209,9 +3001,9 @@
             "per_state": {
               "MET": {
                 "precision": {
-                  "denominator": 3,
+                  "denominator": 0,
                   "numerator": 0,
-                  "value": 0.0
+                  "value": null
                 },
                 "recall": {
                   "denominator": 0,
@@ -3221,14 +3013,14 @@
               },
               "NEEDS_REVIEW": {
                 "precision": {
-                  "denominator": 0,
-                  "numerator": 0,
-                  "value": null
+                  "denominator": 3,
+                  "numerator": 3,
+                  "value": 1.0
                 },
                 "recall": {
                   "denominator": 3,
-                  "numerator": 0,
-                  "value": 0.0
+                  "numerator": 3,
+                  "value": 1.0
                 }
               },
               "NOT_DOCUMENTED": {
@@ -3259,13 +3051,13 @@
             "review_rate": {
               "denominator": 3,
               "denominator_meaning": "all scored labels; predicted NEEDS_REVIEW",
-              "numerator": 0,
-              "value": 0.0
+              "numerator": 3,
+              "value": 1.0
             },
             "scored_labels": 3,
             "utility_flags": [
               "MET_RECALL_NOT_MEASURED",
-              "ASSERTS_EVERY_UNSUPPORTED_FACT"
+              "NEVER_DECIDES"
             ]
           },
           "by_requirement": {
@@ -3273,13 +3065,13 @@
               "abstention_rate": {
                 "denominator": 2,
                 "denominator_meaning": "all scored labels; predicted NOT_DOCUMENTED or NEEDS_REVIEW",
-                "numerator": 0,
-                "value": 0.0
+                "numerator": 2,
+                "value": 1.0
               },
               "acceptable_agreement": {
                 "denominator": 2,
-                "numerator": 0,
-                "value": 0.0
+                "numerator": 2,
+                "value": 1.0
               },
               "confusion_matrix": {
                 "MET": {
@@ -3289,8 +3081,8 @@
                   "NOT_MET": 0
                 },
                 "NEEDS_REVIEW": {
-                  "MET": 2,
-                  "NEEDS_REVIEW": 0,
+                  "MET": 0,
+                  "NEEDS_REVIEW": 2,
                   "NOT_DOCUMENTED": 0,
                   "NOT_MET": 0
                 },
@@ -3310,12 +3102,10 @@
               "decided_coverage": {
                 "denominator": 2,
                 "denominator_meaning": "all scored labels; predicted MET or NOT_MET",
-                "numerator": 2,
-                "value": 1.0
+                "numerator": 0,
+                "value": 0.0
               },
-              "error_classes": {
-                "FALSE_MET": 2
-              },
+              "error_classes": {},
               "evidence_coverage": {
                 "denominator": 2,
                 "denominator_meaning": "scored labels predicted MET, NOT_MET or NEEDS_REVIEW; at least one cited span",
@@ -3323,28 +3113,28 @@
                 "value": 1.0
               },
               "evidence_overlap": {
-                "denominator": 0,
+                "denominator": 2,
                 "denominator_meaning": "exact-agreement labels with an expected quote and a cited span; cited span overlaps the quote",
-                "numerator": 0,
-                "value": null
+                "numerator": 2,
+                "value": 1.0
               },
               "exact_agreement": {
                 "denominator": 2,
-                "numerator": 0,
-                "value": 0.0
+                "numerator": 2,
+                "value": 1.0
               },
               "false_met": {
                 "denominator": 2,
                 "denominator_meaning": "scored labels where MET is not an acceptable state",
-                "numerator": 2,
-                "value": 1.0
+                "numerator": 0,
+                "value": 0.0
               },
               "meets_minimum_utility": false,
               "met_precision": {
-                "denominator": 2,
+                "denominator": 0,
                 "denominator_meaning": "scored labels predicted MET",
                 "numerator": 0,
-                "value": 0.0
+                "value": null
               },
               "met_recall": {
                 "denominator": 0,
@@ -3367,9 +3157,9 @@
               "per_state": {
                 "MET": {
                   "precision": {
-                    "denominator": 2,
+                    "denominator": 0,
                     "numerator": 0,
-                    "value": 0.0
+                    "value": null
                   },
                   "recall": {
                     "denominator": 0,
@@ -3379,14 +3169,14 @@
                 },
                 "NEEDS_REVIEW": {
                   "precision": {
-                    "denominator": 0,
-                    "numerator": 0,
-                    "value": null
+                    "denominator": 2,
+                    "numerator": 2,
+                    "value": 1.0
                   },
                   "recall": {
                     "denominator": 2,
-                    "numerator": 0,
-                    "value": 0.0
+                    "numerator": 2,
+                    "value": 1.0
                   }
                 },
                 "NOT_DOCUMENTED": {
@@ -3417,26 +3207,26 @@
               "review_rate": {
                 "denominator": 2,
                 "denominator_meaning": "all scored labels; predicted NEEDS_REVIEW",
-                "numerator": 0,
-                "value": 0.0
+                "numerator": 2,
+                "value": 1.0
               },
               "scored_labels": 2,
               "utility_flags": [
                 "MET_RECALL_NOT_MEASURED",
-                "ASSERTS_EVERY_UNSUPPORTED_FACT"
+                "NEVER_DECIDES"
               ]
             },
             "cpb_0236_conservative_therapy_weeks": {
               "abstention_rate": {
                 "denominator": 1,
                 "denominator_meaning": "all scored labels; predicted NOT_DOCUMENTED or NEEDS_REVIEW",
-                "numerator": 0,
-                "value": 0.0
+                "numerator": 1,
+                "value": 1.0
               },
               "acceptable_agreement": {
                 "denominator": 1,
-                "numerator": 0,
-                "value": 0.0
+                "numerator": 1,
+                "value": 1.0
               },
               "confusion_matrix": {
                 "MET": {
@@ -3446,8 +3236,8 @@
                   "NOT_MET": 0
                 },
                 "NEEDS_REVIEW": {
-                  "MET": 1,
-                  "NEEDS_REVIEW": 0,
+                  "MET": 0,
+                  "NEEDS_REVIEW": 1,
                   "NOT_DOCUMENTED": 0,
                   "NOT_MET": 0
                 },
@@ -3467,12 +3257,10 @@
               "decided_coverage": {
                 "denominator": 1,
                 "denominator_meaning": "all scored labels; predicted MET or NOT_MET",
-                "numerator": 1,
-                "value": 1.0
+                "numerator": 0,
+                "value": 0.0
               },
-              "error_classes": {
-                "FALSE_MET": 1
-              },
+              "error_classes": {},
               "evidence_coverage": {
                 "denominator": 1,
                 "denominator_meaning": "scored labels predicted MET, NOT_MET or NEEDS_REVIEW; at least one cited span",
@@ -3480,28 +3268,28 @@
                 "value": 1.0
               },
               "evidence_overlap": {
-                "denominator": 0,
+                "denominator": 1,
                 "denominator_meaning": "exact-agreement labels with an expected quote and a cited span; cited span overlaps the quote",
-                "numerator": 0,
-                "value": null
+                "numerator": 1,
+                "value": 1.0
               },
               "exact_agreement": {
                 "denominator": 1,
-                "numerator": 0,
-                "value": 0.0
+                "numerator": 1,
+                "value": 1.0
               },
               "false_met": {
                 "denominator": 1,
                 "denominator_meaning": "scored labels where MET is not an acceptable state",
-                "numerator": 1,
-                "value": 1.0
+                "numerator": 0,
+                "value": 0.0
               },
               "meets_minimum_utility": false,
               "met_precision": {
-                "denominator": 1,
+                "denominator": 0,
                 "denominator_meaning": "scored labels predicted MET",
                 "numerator": 0,
-                "value": 0.0
+                "value": null
               },
               "met_recall": {
                 "denominator": 0,
@@ -3524,9 +3312,9 @@
               "per_state": {
                 "MET": {
                   "precision": {
-                    "denominator": 1,
+                    "denominator": 0,
                     "numerator": 0,
-                    "value": 0.0
+                    "value": null
                   },
                   "recall": {
                     "denominator": 0,
@@ -3536,14 +3324,14 @@
                 },
                 "NEEDS_REVIEW": {
                   "precision": {
-                    "denominator": 0,
-                    "numerator": 0,
-                    "value": null
+                    "denominator": 1,
+                    "numerator": 1,
+                    "value": 1.0
                   },
                   "recall": {
                     "denominator": 1,
-                    "numerator": 0,
-                    "value": 0.0
+                    "numerator": 1,
+                    "value": 1.0
                   }
                 },
                 "NOT_DOCUMENTED": {
@@ -3574,13 +3362,13 @@
               "review_rate": {
                 "denominator": 1,
                 "denominator_meaning": "all scored labels; predicted NEEDS_REVIEW",
-                "numerator": 0,
-                "value": 0.0
+                "numerator": 1,
+                "value": 1.0
               },
               "scored_labels": 1,
               "utility_flags": [
                 "MET_RECALL_NOT_MEASURED",
-                "ASSERTS_EVERY_UNSUPPORTED_FACT"
+                "NEVER_DECIDES"
               ]
             }
           },
@@ -9254,7 +9042,7 @@
   },
   "system_under_test": {
     "drug_table_sha256": "ae6bc85fc2f923c10a652efe76a1f5316ba2eb8c1807abf4bad73660408b4812",
-    "engine_version": "2.7.0",
+    "engine_version": "2.7.1",
     "path": "engine.service.ReadinessService.evaluate, no verifications, no corrections",
     "rules_version": "1.0"
   }
