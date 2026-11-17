@@ -80,7 +80,7 @@ A pre-merge review found one substantive cost that neither the specification's m
 | "…no improvement; stopped after 3 days." | `MET` (false) | review (correct) |
 | "…no improvement at the time; that was before the current flare…" | `MET` (false) | review (correct) |
 
-This is fail-safe: it adds no false `MET`. It is still more frequent than section 4 of the specification implies, because that measurement covered only existing notes. The earlier statement that there were no unexpected regressions is withdrawn for this behaviour.
+This is fail-safe: it adds no false `MET`. It is still more frequent than section 4 of the specification implies, because that measurement covered only existing notes. The earlier statement that there were no unexpected regressions was withdrawn for this behaviour until the resolution below.
 
 A narrower rule was tested in a scratch copy, not on this branch. It counts a sibling clause as commentary only when it begins with a reference back to the course ("that", "this", "it", "which", "these", "those", "they").
 
@@ -88,7 +88,43 @@ A narrower rule was tested in a scratch copy, not on this branch. It counts a si
 - It restores `MET` on the six unrelated-commentary notes and still sends CH-15 to review.
 - It leaves "…; stopped after 3 days." as a false `MET`, the same as 2.7.0.
 
-**Decision for the owner before merging this PR:**
+**Resolution (owner request, November 17).** The owner rejected both "merge as is" and the back-reference rule. In their place, a sibling clause that names no therapy keeps a clean course `MET` only when the whole clause is one of a closed set of clearly independent statements:
 
-- Merge as is and accept the extra reviews.
-- Or adopt the narrower rule, with these probes added as tests, in a separate approved commit.
+- an MRI request;
+- a referral to a spine, pain, neurosurgery, orthopedic or physiatry clinic;
+- "see attached records";
+- the patient still working full or part time;
+- the patient declining injections or surgery.
+
+"Pain is severe" describes the response, so it is accepted only when the course itself states a non-response, where the two agree. Anything unlisted or only partly matching still sends the course to review.
+
+Tests were written and committed first (`047dbe8`, `7c1f844`), and the change followed (`a423225`).
+
+| Note ending | 2.7.0 | 2.7.1 before | 2.7.1 after |
+| --- | --- | --- | --- |
+| "; pain is severe." | 8, true | review | 8, true |
+| "; MRI requested." | 8, true | review | 8, true |
+| "; referred to spine clinic." | 8, true | review | 8, true |
+| ", though she still works full time." | 8, true | review | 8, true |
+| ", but she declines injections." | 8, true | review | 8, true |
+| "; see attached records." | 8, true | review | 8, true |
+| "; stopped after 3 days." | 8, true (false `MET`) | review | review |
+| CH-15 "…at the time; that was before the current flare…" | 8, true (false `MET`) | review | review |
+| "; she works as a nurse." (unrecognized) | 8, true | review | review |
+| "; MRI requested after she stopped them." | 8, true | review | review |
+| "; referred to spine clinic, stopped after 3 days." | 8, true | review | review |
+| "; pain is severe but now improving." | 8, true | review | review |
+| "; pain is no longer severe." | review | review | review |
+| "…significant improvement; pain is severe." | 8, false | review | review |
+| "NSAIDs for 8 weeks; pain is severe." | 8, none | review | review |
+
+**Results:**
+
+- The committed evaluation baseline is byte-identical before and after the change: no new false `MET` or missed `MET` in any set or tier.
+- The full suite gives 2,061 passed and 9 xfailed on Python 3.12 and 3.13, with no existing expectation changed.
+- Goldens and artifacts are unchanged.
+
+**Limits that remain:**
+
+- The allowlist covers only these forms. Any other harmless commentary still goes to review, which is the conservative direction.
+- A sibling clause that names a therapy is treated as a separate course and not checked as commentary. For example, "; referred because NSAIDs were stopped" can leave the first course `MET`. This behaviour predates Phase 2 and is unchanged.

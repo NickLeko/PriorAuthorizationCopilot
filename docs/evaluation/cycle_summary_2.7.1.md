@@ -1,11 +1,11 @@
 # Development cycle summary: engine 2.7.0 to 2.7.1
 
-November 17, 2026. Covers PRs #23 and #24. Neither is merged or deployed.
+November 17, 2026. Covers PRs #23 and #24. #23 is merged into `main` (`8cf737d`); #24 is open and not merged. Nothing is deployed.
 
 ## What changed
 
 - **Measurement (#23).** Requirement-level evaluation replaced a false-`READY` headline that could not fail. Results carry explicit denominators, constant-predictor controls and separated label tiers, and the holdout is sealed.
-- **Extraction (#24).** Lumbar CPB 0236 therapy courses are resolved per course and per fact. A course whose wording is not fully accounted for by a closed course grammar goes to review instead of `MET`. A separate clean course still counts, and a documented duration survives when only the response is qualified.
+- **Extraction (#24).** Lumbar CPB 0236 therapy courses are resolved per course and per fact. A course whose wording is not fully accounted for by a closed course grammar goes to review instead of `MET`. A separate clean course still counts, and a documented duration survives when only the response is qualified. Clearly independent commentary in the same sentence, from a closed list, does not downgrade a clean course.
 
 ## Measured results
 
@@ -32,7 +32,7 @@ The challenge counts are known failures on selected notes. They are not estimate
 
 1. **False `MET` on objective-exam temporality.** A historical or copied exam (CH-06, N1B) can satisfy the verified lumbar exam criterion.
 2. **False `MET` from a response reversed in a later sentence** (CH-14).
-3. **Sibling-clause over-review in 2.7.1** (fail-safe). It is a usability cost on common note wording and needs an owner decision before #24 merges.
+3. **Sibling clauses that name a therapy are not checked as commentary.** "; referred because NSAIDs were stopped" can leave a course `MET`. This predates 2.7.1. Commentary outside the allowlist goes to review, which is fail-safe.
 4. **Evidence attribution for set-aside courses.** Duration evidence lists courses that did not decide the value.
 5. **False `MET` on the generic demo pathways** (CH-16, CH-17). These pathways are not policy-verified.
 6. **Recall gaps on natural phrasing** (11 missed `MET`).
@@ -56,7 +56,7 @@ The next step is evaluation, not development. A human labels the holdout without
 
 | Item | Purpose | After verified merges |
 | --- | --- | --- |
-| `claude/gallant-bardeen-0kt5bf` (local and `origin`) | PR #23 head | Can be removed once #23 is merged and #24 has been retargeted and merged |
+| `claude/gallant-bardeen-0kt5bf` (local and `origin`) | PR #23 head, merged as `8cf737d` | Kept on owner instruction. Can be removed after #24 merges. |
 | `claude/phase2-per-course-therapy` (local and `origin`) | PR #24 head | Can be removed after #24 is merged |
 | `main` (local) | Tracks `origin/main` at `6b583df` | Keep; fast-forward after the merges |
 | Worktree `/home/user/PriorAuthorizationCopilot` | The only worktree in this cloud container | Ephemeral container; nothing to remove |

@@ -6,10 +6,10 @@ November 17, 2026. Prepared by Claude for an independent Codex review. **No inde
 
 | PR | Base | Head at handoff | Scope |
 | --- | --- | --- | --- |
-| [#23](https://github.com/NickLeko/PriorAuthorizationCopilot/pull/23) | `main` at `6b583df` | `5f6b8a6` | Evaluation infrastructure, datasets, human-review record, Phase 2 specification. No extraction change. |
-| [#24](https://github.com/NickLeko/PriorAuthorizationCopilot/pull/24) | #23's branch at `5f6b8a6` | `351ea81` plus one docs-only commit that adds this file | Phase 2 production change, engine 2.7.1. |
+| [#23](https://github.com/NickLeko/PriorAuthorizationCopilot/pull/23) | `main` at `6b583df` | `5f6b8a6`, merged into `main` as `8cf737d` (merge commit) | Evaluation infrastructure, datasets, human-review record, Phase 2 specification. No extraction change. |
+| [#24](https://github.com/NickLeko/PriorAuthorizationCopilot/pull/24) | `main` at `8cf737d` | Code head `a423225`, followed only by docs commits | Phase 2 production change, engine 2.7.1. |
 
-After #24's code head `351ea81`, only files under `docs/evaluation/` change. `git diff 351ea81 <#24 head> --stat` should show that.
+After #24's code head `a423225`, only files under `docs/evaluation/` change. `git diff a423225 <#24 head> --stat` should show that.
 
 ## Architectural changes
 
@@ -24,6 +24,7 @@ After #24's code head `351ea81`, only files under `docs/evaluation/` change. `gi
 - `_TherapyCourseCandidate.course_status`: `clean`, `response_uncertain` or `course_uncertain`.
 - `_class_name_course_status`: classifies each course.
 - `_resolve_with_uncertain_courses`: a branch in front of the unchanged resolver, which is renamed `_resolve_clean_cpb_therapy_candidates`.
+- `CPB_INDEPENDENT_COMMENTARY_RE` and `CPB_NONRESPONSE_COMMENTARY_RE`: a closed allowlist of sibling clauses that do not send a clean course to review.
 
 There are no schema, operator, service, correction or verification changes. The version moves to 2.7.1.
 
@@ -42,7 +43,7 @@ There are no schema, operator, service, correction or verification changes. The 
 
 ## Known remaining failures
 
-1. **Sibling-clause over-review, new in 2.7.1.** See `phase2_results.md`. It never creates a false `MET`.
+1. **Sibling-clause commentary outside the allowlist still goes to review.** This is conservative, so it never creates a false `MET`. A sibling clause that names a therapy is treated as a separate course, so "; referred because NSAIDs were stopped" can leave the first course `MET`. That predates Phase 2.
 2. **CH-06, historical exam** ("Exam two years ago…"): false `MET`. The copied-note test N1B also still asserts a 2019 diagnosis and exam as `MET`.
 3. **CH-14, response reversed in the next sentence:** false `MET`.
 4. **CH-16 and CH-17, generic demo pathways:** borrowed symptom duration, wrong-region imaging and missed physical therapy are asserted as `MET`.
@@ -65,7 +66,7 @@ There are no schema, operator, service, correction or verification changes. The 
 
 1. Find a note where 2.7.1 produces a `MET` that 2.7.0 did not. One intended case is known: an independent clean course beside a shorter uncertain one. Are there unintended ones?
 2. Find a note where a valid, clean course now loses `MET`, other than the sibling-clause class.
-3. Is the sibling-clause rule the right trade-off, or is the narrower back-reference rule in `phase2_results.md` safer overall?
+3. Can any form in `CPB_INDEPENDENT_COMMENTARY_RE` hide a statement that modifies or contradicts the course? Is the agreement check for "pain is severe" sufficient?
 4. Do the 25 tests in `test/test_phase2_therapy_courses.py` test behaviour, or only reproduce the author's own examples?
 5. Can anything in the evaluation package run or score the sealed holdout, or verify a label without a logged human decision?
-6. Are any changed test expectations unjustified? Seven test files changed across the two PRs; see `phase2_results.md`.
+6. Are any changed test expectations unjustified? See `phase2_results.md`. The allowlist commits added tests and changed no existing expectation.
