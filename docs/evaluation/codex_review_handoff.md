@@ -9,7 +9,7 @@ November 17, 2026. Prepared by Claude for an independent Codex review. **No inde
 | [#23](https://github.com/NickLeko/PriorAuthorizationCopilot/pull/23) | `main` at `6b583df` | `5f6b8a6`, merged into `main` as `8cf737d` (merge commit) | Evaluation infrastructure, datasets, human-review record, Phase 2 specification. No extraction change. |
 | [#24](https://github.com/NickLeko/PriorAuthorizationCopilot/pull/24) | `main` at `8cf737d` | Code head `a423225`, followed only by docs commits | Phase 2 production change, engine 2.7.1. |
 
-After #24's code head `a423225`, only files under `docs/evaluation/` change. `git diff a423225 <#24 head> --stat` should show that.
+After #24's code head `a423225`, only documentation under `docs/` changes. `git diff a423225 <#24 head> --stat` should show that.
 
 ## Architectural changes
 
