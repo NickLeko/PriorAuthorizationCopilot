@@ -222,3 +222,16 @@ Goldens and generated artifacts were unchanged under the prototype. No strict ex
 - Borrowed evidence on the generic pathways (CH-16, CH-17).
 - Policy-aware extraction.
 - Relationship models or model-based extraction.
+
+## 11. Addendum: independent sibling commentary (owner request, November 17)
+
+The rule in section 3.1 that sends a course to review when a sibling clause names no therapy has one bounded exception. The sibling clause is not treated as commentary on the course when the whole clause matches `CPB_INDEPENDENT_COMMENTARY_RE`:
+
+- an MRI request;
+- a referral to a named specialty clinic;
+- "see attached records";
+- the patient still working;
+- the patient declining injections or surgery.
+
+It is also not treated as commentary when the clause matches `CPB_NONRESPONSE_COMMENTARY_RE` ("pain is severe") and the course clause states a non-response. Everything else keeps the section 3.1 behaviour. Measured results are in [phase2_results.md](phase2_results.md).
+

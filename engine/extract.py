@@ -95,6 +95,53 @@ CPB_0236_RESPONSE_RE = re.compile(
     r"\b(?:substantial|significant|meaningful|good)\s+(?:improvement|relief|response|benefit)\b"
     r"|\bsymptoms? resolved\b"
 )
+# Whole-course grammar for class-name courses (Phase 2, docs/evaluation/phase2_spec.md).
+# A class-name course counts only if its clause is fully accounted for. This is an
+# allowlist: a missing framing word costs a review, never a false MET. Add a form
+# only with a written control showing valid documentation going to review.
+CPB_COURSE_HEADER = r"(?:(?:conservative\s+)?(?:therapy|treatment|treatments|management)(?:\s+history)?|medications?)\s*:\s*"
+CPB_COURSE_SUBJECT = r"(?:(?:the\s+)?patient\s+|(?:she|he)\s+)?"
+CPB_COURSE_USE = (
+    r"(?:(?:(?:has|have|had)\s+(?:been\s+)?(?:taking|using|on)|(?:has|have|had)\s+(?:taken|used|tried)|"
+    r"reports?\s+(?:taking|using)|took|takes?|taking|used|uses?|using|tried|trialed|received|completed|on|treated\s+with)\s+)?"
+)
+CPB_COURSE_MODIFIER = r"(?:(?:over-the-counter|otc|prescription)\s+)?"
+CPB_COURSE_MODALITY = rf"{CPB_0236_THERAPY_CONTEXT}(?:\s*(?:,|and|plus|\+)\s*{CPB_0236_THERAPY_CONTEXT})*"
+CPB_COURSE_RESPONSE = (
+    r"(?:(?:\s+with\s+|,\s*|\s+(?:produced|provided|gave|yielded|resulted\s+in)\s+)"
+    r"(?:no|minimal|little|insufficient|substantial|significant|meaningful|good)\s+(?:meaningful\s+)?"
+    r"(?:improvement|relief|response|benefit)"
+    r"|\s+without\s+(?:meaningful\s+)?(?:improvement|relief|response|benefit))"
+    r"(?:\s+in\s+(?:(?:her|his|the\s+patient's)\s+)?(?:(?:back|leg|low\s+back)\s+)?(?:pain|symptoms))?"
+    r"(?:\s+(?:so\s+far|to\s+date))?"
+)
+# Sibling clauses that are clearly independent of the treatment course. Each must be the
+# whole clause. This is a closed allowlist: anything not listed, or only partly matching,
+# is treated as commentary on the course and still sends it to review.
+CPB_INDEPENDENT_COMMENTARY_RE = re.compile(
+    r"^(?:"
+    r"(?:lumbar\s+)?mri\s+(?:is\s+)?requested"
+    r"|(?:(?:the\s+)?patient\s+|she\s+|he\s+)?(?:was\s+)?referred\s+to\s+(?:the\s+)?"
+    r"(?:spine|pain|neurosurgery|orthopedic|orthopaedic|physiatry)\s+clinic"
+    r"|(?:she|he|the\s+patient)\s+still\s+works\s+(?:full|part)[\s-]time"
+    r"|(?:she|he|the\s+patient)\s+declines\s+(?:injections|epidural\s+(?:steroid\s+)?injections|surgery)"
+    r"|see\s+attached\s+records"
+    r")$"
+)
+# Severity describes the response, so it is accepted only beside a stated non-response,
+# where it agrees with the course. Beside an improvement or no response it still needs review.
+CPB_NONRESPONSE_COMMENTARY_RE = re.compile(r"^(?:(?:her|his|the)\s+)?(?:(?:back|leg)\s+)?pain\s+is\s+severe$")
+CPB_COURSE_PREFIX = rf"^(?:{CPB_COURSE_HEADER})?{CPB_COURSE_SUBJECT}{CPB_COURSE_USE}{CPB_COURSE_MODIFIER}"
+CPB_WHOLE_COURSE_RES = (
+    re.compile(
+        rf"{CPB_COURSE_PREFIX}{CPB_COURSE_MODALITY}{CPB_DRUG_DOSE}\s*(?:x|for|over)\s*{CPB_EXPLICIT_DURATION_VALUE}"
+        rf"\s*(?:days?|months?|weeks?)(?:{CPB_COURSE_RESPONSE})?\s*$"
+    ),
+    re.compile(
+        rf"{CPB_COURSE_PREFIX}(?:(?:a|an)\s+)?{CPB_EXPLICIT_DURATION_VALUE}[ -]+(?:days?|months?|weeks?)\s+"
+        rf"(?:(?:course|trial)\s+)?of\s+{CPB_COURSE_MODIFIER}{CPB_COURSE_MODALITY}{CPB_DRUG_DOSE}(?:{CPB_COURSE_RESPONSE})?\s*$"
+    ),
+)
 THERAPY_CLAUSE_BOUNDARY_RE = re.compile(r";\s*|(?:,\s*)?\b(?:whereas|while|however|but|though|although|yet|in contrast)\b\s*[:,]?\s*")
 EXCLUSION_TRIGGER = (
     r"\b(?:ruled\s+out|ordered|prescribed|recommended|not\s+yet\s+started|"
@@ -252,6 +299,8 @@ class _TherapyCourseCandidate:
     end: int
     ambiguous_linkage: bool = False
     response_only_review: bool = False
+    # Phase 2: "clean", "response_uncertain" or "course_uncertain" for class-name courses.
+    course_status: str = "clean"
 
 
 def _add_span(evidence: Dict[str, List[Dict[str, Any]]], key: str, start: int, end: int, text: str) -> None:
@@ -532,6 +581,43 @@ def _cpb_duration_weeks(match: re.Match[str]) -> int:
     return value
 
 
+def _is_whole_course(clause: str) -> bool:
+    return any(pattern.match(clause) for pattern in CPB_WHOLE_COURSE_RES)
+
+
+def _class_name_course_status(sentence: str, clause_start: int, clause_end: int) -> str:
+    """Classify one class-name course clause; see docs/evaluation/phase2_spec.md section 3.1."""
+    clause = sentence[clause_start:clause_end].strip().rstrip(".!?").strip()
+    if not (CPB_0236_THERAPY_AFTER_RE.search(clause) or CPB_0236_THERAPY_BEFORE_RE.search(clause)):
+        return "clean"
+    # A sibling clause naming no therapy at all comments on this course (timing,
+    # adherence, a reversed response), so the course itself is uncertain, unless the
+    # whole clause is one of the closed set of clearly independent statements.
+    states_nonresponse = bool(CPB_0236_NONRESPONSE_RE.search(clause)) and not CPB_0236_RESPONSE_RE.search(clause)
+
+    def independent(sibling: str) -> bool:
+        sibling = sibling.strip().rstrip(".!?").strip()
+        return bool(CPB_INDEPENDENT_COMMENTARY_RE.match(sibling) or (states_nonresponse and CPB_NONRESPONSE_COMMENTARY_RE.match(sibling)))
+
+    commentary = any(
+        (start, end) != (clause_start, clause_end)
+        and not CPB_0236_THERAPY_CONTEXT_RE.search(sentence[start:end])
+        and not DRUG_NAME_RE.search(sentence[start:end])
+        and not THERAPY_CONTEXT_RE.search(sentence[start:end])
+        and not independent(sentence[start:end])
+        for start, end in _therapy_clause_spans(sentence)
+    )
+    if commentary:
+        return "course_uncertain"
+    if _is_whole_course(clause):
+        return "clean"
+    # Words after a complete response phrase qualify the response, not the course.
+    for match in [*CPB_0236_NONRESPONSE_RE.finditer(clause), *CPB_0236_RESPONSE_RE.finditer(clause)]:
+        if clause[match.end() :].strip() and _is_whole_course(clause[: match.end()]):
+            return "response_uncertain"
+    return "course_uncertain"
+
+
 def _collect_cpb_therapy_candidates(text: str) -> List[_TherapyCourseCandidate]:
     candidates: List[_TherapyCourseCandidate] = []
     unresolved_drug_context: List[_TherapyCourseCandidate] = []
@@ -677,6 +763,7 @@ def _collect_cpb_therapy_candidates(text: str) -> List[_TherapyCourseCandidate]:
                     end=absolute_end,
                     ambiguous_linkage=linkage_ambiguous,
                     response_only_review=response_only_review,
+                    course_status="clean" if linkage_ambiguous else _class_name_course_status(sentence, clause_start, clause_end),
                 )
             )
 
@@ -687,6 +774,39 @@ def _collect_cpb_therapy_candidates(text: str) -> List[_TherapyCourseCandidate]:
 
 
 def _resolve_cpb_therapy_candidates(
+    candidates: List[_TherapyCourseCandidate],
+) -> Tuple[Optional[int] | str, Optional[bool] | str]:
+    if not candidates:
+        return None, None
+    uncertain = [candidate for candidate in candidates if candidate.course_status != "clean"]
+    if uncertain and not any(candidate.ambiguous_linkage for candidate in candidates):
+        return _resolve_with_uncertain_courses(candidates, uncertain)
+    return _resolve_clean_cpb_therapy_candidates(candidates)
+
+
+def _resolve_with_uncertain_courses(
+    candidates: List[_TherapyCourseCandidate], uncertain: List[_TherapyCourseCandidate]
+) -> Tuple[Optional[int] | str, Optional[bool] | str]:
+    """Per-course, per-fact resolution (docs/evaluation/phase2_spec.md section 3.2)."""
+    clean = [candidate for candidate in candidates if candidate.course_status == "clean"]
+    if not clean:
+        only = uncertain[0]
+        if len(uncertain) == 1 and only.course_status == "response_uncertain" and only.duration_weeks is not None:
+            return only.duration_weeks, REVIEW_REQUIRED_FACT
+        return REVIEW_REQUIRED_FACT, REVIEW_REQUIRED_FACT
+    duration, response = _resolve_clean_cpb_therapy_candidates(clean)
+    # An uncertain course longer than the clean one could change the outcome, and the
+    # extractor deliberately does not know the policy minimum (owner decision, Option A).
+    if (
+        type(duration) is int
+        and response != REVIEW_REQUIRED_FACT
+        and all(candidate.duration_weeks is None or candidate.duration_weeks <= duration for candidate in uncertain)
+    ):
+        return duration, response
+    return REVIEW_REQUIRED_FACT, REVIEW_REQUIRED_FACT
+
+
+def _resolve_clean_cpb_therapy_candidates(
     candidates: List[_TherapyCourseCandidate],
 ) -> Tuple[Optional[int] | str, Optional[bool] | str]:
     if not candidates:

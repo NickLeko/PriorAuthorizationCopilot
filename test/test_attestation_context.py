@@ -32,8 +32,17 @@ def test_n1b_shows_following_contradiction_for_all_four_attestations():
     at = evaluated_app(N1B)
     payload = at.session_state["last_eval_payload"]
     assert len(payload["results"]) == 4
-    assert all(result["status"] == "MET" for result in payload["results"])
-    assert payload["overall_status"] == "PENDING_VERIFICATION"
+    # Phase 2 (owner-approved, docs/evaluation/phase2_spec.md section 7): the copied 2019
+    # therapy course is no longer asserted as MET; its two facts go to review. The
+    # reviewer-context and attestation assertions below are unchanged.
+    statuses = {result["key"]: result["status"] for result in payload["results"]}
+    assert statuses == {
+        "back_pain_with_radiculopathy": "MET",
+        "objective_motor_or_reflex_change_in_root_distribution": "MET",
+        "cpb_0236_conservative_therapy_weeks": "NEEDS_REVIEW",
+        "cpb_0236_conservative_therapy_no_improvement": "NEEDS_REVIEW",
+    }
+    assert payload["overall_status"] == "NEEDS_REVIEW"
     form = verification_form(at)
     contexts = [text.value for text in form.text if "⟦" in text.value]
     assert len(contexts) == 4

@@ -279,32 +279,40 @@ def test_review_statement_follows_the_recorded_review_state():
 
 
 def test_known_lumbar_failures_are_represented_as_measured_baseline_failures(baseline):
-    """Pins the pre-fix baseline. A Phase 2 extraction change is expected to update these deliberately."""
+    """Pins the post-Phase-2 baseline (engine 2.7.1). Phase 2 resolved nine false MET; see the accounting in
+    docs/evaluation/phase2_results.md. Every remaining known failure stays pinned so a later change is deliberate."""
     challenge = baseline["datasets"]["challenge_v1"]
     observed = {(row["case_id"], row["requirement_key"]): row["error_class"] for row in challenge["observed_failures"]}
     weeks, response = "cpb_0236_conservative_therapy_weeks", "cpb_0236_conservative_therapy_no_improvement"
     exam = "objective_motor_or_reflex_change_in_root_distribution"
-    expected = {
-        ("CH-02-missed-nsaids", weeks): "FALSE_MET",
-        ("CH-02-missed-nsaids", response): "FALSE_MET",
-        ("CH-03-nsaids-2019", weeks): "FALSE_MET",
-        ("CH-04-initially-none-now-improved", response): "FALSE_MET",
-        ("CH-05-intermittent-adherence", weeks): "FALSE_MET",
+    resolved_by_phase2 = [
+        ("CH-02-missed-nsaids", weeks),
+        ("CH-02-missed-nsaids", response),
+        ("CH-03-nsaids-2019", weeks),
+        ("CH-03-nsaids-2019", response),
+        ("CH-04-initially-none-now-improved", response),
+        ("CH-05-intermittent-adherence", weeks),
+        ("CH-05-intermittent-adherence", response),
+        ("CH-15-course-before-current-flare", weeks),
+        ("CH-15-course-before-current-flare", response),
+    ]
+    assert not [key for key in resolved_by_phase2 if key in observed]
+    remaining = {
         ("CH-06-historical-exam", exam): "FALSE_MET",
         ("CH-07-natural-two-months", weeks): "MISSED_MET",
         ("CH-08-natural-x-8-wks-failed", weeks): "MISSED_MET",
         ("CH-10-natural-dorsiflexion-l5", exam): "MISSED_MET",
+        ("CH-14-response-reversed-next-sentence", response): "FALSE_MET",
     }
-    assert {key: observed.get(key) for key in expected} == expected
-    assert observed[("CH-05-intermittent-adherence", response)] == "FALSE_MET"
+    assert {key: observed.get(key) for key in remaining} == remaining
     unscored = {(row["case_id"], row["requirement_key"]): row["observed_state"] for row in challenge["unscored_needs_review"]}
     assert unscored == {("CH-09-natural-ehl", exam): "NOT_DOCUMENTED"}
     verified = challenge["tiers"]["verified"]["aggregate"]
     provisional = challenge["tiers"]["provisional"]["aggregate"]
-    assert (verified["false_met"]["numerator"], verified["false_met"]["denominator"]) == (3, 3)
-    assert (provisional["false_met"]["numerator"], provisional["false_met"]["denominator"]) == (11, 15)
+    assert (verified["false_met"]["numerator"], verified["false_met"]["denominator"]) == (0, 3)
+    assert (provisional["false_met"]["numerator"], provisional["false_met"]["denominator"]) == (5, 15)
     assert (provisional["missed_met"]["numerator"], provisional["missed_met"]["denominator"]) == (11, 59)
-    assert challenge["case_level"]["false_all_met"]["numerator"] == 8
+    assert challenge["case_level"]["false_all_met"]["numerator"] == 3
 
 
 def test_framing_controls_are_all_met_and_their_baseline_misses_are_pinned(baseline):
@@ -375,7 +383,7 @@ def test_challenge_results_are_never_rendered_as_percentages(baseline):
     selected = text.split("## Dataset `challenge_v1`")[1].split("## Human review")[0]
     assert "## Dataset `framing_controls_v1`" in selected
     assert "%" not in selected
-    assert "11 of 15" in selected and "known failures, not rates" in selected
+    assert "5 of 15" in selected and "known failures, not rates" in selected
     assert "say nothing about real-world or clinical performance" in text
 
 
