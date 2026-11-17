@@ -1,0 +1,102 @@
+{
+  "dataset_id": "holdout_v1",
+  "dataset_version": 1,
+  "split": "holdout",
+  "sealed": true,
+  "description": "Ten synthetic notes reserved for a future evaluation. They carry no labels and have never been run through the extractor.",
+  "note_authorship": "Synthetic, agent-authored (Claude). Not written or reviewed by a clinician. The author had read the extractor source, so these are unrun, not independent.",
+  "selection": "Written to the same phenomena as challenge_v1 with different wording. Sealed on 2026-11-16 before any extraction change.",
+  "independent_clinical_ground_truth": false,
+  "cases": [
+    {
+      "case_id": "HO-01",
+      "payer": "Aetna",
+      "procedure_code": "MRI_LUMBAR",
+      "note_sha256": "3afdf3d32107c1b57e522f7cac523d6fdf5825e8e939604f85e5a00795bc0f02",
+      "note_text": "Chronic lumbar pain radiating down the left leg in an L5 pattern. Left great toe extension is 3/5 on exam today. Has been on meloxicam since early September, roughly ten weeks, and says it has done nothing for the pain.",
+      "phenomena": [],
+      "labels": []
+    },
+    {
+      "case_id": "HO-02",
+      "payer": "Aetna",
+      "procedure_code": "MRI_LUMBAR",
+      "note_sha256": "527335a9f66a999e67806d4a18e4c975c52941bd380ddb9ddade6d167984e118",
+      "note_text": "Low back pain with left leg radiculopathy. Objective motor exam in the left S1 distribution: plantar flexion strength 4/5. Took naproxen for about a week, then ran out; restarted two months later for another week. No better.",
+      "phenomena": [],
+      "labels": []
+    },
+    {
+      "case_id": "HO-03",
+      "payer": "Aetna",
+      "procedure_code": "MRI_LUMBAR",
+      "note_sha256": "d634ced55a33e8f5500f2044f220454916506c0bf2cb196b47a73107a143179e",
+      "note_text": "Low back pain with right leg radiculopathy. Ankle reflex was absent on the right at the visit last spring; today reflexes are symmetric and strength is full. NSAIDs for 7 weeks with no improvement.",
+      "phenomena": [],
+      "labels": []
+    },
+    {
+      "case_id": "HO-04",
+      "payer": "Aetna",
+      "procedure_code": "MRI_LUMBAR",
+      "note_sha256": "f708e54be4a19657655fb84b664845ed49d6f55c65e376f1aa1e9fec13ebca75",
+      "note_text": "Low back pain with right leg radiculopathy. Objective motor exam in the right L5 distribution: strength 4/5. Was told to take ibuprofen for 6 weeks. He is not sure how often he actually took it. Pain is about the same.",
+      "phenomena": [],
+      "labels": []
+    },
+    {
+      "case_id": "HO-05",
+      "payer": "Aetna",
+      "procedure_code": "MRI_LUMBAR",
+      "note_sha256": "a77158b508e91eb07eb494ea72036bee56d63fdb8a96ba0da8ada31726a58a19",
+      "note_text": "Back pain without leg symptoms. Radiculopathy was considered at the last visit but EMG was normal. Objective motor exam in the right L5 distribution: strength 5/5. Analgesics for 9 weeks with little relief.",
+      "phenomena": [],
+      "labels": []
+    },
+    {
+      "case_id": "HO-06",
+      "payer": "Aetna",
+      "procedure_code": "MRI_CERVICAL",
+      "note_sha256": "700ae7f1068dbacff1c6c5072e9ccd90c7ce12b71c6c3acfddb0625ff155a0f1",
+      "note_text": "Neck pain since a fall in the summer. Physical therapy was started six weeks ago but she attended only the first two sessions. Denies arm weakness. Has not had any imaging.",
+      "phenomena": [],
+      "labels": []
+    },
+    {
+      "case_id": "HO-07",
+      "payer": "Aetna",
+      "procedure_code": "MRI_KNEE",
+      "note_sha256": "656fc6f2e61dcc58910ccda72cc70b8411f94c4412e956f4b63360f7c44addc6",
+      "note_text": "Left knee has been painful for a little over two months. Did eight weeks of home exercise with her daughter's old PT sheet. Knee films last month were read as normal. The knee gave way twice on stairs.",
+      "phenomena": [],
+      "labels": []
+    },
+    {
+      "case_id": "HO-08",
+      "payer": "Aetna",
+      "procedure_code": "CPAP_DEVICE",
+      "note_sha256": "158eb4506dd0655939c25028d50a6879bf64a989f0a140f3ccd173badcb8b652",
+      "note_text": "Home sleep apnea test was mailed out 02/02/2026 and returned incomplete. In-lab study is booked. Prior AHI 14 per patient recollection. Carries a diagnosis of OSA from an outside clinic.",
+      "phenomena": [],
+      "labels": []
+    },
+    {
+      "case_id": "HO-09",
+      "payer": "Aetna",
+      "procedure_code": "CPAP_DEVICE",
+      "note_sha256": "d7e72c01e97f92ab901f44c4ac42c580697aec6c941a26aa127c1e885bba284d",
+      "note_text": "No evidence of obstructive sleep apnea on the split-night study dated 11 January 2026. Respiratory disturbance index 3.1.",
+      "phenomena": [],
+      "labels": []
+    },
+    {
+      "case_id": "HO-10",
+      "payer": "Aetna",
+      "procedure_code": "MRI_LUMBAR",
+      "note_sha256": "a22e96515c7d9321a10f05dba6823407bf2492a9c80d2a5a703e917a3285ed64",
+      "note_text": "Low back pain with right leg radiculopathy. Objective motor exam in the right L5 distribution: strength 4/5. Completed a six week course of cyclobenzaprine. Initially helped, but symptoms returned to baseline by week six.",
+      "phenomena": [],
+      "labels": []
+    }
+  ]
+}

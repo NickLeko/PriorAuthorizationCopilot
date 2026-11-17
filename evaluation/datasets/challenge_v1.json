@@ -1,0 +1,1218 @@
+{
+  "dataset_id": "challenge_v1",
+  "dataset_version": 1,
+  "split": "challenge",
+  "sealed": false,
+  "description": "Twenty synthetic notes targeting temporal ambiguity, treatment adherence, contradictory evidence, negation, historical findings and natural clinical phrasing. It includes the failures reproduced in the November 2026 review.",
+  "note_authorship": "Synthetic, agent-authored (Claude). Not written or reviewed by a clinician.",
+  "selection": "Adversarial and non-random. Fourteen notes were chosen after their extractor output had been seen, so failure counts here are a list of known failures, not a rate.",
+  "independent_clinical_ground_truth": false,
+  "label_defaults": {
+    "author_type": "agent",
+    "author": "Claude (AI agent)",
+    "authored_on": "2026-11-16",
+    "blind_to_extractor_output": false,
+    "basis": "Written from the note text, the fact meanings in engine/fact_contracts.py, the rule operators and CPB 0236 Footnote 1. The author had read the extractor source; see each case's extractor_output_seen_before_labeling."
+  },
+  "cases": [
+    {
+      "case_id": "CH-01-lumbar-control",
+      "payer": "Aetna",
+      "procedure_code": "MRI_LUMBAR",
+      "note_sha256": "3baa407321fb59bc977be4f6be6d83b22b3ecbe2db362b8193e8382da99aec71",
+      "note_text": "Low back pain with right leg radiculopathy. Objective motor exam in the right L5 distribution: strength 4/5. NSAIDs for 8 weeks with no improvement.",
+      "phenomena": [
+        "positive_control"
+      ],
+      "extractor_output_seen_before_labeling": true,
+      "labels": [
+        {
+          "requirement_key": "back_pain_with_radiculopathy",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "Low back pain with right leg radiculopathy",
+          "rationale": "Back pain and radiculopathy are documented together affirmatively.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "objective_motor_or_reflex_change_in_root_distribution",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "strength 4/5",
+          "rationale": "Reduced strength on objective exam in a named nerve-root distribution.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "cpb_0236_conservative_therapy_weeks",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "NSAIDs for 8 weeks",
+          "rationale": "An 8-week NSAID course meets the 6-week minimum.",
+          "uncertainty": "low",
+          "decision_type": "textual"
+        },
+        {
+          "requirement_key": "cpb_0236_conservative_therapy_no_improvement",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "no improvement",
+          "rationale": "No improvement is documented for the NSAID course.",
+          "uncertainty": "low"
+        }
+      ]
+    },
+    {
+      "case_id": "CH-02-missed-nsaids",
+      "payer": "Aetna",
+      "procedure_code": "MRI_LUMBAR",
+      "note_sha256": "8dea23ec385639f5f13b38028d963fdffd2fc04f0f0db0bcdace5f4539a3c3eb",
+      "note_text": "Low back pain with right leg radiculopathy. Objective motor exam in the right L5 distribution: strength 4/5. Missed NSAIDs for 8 weeks with no improvement.",
+      "phenomena": [
+        "treatment_adherence"
+      ],
+      "extractor_output_seen_before_labeling": true,
+      "labels": [
+        {
+          "requirement_key": "back_pain_with_radiculopathy",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "Low back pain with right leg radiculopathy",
+          "rationale": "Back pain and radiculopathy are documented together affirmatively.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "objective_motor_or_reflex_change_in_root_distribution",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "strength 4/5",
+          "rationale": "Reduced strength on objective exam in a named nerve-root distribution.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "cpb_0236_conservative_therapy_weeks",
+          "review_status": "verified",
+          "expected_state": "NEEDS_REVIEW",
+          "acceptable_states": [
+            "NEEDS_REVIEW"
+          ],
+          "evidence_quote": "Missed NSAIDs for 8 weeks with no improvement",
+          "rationale": "The note says the NSAIDs were missed. Reviewer judgment: the sentence is contradictory enough that it should go back to a human rather than be treated as absent therapy.",
+          "uncertainty": "low",
+          "decision_type": "textual",
+          "reviewer": "NickLeko",
+          "reviewer_type": "human",
+          "reviewed_on": "2026-11-17"
+        },
+        {
+          "requirement_key": "cpb_0236_conservative_therapy_no_improvement",
+          "review_status": "verified",
+          "expected_state": "NEEDS_REVIEW",
+          "acceptable_states": [
+            "NEEDS_REVIEW"
+          ],
+          "evidence_quote": "Missed NSAIDs for 8 weeks with no improvement",
+          "rationale": "The response is attached to a course the note says was missed. Reviewer judgment: route to human review.",
+          "uncertainty": "low",
+          "decision_type": "textual",
+          "reviewer": "NickLeko",
+          "reviewer_type": "human",
+          "reviewed_on": "2026-11-17"
+        }
+      ]
+    },
+    {
+      "case_id": "CH-03-nsaids-2019",
+      "payer": "Aetna",
+      "procedure_code": "MRI_LUMBAR",
+      "note_sha256": "42d6cb6f9157cbf3a97c78663c65f2ce34811d6769e56836ee5ce6728ed0cf2b",
+      "note_text": "Low back pain with right leg radiculopathy. Objective motor exam in the right L5 distribution: strength 4/5. In 2019, NSAIDs for 8 weeks with no improvement.",
+      "phenomena": [
+        "historical_finding",
+        "temporal_ambiguity"
+      ],
+      "extractor_output_seen_before_labeling": true,
+      "labels": [
+        {
+          "requirement_key": "back_pain_with_radiculopathy",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "Low back pain with right leg radiculopathy",
+          "rationale": "Back pain and radiculopathy are documented together affirmatively.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "objective_motor_or_reflex_change_in_root_distribution",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "strength 4/5",
+          "rationale": "Reduced strength on objective exam in a named nerve-root distribution.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "cpb_0236_conservative_therapy_weeks",
+          "review_status": "provisional",
+          "expected_state": "NEEDS_REVIEW",
+          "acceptable_states": [
+            "NEEDS_REVIEW",
+            "NOT_DOCUMENTED"
+          ],
+          "evidence_quote": "In 2019, NSAIDs for 8 weeks",
+          "rationale": "The course is dated 2019; the note does not link it to the current presentation.",
+          "uncertainty": "medium",
+          "uncertainty_note": "Whether a years-old course can count for the current request is a policy question. Reviewer opinion (2026-11-17, given individually): NEEDS_REVIEW. Not confirmed by the policy owner.",
+          "decision_type": "policy"
+        },
+        {
+          "requirement_key": "cpb_0236_conservative_therapy_no_improvement",
+          "review_status": "provisional",
+          "expected_state": "NEEDS_REVIEW",
+          "acceptable_states": [
+            "NEEDS_REVIEW",
+            "NOT_DOCUMENTED"
+          ],
+          "evidence_quote": "no improvement",
+          "rationale": "The response belongs to the 2019 course.",
+          "uncertainty": "medium",
+          "uncertainty_note": "Same question as the duration. Reviewer opinion (2026-11-17, given individually): NEEDS_REVIEW. Not confirmed by the policy owner.",
+          "decision_type": "policy"
+        }
+      ]
+    },
+    {
+      "case_id": "CH-04-initially-none-now-improved",
+      "payer": "Aetna",
+      "procedure_code": "MRI_LUMBAR",
+      "note_sha256": "b5a6106dab739c83db15921dda508969fb6b8cb54a3ba4b8540223775ebff30d",
+      "note_text": "Low back pain with right leg radiculopathy. Objective motor exam in the right L5 distribution: strength 4/5. NSAIDs for 8 weeks with no improvement initially, now much improved.",
+      "phenomena": [
+        "contradictory_evidence",
+        "temporal_ambiguity"
+      ],
+      "extractor_output_seen_before_labeling": true,
+      "labels": [
+        {
+          "requirement_key": "back_pain_with_radiculopathy",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "Low back pain with right leg radiculopathy",
+          "rationale": "Back pain and radiculopathy are documented together affirmatively.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "objective_motor_or_reflex_change_in_root_distribution",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "strength 4/5",
+          "rationale": "Reduced strength on objective exam in a named nerve-root distribution.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "cpb_0236_conservative_therapy_weeks",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "NSAIDs for 8 weeks",
+          "rationale": "An 8-week NSAID course meets the 6-week minimum.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "cpb_0236_conservative_therapy_no_improvement",
+          "review_status": "verified",
+          "expected_state": "NEEDS_REVIEW",
+          "acceptable_states": [
+            "NEEDS_REVIEW"
+          ],
+          "evidence_quote": "now much improved",
+          "rationale": "The note states no improvement initially and marked improvement now. Reviewer judgment: route to human review; the tool should not resolve which state governs.",
+          "uncertainty": "low",
+          "decision_type": "textual",
+          "reviewer": "NickLeko",
+          "reviewer_type": "human",
+          "reviewed_on": "2026-11-17"
+        }
+      ]
+    },
+    {
+      "case_id": "CH-05-intermittent-adherence",
+      "payer": "Aetna",
+      "procedure_code": "MRI_LUMBAR",
+      "note_sha256": "ee729c2c67b4e7047ec5c019b41ed5a2bbc9193016ec60dbafd814b3892cdf2e",
+      "note_text": "Low back pain with right leg radiculopathy. Objective motor exam in the right L5 distribution: strength 4/5. Intermittent NSAIDs for 8 weeks, taken twice total, with no improvement.",
+      "phenomena": [
+        "treatment_adherence"
+      ],
+      "extractor_output_seen_before_labeling": true,
+      "labels": [
+        {
+          "requirement_key": "back_pain_with_radiculopathy",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "Low back pain with right leg radiculopathy",
+          "rationale": "Back pain and radiculopathy are documented together affirmatively.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "objective_motor_or_reflex_change_in_root_distribution",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "strength 4/5",
+          "rationale": "Reduced strength on objective exam in a named nerve-root distribution.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "cpb_0236_conservative_therapy_weeks",
+          "review_status": "provisional",
+          "expected_state": "NEEDS_REVIEW",
+          "acceptable_states": [
+            "NEEDS_REVIEW",
+            "NOT_DOCUMENTED"
+          ],
+          "evidence_quote": "taken twice total",
+          "rationale": "Two doses over 8 weeks is not clearly an 8-week course.",
+          "uncertainty": "medium",
+          "uncertainty_note": "Whether minimal adherence defeats the duration is a policy question. Reviewer opinion (2026-11-17, given by accepting the agent proposal): NEEDS_REVIEW. Not confirmed by the policy owner.",
+          "decision_type": "policy"
+        },
+        {
+          "requirement_key": "cpb_0236_conservative_therapy_no_improvement",
+          "review_status": "provisional",
+          "expected_state": "NEEDS_REVIEW",
+          "evidence_quote": "with no improvement",
+          "rationale": "No improvement is stated for a course that was taken twice in 8 weeks. Policy reading: route to human review.",
+          "uncertainty": "medium",
+          "uncertainty_note": "Policy reading adopted by the reviewer from the agent proposal without separate deliberation; not confirmed by the policy owner.",
+          "decision_type": "policy",
+          "acceptable_states": [
+            "NEEDS_REVIEW",
+            "NOT_DOCUMENTED"
+          ]
+        }
+      ]
+    },
+    {
+      "case_id": "CH-06-historical-exam",
+      "payer": "Aetna",
+      "procedure_code": "MRI_LUMBAR",
+      "note_sha256": "41b0e9ae87db8e28a0b829802c39f30e90ce3a01998058996585f8be55b9cd6d",
+      "note_text": "Low back pain with right leg radiculopathy. NSAIDs for 8 weeks with no improvement. Exam two years ago showed strength 4/5 in the right L5 distribution.",
+      "phenomena": [
+        "historical_finding"
+      ],
+      "extractor_output_seen_before_labeling": true,
+      "labels": [
+        {
+          "requirement_key": "back_pain_with_radiculopathy",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "Low back pain with right leg radiculopathy",
+          "rationale": "Back pain and radiculopathy are documented together affirmatively.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "cpb_0236_conservative_therapy_weeks",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "NSAIDs for 8 weeks",
+          "rationale": "An 8-week NSAID course meets the 6-week minimum.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "cpb_0236_conservative_therapy_no_improvement",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "no improvement",
+          "rationale": "No improvement is documented for the NSAID course.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "objective_motor_or_reflex_change_in_root_distribution",
+          "review_status": "provisional",
+          "expected_state": "NEEDS_REVIEW",
+          "acceptable_states": [
+            "NEEDS_REVIEW",
+            "NOT_DOCUMENTED"
+          ],
+          "evidence_quote": "Exam two years ago",
+          "rationale": "The only objective finding is from two years ago.",
+          "uncertainty": "medium",
+          "uncertainty_note": "The policy does not state how recent the exam must be.",
+          "decision_type": "policy"
+        }
+      ]
+    },
+    {
+      "case_id": "CH-07-natural-two-months",
+      "payer": "Aetna",
+      "procedure_code": "MRI_LUMBAR",
+      "note_sha256": "f7e5d4002be766cec7ab87be1aaa188c0af81b4f4d54b39137278c3209e8d26f",
+      "note_text": "Low back pain with right leg radiculopathy. Objective motor exam in the right L5 distribution: strength 4/5. She has taken ibuprofen daily for the past two months without relief.",
+      "phenomena": [
+        "natural_phrasing"
+      ],
+      "extractor_output_seen_before_labeling": true,
+      "labels": [
+        {
+          "requirement_key": "back_pain_with_radiculopathy",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "Low back pain with right leg radiculopathy",
+          "rationale": "Back pain and radiculopathy are documented together affirmatively.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "objective_motor_or_reflex_change_in_root_distribution",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "strength 4/5",
+          "rationale": "Reduced strength on objective exam in a named nerve-root distribution.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "cpb_0236_conservative_therapy_weeks",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "ibuprofen daily for the past two months",
+          "rationale": "Ibuprofen is an NSAID taken daily for two months, above the 6-week minimum.",
+          "uncertainty": "medium",
+          "uncertainty_note": "Requires reading two months as at least 6 weeks.",
+          "decision_type": "textual"
+        },
+        {
+          "requirement_key": "cpb_0236_conservative_therapy_no_improvement",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "without relief",
+          "rationale": "No relief is documented for that course.",
+          "uncertainty": "low",
+          "decision_type": "textual"
+        }
+      ]
+    },
+    {
+      "case_id": "CH-08-natural-x-8-wks-failed",
+      "payer": "Aetna",
+      "procedure_code": "MRI_LUMBAR",
+      "note_sha256": "f5823fc85619960b0d38d4405b670b2a7327722a7912e0d2afecfc355fd2eca5",
+      "note_text": "Low back pain with right leg radiculopathy. Objective motor exam in the right L5 distribution: strength 4/5. Trial of naproxen x 8 wks failed.",
+      "phenomena": [
+        "natural_phrasing"
+      ],
+      "extractor_output_seen_before_labeling": true,
+      "labels": [
+        {
+          "requirement_key": "back_pain_with_radiculopathy",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "Low back pain with right leg radiculopathy",
+          "rationale": "Back pain and radiculopathy are documented together affirmatively.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "objective_motor_or_reflex_change_in_root_distribution",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "strength 4/5",
+          "rationale": "Reduced strength on objective exam in a named nerve-root distribution.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "cpb_0236_conservative_therapy_weeks",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "naproxen x 8 wks",
+          "rationale": "Naproxen is an NSAID trialled for 8 weeks.",
+          "uncertainty": "low",
+          "decision_type": "textual"
+        },
+        {
+          "requirement_key": "cpb_0236_conservative_therapy_no_improvement",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET",
+            "NEEDS_REVIEW"
+          ],
+          "evidence_quote": "failed",
+          "rationale": "A failed trial documents lack of improvement.",
+          "uncertainty": "medium",
+          "uncertainty_note": "'Failed' can also mean intolerance rather than no improvement.",
+          "decision_type": "textual"
+        }
+      ]
+    },
+    {
+      "case_id": "CH-09-natural-ehl",
+      "payer": "Aetna",
+      "procedure_code": "MRI_LUMBAR",
+      "note_sha256": "3a8647ac8f4e980becbf8643c294acee40cce4f3830db98aaee7fb0710f62bad",
+      "note_text": "Low back pain with right leg radiculopathy. NSAIDs for 8 weeks with no improvement. Right EHL 4/5.",
+      "phenomena": [
+        "natural_phrasing"
+      ],
+      "extractor_output_seen_before_labeling": false,
+      "labels": [
+        {
+          "requirement_key": "back_pain_with_radiculopathy",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "Low back pain with right leg radiculopathy",
+          "rationale": "Back pain and radiculopathy are documented together affirmatively.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "cpb_0236_conservative_therapy_weeks",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "NSAIDs for 8 weeks",
+          "rationale": "An 8-week NSAID course meets the 6-week minimum.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "cpb_0236_conservative_therapy_no_improvement",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "no improvement",
+          "rationale": "No improvement is documented for the NSAID course.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "objective_motor_or_reflex_change_in_root_distribution",
+          "review_status": "needs_review",
+          "expected_state": "MET",
+          "evidence_quote": "Right EHL 4/5",
+          "rationale": "Reduced strength in a named muscle on exam; no nerve root is named.",
+          "uncertainty": "high",
+          "uncertainty_note": "Does weakness in a named muscle (EHL) without a named root satisfy 'objective findings in the specific nerve root distribution'? This needs a clinician or the policy owner.",
+          "decision_type": "clinical"
+        }
+      ]
+    },
+    {
+      "case_id": "CH-10-natural-dorsiflexion-l5",
+      "payer": "Aetna",
+      "procedure_code": "MRI_LUMBAR",
+      "note_sha256": "e02b22e339486d564fd53304f6beade65b0e7c3844b74a5f93fbf5adbb693254",
+      "note_text": "Low back pain with right leg radiculopathy. NSAIDs for 8 weeks with no improvement. Motor: right ankle dorsiflexion 4/5 (L5).",
+      "phenomena": [
+        "natural_phrasing"
+      ],
+      "extractor_output_seen_before_labeling": true,
+      "labels": [
+        {
+          "requirement_key": "back_pain_with_radiculopathy",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "Low back pain with right leg radiculopathy",
+          "rationale": "Back pain and radiculopathy are documented together affirmatively.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "cpb_0236_conservative_therapy_weeks",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "NSAIDs for 8 weeks",
+          "rationale": "An 8-week NSAID course meets the 6-week minimum.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "cpb_0236_conservative_therapy_no_improvement",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "no improvement",
+          "rationale": "No improvement is documented for the NSAID course.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "objective_motor_or_reflex_change_in_root_distribution",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "right ankle dorsiflexion 4/5 (L5)",
+          "rationale": "Reduced strength on motor exam with the L5 root named.",
+          "uncertainty": "medium",
+          "uncertainty_note": "The root is named in parentheses rather than as 'L5 distribution'.",
+          "decision_type": "textual"
+        }
+      ]
+    },
+    {
+      "case_id": "CH-11-natural-dose-unchanged",
+      "payer": "Aetna",
+      "procedure_code": "MRI_LUMBAR",
+      "note_sha256": "7eae9e527fde2900d361f66317ecfe27f0269c9ac66985b1603dd59997ef80b9",
+      "note_text": "Low back pain with right leg radiculopathy. Objective motor exam in the right L5 distribution: strength 4/5. Ibuprofen 600 mg TID for 8 weeks; symptoms unchanged.",
+      "phenomena": [
+        "natural_phrasing"
+      ],
+      "extractor_output_seen_before_labeling": true,
+      "labels": [
+        {
+          "requirement_key": "back_pain_with_radiculopathy",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "Low back pain with right leg radiculopathy",
+          "rationale": "Back pain and radiculopathy are documented together affirmatively.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "objective_motor_or_reflex_change_in_root_distribution",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "strength 4/5",
+          "rationale": "Reduced strength on objective exam in a named nerve-root distribution.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "cpb_0236_conservative_therapy_weeks",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "Ibuprofen 600 mg TID for 8 weeks",
+          "rationale": "Ibuprofen is an NSAID taken for 8 weeks.",
+          "uncertainty": "low",
+          "decision_type": "textual"
+        },
+        {
+          "requirement_key": "cpb_0236_conservative_therapy_no_improvement",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "symptoms unchanged",
+          "rationale": "Unchanged symptoms after the course document no improvement.",
+          "uncertainty": "medium",
+          "uncertainty_note": "'Unchanged' is not one of the contract's listed response words.",
+          "decision_type": "textual"
+        }
+      ]
+    },
+    {
+      "case_id": "CH-12-stopped-early",
+      "payer": "Aetna",
+      "procedure_code": "MRI_LUMBAR",
+      "note_sha256": "54036f5730558eb4ec9a79545deadea1df001ec7507a3e247e38e350fe28004c",
+      "note_text": "Low back pain with right leg radiculopathy. Objective motor exam in the right L5 distribution: strength 4/5. NSAIDs for 8 weeks were prescribed but stopped after 3 days due to GI upset, with no improvement.",
+      "phenomena": [
+        "treatment_adherence"
+      ],
+      "extractor_output_seen_before_labeling": true,
+      "labels": [
+        {
+          "requirement_key": "back_pain_with_radiculopathy",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "Low back pain with right leg radiculopathy",
+          "rationale": "Back pain and radiculopathy are documented together affirmatively.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "objective_motor_or_reflex_change_in_root_distribution",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "strength 4/5",
+          "rationale": "Reduced strength on objective exam in a named nerve-root distribution.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "cpb_0236_conservative_therapy_weeks",
+          "review_status": "provisional",
+          "expected_state": "NOT_DOCUMENTED",
+          "acceptable_states": [
+            "NOT_DOCUMENTED",
+            "NEEDS_REVIEW",
+            "NOT_MET"
+          ],
+          "evidence_quote": null,
+          "rationale": "The 8 weeks were prescribed, not completed; the course lasted 3 days.",
+          "uncertainty": "low",
+          "decision_type": "textual"
+        },
+        {
+          "requirement_key": "cpb_0236_conservative_therapy_no_improvement",
+          "review_status": "provisional",
+          "expected_state": "NOT_DOCUMENTED",
+          "acceptable_states": [
+            "NOT_DOCUMENTED",
+            "NEEDS_REVIEW"
+          ],
+          "evidence_quote": null,
+          "rationale": "No qualifying completed course for the response to attach to.",
+          "uncertainty": "low"
+        }
+      ]
+    },
+    {
+      "case_id": "CH-13-negated-diagnosis",
+      "payer": "Aetna",
+      "procedure_code": "MRI_LUMBAR",
+      "note_sha256": "6979afc4ac309df0b187fc8ab6bd9485c665be3f6da605dbced42c41262d4721",
+      "note_text": "No low back pain or radiculopathy today. Objective motor exam in the right L5 distribution: strength 4/5. NSAIDs for 8 weeks with no improvement.",
+      "phenomena": [
+        "negation"
+      ],
+      "extractor_output_seen_before_labeling": false,
+      "labels": [
+        {
+          "requirement_key": "back_pain_with_radiculopathy",
+          "review_status": "provisional",
+          "expected_state": "NOT_MET",
+          "acceptable_states": [
+            "NOT_MET",
+            "NEEDS_REVIEW"
+          ],
+          "evidence_quote": "No low back pain or radiculopathy today",
+          "rationale": "Back pain and radiculopathy are explicitly negated.",
+          "uncertainty": "low",
+          "decision_type": "textual"
+        },
+        {
+          "requirement_key": "objective_motor_or_reflex_change_in_root_distribution",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "strength 4/5",
+          "rationale": "Reduced strength on objective exam in a named nerve-root distribution.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "cpb_0236_conservative_therapy_weeks",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "NSAIDs for 8 weeks",
+          "rationale": "An 8-week NSAID course meets the 6-week minimum.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "cpb_0236_conservative_therapy_no_improvement",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "no improvement",
+          "rationale": "No improvement is documented for the NSAID course.",
+          "uncertainty": "low"
+        }
+      ]
+    },
+    {
+      "case_id": "CH-14-response-reversed-next-sentence",
+      "payer": "Aetna",
+      "procedure_code": "MRI_LUMBAR",
+      "note_sha256": "33af6204316eafc0888c8cacc96045a7b68e835a8d461aada06e77969d42b20c",
+      "note_text": "Low back pain with right leg radiculopathy. Objective motor exam in the right L5 distribution: strength 4/5. NSAIDs for 8 weeks with no improvement. On follow-up, pain has resolved.",
+      "phenomena": [
+        "contradictory_evidence"
+      ],
+      "extractor_output_seen_before_labeling": false,
+      "labels": [
+        {
+          "requirement_key": "back_pain_with_radiculopathy",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "Low back pain with right leg radiculopathy",
+          "rationale": "Back pain and radiculopathy are documented together affirmatively.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "objective_motor_or_reflex_change_in_root_distribution",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "strength 4/5",
+          "rationale": "Reduced strength on objective exam in a named nerve-root distribution.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "cpb_0236_conservative_therapy_weeks",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "NSAIDs for 8 weeks",
+          "rationale": "An 8-week NSAID course meets the 6-week minimum.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "cpb_0236_conservative_therapy_no_improvement",
+          "review_status": "provisional",
+          "expected_state": "NEEDS_REVIEW",
+          "acceptable_states": [
+            "NEEDS_REVIEW",
+            "NOT_MET"
+          ],
+          "evidence_quote": "pain has resolved",
+          "rationale": "No improvement is followed by a statement that pain has resolved.",
+          "uncertainty": "medium",
+          "uncertainty_note": "If the follow-up governs, NOT_MET is also defensible.",
+          "decision_type": "textual"
+        }
+      ]
+    },
+    {
+      "case_id": "CH-15-course-before-current-flare",
+      "payer": "Aetna",
+      "procedure_code": "MRI_LUMBAR",
+      "note_sha256": "357d0f0d06a697f336adefefc280cd4ae974ad73198d99763ee772ca68fc2777",
+      "note_text": "Low back pain with right leg radiculopathy. Objective motor exam in the right L5 distribution: strength 4/5. NSAIDs for 8 weeks with no improvement at the time; that was before the current flare began last week.",
+      "phenomena": [
+        "temporal_ambiguity",
+        "historical_finding"
+      ],
+      "extractor_output_seen_before_labeling": false,
+      "labels": [
+        {
+          "requirement_key": "back_pain_with_radiculopathy",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "Low back pain with right leg radiculopathy",
+          "rationale": "Back pain and radiculopathy are documented together affirmatively.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "objective_motor_or_reflex_change_in_root_distribution",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "strength 4/5",
+          "rationale": "Reduced strength on objective exam in a named nerve-root distribution.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "cpb_0236_conservative_therapy_weeks",
+          "review_status": "provisional",
+          "expected_state": "NEEDS_REVIEW",
+          "acceptable_states": [
+            "NEEDS_REVIEW",
+            "NOT_DOCUMENTED"
+          ],
+          "evidence_quote": "before the current flare began last week",
+          "rationale": "The course predates the current flare.",
+          "uncertainty": "medium",
+          "uncertainty_note": "Whether an earlier-episode course counts is a policy question. Reviewer opinion (2026-11-17, given by accepting the agent proposal): NEEDS_REVIEW. Not confirmed by the policy owner.",
+          "decision_type": "policy"
+        },
+        {
+          "requirement_key": "cpb_0236_conservative_therapy_no_improvement",
+          "review_status": "provisional",
+          "expected_state": "NEEDS_REVIEW",
+          "acceptable_states": [
+            "NEEDS_REVIEW",
+            "NOT_DOCUMENTED"
+          ],
+          "evidence_quote": "no improvement at the time",
+          "rationale": "The response belongs to the earlier course.",
+          "uncertainty": "medium",
+          "uncertainty_note": "Same question as the duration. Reviewer opinion (2026-11-17, given by accepting the agent proposal): NEEDS_REVIEW. Not confirmed by the policy owner.",
+          "decision_type": "policy"
+        }
+      ]
+    },
+    {
+      "case_id": "CH-16-cervical-borrowed-duration",
+      "payer": "Aetna",
+      "procedure_code": "MRI_CERVICAL",
+      "note_sha256": "0d50730ef246f312bb40f56b61cd4a0b75672afec52addb3eb992c2ba4b78b87",
+      "note_text": "Neck pain for 3 days after 12 weeks of travel. Completed 8 weeks of physical therapy. Denies weakness. X-ray of the ankle normal.",
+      "phenomena": [
+        "temporal_ambiguity",
+        "natural_phrasing"
+      ],
+      "extractor_output_seen_before_labeling": true,
+      "labels": [
+        {
+          "requirement_key": "conservative_therapy_weeks",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "8 weeks of physical therapy",
+          "rationale": "Eight weeks of completed physical therapy.",
+          "uncertainty": "medium",
+          "uncertainty_note": "Eight weeks of therapy for a 3-day complaint is internally odd; the duration itself is explicit."
+        },
+        {
+          "requirement_key": "neuro_red_flags_documented",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "Denies weakness",
+          "rationale": "A neurological red flag is explicitly addressed (denied).",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "prior_imaging_result",
+          "review_status": "provisional",
+          "expected_state": "NOT_DOCUMENTED",
+          "acceptable_states": [
+            "NOT_DOCUMENTED",
+            "NEEDS_REVIEW"
+          ],
+          "evidence_quote": null,
+          "rationale": "The only imaging is of the ankle, not the cervical spine.",
+          "uncertainty": "medium",
+          "uncertainty_note": "The rule text does not say prior imaging must be of the requested region.",
+          "decision_type": "policy"
+        },
+        {
+          "requirement_key": "symptom_duration_weeks",
+          "review_status": "provisional",
+          "expected_state": "NOT_MET",
+          "acceptable_states": [
+            "NOT_MET",
+            "NEEDS_REVIEW",
+            "NOT_DOCUMENTED"
+          ],
+          "evidence_quote": "Neck pain for 3 days",
+          "rationale": "Symptoms have lasted 3 days; the 12 weeks describe travel.",
+          "uncertainty": "low",
+          "decision_type": "textual"
+        }
+      ]
+    },
+    {
+      "case_id": "CH-17-knee-missed-pt",
+      "payer": "Aetna",
+      "procedure_code": "MRI_KNEE",
+      "note_sha256": "d915a335a88388566ff13fcae291df26c50ca977bf951002a5d720df51975351",
+      "note_text": "Knee pain for 10 weeks. Missed 6 weeks of PT. X-ray negative. Denies locking.",
+      "phenomena": [
+        "treatment_adherence"
+      ],
+      "extractor_output_seen_before_labeling": true,
+      "labels": [
+        {
+          "requirement_key": "conservative_therapy_weeks",
+          "review_status": "provisional",
+          "expected_state": "NOT_DOCUMENTED",
+          "acceptable_states": [
+            "NOT_DOCUMENTED",
+            "NEEDS_REVIEW"
+          ],
+          "evidence_quote": null,
+          "rationale": "The note says PT was missed, so no completed therapy duration is documented.",
+          "uncertainty": "low",
+          "decision_type": "textual"
+        },
+        {
+          "requirement_key": "symptom_duration_weeks",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "Knee pain for 10 weeks",
+          "rationale": "Ten weeks of symptoms.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "prior_imaging_result",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "X-ray negative",
+          "rationale": "A negative x-ray result is documented.",
+          "uncertainty": "medium",
+          "uncertainty_note": "The x-ray region is not stated.",
+          "decision_type": "textual"
+        },
+        {
+          "requirement_key": "mechanical_symptoms_documented",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "Denies locking",
+          "rationale": "Mechanical symptoms are explicitly addressed (denied).",
+          "uncertainty": "low"
+        }
+      ]
+    },
+    {
+      "case_id": "CH-18-cpap-cancelled-study",
+      "payer": "Aetna",
+      "procedure_code": "CPAP_DEVICE",
+      "note_sha256": "757742e9da6dfa5c3d79f9e79c6cd18b8d09064215f4cec2fd0a71cc75c568ff",
+      "note_text": "OSA diagnosed. Sleep study on 03/14/2026 was cancelled; repeat pending. AHI of 22 reported from a 2019 study at outside facility.",
+      "phenomena": [
+        "negation",
+        "historical_finding"
+      ],
+      "extractor_output_seen_before_labeling": true,
+      "labels": [
+        {
+          "requirement_key": "osa_diagnosis",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "OSA diagnosed",
+          "rationale": "An affirmative patient OSA diagnosis is documented.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "sleep_study_date",
+          "review_status": "provisional",
+          "expected_state": "NOT_DOCUMENTED",
+          "acceptable_states": [
+            "NOT_DOCUMENTED",
+            "NEEDS_REVIEW"
+          ],
+          "evidence_quote": null,
+          "rationale": "The dated study was cancelled and the repeat is pending; the 2019 study has no date.",
+          "uncertainty": "low",
+          "decision_type": "textual"
+        },
+        {
+          "requirement_key": "ahi_documented",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "AHI of 22",
+          "rationale": "A numeric AHI is documented; the contract does not check recency.",
+          "uncertainty": "medium",
+          "uncertainty_note": "The value is from a 2019 outside study."
+        }
+      ]
+    },
+    {
+      "case_id": "CH-19-cpap-natural-polysomnography",
+      "payer": "Aetna",
+      "procedure_code": "CPAP_DEVICE",
+      "note_sha256": "1cf3562c59422c7d71ddb77bc2e6ea41c5ba5f7bf220265a738415fde0c30be6",
+      "note_text": "Polysomnography on March 14, 2026 confirmed obstructive sleep apnea with an apnea-hypopnea index of 31 events per hour.",
+      "phenomena": [
+        "natural_phrasing",
+        "positive_control"
+      ],
+      "extractor_output_seen_before_labeling": false,
+      "labels": [
+        {
+          "requirement_key": "osa_diagnosis",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "confirmed obstructive sleep apnea",
+          "rationale": "An affirmative patient OSA diagnosis is documented.",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "sleep_study_date",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "Polysomnography on March 14, 2026",
+          "rationale": "A completed, dated polysomnography is documented.",
+          "uncertainty": "medium",
+          "uncertainty_note": "Polysomnography is a sleep study; the note does not use the words 'sleep study'."
+        },
+        {
+          "requirement_key": "ahi_documented",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "apnea-hypopnea index of 31",
+          "rationale": "A numeric apnea-hypopnea index is documented.",
+          "uncertainty": "low"
+        }
+      ]
+    },
+    {
+      "case_id": "CH-20-cervical-natural-positive",
+      "payer": "Aetna",
+      "procedure_code": "MRI_CERVICAL",
+      "note_sha256": "b6145b006cdd0b1a23953647c2811206ff7c606a8af509ff0230b17383e9114f",
+      "note_text": "Neck pain began about three months ago. She finished a two-month course of physical therapy. No weakness, numbness, or bowel or bladder changes. Cervical radiographs showed degenerative changes.",
+      "phenomena": [
+        "natural_phrasing",
+        "positive_control"
+      ],
+      "extractor_output_seen_before_labeling": false,
+      "labels": [
+        {
+          "requirement_key": "conservative_therapy_weeks",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "two-month course of physical therapy",
+          "rationale": "Two months of completed physical therapy, above the 6-week minimum.",
+          "uncertainty": "medium",
+          "uncertainty_note": "Requires reading two months as at least 6 weeks.",
+          "decision_type": "textual"
+        },
+        {
+          "requirement_key": "neuro_red_flags_documented",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "No weakness, numbness, or bowel or bladder changes",
+          "rationale": "Neurological red flags are explicitly addressed (denied).",
+          "uncertainty": "low"
+        },
+        {
+          "requirement_key": "prior_imaging_result",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "Cervical radiographs showed degenerative changes",
+          "rationale": "Prior imaging with an abnormal finding is documented.",
+          "uncertainty": "low",
+          "decision_type": "textual"
+        },
+        {
+          "requirement_key": "symptom_duration_weeks",
+          "review_status": "provisional",
+          "expected_state": "MET",
+          "acceptable_states": [
+            "MET"
+          ],
+          "evidence_quote": "began about three months ago",
+          "rationale": "About three months of symptoms, above the 6-week minimum.",
+          "uncertainty": "medium",
+          "uncertainty_note": "Duration is expressed as an onset, not as 'for N weeks'.",
+          "decision_type": "textual"
+        }
+      ]
+    }
+  ]
+}

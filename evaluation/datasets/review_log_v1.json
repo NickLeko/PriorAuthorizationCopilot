@@ -1,0 +1,152 @@
+{
+  "log_id": "review_log_v1",
+  "reviewer": "NickLeko",
+  "reviewer_type": "human",
+  "reviewed_on": "2026-11-17",
+  "reviewer_authority": "No clinical or payer-policy authority is claimed. Textual decisions are recorded as verified labels; policy and clinical decisions are recorded here as opinions and their labels stay unverified.",
+  "method": "Decisions were presented one at a time in conversation, with the note, requirement, policy wording, a proposed state and alternatives. Extractor output was not shown for these notes.",
+  "textual_decisions": [
+    {
+      "dataset": "challenge_v1",
+      "case_id": "CH-02-missed-nsaids",
+      "requirement_key": "cpb_0236_conservative_therapy_weeks",
+      "decision_type": "textual",
+      "reviewer_state": "NEEDS_REVIEW",
+      "acceptable_states": [
+        "NEEDS_REVIEW"
+      ],
+      "how_given": "individual",
+      "recorded_as": "verified_label",
+      "note": "Agent proposed NOT_DOCUMENTED; reviewer chose NEEDS_REVIEW."
+    },
+    {
+      "dataset": "challenge_v1",
+      "case_id": "CH-02-missed-nsaids",
+      "requirement_key": "cpb_0236_conservative_therapy_no_improvement",
+      "decision_type": "textual",
+      "reviewer_state": "NEEDS_REVIEW",
+      "acceptable_states": [
+        "NEEDS_REVIEW"
+      ],
+      "how_given": "individual",
+      "recorded_as": "verified_label",
+      "note": "Agent proposed NOT_DOCUMENTED; reviewer chose NEEDS_REVIEW."
+    },
+    {
+      "dataset": "challenge_v1",
+      "case_id": "CH-04-initially-none-now-improved",
+      "requirement_key": "cpb_0236_conservative_therapy_no_improvement",
+      "decision_type": "textual",
+      "reviewer_state": "NEEDS_REVIEW",
+      "acceptable_states": [
+        "NEEDS_REVIEW"
+      ],
+      "how_given": "individual",
+      "recorded_as": "verified_label",
+      "note": "Matches the agent proposal. NOT_MET was offered and not chosen."
+    }
+  ],
+  "policy_and_clinical_opinions": [
+    {
+      "dataset": "corpus52",
+      "case_id": "MRI-01-complete",
+      "requirement_key": "cpb_0236_conservative_therapy_no_improvement",
+      "decision_type": "policy",
+      "reviewer_state": "MET",
+      "acceptable_states": [
+        "MET"
+      ],
+      "how_given": "individual",
+      "recorded_as": "reviewer_opinion",
+      "note": "'Minimal improvement' satisfies the policy's 'no improvement', as the current rule assumes."
+    },
+    {
+      "dataset": "challenge_v1",
+      "case_id": "CH-03-nsaids-2019",
+      "requirement_key": "cpb_0236_conservative_therapy_weeks",
+      "decision_type": "policy",
+      "reviewer_state": "NEEDS_REVIEW",
+      "acceptable_states": [
+        "NEEDS_REVIEW",
+        "NOT_DOCUMENTED"
+      ],
+      "how_given": "individual",
+      "recorded_as": "reviewer_opinion",
+      "note": "A dated 2019 course goes to review; the policy states no time window."
+    },
+    {
+      "dataset": "challenge_v1",
+      "case_id": "CH-03-nsaids-2019",
+      "requirement_key": "cpb_0236_conservative_therapy_no_improvement",
+      "decision_type": "policy",
+      "reviewer_state": "NEEDS_REVIEW",
+      "acceptable_states": [
+        "NEEDS_REVIEW",
+        "NOT_DOCUMENTED"
+      ],
+      "how_given": "individual",
+      "recorded_as": "reviewer_opinion",
+      "note": "As for duration."
+    },
+    {
+      "dataset": "challenge_v1",
+      "case_id": "CH-15-course-before-current-flare",
+      "requirement_key": "cpb_0236_conservative_therapy_weeks",
+      "decision_type": "policy",
+      "reviewer_state": "NEEDS_REVIEW",
+      "acceptable_states": [
+        "NEEDS_REVIEW",
+        "NOT_DOCUMENTED"
+      ],
+      "how_given": "bulk_acceptance_of_agent_proposals",
+      "recorded_as": "reviewer_opinion",
+      "note": "Reviewer accepted the agent proposal for all remaining questions."
+    },
+    {
+      "dataset": "challenge_v1",
+      "case_id": "CH-15-course-before-current-flare",
+      "requirement_key": "cpb_0236_conservative_therapy_no_improvement",
+      "decision_type": "policy",
+      "reviewer_state": "NEEDS_REVIEW",
+      "acceptable_states": [
+        "NEEDS_REVIEW",
+        "NOT_DOCUMENTED"
+      ],
+      "how_given": "bulk_acceptance_of_agent_proposals",
+      "recorded_as": "reviewer_opinion",
+      "note": "Reviewer accepted the agent proposal for all remaining questions."
+    },
+    {
+      "dataset": "challenge_v1",
+      "case_id": "CH-05-intermittent-adherence",
+      "requirement_key": "cpb_0236_conservative_therapy_weeks",
+      "decision_type": "policy",
+      "reviewer_state": "NEEDS_REVIEW",
+      "acceptable_states": [
+        "NEEDS_REVIEW",
+        "NOT_DOCUMENTED"
+      ],
+      "how_given": "bulk_acceptance_of_agent_proposals",
+      "recorded_as": "reviewer_opinion",
+      "note": "Reviewer accepted the agent proposal for all remaining questions."
+    },
+    {
+      "dataset": "challenge_v1",
+      "case_id": "CH-05-intermittent-adherence",
+      "requirement_key": "cpb_0236_conservative_therapy_no_improvement",
+      "decision_type": "policy",
+      "reviewer_state": "NEEDS_REVIEW",
+      "acceptable_states": [
+        "NEEDS_REVIEW",
+        "NOT_DOCUMENTED"
+      ],
+      "how_given": "bulk_acceptance_of_agent_proposals",
+      "recorded_as": "reviewer_opinion",
+      "note": "Reviewer accepted the agent proposal; the label moves from open question to provisional."
+    }
+  ],
+  "assumptions_not_reviewed": [
+    "CH-04 therapy duration stays MET: stated in conversation and not objected to, but not asked as a decision.",
+    "CH-02 and CH-04: NEEDS_REVIEW was recorded as the only acceptable state. The reviewer was told this and did not object."
+  ]
+}

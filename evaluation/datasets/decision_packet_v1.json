@@ -1,0 +1,193 @@
+{
+  "packet_id": "decision_packet_v1",
+  "created_on": "2026-11-16",
+  "purpose": "First human review pass: the labels behind every baseline failure, every open question, and labels that would change the Phase 2 proposal.",
+  "selection_note": "Entries were chosen with knowledge of extractor output. The rendered packet hides that output and mixes in rows where the tool agreed with the label, unmarked.",
+  "entries": [
+    {
+      "dataset": "challenge_v1",
+      "case_id": "CH-02-missed-nsaids",
+      "requirement_key": "cpb_0236_conservative_therapy_weeks"
+    },
+    {
+      "dataset": "challenge_v1",
+      "case_id": "CH-02-missed-nsaids",
+      "requirement_key": "cpb_0236_conservative_therapy_no_improvement"
+    },
+    {
+      "dataset": "challenge_v1",
+      "case_id": "CH-03-nsaids-2019",
+      "requirement_key": "cpb_0236_conservative_therapy_weeks"
+    },
+    {
+      "dataset": "challenge_v1",
+      "case_id": "CH-03-nsaids-2019",
+      "requirement_key": "cpb_0236_conservative_therapy_no_improvement"
+    },
+    {
+      "dataset": "challenge_v1",
+      "case_id": "CH-04-initially-none-now-improved",
+      "requirement_key": "cpb_0236_conservative_therapy_no_improvement"
+    },
+    {
+      "dataset": "challenge_v1",
+      "case_id": "CH-05-intermittent-adherence",
+      "requirement_key": "cpb_0236_conservative_therapy_weeks"
+    },
+    {
+      "dataset": "challenge_v1",
+      "case_id": "CH-05-intermittent-adherence",
+      "requirement_key": "cpb_0236_conservative_therapy_no_improvement"
+    },
+    {
+      "dataset": "challenge_v1",
+      "case_id": "CH-06-historical-exam",
+      "requirement_key": "objective_motor_or_reflex_change_in_root_distribution"
+    },
+    {
+      "dataset": "challenge_v1",
+      "case_id": "CH-07-natural-two-months",
+      "requirement_key": "cpb_0236_conservative_therapy_weeks"
+    },
+    {
+      "dataset": "challenge_v1",
+      "case_id": "CH-07-natural-two-months",
+      "requirement_key": "cpb_0236_conservative_therapy_no_improvement"
+    },
+    {
+      "dataset": "challenge_v1",
+      "case_id": "CH-08-natural-x-8-wks-failed",
+      "requirement_key": "cpb_0236_conservative_therapy_weeks"
+    },
+    {
+      "dataset": "challenge_v1",
+      "case_id": "CH-08-natural-x-8-wks-failed",
+      "requirement_key": "cpb_0236_conservative_therapy_no_improvement"
+    },
+    {
+      "dataset": "challenge_v1",
+      "case_id": "CH-09-natural-ehl",
+      "requirement_key": "objective_motor_or_reflex_change_in_root_distribution"
+    },
+    {
+      "dataset": "challenge_v1",
+      "case_id": "CH-10-natural-dorsiflexion-l5",
+      "requirement_key": "objective_motor_or_reflex_change_in_root_distribution"
+    },
+    {
+      "dataset": "challenge_v1",
+      "case_id": "CH-11-natural-dose-unchanged",
+      "requirement_key": "cpb_0236_conservative_therapy_weeks"
+    },
+    {
+      "dataset": "challenge_v1",
+      "case_id": "CH-11-natural-dose-unchanged",
+      "requirement_key": "cpb_0236_conservative_therapy_no_improvement"
+    },
+    {
+      "dataset": "challenge_v1",
+      "case_id": "CH-14-response-reversed-next-sentence",
+      "requirement_key": "cpb_0236_conservative_therapy_no_improvement"
+    },
+    {
+      "dataset": "challenge_v1",
+      "case_id": "CH-15-course-before-current-flare",
+      "requirement_key": "cpb_0236_conservative_therapy_weeks"
+    },
+    {
+      "dataset": "challenge_v1",
+      "case_id": "CH-15-course-before-current-flare",
+      "requirement_key": "cpb_0236_conservative_therapy_no_improvement"
+    },
+    {
+      "dataset": "challenge_v1",
+      "case_id": "CH-16-cervical-borrowed-duration",
+      "requirement_key": "prior_imaging_result"
+    },
+    {
+      "dataset": "challenge_v1",
+      "case_id": "CH-16-cervical-borrowed-duration",
+      "requirement_key": "symptom_duration_weeks"
+    },
+    {
+      "dataset": "challenge_v1",
+      "case_id": "CH-17-knee-missed-pt",
+      "requirement_key": "conservative_therapy_weeks"
+    },
+    {
+      "dataset": "challenge_v1",
+      "case_id": "CH-17-knee-missed-pt",
+      "requirement_key": "prior_imaging_result"
+    },
+    {
+      "dataset": "challenge_v1",
+      "case_id": "CH-20-cervical-natural-positive",
+      "requirement_key": "conservative_therapy_weeks"
+    },
+    {
+      "dataset": "challenge_v1",
+      "case_id": "CH-20-cervical-natural-positive",
+      "requirement_key": "prior_imaging_result"
+    },
+    {
+      "dataset": "challenge_v1",
+      "case_id": "CH-20-cervical-natural-positive",
+      "requirement_key": "symptom_duration_weeks"
+    },
+    {
+      "dataset": "corpus52",
+      "case_id": "MRI-02-complete",
+      "requirement_key": "cpb_0236_conservative_therapy_weeks"
+    },
+    {
+      "dataset": "corpus52",
+      "case_id": "MRI-02-complete",
+      "requirement_key": "cpb_0236_conservative_therapy_no_improvement"
+    },
+    {
+      "dataset": "corpus52",
+      "case_id": "MRI-07-edge-exact-threshold",
+      "requirement_key": "cpb_0236_conservative_therapy_weeks"
+    },
+    {
+      "dataset": "corpus52",
+      "case_id": "MRI-07-edge-exact-threshold",
+      "requirement_key": "cpb_0236_conservative_therapy_no_improvement"
+    },
+    {
+      "dataset": "challenge_v1",
+      "case_id": "CH-01-lumbar-control",
+      "requirement_key": "cpb_0236_conservative_therapy_weeks"
+    },
+    {
+      "dataset": "challenge_v1",
+      "case_id": "CH-12-stopped-early",
+      "requirement_key": "cpb_0236_conservative_therapy_weeks"
+    },
+    {
+      "dataset": "challenge_v1",
+      "case_id": "CH-13-negated-diagnosis",
+      "requirement_key": "back_pain_with_radiculopathy"
+    },
+    {
+      "dataset": "challenge_v1",
+      "case_id": "CH-18-cpap-cancelled-study",
+      "requirement_key": "sleep_study_date"
+    },
+    {
+      "dataset": "corpus52",
+      "case_id": "MRI-01-complete",
+      "requirement_key": "cpb_0236_conservative_therapy_no_improvement"
+    },
+    {
+      "dataset": "corpus52",
+      "case_id": "SAFETY-01-cross-therapy-linkage",
+      "requirement_key": "cpb_0236_conservative_therapy_weeks"
+    },
+    {
+      "dataset": "corpus52",
+      "case_id": "SAFETY-03-family-therapy-coreference",
+      "requirement_key": "cpb_0236_conservative_therapy_weeks"
+    }
+  ]
+}

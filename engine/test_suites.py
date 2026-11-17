@@ -61,10 +61,23 @@ def run_cases(rules_path: str, cases_path: str) -> List[Dict[str, Any]]:
     return rows
 
 
+READY_SCOPE_NOTE = (
+    "Overall-status regression on the bundled fixture. No human verifications are supplied, so READY is "
+    "unreachable and no false-READY rate is reported. The false-PENDING_VERIFICATION count is implied by the "
+    "exact-status match on fixtures written alongside the extractor, so it is a regression invariant, not a "
+    "safety estimate. A correct overall status can hide a wrong requirement; requirement-level results are in "
+    "docs/evaluation/requirement_level_baseline.md."
+)
+
+
 def summarize_safety_metrics(rows: List[Dict[str, Any]]) -> Dict[str, Any]:
     labeled = [row for row in rows if row.get("expected")]
-    expected_not_ready = [row for row in labeled if row["expected"] != "READY"]
-    false_ready_count = sum(1 for row in expected_not_ready if row.get("overall_status") == "READY")
+    # run_cases supplies no human verifications, so READY cannot occur. The count is
+    # kept as an invariant (it must stay 0); it is not a safety measurement and has no rate.
+    ready_count = sum(1 for row in labeled if row.get("overall_status") == "READY")
+    passing = ("PENDING_VERIFICATION", "READY")
+    expected_non_passing = [row for row in labeled if row["expected"] not in passing]
+    false_pending_count = sum(1 for row in expected_non_passing if row.get("overall_status") in passing)
     exact_correct_count = sum(1 for row in labeled if row.get("overall_status") == row.get("expected"))
     needs_review_count = sum(1 for row in labeled if row.get("overall_status") == "NEEDS_REVIEW")
     cannot_determine_count = sum(1 for row in labeled if row.get("overall_status") == "CANNOT_DETERMINE")
@@ -76,11 +89,14 @@ def summarize_safety_metrics(rows: List[Dict[str, Any]]) -> Dict[str, Any]:
 
     return {
         "total_labeled_cases": len(labeled),
-        "expected_non_ready_count": len(expected_not_ready),
+        "expected_non_passing_count": len(expected_non_passing),
         "exact_status_correct_count": exact_correct_count,
         "exact_overall_status_accuracy_pct": rate(exact_correct_count, len(labeled)),
-        "false_ready_count": false_ready_count,
-        "false_ready_rate_pct": rate(false_ready_count, len(expected_not_ready)),
+        "false_pending_verification_count": false_pending_count,
+        "false_pending_verification_rate_pct": rate(false_pending_count, len(expected_non_passing)),
+        "ready_reachable": False,
+        "ready_count": ready_count,
+        "scope_note": READY_SCOPE_NOTE,
         "needs_review_count": needs_review_count,
         "needs_review_rate_pct": rate(needs_review_count, len(labeled)),
         "cannot_determine_count": cannot_determine_count,

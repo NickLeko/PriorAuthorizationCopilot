@@ -107,7 +107,7 @@ Concrete examples:
 - `MRI-08-edge-below-threshold` -> `NOT_READY`
 - `CPAP-02-borderline` -> `CANNOT_DETERMINE`
 
-The bundled labeled fixture currently reports 52/52 exact overall statuses, 0 false `READY` results among 52 expected non-`READY` cases, 12 `NEEDS_REVIEW` results (23.1%), and 42 combined abstentions (80.8%). These are fixture-scoped regression results, not estimates of behavior on external or real-world notes.
+The bundled labeled fixture currently reports 52/52 exact overall statuses, 0 false `PENDING_VERIFICATION` results among 45 expected non-passing cases (`READY` is unreachable in this run because no human verifications are supplied, so no false-`READY` rate is reported), 12 `NEEDS_REVIEW` results (23.1%), and 42 combined abstentions (80.8%). These are fixture-scoped regression results, not estimates of behavior on external or real-world notes. Requirement-level results are in [docs/evaluation](evaluation/README.md).
 
 ## What Does The Output Mean?
 
