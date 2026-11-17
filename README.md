@@ -13,6 +13,8 @@ this does not establish current episode truth. Engine/app version is **2.7.0**;
 record schema remains **2.0.0**. Policies, human verification and governance are
 unchanged. Validation: **1681 passed, 9 xfailed**. See [release notes](docs/releases/v2.7.0.md).
 
+The v2.7.1 candidate resolves CPB 0236 class-name therapy courses per course and per fact. A course whose wording is not fully accounted for by a closed course grammar (for example a missed, intermittent or 2019 course) goes to `NEEDS_REVIEW` instead of `MET`; a separate clean course still counts on its own, and a documented duration stays `MET` when only the response is qualified. Engine/app version is **2.7.1**; record schema remains **2.0.0**. See [release notes](docs/releases/v2.7.1.md) and [docs/evaluation](docs/evaluation/README.md).
+
 [engine/data/cpb0236_drugs_v1.json](engine/data/cpb0236_drugs_v1.json) remains
 owner-approved reviewed data: 26 generic drugs, common US brands, ATC codes and
 Footnote 1 classes. **ATC codes require human verification against WHO ATC before any external claim.**
