@@ -62,3 +62,33 @@ One note in the required tests moves from review to `MET`: "In 2019, NSAIDs for 
 ## Unexpected regressions
 
 None found. Two expectations changed for reasons outside the specification's list: the version pins in `test_api.py` and `test_v210_safety.py`. Both follow directly from the required version bump and are listed above.
+
+## Pre-merge review finding (November 17, 2026)
+
+A pre-merge review found one substantive cost that neither the specification's measurement nor the framing controls covered.
+
+**The sibling-clause rule downgrades clean courses for unrelated commentary.** A clean course followed in the same sentence by any clause that names no therapy now sends both therapy facts to `NEEDS_REVIEW`. On eight probe notes, each after the standard lumbar diagnosis and exam sentences:
+
+| Note ending | 2.7.0 | 2.7.1 (this PR) |
+| --- | --- | --- |
+| "…no improvement; pain is severe." | `MET` (correct) | review (unnecessary) |
+| "…no improvement; MRI requested." | `MET` (correct) | review (unnecessary) |
+| "…no improvement; referred to spine clinic." | `MET` (correct) | review (unnecessary) |
+| "…no improvement, though she still works full time." | `MET` (correct) | review (unnecessary) |
+| "…no improvement, but she declines injections." | `MET` (correct) | review (unnecessary) |
+| "…no improvement; see attached records." | `MET` (correct) | review (unnecessary) |
+| "…no improvement; stopped after 3 days." | `MET` (false) | review (correct) |
+| "…no improvement at the time; that was before the current flare…" | `MET` (false) | review (correct) |
+
+This is fail-safe: it adds no false `MET`. It is still more frequent than section 4 of the specification implies, because that measurement covered only existing notes. The earlier statement that there were no unexpected regressions is withdrawn for this behaviour.
+
+A narrower rule was tested in a scratch copy, not on this branch. It counts a sibling clause as commentary only when it begins with a reference back to the course ("that", "this", "it", "which", "these", "those", "they").
+
+- The full suite and the committed evaluation baseline are unchanged under it.
+- It restores `MET` on the six unrelated-commentary notes and still sends CH-15 to review.
+- It leaves "…; stopped after 3 days." as a false `MET`, the same as 2.7.0.
+
+**Decision for the owner before merging this PR:**
+
+- Merge as is and accept the extra reviews.
+- Or adopt the narrower rule, with these probes added as tests, in a separate approved commit.
