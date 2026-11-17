@@ -19,9 +19,12 @@ It is evaluation only. Nothing here changes extraction, evaluation, archives, ve
 | [requirement_level_baseline.json](requirement_level_baseline.json) | The same results, machine-readable |
 | [decision_packet.md](decision_packet.md) | First review pass: 37 label decisions, without extractor output |
 | [labeling_packet.csv](labeling_packet.csv) | Every label awaiting human review, without extractor output |
-| [phase2_proposal.md](phase2_proposal.md) | Metric audit, failure mechanisms and the proposed Phase 2 change |
+| [phase2_proposal.md](phase2_proposal.md) | Metric audit and failure mechanisms |
+| [phase2_spec.md](phase2_spec.md) | Phase 2 implementation specification (not implemented) |
 | `evaluation/datasets/corpus52_labels.json` | Per-requirement labels for the 52 bundled cases |
 | `evaluation/datasets/challenge_v1.json` | 20 agent-authored notes aimed at known weak areas |
+| `evaluation/datasets/framing_controls_v1.json` | 20 valid-course notes that a conservative change must keep `MET` |
+| `evaluation/datasets/review_log_v1.json` | Human review decisions: textual ones as verified labels, policy and clinical ones as opinions |
 | `evaluation/datasets/holdout_v1.json` | 10 sealed notes, unlabeled and never run |
 
 Regenerate with `python -m evaluation.report`. `python -m evaluation.report --check` and the test suite both fail when the committed files are out of date, so a change in extraction behaviour shows up as a diff in the baseline.
@@ -36,7 +39,7 @@ Each label covers one requirement of one note and records the expected state, ot
 | `provisional` | Agent-authored and defensible from the note text. Not independently reviewed. | Yes, reported on its own |
 | `needs_review` | The note or the contract does not settle the answer. | No. Listed with the question to decide |
 
-The tiers are never combined. There are currently no verified labels, and the report says so instead of showing an empty tier as a pass. A requirement with no label is listed as unlabeled and excluded from every rate.
+Requirement tables never combine tiers; case-level results do, and say so. Verified labels exist only where a textual decision was given individually and logged in a review log; the report checks that every verified label has such an entry. Policy and clinical answers are logged as opinions and never verify a label. A requirement with no label is listed as unlabeled and excluded from every rate.
 
 `acceptable_states` lists other states a careful reader could defend, usually a conservative `NEEDS_REVIEW`. `MET` appears there only when asserting the fact would be correct, so an unsupported `MET` always counts as a false `MET`.
 

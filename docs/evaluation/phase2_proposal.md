@@ -1,5 +1,7 @@
 # Metric audit, failure mechanisms and Phase 2 proposal
 
+Implementation reference: [phase2_spec.md](phase2_spec.md), which supersedes section 3 below.
+
 November 16, 2026. Based on the committed [baseline](requirement_level_baseline.md) for engine 2.7.0. Nothing in this document has been implemented. Every label behind it is provisional and agent-authored.
 
 ## 1. Metric audit
