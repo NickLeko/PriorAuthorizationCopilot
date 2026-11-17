@@ -122,3 +122,48 @@ def test_every_framing_control_keeps_its_valid_course():
             if (case.case_id, key) in known_misses:
                 continue
             assert facts[key] not in (None, REVIEW_REQUIRED_FACT), (case.case_id, key)
+
+
+# Sibling-clause commentary (owner request, November 17). A sibling clause that names no
+# therapy is treated as commentary on the course unless it is one of a small, closed set of
+# clearly independent, non-treatment statements. Anything else still sends the course to review.
+INDEPENDENT_COMMENTARY = [
+    "NSAIDs for 8 weeks with no improvement; pain is severe.",
+    "NSAIDs for 8 weeks with no improvement; MRI requested.",
+    "Patient completed NSAIDs for 8 weeks with no improvement; referred to spine clinic.",
+    "NSAIDs for 8 weeks with no improvement, though she still works full time.",
+    "NSAIDs for 8 weeks with no improvement, but she declines injections.",
+    "NSAIDs for 8 weeks with no improvement; see attached records.",
+]
+
+COURSE_COMMENTARY = [
+    # Modifies the course.
+    "NSAIDs for 8 weeks with no improvement; stopped after 3 days.",
+    # CH-15: refers back to the course and changes its timing.
+    "NSAIDs for 8 weeks with no improvement at the time; that was before the current flare began last week.",
+    # Unrecognized commentary is not assumed to be independent.
+    "NSAIDs for 8 weeks with no improvement; she works as a nurse.",
+    # A recognized form only counts when it is the whole clause.
+    "NSAIDs for 8 weeks with no improvement; MRI requested after she stopped them.",
+    "NSAIDs for 8 weeks with no improvement; referred to spine clinic, stopped after 3 days.",
+    "NSAIDs for 8 weeks with no improvement; pain is severe but now improving.",
+    "NSAIDs for 8 weeks with no improvement; pain is no longer severe.",
+]
+
+
+@pytest.mark.parametrize("note", INDEPENDENT_COMMENTARY, ids=[f"independent-{index}" for index in range(1, 7)])
+def test_independent_commentary_does_not_downgrade_a_clean_course(note):
+    assert therapy(note) == (8, True)
+
+
+@pytest.mark.parametrize("note", COURSE_COMMENTARY, ids=[f"course-commentary-{index}" for index in range(1, len(COURSE_COMMENTARY) + 1)])
+def test_commentary_that_modifies_or_is_not_recognized_still_requires_review(note):
+    assert therapy(note) == (REVIEW, REVIEW)
+
+
+def test_independent_commentary_does_not_change_existing_multi_course_resolution():
+    # Two clean paired courses with different durations already go to review in 2.7.0.
+    note = "Muscle relaxants for 6 weeks with no improvement. NSAIDs for 8 weeks with no improvement; MRI requested."
+    assert therapy(note) == (REVIEW, REVIEW)
+    note = "In 2019, NSAIDs for 4 weeks with no improvement. Muscle relaxants for 6 weeks with no improvement; see attached records."
+    assert therapy(note) == (6, True)
