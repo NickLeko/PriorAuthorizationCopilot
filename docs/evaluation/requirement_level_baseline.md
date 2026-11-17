@@ -125,33 +125,79 @@ Twenty synthetic notes targeting temporal ambiguity, treatment adherence, contra
 - Notes: Synthetic, agent-authored (Claude). Not written or reviewed by a clinician.
 - Selection: Adversarial and non-random. Fourteen notes were chosen after their extractor output had been seen, so failure counts here are a list of known failures, not a rate.
 - Cases: 20; requirement slots: 78
-- Labels: 0 verified, 76 provisional, 2 needs review (unscored), 0 unlabeled (unscored)
+- Labels: 3 verified, 74 provisional, 1 needs review (unscored), 0 unlabeled (unscored)
 - Source cases with no labels at all: 0
 - Cases whose extractor output was seen before labeling: 14
 
 ### Verified labels
 
-No verified labels exist. Nothing is reported for this tier.
+Scored labels: 3.
 
-### Provisional labels
-
-Scored labels: 76.
-
-Adversarial set: counts only. These are known failures, not rates.
+Selected set: counts only. These are known failures, not rates.
 
 | Metric | Result | Denominator |
 | --- | --- | --- |
-| False MET | 13 of 17 | scored labels where MET is not an acceptable state |
-| MET precision | 48 of 61 | scored labels predicted MET |
+| False MET | 3 of 3 | scored labels where MET is not an acceptable state |
+| MET precision | 0 of 3 | scored labels predicted MET |
+| Missed MET | not measured (no eligible labels) | scored labels whose expected state is MET |
+| MET recall | not measured (no eligible labels) | scored labels whose expected state is MET |
+| Over-abstention | not measured (no eligible labels) | scored labels whose expected state is MET or NOT_MET |
+| Abstention rate | 0 of 3 | all scored labels; predicted NOT_DOCUMENTED or NEEDS_REVIEW |
+| Review rate | 0 of 3 | all scored labels; predicted NEEDS_REVIEW |
+| Decided coverage | 3 of 3 | all scored labels; predicted MET or NOT_MET |
+| Exact agreement | 0 of 3 | all scored labels |
+| Acceptable agreement | 0 of 3 | all scored labels |
+| Evidence coverage | 3 of 3 | scored labels predicted MET, NOT_MET or NEEDS_REVIEW; at least one cited span |
+| Evidence overlap | not measured (no eligible labels) | exact-agreement labels with an expected quote and a cited span; cited span overlaps the quote |
+
+Utility flags: MET_RECALL_NOT_MEASURED, ASSERTS_EVERY_UNSUPPORTED_FACT.
+
+Confusion matrix (all requirements):
+
+| Expected \ Observed | MET | NOT_MET | NOT_DOCUMENTED | NEEDS_REVIEW |
+| --- | ---: | ---: | ---: | ---: |
+| MET | 0 | 0 | 0 | 0 |
+| NOT_MET | 0 | 0 | 0 | 0 |
+| NOT_DOCUMENTED | 0 | 0 | 0 | 0 |
+| NEEDS_REVIEW | 3 | 0 | 0 | 0 |
+
+Per requirement:
+
+| Requirement | Scored | False MET | Missed MET | MET precision | MET recall |
+| --- | ---: | --- | --- | --- | --- |
+| `cpb_0236_conservative_therapy_no_improvement` | 2 | 2 of 2 | not measured (no eligible labels) | 0 of 2 | not measured (no eligible labels) |
+| `cpb_0236_conservative_therapy_weeks` | 1 | 1 of 1 | not measured (no eligible labels) | 0 of 1 | not measured (no eligible labels) |
+
+Controls on the same labels. A constant predictor must not look good:
+
+| Predictor | False MET | MET recall | Decided coverage | Degenerate | Flags |
+| --- | --- | --- | --- | --- | --- |
+| Production extractor | 3 of 3 | not measured (no eligible labels) | 3 of 3 | yes | MET_RECALL_NOT_MEASURED, ASSERTS_EVERY_UNSUPPORTED_FACT |
+| ALWAYS_NOT_DOCUMENTED | 0 of 3 | not measured (no eligible labels) | 0 of 3 | yes | MET_RECALL_NOT_MEASURED, NEVER_DECIDES |
+| ALWAYS_NEEDS_REVIEW | 0 of 3 | not measured (no eligible labels) | 0 of 3 | yes | MET_RECALL_NOT_MEASURED, NEVER_DECIDES |
+| ALWAYS_MET | 3 of 3 | not measured (no eligible labels) | 3 of 3 | yes | MET_RECALL_NOT_MEASURED, ASSERTS_EVERY_UNSUPPORTED_FACT |
+
+'Degenerate: no' only means the predictor is not one of these constant baselines. It is not a quality bar.
+
+### Provisional labels
+
+Scored labels: 74.
+
+Selected set: counts only. These are known failures, not rates.
+
+| Metric | Result | Denominator |
+| --- | --- | --- |
+| False MET | 11 of 15 | scored labels where MET is not an acceptable state |
+| MET precision | 48 of 59 | scored labels predicted MET |
 | Missed MET | 11 of 59 | scored labels whose expected state is MET |
 | MET recall | 48 of 59 | scored labels whose expected state is MET |
 | Over-abstention | 11 of 61 | scored labels whose expected state is MET or NOT_MET |
-| Abstention rate | 14 of 76 | all scored labels; predicted NOT_DOCUMENTED or NEEDS_REVIEW |
-| Review rate | 0 of 76 | all scored labels; predicted NEEDS_REVIEW |
-| Decided coverage | 62 of 76 | all scored labels; predicted MET or NOT_MET |
-| Exact agreement | 52 of 76 | all scored labels |
-| Acceptable agreement | 52 of 76 | all scored labels |
-| Evidence coverage | 62 of 62 | scored labels predicted MET, NOT_MET or NEEDS_REVIEW; at least one cited span |
+| Abstention rate | 14 of 74 | all scored labels; predicted NOT_DOCUMENTED or NEEDS_REVIEW |
+| Review rate | 0 of 74 | all scored labels; predicted NEEDS_REVIEW |
+| Decided coverage | 60 of 74 | all scored labels; predicted MET or NOT_MET |
+| Exact agreement | 52 of 74 | all scored labels |
+| Acceptable agreement | 52 of 74 | all scored labels |
+| Evidence coverage | 60 of 60 | scored labels predicted MET, NOT_MET or NEEDS_REVIEW; at least one cited span |
 | Evidence overlap | 49 of 49 | exact-agreement labels with an expected quote and a cited span; cited span overlaps the quote |
 
 Utility flags: none.
@@ -162,7 +208,7 @@ Confusion matrix (all requirements):
 | --- | ---: | ---: | ---: | ---: |
 | MET | 48 | 0 | 11 | 0 |
 | NOT_MET | 1 | 1 | 0 | 0 |
-| NOT_DOCUMENTED | 4 | 0 | 3 | 0 |
+| NOT_DOCUMENTED | 2 | 0 | 3 | 0 |
 | NEEDS_REVIEW | 8 | 0 | 0 | 0 |
 
 Per requirement:
@@ -172,8 +218,8 @@ Per requirement:
 | `ahi_documented` | 2 | not measured (no eligible labels) | 0 of 2 | 2 of 2 | 2 of 2 |
 | `back_pain_with_radiculopathy` | 15 | 0 of 1 | 0 of 14 | 14 of 14 | 14 of 14 |
 | `conservative_therapy_weeks` | 3 | 1 of 1 | 1 of 2 | 1 of 2 | 1 of 2 |
-| `cpb_0236_conservative_therapy_no_improvement` | 14 | 5 of 6 | 3 of 8 | 5 of 10 | 5 of 8 |
-| `cpb_0236_conservative_therapy_weeks` | 15 | 4 of 5 | 3 of 10 | 7 of 11 | 7 of 10 |
+| `cpb_0236_conservative_therapy_no_improvement` | 13 | 4 of 5 | 3 of 8 | 5 of 9 | 5 of 8 |
+| `cpb_0236_conservative_therapy_weeks` | 14 | 3 of 4 | 3 of 10 | 7 of 10 | 7 of 10 |
 | `mechanical_symptoms_documented` | 1 | not measured (no eligible labels) | 0 of 1 | 1 of 1 | 1 of 1 |
 | `neuro_red_flags_documented` | 2 | not measured (no eligible labels) | 0 of 2 | 2 of 2 | 2 of 2 |
 | `objective_motor_or_reflex_change_in_root_distribution` | 14 | 1 of 1 | 1 of 13 | 12 of 13 | 12 of 13 |
@@ -186,37 +232,38 @@ Controls on the same labels. A constant predictor must not look good:
 
 | Predictor | False MET | MET recall | Decided coverage | Degenerate | Flags |
 | --- | --- | --- | --- | --- | --- |
-| Production extractor | 13 of 17 | 48 of 59 | 62 of 76 | no | none |
-| ALWAYS_NOT_DOCUMENTED | 0 of 17 | 0 of 59 | 0 of 76 | yes | ZERO_MET_RECALL, NEVER_DECIDES |
-| ALWAYS_NEEDS_REVIEW | 0 of 17 | 0 of 59 | 0 of 76 | yes | ZERO_MET_RECALL, NEVER_DECIDES |
-| ALWAYS_MET | 17 of 17 | 59 of 59 | 76 of 76 | yes | ASSERTS_EVERY_UNSUPPORTED_FACT |
+| Production extractor | 11 of 15 | 48 of 59 | 60 of 74 | no | none |
+| ALWAYS_NOT_DOCUMENTED | 0 of 15 | 0 of 59 | 0 of 74 | yes | ZERO_MET_RECALL, NEVER_DECIDES |
+| ALWAYS_NEEDS_REVIEW | 0 of 15 | 0 of 59 | 0 of 74 | yes | ZERO_MET_RECALL, NEVER_DECIDES |
+| ALWAYS_MET | 15 of 15 | 59 of 59 | 74 of 74 | yes | ASSERTS_EVERY_UNSUPPORTED_FACT |
 
 'Degenerate: no' only means the predictor is not one of these constant baselines. It is not a quality bar.
 
 ### Case level
 
-Derived from requirement labels. A case counts only if every requirement has a scored label. Unlike the requirement tables, case-level results use every scored tier together; see label_tiers_used. Fully scored cases: 18 of 20. Label tiers used: provisional.
+Derived from requirement labels. A case counts only if every requirement has a scored label. Unlike the requirement tables, case-level results use every scored tier together; see label_tiers_used. Fully scored cases: 19 of 20. Label tiers used: provisional, verified.
 
 | Measure | Result | Denominator |
 | --- | --- | --- |
-| All requirements MET when at least one must not be | 7/11 | fully scored cases where at least one requirement must not be MET |
+| All requirements MET when at least one must not be | 8/12 | fully scored cases where at least one requirement must not be MET |
 | Not all MET when every requirement is expected MET | 5/7 | fully scored cases where every requirement is expected MET |
 | False MET hidden by another blocker | 1/9 | cases with at least one false MET; overall status was not PENDING_VERIFICATION |
 
-Blocker depth: 6 of 11 non-passing cases are blocked by exactly one requirement. Only in those can a single false MET change the overall status; in the rest it stays hidden (cases by number of blocking requirements: {'1': 6, '2': 5}).
+Blocker depth: 6 of 12 non-passing cases are blocked by exactly one requirement. Only in those can a single false MET change the overall status; in the rest it stays hidden (cases by number of blocking requirements: {'1': 6, '2': 6}).
 
 READY: not reachable. No human verifications are supplied, so READY cannot occur. No false-READY rate is reported.
 
-### Observed failures (24)
+### Observed failures (25)
 
 | Case | Requirement | Class | Expected | Observed | Phenomena |
 | --- | --- | --- | --- | --- | --- |
-| CH-02-missed-nsaids | `cpb_0236_conservative_therapy_weeks` | FALSE_MET | NOT_DOCUMENTED | MET | treatment_adherence |
-| CH-02-missed-nsaids | `cpb_0236_conservative_therapy_no_improvement` | FALSE_MET | NOT_DOCUMENTED | MET | treatment_adherence |
+| CH-02-missed-nsaids | `cpb_0236_conservative_therapy_weeks` | FALSE_MET | NEEDS_REVIEW | MET | treatment_adherence |
+| CH-02-missed-nsaids | `cpb_0236_conservative_therapy_no_improvement` | FALSE_MET | NEEDS_REVIEW | MET | treatment_adherence |
 | CH-03-nsaids-2019 | `cpb_0236_conservative_therapy_weeks` | FALSE_MET | NEEDS_REVIEW | MET | historical_finding, temporal_ambiguity |
 | CH-03-nsaids-2019 | `cpb_0236_conservative_therapy_no_improvement` | FALSE_MET | NEEDS_REVIEW | MET | historical_finding, temporal_ambiguity |
 | CH-04-initially-none-now-improved | `cpb_0236_conservative_therapy_no_improvement` | FALSE_MET | NEEDS_REVIEW | MET | contradictory_evidence, temporal_ambiguity |
 | CH-05-intermittent-adherence | `cpb_0236_conservative_therapy_weeks` | FALSE_MET | NEEDS_REVIEW | MET | treatment_adherence |
+| CH-05-intermittent-adherence | `cpb_0236_conservative_therapy_no_improvement` | FALSE_MET | NEEDS_REVIEW | MET | treatment_adherence |
 | CH-06-historical-exam | `objective_motor_or_reflex_change_in_root_distribution` | FALSE_MET | NEEDS_REVIEW | MET | historical_finding |
 | CH-07-natural-two-months | `cpb_0236_conservative_therapy_weeks` | MISSED_MET | MET | NOT_DOCUMENTED | natural_phrasing |
 | CH-07-natural-two-months | `cpb_0236_conservative_therapy_no_improvement` | MISSED_MET | MET | NOT_DOCUMENTED | natural_phrasing |
@@ -236,12 +283,106 @@ READY: not reachable. No human verifications are supplied, so READY cannot occur
 | CH-20-cervical-natural-positive | `prior_imaging_result` | MISSED_MET | MET | NOT_DOCUMENTED | natural_phrasing, positive_control |
 | CH-20-cervical-natural-positive | `symptom_duration_weeks` | MISSED_MET | MET | NOT_DOCUMENTED | natural_phrasing, positive_control |
 
-### Unscored requirements (2)
+### Unscored requirements (1)
 
 | Case | Requirement | Observed | Question for a reviewer |
 | --- | --- | --- | --- |
-| CH-05-intermittent-adherence | `cpb_0236_conservative_therapy_no_improvement` | MET | Does a response to a barely-taken course count as documented, need review, or count as absent? |
 | CH-09-natural-ehl | `objective_motor_or_reflex_change_in_root_distribution` | NOT_DOCUMENTED | Does weakness in a named muscle (EHL) without a named root satisfy 'objective findings in the specific nerve root distribution'? This needs a clinician or the policy owner. |
+
+## Dataset `framing_controls_v1` (control)
+
+Twenty lumbar notes in which one valid conservative-therapy course is documented with ordinary framing language. Every therapy label is MET. They measure whether a conservative ambiguity detector rejects valid documentation.
+
+- Notes: Synthetic, agent-authored (Claude). Not written or reviewed by a clinician.
+- Selection: Written to cover common framing forms before any of them was run. The author had read the extractor source, so the set reflects forms the author expected to matter, not a sample.
+- Cases: 20; requirement slots: 80
+- Labels: 0 verified, 80 provisional, 0 needs review (unscored), 0 unlabeled (unscored)
+- Source cases with no labels at all: 0
+- Cases whose extractor output was seen before labeling: 0
+
+### Verified labels
+
+No verified labels exist. Nothing is reported for this tier.
+
+### Provisional labels
+
+Scored labels: 80.
+
+Selected set: counts only. These are known failures, not rates.
+
+| Metric | Result | Denominator |
+| --- | --- | --- |
+| False MET | not measured (no eligible labels) | scored labels where MET is not an acceptable state |
+| MET precision | 78 of 78 | scored labels predicted MET |
+| Missed MET | 2 of 80 | scored labels whose expected state is MET |
+| MET recall | 78 of 80 | scored labels whose expected state is MET |
+| Over-abstention | 2 of 80 | scored labels whose expected state is MET or NOT_MET |
+| Abstention rate | 2 of 80 | all scored labels; predicted NOT_DOCUMENTED or NEEDS_REVIEW |
+| Review rate | 0 of 80 | all scored labels; predicted NEEDS_REVIEW |
+| Decided coverage | 78 of 80 | all scored labels; predicted MET or NOT_MET |
+| Exact agreement | 78 of 80 | all scored labels |
+| Acceptable agreement | 78 of 80 | all scored labels |
+| Evidence coverage | 78 of 78 | scored labels predicted MET, NOT_MET or NEEDS_REVIEW; at least one cited span |
+| Evidence overlap | 78 of 78 | exact-agreement labels with an expected quote and a cited span; cited span overlaps the quote |
+
+Utility flags: FALSE_MET_NOT_MEASURED.
+
+Confusion matrix (all requirements):
+
+| Expected \ Observed | MET | NOT_MET | NOT_DOCUMENTED | NEEDS_REVIEW |
+| --- | ---: | ---: | ---: | ---: |
+| MET | 78 | 0 | 2 | 0 |
+| NOT_MET | 0 | 0 | 0 | 0 |
+| NOT_DOCUMENTED | 0 | 0 | 0 | 0 |
+| NEEDS_REVIEW | 0 | 0 | 0 | 0 |
+
+Per requirement:
+
+| Requirement | Scored | False MET | Missed MET | MET precision | MET recall |
+| --- | ---: | --- | --- | --- | --- |
+| `back_pain_with_radiculopathy` | 20 | not measured (no eligible labels) | 0 of 20 | 20 of 20 | 20 of 20 |
+| `cpb_0236_conservative_therapy_no_improvement` | 20 | not measured (no eligible labels) | 1 of 20 | 19 of 19 | 19 of 20 |
+| `cpb_0236_conservative_therapy_weeks` | 20 | not measured (no eligible labels) | 1 of 20 | 19 of 19 | 19 of 20 |
+| `objective_motor_or_reflex_change_in_root_distribution` | 20 | not measured (no eligible labels) | 0 of 20 | 20 of 20 | 20 of 20 |
+
+Controls on the same labels. A constant predictor must not look good:
+
+| Predictor | False MET | MET recall | Decided coverage | Degenerate | Flags |
+| --- | --- | --- | --- | --- | --- |
+| Production extractor | not measured (no eligible labels) | 78 of 80 | 78 of 80 | yes | FALSE_MET_NOT_MEASURED |
+| ALWAYS_NOT_DOCUMENTED | not measured (no eligible labels) | 0 of 80 | 0 of 80 | yes | ZERO_MET_RECALL, NEVER_DECIDES, FALSE_MET_NOT_MEASURED |
+| ALWAYS_NEEDS_REVIEW | not measured (no eligible labels) | 0 of 80 | 0 of 80 | yes | ZERO_MET_RECALL, NEVER_DECIDES, FALSE_MET_NOT_MEASURED |
+| ALWAYS_MET | not measured (no eligible labels) | 80 of 80 | 80 of 80 | yes | FALSE_MET_NOT_MEASURED |
+
+'Degenerate: no' only means the predictor is not one of these constant baselines. It is not a quality bar.
+
+### Case level
+
+Derived from requirement labels. A case counts only if every requirement has a scored label. Unlike the requirement tables, case-level results use every scored tier together; see label_tiers_used. Fully scored cases: 20 of 20. Label tiers used: provisional.
+
+| Measure | Result | Denominator |
+| --- | --- | --- |
+| All requirements MET when at least one must not be | 0/0 | fully scored cases where at least one requirement must not be MET |
+| Not all MET when every requirement is expected MET | 2/20 | fully scored cases where every requirement is expected MET |
+| False MET hidden by another blocker | 0/0 | cases with at least one false MET; overall status was not PENDING_VERIFICATION |
+
+Blocker depth: 0 of 0 non-passing cases are blocked by exactly one requirement. Only in those can a single false MET change the overall status; in the rest it stays hidden (cases by number of blocking requirements: {}).
+
+READY: not reachable. No human verifications are supplied, so READY cannot occur. No false-READY rate is reported.
+
+### Observed failures (2)
+
+| Case | Requirement | Class | Expected | Observed | Phenomena |
+| --- | --- | --- | --- | --- | --- |
+| PC-05 | `cpb_0236_conservative_therapy_weeks` | MISSED_MET | MET | NOT_DOCUMENTED | framing_control, frequency |
+| PC-20 | `cpb_0236_conservative_therapy_no_improvement` | MISSED_MET | MET | NOT_DOCUMENTED | framing_control, two_sentence |
+
+### Unscored requirements (0)
+
+
+## Human review
+
+- `review_log_v1`: 3 textual decisions recorded as verified labels; 7 policy or clinical opinions left unverified; 4 given by accepting agent proposals in bulk. No clinical or payer-policy authority is claimed. Textual decisions are recorded as verified labels; policy and clinical decisions are recorded here as opinions and their labels stay unverified.
 
 ## Sealed holdouts
 

@@ -108,29 +108,33 @@
         },
         {
           "requirement_key": "cpb_0236_conservative_therapy_weeks",
-          "review_status": "provisional",
-          "expected_state": "NOT_DOCUMENTED",
+          "review_status": "verified",
+          "expected_state": "NEEDS_REVIEW",
           "acceptable_states": [
-            "NOT_DOCUMENTED",
             "NEEDS_REVIEW"
           ],
-          "evidence_quote": null,
-          "rationale": "The note says the NSAIDs were missed, so no completed course is documented.",
+          "evidence_quote": "Missed NSAIDs for 8 weeks with no improvement",
+          "rationale": "The note says the NSAIDs were missed. Reviewer judgment: the sentence is contradictory enough that it should go back to a human rather than be treated as absent therapy.",
           "uncertainty": "low",
-          "decision_type": "textual"
+          "decision_type": "textual",
+          "reviewer": "NickLeko",
+          "reviewer_type": "human",
+          "reviewed_on": "2026-11-17"
         },
         {
           "requirement_key": "cpb_0236_conservative_therapy_no_improvement",
-          "review_status": "provisional",
-          "expected_state": "NOT_DOCUMENTED",
+          "review_status": "verified",
+          "expected_state": "NEEDS_REVIEW",
           "acceptable_states": [
-            "NOT_DOCUMENTED",
             "NEEDS_REVIEW"
           ],
-          "evidence_quote": null,
-          "rationale": "There is no completed course for the response to attach to.",
+          "evidence_quote": "Missed NSAIDs for 8 weeks with no improvement",
+          "rationale": "The response is attached to a course the note says was missed. Reviewer judgment: route to human review.",
           "uncertainty": "low",
-          "decision_type": "textual"
+          "decision_type": "textual",
+          "reviewer": "NickLeko",
+          "reviewer_type": "human",
+          "reviewed_on": "2026-11-17"
         }
       ]
     },
@@ -179,7 +183,7 @@
           "evidence_quote": "In 2019, NSAIDs for 8 weeks",
           "rationale": "The course is dated 2019; the note does not link it to the current presentation.",
           "uncertainty": "medium",
-          "uncertainty_note": "Whether a years-old course can count for the current request is a policy question.",
+          "uncertainty_note": "Whether a years-old course can count for the current request is a policy question. Reviewer opinion (2026-11-17, given individually): NEEDS_REVIEW. Not confirmed by the policy owner.",
           "decision_type": "policy"
         },
         {
@@ -193,7 +197,7 @@
           "evidence_quote": "no improvement",
           "rationale": "The response belongs to the 2019 course.",
           "uncertainty": "medium",
-          "uncertainty_note": "Same question as the duration.",
+          "uncertainty_note": "Same question as the duration. Reviewer opinion (2026-11-17, given individually): NEEDS_REVIEW. Not confirmed by the policy owner.",
           "decision_type": "policy"
         }
       ]
@@ -245,17 +249,18 @@
         },
         {
           "requirement_key": "cpb_0236_conservative_therapy_no_improvement",
-          "review_status": "provisional",
+          "review_status": "verified",
           "expected_state": "NEEDS_REVIEW",
           "acceptable_states": [
-            "NEEDS_REVIEW",
-            "NOT_MET"
+            "NEEDS_REVIEW"
           ],
           "evidence_quote": "now much improved",
-          "rationale": "The note states no improvement initially and marked improvement now.",
-          "uncertainty": "medium",
-          "uncertainty_note": "If the current state governs, NOT_MET is also defensible.",
-          "decision_type": "textual"
+          "rationale": "The note states no improvement initially and marked improvement now. Reviewer judgment: route to human review; the tool should not resolve which state governs.",
+          "uncertainty": "low",
+          "decision_type": "textual",
+          "reviewer": "NickLeko",
+          "reviewer_type": "human",
+          "reviewed_on": "2026-11-17"
         }
       ]
     },
@@ -303,18 +308,22 @@
           "evidence_quote": "taken twice total",
           "rationale": "Two doses over 8 weeks is not clearly an 8-week course.",
           "uncertainty": "medium",
-          "uncertainty_note": "Whether minimal adherence defeats the duration is a policy question.",
+          "uncertainty_note": "Whether minimal adherence defeats the duration is a policy question. Reviewer opinion (2026-11-17, given by accepting the agent proposal): NEEDS_REVIEW. Not confirmed by the policy owner.",
           "decision_type": "policy"
         },
         {
           "requirement_key": "cpb_0236_conservative_therapy_no_improvement",
-          "review_status": "needs_review",
+          "review_status": "provisional",
           "expected_state": "NEEDS_REVIEW",
           "evidence_quote": "with no improvement",
-          "rationale": "No improvement is stated, but for a course that was barely taken.",
-          "uncertainty": "high",
-          "uncertainty_note": "Does a response to a barely-taken course count as documented, need review, or count as absent?",
-          "decision_type": "policy"
+          "rationale": "No improvement is stated for a course that was taken twice in 8 weeks. Policy reading: route to human review.",
+          "uncertainty": "medium",
+          "uncertainty_note": "Policy reading adopted by the reviewer from the agent proposal without separate deliberation; not confirmed by the policy owner.",
+          "decision_type": "policy",
+          "acceptable_states": [
+            "NEEDS_REVIEW",
+            "NOT_DOCUMENTED"
+          ]
         }
       ]
     },
@@ -899,7 +908,7 @@
           "evidence_quote": "before the current flare began last week",
           "rationale": "The course predates the current flare.",
           "uncertainty": "medium",
-          "uncertainty_note": "Whether an earlier-episode course counts is a policy question.",
+          "uncertainty_note": "Whether an earlier-episode course counts is a policy question. Reviewer opinion (2026-11-17, given by accepting the agent proposal): NEEDS_REVIEW. Not confirmed by the policy owner.",
           "decision_type": "policy"
         },
         {
@@ -913,7 +922,7 @@
           "evidence_quote": "no improvement at the time",
           "rationale": "The response belongs to the earlier course.",
           "uncertainty": "medium",
-          "uncertainty_note": "Same question as the duration.",
+          "uncertainty_note": "Same question as the duration. Reviewer opinion (2026-11-17, given by accepting the agent proposal): NEEDS_REVIEW. Not confirmed by the policy owner.",
           "decision_type": "policy"
         }
       ]

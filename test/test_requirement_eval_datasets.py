@@ -8,7 +8,17 @@ from pydantic import ValidationError
 
 from evaluation import report as report_module
 from evaluation.harness import evaluate_dataset
-from evaluation.schema import DATASET_DIR, REPO_ROOT, Dataset, HoldoutSealedError, RequirementLabel, load_dataset, note_sha256
+from evaluation.schema import (
+    DATASET_DIR,
+    REPO_ROOT,
+    Dataset,
+    HoldoutSealedError,
+    RequirementLabel,
+    ReviewLog,
+    check_review_log,
+    load_dataset,
+    note_sha256,
+)
 
 NOTE = "Low back pain with radiculopathy. NSAIDs for 8 weeks with no improvement."
 PROVENANCE = {
@@ -228,10 +238,13 @@ def test_baseline_states_its_limits_and_makes_no_population_estimate(baseline):
     text = report_module.render_markdown(baseline)
     for phrase in ("No label has been reviewed by a human", "synthetic", "no population-level error rate", "READY: not reachable"):
         assert phrase in text
-    for data in baseline["datasets"].values():
+    log = json.loads((DATASET_DIR / "review_log_v1.json").read_text(encoding="utf-8"))
+    for dataset_id, data in baseline["datasets"].items():
         assert data["independent_clinical_ground_truth"] is False
-        assert data["label_counts"]["verified"] == 0
-        assert data["tiers"]["verified"]["aggregate"]["scored_labels"] == 0
+        # Only individually given textual human decisions can create verified labels.
+        logged = sum(1 for item in log["textual_decisions"] if item["dataset"] == dataset_id)
+        assert data["label_counts"]["verified"] == logged
+        assert data["tiers"]["verified"]["aggregate"]["scored_labels"] == logged
         assert not data["unlabeled_requirements"] and not data["labels_without_matching_requirement"]
         assert data["case_level"]["ready"]["observed"] == 0
 
@@ -268,12 +281,58 @@ def test_known_lumbar_failures_are_represented_as_measured_baseline_failures(bas
         ("CH-10-natural-dorsiflexion-l5", exam): "MISSED_MET",
     }
     assert {key: observed.get(key) for key in expected} == expected
+    assert observed[("CH-05-intermittent-adherence", response)] == "FALSE_MET"
     unscored = {(row["case_id"], row["requirement_key"]): row["observed_state"] for row in challenge["unscored_needs_review"]}
-    assert unscored[("CH-09-natural-ehl", exam)] == "NOT_DOCUMENTED"
-    aggregate = challenge["tiers"]["provisional"]["aggregate"]
-    assert (aggregate["false_met"]["numerator"], aggregate["false_met"]["denominator"]) == (13, 17)
-    assert (aggregate["missed_met"]["numerator"], aggregate["missed_met"]["denominator"]) == (11, 59)
-    assert challenge["case_level"]["false_all_met"]["numerator"] == 7
+    assert unscored == {("CH-09-natural-ehl", exam): "NOT_DOCUMENTED"}
+    verified = challenge["tiers"]["verified"]["aggregate"]
+    provisional = challenge["tiers"]["provisional"]["aggregate"]
+    assert (verified["false_met"]["numerator"], verified["false_met"]["denominator"]) == (3, 3)
+    assert (provisional["false_met"]["numerator"], provisional["false_met"]["denominator"]) == (11, 15)
+    assert (provisional["missed_met"]["numerator"], provisional["missed_met"]["denominator"]) == (11, 59)
+    assert challenge["case_level"]["false_all_met"]["numerator"] == 8
+
+
+def test_framing_controls_are_all_met_and_their_baseline_misses_are_pinned(baseline):
+    controls = baseline["datasets"]["framing_controls_v1"]
+    assert (controls["cases"], controls["split"]) == (20, "control")
+    assert controls["label_counts"] == {"verified": 0, "provisional": 80, "needs_review": 0}
+    assert controls["cases_with_output_seen_before_labeling"] == 0
+    aggregate = controls["tiers"]["provisional"]["aggregate"]
+    assert aggregate["false_met"]["denominator"] == 0  # every label is MET
+    assert {(row["case_id"], row["requirement_key"]) for row in controls["observed_failures"]} == {
+        ("PC-05", "cpb_0236_conservative_therapy_weeks"),
+        ("PC-20", "cpb_0236_conservative_therapy_no_improvement"),
+    }
+
+
+def test_review_log_keeps_textual_decisions_apart_from_policy_and_clinical_opinions():
+    log = ReviewLog.model_validate_json((DATASET_DIR / "review_log_v1.json").read_text(encoding="utf-8"))
+    datasets = {}
+    for name in report_module.EVALUATED_DATASETS:
+        data = load_dataset(DATASET_DIR / name)
+        datasets[data.dataset_id] = data
+    check_review_log(log, datasets)
+    assert all(item.recorded_as == "verified_label" for item in log.textual_decisions)
+    assert all(item.recorded_as == "reviewer_opinion" for item in log.policy_and_clinical_opinions)
+
+    payload = json.loads(log.model_dump_json())
+    moved = {**payload["policy_and_clinical_opinions"][0], "recorded_as": "verified_label"}
+    with pytest.raises(ValidationError, match="Only textual decisions"):
+        ReviewLog.model_validate({**payload, "policy_and_clinical_opinions": [moved]})
+    bulk = {**payload["textual_decisions"][0], "how_given": "bulk_acceptance_of_agent_proposals"}
+    with pytest.raises(ValidationError, match="individual decision"):
+        ReviewLog.model_validate({**payload, "textual_decisions": [bulk]})
+
+    # A verified label with no logged textual decision is rejected.
+    unlogged = ReviewLog.model_validate({**payload, "textual_decisions": payload["textual_decisions"][1:]})
+    with pytest.raises(ValueError, match="without a logged textual decision"):
+        check_review_log(unlogged, datasets)
+    # A policy opinion whose label claims verification is rejected.
+    corpus = datasets["corpus52"]
+    label = next(lbl for case in corpus.cases if case.case_id == "MRI-01-complete" for lbl in case.labels if lbl.decision_type == "policy")
+    label.review_status, label.reviewer, label.reviewer_type, label.reviewed_on = "verified", log.reviewer, "human", log.reviewed_on
+    with pytest.raises(ValueError, match="cannot verify a label"):
+        check_review_log(log, datasets)
 
 
 def test_a_case_added_to_the_note_file_cannot_go_silently_unlabeled(tmp_path, monkeypatch):
@@ -298,9 +357,10 @@ def test_blocker_depth_shows_where_a_single_false_met_would_stay_hidden(baseline
 
 def test_challenge_results_are_never_rendered_as_percentages(baseline):
     text = report_module.render_markdown(baseline)
-    challenge = text.split("## Dataset `challenge_v1`")[1].split("## Sealed holdouts")[0]
-    assert "%" not in challenge
-    assert "13 of 17" in challenge and "known failures, not rates" in challenge
+    selected = text.split("## Dataset `challenge_v1`")[1].split("## Human review")[0]
+    assert "## Dataset `framing_controls_v1`" in selected
+    assert "%" not in selected
+    assert "11 of 15" in selected and "known failures, not rates" in selected
     assert "say nothing about real-world or clinical performance" in text
 
 
@@ -308,8 +368,9 @@ def test_decision_packet_is_compact_blind_and_quotes_the_stored_policy(baseline)
     spec = json.loads((DATASET_DIR / "decision_packet_v1.json").read_text(encoding="utf-8"))
     selected = {(entry["dataset"], entry["case_id"], entry["requirement_key"]) for entry in spec["entries"]}
     assert len(selected) == len(spec["entries"]) == 37
-    # Every baseline failure and every open question is in the first review pass.
-    for dataset_id, data in baseline["datasets"].items():
+    # Every baseline failure and every open question in the sets the packet was built for is in the first review pass.
+    for dataset_id in ("corpus52", "challenge_v1"):
+        data = baseline["datasets"][dataset_id]
         for row in data["observed_failures"] + data["unscored_needs_review"]:
             assert (dataset_id, row["case_id"], row["requirement_key"]) in selected
     assert not any(entry["dataset"] == "holdout_v1" for entry in spec["entries"])
@@ -326,7 +387,13 @@ def test_decision_packet_is_compact_blind_and_quotes_the_stored_policy(baseline)
 def test_labeling_packet_keeps_the_reviewer_blind_to_extractor_output():
     rows = report_module.build_packet_rows()
     assert not any("observed" in column or "predicted" in column for column in report_module.PACKET_COLUMNS)
-    assert sum(1 for row in rows if row["priority"] == "1-decide") == 6
+    assert sum(1 for row in rows if row["priority"] == "1-decide") == 5
+    assert not any(
+        row["case_id"] in {"CH-02-missed-nsaids", "CH-04-initially-none-now-improved"}
+        and row["requirement_key"].endswith("improvement")
+        and row["proposed_state"] == ""
+        for row in rows
+    )
     assert sum(1 for row in rows if row["dataset"] == "holdout_v1") == 10
     assert all(row["reviewer_state"] == "" and row["reviewer_name"] == "" for row in rows)
     assert (REPO_ROOT / "docs/evaluation/labeling_packet.csv").exists()

@@ -156,6 +156,80 @@ class Dataset(BaseModel):
         return self
 
 
+class ReviewDecision(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    dataset: str
+    case_id: str
+    requirement_key: str
+    decision_type: Literal["textual", "policy", "clinical"]
+    reviewer_state: RequirementState
+    acceptable_states: List[RequirementState]
+    how_given: Literal["individual", "bulk_acceptance_of_agent_proposals"]
+    recorded_as: Literal["verified_label", "reviewer_opinion"]
+    note: str
+
+    @model_validator(mode="after")
+    def _separate(self) -> "ReviewDecision":
+        if (self.decision_type == "textual") != (self.recorded_as == "verified_label"):
+            raise ValueError("Only textual decisions become verified labels; policy and clinical ones stay opinions.")
+        if self.recorded_as == "verified_label" and self.how_given != "individual":
+            raise ValueError("A verified label needs an individual decision, not bulk acceptance.")
+        if self.reviewer_state not in self.acceptable_states:
+            raise ValueError("acceptable_states must include reviewer_state.")
+        return self
+
+
+class ReviewLog(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    log_id: str
+    reviewer: str = Field(min_length=1)
+    reviewer_type: Literal["human"]
+    reviewed_on: str = Field(pattern=r"^\d{4}-\d{2}-\d{2}$")
+    reviewer_authority: str = Field(min_length=1)
+    method: str = Field(min_length=1)
+    textual_decisions: List[ReviewDecision]
+    policy_and_clinical_opinions: List[ReviewDecision]
+    assumptions_not_reviewed: List[str] = Field(default_factory=list)
+
+    @model_validator(mode="after")
+    def _sections(self) -> "ReviewLog":
+        if any(item.decision_type != "textual" for item in self.textual_decisions):
+            raise ValueError("The textual section holds textual decisions only.")
+        if any(item.decision_type == "textual" for item in self.policy_and_clinical_opinions):
+            raise ValueError("Textual decisions belong in the textual section.")
+        return self
+
+
+def check_review_log(log: ReviewLog, datasets: Dict[str, Dataset]) -> None:
+    """Every logged decision must match its label, and only textual decisions may be verified labels."""
+    for item in [*log.textual_decisions, *log.policy_and_clinical_opinions]:
+        case = next((case for case in datasets[item.dataset].cases if case.case_id == item.case_id), None)
+        label = next((label for label in (case.labels if case else []) if label.requirement_key == item.requirement_key), None)
+        if label is None:
+            raise ValueError(f"Logged decision has no label: {item.case_id}/{item.requirement_key}")
+        if label.decision_type != item.decision_type or label.expected_state != item.reviewer_state:
+            raise ValueError(f"Label disagrees with the logged decision: {item.case_id}/{item.requirement_key}")
+        if item.recorded_as == "verified_label":
+            if label.review_status != "verified" or label.reviewer != log.reviewer or label.reviewed_on != log.reviewed_on:
+                raise ValueError(f"Textual decision is not recorded as a verified label: {item.case_id}/{item.requirement_key}")
+            if label.acceptable_states != item.acceptable_states:
+                raise ValueError(f"Verified label acceptable states differ from the decision: {item.case_id}/{item.requirement_key}")
+        elif label.review_status == "verified":
+            raise ValueError(f"A policy or clinical opinion cannot verify a label: {item.case_id}/{item.requirement_key}")
+    verified = {
+        (dataset_id, case.case_id, label.requirement_key)
+        for dataset_id, dataset in datasets.items()
+        for case in dataset.cases
+        for label in case.labels
+        if label.review_status == "verified"
+    }
+    logged = {(item.dataset, item.case_id, item.requirement_key) for item in log.textual_decisions}
+    if verified - logged:
+        raise ValueError(f"Verified labels without a logged textual decision: {sorted(verified - logged)}")
+
+
 def source_case_ids(dataset: Dataset, repo_root: Path = REPO_ROOT) -> List[str]:
     """Case IDs in the referenced note file, so a case added there cannot go silently unlabeled."""
     if not dataset.notes_source:

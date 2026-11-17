@@ -24,11 +24,12 @@ from engine.service import ReadinessService
 
 from .harness import evaluate_dataset, service_predictor
 from .metrics import CONTROLS
-from .schema import DATASET_DIR, REPO_ROOT, SCORED_TIERS, Dataset, dataset_file_sha256, load_dataset
+from .schema import DATASET_DIR, REPO_ROOT, SCORED_TIERS, Dataset, ReviewLog, check_review_log, dataset_file_sha256, load_dataset
 
 REPORT_VERSION = 1
 OUTPUT_DIR = REPO_ROOT / "docs" / "evaluation"
-EVALUATED_DATASETS = ("corpus52_labels.json", "challenge_v1.json")
+EVALUATED_DATASETS = ("corpus52_labels.json", "challenge_v1.json", "framing_controls_v1.json")
+REVIEW_LOGS = ("review_log_v1.json",)
 SEALED_DATASETS = ("holdout_v1.json",)
 
 SCOPE = (
@@ -62,11 +63,26 @@ def build_report(service: ReadinessService | None = None) -> Dict[str, Any]:
     predict = service_predictor(service)
     datasets: Dict[str, Any] = {}
     sources: Dict[str, Any] = {}
+    loaded: Dict[str, Dataset] = {}
     for name in EVALUATED_DATASETS:
         path = DATASET_DIR / name
         dataset = load_dataset(path)
+        loaded[dataset.dataset_id] = dataset
         datasets[dataset.dataset_id] = evaluate_dataset(dataset, predict)
         sources[dataset.dataset_id] = _dataset_summary(dataset, path)
+    reviews = {}
+    for name in REVIEW_LOGS:
+        log = ReviewLog.model_validate_json((DATASET_DIR / name).read_text(encoding="utf-8"))
+        check_review_log(log, loaded)
+        reviews[log.log_id] = {
+            "file": (DATASET_DIR / name).relative_to(REPO_ROOT).as_posix(),
+            "reviewer_authority": log.reviewer_authority,
+            "textual_decisions_recorded_as_verified": len(log.textual_decisions),
+            "policy_or_clinical_opinions_left_unverified": len(log.policy_and_clinical_opinions),
+            "given_by_bulk_acceptance": sum(
+                1 for item in [*log.textual_decisions, *log.policy_and_clinical_opinions] if item.how_given != "individual"
+            ),
+        }
     sealed = {}
     for name in SEALED_DATASETS:
         path = DATASET_DIR / name
@@ -90,6 +106,7 @@ def build_report(service: ReadinessService | None = None) -> Dict[str, Any]:
             "drug_table_sha256": sha256(DRUG_TABLE_PATH.read_bytes()).hexdigest(),
         },
         "dataset_files": sources,
+        "human_reviews": reviews,
         "datasets": datasets,
         "sealed_holdouts": sealed,
     }
@@ -153,7 +170,7 @@ def render_markdown(report: Dict[str, Any]) -> str:
     ]
     for dataset_id, data in report["datasets"].items():
         counts = data["label_counts"]
-        percent = data["split"] != "challenge"
+        percent = data["split"] == "regression"
         out += [
             f"## Dataset `{dataset_id}` ({data['split']})",
             "",
@@ -177,7 +194,7 @@ def render_markdown(report: Dict[str, Any]) -> str:
                 continue
             out += [f"Scored labels: {aggregate['scored_labels']}.", ""]
             if not percent:
-                out += ["Adversarial set: counts only. These are known failures, not rates.", ""]
+                out += ["Selected set: counts only. These are known failures, not rates.", ""]
             out += _metric_rows(aggregate, percent)
             flags = ", ".join(aggregate["utility_flags"]) or "none"
             out += ["", f"Utility flags: {flags}.", "", "Confusion matrix (all requirements):", ""]
@@ -259,7 +276,14 @@ def render_markdown(report: Dict[str, Any]) -> str:
         for case_id in data["unlabeled_source_cases"]:
             out.append(f"- Source case with no labels: {case_id}")
         out.append("")
-    out += ["## Sealed holdouts", ""]
+    out += ["## Human review", ""]
+    for log_id, review in report["human_reviews"].items():
+        out += [
+            f"- `{log_id}`: {review['textual_decisions_recorded_as_verified']} textual decisions recorded as verified labels; "
+            f"{review['policy_or_clinical_opinions_left_unverified']} policy or clinical opinions left unverified; "
+            f"{review['given_by_bulk_acceptance']} given by accepting agent proposals in bulk. {review['reviewer_authority']}"
+        ]
+    out += ["", "## Sealed holdouts", ""]
     for dataset_id, data in report["sealed_holdouts"].items():
         out.append(f"- `{dataset_id}`: {data['cases']} cases, not evaluated. {data['reason']}")
     return "\n".join(out) + "\n"
@@ -394,7 +418,11 @@ def render_decision_packet(service: ReadinessService | None = None) -> str:
             number += 1
             counts[label.decision_type] += 1
             others = [state for state in label.acceptable_states if state != label.expected_state]
-            status = "open question" if label.review_status == "needs_review" else "provisional"
+            status = {
+                "needs_review": "open question",
+                "provisional": "provisional",
+                "verified": f"verified by {label.reviewer} on {label.reviewed_on}",
+            }[label.review_status]
             quote = f'"{label.evidence_quote}"' if label.evidence_quote else "none in the note"
             body += [
                 f"**{number}. `{key}`** ({label.decision_type})",
