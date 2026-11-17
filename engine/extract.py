@@ -115,6 +115,22 @@ CPB_COURSE_RESPONSE = (
     r"(?:\s+in\s+(?:(?:her|his|the\s+patient's)\s+)?(?:(?:back|leg|low\s+back)\s+)?(?:pain|symptoms))?"
     r"(?:\s+(?:so\s+far|to\s+date))?"
 )
+# Sibling clauses that are clearly independent of the treatment course. Each must be the
+# whole clause. This is a closed allowlist: anything not listed, or only partly matching,
+# is treated as commentary on the course and still sends it to review.
+CPB_INDEPENDENT_COMMENTARY_RE = re.compile(
+    r"^(?:"
+    r"(?:lumbar\s+)?mri\s+(?:is\s+)?requested"
+    r"|(?:(?:the\s+)?patient\s+|she\s+|he\s+)?(?:was\s+)?referred\s+to\s+(?:the\s+)?"
+    r"(?:spine|pain|neurosurgery|orthopedic|orthopaedic|physiatry)\s+clinic"
+    r"|(?:she|he|the\s+patient)\s+still\s+works\s+(?:full|part)[\s-]time"
+    r"|(?:she|he|the\s+patient)\s+declines\s+(?:injections|epidural\s+(?:steroid\s+)?injections|surgery)"
+    r"|see\s+attached\s+records"
+    r")$"
+)
+# Severity describes the response, so it is accepted only beside a stated non-response,
+# where it agrees with the course. Beside an improvement or no response it still needs review.
+CPB_NONRESPONSE_COMMENTARY_RE = re.compile(r"^(?:(?:her|his|the)\s+)?(?:(?:back|leg)\s+)?pain\s+is\s+severe$")
 CPB_COURSE_PREFIX = rf"^(?:{CPB_COURSE_HEADER})?{CPB_COURSE_SUBJECT}{CPB_COURSE_USE}{CPB_COURSE_MODIFIER}"
 CPB_WHOLE_COURSE_RES = (
     re.compile(
@@ -575,12 +591,20 @@ def _class_name_course_status(sentence: str, clause_start: int, clause_end: int)
     if not (CPB_0236_THERAPY_AFTER_RE.search(clause) or CPB_0236_THERAPY_BEFORE_RE.search(clause)):
         return "clean"
     # A sibling clause naming no therapy at all comments on this course (timing,
-    # adherence, a reversed response), so the course itself is uncertain.
+    # adherence, a reversed response), so the course itself is uncertain, unless the
+    # whole clause is one of the closed set of clearly independent statements.
+    states_nonresponse = bool(CPB_0236_NONRESPONSE_RE.search(clause)) and not CPB_0236_RESPONSE_RE.search(clause)
+
+    def independent(sibling: str) -> bool:
+        sibling = sibling.strip().rstrip(".!?").strip()
+        return bool(CPB_INDEPENDENT_COMMENTARY_RE.match(sibling) or (states_nonresponse and CPB_NONRESPONSE_COMMENTARY_RE.match(sibling)))
+
     commentary = any(
         (start, end) != (clause_start, clause_end)
         and not CPB_0236_THERAPY_CONTEXT_RE.search(sentence[start:end])
         and not DRUG_NAME_RE.search(sentence[start:end])
         and not THERAPY_CONTEXT_RE.search(sentence[start:end])
+        and not independent(sentence[start:end])
         for start, end in _therapy_clause_spans(sentence)
     )
     if commentary:
