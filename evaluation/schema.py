@@ -24,7 +24,7 @@ RequirementState = Literal["MET", "NOT_MET", "NOT_DOCUMENTED", "NEEDS_REVIEW"]
 STATES: tuple[str, ...] = ("MET", "NOT_MET", "NOT_DOCUMENTED", "NEEDS_REVIEW")
 ReviewStatus = Literal["verified", "provisional", "needs_review"]
 SCORED_TIERS: tuple[str, ...] = ("verified", "provisional")
-Split = Literal["regression", "challenge", "holdout"]
+Split = Literal["regression", "challenge", "control", "holdout"]
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 DATASET_DIR = Path(__file__).resolve().parent / "datasets"
